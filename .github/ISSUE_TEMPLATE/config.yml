@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: VistA Evolved HQ
+    url: https://www.notion.so/VistA-Evolved-HQ-3013cd55025780418b92f3624b7469b6
+    about: Link to VistA Evolved HQ page (replace with your real Notion URL).
+  - name: Security vulnerability report
+    url: mailto:admin@onservice.us
+    about: Please report security issues privately
