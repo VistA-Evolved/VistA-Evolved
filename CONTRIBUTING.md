@@ -30,3 +30,26 @@
 - Keep MVP scope: Patient Search → Allergies → Vitals.
 - Do not start Scheduling/CPOE early.
 - If something breaks twice, document it in `docs/runbooks/`.
+
+## Workflow
+- Default branch: `main`
+- Use feature branches: `feat/<short-name>` or `fix/<short-name>`
+- Prefer small PRs (easy review, less risk)
+
+## Linking work
+When possible, link:
+- GitHub Issue ↔ Notion Feature
+- PR ↔ Issue
+- Architecture-impacting work ↔ ADR
+
+## Decisions (ADRs)
+If a change affects architecture, interfaces, tenancy, data model, or deployment:
+- Create/Update an ADR (Notion ADR + optionally a repo stub in `docs/decisions/`)
+
+## Commit/PR expectations
+- PR includes: what changed, why, how to test
+- Add docs/runbook updates when behavior or ops steps change
+
+## Security
+Do not commit secrets. Use `.env` locally and a secret manager in deployment.
+
