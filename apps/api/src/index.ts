@@ -1,18 +1,16 @@
 import Fastify from "fastify";
 
-const app = Fastify({ logger: true });
+const server = Fastify();
 
-app.get("/health", async () => {
-  return { ok: true };
-});
+server.get("/health", async () => ({ ok: true }));
 
-const port = Number(process.env.PORT || 3001);
-const host = process.env.HOST || "127.0.0.1";
+const port = Number(process.env.PORT || 3001)
+const host = process.env.HOST || "127.0.0.1"
 
 try {
-  await app.listen({ port, host });
-  app.log.info(`API running on http://${host}:${port}`);
+  await server.listen({ port, host });
+  console.log(`Server listening on http://${host}:${port}`);
 } catch (err) {
-  app.log.error(err);
+  console.error(err);
   process.exit(1);
 }
