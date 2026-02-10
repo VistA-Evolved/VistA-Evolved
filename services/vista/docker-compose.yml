@@ -1,0 +1,10 @@
+services:
+  yottadb:
+    image: yottadb/yottadb:latest
+    profiles: ["placeholder"]
+    command: ["bash", "-lc", "echo 'TODO: add yottadb config' && sleep 3600"]
+
+  vista:
+    image: alpine:latest
+    profiles: ["placeholder"]
+    command: ["sh", "-lc", "echo 'TODO: add VistA container + startup scripts' && sleep 3600"]

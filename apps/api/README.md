@@ -2,10 +2,28 @@
 
 Node.js API server for VistA Evolved.
 
-## Responsibilities
-- Provide API endpoints for the web UI
-- Talk to YottaDB/VistA via bridge layer (mg-dbx-napi)
-- Validate input/output and normalize data for the UI
+## What this is (today)
+Minimal Fastify API scaffold for the “Hello System” milestone.
+
+## What this becomes (later)
+A thin API layer that:
+- Provides endpoints for the web UI
+- Talks to VistA/YottaDB via the bridge layer (mg-dbx-napi)
+- Validates input/output and normalizes data for the UI
+
+## Run (Hello System)
+From repo root:
+pnpm -r install
+
+Then:
+pnpm -C apps/api dev
+
+## Test
+Open:
+http://localhost:3001/health
+
+Expected:
+{ "ok": true }
 
 ## MVP endpoints (planned)
 - Patient search

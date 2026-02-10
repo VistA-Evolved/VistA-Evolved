@@ -1,14 +1,24 @@
-# apps/web (Browser UI)
+# apps/web (Next.js)
 
-React-based browser UI for VistA Evolved.
+Next.js web app for VistA Evolved.
 
-## MVP screens (planned)
+## Purpose
+This is the browser UI. In the MVP it will deliver:
 - Patient Search (read-only)
-- Patient Demographics (basic)
+- Patient demographics
 - Allergies (view + add)
 - Vitals (view + add)
-- Patient Summary (later)
+
+## Run (development)
+From repo root:
+pnpm -r install
+
+Then:
+pnpm -C apps/web dev
+
+Open:
+http://localhost:3000
 
 ## Notes
-- Keep UI simple and workflow-driven.
-- Avoid building “full EHR UI” early — focus on MVP modules first.
+- This project was created using create-next-app.
+- Keep UI changes small and incremental during MVP.
