@@ -17,22 +17,34 @@ jobs:
       contents: read
       security-events: write
 
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ "javascript-typescript" ]
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Detect JS/TS source files
+        id: detect
+        shell: bash
+        run: |
+          if git ls-files | grep -E '\.(js|jsx|ts|tsx)$' | grep -E '^(apps/|services/|scripts/)' >/dev/null; then
+            echo "has_code=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_code=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Skip if no JS/TS source code yet
+        if: steps.detect.outputs.has_code == 'false'
+        run: echo "No JS/TS source files yet. Skipping CodeQL."
+
       - name: Initialize CodeQL
+        if: steps.detect.outputs.has_code == 'true'
         uses: github/codeql-action/init@v3
         with:
-          languages: ${{ matrix.language }}
+          languages: javascript-typescript
 
       - name: Autobuild
+        if: steps.detect.outputs.has_code == 'true'
         uses: github/codeql-action/autobuild@v3
 
       - name: Perform CodeQL Analysis
+        if: steps.detect.outputs.has_code == 'true'
         uses: github/codeql-action/analyze@v3
