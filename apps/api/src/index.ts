@@ -771,6 +771,175 @@ server.get("/vista/medications", async (request) => {
   }
 });
 
+// Phase 8B: Add medication via ORWDXM AUTOACK (quick order path)
+//
+// VistA CPOE (Computerized Provider Order Entry) is extremely complex:
+//   Full flow: LOCK → build ORDIALOG (13+ params) → SAVE → order checks → SEND (e-sig) → UNLOCK
+//   AUTOACK simplify: LOCK → AUTOACK(DFN, DUZ, Location, QuickOrder) → UNLOCK
+//
+// MVP approach: match drug name to pre-configured quick orders (PSOZ*) in the
+// WorldVistA Docker sandbox, then use AUTOACK to place an unsigned order.
+// Drugs without a matching quick order return an honest error explaining the limitation.
+//
+// Quick orders available in WorldVistA Docker (IEN → drug name keyword):
+const QUICK_ORDERS: { ien: number; name: string; keywords: string[] }[] = [
+  { ien: 1638, name: "ASPIRIN CHEW",        keywords: ["ASPIRIN CHEW", "ASPIRIN CHEWABLE", "ASA CHEW"] },
+  { ien: 1639, name: "ASPIRIN TAB EC",      keywords: ["ASPIRIN TAB", "ASPIRIN EC", "ASA TAB", "ASPIRIN"] },
+  { ien: 1640, name: "ATENOLOL TAB",        keywords: ["ATENOLOL"] },
+  { ien: 1641, name: "ATORVASTATIN TAB",    keywords: ["ATORVASTATIN", "LIPITOR"] },
+  { ien: 1642, name: "BENAZEPRIL TAB",      keywords: ["BENAZEPRIL"] },
+  { ien: 1643, name: "CANDESARTAN TAB",     keywords: ["CANDESARTAN"] },
+  { ien: 1644, name: "CAPTOPRIL TAB",       keywords: ["CAPTOPRIL"] },
+  { ien: 1645, name: "CARVEDILOL TAB",      keywords: ["CARVEDILOL"] },
+  { ien: 1646, name: "ENALAPRIL TAB",       keywords: ["ENALAPRIL"] },
+  { ien: 1658, name: "FLUVASTATIN CAP",     keywords: ["FLUVASTATIN CAP"] },
+  { ien: 1647, name: "FLUVASTATIN XL TAB",  keywords: ["FLUVASTATIN TAB", "FLUVASTATIN XL", "FLUVASTATIN"] },
+  { ien: 1648, name: "LISINOPRIL TAB",      keywords: ["LISINOPRIL"] },
+  { ien: 1649, name: "LOSARTAN TAB",        keywords: ["LOSARTAN"] },
+  { ien: 1650, name: "LOVASTATIN TAB",      keywords: ["LOVASTATIN"] },
+  { ien: 1651, name: "METOPROLOL TAB",      keywords: ["METOPROLOL"] },
+  { ien: 1652, name: "NADOLOL TAB",         keywords: ["NADOLOL"] },
+  { ien: 1653, name: "CLOPIDOGREL TAB",     keywords: ["CLOPIDOGREL", "PLAVIX"] },
+  { ien: 1654, name: "PRAVASTATIN TAB",     keywords: ["PRAVASTATIN"] },
+  { ien: 1655, name: "PROPRANOLOL TAB",     keywords: ["PROPRANOLOL"] },
+  { ien: 1656, name: "ROSUVASTATIN TAB",    keywords: ["ROSUVASTATIN", "CRESTOR"] },
+  { ien: 1657, name: "SIMVASTATIN TAB",     keywords: ["SIMVASTATIN", "ZOCOR"] },
+  { ien: 1628, name: "WARFARIN",            keywords: ["WARFARIN", "COUMADIN"] },
+];
+
+/** Find the best-matching quick order for a drug name. */
+function matchQuickOrder(drug: string): (typeof QUICK_ORDERS)[number] | null {
+  const upper = drug.toUpperCase().trim();
+  // Exact keyword match first
+  for (const qo of QUICK_ORDERS) {
+    for (const kw of qo.keywords) {
+      if (upper === kw) return qo;
+    }
+  }
+  // Substring match (drug contains keyword or keyword contains drug)
+  for (const qo of QUICK_ORDERS) {
+    for (const kw of qo.keywords) {
+      if (upper.includes(kw) || kw.includes(upper)) return qo;
+    }
+  }
+  return null;
+}
+
+server.post("/vista/medications", async (request) => {
+  const body = request.body as any;
+  const dfn = body?.dfn;
+  const drug = body?.drug;
+
+  // Validate inputs
+  if (!dfn || !/^\d+$/.test(String(dfn))) {
+    return {
+      ok: false,
+      error: "Missing or non-numeric dfn",
+      hint: 'Body: { "dfn": "1", "drug": "ASPIRIN" }',
+    };
+  }
+  if (!drug || typeof drug !== "string" || drug.trim().length < 2) {
+    return {
+      ok: false,
+      error: "drug must be at least 2 characters",
+      hint: 'Body: { "dfn": "1", "drug": "ASPIRIN" }',
+    };
+  }
+
+  // Match drug name to a pre-configured quick order
+  const qo = matchQuickOrder(drug);
+  if (!qo) {
+    const available = QUICK_ORDERS.map((q) => q.name).join(", ");
+    return {
+      ok: false,
+      error: `No matching quick order for "${drug.trim()}". VistA CPOE ordering is ` +
+        `complex and requires pre-configured quick orders in this sandbox.`,
+      availableDrugs: available,
+      hint: "Available quick-order drugs: " + available,
+    };
+  }
+
+  try {
+    validateCredentials();
+  } catch (err: any) {
+    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+  }
+
+  try {
+    await connect();
+    const duz = getDuz();
+
+    // Step 1: Lock patient for ordering
+    const lockLines = await callRpc("ORWDX LOCK", [String(dfn)]);
+    const lockResult = lockLines[0]?.trim() || "";
+    if (lockResult !== "1") {
+      disconnect();
+      return {
+        ok: false,
+        error: "Could not lock patient for ordering: " + (lockResult || "empty response"),
+        hint: "Another user may be placing orders for this patient",
+      };
+    }
+
+    // Step 2: AUTOACK — place quick order without verify step
+    // Params: ORVP=DFN, ORNP=DUZ, ORL=Location(2=DR OFFICE), ORIT=QuickOrderIEN
+    const LOCATION_IEN = "2"; // DR OFFICE in WorldVistA Docker
+    let autoackLines: string[];
+    try {
+      autoackLines = await callRpc("ORWDXM AUTOACK", [
+        String(dfn),
+        duz,
+        LOCATION_IEN,
+        String(qo.ien),
+      ]);
+    } catch (autoackErr: any) {
+      // Unlock patient before returning error
+      try { await callRpc("ORWDX UNLOCK", [String(dfn)]); } catch { /* best-effort */ }
+      disconnect();
+      return {
+        ok: false,
+        error: "AUTOACK failed: " + autoackErr.message,
+        hint: "VistA CPOE quick-order placement failed. This may require full dialog-based ordering.",
+      };
+    }
+
+    // Step 3: Unlock patient
+    try { await callRpc("ORWDX UNLOCK", [String(dfn)]); } catch { /* best-effort */ }
+
+    disconnect();
+
+    // Parse AUTOACK response — returns order record lines from GETBYIFN^ORWORR
+    // Format: orderIEN;status^...  or multiple lines describing the new order
+    const raw = autoackLines.join("\n").trim();
+    if (!raw || raw === "0" || raw.startsWith("-1")) {
+      return {
+        ok: false,
+        error: "Order was not created. AUTOACK returned: " + (raw || "(empty)"),
+        hint: "The quick order may be misconfigured or the patient context invalid.",
+      };
+    }
+
+    // Extract order IEN from response (first field before ^ or ;, strip leading ~)
+    const orderIEN = (raw.split(/[\^;]/)[0]?.trim() || raw).replace(/^~/, "");
+
+    return {
+      ok: true,
+      message: `Medication order created (unsigned): ${qo.name}`,
+      orderIEN,
+      quickOrder: qo.name,
+      raw: autoackLines,
+      rpcUsed: "ORWDXM AUTOACK",
+    };
+  } catch (err: any) {
+    disconnect();
+    return {
+      ok: false,
+      error: err.message,
+      hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
+    };
+  }
+});
+
 // Phase 4A: Real RPC call to get default patient list
 server.get("/vista/default-patient-list", async () => {
   try {

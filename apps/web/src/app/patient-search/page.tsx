@@ -132,6 +132,10 @@ export default function PatientSearchPage() {
   const [medications, setMedications] = useState<Medication[]>([]);
   const [medsLoading, setMedsLoading] = useState(false);
   const [medsError, setMedsError] = useState<string | null>(null);
+  const [newMedDrug, setNewMedDrug] = useState("");
+  const [addMedLoading, setAddMedLoading] = useState(false);
+  const [addMedError, setAddMedError] = useState<string | null>(null);
+  const [addMedSuccess, setAddMedSuccess] = useState<string | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Debounce the query input
@@ -283,6 +287,38 @@ export default function PatientSearchPage() {
     }
   }, []);
 
+  // Add a medication for the selected patient
+  const addMedication = useCallback(async () => {
+    if (!selected || newMedDrug.trim().length < 2) return;
+    setAddMedLoading(true);
+    setAddMedError(null);
+    setAddMedSuccess(null);
+
+    try {
+      const res = await fetch(`${API_BASE}/vista/medications`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dfn: selected.dfn, drug: newMedDrug.trim() }),
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setAddMedError(data.error || `Server error (${res.status})`);
+      } else {
+        setAddMedSuccess(data.message || "Medication ordered");
+        setNewMedDrug("");
+        // Refresh medications list
+        await fetchMedications(selected.dfn);
+      }
+    } catch (err) {
+      setAddMedError(
+        err instanceof Error ? err.message : "Failed to reach API server"
+      );
+    } finally {
+      setAddMedLoading(false);
+    }
+  }, [selected, newMedDrug, fetchMedications]);
+
   // Fetch demographics when a patient is selected
   const selectPatient = useCallback(async (pt: Patient) => {
     setSelected(pt);
@@ -307,6 +343,9 @@ export default function PatientSearchPage() {
     setAddNoteSuccess(null);
     setMedications([]);
     setMedsError(null);
+    setNewMedDrug("");
+    setAddMedError(null);
+    setAddMedSuccess(null);
 
     try {
       const res = await fetch(
@@ -669,6 +708,33 @@ export default function PatientSearchPage() {
                 </tbody>
               </table>
             )}
+
+            {/* Phase 8B: Add Medication form */}
+            <div className={styles.addMedForm}>
+              <h3 className={styles.addMedTitle}>Add Medication</h3>
+              <div className={styles.addMedRow}>
+                <input
+                  type="text"
+                  className={styles.addMedInput}
+                  placeholder="Drug name (e.g., ASPIRIN, LISINOPRIL)"
+                  value={newMedDrug}
+                  onChange={(e) => setNewMedDrug(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") addMedication();
+                  }}
+                  disabled={addMedLoading}
+                />
+                <button
+                  className={styles.addMedBtn}
+                  onClick={addMedication}
+                  disabled={addMedLoading || newMedDrug.trim().length < 2}
+                >
+                  {addMedLoading ? "Ordering…" : "Order"}
+                </button>
+              </div>
+              {addMedError && <div className={styles.addMedError}>{addMedError}</div>}
+              {addMedSuccess && <div className={styles.addMedSuccess}>{addMedSuccess}</div>}
+            </div>
           </div>
         )}
 

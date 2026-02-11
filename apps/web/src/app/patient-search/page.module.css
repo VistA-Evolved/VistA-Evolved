@@ -662,6 +662,69 @@
   text-transform: capitalize;
 }
 
+/* Phase 8B: Add Medication form */
+.addMedForm {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-section, #fafafa);
+}
+
+.addMedTitle {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.addMedRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.addMedInput {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.addMedBtn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent, #0070f3);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.addMedBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.addMedError {
+  margin-top: 8px;
+  padding: 8px;
+  color: #b91c1c;
+  background: #fef2f2;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.addMedSuccess {
+  margin-top: 8px;
+  padding: 8px;
+  color: #15803d;
+  background: #f0fdf4;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
 /* Phase 7B: Create Note form */
 .addNoteForm {
   margin-top: 16px;
