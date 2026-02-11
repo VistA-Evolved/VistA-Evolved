@@ -1,10 +1,14 @@
 services:
-  yottadb:
-    image: yottadb/yottadb:latest
-    profiles: ["placeholder"]
-    command: ["bash", "-lc", "echo 'TODO: add yottadb config' && sleep 3600"]
-
-  vista:
-    image: alpine:latest
-    profiles: ["placeholder"]
-    command: ["sh", "-lc", "echo 'TODO: add VistA container + startup scripts' && sleep 3600"]
+  wv:
+    image: worldvista/worldvista-ehr:latest
+    container_name: wv
+    profiles: ["dev"]
+    ports:
+      - "2222:22"
+      - "9430:9430"
+      - "8001:8001"
+      - "8080:8080"
+      - "9080:9080"
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
