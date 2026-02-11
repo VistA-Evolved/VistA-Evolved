@@ -980,6 +980,89 @@ server.get("/vista/default-patient-list", async () => {
   }
 });
 
+// Phase 9A: Problem List via ORWCH PROBLEM LIST RPC
+server.get("/vista/problems", async (request) => {
+  const dfn = (request.query as any)?.dfn;
+  if (!dfn || !/^\d+$/.test(String(dfn))) {
+    return { ok: false, error: "Missing or non-numeric dfn query parameter", hint: "Example: /vista/problems?dfn=1" };
+  }
+
+  try {
+    validateCredentials();
+  } catch (err: any) {
+    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+  }
+
+  const RPC_NAME = "ORWCH PROBLEM LIST";
+
+  try {
+    await connect();
+
+    // ORWCH PROBLEM LIST params: (DFN, FLAG)
+    // DFN   = patient IEN
+    // FLAG  = 1 for active problems only, 0 for all
+    const lines = await callRpc(RPC_NAME, [String(dfn), "0"]);
+
+    disconnect();
+
+    // Check for -1^error pattern
+    if (lines.length > 0 && lines[0].startsWith("-1")) {
+      const errMsg = lines[0].split("^").slice(1).join("^") || "Unknown VistA error";
+      return { ok: false, error: errMsg, rpcUsed: RPC_NAME };
+    }
+
+    // Parse problem list lines
+    // Wire format per line: IEN^problem_text^status^onset_date^...
+    // where status is typically: "A" (active), "I" (inactive), etc.
+    interface ProblemEntry {
+      id: string;
+      text: string;
+      status: string;
+      onset?: string;
+    }
+
+    const results: ProblemEntry[] = lines
+      .map((line) => {
+        if (!line || line.trim() === "") return null;
+        const parts = line.split("^");
+        if (parts.length < 2) return null;
+
+        const ien = parts[0]?.trim();
+        const text = parts[1]?.trim();
+        const status = parts[2]?.trim() || "Unknown";
+        const onset = parts[3]?.trim() || "";
+
+        // Skip empty entries
+        if (!ien || !text) return null;
+
+        // Simplify status for display
+        let displayStatus = "active";
+        if (status.toUpperCase().includes("I") || status === "0") {
+          displayStatus = "inactive";
+        } else if (status.toUpperCase().includes("R") || status === "2") {
+          displayStatus = "resolved";
+        }
+
+        return {
+          id: ien,
+          text,
+          status: displayStatus,
+          onset: onset || undefined,
+        };
+      })
+      .filter((r) => r !== null);
+
+    return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
+  } catch (err: any) {
+    disconnect();
+    return {
+      ok: false,
+      error: err.message,
+      hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
+    };
+  }
+});
+
 const port = Number(process.env.PORT || 3001)
 const host = process.env.HOST || "127.0.0.1"
 

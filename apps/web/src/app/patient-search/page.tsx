@@ -92,6 +92,21 @@ interface MedicationsResult {
   error?: string;
 }
 
+interface Problem {
+  id: string;
+  text: string;
+  status: string;
+  onset?: string;
+}
+
+interface ProblemsResult {
+  ok: boolean;
+  count?: number;
+  results?: Problem[];
+  rpcUsed?: string;
+  error?: string;
+}
+
 const API_BASE = "http://127.0.0.1:3001";
 const DEBOUNCE_MS = 400;
 
@@ -136,6 +151,9 @@ export default function PatientSearchPage() {
   const [addMedLoading, setAddMedLoading] = useState(false);
   const [addMedError, setAddMedError] = useState<string | null>(null);
   const [addMedSuccess, setAddMedSuccess] = useState<string | null>(null);
+  const [problems, setProblems] = useState<Problem[]>([]);
+  const [problemsLoading, setProblemsLoading] = useState(false);
+  const [problemsError, setProblemsError] = useState<string | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Debounce the query input
@@ -287,6 +305,30 @@ export default function PatientSearchPage() {
     }
   }, []);
 
+  // Fetch problems for a given patient DFN
+  const fetchProblems = useCallback(async (dfn: string) => {
+    setProblemsLoading(true);
+    setProblemsError(null);
+    try {
+      const res = await fetch(
+        `${API_BASE}/vista/problems?dfn=${encodeURIComponent(dfn)}`
+      );
+      const data: ProblemsResult = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setProblemsError(data.error || `Server error (${res.status})`);
+      } else {
+        setProblems(data.results || []);
+      }
+    } catch (err) {
+      setProblemsError(
+        err instanceof Error ? err.message : "Failed to reach API server"
+      );
+    } finally {
+      setProblemsLoading(false);
+    }
+  }, []);
+
   // Add a medication for the selected patient
   const addMedication = useCallback(async () => {
     if (!selected || newMedDrug.trim().length < 2) return;
@@ -346,6 +388,8 @@ export default function PatientSearchPage() {
     setNewMedDrug("");
     setAddMedError(null);
     setAddMedSuccess(null);
+    setProblems([]);
+    setProblemsError(null);
 
     try {
       const res = await fetch(
@@ -366,14 +410,15 @@ export default function PatientSearchPage() {
       setDemoLoading(false);
     }
 
-    // Fetch allergies, vitals, notes, and medications in parallel
+    // Fetch allergies, vitals, notes, medications, and problems in parallel
     await Promise.all([
       fetchAllergies(pt.dfn),
       fetchVitals(pt.dfn),
       fetchNotes(pt.dfn),
       fetchMedications(pt.dfn),
+      fetchProblems(pt.dfn),
     ]);
-  }, [fetchAllergies, fetchVitals, fetchNotes, fetchMedications]);
+  }, [fetchAllergies, fetchVitals, fetchNotes, fetchMedications, fetchProblems]);
 
   // Add a new allergy for the selected patient
   const addAllergy = useCallback(async () => {
@@ -814,6 +859,42 @@ export default function PatientSearchPage() {
               {addNoteError && <div className={styles.addNoteError}>{addNoteError}</div>}
               {addNoteSuccess && <div className={styles.addNoteSuccess}>{addNoteSuccess}</div>}
             </div>
+          </div>
+        )}
+
+        {/* Phase 9A: Problems section */}
+        {selected && (
+          <div className={styles.problemsSection}>
+            <h2 className={styles.problemsSectionTitle}>Problem List</h2>
+            {problemsLoading && (
+              <p className={styles.loading}>Loading problems…</p>
+            )}
+            {problemsError && (
+              <div className={styles.error}>{problemsError}</div>
+            )}
+            {!problemsLoading && !problemsError && problems.length === 0 && (
+              <p className={styles.empty}>No problems found.</p>
+            )}
+            {!problemsLoading && !problemsError && problems.length > 0 && (
+              <table className={styles.problemsTable}>
+                <thead>
+                  <tr>
+                    <th className={styles.problemsTh}>Problem</th>
+                    <th className={styles.problemsTh}>Status</th>
+                    <th className={styles.problemsTh}>Onset</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {problems.map((p) => (
+                    <tr key={p.id} className={styles.problemsRow}>
+                      <td className={styles.problemsTd}>{p.text}</td>
+                      <td className={styles.problemsTdStatus}>{p.status}</td>
+                      <td className={styles.problemsTdOnset}>{p.onset || "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         )}
 
