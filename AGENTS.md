@@ -135,3 +135,22 @@ items across Phases 1–5D and reports PASS/FAIL for each.
 7. **GMRAGNT format is `NAME^IEN;file_root`** (semicolon between IEN and root).
 8. **All 6 OREDITED fields mandatory** for `ORWDAL32 SAVE ALLERGY` — see
    `docs/runbooks/vista-rpc-add-allergy.md`.
+
+---
+
+## 7. Bug Tracker & Lessons Learned
+
+A comprehensive log of every bug, challenge, and fix from Phase 1 through
+Phase 5D lives in **[`docs/BUG-TRACKER.md`](docs/BUG-TRACKER.md)**.
+
+It covers 20 bugs with:
+- What was attempted
+- The exact error or symptom
+- Root cause analysis
+- The fix applied
+- Preventive measures
+
+Plus 8 cross-cutting lessons and a quick-reference error → fix lookup table.
+
+**Update this file whenever a new bug is found and fixed.** It's the single
+source of debugging wisdom for VistA-Evolved.
