@@ -352,6 +352,86 @@ server.get("/vista/vitals", async (request) => {
   }
 });
 
+// Phase 6B: Add a vital via GMV ADD VM RPC
+// Vital type abbreviation → IEN in file 120.51 (WorldVistA defaults)
+const VITAL_TYPE_IEN: Record<string, number> = {
+  BP: 1, T: 2, R: 3, P: 5, HT: 8, WT: 9, PO2: 21, PN: 22,
+};
+const VALID_VITAL_TYPES = Object.keys(VITAL_TYPE_IEN);
+
+server.post("/vista/vitals", async (request) => {
+  const body = request.body as any;
+  const dfn = body?.dfn;
+  const type = (body?.type || "").toUpperCase().trim();
+  const value = (body?.value || "").trim();
+
+  if (!dfn || !/^\d+$/.test(String(dfn))) {
+    return { ok: false, error: "Missing or non-numeric dfn", hint: 'Body: { "dfn": "1", "type": "BP", "value": "120/80" }' };
+  }
+  if (!type || !VITAL_TYPE_IEN[type]) {
+    return { ok: false, error: `Invalid vital type. Must be one of: ${VALID_VITAL_TYPES.join(", ")}`, hint: 'Body: { "dfn": "1", "type": "BP", "value": "120/80" }' };
+  }
+  if (!value || value.length < 1) {
+    return { ok: false, error: "Missing value", hint: 'Body: { "dfn": "1", "type": "BP", "value": "120/80" }' };
+  }
+
+  try {
+    validateCredentials();
+  } catch (err: any) {
+    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+  }
+
+  try {
+    await connect();
+    const duz = getDuz();
+
+    // Build FileMan date for "now": YYYMMDD.HHMM (YYY = year - 1700)
+    const now = new Date();
+    const fmYear = now.getFullYear() - 1700;
+    const fmMonth = String(now.getMonth() + 1).padStart(2, "0");
+    const fmDay = String(now.getDate()).padStart(2, "0");
+    const fmHour = String(now.getHours()).padStart(2, "0");
+    const fmMin = String(now.getMinutes()).padStart(2, "0");
+    const fmDate = `${fmYear}${fmMonth}${fmDay}.${fmHour}${fmMin}`;
+
+    const vitalTypeIen = VITAL_TYPE_IEN[type];
+
+    // GMV ADD VM format: datetime^DFN^vitalTypeIEN;reading;^hospitalLocation^DUZ
+    // Hospital location 2 = DR OFFICE (default in WorldVistA)
+    const hospitalLocation = 2;
+    const gmvData = `${fmDate}^${dfn}^${vitalTypeIen};${value};^${hospitalLocation}^${duz}`;
+
+    // GMV ADD VM takes a single literal string param
+    const lines = await callRpc("GMV ADD VM", [gmvData]);
+    disconnect();
+
+    // Check for errors: GMVDCSAV sets RESULT(n) = "ERROR: ..." on failure
+    const allText = lines.join("\n");
+    if (allText.includes("ERROR")) {
+      return {
+        ok: false,
+        error: allText.trim() || "VistA returned an error",
+        hint: "The vital could not be saved",
+      };
+    }
+
+    return {
+      ok: true,
+      message: "Vital recorded",
+      type,
+      value,
+      rpcUsed: "GMV ADD VM",
+    };
+  } catch (err: any) {
+    disconnect();
+    return {
+      ok: false,
+      error: err.message,
+      hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
+    };
+  }
+});
+
 // Phase 4A: Real RPC call to get default patient list
 server.get("/vista/default-patient-list", async () => {
   try {

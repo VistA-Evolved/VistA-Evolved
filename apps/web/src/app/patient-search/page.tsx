@@ -84,6 +84,11 @@ export default function PatientSearchPage() {
   const [vitals, setVitals] = useState<Vital[]>([]);
   const [vitalsLoading, setVitalsLoading] = useState(false);
   const [vitalsError, setVitalsError] = useState<string | null>(null);
+  const [newVitalType, setNewVitalType] = useState("BP");
+  const [newVitalValue, setNewVitalValue] = useState("");
+  const [addVitalLoading, setAddVitalLoading] = useState(false);
+  const [addVitalError, setAddVitalError] = useState<string | null>(null);
+  const [addVitalSuccess, setAddVitalSuccess] = useState<string | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Debounce the query input
@@ -200,6 +205,9 @@ export default function PatientSearchPage() {
     setAddSuccess(null);
     setVitals([]);
     setVitalsError(null);
+    setNewVitalValue("");
+    setAddVitalError(null);
+    setAddVitalSuccess(null);
 
     try {
       const res = await fetch(
@@ -258,6 +266,39 @@ export default function PatientSearchPage() {
       setAddLoading(false);
     }
   }, [selected, newAllergen, fetchAllergies]);
+
+  // Add a vital for the selected patient
+  const VITAL_TYPES = ["BP", "T", "P", "R", "HT", "WT", "PO2", "PN"];
+  const addVital = useCallback(async () => {
+    if (!selected || newVitalValue.trim().length < 1) return;
+    setAddVitalLoading(true);
+    setAddVitalError(null);
+    setAddVitalSuccess(null);
+
+    try {
+      const res = await fetch(`${API_BASE}/vista/vitals`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dfn: selected.dfn, type: newVitalType, value: newVitalValue.trim() }),
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setAddVitalError(data.error || `Server error (${res.status})`);
+      } else {
+        setAddVitalSuccess(`Recorded ${data.type} ${data.value}`);
+        setNewVitalValue("");
+        // Refresh vitals list
+        await fetchVitals(selected.dfn);
+      }
+    } catch (err) {
+      setAddVitalError(
+        err instanceof Error ? err.message : "Failed to reach API server"
+      );
+    } finally {
+      setAddVitalLoading(false);
+    }
+  }, [selected, newVitalType, newVitalValue, fetchVitals]);
 
   return (
     <div className={styles.page}>
@@ -414,6 +455,50 @@ export default function PatientSearchPage() {
                 </tbody>
               </table>
             )}
+
+            {/* Phase 6B: Add vital form */}
+            <div className={styles.addVitalForm}>
+              <h3 className={styles.addVitalTitle}>Record a Vital</h3>
+              <div className={styles.addVitalRow}>
+                <select
+                  className={styles.vitalSelect}
+                  value={newVitalType}
+                  onChange={(e) => {
+                    setNewVitalType(e.target.value);
+                    setAddVitalError(null);
+                    setAddVitalSuccess(null);
+                  }}
+                  disabled={addVitalLoading}
+                >
+                  {VITAL_TYPES.map((t) => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
+                <input
+                  className={styles.vitalInput}
+                  value={newVitalValue}
+                  onChange={(e) => {
+                    setNewVitalValue(e.target.value);
+                    setAddVitalError(null);
+                    setAddVitalSuccess(null);
+                  }}
+                  placeholder="Value (e.g., 120/80)"
+                  disabled={addVitalLoading}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") addVital();
+                  }}
+                />
+                <button
+                  className={styles.addVitalBtn}
+                  onClick={addVital}
+                  disabled={addVitalLoading || newVitalValue.trim().length < 1}
+                >
+                  {addVitalLoading ? "Saving…" : "Record"}
+                </button>
+              </div>
+              {addVitalError && <div className={styles.addVitalError}>{addVitalError}</div>}
+              {addVitalSuccess && <div className={styles.addVitalSuccess}>{addVitalSuccess}</div>}
+            </div>
           </div>
         )}
 

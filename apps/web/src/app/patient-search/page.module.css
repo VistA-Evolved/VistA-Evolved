@@ -454,3 +454,81 @@
   color: var(--text-secondary);
   font-size: 12px;
 }
+
+/* Phase 6B: Add vital form */
+.addVitalForm {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.addVitalTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 10px 0;
+}
+
+.addVitalRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.vitalSelect {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-size: 14px;
+  background: var(--bg-secondary, #fff);
+  color: var(--text-primary);
+  min-width: 80px;
+}
+
+.vitalInput {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.vitalInput:focus {
+  outline: none;
+  border-color: var(--accent, #2563eb);
+}
+
+.addVitalBtn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: var(--accent, #2563eb);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+
+.addVitalBtn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.addVitalBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.addVitalError {
+  margin-top: 8px;
+  color: var(--error, #e11d48);
+  font-size: 13px;
+}
+
+.addVitalSuccess {
+  margin-top: 8px;
+  color: var(--success, #16a34a);
+  font-size: 13px;
+}
