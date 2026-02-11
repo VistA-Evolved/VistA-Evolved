@@ -269,6 +269,91 @@
   color: var(--text-secondary);
 }
 
+/* ── Phase 5D: Add Allergy Form ──────────────────── */
+
+.addAllergyForm {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.addAllergyTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.addAllergyRow {
+  display: flex;
+  gap: 8px;
+}
+
+.allergyInput {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.15s;
+  font-family: var(--font-geist-sans);
+  color: var(--text-primary);
+  background: var(--background);
+}
+
+.allergyInput:focus {
+  border-color: var(--accent);
+}
+
+.allergyInput:disabled {
+  opacity: 0.6;
+}
+
+.addAllergyBtn {
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.addAllergyBtn:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.addAllergyBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.addAllergyError {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: var(--error-bg);
+  border: 1px solid var(--error-border);
+  color: var(--error-text);
+  font-size: 13px;
+}
+
+.addAllergySuccess {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: var(--selected-bg);
+  border: 1px solid var(--selected-border);
+  color: var(--text-primary);
+  font-size: 13px;
+}
+
 @media (prefers-color-scheme: dark) {
   .page {
     --background: #000;

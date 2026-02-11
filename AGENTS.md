@@ -72,11 +72,14 @@ names like `"OR CPRS GUI CHART"`.
 
 ```
 apps/api/src/
-  index.ts              — Fastify server, all routes
+  index.ts              — Fastify server, all routes (GET+POST)
   vista/
     config.ts           — env var loader + credential docs
     rpcBroker.ts        — TCP probe for /vista/ping (no auth)
-    rpcBrokerClient.ts  — Full XWB RPC client (auth + RPC calls)
+    rpcBrokerClient.ts  — Full XWB RPC client (auth + RPC calls + LIST params)
+
+apps/web/src/app/
+  patient-search/       — Patient search, demographics, allergies, add allergy
 
 services/vista/
   docker-compose.yml    — WorldVistA container (port 9430)
@@ -110,11 +113,11 @@ curl http://127.0.0.1:3001/vista/default-patient-list
 
 ## 5. Verification Script
 
-Run `scripts/verify-phase1-to-phase4a.ps1` from the repo root. It checks
-40 items across Phases 1–4A and reports PASS/FAIL for each.
+Run `scripts/verify-phase1-to-phase5b.ps1` from the repo root. It checks
+items across Phases 1–5D and reports PASS/FAIL for each.
 
 ```powershell
-.\scripts\verify-phase1-to-phase4a.ps1
+.\scripts\verify-phase1-to-phase5b.ps1
 ```
 
 ---
@@ -127,3 +130,8 @@ Run `scripts/verify-phase1-to-phase4a.ps1` from the repo root. It checks
 3. **`.env.local` is git-ignored.** You must create it yourself — see `.env.example`.
 4. **Port 9430 takes ~15s to be ready** after Docker container starts.
 5. **The verification script expects Docker running.** Use `-SkipDocker` to skip.
+6. **XWB LIST param keys need MUMPS double-quotes** (`'"GMRAGNT"'`). See
+   `buildRpcMessageEx` in `rpcBrokerClient.ts`.
+7. **GMRAGNT format is `NAME^IEN;file_root`** (semicolon between IEN and root).
+8. **All 6 OREDITED fields mandatory** for `ORWDAL32 SAVE ALLERGY` — see
+   `docs/runbooks/vista-rpc-add-allergy.md`.

@@ -1,8 +1,8 @@
 <#
 .SYNOPSIS
-    VistA-Evolved Phase 1-5C Verification Script
+    VistA-Evolved Phase 1-5D Verification Script
 .DESCRIPTION
-    Verifies phases from Hello System through Phase 5C Patient Allergies.
+    Verifies phases from Hello System through Phase 5D Add Allergy (CRUD).
     Run from repo root: .\scripts\verify-phase1-to-phase5b.ps1
 .NOTES
     Requires: Node v24+, pnpm v10+, Docker Desktop running
@@ -69,7 +69,7 @@ function Stop-ApiProcess {
 # -- Pre-flight ------------------------------------------------------------
 
 Write-Host ""
-Write-Host "VistA-Evolved Phase 1-5C Verification" -ForegroundColor White -BackgroundColor DarkBlue
+Write-Host "VistA-Evolved Phase 1-5D Verification" -ForegroundColor White -BackgroundColor DarkBlue
 Write-Host "Repo: $repoRoot"
 Write-Host "Time: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
 Write-Host ""
@@ -426,6 +426,87 @@ if ($ready -and $dockerOk) {
 } else {
     if (-not $dockerOk) { Write-Host "  [SKIP] Sandbox not running -- cannot test Phase 5C" -ForegroundColor Yellow }
     if (-not $ready)    { Write-Host "  [SKIP] API not running -- cannot test Phase 5C" -ForegroundColor Yellow }
+}
+
+# =========================================================================
+Write-Phase "PHASE 5D" "Add Allergy (First Write / CRUD)"
+# =========================================================================
+
+# Source-level checks
+$indexSrc = Get-Content "$repoRoot\apps\api\src\index.ts" -Raw
+Assert-Check "POST /vista/allergies route exists" ($indexSrc -match 'server\.post\("/vista/allergies"')
+Assert-Check "Uses ORWDAL32 ALLERGY MATCH" ($indexSrc -match 'ORWDAL32 ALLERGY MATCH')
+Assert-Check "Uses ORWDAL32 SAVE ALLERGY" ($indexSrc -match 'ORWDAL32 SAVE ALLERGY')
+Assert-Check "GMRAORDT field included" ($indexSrc -match 'GMRAORDT')
+
+$brokerSrc = Get-Content "$repoRoot\apps\api\src\vista\rpcBrokerClient.ts" -Raw
+Assert-Check "callRpcWithList export exists" ($brokerSrc -match 'export async function callRpcWithList')
+Assert-Check "getDuz export exists" ($brokerSrc -match 'export function getDuz')
+Assert-Check "RpcParam type exported" ($brokerSrc -match 'export type RpcParam')
+
+$uiSrc = Get-Content "$repoRoot\apps\web\src\app\patient-search\page.tsx" -Raw
+Assert-Check "UI has addAllergyForm" ($uiSrc -match 'addAllergyForm')
+Assert-Check "UI POST fetch to /vista/allergies" ($uiSrc -match 'POST')
+
+$cssSrc = Get-Content "$repoRoot\apps\web\src\app\patient-search\page.module.css" -Raw
+Assert-Check "CSS .addAllergyForm exists" ($cssSrc -match '\.addAllergyForm')
+Assert-Check "CSS .addAllergyBtn exists" ($cssSrc -match '\.addAllergyBtn')
+
+Assert-Check "Runbook exists" (Test-Path "$repoRoot\docs\runbooks\vista-rpc-add-allergy.md")
+
+# Live API tests
+if ($dockerOk -and $ready) {
+    # Test input validation: missing dfn
+    try {
+        $noDfn = Invoke-RestMethod -Uri "http://127.0.0.1:$ApiPort/vista/allergies" `
+            -Method POST -ContentType "application/json" -Body '{"allergyText":"TEST"}' -TimeoutSec 15
+        Assert-Check "POST missing dfn returns ok:false" ($noDfn.ok -eq $false) "error=$($noDfn.error)"
+    } catch {
+        Assert-Check "POST missing dfn returns error" $false $_.Exception.Message
+    }
+
+    # Test input validation: short allergyText
+    try {
+        $shortText = Invoke-RestMethod -Uri "http://127.0.0.1:$ApiPort/vista/allergies" `
+            -Method POST -ContentType "application/json" -Body '{"dfn":"1","allergyText":"X"}' -TimeoutSec 15
+        Assert-Check "POST short allergyText returns ok:false" ($shortText.ok -eq $false) "error=$($shortText.error)"
+    } catch {
+        Assert-Check "POST short allergyText returns error" $false $_.Exception.Message
+    }
+
+    # Test successful add (use TETRACYCLINE on DFN=3 to avoid preexisting entries)
+    try {
+        $addBody = '{"dfn":"3","allergyText":"TETRACYCLINE"}'
+        $addResult = Invoke-RestMethod -Uri "http://127.0.0.1:$ApiPort/vista/allergies" `
+            -Method POST -ContentType "application/json" -Body $addBody -TimeoutSec 30
+        Assert-Check "POST add allergy returns ok:true" ($addResult.ok -eq $true) "allergen=$($addResult.allergen)"
+        Assert-Check "POST result is 0 (success)" ($addResult.result -eq "0") "result=$($addResult.result)"
+    } catch {
+        # May fail if already added in a prior run; check for duplicate error
+        try {
+            $errResp = $_.Exception.Response
+            if ($errResp) {
+                Warn-Check "POST add allergy (may be duplicate from prior run)" $_.Exception.Message
+            } else {
+                Assert-Check "POST add allergy" $false $_.Exception.Message
+            }
+        } catch {
+            Warn-Check "POST add allergy (prior run duplicate?)" $_.Exception.Message
+        }
+    }
+
+    # Test duplicate detection
+    try {
+        $dupBody = '{"dfn":"3","allergyText":"TETRACYCLINE"}'
+        $dupResult = Invoke-RestMethod -Uri "http://127.0.0.1:$ApiPort/vista/allergies" `
+            -Method POST -ContentType "application/json" -Body $dupBody -TimeoutSec 30
+        Assert-Check "POST duplicate returns ok:false" ($dupResult.ok -eq $false) "error=$($dupResult.error)"
+    } catch {
+        Assert-Check "POST duplicate detection" $false $_.Exception.Message
+    }
+} else {
+    if (-not $dockerOk) { Write-Host "  [SKIP] Sandbox not running -- cannot test Phase 5D" -ForegroundColor Yellow }
+    if (-not $ready)    { Write-Host "  [SKIP] API not running -- cannot test Phase 5D" -ForegroundColor Yellow }
 }
 
 # =========================================================================

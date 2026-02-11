@@ -63,6 +63,10 @@ export default function PatientSearchPage() {
   const [allergies, setAllergies] = useState<Allergy[]>([]);
   const [allergyLoading, setAllergyLoading] = useState(false);
   const [allergyError, setAllergyError] = useState<string | null>(null);
+  const [newAllergen, setNewAllergen] = useState("");
+  const [addLoading, setAddLoading] = useState(false);
+  const [addError, setAddError] = useState<string | null>(null);
+  const [addSuccess, setAddSuccess] = useState<string | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Debounce the query input
@@ -118,6 +122,30 @@ export default function PatientSearchPage() {
     fetchPatients(debouncedQuery);
   }, [debouncedQuery, fetchPatients]);
 
+  // Fetch allergies for a given patient DFN
+  const fetchAllergies = useCallback(async (dfn: string) => {
+    setAllergyLoading(true);
+    setAllergyError(null);
+    try {
+      const allergyRes = await fetch(
+        `${API_BASE}/vista/allergies?dfn=${encodeURIComponent(dfn)}`
+      );
+      const allergyData: AllergiesResult = await allergyRes.json();
+
+      if (!allergyRes.ok || !allergyData.ok) {
+        setAllergyError(allergyData.error || `Server error (${allergyRes.status})`);
+      } else {
+        setAllergies(allergyData.results || []);
+      }
+    } catch (err) {
+      setAllergyError(
+        err instanceof Error ? err.message : "Failed to reach API server"
+      );
+    } finally {
+      setAllergyLoading(false);
+    }
+  }, []);
+
   // Fetch demographics when a patient is selected
   const selectPatient = useCallback(async (pt: Patient) => {
     setSelected(pt);
@@ -126,7 +154,9 @@ export default function PatientSearchPage() {
     setDemoLoading(true);
     setAllergies([]);
     setAllergyError(null);
-    setAllergyLoading(true);
+    setNewAllergen("");
+    setAddError(null);
+    setAddSuccess(null);
 
     try {
       const res = await fetch(
@@ -148,25 +178,40 @@ export default function PatientSearchPage() {
     }
 
     // Fetch allergies
-    try {
-      const allergyRes = await fetch(
-        `${API_BASE}/vista/allergies?dfn=${encodeURIComponent(pt.dfn)}`
-      );
-      const allergyData: AllergiesResult = await allergyRes.json();
+    await fetchAllergies(pt.dfn);
+  }, [fetchAllergies]);
 
-      if (!allergyRes.ok || !allergyData.ok) {
-        setAllergyError(allergyData.error || `Server error (${allergyRes.status})`);
+  // Add a new allergy for the selected patient
+  const addAllergy = useCallback(async () => {
+    if (!selected || newAllergen.trim().length < 2) return;
+    setAddLoading(true);
+    setAddError(null);
+    setAddSuccess(null);
+
+    try {
+      const res = await fetch(`${API_BASE}/vista/allergies`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dfn: selected.dfn, allergyText: newAllergen.trim() }),
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setAddError(data.error || `Server error (${res.status})`);
       } else {
-        setAllergies(allergyData.results || []);
+        setAddSuccess(`Added ${data.allergen}`);
+        setNewAllergen("");
+        // Refresh allergies list
+        await fetchAllergies(selected.dfn);
       }
     } catch (err) {
-      setAllergyError(
+      setAddError(
         err instanceof Error ? err.message : "Failed to reach API server"
       );
     } finally {
-      setAllergyLoading(false);
+      setAddLoading(false);
     }
-  }, []);
+  }, [selected, newAllergen, fetchAllergies]);
 
   return (
     <div className={styles.page}>
@@ -256,6 +301,37 @@ export default function PatientSearchPage() {
                 ))}
               </ul>
             )}
+
+            {/* Phase 5D: Add Allergy form */}
+            <div className={styles.addAllergyForm}>
+              <h3 className={styles.addAllergyTitle}>Add Allergy</h3>
+              <div className={styles.addAllergyRow}>
+                <input
+                  className={styles.allergyInput}
+                  type="text"
+                  value={newAllergen}
+                  onChange={(e) => {
+                    setNewAllergen(e.target.value);
+                    setAddError(null);
+                    setAddSuccess(null);
+                  }}
+                  placeholder="Allergen name (e.g., PENICILLIN)"
+                  disabled={addLoading}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") addAllergy();
+                  }}
+                />
+                <button
+                  className={styles.addAllergyBtn}
+                  onClick={addAllergy}
+                  disabled={addLoading || newAllergen.trim().length < 2}
+                >
+                  {addLoading ? "Saving…" : "Add"}
+                </button>
+              </div>
+              {addError && <div className={styles.addAllergyError}>{addError}</div>}
+              {addSuccess && <div className={styles.addAllergySuccess}>{addSuccess}</div>}
+            </div>
           </div>
         )}
 

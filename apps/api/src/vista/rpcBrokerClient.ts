@@ -174,6 +174,7 @@ function dbgHex(label: string, data: string): void {
 let sock: Socket | null = null;
 let connected = false;
 let readBuf = ""; // persistent buffer across readToEOT calls
+let sessionDuz = ""; // DUZ of authenticated user (set during connect)
 
 /** Send raw bytes to broker (latin1 preserves byte values). */
 function rawSend(data: string): Promise<void> {
@@ -324,6 +325,7 @@ export async function connect(): Promise<void> {
     );
   }
   dbg("SIGNED ON", "DUZ=" + duz);
+  sessionDuz = duz;
 
   // 5. XWB CREATE CONTEXT (context name encrypted with CipherPad)
   dbg("SEND", "XWB CREATE CONTEXT: " + VISTA_CONTEXT);
@@ -359,6 +361,7 @@ export function disconnect(): void {
   sock = null;
   connected = false;
   readBuf = "";
+  sessionDuz = "";
 }
 
 /** Call an RPC and return the response split into lines. */
@@ -372,6 +375,78 @@ export async function callRpc(
 
   dbg("RPC CALL", rpcName);
   const rpcMsg = buildRpcMessage(rpcName, params);
+  dbgHex("SEND RPC", rpcMsg);
+  await rawSend(rpcMsg);
+  const resp = stripNulls(await readToEOT());
+  dbg("RPC RESP", resp.substring(0, 300));
+  dbgHex("RECV RPC", resp);
+
+  return resp.split(/\r?\n/).filter((l) => l.length > 0);
+}
+
+/** Return the DUZ of the authenticated user (set during connect). */
+export function getDuz(): string {
+  return sessionDuz;
+}
+
+/**
+ * Typed RPC parameter: either a literal string or a key-value list.
+ * Used by callRpcWithList for RPCs that need LIST-type params.
+ */
+export type RpcParam =
+  | { type: "literal"; value: string }
+  | { type: "list"; value: Record<string, string> };
+
+/**
+ * Build an RPC message with mixed literal + list params.
+ * Same framing as buildRpcMessage but supports LIST-type params (type 2).
+ *
+ * LIST wire format (from XWBPRS PRS5):
+ *   "2" + [LPack(key) + LPack(value) + continuation]...
+ *   continuation = "t" (more entries) or "f" (last entry / end-of-param)
+ *
+ * Keys must include MUMPS double-quotes so LINST^XWBPRS correctly sets
+ * string subscripts: LPack('"GMRAGNT"') not LPack('GMRAGNT').
+ */
+function buildRpcMessageEx(rpcName: string, params: RpcParam[]): string {
+  let msg = PREFIX + "11302" + "\x01" + "1" + sPack(rpcName);
+  if (params.length === 0) {
+    msg += "54f";
+  } else {
+    msg += "5";
+    for (const p of params) {
+      if (p.type === "literal") {
+        msg += "0" + lPack(p.value) + "f";
+      } else {
+        // LIST param: type "2", then entries, "f" on last entry
+        const entries = Object.entries(p.value);
+        msg += "2";
+        entries.forEach(([key, val], idx) => {
+          // Wrap key in MUMPS double-quotes for string subscripts
+          const quotedKey = '"' + key + '"';
+          msg += lPack(quotedKey) + lPack(val);
+          msg += idx < entries.length - 1 ? "t" : "f";
+        });
+      }
+    }
+  }
+  return msg + EOT;
+}
+
+/**
+ * Call an RPC with mixed literal and list parameters.
+ * Use this for RPCs like ORWDAL32 SAVE ALLERGY that need LIST-type params.
+ */
+export async function callRpcWithList(
+  rpcName: string,
+  params: RpcParam[]
+): Promise<string[]> {
+  if (!connected || !sock || sock.destroyed) {
+    throw new Error("Not connected. Call connect() first.");
+  }
+
+  dbg("RPC CALL", rpcName);
+  const rpcMsg = buildRpcMessageEx(rpcName, params);
   dbgHex("SEND RPC", rpcMsg);
   await rawSend(rpcMsg);
   const resp = stripNulls(await readToEOT());
