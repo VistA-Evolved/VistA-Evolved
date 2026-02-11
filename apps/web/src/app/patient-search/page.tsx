@@ -154,6 +154,10 @@ export default function PatientSearchPage() {
   const [problems, setProblems] = useState<Problem[]>([]);
   const [problemsLoading, setProblemsLoading] = useState(false);
   const [problemsError, setProblemsError] = useState<string | null>(null);
+  const [newProblemText, setNewProblemText] = useState("");
+  const [addProblemLoading, setAddProblemLoading] = useState(false);
+  const [addProblemError, setAddProblemError] = useState<string | null>(null);
+  const [addProblemSuccess, setAddProblemSuccess] = useState<string | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Debounce the query input
@@ -361,7 +365,37 @@ export default function PatientSearchPage() {
     }
   }, [selected, newMedDrug, fetchMedications]);
 
-  // Fetch demographics when a patient is selected
+  const addProblem = useCallback(async () => {
+    if (!selected || newProblemText.trim().length < 2) return;
+    setAddProblemLoading(true);
+    setAddProblemError(null);
+    setAddProblemSuccess(null);
+
+    try {
+      const res = await fetch(`${API_BASE}/vista/problems`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dfn: selected.dfn, text: newProblemText.trim() }),
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        // For Phase 9B, this will return a documented blocker explaining why it's not implemented
+        setAddProblemError(data.error || `Server error (${res.status})`);
+      } else {
+        setAddProblemSuccess(data.message || "Problem added");
+        setNewProblemText("");
+        // Refresh problems list
+        await fetchProblems(selected.dfn);
+      }
+    } catch (err) {
+      setAddProblemError(
+        err instanceof Error ? err.message : "Failed to reach API server"
+      );
+    } finally {
+      setAddProblemLoading(false);
+    }
+  }, [selected, newProblemText, fetchProblems]);
   const selectPatient = useCallback(async (pt: Patient) => {
     setSelected(pt);
     setDemographics(null);
@@ -390,6 +424,9 @@ export default function PatientSearchPage() {
     setAddMedSuccess(null);
     setProblems([]);
     setProblemsError(null);
+    setNewProblemText("");
+    setAddProblemError(null);
+    setAddProblemSuccess(null);
 
     try {
       const res = await fetch(
@@ -895,6 +932,37 @@ export default function PatientSearchPage() {
                 </tbody>
               </table>
             )}
+            
+            {/* Phase 9B: Add Problem form */}
+            <div className={styles.addProblemForm}>
+              <h3 className={styles.addProblemTitle}>Add Problem</h3>
+              <p className={styles.addProblemInfo}>
+                Problem creation requires full diagnosis code validation and is currently under review. 
+                <br />
+                <strong>Data Input:</strong> This form will be fully enabled in a future phase.
+              </p>
+              <input
+                type="text"
+                placeholder="Problem description (at least 2 characters)"
+                className={styles.addProblemInput}
+                value={newProblemText}
+                onChange={(e) => setNewProblemText(e.target.value)}
+                disabled={addProblemLoading}
+              />
+              <button
+                className={styles.addProblemBtn}
+                onClick={addProblem}
+                disabled={addProblemLoading || newProblemText.trim().length < 2}
+              >
+                {addProblemLoading ? "Submitting…" : "Try Add Problem"}
+              </button>
+              {addProblemError && (
+                <div className={styles.addProblemError}>
+                  <strong>Not Yet Implemented:</strong> {addProblemError}
+                </div>
+              )}
+              {addProblemSuccess && <div className={styles.addProblemSuccess}>{addProblemSuccess}</div>}
+            </div>
           </div>
         )}
 

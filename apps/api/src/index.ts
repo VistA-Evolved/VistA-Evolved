@@ -1063,6 +1063,65 @@ server.get("/vista/problems", async (request) => {
   }
 });
 
+// Phase 9B: Add Problem — NOT YET IMPLEMENTED (documented blocker)
+//
+// Problem creation in VistA requires complex validation:
+//   1. ICD-9/ICD-10 diagnosis code lookup (not just free text)
+//   2. Provider credential validation and assignment
+//   3. Service conditions setup (SC, AO, IR, EC, HNC, MST, CV, SHD flags)
+//   4. Lexicon entry mapping and SNOMED concept handling
+//   5. Duplicate problem checking
+//
+// These go beyond MVP scope. Real problem entry should use VistA CPRS GUI or
+// a fully-validated provider workstation. This endpoint returns a documented
+// "not yet implemented" error rather than risking invalid data.
+//
+server.post("/vista/problems", async (request) => {
+  const body = request.body as any;
+  const dfn = body?.dfn;
+  const text = body?.text;
+
+  // Validate inputs
+  if (!dfn || !/^\d+$/.test(String(dfn))) {
+    return {
+      ok: false,
+      error: "Missing or non-numeric dfn",
+      hint: 'Body: { "dfn": "1", "text": "Hypertension" }',
+    };
+  }
+  if (!text || typeof text !== "string" || text.trim().length < 2) {
+    return {
+      ok: false,
+      error: "text must be at least 2 characters",
+      hint: 'Body: { "dfn": "1", "text": "Hypertension" }',
+    };
+  }
+
+  // Honest error: problem creation requires complex validation
+  return {
+    ok: false,
+    error:
+      "Problem creation is not yet implemented in this MVP. VistA problem entry requires " +
+      "ICD-9/ICD-10 diagnosis codes, provider validation, and service condition flags. " +
+      "Please use VistA CPRS or a provider workstation for this task.",
+    hint: "To add problems, use VistA CPRS Chart at the patient encounter screen.",
+    blocker: {
+      reason: "Complex CPOE validation",
+      requiredFields: [
+        "DFN (patient)",
+        "Text (problem description)",
+        "ICD-9/ICD-10 diagnosis code",
+        "Provider DUZ",
+        "Service conditions (SC, AO, IR, EC, HNC, MST, CV, SHD)",
+        "Onset date",
+        "Location",
+      ],
+      rpcNotAvailable: "GMPLUTL.CREATE requires complex array validation",
+      recommendation: "Use VistA CPRS GUI which handles validation safely",
+    },
+  };
+});
+
 const port = Number(process.env.PORT || 3001)
 const host = process.env.HOST || "127.0.0.1"
 
