@@ -598,6 +598,70 @@
   text-transform: capitalize;
 }
 
+/* Phase 8A: Medications section */
+.medsSection {
+  margin-top: 24px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-primary, #fff);
+}
+
+.medsSectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  color: var(--text-primary);
+}
+
+.medsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.medsTh {
+  text-align: left;
+  padding: 6px 8px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.3px;
+  border-bottom: 2px solid var(--border);
+}
+
+.medsRow {
+  border-bottom: 1px solid var(--border);
+}
+
+.medsRow:last-child {
+  border-bottom: none;
+}
+
+.medsRow:hover {
+  background: var(--row-hover, #f5f5f5);
+}
+
+.medsTd {
+  padding: 8px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.medsTdSig {
+  padding: 8px;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.medsTdStatus {
+  padding: 8px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
 /* Phase 7B: Create Note form */
 .addNoteForm {
   margin-top: 16px;

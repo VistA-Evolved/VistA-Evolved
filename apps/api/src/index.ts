@@ -661,6 +661,116 @@ server.post("/vista/notes", async (request) => {
   }
 });
 
+// Phase 8A: Medications list via ORWPS ACTIVE + ORWORR GETTXT
+server.get("/vista/medications", async (request) => {
+  const { dfn } = request.query as any;
+  if (!dfn || !/^\d+$/.test(String(dfn))) {
+    return { ok: false, error: "Missing or non-numeric dfn query parameter", hint: "Example: /vista/medications?dfn=1" };
+  }
+
+  try {
+    validateCredentials();
+  } catch (err: any) {
+    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+  }
+
+  try {
+    await connect();
+
+    // Step 1: ORWPS ACTIVE returns active meds grouped by type
+    // Params: DFN (LITERAL)
+    // Output: header lines starting with ~ and continuation lines for qty/sig
+    const activeLines = await callRpc("ORWPS ACTIVE", [String(dfn)]);
+
+    // Check for -1^error
+    if (activeLines.length > 0 && activeLines[0].startsWith("-1")) {
+      const errMsg = activeLines[0].split("^").slice(1).join("^") || "Unknown VistA error";
+      disconnect();
+      return { ok: false, error: errMsg, rpcUsed: "ORWPS ACTIVE" };
+    }
+
+    // Parse header lines to build medication objects
+    // Header: ~TYPE^rxIEN;kind^drugName^?^?^?^?^?^orderIEN^status^?^?^qty^?^?
+    // Continuation: "   Qty: N", "\ Sig: ..."
+    interface MedEntry {
+      orderIEN: string;
+      rxId: string;
+      type: string;      // OP, NV, UD, IV, CP
+      drugName: string;   // often empty in WorldVistA Docker
+      status: string;
+      qty: string;
+      sig: string;
+    }
+
+    const meds: MedEntry[] = [];
+    let current: MedEntry | null = null;
+
+    for (const line of activeLines) {
+      if (line.startsWith("~")) {
+        // New medication header
+        const typeEnd = line.indexOf("^");
+        const type = line.substring(1, typeEnd); // e.g., "OP"
+        const fields = line.substring(typeEnd + 1).split("^");
+        // fields[0]=rxIEN;kind, fields[1]=drugName, fields[7]=orderIEN, fields[8]=status, fields[11]=qty
+        current = {
+          orderIEN: fields[7]?.trim() || "",
+          rxId: fields[0]?.split(";")[0] || "",
+          type,
+          drugName: fields[1]?.trim() || "",
+          status: fields[8]?.trim() || "",
+          qty: fields[11]?.trim() || "",
+          sig: "",
+        };
+        meds.push(current);
+      } else if (current) {
+        // Continuation line
+        const trimmed = line.trim();
+        if (trimmed.startsWith("\\ Sig:") || trimmed.startsWith("\\Sig:")) {
+          current.sig = trimmed.replace(/^\\\s*Sig:\s*/i, "").trim();
+        } else if (trimmed.startsWith("Qty:")) {
+          current.qty = trimmed.replace(/^Qty:\s*/, "").trim();
+        }
+      }
+    }
+
+    // Step 2: For meds with empty drug name, call ORWORR GETTXT to resolve it
+    for (const med of meds) {
+      if (!med.drugName && med.orderIEN && /^\d+$/.test(med.orderIEN)) {
+        try {
+          const txtLines = await callRpc("ORWORR GETTXT", [med.orderIEN]);
+          if (txtLines.length > 0 && !txtLines[0].startsWith("-1")) {
+            med.drugName = txtLines[0].trim();
+            // If sig was empty, grab it from GETTXT line 1
+            if (!med.sig && txtLines[1]) {
+              med.sig = txtLines[1].trim();
+            }
+          }
+        } catch {
+          // Non-fatal: leave drugName empty
+        }
+      }
+    }
+
+    disconnect();
+
+    const results = meds.map((m) => ({
+      id: m.rxId || m.orderIEN,
+      name: m.drugName || "(unknown medication)",
+      sig: m.sig,
+      status: m.status.toLowerCase() || "active",
+    }));
+
+    return { ok: true, count: results.length, results, rpcUsed: "ORWPS ACTIVE" };
+  } catch (err: any) {
+    disconnect();
+    return {
+      ok: false,
+      error: err.message,
+      hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
+    };
+  }
+});
+
 // Phase 4A: Real RPC call to get default patient list
 server.get("/vista/default-patient-list", async () => {
   try {

@@ -77,6 +77,21 @@ interface NotesResult {
   error?: string;
 }
 
+interface Medication {
+  id: string;
+  name: string;
+  sig: string;
+  status: string;
+}
+
+interface MedicationsResult {
+  ok: boolean;
+  count?: number;
+  results?: Medication[];
+  rpcUsed?: string;
+  error?: string;
+}
+
 const API_BASE = "http://127.0.0.1:3001";
 const DEBOUNCE_MS = 400;
 
@@ -114,6 +129,9 @@ export default function PatientSearchPage() {
   const [addNoteLoading, setAddNoteLoading] = useState(false);
   const [addNoteError, setAddNoteError] = useState<string | null>(null);
   const [addNoteSuccess, setAddNoteSuccess] = useState<string | null>(null);
+  const [medications, setMedications] = useState<Medication[]>([]);
+  const [medsLoading, setMedsLoading] = useState(false);
+  const [medsError, setMedsError] = useState<string | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Debounce the query input
@@ -241,6 +259,30 @@ export default function PatientSearchPage() {
     }
   }, []);
 
+  // Fetch medications for a given patient DFN
+  const fetchMedications = useCallback(async (dfn: string) => {
+    setMedsLoading(true);
+    setMedsError(null);
+    try {
+      const res = await fetch(
+        `${API_BASE}/vista/medications?dfn=${encodeURIComponent(dfn)}`
+      );
+      const data: MedicationsResult = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setMedsError(data.error || `Server error (${res.status})`);
+      } else {
+        setMedications(data.results || []);
+      }
+    } catch (err) {
+      setMedsError(
+        err instanceof Error ? err.message : "Failed to reach API server"
+      );
+    } finally {
+      setMedsLoading(false);
+    }
+  }, []);
+
   // Fetch demographics when a patient is selected
   const selectPatient = useCallback(async (pt: Patient) => {
     setSelected(pt);
@@ -263,6 +305,8 @@ export default function PatientSearchPage() {
     setNewNoteText("");
     setAddNoteError(null);
     setAddNoteSuccess(null);
+    setMedications([]);
+    setMedsError(null);
 
     try {
       const res = await fetch(
@@ -283,13 +327,14 @@ export default function PatientSearchPage() {
       setDemoLoading(false);
     }
 
-    // Fetch allergies, vitals, and notes in parallel
+    // Fetch allergies, vitals, notes, and medications in parallel
     await Promise.all([
       fetchAllergies(pt.dfn),
       fetchVitals(pt.dfn),
       fetchNotes(pt.dfn),
+      fetchMedications(pt.dfn),
     ]);
-  }, [fetchAllergies, fetchVitals, fetchNotes]);
+  }, [fetchAllergies, fetchVitals, fetchNotes, fetchMedications]);
 
   // Add a new allergy for the selected patient
   const addAllergy = useCallback(async () => {
@@ -588,6 +633,42 @@ export default function PatientSearchPage() {
               {addVitalError && <div className={styles.addVitalError}>{addVitalError}</div>}
               {addVitalSuccess && <div className={styles.addVitalSuccess}>{addVitalSuccess}</div>}
             </div>
+          </div>
+        )}
+
+        {/* Phase 8A: Medications section */}
+        {selected && (
+          <div className={styles.medsSection}>
+            <h2 className={styles.medsSectionTitle}>Medications</h2>
+            {medsLoading && (
+              <p className={styles.loading}>Loading medications…</p>
+            )}
+            {medsError && (
+              <div className={styles.error}>{medsError}</div>
+            )}
+            {!medsLoading && !medsError && medications.length === 0 && (
+              <p className={styles.empty}>No active medications.</p>
+            )}
+            {!medsLoading && !medsError && medications.length > 0 && (
+              <table className={styles.medsTable}>
+                <thead>
+                  <tr>
+                    <th className={styles.medsTh}>Medication</th>
+                    <th className={styles.medsTh}>Sig / Instructions</th>
+                    <th className={styles.medsTh}>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {medications.map((m) => (
+                    <tr key={m.id} className={styles.medsRow}>
+                      <td className={styles.medsTd}>{m.name}</td>
+                      <td className={styles.medsTdSig}>{m.sig}</td>
+                      <td className={styles.medsTdStatus}>{m.status}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         )}
 
