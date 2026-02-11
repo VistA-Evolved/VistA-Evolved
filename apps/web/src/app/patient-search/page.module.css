@@ -167,6 +167,49 @@
   padding: 16px 0;
 }
 
+.patientHeader {
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  background: var(--selected-bg);
+  border: 1px solid var(--selected-border);
+}
+
+.patientHeaderTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.patientGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 24px;
+}
+
+.patientField {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.patientFieldLabel {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.patientFieldValue {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
 @media (prefers-color-scheme: dark) {
   .page {
     --background: #000;

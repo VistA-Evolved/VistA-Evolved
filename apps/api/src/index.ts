@@ -66,6 +66,63 @@ server.get("/vista/patient-search", async (request) => {
   }
 });
 
+// Phase 5B: Patient demographics via ORWPT SELECT RPC
+server.get("/vista/patient-demographics", async (request) => {
+  const dfn = (request.query as any)?.dfn;
+  if (!dfn || !/^\d+$/.test(String(dfn))) {
+    return { ok: false, error: "Missing or non-numeric dfn", hint: "Use ?dfn=1" };
+  }
+
+  try {
+    validateCredentials();
+  } catch (err: any) {
+    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+  }
+
+  const RPC_NAME = "ORWPT SELECT";
+
+  try {
+    await connect();
+    const lines = await callRpc(RPC_NAME, [String(dfn)]);
+    disconnect();
+
+    const raw = lines[0] || "";
+    const parts = raw.split("^");
+
+    // ORWPT SELECT returns "-1" as first field when DFN is unknown
+    if (parts[0] === "-1" || !parts[0]) {
+      const reason = parts.slice(5).join(" ").trim() || "Patient not found";
+      return { ok: false, error: reason, hint: `DFN ${dfn} not found in VistA` };
+    }
+
+    const name = parts[0] || "";
+    const sex = parts[1] || "";
+    const dobFM = parts[2] || "";
+
+    // Convert FileMan date YYYMMDD → YYYY-MM-DD (YYY = year - 1700)
+    let dob = dobFM;
+    if (/^\d{7}$/.test(dobFM)) {
+      const y = parseInt(dobFM.substring(0, 3), 10) + 1700;
+      const m = dobFM.substring(3, 5);
+      const d = dobFM.substring(5, 7);
+      dob = `${y}-${m}-${d}`;
+    }
+
+    return {
+      ok: true,
+      patient: { dfn: String(dfn), name, dob, sex },
+      rpcUsed: RPC_NAME,
+    };
+  } catch (err: any) {
+    disconnect();
+    return {
+      ok: false,
+      error: err.message,
+      hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
+    };
+  }
+});
+
 // Phase 4A: Real RPC call to get default patient list
 server.get("/vista/default-patient-list", async () => {
   try {

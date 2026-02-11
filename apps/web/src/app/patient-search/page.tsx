@@ -17,6 +17,20 @@ interface SearchResult {
   error?: string;
 }
 
+interface PatientDemographics {
+  dfn: string;
+  name: string;
+  dob: string;
+  sex: string;
+}
+
+interface DemographicsResult {
+  ok: boolean;
+  patient?: PatientDemographics;
+  rpcUsed?: string;
+  error?: string;
+}
+
 const API_BASE = "http://127.0.0.1:3001";
 const DEBOUNCE_MS = 400;
 
@@ -28,6 +42,9 @@ export default function PatientSearchPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selected, setSelected] = useState<Patient | null>(null);
+  const [demographics, setDemographics] = useState<PatientDemographics | null>(null);
+  const [demoLoading, setDemoLoading] = useState(false);
+  const [demoError, setDemoError] = useState<string | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Debounce the query input
@@ -83,6 +100,33 @@ export default function PatientSearchPage() {
     fetchPatients(debouncedQuery);
   }, [debouncedQuery, fetchPatients]);
 
+  // Fetch demographics when a patient is selected
+  const selectPatient = useCallback(async (pt: Patient) => {
+    setSelected(pt);
+    setDemographics(null);
+    setDemoError(null);
+    setDemoLoading(true);
+
+    try {
+      const res = await fetch(
+        `${API_BASE}/vista/patient-demographics?dfn=${encodeURIComponent(pt.dfn)}`
+      );
+      const data: DemographicsResult = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setDemoError(data.error || `Server error (${res.status})`);
+      } else if (data.patient) {
+        setDemographics(data.patient);
+      }
+    } catch (err) {
+      setDemoError(
+        err instanceof Error ? err.message : "Failed to reach API server"
+      );
+    } finally {
+      setDemoLoading(false);
+    }
+  }, []);
+
   return (
     <div className={styles.page}>
       <div className={styles.container}>
@@ -111,9 +155,34 @@ export default function PatientSearchPage() {
         </div>
 
         {selected && (
-          <div className={styles.selected}>
-            <span className={styles.selectedLabel}>Selected:</span>
-            DFN {selected.dfn} — {selected.name}
+          <div className={styles.patientHeader}>
+            <h2 className={styles.patientHeaderTitle}>Patient Header</h2>
+            {demoLoading && (
+              <p className={styles.loading}>Loading demographics…</p>
+            )}
+            {demoError && (
+              <div className={styles.error}>{demoError}</div>
+            )}
+            {demographics && (
+              <div className={styles.patientGrid}>
+                <div className={styles.patientField}>
+                  <span className={styles.patientFieldLabel}>Name</span>
+                  <span className={styles.patientFieldValue}>{demographics.name}</span>
+                </div>
+                <div className={styles.patientField}>
+                  <span className={styles.patientFieldLabel}>DFN</span>
+                  <span className={styles.patientFieldValue}>{demographics.dfn}</span>
+                </div>
+                <div className={styles.patientField}>
+                  <span className={styles.patientFieldLabel}>DOB</span>
+                  <span className={styles.patientFieldValue}>{demographics.dob}</span>
+                </div>
+                <div className={styles.patientField}>
+                  <span className={styles.patientFieldLabel}>Sex</span>
+                  <span className={styles.patientFieldValue}>{demographics.sex}</span>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -134,11 +203,11 @@ export default function PatientSearchPage() {
                   <li
                     key={pt.dfn}
                     className={styles.resultItem}
-                    onClick={() => setSelected(pt)}
+                    onClick={() => selectPatient(pt)}
                     role="button"
                     tabIndex={0}
                     onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") setSelected(pt);
+                      if (e.key === "Enter" || e.key === " ") selectPatient(pt);
                     }}
                   >
                     <span className={styles.resultName}>{pt.name}</span>
