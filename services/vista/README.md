@@ -1,17 +1,42 @@
 # services/vista (VistA / YottaDB Environment)
 
-This folder will contain everything needed to run VistA/YottaDB locally and in dev environments.
+This folder contains the Docker sandbox for Phase 2 VistA development. It provides a local, containerized WorldVistA instance for testing and bridge development.
 
-## Goals (Week 2–3)
-- Run a VistA distribution (WorldVistA or FOIA-based) on YottaDB
-- Provide a stable local dev environment (Docker)
-- Enable bridge testing from Node.js
+## Phase 2: Sandbox Implementation ✅
 
-## Expected contents (to be implemented)
-- docker-compose.yml (or equivalent)
-- container config + volumes
-- seed/test data notes
-- scripts for starting/stopping/resetting the environment
+We now have a working WorldVistA sandbox using Docker:
 
-## MVP principle
-Get one working environment running reliably before building UI.
+- **Image**: `worldvista/worldvista-ehr:latest` (includes YottaDB + VistA)
+- **Container**: `wv` (see `docker-compose.yml`)
+- **Exposed ports**:
+  - `9430` — VistA RPC listener (used by Node.js bridge)
+  - `2222` — SSH access
+  - `8001, 8080, 9080` — Web UIs
+
+## Setup & Operations
+
+See the complete runbook: **[docs/runbooks/local-vista-docker.md](../../docs/runbooks/local-vista-docker.md)**
+
+Quick start:
+```powershell
+cd services\vista
+docker compose --profile dev up -d
+docker ps                           # verify running
+Test-NetConnection 127.0.0.1 -Port 9430  # verify RPC port
+docker exec -it wv su - wv -c 'mumps -r ZU'  # enter VistA
+```
+
+## Next Steps (Phase 3+)
+
+1. **Node.js bridge**: Implement RPC client in `utils/bridge/` using `mg-dbx-napi`.
+2. **Test fixtures**: Add seed data to YottaDB for consistent testing.
+3. **Persistent storage**: Add volumes to preserve data across restarts.
+4. **CI/CD**: Run sandbox in GitHub Actions for integration testing.
+
+## Notes
+
+- This is a **dev sandbox only**; not suitable for production.
+- The WorldVistA image includes pre-configured VistA instance; no additional setup needed.
+- Container restarts preserve data (if volumes are configured).
+- For persistent data: uncomment volumes in `docker-compose.yml`.
+
