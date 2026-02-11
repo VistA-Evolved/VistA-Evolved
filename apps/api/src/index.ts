@@ -35,14 +35,15 @@ server.get("/vista/patient-search", async (request) => {
   }
 
   try {
-    // Attempt sign-on; rpcBroker.signOn will explicitly throw because
-    // full Broker protocol is not implemented in this minimal proof.
+    // This path still uses the legacy rpcBroker.signOn() stub.
+    // The XWB protocol is implemented in rpcBrokerClient.ts — this
+    // endpoint needs to be migrated to use it with the right search RPC.
     await signOn();
     // If signOn ever succeeds, call patientSearch (not implemented)
     const results = await patientSearch(q);
     return { ok: true, results };
   } catch (err: any) {
-    return { ok: false, error: err.message, hint: "RPC Broker protocol or authentication not implemented; see docs/runbooks/vista-rpc-patient-search.md" };
+    return { ok: false, error: err.message, hint: "Patient search RPC not yet mapped; protocol is ready — see docs/runbooks/vista-rpc-patient-search.md" };
   }
 });
 

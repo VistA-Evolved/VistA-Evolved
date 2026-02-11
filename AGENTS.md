@@ -46,9 +46,11 @@ Reference: `vavista-rpc3/brokerRPC3.py` (`buildRpcGreeting`).
 
 ### Fix 2: Cipher pads — must use real XUSRB1.m Z-tag pads
 
-The 20 cipher pads (94 chars each) are **not secrets** — they ship in every
-VistA distribution inside `XUSRB1.m` at the `Z` label. They are used for
-$TRANSLATE-based obfuscation of AV codes and context names.
+The cipher pads are part of the RPC Broker sign-on obfuscation routine and
+are extracted from `XUSRB1.m` (the `Z` label). They are not user credentials,
+but they are security-sensitive implementation details and must not be treated
+casually. There are 20 pads (94 chars each) used for `$TRANSLATE`-based
+obfuscation of AV codes and context names.
 
 If you ever need to re-extract them:
 ```bash

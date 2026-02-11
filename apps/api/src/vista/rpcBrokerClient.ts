@@ -94,7 +94,9 @@ function buildBye(): string {
 
 // ---- CipherPad encryption (XUS AV CODE + XWB CREATE CONTEXT) -----------
 // These 20 cipher pads are extracted from the Z-tag of the XUSRB1.m routine
-// shipped with every VistA distribution.  They are NOT secrets.
+// shipped with every VistA distribution.  They are not user credentials, but
+// they are security-sensitive implementation details of the RPC Broker sign-on
+// obfuscation scheme.  Do not log or expose them unnecessarily.
 // Algorithm matches ENCRYP^XUSRB1: random pair of pad indices (1-20),
 // $TR substitution, identifier index (+31) at front, associator index (+31) at end.
 

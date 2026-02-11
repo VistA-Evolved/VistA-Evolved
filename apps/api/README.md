@@ -9,7 +9,7 @@ Fastify API server for VistA Evolved. Provides health checks, VistA connectivity
 | GET | /health | 1C | Returns `{"ok":true}` |
 | GET | /vista/ping | 3 | TCP connectivity check to VistA RPC port |
 | GET | /vista/default-patient-list | 4A | Calls ORQPT DEFAULT PATIENT LIST via RPC Broker |
-| GET | /vista/patient-search?q=NAME | 4 | Patient search (stub — protocol not yet implemented) |
+| GET | /vista/patient-search?q=NAME | 4B | Pending RPC mapping (protocol ready) |
 
 ## Setup
 
