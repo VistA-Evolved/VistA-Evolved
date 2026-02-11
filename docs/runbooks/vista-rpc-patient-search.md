@@ -1,81 +1,117 @@
-# VistA RPC Patient Search (Phase 4)
+# VistA RPC Patient Search (Phase 4B)
 
-This runbook documents how to perform a minimal connectivity proof and the first
-steps toward a real VistA patient search via the RPC Broker.
+This runbook demonstrates searching for patients by name using the `ORWPT LIST ALL`
+RPC via the Node.js API.
 
-## Important
-- Do NOT store credentials in the repository. Use environment variables:
-  - `VISTA_ACCESS_CODE`
-  - `VISTA_VERIFY_CODE`
-- This Phase 4 implementation performs connectivity checks and validates
-  credentials presence, but does NOT implement the full RPC Broker protocol.
+## Prerequisites
 
-## Steps (PowerShell)
+- Docker running, WorldVistA sandbox started (see [local-vista-docker.md](local-vista-docker.md))
+- `apps/api/.env.local` configured with credentials (see [vista-rpc-default-patient-list.md](vista-rpc-default-patient-list.md))
 
-From repo root: `C:\Users\kmoul\OneDrive\Documents\GitHub\VistA-Evolved`
+## RPC Details
 
-### 1) Start the sandbox
+| Item | Value |
+|------|-------|
+| **RPC Name** | `ORWPT LIST ALL` |
+| **Context** | `OR CPRS GUI CHART` |
+| **Param 1** | FROM — starting search string (case-insensitive) |
+| **Param 2** | DIR — `"1"` for forward alphabetical |
+| **Response** | Lines of `DFN^NAME^^^^NAME` |
+
+## Steps
+
+### 1) Start the sandbox (if not running)
+
 ```powershell
-docker-compose -f services/vista/docker-compose.yml up -d
+cd services\vista
+docker compose --profile dev up -d
 ```
 
-### 2) Verify sandbox is running
+Wait ~10 seconds, then verify:
+
 ```powershell
-docker ps
-Test-NetConnection 127.0.0.1 -Port 9430
+Test-NetConnection 127.0.0.1 -Port 9430 -WarningAction SilentlyContinue
 ```
 
-Expected `Test-NetConnection` output:
-```
-ComputerName     : 127.0.0.1
-RemoteAddress    : 127.0.0.1
-RemotePort       : 9430
-TcpTestSucceeded : True
-```
+### 2) Start the API
 
-### 3) Provide credentials (environment)
-Set credentials in the same terminal (temporary):
-```powershell
-$env:VISTA_ACCESS_CODE="<ACCESS>"
-$env:VISTA_VERIFY_CODE="<VERIFY>"
-```
-
-**Do not commit these values.**
-
-### 4) Start the API
 ```powershell
 pnpm -C apps/api dev
 ```
 
-Expected output:
-```
-Server listening on http://127.0.0.1:3001
-```
+Expected: `Server listening on http://127.0.0.1:3001`
 
-### 5) Call patient-search endpoint
+### 3) Search for patients
+
 ```powershell
-curl "http://127.0.0.1:3001/vista/patient-search?q=smith" -UseBasicParsing
+curl "http://127.0.0.1:3001/vista/patient-search?q=ZZ" -UseBasicParsing
 ```
 
-Possible outputs:
+### 4) Expected response
 
-- If sandbox unreachable:
-```
-Content : {"ok":false,"error":"VistA RPC not reachable: <reason>","hint":"Start sandbox and ensure port is reachable"}
+**Success (patients found):**
+
+```json
+{
+  "ok": true,
+  "count": 3,
+  "results": [
+    { "dfn": "1", "name": "ZZ PATIENT,TEST ONE" },
+    { "dfn": "3", "name": "ZZ PATIENT,TEST THREE" },
+    { "dfn": "2", "name": "ZZ PATIENT,TEST TWO" }
+  ],
+  "rpcUsed": "ORWPT LIST ALL"
+}
 ```
 
-- If credentials missing:
-```
-Content : {"ok":false,"error":"missing credentials","hint":"Set VISTA_ACCESS_CODE and VISTA_VERIFY_CODE in environment"}
+**No matches:**
+
+```json
+{
+  "ok": true,
+  "count": 0,
+  "results": [],
+  "rpcUsed": "ORWPT LIST ALL"
+}
 ```
 
-- If Broker protocol not implemented (expected for this minimal Phase 4):
-```
-Content : {"ok":false,"error":"RPC Broker sign-on not implemented: requires VistA RPC Broker packet framing and RPC protocol. Use a dedicated client (e.g., mg-dbx-napi) or implement the Broker protocol before attempting login.","hint":"See docs/runbooks/vista-rpc-patient-search.md"}
+**Query too short (< 2 chars):**
+
+```json
+{
+  "ok": false,
+  "error": "Query too short",
+  "hint": "Use ?q=SMI (minimum 2 characters)"
+}
 ```
 
-## Next steps
-- Implement Broker protocol or use `mg-dbx-napi` to perform authenticated RPCs.
-- Once sign-on works, implement `ORQPT FIND PATIENT` RPC call and return real results.
+**Missing credentials:**
 
-*** End of runbook
+```json
+{
+  "ok": false,
+  "error": "Missing VistA credentials. Create apps/api/.env.local and set: ...",
+  "hint": "Set VISTA credentials in apps/api/.env.local"
+}
+```
+
+## Troubleshooting
+
+### "TCP connect timeout" or ECONNREFUSED
+- Sandbox not running: `docker ps` to check, `docker compose --profile dev up -d` to start
+- Wait 15s after container start for port 9430 to be ready
+
+### Sign-on failed
+- Verify credentials in `apps/api/.env.local` match the WorldVistA defaults
+  (PROV123 / PROV123!!) — see `apps/api/.env.example`
+
+### 0 results for a name you expect
+- The fresh WorldVistA sandbox has only 3 test patients (ZZ PATIENT,TEST ONE/TWO/THREE)
+- Search is alphabetical starting from the search string; try `?q=ZZ`
+
+## Implementation Notes
+
+- Endpoint: `GET /vista/patient-search?q=<string>`
+- Uses `rpcBrokerClient.ts` → `connect()` + `callRpc("ORWPT LIST ALL", [query, "1"])` + `disconnect()`
+- Same XWB protocol flow as Phase 4A (TCPConnect → SIGNON → AV CODE → CREATE CONTEXT → RPC)
+- No changes to the RPC protocol implementation were needed

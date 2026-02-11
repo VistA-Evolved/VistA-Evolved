@@ -93,7 +93,7 @@ Assert-Check "pnpm allowBuilds: unrs-resolver" ($wsContent -match "unrs-resolver
 # .gitignore safety
 $gitignore = Get-Content "$repoRoot\.gitignore" -Raw
 Assert-Check ".gitignore blocks .env.*" ($gitignore -match "\.env\.\*")
-$trackedEnv = git ls-files -- "apps/api/.env*" 2>$null
+$trackedEnv = git ls-files -- "apps/api/.env.local" 2>$null
 Assert-Check ".env.local NOT tracked in git" ([string]::IsNullOrWhiteSpace($trackedEnv))
 Assert-Check ".env.example exists" (Test-Path "$repoRoot\apps\api\.env.example")
 
