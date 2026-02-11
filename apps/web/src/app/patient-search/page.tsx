@@ -31,6 +31,21 @@ interface DemographicsResult {
   error?: string;
 }
 
+interface Allergy {
+  id: string;
+  allergen: string;
+  severity: string;
+  reactions: string;
+}
+
+interface AllergiesResult {
+  ok: boolean;
+  count?: number;
+  results?: Allergy[];
+  rpcUsed?: string;
+  error?: string;
+}
+
 const API_BASE = "http://127.0.0.1:3001";
 const DEBOUNCE_MS = 400;
 
@@ -45,6 +60,9 @@ export default function PatientSearchPage() {
   const [demographics, setDemographics] = useState<PatientDemographics | null>(null);
   const [demoLoading, setDemoLoading] = useState(false);
   const [demoError, setDemoError] = useState<string | null>(null);
+  const [allergies, setAllergies] = useState<Allergy[]>([]);
+  const [allergyLoading, setAllergyLoading] = useState(false);
+  const [allergyError, setAllergyError] = useState<string | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Debounce the query input
@@ -106,6 +124,9 @@ export default function PatientSearchPage() {
     setDemographics(null);
     setDemoError(null);
     setDemoLoading(true);
+    setAllergies([]);
+    setAllergyError(null);
+    setAllergyLoading(true);
 
     try {
       const res = await fetch(
@@ -124,6 +145,26 @@ export default function PatientSearchPage() {
       );
     } finally {
       setDemoLoading(false);
+    }
+
+    // Fetch allergies
+    try {
+      const allergyRes = await fetch(
+        `${API_BASE}/vista/allergies?dfn=${encodeURIComponent(pt.dfn)}`
+      );
+      const allergyData: AllergiesResult = await allergyRes.json();
+
+      if (!allergyRes.ok || !allergyData.ok) {
+        setAllergyError(allergyData.error || `Server error (${allergyRes.status})`);
+      } else {
+        setAllergies(allergyData.results || []);
+      }
+    } catch (err) {
+      setAllergyError(
+        err instanceof Error ? err.message : "Failed to reach API server"
+      );
+    } finally {
+      setAllergyLoading(false);
     }
   }, []);
 
@@ -182,6 +223,38 @@ export default function PatientSearchPage() {
                   <span className={styles.patientFieldValue}>{demographics.sex}</span>
                 </div>
               </div>
+            )}
+          </div>
+        )}
+
+        {selected && (
+          <div className={styles.allergiesSection}>
+            <h2 className={styles.allergiesSectionTitle}>Allergies</h2>
+            {allergyLoading && (
+              <p className={styles.loading}>Loading allergies…</p>
+            )}
+            {allergyError && (
+              <div className={styles.error}>{allergyError}</div>
+            )}
+            {!allergyLoading && !allergyError && allergies.length === 0 && (
+              <p className={styles.empty}>No known allergies.</p>
+            )}
+            {!allergyLoading && !allergyError && allergies.length > 0 && (
+              <ul className={styles.allergyList}>
+                {allergies.map((a) => (
+                  <li key={a.id} className={styles.allergyItem}>
+                    <div className={styles.allergyName}>{a.allergen}</div>
+                    <div className={styles.allergyMeta}>
+                      {a.severity && (
+                        <span className={styles.allergySeverity}>{a.severity}</span>
+                      )}
+                      {a.reactions && (
+                        <span className={styles.allergyReactions}>{a.reactions.replace(/;/g, ", ")}</span>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
         )}

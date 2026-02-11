@@ -1,8 +1,8 @@
 <#
 .SYNOPSIS
-    VistA-Evolved Phase 1-5B Verification Script
+    VistA-Evolved Phase 1-5C Verification Script
 .DESCRIPTION
-    Verifies phases from Hello System through Phase 5B Patient Demographics.
+    Verifies phases from Hello System through Phase 5C Patient Allergies.
     Run from repo root: .\scripts\verify-phase1-to-phase5b.ps1
 .NOTES
     Requires: Node v24+, pnpm v10+, Docker Desktop running
@@ -69,7 +69,7 @@ function Stop-ApiProcess {
 # -- Pre-flight ------------------------------------------------------------
 
 Write-Host ""
-Write-Host "VistA-Evolved Phase 1-5B Verification" -ForegroundColor White -BackgroundColor DarkBlue
+Write-Host "VistA-Evolved Phase 1-5C Verification" -ForegroundColor White -BackgroundColor DarkBlue
 Write-Host "Repo: $repoRoot"
 Write-Host "Time: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
 Write-Host ""
@@ -134,6 +134,7 @@ Assert-Check "index.ts has /vista/ping route" ($indexTs -match '/vista/ping')
 Assert-Check "index.ts has /vista/default-patient-list route" ($indexTs -match '/vista/default-patient-list')
 Assert-Check "index.ts has /vista/patient-search route" ($indexTs -match '/vista/patient-search')
 Assert-Check "index.ts has /vista/patient-demographics route" ($indexTs -match '/vista/patient-demographics')
+Assert-Check "index.ts has /vista/allergies route" ($indexTs -match '/vista/allergies')
 
 # Check for start script
 $apiPkg = Get-Content "$repoRoot\apps\api\package.json" -Raw
@@ -378,6 +379,53 @@ if ($ready -and $dockerOk) {
 } else {
     if (-not $dockerOk) { Write-Host "  [SKIP] Sandbox not running -- cannot test Phase 5B" -ForegroundColor Yellow }
     if (-not $ready)    { Write-Host "  [SKIP] API not running -- cannot test Phase 5B" -ForegroundColor Yellow }
+}
+
+# =========================================================================
+Write-Phase "PHASE 5C" "Patient Allergies"
+# =========================================================================
+
+Assert-Check "Runbook: vista-rpc-allergies.md" (Test-Path "$repoRoot\docs\runbooks\vista-rpc-allergies.md")
+
+if ($ready -and $dockerOk) {
+    # Test with DFN 1 (known test patient with PEANUT OIL allergy)
+    try {
+        $allergy = Invoke-RestMethod -Uri "http://127.0.0.1:$ApiPort/vista/allergies?dfn=1" -TimeoutSec 25
+
+        if ($allergy.ok -eq $true) {
+            Assert-Check "GET /vista/allergies ok:true" $true "count=$($allergy.count)"
+            Assert-Check "Allergies count >= 1" ($allergy.count -ge 1) "count=$($allergy.count)"
+            if ($allergy.results -and $allergy.results.Count -gt 0) {
+                $first = $allergy.results[0]
+                Assert-Check "Allergy has allergen field" (-not [string]::IsNullOrWhiteSpace($first.allergen)) $first.allergen
+                Assert-Check "Allergy has id field" (-not [string]::IsNullOrWhiteSpace($first.id)) $first.id
+            }
+            Assert-Check "Allergies rpcUsed is ORQQAL LIST" ($allergy.rpcUsed -eq "ORQQAL LIST") $allergy.rpcUsed
+        } else {
+            Assert-Check "GET /vista/allergies ok:true" $false "Error: $($allergy.error)"
+        }
+    } catch {
+        Assert-Check "GET /vista/allergies responds" $false $_.Exception.Message
+    }
+
+    # Test validation: missing dfn
+    try {
+        $bad = Invoke-RestMethod -Uri "http://127.0.0.1:$ApiPort/vista/allergies" -TimeoutSec 10
+        Assert-Check "Allergies missing dfn returns ok:false" ($bad.ok -eq $false) "error=$($bad.error)"
+    } catch {
+        Assert-Check "Allergies missing dfn returns error response" $false $_.Exception.Message
+    }
+
+    # Test non-numeric dfn
+    try {
+        $nan = Invoke-RestMethod -Uri "http://127.0.0.1:$ApiPort/vista/allergies?dfn=abc" -TimeoutSec 10
+        Assert-Check "Allergies non-numeric dfn returns ok:false" ($nan.ok -eq $false) "error=$($nan.error)"
+    } catch {
+        Assert-Check "Allergies non-numeric dfn returns error response" $false $_.Exception.Message
+    }
+} else {
+    if (-not $dockerOk) { Write-Host "  [SKIP] Sandbox not running -- cannot test Phase 5C" -ForegroundColor Yellow }
+    if (-not $ready)    { Write-Host "  [SKIP] API not running -- cannot test Phase 5C" -ForegroundColor Yellow }
 }
 
 # =========================================================================

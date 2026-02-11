@@ -123,6 +123,51 @@ server.get("/vista/patient-demographics", async (request) => {
   }
 });
 
+// Phase 5C: Allergies via ORQQAL LIST RPC
+server.get("/vista/allergies", async (request) => {
+  const dfn = (request.query as any)?.dfn;
+  if (!dfn || !/^\d+$/.test(String(dfn))) {
+    return { ok: false, error: "Missing or non-numeric dfn", hint: "Use ?dfn=1" };
+  }
+
+  try {
+    validateCredentials();
+  } catch (err: any) {
+    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+  }
+
+  const RPC_NAME = "ORQQAL LIST";
+
+  try {
+    await connect();
+    const lines = await callRpc(RPC_NAME, [String(dfn)]);
+    disconnect();
+
+    // Each line: id^allergen^severity^reactions (reactions semicolon-separated)
+    // "No Allergy Assessment" returns: "^No Allergy Assessment"
+    const results = lines
+      .map((line) => {
+        const parts = line.split("^");
+        const id = parts[0]?.trim();
+        const allergen = parts[1]?.trim() || "";
+        const severity = parts[2]?.trim() || "";
+        const reactions = parts[3]?.trim() || "";
+        if (!id) return null; // skip "No Allergy Assessment" line
+        return { id, allergen, severity, reactions };
+      })
+      .filter((r) => r !== null);
+
+    return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
+  } catch (err: any) {
+    disconnect();
+    return {
+      ok: false,
+      error: err.message,
+      hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
+    };
+  }
+});
+
 // Phase 4A: Real RPC call to get default patient list
 server.get("/vista/default-patient-list", async () => {
   try {
