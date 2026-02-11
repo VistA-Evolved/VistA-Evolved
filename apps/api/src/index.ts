@@ -449,9 +449,10 @@ server.get("/vista/notes", async (request) => {
   try {
     await connect();
 
+    // Fetch signed (CONTEXT=1) and unsigned (CONTEXT=2) notes, merge results.
+    // CONTEXT=1: all signed, CONTEXT=2: unsigned by current author.
     // Params: CLASS, CONTEXT, DFN, EARLY, LATE, PERSON, OCCLIM, SEQUENCE
-    // CLASS=3 (progress notes), CONTEXT=1 (all signed), PERSON=0 (all authors)
-    const lines = await callRpc(RPC_NAME, [
+    const signedLines = await callRpc(RPC_NAME, [
       "3",          // CLASS - progress notes (document definition 8925.1)
       "1",          // CONTEXT - all signed
       String(dfn),  // DFN - patient
@@ -461,17 +462,39 @@ server.get("/vista/notes", async (request) => {
       "0",          // OCCLIM - no limit
       "D",          // SEQUENCE - descending (newest first)
     ]);
+    const unsignedLines = await callRpc(RPC_NAME, [
+      "3",          // CLASS - progress notes
+      "2",          // CONTEXT - unsigned
+      String(dfn),  // DFN - patient
+      "",           // EARLY
+      "",           // LATE
+      "0",          // PERSON - all authors
+      "0",          // OCCLIM
+      "D",          // SEQUENCE
+    ]);
     disconnect();
 
-    // Check for -1^error pattern
-    if (lines.length === 1 && lines[0].startsWith("-1")) {
-      const errMsg = lines[0].split("^").slice(1).join("^") || "Unknown VistA error";
+    // Merge lines, dedup by IEN (unsigned first so newest show at top)
+    const seenIens = new Set<string>();
+    const allLines: string[] = [];
+    for (const line of [...unsignedLines, ...signedLines]) {
+      const ien = line.split("^")[0]?.trim();
+      if (ien && /^\d+$/.test(ien) && !seenIens.has(ien)) {
+        seenIens.add(ien);
+        allLines.push(line);
+      }
+    }
+
+    // Check for -1^error pattern (from either call)
+    const errorLine = [...signedLines, ...unsignedLines].find(l => l.startsWith("-1"));
+    if (errorLine && allLines.length === 0) {
+      const errMsg = errorLine.split("^").slice(1).join("^") || "Unknown VistA error";
       return { ok: false, error: errMsg, rpcUsed: RPC_NAME };
     }
 
     // Wire format per line:
     // IEN^title^editDate(FM)^patient^authorDUZ;sigName;authorName^location^status^visitDate^...
-    const results = lines
+    const results = allLines
       .map((line) => {
         const parts = line.split("^");
         if (parts.length < 7) return null;
@@ -507,6 +530,127 @@ server.get("/vista/notes", async (request) => {
       .filter(Boolean);
 
     return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
+  } catch (err: any) {
+    disconnect();
+    return {
+      ok: false,
+      error: err.message,
+      hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
+    };
+  }
+});
+
+// Phase 7B: Create note via TIU CREATE RECORD + TIU SET DOCUMENT TEXT
+server.post("/vista/notes", async (request) => {
+  const body = request.body as any;
+  const dfn = body?.dfn;
+  const title = (body?.title || "").trim();
+  const text = (body?.text || "").trim();
+
+  if (!dfn || !/^\d+$/.test(String(dfn))) {
+    return { ok: false, error: "Missing or non-numeric dfn", hint: 'Body: { "dfn": "1", "title": "TEST NOTE", "text": "hello world" }' };
+  }
+  if (!title || title.length < 1) {
+    return { ok: false, error: "Missing title", hint: 'Body: { "dfn": "1", "title": "TEST NOTE", "text": "hello world" }' };
+  }
+  if (!text || text.length < 1) {
+    return { ok: false, error: "Missing text", hint: 'Body: { "dfn": "1", "title": "TEST NOTE", "text": "hello world" }' };
+  }
+
+  try {
+    validateCredentials();
+  } catch (err: any) {
+    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+  }
+
+  try {
+    await connect();
+    const duz = getDuz();
+
+    // Build FileMan date for "now": YYYMMDD.HHMM (YYY = year - 1700)
+    const now = new Date();
+    const fmYear = now.getFullYear() - 1700;
+    const fmMonth = String(now.getMonth() + 1).padStart(2, "0");
+    const fmDay = String(now.getDate()).padStart(2, "0");
+    const fmHour = String(now.getHours()).padStart(2, "0");
+    const fmMin = String(now.getMinutes()).padStart(2, "0");
+    const fmDate = `${fmYear}${fmMonth}${fmDay}.${fmHour}${fmMin}`;
+
+    // STEP 1: TIU CREATE RECORD
+    //   MAKE(SUCCESS,DFN,TITLE,VDT,VLOC,VSIT,TIUX,VSTR,SUPPRESS,NOASF)
+    //   Title IEN 10 = GENERAL NOTE (DOC type in 8925.1)
+    //   VLOC 2 = DR OFFICE (hospital location)
+    //   TIUX: 1202=Author(DUZ), 1301=RefDate
+    const TITLE_IEN = "10";   // GENERAL NOTE
+    const VLOC = "2";         // DR OFFICE
+    const tiux: Record<string, string> = {
+      "1202": String(duz),   // Author/dictator
+      "1301": fmDate,        // Reference date
+    };
+
+    const createLines = await callRpcWithList("TIU CREATE RECORD", [
+      { type: "literal", value: String(dfn) },    // DFN
+      { type: "literal", value: TITLE_IEN },       // TITLE
+      { type: "literal", value: fmDate },          // VDT
+      { type: "literal", value: VLOC },            // VLOC
+      { type: "literal", value: "" },              // VSIT
+      { type: "list", value: tiux },               // TIUX (field data, no text)
+      { type: "literal", value: "" },              // VSTR
+      { type: "literal", value: "1" },             // SUPPRESS (suppress alerts)
+      { type: "literal", value: "0" },             // NOASF
+    ]);
+
+    const createResult = createLines[0] || "";
+    if (createResult.startsWith("0^") || createResult.startsWith("-1")) {
+      const errMsg = createResult.split("^").slice(1).join("^") || "Failed to create note record";
+      disconnect();
+      return { ok: false, error: errMsg, hint: "TIU CREATE RECORD failed" };
+    }
+
+    const noteId = createResult.split("^")[0].trim();
+    if (!noteId || !/^\d+$/.test(noteId)) {
+      disconnect();
+      return { ok: false, error: `Unexpected response: ${createResult}`, hint: "TIU CREATE RECORD returned non-numeric ID" };
+    }
+
+    // STEP 2: TIU SET DOCUMENT TEXT
+    //   SETTEXT(TIUY,TIUDA,TIUX,SUPPRESS)
+    //   TIUX: HDR="page^pages", TEXT,N,0 = line N
+    // Build user-supplied title as first line, then text body
+    const bodyLines = text.split(/\r?\n/);
+    const allLines = [title, "", ...bodyLines];
+    const textData: Record<string, string> = {
+      "HDR": "1^1",
+    };
+    allLines.forEach((line, i) => {
+      textData[`TEXT,${i + 1},0`] = line;
+    });
+
+    const textResult = await callRpcWithList("TIU SET DOCUMENT TEXT", [
+      { type: "literal", value: noteId },       // TIUDA
+      { type: "list", value: textData },         // TIUX (HDR + TEXT lines)
+      { type: "literal", value: "0" },           // SUPPRESS
+    ]);
+
+    disconnect();
+
+    const textResp = textResult[0] || "";
+    // SETTEXT returns "TIUDA^page^pages" on success, "0^...^...^error" on failure
+    if (textResp.startsWith("0^")) {
+      return {
+        ok: false,
+        error: `Note ${noteId} created but text save failed: ${textResp}`,
+        id: noteId,
+        hint: "TIU SET DOCUMENT TEXT failed",
+      };
+    }
+
+    return {
+      ok: true,
+      id: noteId,
+      message: "Note created",
+      rpcUsed: "TIU CREATE RECORD + TIU SET DOCUMENT TEXT",
+    };
   } catch (err: any) {
     disconnect();
     return {

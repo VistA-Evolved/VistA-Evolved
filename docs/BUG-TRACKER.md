@@ -1,10 +1,10 @@
-# Bug Tracker & Lessons Learned — VistA-Evolved (Phase 1 → Phase 5D)
+# Bug Tracker & Lessons Learned — VistA-Evolved (Phase 1 → Phase 7B)
 
 > **Purpose**: A single-source log of every significant bug, challenge, and
-> hard-won fix from the project's inception through Phase 5D. Share this with
+> hard-won fix from the project's inception through Phase 7B. Share this with
 > new developers and AI agents so they don't repeat the same mistakes.
 >
-> **Last updated**: 2026-02-11 (Phase 6A complete)
+> **Last updated**: 2026-02-11 (Phase 7B complete)
 
 ---
 
@@ -20,7 +20,8 @@
 8. [Phase 5C — Allergies Display](#phase-5c--allergies-display)
 9. [Phase 5D — Add Allergy (First Write/CRUD)](#phase-5d--add-allergy-first-writecrud)
 10. [Phase 6A — Vitals Display](#phase-6a--vitals-display)
-11. [Cross-Cutting Lessons](#cross-cutting-lessons)
+11. [Phase 7B — Create Note](#phase-7b--create-note)
+12. [Cross-Cutting Lessons](#cross-cutting-lessons)
 
 ---
 
@@ -272,6 +273,20 @@
 | **How we found it** | Called `VITALS^ORQQVI` directly in MUMPS via Docker and examined raw output: `12^HT^52^3050719.08` — clearly 52 is height (inches) and 3050719.08 is a FileMan date |
 | **Fix** | Swapped field assignments: `value = parts[2]`, `takenAtFM = parts[3]` |
 | **Preventive** | Never trust MUMPS source comments about field order. Always verify with a direct MUMPS call: `D VITALS^ORQQVI(.Y,DFN,...) F I=1:1 Q:$D(Y(I))=0 W Y(I),!` |
+
+---
+
+## Phase 7B — Create Note
+
+### BUG-022: LINST+3^XWBPRS — Right Parenthesis Expected for Multi-Subscript LIST Keys
+
+| | |
+|---|---|
+| **Symptom** | `TIU CREATE RECORD` returns `M ERROR=LINST+3^XWBPRS, Right parenthesis expected,-%YDB-E-RPARENMISSING` |
+| **What was tried** | Passing note text inside the TIUX LIST parameter with multi-subscript keys: `"TEXT",1,0` as the key, `"TEXT",2,0`, etc. |
+| **Root cause** | The XWB broker's LIST parameter parser (`LINST^XWBPRS`) treats keys as simple subscripts. Multi-subscript keys with commas (like `"TEXT",1,0`) confuse the parser — it expects keys to be simple quoted strings, not compound MUMPS subscript expressions |
+| **Fix** | Split note creation into two RPC calls: (1) `TIU CREATE RECORD` with only simple field keys (`1202`, `1301`), (2) `TIU SET DOCUMENT TEXT` with `HDR` and `TEXT,N,0` keys (which SETTEXT^TIUSRVPT handles correctly). This matches the approach CPRS actually uses. |
+| **Preventive** | For RPCs that need multi-dimensional array data (word processing fields), always use separate RPCs to set text. The XWB LIST format is limited to flat key→value pairs. |
 
 ---
 

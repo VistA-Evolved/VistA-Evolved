@@ -109,6 +109,11 @@ export default function PatientSearchPage() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [notesLoading, setNotesLoading] = useState(false);
   const [notesError, setNotesError] = useState<string | null>(null);
+  const [newNoteTitle, setNewNoteTitle] = useState("");
+  const [newNoteText, setNewNoteText] = useState("");
+  const [addNoteLoading, setAddNoteLoading] = useState(false);
+  const [addNoteError, setAddNoteError] = useState<string | null>(null);
+  const [addNoteSuccess, setAddNoteSuccess] = useState<string | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Debounce the query input
@@ -254,6 +259,10 @@ export default function PatientSearchPage() {
     setAddVitalSuccess(null);
     setNotes([]);
     setNotesError(null);
+    setNewNoteTitle("");
+    setNewNoteText("");
+    setAddNoteError(null);
+    setAddNoteSuccess(null);
 
     try {
       const res = await fetch(
@@ -346,6 +355,39 @@ export default function PatientSearchPage() {
       setAddVitalLoading(false);
     }
   }, [selected, newVitalType, newVitalValue, fetchVitals]);
+
+  // Add a new note for the selected patient
+  const addNote = useCallback(async () => {
+    if (!selected || newNoteTitle.trim().length < 1 || newNoteText.trim().length < 1) return;
+    setAddNoteLoading(true);
+    setAddNoteError(null);
+    setAddNoteSuccess(null);
+
+    try {
+      const res = await fetch(`${API_BASE}/vista/notes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dfn: selected.dfn, title: newNoteTitle.trim(), text: newNoteText.trim() }),
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setAddNoteError(data.error || `Server error (${res.status})`);
+      } else {
+        setAddNoteSuccess(`Note created (ID: ${data.id})`);
+        setNewNoteTitle("");
+        setNewNoteText("");
+        // Refresh notes list
+        await fetchNotes(selected.dfn);
+      }
+    } catch (err) {
+      setAddNoteError(
+        err instanceof Error ? err.message : "Failed to reach API server"
+      );
+    } finally {
+      setAddNoteLoading(false);
+    }
+  }, [selected, newNoteTitle, newNoteText, fetchNotes]);
 
   return (
     <div className={styles.page}>
@@ -584,6 +626,47 @@ export default function PatientSearchPage() {
                 </tbody>
               </table>
             )}
+
+            {/* Phase 7B: Create note form */}
+            <div className={styles.addNoteForm}>
+              <h3 className={styles.addNoteTitle}>Create Note</h3>
+              <div className={styles.addNoteRow}>
+                <input
+                  className={styles.noteTitleInput}
+                  value={newNoteTitle}
+                  onChange={(e) => {
+                    setNewNoteTitle(e.target.value);
+                    setAddNoteError(null);
+                    setAddNoteSuccess(null);
+                  }}
+                  placeholder="Note title"
+                  disabled={addNoteLoading}
+                />
+              </div>
+              <div className={styles.addNoteRow}>
+                <textarea
+                  className={styles.noteTextInput}
+                  value={newNoteText}
+                  onChange={(e) => {
+                    setNewNoteText(e.target.value);
+                    setAddNoteError(null);
+                    setAddNoteSuccess(null);
+                  }}
+                  placeholder="Note text…"
+                  rows={4}
+                  disabled={addNoteLoading}
+                />
+              </div>
+              <button
+                className={styles.addNoteBtn}
+                onClick={addNote}
+                disabled={addNoteLoading || newNoteTitle.trim().length < 1 || newNoteText.trim().length < 1}
+              >
+                {addNoteLoading ? "Saving…" : "Save Note"}
+              </button>
+              {addNoteError && <div className={styles.addNoteError}>{addNoteError}</div>}
+              {addNoteSuccess && <div className={styles.addNoteSuccess}>{addNoteSuccess}</div>}
+            </div>
           </div>
         )}
 

@@ -597,3 +597,102 @@
   font-size: 12px;
   text-transform: capitalize;
 }
+
+/* Phase 7B: Create Note form */
+.addNoteForm {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-section, #fafafa);
+}
+
+.addNoteTitle {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.addNoteRow {
+  margin-bottom: 8px;
+}
+
+.noteTitleInput {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+  background: var(--bg-card, #fff);
+  color: var(--text-primary);
+  box-sizing: border-box;
+}
+
+.noteTitleInput:focus {
+  outline: none;
+  border-color: var(--accent, #228be6);
+  box-shadow: 0 0 0 2px rgba(34, 139, 230, 0.15);
+}
+
+.noteTextInput {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  background: var(--bg-card, #fff);
+  color: var(--text-primary);
+  resize: vertical;
+  min-height: 80px;
+  box-sizing: border-box;
+}
+
+.noteTextInput:focus {
+  outline: none;
+  border-color: var(--accent, #228be6);
+  box-shadow: 0 0 0 2px rgba(34, 139, 230, 0.15);
+}
+
+.addNoteBtn {
+  margin-top: 4px;
+  padding: 8px 20px;
+  background: var(--accent, #228be6);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.addNoteBtn:hover:not(:disabled) {
+  background: var(--accent-hover, #1c7ed6);
+}
+
+.addNoteBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.addNoteError {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #fff5f5;
+  color: #e03131;
+  border: 1px solid #ffc9c9;
+  font-size: 13px;
+}
+
+.addNoteSuccess {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #f0fff4;
+  color: #2f9e44;
+  border: 1px solid #b2f2bb;
+  font-size: 13px;
+}
