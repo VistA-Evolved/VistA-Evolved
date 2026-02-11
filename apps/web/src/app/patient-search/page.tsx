@@ -46,6 +46,20 @@ interface AllergiesResult {
   error?: string;
 }
 
+interface Vital {
+  type: string;
+  value: string;
+  takenAt: string;
+}
+
+interface VitalsResult {
+  ok: boolean;
+  count?: number;
+  results?: Vital[];
+  rpcUsed?: string;
+  error?: string;
+}
+
 const API_BASE = "http://127.0.0.1:3001";
 const DEBOUNCE_MS = 400;
 
@@ -67,6 +81,9 @@ export default function PatientSearchPage() {
   const [addLoading, setAddLoading] = useState(false);
   const [addError, setAddError] = useState<string | null>(null);
   const [addSuccess, setAddSuccess] = useState<string | null>(null);
+  const [vitals, setVitals] = useState<Vital[]>([]);
+  const [vitalsLoading, setVitalsLoading] = useState(false);
+  const [vitalsError, setVitalsError] = useState<string | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Debounce the query input
@@ -146,6 +163,30 @@ export default function PatientSearchPage() {
     }
   }, []);
 
+  // Fetch vitals for a given patient DFN
+  const fetchVitals = useCallback(async (dfn: string) => {
+    setVitalsLoading(true);
+    setVitalsError(null);
+    try {
+      const res = await fetch(
+        `${API_BASE}/vista/vitals?dfn=${encodeURIComponent(dfn)}`
+      );
+      const data: VitalsResult = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setVitalsError(data.error || `Server error (${res.status})`);
+      } else {
+        setVitals(data.results || []);
+      }
+    } catch (err) {
+      setVitalsError(
+        err instanceof Error ? err.message : "Failed to reach API server"
+      );
+    } finally {
+      setVitalsLoading(false);
+    }
+  }, []);
+
   // Fetch demographics when a patient is selected
   const selectPatient = useCallback(async (pt: Patient) => {
     setSelected(pt);
@@ -157,6 +198,8 @@ export default function PatientSearchPage() {
     setNewAllergen("");
     setAddError(null);
     setAddSuccess(null);
+    setVitals([]);
+    setVitalsError(null);
 
     try {
       const res = await fetch(
@@ -177,9 +220,12 @@ export default function PatientSearchPage() {
       setDemoLoading(false);
     }
 
-    // Fetch allergies
-    await fetchAllergies(pt.dfn);
-  }, [fetchAllergies]);
+    // Fetch allergies and vitals in parallel
+    await Promise.all([
+      fetchAllergies(pt.dfn),
+      fetchVitals(pt.dfn),
+    ]);
+  }, [fetchAllergies, fetchVitals]);
 
   // Add a new allergy for the selected patient
   const addAllergy = useCallback(async () => {
@@ -332,6 +378,42 @@ export default function PatientSearchPage() {
               {addError && <div className={styles.addAllergyError}>{addError}</div>}
               {addSuccess && <div className={styles.addAllergySuccess}>{addSuccess}</div>}
             </div>
+          </div>
+        )}
+
+        {/* Phase 6A: Vitals section */}
+        {selected && (
+          <div className={styles.vitalsSection}>
+            <h2 className={styles.vitalsSectionTitle}>Vitals</h2>
+            {vitalsLoading && (
+              <p className={styles.loading}>Loading vitals…</p>
+            )}
+            {vitalsError && (
+              <div className={styles.error}>{vitalsError}</div>
+            )}
+            {!vitalsLoading && !vitalsError && vitals.length === 0 && (
+              <p className={styles.empty}>No vitals found.</p>
+            )}
+            {!vitalsLoading && !vitalsError && vitals.length > 0 && (
+              <table className={styles.vitalsTable}>
+                <thead>
+                  <tr>
+                    <th className={styles.vitalsThType}>Type</th>
+                    <th className={styles.vitalsThValue}>Value</th>
+                    <th className={styles.vitalsThDate}>Taken At</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {vitals.map((v, i) => (
+                    <tr key={`${v.type}-${v.takenAt}-${i}`} className={styles.vitalsRow}>
+                      <td className={styles.vitalsTd}>{v.type}</td>
+                      <td className={styles.vitalsTd}>{v.value}</td>
+                      <td className={styles.vitalsTdDate}>{v.takenAt}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         )}
 

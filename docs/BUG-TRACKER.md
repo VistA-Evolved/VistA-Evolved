@@ -4,7 +4,7 @@
 > hard-won fix from the project's inception through Phase 5D. Share this with
 > new developers and AI agents so they don't repeat the same mistakes.
 >
-> **Last updated**: 2026-02-11 (Phase 5D complete)
+> **Last updated**: 2026-02-11 (Phase 6A complete)
 
 ---
 
@@ -19,7 +19,8 @@
 7. [Phase 5B — Patient Demographics](#phase-5b--patient-demographics)
 8. [Phase 5C — Allergies Display](#phase-5c--allergies-display)
 9. [Phase 5D — Add Allergy (First Write/CRUD)](#phase-5d--add-allergy-first-writecrud)
-10. [Cross-Cutting Lessons](#cross-cutting-lessons)
+10. [Phase 6A — Vitals Display](#phase-6a--vitals-display)
+11. [Cross-Cutting Lessons](#cross-cutting-lessons)
 
 ---
 
@@ -259,6 +260,21 @@
 
 ---
 
+## Phase 6A — Vitals Display
+
+### BUG-021: ORQQVI VITALS field order — MUMPS comment lies
+
+| Field | Detail |
+|-------|--------|
+| **What we tried** | Parsed response as `ien^type^datetime^rate` per the MUMPS comment in `VITALS^ORQQVI` |
+| **Error** | `value` field contained FileMan dates (e.g., `3050719.08`) and `takenAt` contained measurements (e.g., `99`, `195/90`) — completely swapped |
+| **Root cause** | The MUMPS comment says `ien^vital type^date/time taken^rate` but the actual wire format from the code `$P(^UTILITY(...),8)_"^"_$P(^(ORI),1)` produces `ien^type^value^datetime`. Piece 8 is the rate/value, piece 1 is the datetime |
+| **How we found it** | Called `VITALS^ORQQVI` directly in MUMPS via Docker and examined raw output: `12^HT^52^3050719.08` — clearly 52 is height (inches) and 3050719.08 is a FileMan date |
+| **Fix** | Swapped field assignments: `value = parts[2]`, `takenAtFM = parts[3]` |
+| **Preventive** | Never trust MUMPS source comments about field order. Always verify with a direct MUMPS call: `D VITALS^ORQQVI(.Y,DFN,...) F I=1:1 Q:$D(Y(I))=0 W Y(I),!` |
+
+---
+
 ## Cross-Cutting Lessons
 
 ### Lesson 1: VistA XWB Protocol Is Byte-Exact
@@ -346,3 +362,5 @@ CPRS sends. If your code disagrees with CPRS, your code is wrong.
 | Allergy shows IEN instead of name | BUG-018 | GMRAGNT = `NAME^IEN;root` not `IEN^root` |
 | MUMPS reference missing trailing comma | BUG-019 | Keep `GMRD(120.82,` — don't strip comma |
 | First match is a header, not an allergy | BUG-020 | Skip lines where source (piece 3) is empty |
+| Vitals value/datetime swapped | BUG-021 | Wire format is `ien^type^value^datetime`, not what comment says |
+| Vitals value/datetime swapped | BUG-021 | Wire format is `ien^type^value^datetime`, not what comment says |

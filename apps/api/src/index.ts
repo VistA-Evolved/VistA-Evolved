@@ -282,6 +282,76 @@ server.post("/vista/allergies", async (request) => {
   }
 });
 
+// Phase 6A: Vitals via ORQQVI VITALS RPC
+server.get("/vista/vitals", async (request) => {
+  const dfn = (request.query as any)?.dfn;
+  if (!dfn || !/^\d+$/.test(String(dfn))) {
+    return { ok: false, error: "Missing or non-numeric dfn", hint: "Use ?dfn=1" };
+  }
+
+  try {
+    validateCredentials();
+  } catch (err: any) {
+    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+  }
+
+  // ORQQVI VITALS params: (DFN, ORSDT, OREDT)
+  //   DFN   = patient IEN
+  //   ORSDT = start date in FileMan format (use 0 for earliest)
+  //   OREDT = end date in FileMan format (use a far-future date)
+  const RPC_NAME = "ORQQVI VITALS";
+
+  try {
+    await connect();
+
+    // Wide date range: 2000-01-01 (3000101) to 2099-12-31 (3991231)
+    const lines = await callRpc(RPC_NAME, [String(dfn), "3000101", "3991231"]);
+    disconnect();
+
+    // Response format: ien^type^value^datetime
+    // (Note: MUMPS comment says ien^type^datetime^rate but actual wire is reversed)
+    // Informational line: "^No vitals found." — id is empty
+    const results = lines
+      .map((line) => {
+        const parts = line.split("^");
+        const id = parts[0]?.trim();
+        const type = parts[1]?.trim() || "";
+        const value = parts[2]?.trim() || "";
+        const takenAtFM = parts[3]?.trim() || "";
+        if (!id) return null; // skip informational lines like "^No vitals found."
+
+        // Convert FileMan date YYYMMDD.HHMMSS → human-readable YYYY-MM-DD HH:MM
+        let takenAt = takenAtFM;
+        if (takenAtFM && takenAtFM.length >= 7) {
+          const datePart = takenAtFM.split(".")[0] || "";
+          const timePart = takenAtFM.split(".")[1] || "";
+          if (/^\d{7}$/.test(datePart)) {
+            const y = parseInt(datePart.substring(0, 3), 10) + 1700;
+            const m = datePart.substring(3, 5);
+            const d = datePart.substring(5, 7);
+            let timeStr = "";
+            if (timePart && timePart.length >= 4) {
+              timeStr = " " + timePart.substring(0, 2) + ":" + timePart.substring(2, 4);
+            }
+            takenAt = `${y}-${m}-${d}${timeStr}`;
+          }
+        }
+
+        return { type, value, takenAt };
+      })
+      .filter((r) => r !== null);
+
+    return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
+  } catch (err: any) {
+    disconnect();
+    return {
+      ok: false,
+      error: err.message,
+      hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
+    };
+  }
+});
+
 // Phase 4A: Real RPC call to get default patient list
 server.get("/vista/default-patient-list", async () => {
   try {
