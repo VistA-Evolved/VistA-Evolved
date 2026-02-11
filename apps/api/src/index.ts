@@ -432,6 +432,91 @@ server.post("/vista/vitals", async (request) => {
   }
 });
 
+// Phase 7A: Notes list via TIU DOCUMENTS BY CONTEXT
+server.get("/vista/notes", async (request) => {
+  const { dfn } = request.query as any;
+  if (!dfn || !/^\d+$/.test(String(dfn))) {
+    return { ok: false, error: "Missing or non-numeric dfn query parameter", hint: "Example: /vista/notes?dfn=1" };
+  }
+
+  try {
+    validateCredentials();
+  } catch (err: any) {
+    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+  }
+
+  const RPC_NAME = "TIU DOCUMENTS BY CONTEXT";
+  try {
+    await connect();
+
+    // Params: CLASS, CONTEXT, DFN, EARLY, LATE, PERSON, OCCLIM, SEQUENCE
+    // CLASS=3 (progress notes), CONTEXT=1 (all signed), PERSON=0 (all authors)
+    const lines = await callRpc(RPC_NAME, [
+      "3",          // CLASS - progress notes (document definition 8925.1)
+      "1",          // CONTEXT - all signed
+      String(dfn),  // DFN - patient
+      "",           // EARLY - no start filter
+      "",           // LATE - no end filter
+      "0",          // PERSON - all authors
+      "0",          // OCCLIM - no limit
+      "D",          // SEQUENCE - descending (newest first)
+    ]);
+    disconnect();
+
+    // Check for -1^error pattern
+    if (lines.length === 1 && lines[0].startsWith("-1")) {
+      const errMsg = lines[0].split("^").slice(1).join("^") || "Unknown VistA error";
+      return { ok: false, error: errMsg, rpcUsed: RPC_NAME };
+    }
+
+    // Wire format per line:
+    // IEN^title^editDate(FM)^patient^authorDUZ;sigName;authorName^location^status^visitDate^...
+    const results = lines
+      .map((line) => {
+        const parts = line.split("^");
+        if (parts.length < 7) return null;
+
+        const id = parts[0].trim();
+        if (!id || !/^\d+$/.test(id)) return null;
+
+        const title = (parts[1] || "").replace(/^\+\s*/, "").trim();
+        const fmDate = parts[2] || "";
+        const authorField = parts[4] || "";
+        const location = parts[5] || "";
+        const status = parts[6] || "";
+
+        // Convert FileMan date YYYMMDD.HHMM → YYYY-MM-DD HH:MM
+        let date = fmDate;
+        if (fmDate && fmDate.length >= 7) {
+          const [datePart, timePart] = fmDate.split(".");
+          const y = parseInt(datePart.substring(0, 3), 10) + 1700;
+          const m = datePart.substring(3, 5);
+          const d = datePart.substring(5, 7);
+          date = `${y}-${m}-${d}`;
+          if (timePart && timePart.length >= 4) {
+            date += ` ${timePart.substring(0, 2)}:${timePart.substring(2, 4)}`;
+          }
+        }
+
+        // Author: "DUZ;sigName;displayName" → use displayName
+        const authorParts = authorField.split(";");
+        const author = authorParts.length >= 3 ? authorParts[2] : authorParts[1] || authorField;
+
+        return { id, title, date, author, location, status };
+      })
+      .filter(Boolean);
+
+    return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
+  } catch (err: any) {
+    disconnect();
+    return {
+      ok: false,
+      error: err.message,
+      hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
+    };
+  }
+});
+
 // Phase 4A: Real RPC call to get default patient list
 server.get("/vista/default-patient-list", async () => {
   try {

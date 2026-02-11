@@ -60,6 +60,23 @@ interface VitalsResult {
   error?: string;
 }
 
+interface Note {
+  id: string;
+  title: string;
+  date: string;
+  author: string;
+  location: string;
+  status: string;
+}
+
+interface NotesResult {
+  ok: boolean;
+  count?: number;
+  results?: Note[];
+  rpcUsed?: string;
+  error?: string;
+}
+
 const API_BASE = "http://127.0.0.1:3001";
 const DEBOUNCE_MS = 400;
 
@@ -89,6 +106,9 @@ export default function PatientSearchPage() {
   const [addVitalLoading, setAddVitalLoading] = useState(false);
   const [addVitalError, setAddVitalError] = useState<string | null>(null);
   const [addVitalSuccess, setAddVitalSuccess] = useState<string | null>(null);
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [notesLoading, setNotesLoading] = useState(false);
+  const [notesError, setNotesError] = useState<string | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Debounce the query input
@@ -192,6 +212,30 @@ export default function PatientSearchPage() {
     }
   }, []);
 
+  // Fetch notes for a given patient DFN
+  const fetchNotes = useCallback(async (dfn: string) => {
+    setNotesLoading(true);
+    setNotesError(null);
+    try {
+      const res = await fetch(
+        `${API_BASE}/vista/notes?dfn=${encodeURIComponent(dfn)}`
+      );
+      const data: NotesResult = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setNotesError(data.error || `Server error (${res.status})`);
+      } else {
+        setNotes(data.results || []);
+      }
+    } catch (err) {
+      setNotesError(
+        err instanceof Error ? err.message : "Failed to reach API server"
+      );
+    } finally {
+      setNotesLoading(false);
+    }
+  }, []);
+
   // Fetch demographics when a patient is selected
   const selectPatient = useCallback(async (pt: Patient) => {
     setSelected(pt);
@@ -208,6 +252,8 @@ export default function PatientSearchPage() {
     setNewVitalValue("");
     setAddVitalError(null);
     setAddVitalSuccess(null);
+    setNotes([]);
+    setNotesError(null);
 
     try {
       const res = await fetch(
@@ -228,12 +274,13 @@ export default function PatientSearchPage() {
       setDemoLoading(false);
     }
 
-    // Fetch allergies and vitals in parallel
+    // Fetch allergies, vitals, and notes in parallel
     await Promise.all([
       fetchAllergies(pt.dfn),
       fetchVitals(pt.dfn),
+      fetchNotes(pt.dfn),
     ]);
-  }, [fetchAllergies, fetchVitals]);
+  }, [fetchAllergies, fetchVitals, fetchNotes]);
 
   // Add a new allergy for the selected patient
   const addAllergy = useCallback(async () => {
@@ -499,6 +546,44 @@ export default function PatientSearchPage() {
               {addVitalError && <div className={styles.addVitalError}>{addVitalError}</div>}
               {addVitalSuccess && <div className={styles.addVitalSuccess}>{addVitalSuccess}</div>}
             </div>
+          </div>
+        )}
+
+        {/* Phase 7A: Notes section */}
+        {selected && (
+          <div className={styles.notesSection}>
+            <h2 className={styles.notesSectionTitle}>Notes</h2>
+            {notesLoading && (
+              <p className={styles.loading}>Loading notes…</p>
+            )}
+            {notesError && (
+              <div className={styles.error}>{notesError}</div>
+            )}
+            {!notesLoading && !notesError && notes.length === 0 && (
+              <p className={styles.empty}>No notes found.</p>
+            )}
+            {!notesLoading && !notesError && notes.length > 0 && (
+              <table className={styles.notesTable}>
+                <thead>
+                  <tr>
+                    <th className={styles.notesTh}>Title</th>
+                    <th className={styles.notesTh}>Date</th>
+                    <th className={styles.notesTh}>Author</th>
+                    <th className={styles.notesTh}>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {notes.map((n) => (
+                    <tr key={n.id} className={styles.notesRow}>
+                      <td className={styles.notesTd}>{n.title}</td>
+                      <td className={styles.notesTdDate}>{n.date}</td>
+                      <td className={styles.notesTd}>{n.author}</td>
+                      <td className={styles.notesTdStatus}>{n.status}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         )}
 

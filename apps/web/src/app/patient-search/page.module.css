@@ -532,3 +532,68 @@
   color: var(--success, #16a34a);
   font-size: 13px;
 }
+
+/* Phase 7A: Notes section */
+.notesSection {
+  margin-top: 24px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-primary, #fff);
+}
+
+.notesSectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  color: var(--text-primary);
+}
+
+.notesTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.notesTh {
+  text-align: left;
+  padding: 6px 8px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.3px;
+  border-bottom: 2px solid var(--border);
+}
+
+.notesRow {
+  border-bottom: 1px solid var(--border);
+}
+
+.notesRow:last-child {
+  border-bottom: none;
+}
+
+.notesRow:hover {
+  background: var(--row-hover, #f5f5f5);
+}
+
+.notesTd {
+  padding: 8px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.notesTdDate {
+  padding: 8px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.notesTdStatus {
+  padding: 8px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-transform: capitalize;
+}
