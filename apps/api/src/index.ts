@@ -1,9 +1,11 @@
 import Fastify from "fastify";
+import cors from "@fastify/cors";
 import { probeConnect } from "./vista/rpcBroker";
 import { validateCredentials } from "./vista/config";
 import { connect, disconnect, callRpc, callRpcWithList, getDuz } from "./vista/rpcBrokerClient";
 
 const server = Fastify();
+server.register(cors, { origin: true });
 
 server.get("/health", async () => ({ ok: true }));
 
