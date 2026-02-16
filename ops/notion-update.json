@@ -6,7 +6,7 @@
       "status": "Implemented",
       "promptRef": "prompts/12-PHASE-10-CPRS-EXTRACT/12-01-Phase10A-CPRS-Inventory-Extraction-IMPLEMENT.md",
       "verifyRef": "prompts/12-PHASE-10-CPRS-EXTRACT/12-02-Phase10A-CPRS-Inventory-Extraction-VERIFY.md",
-      "runbookPath": null,
+      "runbookPath": "docs/runbooks/cprs-inventory-extraction.md",
       "verifyScript": "scripts/verify-latest.ps1",
       "verificationStatus": "Not run",
       "commitSHA": "PLACEHOLDER"
@@ -17,7 +17,7 @@
       "status": "Implemented",
       "promptRef": "prompts/12-PHASE-10-CPRS-EXTRACT/12-03-Phase10B-CPRS-Contract-Generation-IMPLEMENT.md",
       "verifyRef": "prompts/12-PHASE-10-CPRS-EXTRACT/12-04-Phase10B-CPRS-Contract-Generation-VERIFY.md",
-      "runbookPath": null,
+      "runbookPath": "docs/runbooks/cprs-contract-generation.md",
       "verifyScript": "scripts/verify-latest.ps1",
       "verificationStatus": "Not run",
       "commitSHA": "PLACEHOLDER"
@@ -28,7 +28,7 @@
       "status": "Implemented",
       "promptRef": "prompts/12-PHASE-10-CPRS-EXTRACT/12-05-Phase10C-CPRS-Replica-Shell-IMPLEMENT.md",
       "verifyRef": "prompts/12-PHASE-10-CPRS-EXTRACT/12-06-Phase10C-CPRS-Replica-Shell-VERIFY.md",
-      "runbookPath": null,
+      "runbookPath": "docs/runbooks/cprs-replica-shell.md",
       "verifyScript": "scripts/verify-latest.ps1",
       "verificationStatus": "Not run",
       "commitSHA": "PLACEHOLDER"
@@ -39,7 +39,7 @@
       "status": "Implemented",
       "promptRef": "prompts/12-PHASE-10-CPRS-EXTRACT/12-07-Phase10D-API-Scaffold-Generator-IMPLEMENT.md",
       "verifyRef": "prompts/12-PHASE-10-CPRS-EXTRACT/12-08-Phase10D-API-Scaffold-Generator-VERIFY.md",
-      "runbookPath": null,
+      "runbookPath": "docs/runbooks/cprs-api-scaffold-generator.md",
       "verifyScript": "scripts/verify-latest.ps1",
       "verificationStatus": "Not run",
       "commitSHA": "PLACEHOLDER"
