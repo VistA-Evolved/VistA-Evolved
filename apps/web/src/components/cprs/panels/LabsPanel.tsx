@@ -30,7 +30,7 @@ export default function LabsPanel({ dfn }: Props) {
       <div className={styles.splitPane}>
         <div className={styles.splitLeft}>
           <table className={styles.dataTable}>
-            <thead><tr><th>Test</th><th>Date</th><th>Status</th></tr></thead>
+            <thead><tr><th>Test</th><th>Date</th><th>Flag</th><th>Status</th></tr></thead>
             <tbody>
               {labs.map((lab) => (
                 <tr
@@ -41,15 +41,21 @@ export default function LabsPanel({ dfn }: Props) {
                   <td>{lab.name}</td>
                   <td>{lab.date || '—'}</td>
                   <td>
+                    {lab.flag && (lab.flag === 'H' || lab.flag === 'L' || lab.flag === 'HH' || lab.flag === 'LL')
+                      ? <span className={`${styles.badge} ${styles.inactive}`} title="Abnormal">{lab.flag}</span>
+                      : <span style={{ color: 'var(--cprs-text-muted)', fontSize: 11 }}>—</span>
+                    }
+                  </td>
+                  <td>
                     {acknowledged.has(lab.id)
-                      ? <span className={`${styles.badge} ${styles.signed}`}>Acknowledged</span>
+                      ? <span className={`${styles.badge} ${styles.signed}`}>Ack&apos;d</span>
                       : <span className={`${styles.badge} ${styles.unsigned}`}>{lab.status}</span>
                     }
                   </td>
                 </tr>
               ))}
               {!loading && labs.length === 0 && (
-                <tr><td colSpan={3} style={{ textAlign: 'center', fontStyle: 'italic' }}>No lab results on file</td></tr>
+                <tr><td colSpan={4} style={{ textAlign: 'center', fontStyle: 'italic' }}>No lab results on file</td></tr>
               )}
             </tbody>
           </table>
@@ -60,15 +66,43 @@ export default function LabsPanel({ dfn }: Props) {
             <div>
               <div className={styles.panelTitle}>{selected.name} — Detail</div>
               <div className={styles.formGroup}><label>Date</label><div>{selected.date || '—'}</div></div>
-              <div className={styles.formGroup}><label>Status</label><div>{selected.status}</div></div>
               <div className={styles.formGroup}>
-                <label>Results</label>
-                <div style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>{selected.value}</div>
+                <label>Status</label>
+                <div>
+                  {selected.flag && (selected.flag === 'H' || selected.flag === 'L' || selected.flag === 'HH' || selected.flag === 'LL' || selected.flag === '*') ? (
+                    <span className={`${styles.badge} ${styles.inactive}`} title="Abnormal">{selected.flag === 'H' || selected.flag === 'HH' ? 'HIGH' : selected.flag === 'L' || selected.flag === 'LL' ? 'LOW' : 'ABNORMAL'}</span>
+                  ) : (
+                    <span className={`${styles.badge} ${styles.signed}`}>{selected.status}</span>
+                  )}
+                </div>
               </div>
+              <div className={styles.formGroup}>
+                <label>Result</label>
+                <div style={{ fontFamily: 'monospace', fontWeight: 600 }}>
+                  {selected.value}{selected.units ? ` ${selected.units}` : ''}
+                </div>
+              </div>
+              {selected.refRange && (
+                <div className={styles.formGroup}>
+                  <label>Reference Range</label>
+                  <div style={{ fontSize: 12 }}>{selected.refRange}</div>
+                </div>
+              )}
+              {selected.specimen && (
+                <div className={styles.formGroup}>
+                  <label>Specimen</label>
+                  <div style={{ fontSize: 12 }}>{selected.specimen}</div>
+                </div>
+              )}
               {!acknowledged.has(selected.id) && (
-                <button className={styles.btn} onClick={() => handleAcknowledge(selected.id)} style={{ marginTop: 8 }}>
-                  Acknowledge Result
-                </button>
+                <div>
+                  <button className={styles.btn} onClick={() => handleAcknowledge(selected.id)} style={{ marginTop: 8 }}>
+                    Acknowledge Result
+                  </button>
+                  <p style={{ fontSize: 10, color: 'var(--cprs-text-muted)', marginTop: 4 }}>
+                    Note: Acknowledgment is local-only. Server-side acknowledgment requires ORWLRR ACK RPC (not yet wired).
+                  </p>
+                </div>
               )}
             </div>
           ) : (

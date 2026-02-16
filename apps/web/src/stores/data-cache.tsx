@@ -25,7 +25,7 @@ export interface DraftOrder {
 export interface Consult { id: string; date: string; status: string; service: string; type: string; }
 export interface Surgery { id: string; caseNum: string; procedure: string; date: string; surgeon: string; }
 export interface DCSummary { id: string; title: string; date: string; author: string; location: string; status: string; }
-export interface LabResult { id: string; name: string; date: string; status: string; value: string; }
+export interface LabResult { id: string; name: string; date: string; status: string; value: string; flag?: string; refRange?: string; units?: string; specimen?: string; }
 export interface ReportDef { id: string; name: string; hsType: string; }
 
 export interface ClinicalData {
@@ -108,8 +108,21 @@ async function fetchDCSummaries(dfn: string): Promise<DCSummary[]> {
   return d.results ?? [];
 }
 async function fetchLabs(dfn: string): Promise<LabResult[]> {
-  const d = await fetchJSON<{ ok: boolean; results?: LabResult[]; rawText?: string }>(`/vista/labs?dfn=${dfn}`);
-  if (d.results && d.results.length > 0) return d.results;
+  interface ApiLab { testName?: string; result?: string; units?: string; refRange?: string; flag?: string; specimen?: string; collectionDate?: string; }
+  const d = await fetchJSON<{ ok: boolean; results?: ApiLab[]; rawText?: string }>(`/vista/labs?dfn=${dfn}`);
+  if (d.results && d.results.length > 0) {
+    return d.results.map((r, i) => ({
+      id: `lab-${i}`,
+      name: r.testName ?? 'Unknown',
+      date: r.collectionDate ?? '',
+      status: r.flag ? (r.flag.toUpperCase() === 'H' || r.flag.toUpperCase() === 'L' ? 'Abnormal' : 'Final') : 'Final',
+      value: r.result ?? '',
+      flag: r.flag ?? '',
+      refRange: r.refRange ?? '',
+      units: r.units ?? '',
+      specimen: r.specimen ?? '',
+    }));
+  }
   // If only rawText, return a single synthetic entry so UI can display it
   if (d.rawText && d.rawText !== 'No Data Found') {
     return [{ id: 'raw-1', name: 'Lab Report', date: '', status: 'Final', value: d.rawText }];

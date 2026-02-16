@@ -39,7 +39,7 @@
 ### Documentation
 - `docs/parity-coverage-report.md` — comprehensive parity report
 - `docs/runbooks/vista-rpc-phase12-parity.md` — Phase 12 runbook
-- `prompts/12-PHASE-12-CPRS-PARITY-WIRING/` — IMPLEMENT + VERIFY prompts
+- `prompts/14-PHASE-12-CPRS-PARITY-WIRING/` — IMPLEMENT + VERIFY prompts
 
 ### Verification
 - `scripts/verify-phase1-to-phase12-parity.ps1` — extends Phase 11 with 25+ new checks

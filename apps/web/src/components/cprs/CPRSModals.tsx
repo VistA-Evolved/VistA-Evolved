@@ -331,10 +331,10 @@ function AboutModal({ onClose }: { onClose: () => void }) {
         <p>CPRS Web Replica v1.0</p>
         <p style={{ color: 'var(--cprs-text-muted)', fontSize: 12 }}>
           Built from CPRS Delphi source contracts.<br />
-          Phase 11 — Full end-to-end wiring.
+          Phase 12 — CPRS Parity Wiring.
         </p>
         <p style={{ marginTop: 12, fontSize: 11, color: 'var(--cprs-text-muted)' }}>
-          975 RPCs cataloged &bull; 10 chart tabs &bull; 1688 menu items extracted
+          975 RPCs cataloged &bull; 10 chart tabs &bull; 24 API endpoints &bull; 11 data domains
         </p>
       </div>
       <div className={styles.modalFooter}>

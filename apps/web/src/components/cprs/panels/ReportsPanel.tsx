@@ -66,6 +66,12 @@ export default function ReportsPanel({ dfn }: Props) {
           {!loading && reports.length === 0 && (
             <p className={styles.emptyText}>No report types available</p>
           )}
+          {/* Imaging report viewer placeholder — intentional */}
+          <div style={{ marginTop: 12, padding: 8, border: '1px dashed var(--cprs-border)', borderRadius: 4, fontSize: 11, color: 'var(--cprs-text-muted)' }}>
+            <strong>Imaging Reports:</strong> The imaging report viewer is a placeholder.
+            Full integration requires RA DETAILED REPORT and MAG4 IMAGE LIST RPCs,
+            plus DICOM viewer integration (Phase 13+).
+          </div>
         </div>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
           {selectedReport ? (
