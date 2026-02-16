@@ -81,16 +81,50 @@ export default function CPRSChartPage({ params }: ChartPageProps) {
     }
   }, [dfn, fetchAll]);
 
-  const densityClass = preferences.density === 'compact' ? styles.compact : '';
+  const densityClass = preferences.density === 'compact' || preferences.density === 'dense' ? styles.compact : '';
+  const isModern = preferences.layoutMode === 'modern';
 
   return (
     <div className={`${styles.shell} ${densityClass}`}>
       <CPRSMenuBar />
       <PatientBanner />
-      <CPRSTabStrip dfn={dfn} activeTab={tab} />
-      <main className={styles.content} style={{ flex: 1, overflow: 'auto', padding: 8 }}>
-        <TabContent dfn={dfn} tab={tab} />
-      </main>
+      {!isModern && <CPRSTabStrip dfn={dfn} activeTab={tab} />}
+      <div style={isModern ? { display: 'flex', flex: 1, overflow: 'hidden' } : { display: 'contents' }}>
+        {isModern && (
+          <nav style={{
+            width: 180,
+            borderRight: '1px solid var(--cprs-border)',
+            padding: '8px 0',
+            overflowY: 'auto',
+            background: 'var(--cprs-surface)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+          }}>
+            {['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports'].map((t) => (
+              <a
+                key={t}
+                href={`/cprs/chart/${dfn}/${t}`}
+                style={{
+                  display: 'block',
+                  padding: '6px 16px',
+                  fontSize: 12,
+                  textDecoration: 'none',
+                  color: t === tab ? 'var(--cprs-text)' : 'var(--cprs-text-muted)',
+                  background: t === tab ? 'var(--cprs-selected)' : 'transparent',
+                  fontWeight: t === tab ? 600 : 400,
+                  borderLeft: t === tab ? '3px solid var(--cprs-accent, #2563eb)' : '3px solid transparent',
+                }}
+              >
+                {t === 'cover' ? 'Cover Sheet' : t === 'dcsumm' ? 'DC Summaries' : t.charAt(0).toUpperCase() + t.slice(1)}
+              </a>
+            ))}
+          </nav>
+        )}
+        <main className={styles.content} style={{ flex: 1, overflow: 'auto', padding: isModern ? 16 : 8 }}>
+          <TabContent dfn={dfn} tab={tab} />
+        </main>
+      </div>
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useCPRSUI } from '@/stores/cprs-ui-state';
 import { usePatient } from '@/stores/patient-context';
+import { useSession } from '@/stores/session-context';
 import { useDataCache, type Vital } from '@/stores/data-cache';
 import { AddProblemDialog, EditProblemDialog, AddMedicationDialog } from './dialogs';
 import styles from './cprs.module.css';
@@ -171,45 +172,159 @@ function GraphingModal({ onClose }: { onClose: () => void }) {
 }
 
 function LegacyConsoleModal({ onClose }: { onClose: () => void }) {
-  const [rpcUrl, setRpcUrl] = useState('/vista/ping');
+  const { token, hasRole } = useSession();
   const [output, setOutput] = useState<string[]>([
-    '> Legacy RPC Console — Phase 12',
-    '> Type an API endpoint path and press Enter to execute.',
-    '> Examples: /vista/ping, /vista/reports, /vista/vitals?dfn=1',
+    '> Legacy RPC Console — Phase 13 (WebSocket)',
+    '> Type a command and press Enter.',
+    '> Modes: "rpc RPC_NAME param1 param2" or "api /vista/ping"',
     '> _',
   ]);
+  const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [wsRef, setWsRef] = useState<WebSocket | null>(null);
+  const [connected, setConnected] = useState(false);
+
+  // Connect WebSocket on mount
+  useEffect(() => {
+    if (!token) {
+      setOutput((prev) => [...prev, '[ERROR] Not authenticated. Please log in first.']);
+      return;
+    }
+    if (!hasRole('provider', 'admin')) {
+      setOutput((prev) => [...prev, '[ACCESS DENIED] Console requires provider or admin role.']);
+      return;
+    }
+
+    let ws: WebSocket;
+    try {
+      const wsUrl = `ws://127.0.0.1:3001/ws/console?token=${token}`;
+      ws = new WebSocket(wsUrl);
+    } catch {
+      setOutput((prev) => [...prev, '[ERROR] Failed to create WebSocket connection.']);
+      return;
+    }
+
+    ws.onopen = () => {
+      setConnected(true);
+      setOutput((prev) => [...prev, '[WS] Connected to console gateway.']);
+    };
+
+    ws.onmessage = (event) => {
+      try {
+        const msg = JSON.parse(event.data);
+        const ts = msg.ts?.split('T')[1]?.slice(0, 8) ?? '';
+        if (msg.type === 'info') {
+          setOutput((prev) => [...prev, `[${ts}] ${msg.message}`]);
+        } else if (msg.type === 'result') {
+          setOutput((prev) => [
+            ...prev,
+            `[${ts}] RPC ${msg.rpcName} → ${msg.count} line(s)`,
+            ...msg.lines.map((l: string) => `  ${l}`),
+            '> _',
+          ]);
+        } else if (msg.type === 'api_result') {
+          const body = typeof msg.body === 'string' ? msg.body : JSON.stringify(msg.body, null, 2);
+          setOutput((prev) => [
+            ...prev,
+            `[${ts}] ${msg.status} ${msg.path}`,
+            body,
+            '> _',
+          ]);
+        } else if (msg.type === 'error') {
+          setOutput((prev) => [...prev, `[${ts}] ERROR: ${msg.message}`, '> _']);
+        } else if (msg.type === 'pong') {
+          setOutput((prev) => [...prev, `[${ts}] PONG`]);
+        }
+      } catch {
+        setOutput((prev) => [...prev, `[RAW] ${event.data}`]);
+      }
+      setLoading(false);
+    };
+
+    ws.onclose = () => {
+      setConnected(false);
+      setOutput((prev) => [...prev, '[WS] Disconnected.']);
+    };
+
+    ws.onerror = () => {
+      setOutput((prev) => [...prev, '[WS] Connection error. Falling back to HTTP mode.']);
+    };
+
+    setWsRef(ws);
+    return () => { ws.close(); };
+  }, [token, hasRole]);
 
   async function handleExecute() {
-    if (!rpcUrl.trim()) return;
+    const cmd = input.trim();
+    if (!cmd) return;
+    setInput('');
     setLoading(true);
+
     const ts = new Date().toISOString().split('T')[1]?.slice(0, 8) ?? '';
-    setOutput((prev) => [...prev, `[${ts}] GET ${rpcUrl}`]);
-    try {
-      const res = await fetch(`${API_BASE}${rpcUrl}`);
-      const text = await res.text();
-      try {
-        const obj = JSON.parse(text);
-        setOutput((prev) => [...prev, `[${ts}] ${res.status} OK`, JSON.stringify(obj, null, 2), '> _']);
-      } catch {
-        setOutput((prev) => [...prev, `[${ts}] ${res.status}`, text.slice(0, 2000), '> _']);
+    setOutput((prev) => [...prev, `[${ts}] $ ${cmd}`]);
+
+    if (wsRef && connected) {
+      // WebSocket mode
+      if (cmd.startsWith('rpc ')) {
+        const parts = cmd.substring(4).split(/\s+/);
+        const rpcName = parts[0];
+        const params = parts.slice(1);
+        wsRef.send(JSON.stringify({ type: 'rpc', name: rpcName, params }));
+      } else if (cmd.startsWith('api ')) {
+        const path = cmd.substring(4).trim();
+        wsRef.send(JSON.stringify({ type: 'api', path }));
+      } else if (cmd === 'ping') {
+        wsRef.send(JSON.stringify({ type: 'ping' }));
+      } else if (cmd === 'clear') {
+        setOutput(['> Console cleared.', '> _']);
+        setLoading(false);
+      } else if (cmd === 'help') {
+        setOutput((prev) => [
+          ...prev,
+          '  rpc <RPC_NAME> [param1] [param2] ...  — Execute a VistA RPC',
+          '  api <path>                              — Execute a local API GET',
+          '  ping                                    — Test WebSocket',
+          '  clear                                   — Clear console',
+          '  help                                    — Show this help',
+          '> _',
+        ]);
+        setLoading(false);
+      } else {
+        // Default: treat as API path
+        wsRef.send(JSON.stringify({ type: 'api', path: cmd.startsWith('/') ? cmd : `/vista/${cmd}` }));
       }
-    } catch (err: unknown) {
-      setOutput((prev) => [...prev, `[${ts}] ERROR: ${err instanceof Error ? err.message : String(err)}`, '> _']);
-    } finally {
-      setLoading(false);
+    } else {
+      // HTTP fallback
+      try {
+        const url = cmd.startsWith('/') ? cmd : `/vista/${cmd}`;
+        const res = await fetch(`${API_BASE}${url}`);
+        const text = await res.text();
+        try {
+          const obj = JSON.parse(text);
+          setOutput((prev) => [...prev, `[${ts}] ${res.status} OK`, JSON.stringify(obj, null, 2), '> _']);
+        } catch {
+          setOutput((prev) => [...prev, `[${ts}] ${res.status}`, text.slice(0, 2000), '> _']);
+        }
+      } catch (err: unknown) {
+        setOutput((prev) => [...prev, `[${ts}] ERROR: ${err instanceof Error ? err.message : String(err)}`, '> _']);
+      } finally {
+        setLoading(false);
+      }
     }
   }
 
   return (
     <Modal title="Legacy Console" onClose={onClose} wide>
-      <div style={{ display: 'flex', gap: 4, marginBottom: 8 }}>
+      <div style={{ display: 'flex', gap: 4, marginBottom: 4, alignItems: 'center' }}>
+        <span style={{ fontSize: 10, color: connected ? '#28a745' : '#dc3545', fontWeight: 600 }}>
+          {connected ? 'WS' : 'HTTP'}
+        </span>
         <input
           className={styles.formInput}
-          value={rpcUrl}
-          onChange={(e) => setRpcUrl(e.target.value)}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleExecute()}
-          placeholder="/vista/..."
+          placeholder={connected ? 'rpc ORWPT LIST ALL SMI 1' : '/vista/ping'}
           style={{ flex: 1, fontFamily: 'monospace', fontSize: 12 }}
         />
         <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={handleExecute} disabled={loading}>
@@ -328,13 +443,15 @@ function AboutModal({ onClose }: { onClose: () => void }) {
     <Modal title="About EHR — Evolved" onClose={onClose}>
       <div style={{ textAlign: 'center', padding: 16 }}>
         <h2 style={{ fontSize: 18, margin: '0 0 8px' }}>EHR — Evolved</h2>
-        <p>CPRS Web Replica v1.0</p>
+        <p>CPRS Web Replica v2.0</p>
         <p style={{ color: 'var(--cprs-text-muted)', fontSize: 12 }}>
           Built from CPRS Delphi source contracts.<br />
-          Phase 12 — CPRS Parity Wiring.
+          Phase 13 — CPRS Operationalization.
         </p>
         <p style={{ marginTop: 12, fontSize: 11, color: 'var(--cprs-text-muted)' }}>
-          975 RPCs cataloged &bull; 10 chart tabs &bull; 24 API endpoints &bull; 11 data domains
+          975 RPCs cataloged &bull; 10 chart tabs &bull; 27+ API endpoints &bull; 12 data domains
+          <br />Session auth &bull; Inbox &bull; Order state machine &bull; Results workflow
+          <br />WebSocket console &bull; Modern UI toggle &bull; Remote data viewer
         </p>
       </div>
       <div className={styles.modalFooter}>

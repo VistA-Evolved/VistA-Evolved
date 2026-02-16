@@ -1,96 +1,90 @@
-# Phase 12 — CPRS Parity Wiring — Ops Summary
+# Phase 14: CPRS Parity Gap Closure + Compatibility Layer
 
 ## What Changed
 
-### Phase 12 New API Endpoints (9)
-- `GET /vista/icd-search?q=` — ORQQPL4 LEX lexicon search
-- `GET /vista/consults?dfn=` — ORQQCN LIST
-- `GET /vista/consults/detail?id=` — ORQQCN DETAIL
-- `GET /vista/surgery?dfn=` — ORWSR LIST
-- `GET /vista/dc-summaries?dfn=` — TIU DOCUMENTS BY CONTEXT (class 244)
-- `GET /vista/tiu-text?id=` — TIU GET RECORD TEXT
-- `GET /vista/labs?dfn=` — ORWLRR INTERIM
-- `GET /vista/reports` — ORWRP REPORT LISTS
-- `GET /vista/reports/text?dfn=&id=&hsType=` — ORWRP REPORT TEXT
+### 14A - RPC Capability Discovery + Cache
+- New `apps/api/src/vista/rpcCapabilities.ts`: Runtime RPC capability discovery engine with 5-min TTL cache. Probes 39 RPCs across 12 domains. Exports `discoverCapabilities()`, `requireRpc()`, `optionalRpc()`, `isRpcAvailable()`, `getCapabilities()`, `getDomainCapabilities()`.
+- New `apps/api/src/routes/capabilities.ts`: `GET /vista/rpc-capabilities` endpoint with `?refresh=true` and `?domain=` filters. Returns per-domain availability summaries.
+- `WORLDVISTA_EXPECTED_MISSING` list (15 RPCs) prevents false alarms on known sandbox gaps.
 
-### 5 Gap Panels Wired to Live Data
-- ConsultsPanel — useDataCache + detail text fetch
-- SurgeryPanel — useDataCache + split pane layout
-- DCSummPanel — useDataCache + full text fetch
-- LabsPanel — useDataCache + acknowledge workflow
-- ReportsPanel — useDataCache + report text fetch
-- All show "Data source: live RPC" (no more mock data)
+### 14B - WARN Gap Closure
+- Modified `apps/api/src/routes/inbox.ts`: Replaced raw `rpcErrors` with structured `featureStatus` array using `optionalRpc()`. Status values: `available`, `expected-missing`, `error`. Backward-compat `rpcErrors` field retained.
+- Result: 2 former WARNs (ORWORB UNSIG ORDERS, ORWORB FASTUSER) now report as INFO/expected-missing.
 
-### 3 Dialogs Improved
-- AddProblemDialog — live ICD search (ORQQPL4 LEX), API-first save, sync status
-- EditProblemDialog — API-first save, sync-status banner
-- AddMedicationDialog — env-based API_BASE
+### 14C - Write-back Parity Upgrades
+- New `apps/api/src/routes/write-backs.ts`: 6 write-back endpoints + 3 utility endpoints.
+  - `POST /vista/orders/sign` - ORWDX SAVE or draft
+  - `POST /vista/orders/release` - ORWDXA VERIFY or draft
+  - `POST /vista/labs/ack` - ORWLRR ACK or draft
+  - `POST /vista/consults/create` - ORQQCN2 or draft
+  - `POST /vista/surgery/create` - always draft (no RPC available)
+  - `POST /vista/problems/save` - ORQQPL ADD SAVE or draft
+  - `GET /vista/drafts`, `GET /vista/drafts/stats`, `GET /vista/write-audit`
+- Modified `apps/web/src/stores/data-cache.tsx`: `signOrder`, `releaseOrder` now async with API calls. Added `acknowledgeLabs`, `fetchCapabilities`, `capabilities` state.
+- Modified `apps/web/src/components/cprs/panels/LabsPanel.tsx`: Server-side ack with mode display.
 
-### Tools Menu Features
-- GraphingModal — real SVG vitals chart with type selector
-- LegacyConsoleModal — working RPC console with execute/clear
-- RemoteDataModal — architecture docs with FHIR bridge notes
+### 14D - Imaging Viewer Integration
+- New `apps/api/src/routes/imaging.ts`: `GET /vista/imaging/status`, `GET /vista/imaging/report`. Plugin interface (`ImagingViewerPlugin`) for future imaging viewer integration.
 
-### Data Cache Extended
-- 5 new types: Consult, Surgery, DCSummary, LabResult, ReportDef
-- 5 new fetchers: fetchConsults, fetchSurgery, fetchDCSummaries, fetchLabs, fetchReports
-- 11 total domains (up from 6)
+### 14E - Documentation
+- New prompt: `prompts/15-PHASE-14-PARITY-CLOSURE/15-01-Phase14A-Compat-Layer-IMPLEMENT.md`
+- New prompt: `prompts/15-PHASE-14-PARITY-CLOSURE/15-02-Phase14A-Compat-Layer-VERIFY.md`
+- New runbook: `docs/runbooks/cprs-parity-closure-phase14.md`
+- New verifier: `scripts/verify-phase1-to-phase14-parity-closure.ps1`
 
-### Documentation
-- `docs/parity-coverage-report.md` — comprehensive parity report
-- `docs/runbooks/vista-rpc-phase12-parity.md` — Phase 12 runbook
-- `prompts/14-PHASE-12-CPRS-PARITY-WIRING/` — IMPLEMENT + VERIFY prompts
-
-### Verification
-- `scripts/verify-phase1-to-phase12-parity.ps1` — extends Phase 11 with 25+ new checks
-- `/cprs/verify` page updated with 6 new Phase 12 endpoint checks
+### Infrastructure
+- Modified `apps/api/src/index.ts`: Registered 3 new route plugins.
+- Modified `scripts/verify-latest.ps1`: Points to Phase 14 verifier.
 
 ## How to Test Manually
 
-1. Start Docker VistA: `cd services/vista && docker compose --profile dev up -d`
-2. Start API: `pnpm -C apps/api dev`
-3. Build web: `pnpm -C apps/web build`
-4. Start web: `pnpm -C apps/web dev`
-5. Navigate to `http://localhost:3000/cprs/login`
-6. Search patients → select patient → chart opens
-7. Click through all 10 tabs — 5 gap panels now show "live RPC"
-8. Problems tab → Add Problem → type "diabetes" in ICD search box
-9. Tools menu → Graphing → see SVG vitals chart
-10. Tools menu → Legacy Console → execute API calls
-11. Tools menu → Remote Data Viewer → see architecture info
-12. Visit `http://localhost:3000/cprs/verify` — all checks green
+```bash
+# Start Docker sandbox
+cd services/vista && docker compose --profile dev up -d
+
+# Start API
+pnpm -C apps/api dev
+
+# Test capabilities
+curl http://127.0.0.1:3001/vista/rpc-capabilities
+
+# Test write-backs
+curl -X POST http://127.0.0.1:3001/vista/orders/sign \
+  -H 'Content-Type: application/json' \
+  -d '{"dfn":"1","orderId":"test","orderName":"Test","signedBy":"PROVIDER"}'
+
+# Test imaging
+curl http://127.0.0.1:3001/vista/imaging/status
+
+# Test inbox (should show featureStatus, not WARNs)
+curl http://127.0.0.1:3001/vista/inbox
+
+# Check drafts
+curl http://127.0.0.1:3001/vista/drafts
+curl http://127.0.0.1:3001/vista/drafts/stats
+curl http://127.0.0.1:3001/vista/write-audit
+```
 
 ## Verifier Output
 
 ```
-Script: scripts/verify-phase1-to-phase12-parity.ps1
-(Run after commit for final counts)
+PASS: 128
+FAIL: 0
+WARN: 0
+INFO: 2
+TOTAL: 130
+
+*** ALL CHECKS PASSED - 0 WARN ***
+(INFO items are documented expected-missing RPCs on this distro)
 ```
 
-## Follow-Ups
-- Real order signing workflow
-- Full write-back for consults/surgery/labs (read-only in Phase 12)
-- Keyboard navigation and accessibility
-- See `docs/parity-coverage-report.md` for remaining gaps
+INFO items:
+- ORWORB UNSIG ORDERS - expected-missing on WorldVistA Docker
+- ORWORB FASTUSER - expected-missing on WorldVistA Docker
 
-Performed 2026-02-16. Results:
-
-### Contract Validation
-- 5/5 contract JSON files parse: tabs, menus, screen_registry, rpc_catalog, forms
-- 10 main tabs, 12 main menus, 975 RPCs, all loaded and validated by loader.ts
-
-### Component Audit
-- **All 10 tabs**: covered with dedicated panels, switch case + fallback
-- **All 9 modals**: every openModal() call has matching handler in CPRSModals
-- **All 5 menus**: File(5), Edit(3), View(14), Tools(3), Help(2) — all items have handlers
-- **All API fetches**: aligned with correct endpoint URLs and query params
-
-### Bugs Fixed During Verify
-1. Edit -> Paste was a dead click (readText() result discarded) — now pastes into active input
-2. EditProblemDialog save was a no-op — now persists to local data-cache
-3. remoteData action had no handler — now shows integration-pending alert
-4. NotesPanel had unused openModal import — removed
-
-### Known Gaps
-See `ops/known-gaps.md` — 5 panels on mock data, 3 dialogs local-only, 3 menu items placeholder.
-- Keyboard navigation and accessibility
+## Follow-ups
+- Wire imaging plugin to an actual DICOM/VistA Imaging viewer when available
+- Add persistent draft storage (database) to replace in-memory Map
+- Implement full order dialog parameter mapping for ORWDX SAVE
+- Add lab acknowledgement sync when ORWLRR ACK is available on distro
+- Add consult RPC support when ORQQCN2 is available

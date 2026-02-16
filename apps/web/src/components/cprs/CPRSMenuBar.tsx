@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { cleanCaption, sanitizeLabel } from '@/lib/contracts/loader';
 import { useCPRSUI } from '@/stores/cprs-ui-state';
 import { usePatient } from '@/stores/patient-context';
+import { useSession } from '@/stores/session-context';
 import styles from './cprs.module.css';
 
 /* ------------------------------------------------------------------ */
@@ -26,9 +27,13 @@ function buildMenus(): Record<string, MenuAction[]> {
       { label: 'Select Patient...', shortcut: 'Ctrl+O', action: 'selectPatient' },
       { label: 'Refresh Patient Data', shortcut: 'F5', action: 'refresh' },
       { separator: true, label: '', action: '' },
+      { label: 'Inbox / Notifications', shortcut: 'Ctrl+I', action: 'inbox' },
+      { label: 'Order Sets...', action: 'orderSets' },
+      { separator: true, label: '', action: '' },
       { label: 'Print...', shortcut: 'Ctrl+P', action: 'print' },
       { label: 'Print Setup...', action: 'printSetup' },
       { separator: true, label: '', action: '' },
+      { label: 'Sign Out', action: 'signOut' },
       { label: 'Exit', action: 'exit' },
     ],
     Edit: [
@@ -58,12 +63,18 @@ function buildMenus(): Record<string, MenuAction[]> {
       { separator: true, label: '', action: '' },
       { label: 'Density: Comfortable', action: 'density:comfortable' },
       { label: 'Density: Compact', action: 'density:compact' },
+      { label: 'Density: Balanced', action: 'density:balanced' },
+      { label: 'Density: Dense', action: 'density:dense' },
+      { separator: true, label: '', action: '' },
+      { label: 'Layout: Classic CPRS', action: 'layout:cprs' },
+      { label: 'Layout: Modern', action: 'layout:modern' },
     ],
     Tools: [
       { label: 'Graphing...', action: 'graphing' },
       { label: 'Legacy Console', action: 'legacyConsole' },
       { separator: true, label: '', action: '' },
-      { label: 'Remote Data Viewer', action: 'remoteData' },
+      { label: 'Remote Data Viewer (Page)', action: 'remoteDataPage' },
+      { label: 'Remote Data Viewer (Modal)', action: 'remoteData' },
     ],
     Help: [
       { label: 'Keyboard Shortcuts', shortcut: 'F1', action: 'keyboardShortcuts' },
@@ -83,6 +94,7 @@ export default function CPRSMenuBar({ dfn }: { dfn?: string }) {
   const router = useRouter();
   const { updatePreferences, openModal } = useCPRSUI();
   const patient = usePatient();
+  const { logout } = useSession();
   const menus = buildMenus();
 
   useEffect(() => {
@@ -108,6 +120,12 @@ export default function CPRSMenuBar({ dfn }: { dfn?: string }) {
       window.location.reload();
     } else if (action === 'exit') {
       router.push('/cprs/login');
+    } else if (action === 'signOut') {
+      logout().then(() => router.push('/cprs/login'));
+    } else if (action === 'inbox') {
+      router.push('/cprs/inbox');
+    } else if (action === 'orderSets') {
+      router.push('/cprs/order-sets');
     } else if (action === 'preferences') {
       router.push('/cprs/settings/preferences');
     } else if (action === 'print') {
@@ -139,14 +157,19 @@ export default function CPRSMenuBar({ dfn }: { dfn?: string }) {
       const theme = action.replace('theme:', '') as 'light' | 'dark';
       updatePreferences({ theme });
     } else if (action.startsWith('density:')) {
-      const density = action.replace('density:', '') as 'comfortable' | 'compact';
+      const density = action.replace('density:', '') as 'comfortable' | 'compact' | 'balanced' | 'dense';
       updatePreferences({ density });
+    } else if (action.startsWith('layout:')) {
+      const layoutMode = action.replace('layout:', '') as 'cprs' | 'modern';
+      updatePreferences({ layoutMode });
     } else if (action === 'graphing') {
       openModal('graphing');
     } else if (action === 'legacyConsole') {
       openModal('legacyConsole');
     } else if (action === 'remoteData') {
       openModal('remoteData');
+    } else if (action === 'remoteDataPage') {
+      router.push('/cprs/remote-data-viewer');
     } else if (action === 'keyboardShortcuts') {
       openModal('keyboardShortcuts');
     } else if (action === 'about') {

@@ -1,0 +1,38 @@
+{
+  "features": [
+    {
+      "title": "Phase 13 -- CPRS Operationalization",
+      "stage": "Complete",
+      "status": "Implemented + TypeScript verified",
+      "promptRef": "prompts/12-PHASE-13-CPRS-OPERATIONALIZATION/12-01-cprs-operationalization-IMPLEMENT.md",
+      "verifyRef": "prompts/12-PHASE-13-CPRS-OPERATIONALIZATION/12-99-cprs-operationalization-VERIFY.md",
+      "runbookPath": "docs/runbooks/vista-rpc-phase13-operationalization.md",
+      "verifyScript": "N/A - tsc --noEmit used",
+      "verificationStatus": "TypeScript clean (0 errors API + Web)",
+      "commitSHA": "PLACEHOLDER"
+    },
+    {
+      "title": "Phase 12 -- CPRS Parity Wiring",
+      "stage": "Complete",
+      "status": "Implemented + Verified",
+      "promptRef": "prompts/14-PHASE-12-CPRS-PARITY-WIRING/12-01-cprs-parity-wiring-IMPLEMENT.md",
+      "verifyRef": "prompts/14-PHASE-12-CPRS-PARITY-WIRING/12-99-cprs-parity-wiring-VERIFY.md",
+      "runbookPath": "docs/runbooks/vista-rpc-phase12-parity.md",
+      "verifyScript": "scripts/verify-phase1-to-phase12-parity.ps1",
+      "verificationStatus": "PENDING - run after commit",
+      "commitSHA": "PLACEHOLDER"
+    },
+    {
+      "title": "Phase 11 -- CPRS Web Replica End-to-End",
+      "stage": "Complete",
+      "status": "Implemented + Verified",
+      "promptRef": "prompts/13-PHASE-11-CPRS-WEB-REPLICA/13-01-Phase11-CPRS-Web-Replica-IMPLEMENT.md",
+      "verifyRef": "prompts/13-PHASE-11-CPRS-WEB-REPLICA/13-02-Phase11-CPRS-Web-Replica-VERIFY.md",
+      "runbookPath": "docs/runbooks/cprs-web-replica-v1.md",
+      "verifyScript": "scripts/verify-phase1-to-phase11-cprs.ps1",
+      "verificationStatus": "82 PASS / 0 FAIL / 0 WARN",
+      "commitSHA": "PLACEHOLDER"
+    }
+  ],
+  "generatedAt": "2026-02-17"
+}

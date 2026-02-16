@@ -1,12 +1,57 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
+import cookie from "@fastify/cookie";
+import websocket from "@fastify/websocket";
 import { probeConnect } from "./vista/rpcBroker";
 import { validateCredentials } from "./vista/config";
 import { connect, disconnect, callRpc, callRpcWithList, getDuz } from "./vista/rpcBrokerClient";
 import { registerDomainRoutes } from "./routes/index.js";
+import authRoutes from "./auth/auth-routes.js";
+import wsConsoleRoutes from "./routes/ws-console.js";
+import { discoverCapabilities, getCapabilities, optionalRpc, isRpcAvailable, getDomainCapabilities } from "./vista/rpcCapabilities.js";
+import capabilityRoutes from "./routes/capabilities.js";
+import writeBackRoutes from "./routes/write-backs.js";
+import imagingRoutes from "./routes/imaging.js";
 
 const server = Fastify();
-server.register(cors, { origin: true });
+server.register(cors, { origin: true, credentials: true });
+server.register(cookie);
+server.register(websocket);
+
+// Accept empty-body POSTs with any Content-Type (e.g., logout)
+server.addContentTypeParser(
+  'application/x-www-form-urlencoded',
+  { parseAs: 'string' },
+  (_req: any, body: string, done: (err: null, result?: unknown) => void) => {
+    try { done(null, body ? JSON.parse(body) : {}); } catch { done(null, {}); }
+  }
+);
+
+// Override default JSON parser to tolerate empty body (for logout etc.)
+server.removeContentTypeParser('application/json');
+server.addContentTypeParser(
+  'application/json',
+  { parseAs: 'string' },
+  (_req: any, body: string, done: (err: null, result?: unknown) => void) => {
+    if (!body || body.trim() === '') { done(null, {}); return; }
+    try { done(null, JSON.parse(body)); } catch (e: any) { done(null, {}); }
+  }
+);
+
+// Register auth routes (Phase 13)
+server.register(authRoutes);
+
+// Register WebSocket console (Phase 13F)
+server.register(wsConsoleRoutes);
+
+// Register RPC capability discovery (Phase 14A)
+server.register(capabilityRoutes);
+
+// Register write-back routes (Phase 14C)
+server.register(writeBackRoutes);
+
+// Register imaging routes (Phase 14D)
+server.register(imagingRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

@@ -7,7 +7,8 @@ import { createContext, useContext, useState, useCallback, useEffect, type React
 /* ------------------------------------------------------------------ */
 
 export type ThemeMode = 'light' | 'dark' | 'system';
-export type DensityMode = 'comfortable' | 'compact';
+export type DensityMode = 'comfortable' | 'compact' | 'dense' | 'balanced';
+export type LayoutMode = 'cprs' | 'modern';
 
 export interface CoverSheetLayout {
   /** Panel order (by key) */
@@ -19,6 +20,7 @@ export interface CoverSheetLayout {
 export interface CPRSPreferences {
   theme: ThemeMode;
   density: DensityMode;
+  layoutMode: LayoutMode;
   initialTab: string;
   coverSheetLayout: CoverSheetLayout;
   enableDragReorder: boolean;
@@ -50,6 +52,7 @@ const DEFAULT_COVER_LAYOUT: CoverSheetLayout = {
 const DEFAULT_PREFS: CPRSPreferences = {
   theme: 'light',
   density: 'comfortable',
+  layoutMode: 'cprs',
   initialTab: 'cover',
   coverSheetLayout: DEFAULT_COVER_LAYOUT,
   enableDragReorder: false,

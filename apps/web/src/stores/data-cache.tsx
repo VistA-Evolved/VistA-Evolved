@@ -16,9 +16,12 @@ export interface DraftOrder {
   id: string;
   type: 'med' | 'lab' | 'imaging' | 'consult';
   name: string;
-  status: 'draft' | 'queued' | 'unsigned' | 'signed' | 'discontinued';
+  status: 'draft' | 'unsigned' | 'signed' | 'released' | 'discontinued' | 'cancelled';
   details: string;
   createdAt: string;
+  signedBy?: string;
+  signedAt?: string;
+  releasedAt?: string;
 }
 
 /* Phase 12 — 5 new clinical domains */
@@ -57,6 +60,16 @@ export interface DataCacheValue {
   addDraftOrder: (dfn: string, order: DraftOrder) => void;
   /** Update order status */
   updateOrderStatus: (dfn: string, orderId: string, status: DraftOrder['status']) => void;
+  /** Sign an order (Draft/Unsigned → Signed) — calls server-side write-back */
+  signOrder: (dfn: string, orderId: string, signedBy: string) => Promise<{ mode: string; draftId?: string }>;
+  /** Release a signed order (Signed → Released) — calls server-side write-back */
+  releaseOrder: (dfn: string, orderId: string) => Promise<{ mode: string; draftId?: string }>;
+  /** Acknowledge lab results — calls server-side write-back */
+  acknowledgeLabs: (dfn: string, labIds: string[], acknowledgedBy: string) => Promise<{ mode: string; count: number }>;
+  /** Check RPC capabilities from API */
+  fetchCapabilities: () => Promise<Record<string, { available: boolean }>>;
+  /** Cached capability data */
+  capabilities: Record<string, { available: boolean }> | null;
   /** Check if a domain is loading */
   isLoading: (dfn: string, domain: string) => boolean;
   /** Optimistic add for local data (e.g., draft problems) */
@@ -220,6 +233,86 @@ export function DataCacheProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const signOrder = useCallback(async (dfn: string, orderId: string, signedBy: string) => {
+    // Update local state optimistically
+    setData((prev) => {
+      const existing = (prev[dfn]?.orders ?? []) as DraftOrder[];
+      const updated = existing.map((o) => {
+        if (o.id !== orderId) return o;
+        if (o.status !== 'draft' && o.status !== 'unsigned') return o;
+        return { ...o, status: 'signed' as const, signedBy, signedAt: new Date().toISOString() };
+      });
+      return { ...prev, [dfn]: { ...prev[dfn], orders: updated } };
+    });
+    // Call server-side write-back
+    try {
+      const res = await fetch(`${API_BASE}/vista/orders/sign`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dfn, orderId, signedBy }),
+      });
+      const data = await res.json();
+      return { mode: data.mode || 'draft', draftId: data.draftId };
+    } catch {
+      return { mode: 'local', draftId: undefined };
+    }
+  }, []);
+
+  const releaseOrder = useCallback(async (dfn: string, orderId: string) => {
+    setData((prev) => {
+      const existing = (prev[dfn]?.orders ?? []) as DraftOrder[];
+      const updated = existing.map((o) => {
+        if (o.id !== orderId) return o;
+        if (o.status !== 'signed') return o;
+        return { ...o, status: 'released' as const, releasedAt: new Date().toISOString() };
+      });
+      return { ...prev, [dfn]: { ...prev[dfn], orders: updated } };
+    });
+    try {
+      const res = await fetch(`${API_BASE}/vista/orders/release`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dfn, orderId }),
+      });
+      const data = await res.json();
+      return { mode: data.mode || 'draft', draftId: data.draftId };
+    } catch {
+      return { mode: 'local', draftId: undefined };
+    }
+  }, []);
+
+  const acknowledgeLabs = useCallback(async (dfn: string, labIds: string[], acknowledgedBy: string) => {
+    try {
+      const res = await fetch(`${API_BASE}/vista/labs/ack`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dfn, labIds, acknowledgedBy }),
+      });
+      const data = await res.json();
+      return { mode: data.mode || 'draft', count: labIds.length };
+    } catch {
+      return { mode: 'local', count: labIds.length };
+    }
+  }, []);
+
+  const [capabilities, setCapabilities] = useState<Record<string, { available: boolean }> | null>(null);
+
+  const fetchCapabilities = useCallback(async () => {
+    try {
+      const res = await fetch(`${API_BASE}/vista/rpc-capabilities`);
+      const data = await res.json();
+      if (data.ok && data.rpcs) {
+        const caps: Record<string, { available: boolean }> = {};
+        for (const [name, info] of Object.entries(data.rpcs)) {
+          caps[name] = { available: (info as any).available };
+        }
+        setCapabilities(caps);
+        return caps;
+      }
+    } catch { /* silent */ }
+    return {};
+  }, []);
+
   const isLoading = useCallback((dfn: string, domain: string): boolean => {
     return loading[dfn]?.[domain] ?? false;
   }, [loading]);
@@ -235,7 +328,7 @@ export function DataCacheProvider({ children }: { children: ReactNode }) {
 
   return (
     <DataCacheContext.Provider
-      value={{ data, loading, fetchDomain, fetchAll, getDomain, addDraftOrder, updateOrderStatus, isLoading, addLocalItem }}
+      value={{ data, loading, fetchDomain, fetchAll, getDomain, addDraftOrder, updateOrderStatus, signOrder, releaseOrder, acknowledgeLabs, fetchCapabilities, capabilities, isLoading, addLocalItem }}
     >
       {children}
     </DataCacheContext.Provider>

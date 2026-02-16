@@ -1,41 +1,61 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from '@/stores/session-context';
 import styles from '@/components/cprs/cprs.module.css';
 
 /**
- * CPRS Login page — simulates the CPRS access/verify code entry.
- * In this sandbox mode, credentials are fixed (PROV123 / PROV123!!).
- * The login page authenticates the UI context; actual RPC auth happens server-side.
+ * CPRS Login page — Phase 13: real VistA authentication.
+ *
+ * Sends access/verify codes to POST /auth/login which authenticates
+ * against the VistA RPC Broker and creates a server-side session.
  */
 export default function CPRSLoginPage() {
   const router = useRouter();
+  const { authenticated, ready, login } = useSession();
   const [accessCode, setAccessCode] = useState('');
   const [verifyCode, setVerifyCode] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (ready && authenticated) {
+      router.push('/cprs/patient-search');
+    }
+  }, [ready, authenticated, router]);
+
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setError('');
-    setLoading(true);
 
+    if (!accessCode.trim() || !verifyCode.trim()) {
+      setError('Both access code and verify code are required.');
+      return;
+    }
+
+    setLoading(true);
     try {
-      // Verify the API is reachable
-      const res = await fetch('http://127.0.0.1:3001/vista/ping');
-      const data = await res.json();
-      if (data.ok) {
-        // Navigate to patient selection
+      const result = await login(accessCode.trim(), verifyCode.trim());
+      if (result.ok) {
         router.push('/cprs/patient-search');
       } else {
-        setError('EHR system is not responding. Check that VistA Docker is running.');
+        setError(result.error || 'Authentication failed. Check your credentials.');
       }
     } catch {
       setError('Cannot reach API server. Ensure the API is running on port 3001.');
     } finally {
       setLoading(false);
     }
+  }
+
+  if (!ready) {
+    return (
+      <div className={styles.shell} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <p style={{ color: 'var(--cprs-text-muted)' }}>Checking session...</p>
+      </div>
+    );
   }
 
   return (
@@ -80,13 +100,20 @@ export default function CPRSLoginPage() {
             disabled={loading}
             style={{ width: '100%', marginTop: 8 }}
           >
-            {loading ? 'Connecting...' : 'Sign On'}
+            {loading ? 'Authenticating...' : 'Sign On'}
           </button>
         </form>
 
-        <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', textAlign: 'center', marginTop: 16 }}>
-          Sandbox mode &mdash; credentials are handled server-side via .env.local
-        </p>
+        <div style={{ marginTop: 16, padding: 8, background: 'var(--cprs-bg)', borderRadius: 4, fontSize: 11, color: 'var(--cprs-text-muted)' }}>
+          <strong>Sandbox accounts:</strong>
+          <table style={{ width: '100%', marginTop: 4, fontSize: 10 }}>
+            <tbody>
+              <tr><td>PROV123 / PROV123!!</td><td>Provider (Clyde)</td></tr>
+              <tr><td>NURSE123 / NURSE123!!</td><td>Nurse (Helen)</td></tr>
+              <tr><td>PHARM123 / PHARM123!!</td><td>Pharmacist (Linda)</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

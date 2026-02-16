@@ -455,3 +455,144 @@ export async function callRpcWithList(
 
   return resp.split(/\r?\n/).filter((l) => l.length > 0);
 }
+
+// ---- Phase 13: User authentication with custom credentials ----
+
+/**
+ * Authenticate a user against VistA with supplied access/verify codes.
+ * Opens a temporary TCP connection, performs the full handshake + XUS AV CODE,
+ * retrieves user info via XUS GET USER INFO, then disconnects.
+ *
+ * Returns user metadata on success, throws on failure.
+ */
+export async function authenticateUser(
+  accessCode: string,
+  verifyCode: string
+): Promise<{
+  duz: string;
+  userName: string;
+  divisionIen: string;
+  facilityStation: string;
+  facilityName: string;
+}> {
+  const host = VISTA_HOST;
+  const port = VISTA_PORT;
+  const context = VISTA_CONTEXT;
+
+  // Temporary connection (separate from global sock)
+  let tmpSock: Socket;
+  let tmpBuf = "";
+
+  function tmpRawSend(data: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (!tmpSock || tmpSock.destroyed) return reject(new Error("Socket closed"));
+      tmpSock.write(Buffer.from(data, "latin1"), (err) =>
+        err ? reject(new Error("Send: " + err.message)) : resolve()
+      );
+    });
+  }
+
+  function tmpReadToEOT(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      if (!tmpSock || tmpSock.destroyed) return reject(new Error("Socket closed"));
+      const existing = tmpBuf.indexOf(EOT);
+      if (existing !== -1) {
+        const result = tmpBuf.substring(0, existing);
+        tmpBuf = tmpBuf.substring(existing + 1);
+        return resolve(result);
+      }
+      function onData(chunk: Buffer) {
+        tmpBuf += chunk.toString("latin1");
+        const i = tmpBuf.indexOf(EOT);
+        if (i !== -1) {
+          cleanup();
+          const result = tmpBuf.substring(0, i);
+          tmpBuf = tmpBuf.substring(i + 1);
+          resolve(result);
+        }
+      }
+      function onErr(e: Error) { cleanup(); reject(new Error("Read: " + e.message)); }
+      function onClose() {
+        cleanup();
+        if (tmpBuf.length > 0) { const r = tmpBuf; tmpBuf = ""; resolve(r); }
+        else reject(new Error("Connection closed before response"));
+      }
+      const timer = setTimeout(() => { cleanup(); reject(new Error("Read timeout")); }, TIMEOUT_MS);
+      function cleanup() {
+        clearTimeout(timer);
+        tmpSock?.removeListener("data", onData);
+        tmpSock?.removeListener("error", onErr);
+        tmpSock?.removeListener("close", onClose);
+      }
+      tmpSock.on("data", onData);
+      tmpSock.once("error", onErr);
+      tmpSock.once("close", onClose);
+    });
+  }
+
+  function tmpDisconnect() {
+    if (tmpSock && !tmpSock.destroyed) {
+      try { tmpSock.write(Buffer.from("#BYE#", "latin1")); } catch { /* best-effort */ }
+      tmpSock.destroy();
+    }
+  }
+
+  // 1. TCP connect
+  dbg("AUTH CONNECT", host + ":" + port);
+  tmpSock = await new Promise<Socket>((resolve, reject) => {
+    const s = createConnection({ host, port });
+    const timer = setTimeout(() => { s.destroy(); reject(new Error("TCP connect timeout")); }, TIMEOUT_MS);
+    s.once("connect", () => { clearTimeout(timer); resolve(s); });
+    s.once("error", (e) => { clearTimeout(timer); reject(new Error("TCP: " + e.message)); });
+  });
+
+  try {
+    // 2. TCPConnect
+    await tmpRawSend(buildTCPConnect("127.0.0.1", 0));
+    const tcpResp = stripNulls(await tmpReadToEOT());
+    if (!tcpResp.toLowerCase().includes("accept")) {
+      throw new Error("TCPConnect rejected: " + tcpResp.replace(/[\x00-\x1f]/g, ".").trim());
+    }
+
+    // 3. XUS SIGNON SETUP
+    await tmpRawSend(buildRpcMessage("XUS SIGNON SETUP"));
+    await tmpReadToEOT(); // server info (not needed)
+
+    // 4. XUS AV CODE
+    const avPlain = accessCode + ";" + verifyCode;
+    const avEnc = cipherEncrypt(avPlain);
+    await tmpRawSend(buildRpcMessage("XUS AV CODE", [avEnc]));
+    const avResp = stripNulls(await tmpReadToEOT());
+    const avLines = avResp.split(/\r?\n/);
+    const duz = avLines[0]?.trim();
+    if (!duz || duz === "0") {
+      const reason = avLines[3]?.trim() || avLines[2]?.trim() || avLines[1]?.trim() || "Invalid credentials";
+      throw new Error("Authentication failed: " + reason.replace(/[\x00-\x1f]/g, " ").trim());
+    }
+
+    // 5. Set Context
+    const ctxEnc = cipherEncrypt(context);
+    await tmpRawSend(buildRpcMessage("XWB CREATE CONTEXT", [ctxEnc]));
+    const ctxResp = stripNulls(await tmpReadToEOT());
+    if (ctxResp.split(/\r?\n/)[0]?.trim() !== "1") {
+      throw new Error("Set context failed");
+    }
+
+    // 6. XUS GET USER INFO — returns user details
+    await tmpRawSend(buildRpcMessage("XUS GET USER INFO"));
+    const userResp = stripNulls(await tmpReadToEOT());
+    const userLines = userResp.split(/\r?\n/);
+    // Line 0: DUZ, Line 1: user name, Line 2: ???, Line 3: division info
+    const userName = userLines[1]?.trim() || "Unknown User";
+    const divLine = userLines[3]?.trim() || "";
+    // Division format: IEN^station^name (e.g., "500^500^CAMP MASTER")
+    const divParts = divLine.split("^");
+    const divisionIen = divParts[0] || "500";
+    const facilityStation = divParts[1] || "500";
+    const facilityName = divParts[2] || "WorldVistA EHR";
+
+    return { duz, userName, divisionIen, facilityStation, facilityName };
+  } finally {
+    tmpDisconnect();
+  }
+}

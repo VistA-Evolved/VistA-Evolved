@@ -1,10 +1,11 @@
 'use client';
 
-import { useCPRSUI } from '@/stores/cprs-ui-state';
+import { useCPRSUI, type DensityMode, type LayoutMode } from '@/stores/cprs-ui-state';
 import styles from '@/components/cprs/cprs.module.css';
 
 /**
  * Preferences page — matches frmFrame "Tools > Options" in CPRS Delphi.
+ * Phase 13G: adds layout mode and extended density options.
  */
 export default function CPRSPreferencesPage() {
   const { preferences, updatePreferences } = useCPRSUI();
@@ -39,11 +40,31 @@ export default function CPRSPreferencesPage() {
               <select
                 className={styles.formSelect}
                 value={preferences.density}
-                onChange={(e) => updatePreferences({ density: e.target.value as 'comfortable' | 'compact' })}
+                onChange={(e) => updatePreferences({ density: e.target.value as DensityMode })}
               >
                 <option value="comfortable">Comfortable</option>
                 <option value="compact">Compact</option>
+                <option value="balanced">Balanced (Modern)</option>
+                <option value="dense">Dense (Legacy)</option>
               </select>
+              <p style={{ fontSize: 10, color: 'var(--cprs-text-muted)', margin: '2px 0 0' }}>
+                Controls spacing and font scaling across all views.
+              </p>
+            </div>
+            <div className={styles.formGroup}>
+              <label>Layout Mode</label>
+              <select
+                className={styles.formSelect}
+                value={preferences.layoutMode}
+                onChange={(e) => updatePreferences({ layoutMode: e.target.value as LayoutMode })}
+              >
+                <option value="cprs">Classic CPRS</option>
+                <option value="modern">Modern</option>
+              </select>
+              <p style={{ fontSize: 10, color: 'var(--cprs-text-muted)', margin: '2px 0 0' }}>
+                Classic preserves the CPRS workflow and menu bar. Modern uses a sidebar navigation with card-based layouts.
+                Both modes use identical workflows and screen IDs.
+              </p>
             </div>
           </section>
 
