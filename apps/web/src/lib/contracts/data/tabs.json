@@ -1,0 +1,557 @@
+{
+  "_meta": {
+    "source": "reference/cprs/Packages/Order Entry Results Reporting/CPRS/CPRS-Chart/",
+    "extractedAt": "2026-02-16T09:18:01.804Z",
+    "description": "CPRS main chart tabs and sub-tabs extracted from Delphi source"
+  },
+  "mainTabControl": {
+    "component": "tabPage",
+    "type": "TTabControl",
+    "tabPosition": "tpBottom",
+    "align": "alBottom",
+    "isBottomTabs": true
+  },
+  "mainTabs": [
+    {
+      "constant": "CT_PROBLEMS",
+      "label": "Problems",
+      "creationOrder": 0,
+      "conditional": false,
+      "id": 2,
+      "description": "chart tab - problem list",
+      "tabPosition": "tpBottom",
+      "align": "alBottom",
+      "isBottomTab": true
+    },
+    {
+      "constant": "CT_MEDS",
+      "label": "Meds",
+      "creationOrder": 1,
+      "conditional": false,
+      "id": 3,
+      "description": "chart tab - medications screen",
+      "tabPosition": "tpBottom",
+      "align": "alBottom",
+      "isBottomTab": true
+    },
+    {
+      "constant": "CT_ORDERS",
+      "label": "Orders",
+      "creationOrder": 2,
+      "conditional": false,
+      "id": 4,
+      "description": "chart tab - doctor's orders",
+      "tabPosition": "tpBottom",
+      "align": "alBottom",
+      "isBottomTab": true
+    },
+    {
+      "constant": "CT_NOTES",
+      "label": "Notes",
+      "creationOrder": 3,
+      "conditional": false,
+      "id": 6,
+      "description": "chart tab - progress notes",
+      "tabPosition": "tpBottom",
+      "align": "alBottom",
+      "isBottomTab": true
+    },
+    {
+      "constant": "CT_CONSULTS",
+      "label": "Consults",
+      "creationOrder": 4,
+      "conditional": false,
+      "id": 7,
+      "description": "chart tab - consults",
+      "tabPosition": "tpBottom",
+      "align": "alBottom",
+      "isBottomTab": true
+    },
+    {
+      "constant": "CT_SURGERY",
+      "label": "Surgery",
+      "creationOrder": 5,
+      "conditional": true,
+      "id": 11,
+      "description": "chart tab - surgery",
+      "tabPosition": "tpBottom",
+      "align": "alBottom",
+      "isBottomTab": true
+    },
+    {
+      "constant": "CT_DCSUMM",
+      "label": "D/C Summ",
+      "creationOrder": 6,
+      "conditional": false,
+      "id": 8,
+      "description": "chart tab - discharge summaries",
+      "tabPosition": "tpBottom",
+      "align": "alBottom",
+      "isBottomTab": true
+    },
+    {
+      "constant": "CT_LABS",
+      "label": "Labs",
+      "creationOrder": 7,
+      "conditional": false,
+      "id": 9,
+      "description": "chart tab - laboratory results",
+      "tabPosition": "tpBottom",
+      "align": "alBottom",
+      "isBottomTab": true
+    },
+    {
+      "constant": "CT_REPORTS",
+      "label": "Reports",
+      "creationOrder": 8,
+      "conditional": false,
+      "id": 10,
+      "description": "chart tab - reports",
+      "tabPosition": "tpBottom",
+      "align": "alBottom",
+      "isBottomTab": true
+    },
+    {
+      "constant": "CT_COVER",
+      "label": "Cover Sheet",
+      "creationOrder": 9,
+      "conditional": false,
+      "id": 1,
+      "description": "chart tab - cover sheet",
+      "tabPosition": "tpBottom",
+      "align": "alBottom",
+      "isBottomTab": true
+    }
+  ],
+  "subTabs": [
+    {
+      "file": "fARTAllgy.dfm",
+      "controlName": "pgAllergy",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "fARTAllgy.dfm",
+      "controlName": "tabGeneral",
+      "controlType": "TTabSheet",
+      "caption": "General"
+    },
+    {
+      "file": "fARTAllgy.dfm",
+      "controlName": "tabVerify",
+      "controlType": "TTabSheet",
+      "caption": "Verify"
+    },
+    {
+      "file": "fARTAllgy.dfm",
+      "controlName": "tabEnteredInError",
+      "controlType": "TTabSheet",
+      "caption": "Entered In Error"
+    },
+    {
+      "file": "fEncnt.dfm",
+      "controlName": "pgeVisit",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "fEncnt.dfm",
+      "controlName": "tabClinic",
+      "controlType": "TTabSheet",
+      "caption": "Clinic Appointments"
+    },
+    {
+      "file": "fEncnt.dfm",
+      "controlName": "tabAdmit",
+      "controlType": "TTabSheet",
+      "caption": "Hospital Admissions"
+    },
+    {
+      "file": "fEncnt.dfm",
+      "controlName": "tabNewVisit",
+      "controlType": "TTabSheet",
+      "caption": "New Visit"
+    },
+    {
+      "file": "fEncntKEEP.dfm",
+      "controlName": "pgeVisit",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "fEncntKEEP.dfm",
+      "controlName": "tabClinic",
+      "controlType": "TTabSheet",
+      "caption": "Clinic Appointments"
+    },
+    {
+      "file": "fEncntKEEP.dfm",
+      "controlName": "tabAdmit",
+      "controlType": "TTabSheet",
+      "caption": "Hospital Admissions"
+    },
+    {
+      "file": "fEncntKEEP.dfm",
+      "controlName": "tabNewVisit",
+      "controlType": "TTabSheet",
+      "caption": "New Visit"
+    },
+    {
+      "file": "fGraphs.dfm",
+      "controlName": "pcTop",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "fGraphs.dfm",
+      "controlName": "pcBottom",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "fGraphs.dfm",
+      "controlName": "tsTopItems",
+      "controlType": "TTabSheet",
+      "caption": "Items"
+    },
+    {
+      "file": "fGraphs.dfm",
+      "controlName": "tsTopViews",
+      "controlType": "TTabSheet",
+      "caption": "Views"
+    },
+    {
+      "file": "fGraphs.dfm",
+      "controlName": "tsTopCustom",
+      "controlType": "TTabSheet",
+      "caption": "Custom"
+    },
+    {
+      "file": "fGraphs.dfm",
+      "controlName": "tsBottomItems",
+      "controlType": "TTabSheet",
+      "caption": "Items"
+    },
+    {
+      "file": "fGraphs.dfm",
+      "controlName": "tsBottomViews",
+      "controlType": "TTabSheet",
+      "caption": "Views"
+    },
+    {
+      "file": "fGraphs.dfm",
+      "controlName": "tsBottomCustom",
+      "controlType": "TTabSheet",
+      "caption": "Custom"
+    },
+    {
+      "file": "fIconLegend.dfm",
+      "controlName": "pcMain",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "fIconLegend.dfm",
+      "controlName": "Templates",
+      "controlType": "TTabSheet",
+      "caption": "Templates"
+    },
+    {
+      "file": "fIconLegend.dfm",
+      "controlName": "Reminders",
+      "controlType": "TTabSheet",
+      "caption": "Reminders"
+    },
+    {
+      "file": "fIconLegend.dfm",
+      "controlName": "Notes",
+      "controlType": "TTabSheet",
+      "caption": "Notes"
+    },
+    {
+      "file": "fIconLegend.dfm",
+      "controlName": "Consults",
+      "controlType": "TTabSheet",
+      "caption": "Consults"
+    },
+    {
+      "file": "fIconLegend.dfm",
+      "controlName": "Surgery",
+      "controlType": "TTabSheet",
+      "caption": "Surgery"
+    },
+    {
+      "file": "fxBroker.dfm",
+      "controlName": "DbugPageCtrl",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "fxBroker.dfm",
+      "controlName": "SrchPage",
+      "controlType": "TTabSheet",
+      "caption": "Search"
+    },
+    {
+      "file": "fxBroker.dfm",
+      "controlName": "WatchPage",
+      "controlType": "TTabSheet",
+      "caption": "Watch"
+    },
+    {
+      "file": "fxBroker.dfm",
+      "controlName": "LivePage",
+      "controlType": "TTabSheet",
+      "caption": "Live"
+    },
+    {
+      "file": "Options/fOptions.dfm",
+      "controlName": "pagOptions",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "Options/fOptions.dfm",
+      "controlName": "tsCoverSheet",
+      "controlType": "TTabSheet",
+      "caption": "General"
+    },
+    {
+      "file": "Options/fOptions.dfm",
+      "controlName": "tsNotifications",
+      "controlType": "TTabSheet",
+      "caption": "Notifications"
+    },
+    {
+      "file": "Options/fOptions.dfm",
+      "controlName": "tsOrderChecks",
+      "controlType": "TTabSheet",
+      "caption": "Order Checks"
+    },
+    {
+      "file": "Options/fOptions.dfm",
+      "controlName": "tsListsTeams",
+      "controlType": "TTabSheet",
+      "caption": "Lists/Teams"
+    },
+    {
+      "file": "Options/fOptions.dfm",
+      "controlName": "tsNotes",
+      "controlType": "TTabSheet",
+      "caption": "Notes"
+    },
+    {
+      "file": "Options/fOptions.dfm",
+      "controlName": "tsCprsReports",
+      "controlType": "TTabSheet",
+      "caption": "Reports"
+    },
+    {
+      "file": "Options/fOptions.dfm",
+      "controlName": "tsGraphs",
+      "controlType": "TTabSheet",
+      "caption": "Graphs"
+    },
+    {
+      "file": "Options/fOptions.dfm",
+      "controlName": "tsCopyPaste",
+      "controlType": "TTabSheet",
+      "caption": "Copy/Paste"
+    },
+    {
+      "file": "Orders/fODBBank.dfm",
+      "controlName": "pgeProduct",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "Orders/fODBBank.dfm",
+      "controlName": "TabInfo",
+      "controlType": "TTabSheet",
+      "caption": "Patient Information"
+    },
+    {
+      "file": "Orders/fODBBank.dfm",
+      "controlName": "TabDiag",
+      "controlType": "TTabSheet",
+      "caption": "Blood Bank Orders"
+    },
+    {
+      "file": "Orders/fODBBank.dfm",
+      "controlName": "TabResults",
+      "controlType": "TTabSheet",
+      "caption": "Lab Results"
+    },
+    {
+      "file": "Orders/fODDiet.dfm",
+      "controlName": "nbkDiet",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "Orders/fODDiet.dfm",
+      "controlName": "pgeDiet",
+      "controlType": "TTabSheet",
+      "caption": "Diet"
+    },
+    {
+      "file": "Orders/fODDiet.dfm",
+      "controlName": "pgeOutPt",
+      "controlType": "TTabSheet",
+      "caption": "Outpatient Meals"
+    },
+    {
+      "file": "Orders/fODDiet.dfm",
+      "controlName": "pgeTubefeeding",
+      "controlType": "TTabSheet",
+      "caption": "Tubefeeding"
+    },
+    {
+      "file": "Orders/fODDiet.dfm",
+      "controlName": "pgeEarlyLate",
+      "controlType": "TTabSheet",
+      "caption": "Early / Late Tray"
+    },
+    {
+      "file": "Orders/fODDiet.dfm",
+      "controlName": "pgeIsolations",
+      "controlType": "TTabSheet",
+      "caption": "Isolations / Precautions"
+    },
+    {
+      "file": "Orders/fODDiet.dfm",
+      "controlName": "pgeAdditional",
+      "controlType": "TTabSheet",
+      "caption": "Additional Order"
+    },
+    {
+      "file": "Orders/fODMedIV.dfm",
+      "controlName": "pgctrlSolutionsAndAdditives",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "Orders/fODMedIV.dfm",
+      "controlName": "tbshtSolutions",
+      "controlType": "TTabSheet",
+      "caption": "Solutions"
+    },
+    {
+      "file": "Orders/fODMedIV.dfm",
+      "controlName": "tbshtAdditives",
+      "controlType": "TTabSheet",
+      "caption": "Additives"
+    }
+  ],
+  "allTabControls": [
+    {
+      "file": "Encounter/fEncounterFrame.dfm",
+      "controlName": "TabControl",
+      "controlType": "TTabControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "fARTAllgy.dfm",
+      "controlName": "pgAllergy",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "fEncnt.dfm",
+      "controlName": "pgeVisit",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "fEncntKEEP.dfm",
+      "controlName": "pgeVisit",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "fFrame.dfm",
+      "controlName": "tabPage",
+      "controlType": "TTabControl",
+      "tabPosition": "tpBottom"
+    },
+    {
+      "file": "fGraphs.dfm",
+      "controlName": "pcTop",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "fGraphs.dfm",
+      "controlName": "pcBottom",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "fIconLegend.dfm",
+      "controlName": "pcMain",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "fLabs.dfm",
+      "controlName": "TabControl1",
+      "controlType": "TTabControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "fReports.dfm",
+      "controlName": "TabControl1",
+      "controlType": "TTabControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "fxBroker.dfm",
+      "controlName": "DbugPageCtrl",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "Options/fOptions.dfm",
+      "controlName": "pagOptions",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "Orders/fODBBank.dfm",
+      "controlName": "pgeProduct",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "Orders/fODDiet.dfm",
+      "controlName": "nbkDiet",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "Orders/fODMedIV.dfm",
+      "controlName": "pgctrlSolutionsAndAdditives",
+      "controlType": "TPageControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "Orders/fODMedNVA.dfm",
+      "controlName": "tabDose",
+      "controlType": "TTabControl",
+      "tabPosition": "tpTop"
+    },
+    {
+      "file": "Orders/fODMeds.dfm",
+      "controlName": "tabDose",
+      "controlType": "TTabControl",
+      "tabPosition": "tpTop"
+    }
+  ],
+  "summary": {
+    "mainTabCount": 10,
+    "subTabSheetCount": 42,
+    "pageControlCount": 11,
+    "tabControlCount": 6,
+    "bottomTabControls": 1
+  }
+}
