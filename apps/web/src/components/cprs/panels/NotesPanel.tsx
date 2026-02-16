@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useDataCache, type Note } from '@/stores/data-cache';
-import { useCPRSUI } from '@/stores/cprs-ui-state';
 import styles from '../cprs.module.css';
 
 /* ------------------------------------------------------------------ */
@@ -21,7 +20,6 @@ interface Props { dfn: string; }
 
 export default function NotesPanel({ dfn }: Props) {
   const cache = useDataCache();
-  const { openModal } = useCPRSUI();
   const [selected, setSelected] = useState<Note | null>(null);
   const [showNewNote, setShowNewNote] = useState(false);
   const [noteTitle, setNoteTitle] = useState('');

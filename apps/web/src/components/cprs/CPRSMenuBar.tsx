@@ -115,9 +115,26 @@ export default function CPRSMenuBar({ dfn }: { dfn?: string }) {
     } else if (action === 'printSetup') {
       openModal('printSetup');
     } else if (action === 'copy') {
-      document.execCommand('copy');
+      // Copy selected text to clipboard (modern API with legacy fallback)
+      const sel = window.getSelection()?.toString();
+      if (sel && navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(sel);
+      } else {
+        document.execCommand('copy');
+      }
     } else if (action === 'paste') {
-      navigator.clipboard?.readText?.();
+      // Paste clipboard text into the currently focused input/textarea
+      if (navigator.clipboard?.readText) {
+        navigator.clipboard.readText().then((text) => {
+          const el = document.activeElement;
+          if (el && (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement)) {
+            const start = el.selectionStart ?? el.value.length;
+            const end = el.selectionEnd ?? el.value.length;
+            el.setRangeText(text, start, end, 'end');
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        });
+      }
     } else if (action.startsWith('theme:')) {
       const theme = action.replace('theme:', '') as 'light' | 'dark';
       updatePreferences({ theme });
@@ -128,6 +145,9 @@ export default function CPRSMenuBar({ dfn }: { dfn?: string }) {
       openModal('graphing');
     } else if (action === 'legacyConsole') {
       openModal('legacyConsole');
+    } else if (action === 'remoteData') {
+      // Remote Data Viewer — integration pending, currently disabled in menu
+      alert('Remote Data Viewer integration is pending.');
     } else if (action === 'keyboardShortcuts') {
       openModal('keyboardShortcuts');
     } else if (action === 'about') {

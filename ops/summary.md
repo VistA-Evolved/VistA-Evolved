@@ -44,3 +44,28 @@ Script: `scripts/verify-phase1-to-phase11-cprs.ps1`
 - Add ICD/LEX lookup for Add Problem dialog
 - Real order signing workflow
 - Keyboard navigation and accessibility
+- See `ops/known-gaps.md` for full gap inventory
+
+## Verification Audit (Phase 11 VERIFY pass)
+
+Performed 2026-02-16. Results:
+
+### Contract Validation
+- 5/5 contract JSON files parse: tabs, menus, screen_registry, rpc_catalog, forms
+- 10 main tabs, 12 main menus, 975 RPCs, all loaded and validated by loader.ts
+
+### Component Audit
+- **All 10 tabs**: covered with dedicated panels, switch case + fallback
+- **All 9 modals**: every openModal() call has matching handler in CPRSModals
+- **All 5 menus**: File(5), Edit(3), View(14), Tools(3), Help(2) — all items have handlers
+- **All API fetches**: aligned with correct endpoint URLs and query params
+
+### Bugs Fixed During Verify
+1. Edit -> Paste was a dead click (readText() result discarded) — now pastes into active input
+2. EditProblemDialog save was a no-op — now persists to local data-cache
+3. remoteData action had no handler — now shows integration-pending alert
+4. NotesPanel had unused openModal import — removed
+
+### Known Gaps
+See `ops/known-gaps.md` — 5 panels on mock data, 3 dialogs local-only, 3 menu items placeholder.
+- Keyboard navigation and accessibility
