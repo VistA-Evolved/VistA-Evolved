@@ -1,0 +1,10 @@
+export { default as CoverSheetPanel } from './CoverSheetPanel';
+export { default as ProblemsPanel } from './ProblemsPanel';
+export { default as MedsPanel } from './MedsPanel';
+export { default as OrdersPanel } from './OrdersPanel';
+export { default as NotesPanel } from './NotesPanel';
+export { default as ConsultsPanel } from './ConsultsPanel';
+export { default as SurgeryPanel } from './SurgeryPanel';
+export { default as DCSummPanel } from './DCSummPanel';
+export { default as LabsPanel } from './LabsPanel';
+export { default as ReportsPanel } from './ReportsPanel';

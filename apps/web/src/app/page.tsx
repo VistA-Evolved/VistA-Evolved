@@ -19,20 +19,18 @@ export default function Home() {
           <p>Hello System is running.</p>
         </div>
         <div className={styles.ctas}>
-          <Link className={styles.primary} href="/patient-search">
-            Patient Search
+          <Link className={styles.primary} href="/cprs/login">
+            CPRS Web Replica
           </Link>
-          <Link className={styles.primary} href="/chart/100/cover">
-            Chart Shell (Patient 100)
+          <Link className={styles.primary} href="/cprs/verify">
+            Verification Dashboard
           </Link>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          <Link className={styles.secondary} href="/patient-search">
+            Legacy Patient Search
+          </Link>
+          <Link className={styles.secondary} href="/chart/1/cover">
+            Legacy Chart Shell
+          </Link>
         </div>
       </main>
     </div>

@@ -1,50 +1,16 @@
 {
   "features": [
     {
-      "title": "Phase 10A — CPRS Inventory Extraction",
+      "title": "Phase 11 -- CPRS Web Replica End-to-End",
       "stage": "Complete",
-      "status": "Implemented",
-      "promptRef": "prompts/12-PHASE-10-CPRS-EXTRACT/12-01-Phase10A-CPRS-Inventory-Extraction-IMPLEMENT.md",
-      "verifyRef": "prompts/12-PHASE-10-CPRS-EXTRACT/12-02-Phase10A-CPRS-Inventory-Extraction-VERIFY.md",
-      "runbookPath": "docs/runbooks/cprs-inventory-extraction.md",
-      "verifyScript": "scripts/verify-latest.ps1",
-      "verificationStatus": "Not run",
-      "commitSHA": "PLACEHOLDER"
-    },
-    {
-      "title": "Phase 10B — CPRS Contract Generation",
-      "stage": "Complete",
-      "status": "Implemented",
-      "promptRef": "prompts/12-PHASE-10-CPRS-EXTRACT/12-03-Phase10B-CPRS-Contract-Generation-IMPLEMENT.md",
-      "verifyRef": "prompts/12-PHASE-10-CPRS-EXTRACT/12-04-Phase10B-CPRS-Contract-Generation-VERIFY.md",
-      "runbookPath": "docs/runbooks/cprs-contract-generation.md",
-      "verifyScript": "scripts/verify-latest.ps1",
-      "verificationStatus": "Not run",
-      "commitSHA": "PLACEHOLDER"
-    },
-    {
-      "title": "Phase 10C — CPRS Replica Shell (Web UI)",
-      "stage": "Complete",
-      "status": "Implemented",
-      "promptRef": "prompts/12-PHASE-10-CPRS-EXTRACT/12-05-Phase10C-CPRS-Replica-Shell-IMPLEMENT.md",
-      "verifyRef": "prompts/12-PHASE-10-CPRS-EXTRACT/12-06-Phase10C-CPRS-Replica-Shell-VERIFY.md",
-      "runbookPath": "docs/runbooks/cprs-replica-shell.md",
-      "verifyScript": "scripts/verify-latest.ps1",
-      "verificationStatus": "Not run",
-      "commitSHA": "PLACEHOLDER"
-    },
-    {
-      "title": "Phase 10D — API Scaffold Generator",
-      "stage": "Complete",
-      "status": "Implemented",
-      "promptRef": "prompts/12-PHASE-10-CPRS-EXTRACT/12-07-Phase10D-API-Scaffold-Generator-IMPLEMENT.md",
-      "verifyRef": "prompts/12-PHASE-10-CPRS-EXTRACT/12-08-Phase10D-API-Scaffold-Generator-VERIFY.md",
-      "runbookPath": "docs/runbooks/cprs-api-scaffold-generator.md",
-      "verifyScript": "scripts/verify-latest.ps1",
-      "verificationStatus": "Not run",
+      "status": "Implemented + Verified",
+      "promptRef": "prompts/13-PHASE-11-CPRS-WEB-REPLICA/13-01-Phase11-CPRS-Web-Replica-IMPLEMENT.md",
+      "verifyRef": "prompts/13-PHASE-11-CPRS-WEB-REPLICA/13-02-Phase11-CPRS-Web-Replica-VERIFY.md",
+      "runbookPath": "docs/runbooks/cprs-web-replica-v1.md",
+      "verifyScript": "scripts/verify-phase1-to-phase11-cprs.ps1",
+      "verificationStatus": "82 PASS / 0 FAIL / 0 WARN",
       "commitSHA": "PLACEHOLDER"
     }
   ],
-  "fullVerify": "prompts/12-PHASE-10-CPRS-EXTRACT/12-99-Phase10-FULL-VERIFY.md",
   "generatedAt": "2026-02-16"
 }

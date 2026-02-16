@@ -1,0 +1,154 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { usePatient } from '@/stores/patient-context';
+import styles from '@/components/cprs/cprs.module.css';
+
+const API_BASE = 'http://127.0.0.1:3001';
+
+interface PatientSearchResult {
+  dfn: string;
+  name: string;
+  ssn?: string;
+  dob?: string;
+}
+
+/**
+ * CPRS Patient Search / Selection page.
+ * Mirrors frmPtSel from CPRS Delphi — patient list + search.
+ */
+export default function CPRSPatientSearchPage() {
+  const router = useRouter();
+  const { selectPatient } = usePatient();
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState<PatientSearchResult[]>([]);
+  const [defaultList, setDefaultList] = useState<PatientSearchResult[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [selected, setSelected] = useState<string | null>(null);
+
+  // Load default patient list on mount
+  useEffect(() => {
+    async function loadDefaults() {
+      try {
+        const res = await fetch(`${API_BASE}/vista/default-patient-list`);
+        const data = await res.json();
+        if (data.ok && Array.isArray(data.patients)) {
+          setDefaultList(data.patients);
+        }
+      } catch {
+        // Non-critical
+      }
+    }
+    loadDefaults();
+  }, []);
+
+  async function handleSearch(e: React.FormEvent) {
+    e.preventDefault();
+    if (!query.trim()) return;
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch(`${API_BASE}/vista/patient-search?q=${encodeURIComponent(query.trim())}`);
+      const data = await res.json();
+      if (data.ok && Array.isArray(data.results)) {
+        setResults(data.results);
+        if (data.results.length === 0) setError('No patients found.');
+      } else {
+        setError(data.error || 'Search failed.');
+      }
+    } catch (err: unknown) {
+      setError(`Network error: ${err instanceof Error ? err.message : String(err)}`);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function handleSelectPatient(dfn: string) {
+    setSelected(dfn);
+  }
+
+  async function handleOpenChart() {
+    if (!selected) return;
+    await selectPatient(selected);
+    router.push(`/cprs/chart/${selected}/cover`);
+  }
+
+  const displayList = results.length > 0 ? results : defaultList;
+
+  return (
+    <div className={styles.shell} style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <div className={styles.menuBar}>
+        <span style={{ fontWeight: 600, fontSize: 13 }}>EHR &mdash; Evolved</span>
+        <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--cprs-text-muted)' }}>Patient Selection</span>
+      </div>
+
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: 16, maxWidth: 700, margin: '0 auto', width: '100%' }}>
+        <h2 style={{ fontSize: 16, margin: '0 0 12px' }}>Select a Patient</h2>
+
+        <form onSubmit={handleSearch} style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+          <input
+            className={styles.formInput}
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search by name (e.g. CARTER)"
+            autoFocus
+            style={{ flex: 1 }}
+          />
+          <button className={`${styles.btn} ${styles.btnPrimary}`} type="submit" disabled={loading}>
+            {loading ? 'Searching...' : 'Search'}
+          </button>
+        </form>
+
+        {error && (
+          <div style={{ padding: '6px 10px', background: '#f8d7da', border: '1px solid #dc3545', borderRadius: 4, color: '#721c24', fontSize: 12, marginBottom: 8 }}>
+            {error}
+          </div>
+        )}
+
+        <div style={{ flex: 1, overflowY: 'auto', border: '1px solid var(--cprs-border)', borderRadius: 4, background: 'var(--cprs-bg)' }}>
+          {displayList.length === 0 ? (
+            <p className={styles.emptyText} style={{ padding: 20, textAlign: 'center' }}>
+              {results.length === 0 && defaultList.length === 0 ? 'Enter a name to search for patients.' : 'No results.'}
+            </p>
+          ) : (
+            <table className={styles.dataTable}>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>DFN</th>
+                  <th>SSN</th>
+                  <th>DOB</th>
+                </tr>
+              </thead>
+              <tbody>
+                {displayList.map((p) => (
+                  <tr
+                    key={p.dfn}
+                    onClick={() => handleSelectPatient(p.dfn)}
+                    onDoubleClick={() => { handleSelectPatient(p.dfn); setTimeout(handleOpenChart, 50); }}
+                    style={selected === p.dfn ? { background: 'var(--cprs-selected)' } : undefined}
+                  >
+                    <td>{p.name}</td>
+                    <td>{p.dfn}</td>
+                    <td>{p.ssn || '—'}</td>
+                    <td>{p.dob || '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+
+        <div style={{ display: 'flex', gap: 8, marginTop: 12, justifyContent: 'flex-end' }}>
+          <button className={styles.btn} onClick={() => router.push('/cprs/login')}>Back</button>
+          <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={handleOpenChart} disabled={!selected}>
+            Open Chart
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

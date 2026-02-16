@@ -1,52 +1,71 @@
-# ops/summary.md — Phase 10 Prompt System Cleanup
+# Phase 11 — CPRS Web Replica v1 — Ops Summary
 
-## What changed
+## What Changed
 
-### Renamed files (3 renames)
-| Old name | New name |
-|----------|----------|
-| `12-01-cprs-extract-IMPLEMENT.md` | `12-01-Phase10A-CPRS-Inventory-Extraction-IMPLEMENT.md` |
-| `12-02-cprs-ui-shell-IMPLEMENT.md` | `12-05-Phase10C-CPRS-Replica-Shell-IMPLEMENT.md` |
-| `12-03-api-scaffold-IMPLEMENT.md` | `12-07-Phase10D-API-Scaffold-Generator-IMPLEMENT.md` |
+### New Files (30+)
+- **Contract Layer**: `apps/web/src/lib/contracts/types.ts`, `loader.ts`, `data/tabs.json`, `data/menus.json`
+- **State Stores**: `apps/web/src/stores/patient-context.tsx`, `cprs-ui-state.tsx`, `data-cache.tsx`
+- **CPRS Shell**: `components/cprs/cprs.module.css`, `CPRSMenuBar.tsx`, `PatientBanner.tsx`, `CPRSTabStrip.tsx`, `CPRSModals.tsx`
+- **Tab Panels** (10): CoverSheet, Problems, Meds, Orders, Notes, Consults, Surgery, DCSumm, Labs, Reports
+- **Dialogs** (3): AddProblem, EditProblem, AddMedication
+- **Route Pages** (6): `/cprs/layout`, `/cprs/login`, `/cprs/patient-search`, `/cprs/chart/[dfn]/[tab]`, `/cprs/settings/preferences`, `/cprs/verify`
+- **Verification**: `scripts/verify-phase1-to-phase11-cprs.ps1` (82 checks)
+- **Prompts**: `prompts/13-PHASE-11-CPRS-WEB-REPLICA/13-01-*`, `13-02-*`
+- **Runbook**: `docs/runbooks/cprs-web-replica-v1.md`
 
-### New files created (6 files)
-| File | Purpose |
-|------|---------|
-| `12-02-Phase10A-CPRS-Inventory-Extraction-VERIFY.md` | Verification for extraction scripts |
-| `12-03-Phase10B-CPRS-Contract-Generation-IMPLEMENT.md` | Contract schema validation phase |
-| `12-04-Phase10B-CPRS-Contract-Generation-VERIFY.md` | Verification for contract schemas |
-| `12-06-Phase10C-CPRS-Replica-Shell-VERIFY.md` | Verification for UI shell |
-| `12-08-Phase10D-API-Scaffold-Generator-VERIFY.md` | Verification for API scaffolds |
-| `12-99-Phase10-FULL-VERIFY.md` | End-to-end Phase 10 verification |
+### Modified Files
+- `apps/api/package.json` — added `--env-file=.env.local` to dev/start scripts
+- `apps/web/src/app/page.tsx` — root page now links to CPRS routes
+- `scripts/verify-latest.ps1` — points to phase 11 script
 
-### Updated docs (1 file)
-| File | Change |
-|------|--------|
-| `prompts/README.md` | Added Phase 10 subphase mapping table |
+## How to Test Manually
 
-### Logging artifacts (2 files)
-| File | Purpose |
-|------|---------|
-| `ops/notion-update.json` | Notion integration data for all 4 subphases |
-| `ops/summary.md` | This file |
+1. Start Docker VistA: `cd services/vista && docker compose --profile dev up -d`
+2. Start API: `pnpm -C apps/api dev`
+3. Build web: `pnpm -C apps/web build`
+4. Start web: `pnpm -C apps/web dev`
+5. Navigate to `http://localhost:3000/cprs/login`
+6. Search patients (e.g., "ZZ") — finds 3 test patients
+7. Select patient — chart opens with 10 tabs
+8. Tab through all tabs
+9. Visit `http://localhost:3000/cprs/verify` — all checks green
 
-## How to test manually
-```powershell
-# Verify all 9 prompt files exist in the Phase 10 folder
-Get-ChildItem prompts/12-PHASE-10-CPRS-EXTRACT -Name | Sort-Object
-# Expected: 9 files (12-01 through 12-08 + 12-99)
+## Verifier Output
+
+```
+PASS: 82  FAIL: 0  WARN: 0  TOTAL: 82
+*** ALL CHECKS PASSED ***
 ```
 
-## Subphase summary
+Script: `scripts/verify-phase1-to-phase11-cprs.ps1`
 
-| Subphase | Name | Scope |
-|----------|------|-------|
-| 10A | CPRS Inventory Extraction | 4 extraction scripts in `tools/cprs-extract/`, outputs 6 JSON/MD files |
-| 10B | CPRS Contract Generation | Schema validation + cross-referencing of extracted contracts |
-| 10C | CPRS Replica Shell | Next.js UI with bottom tabs, menu bar, chart panels (18 files) |
-| 10D | API Scaffold Generator | Generates 404 typed Fastify RPC stubs across 6 domains |
+## Follow-Ups
+- Wire Labs/Reports/Consults/Surgery/DCSumm to real VistA RPCs
+- Add ICD/LEX lookup for Add Problem dialog
+- Real order signing workflow
+- Keyboard navigation and accessibility
+- See `ops/known-gaps.md` for full gap inventory
 
-## Follow-ups
-- Run `12-99-Phase10-FULL-VERIFY.md` verification script
-- Update Notion feature board with `ops/notion-update.json` data
-- Wire live RPC calls into scaffold stubs (Phase 11+)
+## Verification Audit (Phase 11 VERIFY pass)
+
+Performed 2026-02-16. Results:
+
+### Contract Validation
+- 5/5 contract JSON files parse: tabs, menus, screen_registry, rpc_catalog, forms
+- 10 main tabs, 12 main menus, 975 RPCs, all loaded and validated by loader.ts
+
+### Component Audit
+- **All 10 tabs**: covered with dedicated panels, switch case + fallback
+- **All 9 modals**: every openModal() call has matching handler in CPRSModals
+- **All 5 menus**: File(5), Edit(3), View(14), Tools(3), Help(2) — all items have handlers
+- **All API fetches**: aligned with correct endpoint URLs and query params
+
+### Bugs Fixed During Verify
+1. Edit -> Paste was a dead click (readText() result discarded) — now pastes into active input
+2. EditProblemDialog save was a no-op — now persists to local data-cache
+3. remoteData action had no handler — now shows integration-pending alert
+4. NotesPanel had unused openModal import — removed
+
+### Known Gaps
+See `ops/known-gaps.md` — 5 panels on mock data, 3 dialogs local-only, 3 menu items placeholder.
+- Keyboard navigation and accessibility
