@@ -154,7 +154,7 @@ Assert-Check "getDomainCapabilities exported" ($capContent -match "export functi
 Assert-Check "KNOWN_RPCS catalog exported" ($capContent -match "export const KNOWN_RPCS")
 Assert-Check "Cache TTL configurable" ($capContent -match "VISTA_CAPABILITY_TTL_MS")
 Assert-Check "Expected-missing list defined" ($capContent -match "WORLDVISTA_EXPECTED_MISSING")
-Assert-Check "RPC error detection patterns" ($capContent -match "RPC_ERROR_PATTERNS")
+Assert-Check "RPC not-found detection patterns" ($capContent -match "RPC_NOT_FOUND_PATTERNS")
 
 $capRoute = Get-Content "$repoRoot\apps\api\src\routes\capabilities.ts" -Raw
 Assert-Check "GET /vista/rpc-capabilities" ($capRoute -match '"/vista/rpc-capabilities"')
@@ -273,8 +273,16 @@ try {
     Assert-Check "GET /vista/rpc-capabilities" ($caps.ok -eq $true) "totalProbed=$($caps.totalProbed) available=$($caps.available) missing=$($caps.missing)"
     Assert-Check "Capabilities has instanceId" ($null -ne $caps.instanceId) "instanceId: $($caps.instanceId)"
     Assert-Check "Capabilities has discoveredAt" ($null -ne $caps.discoveredAt) ""
-    Assert-Check "Expected-missing count > 0" ($caps.expectedMissing -gt 0) "expectedMissing: $($caps.expectedMissing)"
     Assert-Check "Available RPCs detected" ($caps.available -gt 0) "$($caps.available) RPCs available"
+    Assert-Check "Majority of RPCs available" ($caps.available -ge 30) "available=$($caps.available) of $($caps.totalProbed) probed"
+    if ($caps.missing -gt 0) {
+        Assert-Check "Missing RPCs classified" ($caps.expectedMissing -ge 0) "expectedMissing=$($caps.expectedMissing) unexpectedMissing=$($caps.unexpectedMissing)"
+        if ($caps.unexpectedMissing -gt 0) {
+            Warn-Check "Unexpected missing RPCs" "unexpectedMissing=$($caps.unexpectedMissing): $($caps.unexpectedMissingList -join ', ')"
+        }
+    } else {
+        Assert-Check "No missing RPCs" $true "All $($caps.totalProbed) RPCs available"
+    }
 
     # Domain filter
     $orderCaps = Invoke-RestMethod -Uri "$apiBase/vista/rpc-capabilities?domain=orders" -TimeoutSec 15

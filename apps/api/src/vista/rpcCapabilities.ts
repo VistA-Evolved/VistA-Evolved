@@ -57,17 +57,23 @@ export interface RpcCheck {
 /* RPC error detection (reused from inbox.ts pattern)                   */
 /* ------------------------------------------------------------------ */
 
-const RPC_ERROR_PATTERNS = [
+/**
+ * Patterns that mean the RPC genuinely does NOT exist on the server.
+ * Note: %YDB-E-LVUNDEF and "M  ERROR" with LVUNDEF indicate the RPC EXISTS
+ * but was called with insufficient parameters — that's a positive availability
+ * signal (the M routine ran). We only flag "doesn't exist" responses.
+ */
+const RPC_NOT_FOUND_PATTERNS = [
   "doesn't exist",
   "doesn\u0027t exist",
-  "%YDB-E-",
-  "M  ERROR",
   "not found",
 ];
 
-function isRpcError(response: string[]): boolean {
+function isRpcMissing(response: string[]): boolean {
   const first = response[0] || "";
-  return RPC_ERROR_PATTERNS.some((pat) => first.includes(pat)) || first.startsWith("CRemote");
+  // "CRemote Procedure 'X' doesn't exist" — server-level rejection
+  if (first.startsWith("CRemote")) return true;
+  return RPC_NOT_FOUND_PATTERNS.some((pat) => first.includes(pat));
 }
 
 /* ------------------------------------------------------------------ */
@@ -162,23 +168,16 @@ const CACHE_TTL_MS = Number(process.env.VISTA_CAPABILITY_TTL_MS || 300_000); // 
 let cachedCapabilities: CapabilityMap | null = null;
 let cacheTimestamp: number = 0;
 
-/** WorldVistA Docker sandbox — RPCs known to be missing */
+/**
+ * WorldVistA Docker sandbox — RPCs that return "doesn't exist" (truly absent).
+ * Note: RPCs that return LVUNDEF are NOT on this list — those exist on the
+ * server, they just fail when called with empty params. We only list RPCs
+ * whose XWB response contains "Remote Procedure 'X' doesn't exist".
+ */
 const WORLDVISTA_EXPECTED_MISSING = [
-  "ORWORB UNSIG ORDERS",
-  "ORWORB FASTUSER",
-  "ORWDX SAVE",
-  "ORWDXA DC",
-  "ORWDXA FLAG",
-  "ORWDXA VERIFY",
-  "ORQQPL ADD SAVE",
-  "ORQQPL EDIT SAVE",
-  "ORQQCN2 MED RESULTS",
-  "ORWSR RPTLIST",
-  "ORWLRR ACK",
-  "ORWLRR CHART",
-  "ORWCIRN FACILITIES",
-  "MAG4 REMOTE PROCEDURE",
-  "ORWPCE SAVE",
+  "ORQQPL EDIT SAVE",      // Returns CRemote "doesn't exist" (not installed)
+  // All other RPCs that error with LVUNDEF are actually available.
+  // The list is intentionally short — only genuinely absent RPCs.
 ];
 
 /* ------------------------------------------------------------------ */
@@ -215,10 +214,12 @@ export async function discoverCapabilities(forceRefresh = false): Promise<Capabi
       try {
         // Probe with empty/minimal params — we only care about "exists" vs "doesn't exist"
         const resp = await callRpc(rpcName, []);
-        if (isRpcError(resp)) {
+        if (isRpcMissing(resp)) {
           rpcs[rpcName] = { rpcName, available: false, error: resp[0]?.substring(0, 200), probedAt };
           missingList.push(rpcName);
         } else {
+          // RPC exists — even if response contains M ERROR / LVUNDEF, the
+          // underlying routine ran, which means the RPC is registered.
           rpcs[rpcName] = { rpcName, available: true, probedAt };
           availableList.push(rpcName);
         }

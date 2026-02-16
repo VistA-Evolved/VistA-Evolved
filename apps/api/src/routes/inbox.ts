@@ -55,7 +55,9 @@ export default async function inboxRoutes(server: FastifyInstance): Promise<void
         try {
           const unsigLines = await callRpc("ORWORB UNSIG ORDERS", [duz]);
           const firstLine = unsigLines[0] || "";
-          if (firstLine.includes("doesn't exist") || firstLine.includes("doesn\u0027t exist") || firstLine.includes("%YDB-E-") || firstLine.startsWith("CRemote")) {
+          // Only "Remote Procedure doesn't exist" means truly absent
+          // LVUNDEF / M ERROR means it ran but needs real params = available
+          if (firstLine.includes("doesn't exist") || firstLine.includes("doesn\u0027t exist") || firstLine.startsWith("CRemote")) {
             featureStatus.push({ rpc: "ORWORB UNSIG ORDERS", status: 'expected-missing', detail: 'RPC not available on this distro' });
           } else {
             featureStatus.push({ rpc: "ORWORB UNSIG ORDERS", status: 'available' });
@@ -92,7 +94,8 @@ export default async function inboxRoutes(server: FastifyInstance): Promise<void
         try {
           const notifLines = await callRpc("ORWORB FASTUSER", [duz]);
           const firstNotif = notifLines[0] || "";
-          if (firstNotif.includes("doesn't exist") || firstNotif.includes("doesn\u0027t exist") || firstNotif.includes("%YDB-E-") || firstNotif.includes("M  ERROR") || firstNotif.startsWith("CRemote")) {
+          // Only "Remote Procedure doesn't exist" means truly absent
+          if (firstNotif.includes("doesn't exist") || firstNotif.includes("doesn\u0027t exist") || firstNotif.startsWith("CRemote")) {
             featureStatus.push({ rpc: "ORWORB FASTUSER", status: 'expected-missing', detail: 'RPC not available on this distro' });
           } else {
             featureStatus.push({ rpc: "ORWORB FASTUSER", status: 'available' });

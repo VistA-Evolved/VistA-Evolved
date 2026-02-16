@@ -99,10 +99,10 @@ export function cleanCaption(caption: string): string {
 }
 
 /**
- * Sanitize VA/VHA terminology per project rules:
+ * Sanitize restricted terminology per project rules:
  * - VistAWeb -> Remote Data Viewer
  * - Non-VA Meds -> External Medications
- * - VA Medical Center -> Facility
+ * - Medical Center references -> Facility
  */
 export function sanitizeLabel(text: string): string {
   return text
