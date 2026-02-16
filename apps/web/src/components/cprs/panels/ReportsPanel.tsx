@@ -1,104 +1,82 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDataCache, type ReportDef } from '../../../stores/data-cache';
 import styles from '../cprs.module.css';
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
 
 interface Props { dfn: string; }
 
-const REPORT_CATEGORIES = [
-  { id: 'clinical', label: 'Clinical Reports' },
-  { id: 'health-summary', label: 'Health Summary' },
-  { id: 'imaging', label: 'Imaging' },
-  { id: 'lab', label: 'Lab Reports' },
-  { id: 'surgery', label: 'Surgery Reports' },
-  { id: 'discharge', label: 'Discharge Summaries' },
-  { id: 'remote', label: 'Remote Data' },
-] as const;
-
-/* Sample reports for interactive UI */
-const MOCK_REPORTS: Record<string, { id: string; title: string; date: string; text: string }[]> = {
-  'clinical': [
-    { id: 'c1', title: 'Annual Physical', date: '2025-12-01', text: 'Annual physical examination completed. No acute findings.' },
-    { id: 'c2', title: 'Follow-up Visit', date: '2025-11-15', text: 'Follow-up for hypertension management. BP well controlled.' },
-  ],
-  'health-summary': [
-    { id: 'hs1', title: 'Health Summary', date: '2025-12-15', text: 'Active Problems: Essential hypertension\nAllergies: Penicillin\nActive Meds: Lisinopril 10mg daily' },
-  ],
-  'imaging': [
-    { id: 'i1', title: 'Chest X-Ray', date: '2025-10-20', text: 'PA and lateral views. Heart size normal. Lungs clear. No acute findings.' },
-  ],
-  'lab': [
-    { id: 'l1', title: 'Chemistry Panel', date: '2025-12-15', text: 'BMP within normal limits. See Labs tab for details.' },
-  ],
-  'surgery': [],
-  'discharge': [],
-  'remote': [
-    { id: 'r1', title: 'Remote Data Viewer', date: '', text: 'Remote data integration pending. This panel will display data from other facilities when connected.' },
-  ],
-};
-
 export default function ReportsPanel({ dfn }: Props) {
-  const [category, setCategory] = useState('clinical');
-  const [selectedReport, setSelectedReport] = useState<string | null>(null);
+  const { fetchDomain, getDomain, isLoading } = useDataCache();
+  const [selectedReport, setSelectedReport] = useState<ReportDef | null>(null);
+  const [reportText, setReportText] = useState<string>('');
+  const [textLoading, setTextLoading] = useState(false);
 
-  const reports = MOCK_REPORTS[category] ?? [];
-  const current = reports.find((r) => r.id === selectedReport);
+  useEffect(() => { fetchDomain(dfn, 'reports'); }, [dfn, fetchDomain]);
+
+  const reports = getDomain(dfn, 'reports');
+  const loading = isLoading(dfn, 'reports');
+
+  async function handleSelect(r: ReportDef) {
+    setSelectedReport(r);
+    setReportText('');
+    setTextLoading(true);
+    try {
+      const res = await fetch(
+        `${API_BASE}/vista/reports/text?dfn=${dfn}&id=${encodeURIComponent(r.id)}&hsType=${encodeURIComponent(r.hsType ?? '')}`
+      );
+      const data = await res.json();
+      setReportText(data.ok ? (data.text ?? '(no report text)') : `Error: ${data.error ?? 'unknown'}`);
+    } catch {
+      setReportText('Network error loading report');
+    } finally {
+      setTextLoading(false);
+    }
+  }
 
   return (
     <div>
       <div className={styles.panelTitle}>Reports</div>
       <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', margin: '2px 0 8px' }}>
-        Contract: ORWRP REPORT LIST &bull; Data source: mock dataset (API integration pending)
+        Contract: ORWRP REPORT LISTS / ORWRP REPORT TEXT &bull; Data source: live RPC
       </p>
 
       <div className={styles.splitPane}>
-        <div className={styles.splitLeft} style={{ maxWidth: 200 }}>
-          <div style={{ fontWeight: 600, marginBottom: 4, fontSize: 12 }}>Categories</div>
-          {REPORT_CATEGORIES.map((cat) => (
+        <div className={styles.splitLeft} style={{ maxWidth: 280 }}>
+          <div style={{ fontWeight: 600, marginBottom: 4, fontSize: 12 }}>
+            {loading ? 'Loading reports...' : `${reports.length} report type(s)`}
+          </div>
+          {reports.map((r) => (
             <div
-              key={cat.id}
-              onClick={() => { setCategory(cat.id); setSelectedReport(null); }}
+              key={r.id}
+              onClick={() => handleSelect(r)}
               style={{
                 padding: '4px 8px',
                 cursor: 'pointer',
                 borderRadius: 3,
                 fontSize: 12,
-                background: category === cat.id ? 'var(--cprs-selected)' : undefined,
+                background: selectedReport?.id === r.id ? 'var(--cprs-selected)' : undefined,
               }}
             >
-              {cat.label}
+              {r.name}
             </div>
           ))}
+          {!loading && reports.length === 0 && (
+            <p className={styles.emptyText}>No report types available</p>
+          )}
         </div>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {reports.length === 0 ? (
-            <p className={styles.emptyText}>No reports in this category</p>
+          {selectedReport ? (
+            <div style={{ padding: 8, border: '1px solid var(--cprs-border)', borderRadius: 4, background: 'var(--cprs-bg)' }}>
+              <div className={styles.panelTitle}>{selectedReport.name}</div>
+              <pre style={{ fontFamily: 'monospace', fontSize: 12, whiteSpace: 'pre-wrap', margin: 0, minHeight: 60 }}>
+                {textLoading ? 'Loading report...' : reportText}
+              </pre>
+            </div>
           ) : (
-            <>
-              <table className={styles.dataTable}>
-                <thead><tr><th>Title</th><th>Date</th></tr></thead>
-                <tbody>
-                  {reports.map((r) => (
-                    <tr
-                      key={r.id}
-                      onClick={() => setSelectedReport(r.id)}
-                      style={selectedReport === r.id ? { background: 'var(--cprs-selected)' } : undefined}
-                    >
-                      <td>{r.title}</td>
-                      <td>{r.date || '—'}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              {current && (
-                <div style={{ padding: 8, border: '1px solid var(--cprs-border)', borderRadius: 4, background: 'var(--cprs-bg)' }}>
-                  <div className={styles.panelTitle}>{current.title}</div>
-                  <pre style={{ fontFamily: 'monospace', fontSize: 12, whiteSpace: 'pre-wrap', margin: 0 }}>
-                    {current.text}
-                  </pre>
-                </div>
-              )}
-            </>
+            <p className={styles.emptyText}>Select a report type, then view the report for this patient</p>
           )}
         </div>
       </div>

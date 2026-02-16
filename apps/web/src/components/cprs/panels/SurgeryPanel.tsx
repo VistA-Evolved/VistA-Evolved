@@ -1,33 +1,33 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDataCache, type Surgery } from '../../../stores/data-cache';
 import styles from '../cprs.module.css';
 
 interface Props { dfn: string; }
 
-const MOCK_SURGERIES = [
-  { id: '1', procedure: 'Cholecystectomy (Laparoscopic)', date: '2024-03-15', surgeon: 'Provider, Clyde WV', status: 'Completed', notes: 'Uncomplicated. Discharged POD 1.' },
-  { id: '2', procedure: 'Right Inguinal Hernia Repair', date: '2022-08-20', surgeon: 'Provider, Clyde WV', status: 'Completed', notes: 'Mesh repair. No complications.' },
-];
-
-type Surgery = typeof MOCK_SURGERIES[number];
-
 export default function SurgeryPanel({ dfn }: Props) {
+  const { fetchDomain, getDomain, isLoading } = useDataCache();
   const [selected, setSelected] = useState<Surgery | null>(null);
+
+  useEffect(() => { fetchDomain(dfn, 'surgery'); }, [dfn, fetchDomain]);
+
+  const cases = getDomain(dfn, 'surgery');
+  const loading = isLoading(dfn, 'surgery');
 
   return (
     <div>
       <div className={styles.panelTitle}>Surgery</div>
       <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', margin: '2px 0 8px' }}>
-        Contract: ORWSR RPTLIST &bull; Data source: mock dataset (API integration pending)
+        Contract: ORWSR LIST &bull; Data source: live RPC
       </p>
 
       <div className={styles.splitPane}>
         <div className={styles.splitLeft}>
           <table className={styles.dataTable}>
-            <thead><tr><th>Procedure</th><th>Date</th><th>Status</th></tr></thead>
+            <thead><tr><th>Procedure</th><th>Date</th><th>Case #</th></tr></thead>
             <tbody>
-              {MOCK_SURGERIES.map((s) => (
+              {cases.map((s) => (
                 <tr
                   key={s.id}
                   onClick={() => setSelected(s)}
@@ -35,32 +35,26 @@ export default function SurgeryPanel({ dfn }: Props) {
                 >
                   <td>{s.procedure}</td>
                   <td>{s.date}</td>
-                  <td><span className={`${styles.badge} ${styles.signed}`}>{s.status}</span></td>
+                  <td>{s.caseNum}</td>
                 </tr>
               ))}
-              {MOCK_SURGERIES.length === 0 && (
-                <tr><td colSpan={3} style={{ textAlign: 'center', fontStyle: 'italic' }}>No surgical procedures on file</td></tr>
+              {!loading && cases.length === 0 && (
+                <tr><td colSpan={3} style={{ textAlign: 'center', fontStyle: 'italic' }}>No surgical cases on file</td></tr>
               )}
             </tbody>
           </table>
+          {loading && <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', padding: 8 }}>Loading...</p>}
         </div>
         <div className={styles.splitRight}>
           {selected ? (
             <div>
               <div className={styles.panelTitle}>{selected.procedure}</div>
               <div className={styles.formGroup}><label>Date</label><div>{selected.date}</div></div>
+              <div className={styles.formGroup}><label>Case #</label><div>{selected.caseNum}</div></div>
               <div className={styles.formGroup}><label>Surgeon</label><div>{selected.surgeon}</div></div>
-              <div className={styles.formGroup}>
-                <label>Status</label>
-                <div><span className={`${styles.badge} ${styles.signed}`}>{selected.status}</span></div>
-              </div>
-              <div className={styles.formGroup}>
-                <label>Operative Note</label>
-                <div style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>{selected.notes}</div>
-              </div>
             </div>
           ) : (
-            <p className={styles.emptyText}>Select a surgical procedure to view details</p>
+            <p className={styles.emptyText}>Select a surgical case to view details</p>
           )}
         </div>
       </div>

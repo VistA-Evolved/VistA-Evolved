@@ -1,22 +1,49 @@
-# Phase 11 — CPRS Web Replica v1 — Ops Summary
+# Phase 12 — CPRS Parity Wiring — Ops Summary
 
 ## What Changed
 
-### New Files (30+)
-- **Contract Layer**: `apps/web/src/lib/contracts/types.ts`, `loader.ts`, `data/tabs.json`, `data/menus.json`
-- **State Stores**: `apps/web/src/stores/patient-context.tsx`, `cprs-ui-state.tsx`, `data-cache.tsx`
-- **CPRS Shell**: `components/cprs/cprs.module.css`, `CPRSMenuBar.tsx`, `PatientBanner.tsx`, `CPRSTabStrip.tsx`, `CPRSModals.tsx`
-- **Tab Panels** (10): CoverSheet, Problems, Meds, Orders, Notes, Consults, Surgery, DCSumm, Labs, Reports
-- **Dialogs** (3): AddProblem, EditProblem, AddMedication
-- **Route Pages** (6): `/cprs/layout`, `/cprs/login`, `/cprs/patient-search`, `/cprs/chart/[dfn]/[tab]`, `/cprs/settings/preferences`, `/cprs/verify`
-- **Verification**: `scripts/verify-phase1-to-phase11-cprs.ps1` (82 checks)
-- **Prompts**: `prompts/13-PHASE-11-CPRS-WEB-REPLICA/13-01-*`, `13-02-*`
-- **Runbook**: `docs/runbooks/cprs-web-replica-v1.md`
+### Phase 12 New API Endpoints (9)
+- `GET /vista/icd-search?q=` — ORQQPL4 LEX lexicon search
+- `GET /vista/consults?dfn=` — ORQQCN LIST
+- `GET /vista/consults/detail?id=` — ORQQCN DETAIL
+- `GET /vista/surgery?dfn=` — ORWSR LIST
+- `GET /vista/dc-summaries?dfn=` — TIU DOCUMENTS BY CONTEXT (class 244)
+- `GET /vista/tiu-text?id=` — TIU GET RECORD TEXT
+- `GET /vista/labs?dfn=` — ORWLRR INTERIM
+- `GET /vista/reports` — ORWRP REPORT LISTS
+- `GET /vista/reports/text?dfn=&id=&hsType=` — ORWRP REPORT TEXT
 
-### Modified Files
-- `apps/api/package.json` — added `--env-file=.env.local` to dev/start scripts
-- `apps/web/src/app/page.tsx` — root page now links to CPRS routes
-- `scripts/verify-latest.ps1` — points to phase 11 script
+### 5 Gap Panels Wired to Live Data
+- ConsultsPanel — useDataCache + detail text fetch
+- SurgeryPanel — useDataCache + split pane layout
+- DCSummPanel — useDataCache + full text fetch
+- LabsPanel — useDataCache + acknowledge workflow
+- ReportsPanel — useDataCache + report text fetch
+- All show "Data source: live RPC" (no more mock data)
+
+### 3 Dialogs Improved
+- AddProblemDialog — live ICD search (ORQQPL4 LEX), API-first save, sync status
+- EditProblemDialog — API-first save, sync-status banner
+- AddMedicationDialog — env-based API_BASE
+
+### Tools Menu Features
+- GraphingModal — real SVG vitals chart with type selector
+- LegacyConsoleModal — working RPC console with execute/clear
+- RemoteDataModal — architecture docs with FHIR bridge notes
+
+### Data Cache Extended
+- 5 new types: Consult, Surgery, DCSummary, LabResult, ReportDef
+- 5 new fetchers: fetchConsults, fetchSurgery, fetchDCSummaries, fetchLabs, fetchReports
+- 11 total domains (up from 6)
+
+### Documentation
+- `docs/parity-coverage-report.md` — comprehensive parity report
+- `docs/runbooks/vista-rpc-phase12-parity.md` — Phase 12 runbook
+- `prompts/12-PHASE-12-CPRS-PARITY-WIRING/` — IMPLEMENT + VERIFY prompts
+
+### Verification
+- `scripts/verify-phase1-to-phase12-parity.ps1` — extends Phase 11 with 25+ new checks
+- `/cprs/verify` page updated with 6 new Phase 12 endpoint checks
 
 ## How to Test Manually
 
@@ -25,28 +52,26 @@
 3. Build web: `pnpm -C apps/web build`
 4. Start web: `pnpm -C apps/web dev`
 5. Navigate to `http://localhost:3000/cprs/login`
-6. Search patients (e.g., "ZZ") — finds 3 test patients
-7. Select patient — chart opens with 10 tabs
-8. Tab through all tabs
-9. Visit `http://localhost:3000/cprs/verify` — all checks green
+6. Search patients → select patient → chart opens
+7. Click through all 10 tabs — 5 gap panels now show "live RPC"
+8. Problems tab → Add Problem → type "diabetes" in ICD search box
+9. Tools menu → Graphing → see SVG vitals chart
+10. Tools menu → Legacy Console → execute API calls
+11. Tools menu → Remote Data Viewer → see architecture info
+12. Visit `http://localhost:3000/cprs/verify` — all checks green
 
 ## Verifier Output
 
 ```
-PASS: 82  FAIL: 0  WARN: 0  TOTAL: 82
-*** ALL CHECKS PASSED ***
+Script: scripts/verify-phase1-to-phase12-parity.ps1
+(Run after commit for final counts)
 ```
 
-Script: `scripts/verify-phase1-to-phase11-cprs.ps1`
-
 ## Follow-Ups
-- Wire Labs/Reports/Consults/Surgery/DCSumm to real VistA RPCs
-- Add ICD/LEX lookup for Add Problem dialog
 - Real order signing workflow
+- Full write-back for consults/surgery/labs (read-only in Phase 12)
 - Keyboard navigation and accessibility
-- See `ops/known-gaps.md` for full gap inventory
-
-## Verification Audit (Phase 11 VERIFY pass)
+- See `docs/parity-coverage-report.md` for remaining gaps
 
 Performed 2026-02-16. Results:
 

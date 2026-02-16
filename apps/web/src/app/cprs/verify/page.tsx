@@ -94,6 +94,62 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       return { ok: d.ok === true, detail: `${d.problems?.length ?? 0} problem(s)` };
     },
   },
+  // --- Phase 12 endpoints ---
+  {
+    id: 'icd-search',
+    label: 'ICD lexicon search (Phase 12)',
+    fn: async () => {
+      const r = await fetch(`${API_BASE}/vista/icd-search?q=diabetes`);
+      const d = await r.json();
+      return { ok: d.ok === true && Array.isArray(d.results), detail: `${d.results?.length ?? 0} result(s)` };
+    },
+  },
+  {
+    id: 'consults',
+    label: 'Consults endpoint (Phase 12)',
+    fn: async () => {
+      const r = await fetch(`${API_BASE}/vista/consults?dfn=1`);
+      const d = await r.json();
+      return { ok: d.ok === true, detail: `${d.results?.length ?? 0} consult(s)` };
+    },
+  },
+  {
+    id: 'surgery',
+    label: 'Surgery endpoint (Phase 12)',
+    fn: async () => {
+      const r = await fetch(`${API_BASE}/vista/surgery?dfn=1`);
+      const d = await r.json();
+      return { ok: d.ok === true, detail: `${d.results?.length ?? 0} case(s)` };
+    },
+  },
+  {
+    id: 'dc-summaries',
+    label: 'D/C Summaries endpoint (Phase 12)',
+    fn: async () => {
+      const r = await fetch(`${API_BASE}/vista/dc-summaries?dfn=1`);
+      const d = await r.json();
+      return { ok: d.ok === true, detail: `${d.results?.length ?? 0} summary(s)` };
+    },
+  },
+  {
+    id: 'labs',
+    label: 'Labs endpoint (Phase 12)',
+    fn: async () => {
+      const r = await fetch(`${API_BASE}/vista/labs?dfn=1`);
+      const d = await r.json();
+      return { ok: d.ok === true, detail: `${d.results?.length ?? 0} result(s)` };
+    },
+  },
+  {
+    id: 'reports',
+    label: 'Reports catalog (Phase 12)',
+    fn: async () => {
+      const r = await fetch(`${API_BASE}/vista/reports`);
+      const d = await r.json();
+      return { ok: d.ok === true && Array.isArray(d.reports), detail: `${d.reports?.length ?? 0} report type(s)` };
+    },
+  },
+  // --- End Phase 12 endpoints ---
   {
     id: 'contract-tabs',
     label: 'Contract tabs.json loaded',
@@ -182,7 +238,7 @@ export default function CPRSVerifyPage() {
     <div className={styles.shell} style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <div className={styles.menuBar}>
         <span style={{ fontWeight: 600, fontSize: 13 }}>EHR &mdash; Evolved</span>
-        <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--cprs-text-muted)' }}>Phase 11 Verification</span>
+        <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--cprs-text-muted)' }}>Phase 12 Verification</span>
       </div>
 
       <div style={{ flex: 1, padding: 24, maxWidth: 700, margin: '0 auto', width: '100%' }}>

@@ -1,20 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useCPRSUI } from '../../../stores/cprs-ui-state';
 import { useDataCache, type Problem } from '../../../stores/data-cache';
 import styles from '../cprs.module.css';
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
+
+interface LexResult { id: string; icd: string; description: string; }
+
 /**
- * Add Problem dialog.
- * Phase 9B revealed that the RPC ORQQPL ADD SAVE requires ICD coding lookup
- * (ORQQPL4 LEX) which isn't yet wired end-to-end. Until then, problems are
- * saved as local drafts in the data cache and a banner explains the limitation.
+ * Add Problem dialog with live ICD lexicon search (ORQQPL4 LEX).
+ * Phase 12F: search box queries /vista/icd-search for real lexicon results.
+ * Falls back to local drafts if problem save API is not yet fully wired.
  */
 export default function AddProblemDialog() {
   const { closeModal, modalData } = useCPRSUI();
   const { addLocalItem } = useDataCache();
   const dfn = String(modalData?.dfn ?? '');
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<LexResult[]>([]);
+  const [searching, setSearching] = useState(false);
+  const [selectedLex, setSelectedLex] = useState<LexResult | null>(null);
 
   const [description, setDescription] = useState('');
   const [onset, setOnset] = useState('');
@@ -23,6 +31,35 @@ export default function AddProblemDialog() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [syncStatus, setSyncStatus] = useState<'synced' | 'local' | ''>('');
+
+  const doSearch = useCallback(async (q: string) => {
+    if (q.trim().length < 2) { setSearchResults([]); return; }
+    setSearching(true);
+    try {
+      const res = await fetch(`${API_BASE}/vista/icd-search?q=${encodeURIComponent(q.trim())}`);
+      const data = await res.json();
+      setSearchResults(data.ok ? (data.results ?? []) : []);
+    } catch {
+      setSearchResults([]);
+    } finally {
+      setSearching(false);
+    }
+  }, []);
+
+  function handleSearchKeyDown(e: React.KeyboardEvent) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      doSearch(searchQuery);
+    }
+  }
+
+  function handleSelectLex(lex: LexResult) {
+    setSelectedLex(lex);
+    setDescription(lex.description);
+    setIcdCode(lex.icd);
+    setSearchResults([]);
+  }
 
   async function handleSave() {
     if (!description.trim()) { setError('Description is required'); return; }
@@ -30,65 +67,107 @@ export default function AddProblemDialog() {
     setError('');
 
     try {
-      // Try API first
-      const res = await fetch(`http://127.0.0.1:3001/vista/problems?dfn=${dfn}`, {
+      const res = await fetch(`${API_BASE}/vista/problems?dfn=${dfn}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ description, onset, status, icdCode }),
+        body: JSON.stringify({ dfn, text: description, onset, status, icdCode }),
       });
-
-      if (res.ok) {
+      const data = await res.json();
+      if (data.ok) {
+        setSyncStatus('synced');
         setSuccess(true);
         setTimeout(() => closeModal(), 800);
         return;
       }
-
-      // API not available — save as local draft
-      const draft: Problem = {
-        id: `draft-${Date.now()}`,
-        text: `${description.trim()}${icdCode ? ` (${icdCode})` : ''}`,
-        onset: onset || 'Unknown',
-        status,
-      };
-      addLocalItem(dfn, 'problems', draft);
-      setSuccess(true);
-      setTimeout(() => closeModal(), 800);
+      // API not available or returned blocker — save locally
+      saveLocal();
     } catch {
-      // Network error — save locally
-      const draft: Problem = {
-        id: `draft-${Date.now()}-2`,
-        text: `${description.trim()}${icdCode ? ` (${icdCode})` : ''}`,
-        onset: onset || 'Unknown',
-        status,
-      };
-      addLocalItem(dfn, 'problems', draft);
-      setSuccess(true);
-      setTimeout(() => closeModal(), 800);
+      saveLocal();
     } finally {
       setSaving(false);
     }
+  }
+
+  function saveLocal() {
+    const draft: Problem = {
+      id: `draft-${Date.now()}`,
+      text: `${description.trim()}${icdCode ? ` (${icdCode})` : ''}`,
+      onset: onset || 'Unknown',
+      status,
+    };
+    addLocalItem(dfn, 'problems', draft);
+    setSyncStatus('local');
+    setSuccess(true);
+    setTimeout(() => closeModal(), 800);
   }
 
   if (!dfn) return null;
 
   return (
     <div className={styles.modalOverlay} onClick={(e) => e.target === e.currentTarget && closeModal()}>
-      <div className={styles.modalContent} style={{ maxWidth: 520 }}>
+      <div className={styles.modalContent} style={{ maxWidth: 560 }}>
         <div className={styles.modalHeader}>
           <span>Add Problem</span>
           <button onClick={closeModal} style={{ background: 'none', border: 'none', fontSize: 18, cursor: 'pointer' }}>&times;</button>
         </div>
         <div className={styles.modalBody}>
-          <div style={{ padding: '6px 10px', background: '#fff3cd', border: '1px solid #ffc107', borderRadius: 4, marginBottom: 12, fontSize: 12 }}>
-            <strong>Note:</strong> ICD lexicon lookup (ORQQPL4 LEX) is not yet wired. Problems will be saved as local drafts until full API integration is complete.
+          {error && <div className={styles.errorText}>{error}</div>}
+          {success && (
+            <div style={{
+              padding: '6px 10px', borderRadius: 4, marginBottom: 8, fontSize: 12,
+              background: syncStatus === 'synced' ? '#d4edda' : '#fff3cd',
+              border: syncStatus === 'synced' ? '1px solid #28a745' : '1px solid #ffc107',
+              color: syncStatus === 'synced' ? '#155724' : '#856404',
+            }}>
+              {syncStatus === 'synced'
+                ? 'Problem saved to server.'
+                : 'Problem saved as local draft. (Full save requires ORQQPL ADD SAVE — not yet wired.)'}
+            </div>
+          )}
+
+          {/* ICD Lexicon Search */}
+          <div className={styles.formGroup}>
+            <label>Search Lexicon (ORQQPL4 LEX)</label>
+            <div style={{ display: 'flex', gap: 4 }}>
+              <input
+                className={styles.formInput}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleSearchKeyDown}
+                placeholder="Type diagnosis (e.g. hypertension) and press Enter"
+                style={{ flex: 1 }}
+              />
+              <button className={styles.btn} onClick={() => doSearch(searchQuery)} disabled={searching || searchQuery.trim().length < 2}>
+                {searching ? '...' : 'Search'}
+              </button>
+            </div>
           </div>
 
-          {error && <div className={styles.errorText}>{error}</div>}
-          {success && <div style={{ color: 'green', fontSize: 12, marginBottom: 8 }}>Problem saved successfully.</div>}
+          {searchResults.length > 0 && (
+            <div style={{ maxHeight: 160, overflowY: 'auto', border: '1px solid var(--cprs-border)', borderRadius: 4, marginBottom: 8 }}>
+              {searchResults.map((r) => (
+                <div
+                  key={r.id}
+                  onClick={() => handleSelectLex(r)}
+                  style={{ padding: '4px 8px', cursor: 'pointer', fontSize: 12, borderBottom: '1px solid var(--cprs-border)' }}
+                  onMouseEnter={(e) => { (e.target as HTMLElement).style.background = 'var(--cprs-selected)'; }}
+                  onMouseLeave={(e) => { (e.target as HTMLElement).style.background = ''; }}
+                >
+                  <strong>{r.icd}</strong> — {r.description}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {selectedLex && (
+            <div style={{ padding: '4px 8px', background: '#d4edda', borderRadius: 4, marginBottom: 8, fontSize: 12 }}>
+              Selected: <strong>{selectedLex.icd}</strong> — {selectedLex.description}
+            </div>
+          )}
 
           <div className={styles.formGroup}>
             <label>Problem Description *</label>
-            <input className={styles.formInput} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="e.g. Essential hypertension" autoFocus />
+            <input className={styles.formInput} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="e.g. Essential hypertension" />
           </div>
           <div className={styles.formGroup}>
             <label>ICD Code</label>

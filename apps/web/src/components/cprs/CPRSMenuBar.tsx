@@ -63,7 +63,7 @@ function buildMenus(): Record<string, MenuAction[]> {
       { label: 'Graphing...', action: 'graphing' },
       { label: 'Legacy Console', action: 'legacyConsole' },
       { separator: true, label: '', action: '' },
-      { label: 'Remote Data Viewer', action: 'remoteData', enabled: false },
+      { label: 'Remote Data Viewer', action: 'remoteData' },
     ],
     Help: [
       { label: 'Keyboard Shortcuts', shortcut: 'F1', action: 'keyboardShortcuts' },
@@ -146,8 +146,7 @@ export default function CPRSMenuBar({ dfn }: { dfn?: string }) {
     } else if (action === 'legacyConsole') {
       openModal('legacyConsole');
     } else if (action === 'remoteData') {
-      // Remote Data Viewer — integration pending, currently disabled in menu
-      alert('Remote Data Viewer integration is pending.');
+      openModal('remoteData');
     } else if (action === 'keyboardShortcuts') {
       openModal('keyboardShortcuts');
     } else if (action === 'about') {

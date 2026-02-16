@@ -21,6 +21,13 @@ export interface DraftOrder {
   createdAt: string;
 }
 
+/* Phase 12 — 5 new clinical domains */
+export interface Consult { id: string; date: string; status: string; service: string; type: string; }
+export interface Surgery { id: string; caseNum: string; procedure: string; date: string; surgeon: string; }
+export interface DCSummary { id: string; title: string; date: string; author: string; location: string; status: string; }
+export interface LabResult { id: string; name: string; date: string; status: string; value: string; }
+export interface ReportDef { id: string; name: string; hsType: string; }
+
 export interface ClinicalData {
   allergies: Allergy[];
   problems: Problem[];
@@ -28,6 +35,11 @@ export interface ClinicalData {
   notes: Note[];
   medications: Medication[];
   orders: DraftOrder[];
+  consults: Consult[];
+  surgery: Surgery[];
+  dcSummaries: DCSummary[];
+  labs: LabResult[];
+  reports: ReportDef[];
 }
 
 export interface DataCacheValue {
@@ -83,6 +95,31 @@ async function fetchMedications(dfn: string): Promise<Medication[]> {
   const d = await fetchJSON<{ ok: boolean; results?: Medication[] }>(`/vista/medications?dfn=${dfn}`);
   return d.results ?? [];
 }
+async function fetchConsults(dfn: string): Promise<Consult[]> {
+  const d = await fetchJSON<{ ok: boolean; results?: Consult[] }>(`/vista/consults?dfn=${dfn}`);
+  return d.results ?? [];
+}
+async function fetchSurgery(dfn: string): Promise<Surgery[]> {
+  const d = await fetchJSON<{ ok: boolean; results?: Surgery[] }>(`/vista/surgery?dfn=${dfn}`);
+  return d.results ?? [];
+}
+async function fetchDCSummaries(dfn: string): Promise<DCSummary[]> {
+  const d = await fetchJSON<{ ok: boolean; results?: DCSummary[] }>(`/vista/dc-summaries?dfn=${dfn}`);
+  return d.results ?? [];
+}
+async function fetchLabs(dfn: string): Promise<LabResult[]> {
+  const d = await fetchJSON<{ ok: boolean; results?: LabResult[]; rawText?: string }>(`/vista/labs?dfn=${dfn}`);
+  if (d.results && d.results.length > 0) return d.results;
+  // If only rawText, return a single synthetic entry so UI can display it
+  if (d.rawText && d.rawText !== 'No Data Found') {
+    return [{ id: 'raw-1', name: 'Lab Report', date: '', status: 'Final', value: d.rawText }];
+  }
+  return [];
+}
+async function fetchReports(_dfn: string): Promise<ReportDef[]> {
+  const d = await fetchJSON<{ ok: boolean; reports?: ReportDef[] }>(`/vista/reports`);
+  return d.reports ?? [];
+}
 
 type DomainFetcher = (dfn: string) => Promise<unknown[]>;
 const FETCHERS: Record<string, DomainFetcher> = {
@@ -92,6 +129,11 @@ const FETCHERS: Record<string, DomainFetcher> = {
   notes: fetchNotes,
   medications: fetchMedications,
   orders: async () => [], // orders are local-only for now
+  consults: fetchConsults,
+  surgery: fetchSurgery,
+  dcSummaries: fetchDCSummaries,
+  labs: fetchLabs,
+  reports: fetchReports,
 };
 
 /* ------------------------------------------------------------------ */
@@ -137,7 +179,10 @@ export function DataCacheProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const fetchAll = useCallback(async (dfn: string) => {
-    const domains: (keyof ClinicalData)[] = ['allergies', 'problems', 'vitals', 'notes', 'medications'];
+    const domains: (keyof ClinicalData)[] = [
+      'allergies', 'problems', 'vitals', 'notes', 'medications',
+      'consults', 'surgery', 'dcSummaries', 'labs', 'reports',
+    ];
     await Promise.allSettled(domains.map((d) => fetchDomain(dfn, d)));
   }, [fetchDomain]);
 

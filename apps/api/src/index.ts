@@ -1128,6 +1128,378 @@ server.post("/vista/problems", async (request) => {
   };
 });
 
+// ============================================================================
+// Phase 12: Consults, Surgery, D/C Summaries, Labs, Reports, ICD Search
+// ============================================================================
+
+// Phase 12F: ICD/Lexicon search via ORQQPL4 LEX
+server.get("/vista/icd-search", async (request) => {
+  const { q } = request.query as any;
+  if (!q || typeof q !== "string" || q.trim().length < 2) {
+    return { ok: false, error: "Search query must be at least 2 characters", hint: "Use ?q=hyper" };
+  }
+  try { validateCredentials(); } catch (err: any) {
+    return { ok: false, error: err.message };
+  }
+  const RPC_NAME = "ORQQPL4 LEX";
+  try {
+    await connect();
+    const lines = await callRpc(RPC_NAME, [q.trim()]);
+    disconnect();
+    // ORQQPL4 LEX returns lines: IEN^Description^ICD-code
+    const results = (Array.isArray(lines) ? lines : [lines])
+      .filter((l: string) => l && l.trim())
+      .map((line: string, idx: number) => {
+      const parts = line.split("^");
+      if (parts.length >= 3) {
+        return { id: parts[0], description: parts[1], icd: parts[2] };
+      } else if (parts.length === 2) {
+        return { id: String(idx), description: parts[0], icd: parts[1] };
+      }
+      return { id: String(idx), icd: "", description: line };
+    });
+    return { ok: true, rpc: RPC_NAME, count: results.length, results };
+  } catch (err: any) {
+    disconnect();
+    return { ok: false, rpc: RPC_NAME, error: err.message };
+  }
+});
+
+// Phase 12A: Consults via ORQQCN LIST + ORQQCN DETAIL
+server.get("/vista/consults", async (request) => {
+  const { dfn } = request.query as any;
+  if (!dfn || !/^\d+$/.test(String(dfn))) {
+    return { ok: false, error: "Missing or non-numeric dfn", hint: "Use ?dfn=1" };
+  }
+  try { validateCredentials(); } catch (err: any) {
+    return { ok: false, error: err.message };
+  }
+  const RPC_NAME = "ORQQCN LIST";
+  try {
+    await connect();
+    // Params: DFN, startDate, stopDate, service, status
+    const lines = await callRpc(RPC_NAME, [String(dfn), "", "", "", ""]);
+    disconnect();
+    if (lines.length === 0 || (lines.length === 1 && lines[0].startsWith("<"))) {
+      return { ok: true, count: 0, results: [], rpcUsed: RPC_NAME };
+    }
+    const results = lines
+      .map((line) => {
+        const p = line.split("^");
+        if (p.length < 5) return null;
+        const id = p[0]?.trim();
+        if (!id || !/^\d+$/.test(id)) return null;
+        // FM date → YYYY-MM-DD
+        let date = p[1] || "";
+        if (date && date.length >= 7) {
+          const [dp, tp] = date.split(".");
+          const y = parseInt(dp.substring(0, 3), 10) + 1700;
+          const m = dp.substring(3, 5);
+          const d = dp.substring(5, 7);
+          date = `${y}-${m}-${d}`;
+          if (tp && tp.length >= 4) date += ` ${tp.substring(0, 2)}:${tp.substring(2, 4)}`;
+        }
+        const status = (p[2] || "").trim();
+        const service = (p[3] || "").trim();
+        const typeStr = (p[4] || "").trim();
+        const typeCode = (p[8] || "").trim(); // C/P/M/I/R
+        return { id, date, status, service, type: typeStr || "Consult", typeCode };
+      })
+      .filter(Boolean);
+    return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
+  } catch (err: any) {
+    disconnect();
+    return { ok: false, error: err.message, rpcUsed: RPC_NAME };
+  }
+});
+
+server.get("/vista/consults/detail", async (request) => {
+  const { id } = request.query as any;
+  if (!id || !/^\d+$/.test(String(id))) {
+    return { ok: false, error: "Missing or non-numeric consult id", hint: "Use ?id=123" };
+  }
+  try { validateCredentials(); } catch (err: any) {
+    return { ok: false, error: err.message };
+  }
+  const RPC_NAME = "ORQQCN DETAIL";
+  try {
+    await connect();
+    const lines = await callRpc(RPC_NAME, [String(id)]);
+    disconnect();
+    return { ok: true, text: lines.join("\n"), rpcUsed: RPC_NAME };
+  } catch (err: any) {
+    disconnect();
+    return { ok: false, error: err.message, rpcUsed: RPC_NAME };
+  }
+});
+
+// Phase 12B: Surgery via ORWSR LIST
+server.get("/vista/surgery", async (request) => {
+  const { dfn } = request.query as any;
+  if (!dfn || !/^\d+$/.test(String(dfn))) {
+    return { ok: false, error: "Missing or non-numeric dfn", hint: "Use ?dfn=1" };
+  }
+  try { validateCredentials(); } catch (err: any) {
+    return { ok: false, error: err.message };
+  }
+  const RPC_NAME = "ORWSR LIST";
+  try {
+    await connect();
+    // Params: DFN, startDate, endDate, context(-1=all), max(999)
+    const lines = await callRpc(RPC_NAME, [String(dfn), "", "", "-1", "999"]);
+    disconnect();
+    if (lines.length === 0 || (lines.length === 1 && !lines[0].trim())) {
+      return { ok: true, count: 0, results: [], rpcUsed: RPC_NAME };
+    }
+    const results = lines
+      .map((line) => {
+        const p = line.split("^");
+        if (p.length < 3) return null;
+        const id = p[0]?.trim();
+        if (!id) return null;
+        const procedure = (p[1] || "").trim();
+        let date = (p[2] || "").trim();
+        if (date && date.length >= 7 && !date.includes("-")) {
+          const [dp, tp] = date.split(".");
+          const y = parseInt(dp.substring(0, 3), 10) + 1700;
+          const m = dp.substring(3, 5);
+          const d = dp.substring(5, 7);
+          date = `${y}-${m}-${d}`;
+          if (tp && tp.length >= 4) date += ` ${tp.substring(0, 2)}:${tp.substring(2, 4)}`;
+        }
+        const surgeonField = (p[3] || "").trim();
+        const surgeon = surgeonField.includes(";") ? surgeonField.split(";")[1] || surgeonField : surgeonField;
+        return { id, procedure, date, surgeon, status: "Complete" };
+      })
+      .filter(Boolean);
+    return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
+  } catch (err: any) {
+    disconnect();
+    return { ok: false, error: err.message, rpcUsed: RPC_NAME };
+  }
+});
+
+// Phase 12C: Discharge Summaries via TIU DOCUMENTS BY CONTEXT (CLASS=244)
+server.get("/vista/dc-summaries", async (request) => {
+  const { dfn } = request.query as any;
+  if (!dfn || !/^\d+$/.test(String(dfn))) {
+    return { ok: false, error: "Missing or non-numeric dfn", hint: "Use ?dfn=1" };
+  }
+  try { validateCredentials(); } catch (err: any) {
+    return { ok: false, error: err.message };
+  }
+  const RPC_NAME = "TIU DOCUMENTS BY CONTEXT";
+  try {
+    await connect();
+    // CLASS=244 for Discharge Summaries (CLS_DC_SUMM in rDCSumm.pas)
+    const signedLines = await callRpc(RPC_NAME, [
+      "244", "1", String(dfn), "", "", "0", "0", "D",
+    ]);
+    const unsignedLines = await callRpc(RPC_NAME, [
+      "244", "2", String(dfn), "", "", "0", "0", "D",
+    ]);
+    disconnect();
+    const seenIens = new Set<string>();
+    const allLines: string[] = [];
+    for (const line of [...unsignedLines, ...signedLines]) {
+      const ien = line.split("^")[0]?.trim();
+      if (ien && /^\d+$/.test(ien) && !seenIens.has(ien)) {
+        seenIens.add(ien);
+        allLines.push(line);
+      }
+    }
+    const results = allLines
+      .map((line) => {
+        const parts = line.split("^");
+        if (parts.length < 7) return null;
+        const id = parts[0].trim();
+        if (!id || !/^\d+$/.test(id)) return null;
+        const title = (parts[1] || "").replace(/^\+\s*/, "").trim();
+        const fmDate = parts[2] || "";
+        let date = fmDate;
+        if (fmDate && fmDate.length >= 7) {
+          const [datePart, timePart] = fmDate.split(".");
+          const y = parseInt(datePart.substring(0, 3), 10) + 1700;
+          const m = datePart.substring(3, 5);
+          const d = datePart.substring(5, 7);
+          date = `${y}-${m}-${d}`;
+          if (timePart && timePart.length >= 4) {
+            date += ` ${timePart.substring(0, 2)}:${timePart.substring(2, 4)}`;
+          }
+        }
+        const authorField = parts[4] || "";
+        const authorParts = authorField.split(";");
+        const author = authorParts.length >= 3 ? authorParts[2] : authorParts[1] || authorField;
+        const location = parts[5] || "";
+        const status = parts[6] || "";
+        return { id, title, date, author, location, status };
+      })
+      .filter(Boolean);
+    return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
+  } catch (err: any) {
+    disconnect();
+    return { ok: false, error: err.message, rpcUsed: RPC_NAME };
+  }
+});
+
+// Phase 12C: Get full text of a TIU document (works for notes AND DC summaries)
+server.get("/vista/tiu-text", async (request) => {
+  const { id } = request.query as any;
+  if (!id || !/^\d+$/.test(String(id))) {
+    return { ok: false, error: "Missing or non-numeric document id", hint: "Use ?id=123" };
+  }
+  try { validateCredentials(); } catch (err: any) {
+    return { ok: false, error: err.message };
+  }
+  const RPC_NAME = "TIU GET RECORD TEXT";
+  try {
+    await connect();
+    const lines = await callRpc(RPC_NAME, [String(id)]);
+    disconnect();
+    return { ok: true, text: lines.join("\n"), rpcUsed: RPC_NAME };
+  } catch (err: any) {
+    disconnect();
+    return { ok: false, error: err.message, rpcUsed: RPC_NAME };
+  }
+});
+
+// Phase 12D: Labs via ORWLRR INTERIM
+server.get("/vista/labs", async (request) => {
+  const { dfn } = request.query as any;
+  if (!dfn || !/^\d+$/.test(String(dfn))) {
+    return { ok: false, error: "Missing or non-numeric dfn", hint: "Use ?dfn=1" };
+  }
+  try { validateCredentials(); } catch (err: any) {
+    return { ok: false, error: err.message };
+  }
+  const RPC_NAME = "ORWLRR INTERIM";
+  try {
+    await connect();
+    // Params: DFN, startDate(FM), endDate(FM) — empty strings fetch all
+    const lines = await callRpc(RPC_NAME, [String(dfn), "", ""]);
+    disconnect();
+    // Response is free-text lab report lines
+    // Parse structured data from the text: look for test name, result, units, ref range, flag
+    const results: { testName: string; result: string; units: string; refRange: string; flag: string; specimen: string; collectionDate: string }[] = [];
+    let currentSpecimen = "";
+    let currentDate = "";
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed) continue;
+      // Specimen headers: "Specimen: BLOOD" or "Specimen: URINE"
+      if (/^Specimen:/i.test(trimmed)) {
+        currentSpecimen = trimmed.replace(/^Specimen:\s*/i, "").trim();
+        continue;
+      }
+      // Collection date lines: "Collection Date: ..." or date-like patterns
+      if (/^(Collection\s+Date|Collected):/i.test(trimmed)) {
+        currentDate = trimmed.replace(/^(Collection\s+Date|Collected):\s*/i, "").trim();
+        continue;
+      }
+      // Test result lines — try to parse structured lab results
+      // Common format: TestName  Result  Units  RefRange  Flag
+      // or caret-delimited: test^result^units^refRange^flag
+      if (trimmed.includes("^")) {
+        const p = trimmed.split("^");
+        if (p.length >= 2) {
+          results.push({
+            testName: (p[0] || "").trim(),
+            result: (p[1] || "").trim(),
+            units: (p[2] || "").trim(),
+            refRange: (p[3] || "").trim(),
+            flag: (p[4] || "").trim(),
+            specimen: currentSpecimen,
+            collectionDate: currentDate,
+          });
+        }
+      }
+    }
+    // If no structured results parsed, return raw text
+    const rawText = lines.join("\n");
+    if (results.length === 0) {
+      return {
+        ok: true,
+        count: 0,
+        results: [],
+        rawText,
+        rpcUsed: RPC_NAME,
+        note: "Lab results returned as free text; structured parsing found no caret-delimited entries",
+      };
+    }
+    return { ok: true, count: results.length, results, rawText, rpcUsed: RPC_NAME };
+  } catch (err: any) {
+    disconnect();
+    return { ok: false, error: err.message, rpcUsed: RPC_NAME };
+  }
+});
+
+// Phase 12E: Reports — list available reports + fetch report text
+server.get("/vista/reports", async (_request) => {
+  try { validateCredentials(); } catch (err: any) {
+    return { ok: false, error: err.message };
+  }
+  const RPC_NAME = "ORWRP REPORT LISTS";
+  try {
+    await connect();
+    const lines = await callRpc(RPC_NAME, []);
+    disconnect();
+    // Response has sections: [DATE RANGES], [HEALTH SUMMARY TYPES], [REPORT LIST]
+    let inReportList = false;
+    const reports: { id: string; heading: string; qualifier: string; remote: string; rpcName: string; category: string }[] = [];
+    const dateRanges: string[] = [];
+    const hsTypes: string[] = [];
+    let currentSection = "";
+    for (const line of lines) {
+      if (line.includes("[DATE RANGES]")) { currentSection = "dateRanges"; continue; }
+      if (line.includes("[HEALTH SUMMARY TYPES]")) { currentSection = "hsTypes"; continue; }
+      if (line.includes("[REPORT LIST]")) { currentSection = "reportList"; inReportList = true; continue; }
+      if (currentSection === "dateRanges") { dateRanges.push(line); continue; }
+      if (currentSection === "hsTypes") { hsTypes.push(line); continue; }
+      if (currentSection === "reportList" && line.trim()) {
+        const p = line.split("^");
+        reports.push({
+          id: (p[0] || "").trim(),
+          heading: (p[1] || "").trim(),
+          qualifier: (p[2] || "").trim(),
+          remote: (p[6] || "").trim(),
+          rpcName: (p[9] || "").trim(),
+          category: (p[8] || "").trim(),
+        });
+      }
+    }
+    return { ok: true, count: reports.length, reports, dateRanges, hsTypes, rpcUsed: RPC_NAME };
+  } catch (err: any) {
+    disconnect();
+    return { ok: false, error: err.message, rpcUsed: RPC_NAME };
+  }
+});
+
+server.get("/vista/reports/text", async (request) => {
+  const { dfn, id, hsType } = request.query as any;
+  if (!dfn || !/^\d+$/.test(String(dfn))) {
+    return { ok: false, error: "Missing or non-numeric dfn", hint: "Use ?dfn=1&id=1" };
+  }
+  if (!id) {
+    return { ok: false, error: "Missing report id", hint: "Use ?dfn=1&id=1" };
+  }
+  try { validateCredentials(); } catch (err: any) {
+    return { ok: false, error: err.message };
+  }
+  const RPC_NAME = "ORWRP REPORT TEXT";
+  try {
+    await connect();
+    // Params: DFN, reportId, hsType, daysBack, section, alpha, omega
+    const lines = await callRpc(RPC_NAME, [
+      String(dfn), String(id), String(hsType || ""), "", "0", "", "",
+    ]);
+    disconnect();
+    return { ok: true, text: lines.join("\n"), rpcUsed: RPC_NAME };
+  } catch (err: any) {
+    disconnect();
+    return { ok: false, error: err.message, rpcUsed: RPC_NAME };
+  }
+});
+
 const port = Number(process.env.PORT || 3001)
 const host = process.env.HOST || "127.0.0.1"
 

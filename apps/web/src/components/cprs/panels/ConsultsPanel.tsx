@@ -1,33 +1,51 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDataCache, type Consult } from '../../../stores/data-cache';
 import styles from '../cprs.module.css';
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
 
 interface Props { dfn: string; }
 
-const MOCK_CONSULTS = [
-  { id: '1', service: 'Cardiology', date: '2025-12-10', status: 'Complete', urgency: 'Routine', reason: 'Elevated BP, ECG changes', result: 'Echocardiogram WNL. Recommend continue current regimen.' },
-  { id: '2', service: 'Endocrinology', date: '2025-11-01', status: 'Pending', urgency: 'Routine', reason: 'Borderline HbA1c', result: '' },
-  { id: '3', service: 'Ophthalmology', date: '2025-09-15', status: 'Complete', urgency: 'Routine', reason: 'Annual diabetic eye exam', result: 'No diabetic retinopathy detected.' },
-];
-
-type Consult = typeof MOCK_CONSULTS[number];
-
 export default function ConsultsPanel({ dfn }: Props) {
+  const { fetchDomain, getDomain, isLoading } = useDataCache();
   const [selected, setSelected] = useState<Consult | null>(null);
   const [filter, setFilter] = useState<'all' | 'pending' | 'complete'>('all');
+  const [detailText, setDetailText] = useState<string>('');
+  const [detailLoading, setDetailLoading] = useState(false);
 
-  const filtered = MOCK_CONSULTS.filter((c) => {
-    if (filter === 'pending') return c.status === 'Pending';
-    if (filter === 'complete') return c.status === 'Complete';
+  useEffect(() => { fetchDomain(dfn, 'consults'); }, [dfn, fetchDomain]);
+
+  const consults = getDomain(dfn, 'consults');
+  const loading = isLoading(dfn, 'consults');
+
+  const filtered = consults.filter((c) => {
+    if (filter === 'pending') return /pending/i.test(c.status);
+    if (filter === 'complete') return /complete/i.test(c.status);
     return true;
   });
+
+  async function handleSelect(c: Consult) {
+    setSelected(c);
+    setDetailText('');
+    setDetailLoading(true);
+    try {
+      const res = await fetch(`${API_BASE}/vista/consults/detail?id=${c.id}`);
+      const data = await res.json();
+      setDetailText(data.ok ? (data.text ?? '(no detail text)') : 'Error loading detail');
+    } catch {
+      setDetailText('Network error loading detail');
+    } finally {
+      setDetailLoading(false);
+    }
+  }
 
   return (
     <div>
       <div className={styles.panelTitle}>Consults / Requests</div>
       <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', margin: '2px 0 8px' }}>
-        Contract: ORQQCN LIST / ORQQCN DETAIL &bull; Data source: mock dataset (API integration pending)
+        Contract: ORQQCN LIST / ORQQCN DETAIL &bull; Data source: live RPC
       </p>
 
       <div className={styles.panelToolbar}>
@@ -36,7 +54,9 @@ export default function ConsultsPanel({ dfn }: Props) {
           <option value="pending">Pending</option>
           <option value="complete">Complete</option>
         </select>
-        <span style={{ fontSize: 11, color: 'var(--cprs-text-muted)' }}>{filtered.length} consult(s)</span>
+        <span style={{ fontSize: 11, color: 'var(--cprs-text-muted)' }}>
+          {loading ? 'Loading...' : `${filtered.length} consult(s)`}
+        </span>
       </div>
 
       <div className={styles.splitPane}>
@@ -47,18 +67,21 @@ export default function ConsultsPanel({ dfn }: Props) {
               {filtered.map((c) => (
                 <tr
                   key={c.id}
-                  onClick={() => setSelected(c)}
+                  onClick={() => handleSelect(c)}
                   style={selected?.id === c.id ? { background: 'var(--cprs-selected)' } : undefined}
                 >
                   <td>{c.service}</td>
                   <td>{c.date}</td>
                   <td>
-                    <span className={`${styles.badge} ${c.status === 'Pending' ? styles.draft : styles.signed}`}>
+                    <span className={`${styles.badge} ${/pending/i.test(c.status) ? styles.draft : styles.signed}`}>
                       {c.status}
                     </span>
                   </td>
                 </tr>
               ))}
+              {!loading && filtered.length === 0 && (
+                <tr><td colSpan={3} style={{ textAlign: 'center', fontStyle: 'italic' }}>No consults on file</td></tr>
+              )}
             </tbody>
           </table>
         </div>
@@ -67,22 +90,21 @@ export default function ConsultsPanel({ dfn }: Props) {
             <div>
               <div className={styles.panelTitle}>{selected.service} Consult</div>
               <div className={styles.formGroup}><label>Date</label><div>{selected.date}</div></div>
-              <div className={styles.formGroup}><label>Urgency</label><div>{selected.urgency}</div></div>
-              <div className={styles.formGroup}><label>Reason</label><div>{selected.reason}</div></div>
+              <div className={styles.formGroup}><label>Type</label><div>{selected.type || '—'}</div></div>
               <div className={styles.formGroup}>
                 <label>Status</label>
                 <div>
-                  <span className={`${styles.badge} ${selected.status === 'Pending' ? styles.draft : styles.signed}`}>
+                  <span className={`${styles.badge} ${/pending/i.test(selected.status) ? styles.draft : styles.signed}`}>
                     {selected.status}
                   </span>
                 </div>
               </div>
-              {selected.result && (
-                <div className={styles.formGroup}>
-                  <label>Result</label>
-                  <div style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>{selected.result}</div>
+              <div className={styles.formGroup}>
+                <label>Detail</label>
+                <div style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap', minHeight: 40 }}>
+                  {detailLoading ? 'Loading...' : detailText}
                 </div>
-              )}
+              </div>
             </div>
           ) : (
             <p className={styles.emptyText}>Select a consult to view details</p>

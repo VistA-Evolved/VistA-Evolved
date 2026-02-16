@@ -5,10 +5,12 @@ import { useCPRSUI } from '../../../stores/cprs-ui-state';
 import { useDataCache } from '../../../stores/data-cache';
 import styles from '../cprs.module.css';
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
+
 /**
  * Edit Problem dialog — allows modifying status and notes on an existing problem.
- * Full ORQQPL EDIT SAVE integration is pending; for now this persists edits
- * to the local data-cache so the Problems list reflects changes immediately.
+ * Attempts POST to /vista/problems for server persistence; falls back to local
+ * data-cache if the API returns a blocker (ORQQPL EDIT SAVE not yet wired).
  */
 export default function EditProblemDialog() {
   const { closeModal, modalData } = useCPRSUI();
@@ -18,20 +20,47 @@ export default function EditProblemDialog() {
 
   const [status, setStatus] = useState<string>(problem?.status ?? 'active');
   const [note, setNote] = useState<string>(problem?.note ?? '');
+  const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [serverSync, setServerSync] = useState<'pending' | 'synced' | 'local'>('pending');
 
-  function handleSave() {
-    // Full ORQQPL EDIT SAVE integration pending — persist to local cache for now
-    if (dfn && problem) {
-      addLocalItem(dfn, 'problems', {
-        id: problem.id ?? `edited-${Date.now()}`,
-        text: `${problem.description ?? ''}${problem.icdCode ? ` (${problem.icdCode})` : ''} [${note ? 'note: ' + note : ''}]`,
-        status,
-        onset: undefined,
+  async function handleSave() {
+    if (!dfn || !problem) return;
+    setSaving(true);
+
+    try {
+      // Try API first
+      const res = await fetch(`${API_BASE}/vista/problems?dfn=${dfn}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dfn, text: problem.description, status, note, icdCode: problem.icdCode }),
       });
+      const data = await res.json();
+      if (data.ok) {
+        setServerSync('synced');
+      } else {
+        // API returned blocker — save locally
+        persistLocal();
+        setServerSync('local');
+      }
+    } catch {
+      // Network error — save locally
+      persistLocal();
+      setServerSync('local');
     }
+
     setSuccess(true);
-    setTimeout(() => closeModal(), 600);
+    setSaving(false);
+    setTimeout(() => closeModal(), 800);
+  }
+
+  function persistLocal() {
+    addLocalItem(dfn, 'problems', {
+      id: problem?.id ?? `edited-${Date.now()}`,
+      text: `${problem?.description ?? ''}${problem?.icdCode ? ` (${problem.icdCode})` : ''} [${note ? 'note: ' + note : ''}]`,
+      status,
+      onset: undefined,
+    });
   }
 
   if (!problem) return null;
@@ -44,7 +73,13 @@ export default function EditProblemDialog() {
           <button onClick={closeModal} style={{ background: 'none', border: 'none', fontSize: 18, cursor: 'pointer' }}>&times;</button>
         </div>
         <div className={styles.modalBody}>
-          {success && <div style={{ color: 'green', fontSize: 12, marginBottom: 8 }}>Changes saved locally. (Server sync pending ORQQPL EDIT SAVE integration.)</div>}
+          {success && (
+            <div style={{ color: serverSync === 'synced' ? 'green' : '#856404', fontSize: 12, marginBottom: 8, padding: '4px 8px', background: serverSync === 'synced' ? '#d4edda' : '#fff3cd', borderRadius: 4 }}>
+              {serverSync === 'synced'
+                ? 'Changes saved to server.'
+                : 'Changes saved locally. (Server sync requires ORQQPL EDIT SAVE — not yet wired.)'}
+            </div>
+          )}
 
           <div className={styles.formGroup}>
             <label>Problem</label>
@@ -73,7 +108,9 @@ export default function EditProblemDialog() {
         </div>
         <div className={styles.modalFooter}>
           <button className={styles.btn} onClick={closeModal}>Cancel</button>
-          <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={handleSave}>Save Changes</button>
+          <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={handleSave} disabled={saving}>
+            {saving ? 'Saving...' : 'Save Changes'}
+          </button>
         </div>
       </div>
     </div>
