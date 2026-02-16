@@ -62,3 +62,19 @@ When a new discovery happens:
 - update the relevant prompt file
 - add a "Changelog" section at bottom with date + summary
 - never delete older knowledge
+
+## Phase 10 subphase mapping
+Phase 10 (CPRS Extract) is the first phase with A/B/C/D subphases.
+Each subphase gets an IMPLEMENT + VERIFY pair:
+
+| File # | Subphase | Description |
+|--------|----------|-------------|
+| 12-01 | 10A IMPLEMENT | CPRS Inventory Extraction (scripts) |
+| 12-02 | 10A VERIFY | Validate extraction scripts + output |
+| 12-03 | 10B IMPLEMENT | CPRS Contract Generation (schemas) |
+| 12-04 | 10B VERIFY | Validate contract schemas + cross-refs |
+| 12-05 | 10C IMPLEMENT | CPRS Replica Shell (Web UI) |
+| 12-06 | 10C VERIFY | Validate UI build + navigation |
+| 12-07 | 10D IMPLEMENT | API Scaffold Generator |
+| 12-08 | 10D VERIFY | Validate generated routes + build |
+| 12-99 | FULL VERIFY | End-to-end Phase 10 verification |
