@@ -15,12 +15,15 @@ export default function Home() {
           priority
         />
         <div className={styles.intro}>
-          <h1>VistA Evolved</h1>
+          <h1>EHR — Evolved</h1>
           <p>Hello System is running.</p>
         </div>
         <div className={styles.ctas}>
           <Link className={styles.primary} href="/patient-search">
             Patient Search
+          </Link>
+          <Link className={styles.primary} href="/chart/100/cover">
+            Chart Shell (Patient 100)
           </Link>
           <a
             className={styles.secondary}

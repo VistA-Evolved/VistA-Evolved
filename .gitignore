@@ -34,3 +34,6 @@ coverage/
 # Docker
 **/.docker/
 docker-compose.override.yml
+
+# External reference repos (cloned separately)
+reference/cprs/

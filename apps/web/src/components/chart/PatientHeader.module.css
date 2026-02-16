@@ -1,0 +1,32 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 6px 12px;
+  background: #003366;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 13px;
+  flex-shrink: 0;
+  min-height: 32px;
+}
+
+.name {
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+}
+
+.detail {
+  color: #b8d4f0;
+  font-size: 12px;
+}
+
+.loading {
+  color: #88b8e0;
+  font-style: italic;
+}
+
+.error {
+  color: #ff9999;
+}

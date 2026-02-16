@@ -1,0 +1,43 @@
+.strip {
+  display: flex;
+  align-items: flex-end;
+  background: #e8e8e8;
+  border-top: 1px solid #c0c0c0;
+  padding: 0 4px;
+  height: 32px;
+  flex-shrink: 0;
+  gap: 1px;
+  overflow-x: auto;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 14px;
+  font-size: 13px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  background: #d8d8d8;
+  border: 1px solid #b0b0b0;
+  border-bottom: none;
+  border-radius: 3px 3px 0 0;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background 0.1s;
+  height: 26px;
+}
+
+.tab:hover {
+  background: #c8c8c8;
+}
+
+.tab.active {
+  background: #ffffff;
+  border-bottom: 1px solid #ffffff;
+  margin-bottom: -1px;
+  font-weight: 600;
+  color: #000;
+  z-index: 1;
+}

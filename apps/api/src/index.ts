@@ -3,9 +3,13 @@ import cors from "@fastify/cors";
 import { probeConnect } from "./vista/rpcBroker";
 import { validateCredentials } from "./vista/config";
 import { connect, disconnect, callRpc, callRpcWithList, getDuz } from "./vista/rpcBrokerClient";
+import { registerDomainRoutes } from "./routes/index.js";
 
 const server = Fastify();
 server.register(cors, { origin: true });
+
+// Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
+registerDomainRoutes(server);
 
 server.get("/health", async () => ({ ok: true }));
 

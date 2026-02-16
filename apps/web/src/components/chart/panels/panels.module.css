@@ -1,0 +1,151 @@
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 300px;
+  color: #888;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  gap: 8px;
+}
+
+.placeholder h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #666;
+}
+
+.placeholder p {
+  font-size: 13px;
+  color: #999;
+}
+
+/* Shared panel styles */
+.panel {
+  padding: 12px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 13px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.panelTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #ddd;
+}
+
+.loadingText {
+  color: #888;
+  font-style: italic;
+  padding: 8px 0;
+}
+
+.errorText {
+  color: #c62828;
+  padding: 8px 0;
+}
+
+.emptyText {
+  color: #999;
+  padding: 8px 0;
+  font-style: italic;
+}
+
+/* Cover sheet grid */
+.coverGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 12px;
+  height: 100%;
+}
+
+.coverSection {
+  background: #fafafa;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.coverSection h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #003366;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Data table */
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.dataTable th {
+  text-align: left;
+  padding: 4px 8px;
+  background: #eee;
+  border-bottom: 1px solid #ccc;
+  font-weight: 600;
+  color: #444;
+}
+
+.dataTable td {
+  padding: 4px 8px;
+  border-bottom: 1px solid #eee;
+  color: #333;
+}
+
+.dataTable tr:hover td {
+  background: #f0f7ff;
+}
+
+/* List panel (for Problems, Notes, etc.) */
+.listPanel {
+  padding: 12px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 13px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.listItem {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 6px 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.listItem:hover {
+  background: #f0f7ff;
+}
+
+.listBadge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #e8e8e8;
+  color: #555;
+  white-space: nowrap;
+}
+
+.listBadge.active {
+  background: #c8e6c9;
+  color: #2e7d32;
+}
+
+.listBadge.inactive {
+  background: #ffcdd2;
+  color: #c62828;
+}

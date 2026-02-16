@@ -1,0 +1,121 @@
+.menuBar {
+  display: flex;
+  align-items: stretch;
+  background: #f0f0f0;
+  border-bottom: 1px solid #c0c0c0;
+  height: 28px;
+  font-size: 13px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.topItem {
+  position: relative;
+}
+
+.topButton {
+  background: none;
+  border: none;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  color: #1a1a1a;
+  height: 100%;
+  white-space: nowrap;
+}
+
+.topButton:hover,
+.topButton.active {
+  background: #d8d8d8;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 220px;
+  background: #ffffff;
+  border: 1px solid #b0b0b0;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  padding: 2px 0;
+}
+
+.menuItemWrapper {
+  position: relative;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 4px 24px 4px 12px;
+  border: none;
+  background: none;
+  font-size: 13px;
+  font-family: inherit;
+  color: #1a1a1a;
+  cursor: pointer;
+  text-align: left;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+.menuItem:hover {
+  background: #0078d4;
+  color: #ffffff;
+}
+
+.menuItem.disabled {
+  color: #999;
+  cursor: default;
+}
+
+.menuItem.disabled:hover {
+  background: none;
+  color: #999;
+}
+
+.shortcut {
+  margin-left: auto;
+  font-size: 12px;
+  color: #888;
+}
+
+.menuItem:hover .shortcut {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.menuItem.disabled .shortcut {
+  color: #bbb;
+}
+
+.arrow {
+  margin-left: auto;
+  font-size: 10px;
+}
+
+.separator {
+  height: 1px;
+  margin: 3px 4px;
+  background: #d0d0d0;
+}
+
+.submenu {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  min-width: 180px;
+  background: #ffffff;
+  border: 1px solid #b0b0b0;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
+  padding: 2px 0;
+}
+
+.menuItemWrapper:hover > .submenu {
+  display: block;
+}

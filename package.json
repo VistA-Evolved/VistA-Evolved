@@ -7,6 +7,8 @@
   },
   "scripts": {
     "dev": "pnpm -r dev",
-    "build": "pnpm -r build"
+    "build": "pnpm -r build",
+    "cprs:extract": "node tools/cprs-extract/run-all.mjs",
+    "cprs:generate-stubs": "node tools/cprs-extract/generate-api-stubs.mjs"
   }
 }

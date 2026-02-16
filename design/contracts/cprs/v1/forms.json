@@ -1,0 +1,5211 @@
+{
+  "_meta": {
+    "source": "reference/cprs/Packages/Order Entry Results Reporting/CPRS/CPRS-Chart/",
+    "extractedAt": "2026-02-16T09:18:01.931Z",
+    "description": "CPRS form inventory extracted from Delphi .dfm files"
+  },
+  "forms": [
+    {
+      "file": "BA/fBALocalDiagnoses.dfm",
+      "formName": "frmBALocalDiagnoses",
+      "formClass": "TfrmBALocalDiagnoses",
+      "declaration": "inherited",
+      "caption": "Assign Diagnoses to Order(s)",
+      "childComponentCount": 19,
+      "features": {
+        "hasGrid": true,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "BA/fBAOptionsDiagnoses.dfm",
+      "formName": "frmBAOptionsDiagnoses",
+      "formClass": "TfrmBAOptionsDiagnoses",
+      "declaration": "inherited",
+      "caption": "Personal Diagnoses List",
+      "childComponentCount": 24,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Consults/fConsMedRslt.dfm",
+      "formName": "frmConsMedRslt",
+      "formClass": "TfrmConsMedRslt",
+      "declaration": "inherited",
+      "caption": "Select Medicine Result",
+      "childComponentCount": 16,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Consults/fConsult513Prt.dfm",
+      "formName": "frm513Print",
+      "formClass": "Tfrm513Print",
+      "declaration": "inherited",
+      "caption": "Print SF 513",
+      "childComponentCount": 15,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Consults/fConsultAct.dfm",
+      "formName": "frmConsultAction",
+      "formClass": "TfrmConsultAction",
+      "declaration": "inherited",
+      "caption": "frmConsultAction",
+      "childComponentCount": 26,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Consults/fConsultAlertTo.dfm",
+      "formName": "frmConsultAlertsTo",
+      "formClass": "TfrmConsultAlertsTo",
+      "declaration": "inherited",
+      "caption": "Send Alert",
+      "childComponentCount": 9,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Consults/fConsultBD.dfm",
+      "formName": "frmConsultsByDate",
+      "formClass": "TfrmConsultsByDate",
+      "declaration": "inherited",
+      "caption": "List Consults by Date Range",
+      "childComponentCount": 8,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Consults/fConsultBS.dfm",
+      "formName": "frmConsultsByService",
+      "formClass": "TfrmConsultsByService",
+      "declaration": "inherited",
+      "caption": "List Consults by Service",
+      "childComponentCount": 7,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Consults/fConsultBSt.dfm",
+      "formName": "frmConsultsByStatus",
+      "formClass": "TfrmConsultsByStatus",
+      "declaration": "inherited",
+      "caption": "List Consults by Status",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Consults/fConsults.dfm",
+      "formName": "frmConsults",
+      "formClass": "TfrmConsults",
+      "declaration": "inherited",
+      "caption": "Consults Page",
+      "childComponentCount": 169,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Consults/fConsultsView.dfm",
+      "formName": "frmConsultsView",
+      "formClass": "TfrmConsultsView",
+      "declaration": "inherited",
+      "caption": "List Selected Consults",
+      "childComponentCount": 17,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Consults/fCsltNote.dfm",
+      "formName": "frmCsltNote",
+      "formClass": "TfrmCsltNote",
+      "declaration": "inherited",
+      "caption": "Select Progress Note",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Consults/fEditConsult.dfm",
+      "formName": "frmEditCslt",
+      "formClass": "TfrmEditCslt",
+      "declaration": "inherited",
+      "caption": "Edit/Resubmit a Cancelled Consult",
+      "childComponentCount": 42,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Consults/fEditProc.dfm",
+      "formName": "frmEditProc",
+      "formClass": "TfrmEditProc",
+      "declaration": "inherited",
+      "caption": "Edit and resubmit a cancelled procedure",
+      "childComponentCount": 44,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Consults/fODConsult.dfm",
+      "formName": "frmODCslt",
+      "formClass": "TfrmODCslt",
+      "declaration": "inherited",
+      "caption": "Order a Consult",
+      "childComponentCount": 39,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Consults/fODProc.dfm",
+      "formName": "frmODProc",
+      "formClass": "TfrmODProc",
+      "declaration": "inherited",
+      "caption": "Order a Procedure",
+      "childComponentCount": 36,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Consults/fPreReq.dfm",
+      "formName": "frmPrerequisites",
+      "formClass": "TfrmPrerequisites",
+      "declaration": "inherited",
+      "caption": "frmPrerequisites",
+      "childComponentCount": 7,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Cover Sheet/fCoverSheet.dfm",
+      "formName": "frmCoverSheet",
+      "formClass": "TfrmCoverSheet",
+      "declaration": "object",
+      "caption": "CoverSheet",
+      "childComponentCount": 2,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Cover Sheet/fCoverSheetDetailDisplay.dfm",
+      "formName": "frmCoverSheetDetailDisplay",
+      "formClass": "TfrmCoverSheetDetailDisplay",
+      "declaration": "object",
+      "caption": "frmCoverSheetDetailDisplay",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Cover Sheet/mCoverSheetDisplayPanel.dfm",
+      "formName": "fraCoverSheetDisplayPanel",
+      "formClass": "TfraCoverSheetDisplayPanel",
+      "declaration": "inherited",
+      "caption": null,
+      "childComponentCount": 0,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Cover Sheet/mCoverSheetDisplayPanel_CPRS.dfm",
+      "formName": "fraCoverSheetDisplayPanel_CPRS",
+      "formClass": "TfraCoverSheetDisplayPanel_CPRS",
+      "declaration": "inherited",
+      "caption": null,
+      "childComponentCount": 2,
+      "features": {
+        "hasGrid": true,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Cover Sheet/mCoverSheetDisplayPanel_CPRS_ActiveMeds.dfm",
+      "formName": "fraCoverSheetDisplayPanel_CPRS_ActiveMeds",
+      "formClass": "TfraCoverSheetDisplayPanel_CPRS_ActiveMeds",
+      "declaration": "inherited",
+      "caption": null,
+      "childComponentCount": 0,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Cover Sheet/mCoverSheetDisplayPanel_CPRS_Allergies.dfm",
+      "formName": "fraCoverSheetDisplayPanel_CPRS_Allergies",
+      "formClass": "TfraCoverSheetDisplayPanel_CPRS_Allergies",
+      "declaration": "inherited",
+      "caption": null,
+      "childComponentCount": 0,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Cover Sheet/mCoverSheetDisplayPanel_CPRS_Appts.dfm",
+      "formName": "fraCoverSheetDisplayPanel_CPRS_Appts",
+      "formClass": "TfraCoverSheetDisplayPanel_CPRS_Appts",
+      "declaration": "inherited",
+      "caption": null,
+      "childComponentCount": 0,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Cover Sheet/mCoverSheetDisplayPanel_CPRS_Immunizations.dfm",
+      "formName": "fraCoverSheetDisplayPanel_CPRS_Immunizations",
+      "formClass": "TfraCoverSheetDisplayPanel_CPRS_Immunizations",
+      "declaration": "inherited",
+      "caption": null,
+      "childComponentCount": 0,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Cover Sheet/mCoverSheetDisplayPanel_CPRS_Labs.dfm",
+      "formName": "fraCoverSheetDisplayPanel_CPRS_Labs",
+      "formClass": "TfraCoverSheetDisplayPanel_CPRS_Labs",
+      "declaration": "inherited",
+      "caption": null,
+      "childComponentCount": 0,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Cover Sheet/mCoverSheetDisplayPanel_CPRS_Postings.dfm",
+      "formName": "fraCoverSheetDisplayPanel_CPRS_Postings",
+      "formClass": "TfraCoverSheetDisplayPanel_CPRS_Postings",
+      "declaration": "inherited",
+      "caption": null,
+      "childComponentCount": 0,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Cover Sheet/mCoverSheetDisplayPanel_CPRS_ProblemList.dfm",
+      "formName": "fraCoverSheetDisplayPanel_CPRS_ProblemList",
+      "formClass": "TfraCoverSheetDisplayPanel_CPRS_ProblemList",
+      "declaration": "inherited",
+      "caption": null,
+      "childComponentCount": 0,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Cover Sheet/mCoverSheetDisplayPanel_CPRS_Reminders.dfm",
+      "formName": "fraCoverSheetDisplayPanel_CPRS_Reminders",
+      "formClass": "TfraCoverSheetDisplayPanel_CPRS_Reminders",
+      "declaration": "inherited",
+      "caption": null,
+      "childComponentCount": 0,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Cover Sheet/mCoverSheetDisplayPanel_CPRS_Vitals.dfm",
+      "formName": "fraCoverSheetDisplayPanel_CPRS_Vitals",
+      "formClass": "TfraCoverSheetDisplayPanel_CPRS_Vitals",
+      "declaration": "inherited",
+      "caption": null,
+      "childComponentCount": 0,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Cover Sheet/mCoverSheetDisplayPanel_CPRS_WH.dfm",
+      "formName": "fraCoverSheetDisplayPanel_CPRS_WH",
+      "formClass": "TfraCoverSheetDisplayPanel_CPRS_WH",
+      "declaration": "inherited",
+      "caption": null,
+      "childComponentCount": 0,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Cover Sheet/mCoverSheetDisplayPanel_Web.dfm",
+      "formName": "fraCoverSheetDisplayPanel_Web",
+      "formClass": "TfraCoverSheetDisplayPanel_Web",
+      "declaration": "inherited",
+      "caption": null,
+      "childComponentCount": 7,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Cover Sheet/mCoverSheetDisplayPanel_WidgetClock.dfm",
+      "formName": "fraCoverSheetDisplayPanel_WidgetClock",
+      "formClass": "TfraCoverSheetDisplayPanel_WidgetClock",
+      "declaration": "inherited",
+      "caption": null,
+      "childComponentCount": 2,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Cover Sheet/mGridPanelFrame.dfm",
+      "formName": "fraGridPanelFrame",
+      "formClass": "TfraGridPanelFrame",
+      "declaration": "object",
+      "caption": null,
+      "childComponentCount": 14,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "dShared.dfm",
+      "formName": "dmodShared",
+      "formClass": "TdmodShared",
+      "declaration": "object",
+      "caption": null,
+      "childComponentCount": 15,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Encounter/fDiagnoses.dfm",
+      "formName": "frmDiagnoses",
+      "formClass": "TfrmDiagnoses",
+      "declaration": "inherited",
+      "caption": "Encounter Diagnoses",
+      "childComponentCount": 2,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Encounter/fEncounterFrame.dfm",
+      "formName": "frmEncounterFrame",
+      "formClass": "TfrmEncounterFrame",
+      "declaration": "inherited",
+      "caption": "Encounter Frame",
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": true
+      }
+    },
+    {
+      "file": "Encounter/fEncVitals.dfm",
+      "formName": "frmEncVitals",
+      "formClass": "TfrmEncVitals",
+      "declaration": "inherited",
+      "caption": "Vitals",
+      "childComponentCount": 42,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Encounter/fExam.dfm",
+      "formName": "frmExams",
+      "formClass": "TfrmExams",
+      "declaration": "inherited",
+      "caption": "Encounter Examinations",
+      "childComponentCount": 2,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Encounter/fGAF.dfm",
+      "formName": "frmGAF",
+      "formClass": "TfrmGAF",
+      "declaration": "inherited",
+      "caption": "frmGAF",
+      "childComponentCount": 12,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Encounter/fHealthFactor.dfm",
+      "formName": "frmHealthFactors",
+      "formClass": "TfrmHealthFactors",
+      "declaration": "inherited",
+      "caption": "Health Factor page",
+      "childComponentCount": 2,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Encounter/fHFSearch.dfm",
+      "formName": "frmHFSearch",
+      "formClass": "TfrmHFSearch",
+      "declaration": "inherited",
+      "caption": "Other Health Factors",
+      "childComponentCount": 8,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Encounter/fImmunization.dfm",
+      "formName": "frmImmunizations",
+      "formClass": "TfrmImmunizations",
+      "declaration": "inherited",
+      "caption": "Encouner Immunization",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Encounter/fPatientEd.dfm",
+      "formName": "frmPatientEd",
+      "formClass": "TfrmPatientEd",
+      "declaration": "inherited",
+      "caption": "Patient Education",
+      "childComponentCount": 2,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Encounter/fPCEBase.dfm",
+      "formName": "frmPCEBase",
+      "formClass": "TfrmPCEBase",
+      "declaration": "inherited",
+      "caption": "Basic Page",
+      "childComponentCount": 2,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Encounter/fPCEBaseGrid.dfm",
+      "formName": "frmPCEBaseGrid",
+      "formClass": "TfrmPCEBaseGrid",
+      "declaration": "inherited",
+      "caption": "frmPCEBaseGrid",
+      "childComponentCount": 2,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Encounter/fPCEBaseMain.dfm",
+      "formName": "frmPCEBaseMain",
+      "formClass": "TfrmPCEBaseMain",
+      "declaration": "inherited",
+      "caption": "frmPCEBaseMain",
+      "childComponentCount": 13,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Encounter/fPCEEdit.dfm",
+      "formName": "frmPCEEdit",
+      "formClass": "TfrmPCEEdit",
+      "declaration": "inherited",
+      "caption": "Edit Encounter",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Encounter/fPCELex.dfm",
+      "formName": "frmPCELex",
+      "formClass": "TfrmPCELex",
+      "declaration": "inherited",
+      "caption": "Lookup Other Diagnosis",
+      "childComponentCount": 13,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Encounter/fPCEOther.dfm",
+      "formName": "frmPCEOther",
+      "formClass": "TfrmPCEOther",
+      "declaration": "inherited",
+      "caption": "OtherItems",
+      "childComponentCount": 3,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Encounter/fPCEProvider.dfm",
+      "formName": "frmPCEProvider",
+      "formClass": "TfrmPCEProvider",
+      "declaration": "inherited",
+      "caption": "Primary Encounter Provider",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Encounter/fProcedure.dfm",
+      "formName": "frmProcedures",
+      "formClass": "TfrmProcedures",
+      "declaration": "inherited",
+      "caption": "Encounter Procedure",
+      "childComponentCount": 8,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Encounter/fSkinTest.dfm",
+      "formName": "frmSkinTests",
+      "formClass": "TfrmSkinTests",
+      "declaration": "inherited",
+      "caption": "Encounter Skin Test form",
+      "childComponentCount": 8,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Encounter/fVisitType.dfm",
+      "formName": "frmVisitType",
+      "formClass": "TfrmVisitType",
+      "declaration": "inherited",
+      "caption": "Encounter VisitType",
+      "childComponentCount": 26,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Encounter/mVisitRelated.dfm",
+      "formName": "fraVisitRelated",
+      "formClass": "TfraVisitRelated",
+      "declaration": "object",
+      "caption": null,
+      "childComponentCount": 24,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fAbout.dfm",
+      "formName": "frmAbout",
+      "formClass": "TfrmAbout",
+      "declaration": "inherited",
+      "caption": "About CPRS",
+      "childComponentCount": 19,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fActivateDeactivate.dfm",
+      "formName": "frmActivateDeactive",
+      "formClass": "TfrmActivateDeactive",
+      "declaration": "inherited",
+      "caption": "Renew Order",
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fAddlSigners.dfm",
+      "formName": "frmAddlSigners",
+      "formClass": "TfrmAddlSigners",
+      "declaration": "inherited",
+      "caption": "Identify Additional Signers",
+      "childComponentCount": 18,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fAlertForward.dfm",
+      "formName": "frmAlertForward",
+      "formClass": "TfrmAlertForward",
+      "declaration": "inherited",
+      "caption": "Forward Alert",
+      "childComponentCount": 13,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fAlertNoteSelector.dfm",
+      "formName": "frmAlertNoteSelector",
+      "formClass": "TfrmAlertNoteSelector",
+      "declaration": "object",
+      "caption": "Alert Processing Note Selector",
+      "childComponentCount": 10,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fAllgyBox.dfm",
+      "formName": "frmAllgyBox",
+      "formClass": "TfrmAllgyBox",
+      "declaration": "inherited",
+      "caption": "frmAllgyBox",
+      "childComponentCount": 3,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fAllgyFind.dfm",
+      "formName": "frmAllgyFind",
+      "formClass": "TfrmAllgyFind",
+      "declaration": "inherited",
+      "caption": "Causative Agent Lookup",
+      "childComponentCount": 14,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fAResize.dfm",
+      "formName": "frmAutoResize",
+      "formClass": "TfrmAutoResize",
+      "declaration": "inherited",
+      "caption": "Basic Auto-Resize Page",
+      "childComponentCount": 0,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fARTAllgy.dfm",
+      "formName": "frmARTAllergy",
+      "formClass": "TfrmARTAllergy",
+      "declaration": "inherited",
+      "caption": "Enter Allergy or Adverse Reaction",
+      "childComponentCount": 55,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": true
+      }
+    },
+    {
+      "file": "fARTFreeTextMsg.dfm",
+      "formName": "frmARTFreeTextMsg",
+      "formClass": "TfrmARTFreeTextMsg",
+      "declaration": "inherited",
+      "caption": "Enter Optional Comments",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fAutoSz.dfm",
+      "formName": "frmAutoSz",
+      "formClass": "TfrmAutoSz",
+      "declaration": "inherited",
+      "caption": "frmAutoSz",
+      "childComponentCount": 0,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fBase508Form.dfm",
+      "formName": "frmBase508Form",
+      "formClass": "TfrmBase508Form",
+      "declaration": "object",
+      "caption": "frmBase508Form",
+      "childComponentCount": 2,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fClinicWardMeds.dfm",
+      "formName": "frmClinicWardMeds",
+      "formClass": "TfrmClinicWardMeds",
+      "declaration": "inherited",
+      "caption": "Patient Location",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fCombatVet.dfm",
+      "formName": "frmCombatVet",
+      "formClass": "TfrmCombatVet",
+      "declaration": "inherited",
+      "caption": "Combat Veteran Details",
+      "childComponentCount": 11,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fCover.dfm",
+      "formName": "frmCover",
+      "formClass": "TfrmCover",
+      "declaration": "inherited",
+      "caption": "Cover Sheet",
+      "childComponentCount": 52,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fDateRange.dfm",
+      "formName": "frmDateRange",
+      "formClass": "TfrmDateRange",
+      "declaration": "inherited",
+      "caption": "Date Range",
+      "childComponentCount": 7,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fDCSumm.dfm",
+      "formName": "frmDCSumm",
+      "formClass": "TfrmDCSumm",
+      "declaration": "inherited",
+      "caption": "Discharge Summary Page",
+      "childComponentCount": 139,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fDCSummProps.dfm",
+      "formName": "frmDCSummProperties",
+      "formClass": "TfrmDCSummProperties",
+      "declaration": "inherited",
+      "caption": "Discharge Summary Properties",
+      "childComponentCount": 20,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fDebugReport.dfm",
+      "formName": "frmDebugReport",
+      "formClass": "TfrmDebugReport",
+      "declaration": "object",
+      "caption": "Debug Report",
+      "childComponentCount": 17,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fDefaultEvent.dfm",
+      "formName": "frmDefaultEvent",
+      "formClass": "TfrmDefaultEvent",
+      "declaration": "inherited",
+      "caption": "Set/Change Default Release Event",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fDeferDialog.dfm",
+      "formName": "frmDeferDialog",
+      "formClass": "TfrmDeferDialog",
+      "declaration": "object",
+      "caption": "Defer Item",
+      "childComponentCount": 19,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fDeviceSelect.dfm",
+      "formName": "frmDeviceSelect",
+      "formClass": "TfrmDeviceSelect",
+      "declaration": "inherited",
+      "caption": "Orders Print Device Selection",
+      "childComponentCount": 11,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fDrawers.dfm",
+      "formName": "frmDrawers",
+      "formClass": "TfrmDrawers",
+      "declaration": "inherited",
+      "caption": "frmDrawers",
+      "childComponentCount": 39,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fDupPts.dfm",
+      "formName": "frmDupPts",
+      "formClass": "TfrmDupPts",
+      "declaration": "inherited",
+      "caption": "Similar Patients",
+      "childComponentCount": 7,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fEffectDate.dfm",
+      "formName": "frmEffectDate",
+      "formClass": "TfrmEffectDate",
+      "declaration": "inherited",
+      "caption": "Discharge Date",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fEncnt.dfm",
+      "formName": "frmEncounter",
+      "formClass": "TfrmEncounter",
+      "declaration": "inherited",
+      "caption": "Provider & Location for Current Activities",
+      "childComponentCount": 26,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": true
+      }
+    },
+    {
+      "file": "fEncntKEEP.dfm",
+      "formName": "frmEncounter",
+      "formClass": "TfrmEncounter",
+      "declaration": "object",
+      "caption": "Provider & Location for Current Activities",
+      "childComponentCount": 24,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": true
+      }
+    },
+    {
+      "file": "fFocusedControls.dfm",
+      "formName": "dlgFocusedControls",
+      "formClass": "TdlgFocusedControls",
+      "declaration": "object",
+      "caption": "Focused Controls",
+      "childComponentCount": 3,
+      "features": {
+        "hasGrid": true,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fFrame.dfm",
+      "formName": "frmFrame",
+      "formClass": "TfrmFrame",
+      "declaration": "inherited",
+      "caption": "]=",
+      "childComponentCount": 129,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": true
+      }
+    },
+    {
+      "file": "fGraphData.dfm",
+      "formName": "frmGraphData",
+      "formClass": "TfrmGraphData",
+      "declaration": "inherited",
+      "caption": "GraphData - displayed only for testing",
+      "childComponentCount": 13,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fGraphOthers.dfm",
+      "formName": "frmGraphOthers",
+      "formClass": "TfrmGraphOthers",
+      "declaration": "inherited",
+      "caption": "Select Other Views and Lab Groups",
+      "childComponentCount": 18,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fGraphProfiles.dfm",
+      "formName": "frmGraphProfiles",
+      "formClass": "TfrmGraphProfiles",
+      "declaration": "inherited",
+      "caption": "Select Items and Define Views",
+      "childComponentCount": 57,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fGraphs.dfm",
+      "formName": "frmGraphs",
+      "formClass": "TfrmGraphs",
+      "declaration": "inherited",
+      "caption": "CPRS Graphing - CPRSpatient,One",
+      "childComponentCount": 108,
+      "features": {
+        "hasGrid": true,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": true
+      }
+    },
+    {
+      "file": "fGraphSettings.dfm",
+      "formName": "frmGraphSettings",
+      "formClass": "TfrmGraphSettings",
+      "declaration": "inherited",
+      "caption": "Graph Settings",
+      "childComponentCount": 40,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fHP.dfm",
+      "formName": "frmHP",
+      "formClass": "TfrmHP",
+      "declaration": "inherited",
+      "caption": "History and Physical Exam Page",
+      "childComponentCount": 1,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fHSplit.dfm",
+      "formName": "frmHSplit",
+      "formClass": "TfrmHSplit",
+      "declaration": "inherited",
+      "caption": "Basic Splitter Page",
+      "childComponentCount": 3,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fIconLegend.dfm",
+      "formName": "frmIconLegend",
+      "formClass": "TfrmIconLegend",
+      "declaration": "inherited",
+      "caption": "Icon Legend",
+      "childComponentCount": 17,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": true
+      }
+    },
+    {
+      "file": "fLabCollTimes.dfm",
+      "formName": "frmLabCollectTimes",
+      "formClass": "TfrmLabCollectTimes",
+      "declaration": "inherited",
+      "caption": "Future Lab Collect Times",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fLabInfo.dfm",
+      "formName": "frmLabInfo",
+      "formClass": "TfrmLabInfo",
+      "declaration": "inherited",
+      "caption": "Lab Test Description",
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fLabPrint.dfm",
+      "formName": "frmLabPrint",
+      "formClass": "TfrmLabPrint",
+      "declaration": "inherited",
+      "caption": "Lab Print Device Selection",
+      "childComponentCount": 12,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fLabs.dfm",
+      "formName": "frmLabs",
+      "formClass": "TfrmLabs",
+      "declaration": "inherited",
+      "caption": "Laboratory Results Page",
+      "childComponentCount": 114,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": true
+      }
+    },
+    {
+      "file": "fLabTest.dfm",
+      "formName": "frmLabTest",
+      "formClass": "TfrmLabTest",
+      "declaration": "inherited",
+      "caption": "Select Lab Test for Graph",
+      "childComponentCount": 8,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fLabTestGroups.dfm",
+      "formName": "frmLabTestGroups",
+      "formClass": "TfrmLabTestGroups",
+      "declaration": "inherited",
+      "caption": "Select Lab Tests",
+      "childComponentCount": 29,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fLabTests.dfm",
+      "formName": "frmLabTests",
+      "formClass": "TfrmLabTests",
+      "declaration": "inherited",
+      "caption": "Select Lab Tests",
+      "childComponentCount": 10,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fLaunch.dfm",
+      "formName": "frmLaunch",
+      "formClass": "TfrmLaunch",
+      "declaration": "object",
+      "caption": "Lauch Stuff",
+      "childComponentCount": 7,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fLkUpLocation.dfm",
+      "formName": "frmLkUpLocation",
+      "formClass": "TfrmLkUpLocation",
+      "declaration": "inherited",
+      "caption": "Select Location",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fMedCopy.dfm",
+      "formName": "frmMedCopy",
+      "formClass": "TfrmMedCopy",
+      "declaration": "inherited",
+      "caption": "Copy Medication Orders",
+      "childComponentCount": 13,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fMeds.dfm",
+      "formName": "frmMeds",
+      "formClass": "TfrmMeds",
+      "declaration": "inherited",
+      "caption": "Medications Page",
+      "childComponentCount": 76,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fMHTest.dfm",
+      "formName": "frmMHTest",
+      "formClass": "TfrmMHTest",
+      "declaration": "inherited",
+      "caption": "frmMHTest",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fNoteBA.dfm",
+      "formName": "frmNotesByAuthor",
+      "formClass": "TfrmNotesByAuthor",
+      "declaration": "inherited",
+      "caption": "List Signed Notes by Author",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fNoteBD.dfm",
+      "formName": "frmNotesByDate",
+      "formClass": "TfrmNotesByDate",
+      "declaration": "inherited",
+      "caption": "List Signed Notes by Date Range",
+      "childComponentCount": 8,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fNoteCPFields.dfm",
+      "formName": "frmNoteCPFields",
+      "formClass": "TfrmNoteCPFields",
+      "declaration": "inherited",
+      "caption": "Enter Required Fields",
+      "childComponentCount": 8,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fNoteCslt.dfm",
+      "formName": "frmNoteConsult",
+      "formClass": "TfrmNoteConsult",
+      "declaration": "inherited",
+      "caption": "Consult Request Selection",
+      "childComponentCount": 10,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fNoteDR.dfm",
+      "formName": "frmNoteDelReason",
+      "formClass": "TfrmNoteDelReason",
+      "declaration": "inherited",
+      "caption": "Reason for Deletion",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fNoteIDParents.dfm",
+      "formName": "frmNoteIDParents",
+      "formClass": "TfrmNoteIDParents",
+      "declaration": "inherited",
+      "caption": "Attach to Interdisciplinary Note",
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fNoteProps.dfm",
+      "formName": "frmNoteProperties",
+      "formClass": "TfrmNoteProperties",
+      "declaration": "inherited",
+      "caption": "Progress Note Properties",
+      "childComponentCount": 33,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fNotePrt.dfm",
+      "formName": "frmNotePrint",
+      "formClass": "TfrmNotePrint",
+      "declaration": "inherited",
+      "caption": "frmNotePrint",
+      "childComponentCount": 15,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fNotes.dfm",
+      "formName": "frmNotes",
+      "formClass": "TfrmNotes",
+      "declaration": "inherited",
+      "caption": "frmNotes",
+      "childComponentCount": 195,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fNotesBP.dfm",
+      "formName": "frmNotesBP",
+      "formClass": "TfrmNotesBP",
+      "declaration": "inherited",
+      "caption": "Boilerplate Text",
+      "childComponentCount": 8,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fNoteST.dfm",
+      "formName": "frmNotesSearchText",
+      "formClass": "TfrmNotesSearchText",
+      "declaration": "inherited",
+      "caption": "List Signed Notes by Author",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fNoteSTStop.dfm",
+      "formName": "frmSearchStop",
+      "formClass": "TfrmSearchStop",
+      "declaration": "inherited",
+      "caption": "Scanning Notes....",
+      "childComponentCount": 2,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fNotificationProcessor.dfm",
+      "formName": "frmNotificationProcessor",
+      "formClass": "TfrmNotificationProcessor",
+      "declaration": "object",
+      "caption": "CPRS Notification Processor",
+      "childComponentCount": 10,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fPage.dfm",
+      "formName": "frmPage",
+      "formClass": "TfrmPage",
+      "declaration": "inherited",
+      "caption": "Basic Page",
+      "childComponentCount": 1,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fPatientFlagMulti.dfm",
+      "formName": "frmFlags",
+      "formClass": "TfrmFlags",
+      "declaration": "inherited",
+      "caption": "Patient Record Flags",
+      "childComponentCount": 15,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fPostings.dfm",
+      "formName": "frmPostings",
+      "formClass": "TfrmPostings",
+      "declaration": "inherited",
+      "caption": "Postings",
+      "childComponentCount": 1,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fPrintList.dfm",
+      "formName": "frmPrintList",
+      "formClass": "TfrmPrintList",
+      "declaration": "inherited",
+      "caption": "Print Selected Items",
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fPrintLocation.dfm",
+      "formName": "frmPrintLocation",
+      "formClass": "TfrmPrintLocation",
+      "declaration": "inherited",
+      "caption": "Order Location",
+      "childComponentCount": 13,
+      "features": {
+        "hasGrid": true,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fProbCmt.dfm",
+      "formName": "frmProbCmt",
+      "formClass": "TfrmProbCmt",
+      "declaration": "inherited",
+      "caption": "Annotate a problem",
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fProbEdt.dfm",
+      "formName": "frmdlgProb",
+      "formClass": "TfrmdlgProb",
+      "declaration": "inherited",
+      "caption": "frmdlgProb",
+      "childComponentCount": 52,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fProbFlt.dfm",
+      "formName": "frmPlVuFilt",
+      "formClass": "TfrmPlVuFilt",
+      "declaration": "inherited",
+      "caption": "Problem List View Filters",
+      "childComponentCount": 19,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fProbFreetext.dfm",
+      "formName": "frmProbFreetext",
+      "formClass": "TfrmProbFreetext",
+      "declaration": "inherited",
+      "caption": "Unresolved Entry",
+      "childComponentCount": 12,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fProbLex.dfm",
+      "formName": "frmPLLex",
+      "formClass": "TfrmPLLex",
+      "declaration": "inherited",
+      "caption": "Problem List  Lexicon Search",
+      "childComponentCount": 14,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fProbs.dfm",
+      "formName": "frmProblems",
+      "formClass": "TfrmProblems",
+      "declaration": "inherited",
+      "caption": "Problems List Page",
+      "childComponentCount": 80,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fPtCWAD.dfm",
+      "formName": "frmPtCWAD",
+      "formClass": "TfrmPtCWAD",
+      "declaration": "inherited",
+      "caption": "Patient Postings",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fPtDemo.dfm",
+      "formName": "frmPtDemo",
+      "formClass": "TfrmPtDemo",
+      "declaration": "inherited",
+      "caption": "Patient Inquiry",
+      "childComponentCount": 8,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fPtSel.dfm",
+      "formName": "frmPtSel",
+      "formClass": "TfrmPtSel",
+      "declaration": "inherited",
+      "caption": "Patient Selection",
+      "childComponentCount": 30,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fPtSelDemog.dfm",
+      "formName": "frmPtSelDemog",
+      "formClass": "TfrmPtSelDemog",
+      "declaration": "inherited",
+      "caption": "frmPtSelDemog",
+      "childComponentCount": 15,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fPtSelMsg.dfm",
+      "formName": "frmPtSelMsg",
+      "formClass": "TfrmPtSelMsg",
+      "declaration": "inherited",
+      "caption": "Patient Lookup Messages",
+      "childComponentCount": 3,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fPtSelOptns.dfm",
+      "formName": "frmPtSelOptns",
+      "formClass": "TfrmPtSelOptns",
+      "declaration": "inherited",
+      "caption": "frmPtSelOptns",
+      "childComponentCount": 15,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fPtSelOptSave.dfm",
+      "formName": "frmPtSelOptSave",
+      "formClass": "TfrmPtSelOptSave",
+      "declaration": "inherited",
+      "caption": null,
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fPtSens.dfm",
+      "formName": "frmPtSens",
+      "formClass": "TfrmPtSens",
+      "declaration": "inherited",
+      "caption": "Restricted Patient Record",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fRemCoverPreview.dfm",
+      "formName": "frmRemCoverPreview",
+      "formClass": "TfrmRemCoverPreview",
+      "declaration": "inherited",
+      "caption": "Cover Sheet Reminders",
+      "childComponentCount": 3,
+      "features": {
+        "hasGrid": true,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fRemCoverSheet.dfm",
+      "formName": "frmRemCoverSheet",
+      "formClass": "TfrmRemCoverSheet",
+      "declaration": "inherited",
+      "caption": null,
+      "childComponentCount": 54,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fReminderDialog.dfm",
+      "formName": "frmRemDlg",
+      "formClass": "TfrmRemDlg",
+      "declaration": "inherited",
+      "caption": "Reminder Dialog",
+      "childComponentCount": 17,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fReminderTree.dfm",
+      "formName": "frmReminderTree",
+      "formClass": "TfrmReminderTree",
+      "declaration": "inherited",
+      "caption": "Available Reminders",
+      "childComponentCount": 16,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fRemVisitInfo.dfm",
+      "formName": "frmRemVisitInfo",
+      "formClass": "TfrmRemVisitInfo",
+      "declaration": "inherited",
+      "caption": "Other Visit Information",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fRename.dfm",
+      "formName": "frmRename",
+      "formClass": "TfrmRename",
+      "declaration": "inherited",
+      "caption": "Rename",
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fRenewOutMed.dfm",
+      "formName": "frmRenewOutMed",
+      "formClass": "TfrmRenewOutMed",
+      "declaration": "inherited",
+      "caption": "Change Refills for Outpatient Medication",
+      "childComponentCount": 10,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fReports.dfm",
+      "formName": "frmReports",
+      "formClass": "TfrmReports",
+      "declaration": "inherited",
+      "caption": "Reports Page",
+      "childComponentCount": 63,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": true
+      }
+    },
+    {
+      "file": "fReportsAdhocComponent1.dfm",
+      "formName": "frmReportsAdhocComponent1",
+      "formClass": "TfrmReportsAdhocComponent1",
+      "declaration": "inherited",
+      "caption": "ADHOC Health Summary",
+      "childComponentCount": 37,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fReportsAdhocSubItem1.dfm",
+      "formName": "frmReportsAdhocSubItem1",
+      "formClass": "TfrmReportsAdhocSubItem1",
+      "declaration": "inherited",
+      "caption": "frmReportsAdhocSubItem1",
+      "childComponentCount": 21,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fReportsPrint.dfm",
+      "formName": "frmReportPrt",
+      "formClass": "TfrmReportPrt",
+      "declaration": "inherited",
+      "caption": "Report Print Device Selection",
+      "childComponentCount": 12,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fReview.dfm",
+      "formName": "frmReview",
+      "formClass": "TfrmReview",
+      "declaration": "inherited",
+      "caption": "Review / Sign Changes",
+      "childComponentCount": 30,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fRptBox.dfm",
+      "formName": "frmReportBox",
+      "formClass": "TfrmReportBox",
+      "declaration": "inherited",
+      "caption": "frmReportBox",
+      "childComponentCount": 9,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fSignItem.dfm",
+      "formName": "frmSignItem",
+      "formClass": "TfrmSignItem",
+      "declaration": "inherited",
+      "caption": "Electronic Signature",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fSpellNotify.dfm",
+      "formName": "frmSpellNotify",
+      "formClass": "TfrmSpellNotify",
+      "declaration": "object",
+      "caption": "Spell Check Running",
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fSplash.dfm",
+      "formName": "frmSplash",
+      "formClass": "TfrmSplash",
+      "declaration": "inherited",
+      "caption": "CPRS Splash Screen",
+      "childComponentCount": 10,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fSurgery.dfm",
+      "formName": "frmSurgery",
+      "formClass": "TfrmSurgery",
+      "declaration": "inherited",
+      "caption": "Surgery Page",
+      "childComponentCount": 136,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fSurgeryView.dfm",
+      "formName": "frmSurgeryView",
+      "formClass": "TfrmSurgeryView",
+      "declaration": "inherited",
+      "caption": "List Selected Cases",
+      "childComponentCount": 14,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fTimeout.dfm",
+      "formName": "frmTimeout",
+      "formClass": "TfrmTimeout",
+      "declaration": "inherited",
+      "caption": "CPRS Timeout",
+      "childComponentCount": 14,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fTIUView.dfm",
+      "formName": "frmTIUView",
+      "formClass": "TfrmTIUView",
+      "declaration": "inherited",
+      "caption": "List Selected Documents",
+      "childComponentCount": 30,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fViewNotifications.dfm",
+      "formName": "frmViewNotifications",
+      "formClass": "TfrmViewNotifications",
+      "declaration": "object",
+      "caption": "All Current Notifications for Patient",
+      "childComponentCount": 17,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fVisit.dfm",
+      "formName": "frmVisit",
+      "formClass": "TfrmVisit",
+      "declaration": "inherited",
+      "caption": "Visit Selection",
+      "childComponentCount": 15,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fvit.dfm",
+      "formName": "frmVit",
+      "formClass": "TfrmVit",
+      "declaration": "inherited",
+      "caption": "frmVit",
+      "childComponentCount": 39,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fVitals.dfm",
+      "formName": "frmVitals",
+      "formClass": "TfrmVitals",
+      "declaration": "inherited",
+      "caption": "Vitals",
+      "childComponentCount": 32,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fxBroker.dfm",
+      "formName": "frmBroker",
+      "formClass": "TfrmBroker",
+      "declaration": "inherited",
+      "caption": "Broker Calls",
+      "childComponentCount": 47,
+      "features": {
+        "hasGrid": true,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": true
+      }
+    },
+    {
+      "file": "fxLists.dfm",
+      "formName": "frmDbgList",
+      "formClass": "TfrmDbgList",
+      "declaration": "inherited",
+      "caption": "Show ListBox Data",
+      "childComponentCount": 1,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "fxServer.dfm",
+      "formName": "frmDbgServer",
+      "formClass": "TfrmDbgServer",
+      "declaration": "inherited",
+      "caption": "Server Information",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "mColumnTree.dfm",
+      "formName": "ColumnTreeFrame",
+      "formClass": "TColumnTreeFrame",
+      "declaration": "object",
+      "caption": null,
+      "childComponentCount": 3,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "mCoPayDesc.dfm",
+      "formName": "fraCoPayDesc",
+      "formClass": "TfraCoPayDesc",
+      "declaration": "object",
+      "caption": null,
+      "childComponentCount": 37,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "mDrawers.dfm",
+      "formName": "fraDrawers",
+      "formClass": "TfraDrawers",
+      "declaration": "object",
+      "caption": null,
+      "childComponentCount": 56,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "mEvntDelay.dfm",
+      "formName": "fraEvntDelayList",
+      "formClass": "TfraEvntDelayList",
+      "declaration": "object",
+      "caption": null,
+      "childComponentCount": 8,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "mImgText.dfm",
+      "formName": "fraImgText",
+      "formClass": "TfraImgText",
+      "declaration": "object",
+      "caption": null,
+      "childComponentCount": 3,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "mRadioListView.dfm",
+      "formName": "RadioLVFrame",
+      "formClass": "TRadioLVFrame",
+      "declaration": "object",
+      "caption": null,
+      "childComponentCount": 3,
+      "features": {
+        "hasGrid": true,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "mTreeGrid.dfm",
+      "formName": "TreeGridFrame",
+      "formClass": "TTreeGridFrame",
+      "declaration": "object",
+      "caption": null,
+      "childComponentCount": 15,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Options/fOptions.dfm",
+      "formName": "frmOptions",
+      "formClass": "TfrmOptions",
+      "declaration": "inherited",
+      "caption": "Options",
+      "childComponentCount": 118,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": true
+      }
+    },
+    {
+      "file": "Options/fOptionsCombinations.dfm",
+      "formName": "frmOptionsCombinations",
+      "formClass": "TfrmOptionsCombinations",
+      "declaration": "inherited",
+      "caption": "Source Combinations",
+      "childComponentCount": 12,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Options/fOptionsDays.dfm",
+      "formName": "frmOptionsDays",
+      "formClass": "TfrmOptionsDays",
+      "declaration": "inherited",
+      "caption": "Date Range Defaults on Cover Sheet",
+      "childComponentCount": 24,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Options/fOptionsLists.dfm",
+      "formName": "frmOptionsLists",
+      "formClass": "TfrmOptionsLists",
+      "declaration": "inherited",
+      "caption": "Personal Lists",
+      "childComponentCount": 24,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Options/fOptionsNewList.dfm",
+      "formName": "frmOptionsNewList",
+      "formClass": "TfrmOptionsNewList",
+      "declaration": "inherited",
+      "caption": "New Personal List",
+      "childComponentCount": 8,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Options/fOptionsNotes.dfm",
+      "formName": "frmOptionsNotes",
+      "formClass": "TfrmOptionsNotes",
+      "declaration": "inherited",
+      "caption": "Notes",
+      "childComponentCount": 12,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Options/fOptionsOther.dfm",
+      "formName": "frmOptionsOther",
+      "formClass": "TfrmOptionsOther",
+      "declaration": "inherited",
+      "caption": "Other Parameters",
+      "childComponentCount": 46,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Options/fOptionsPatientSelection.dfm",
+      "formName": "frmOptionsPatientSelection",
+      "formClass": "TfrmOptionsPatientSelection",
+      "declaration": "inherited",
+      "caption": "Patient Selection Defaults",
+      "childComponentCount": 44,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Options/fOptionsPrimaryList.dfm",
+      "formName": "frmOptionsPrimaryList",
+      "formClass": "TfrmOptionsPrimaryList",
+      "declaration": "inherited",
+      "caption": "Primary List",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Options/fOptionsReminders.dfm",
+      "formName": "frmOptionsReminders",
+      "formClass": "TfrmOptionsReminders",
+      "declaration": "inherited",
+      "caption": "Clinical Reminders on Cover Sheet",
+      "childComponentCount": 13,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Options/fOptionsReportsCustom.dfm",
+      "formName": "frmOptionsReportsCustom",
+      "formClass": "TfrmOptionsReportsCustom",
+      "declaration": "inherited",
+      "caption": "Individual CPRS Report Settings",
+      "childComponentCount": 14,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Options/fOptionsReportsDefault.dfm",
+      "formName": "frmOptionsReportsDefault",
+      "formClass": "TfrmOptionsReportsDefault",
+      "declaration": "inherited",
+      "caption": "Default Settings For Available CPRS Reports",
+      "childComponentCount": 13,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Options/fOptionsSubscribe.dfm",
+      "formName": "frmOptionsSubscribe",
+      "formClass": "TfrmOptionsSubscribe",
+      "declaration": "inherited",
+      "caption": "Subscribe to a Team",
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Options/fOptionsSurrogate.dfm",
+      "formName": "frmOptionsSurrogate",
+      "formClass": "TfrmOptionsSurrogate",
+      "declaration": "inherited",
+      "caption": "Surrogate for Notifications",
+      "childComponentCount": 12,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Options/fOptionsTeams.dfm",
+      "formName": "frmOptionsTeams",
+      "formClass": "TfrmOptionsTeams",
+      "declaration": "inherited",
+      "caption": "Team Information",
+      "childComponentCount": 18,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Options/fOptionsTitles.dfm",
+      "formName": "frmOptionsTitles",
+      "formClass": "TfrmOptionsTitles",
+      "declaration": "inherited",
+      "caption": "Document Titles",
+      "childComponentCount": 19,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fCSRemaining.dfm",
+      "formName": "frmCSRemaining",
+      "formClass": "TfrmCSRemaining",
+      "declaration": "object",
+      "caption": "Unprocessed Controlled Substance Orders",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fIVRoutes.dfm",
+      "formName": "frmIVRoutes",
+      "formClass": "TfrmIVRoutes",
+      "declaration": "inherited",
+      "caption": "Expanded Med Route List",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOCAccept.dfm",
+      "formName": "frmOCAccept",
+      "formClass": "TfrmOCAccept",
+      "declaration": "inherited",
+      "caption": "Order Checking",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOCMonograph.dfm",
+      "formName": "frmOCMonograph",
+      "formClass": "TfrmOCMonograph",
+      "declaration": "object",
+      "caption": "Monographs for Order Checks",
+      "childComponentCount": 8,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOCSession.dfm",
+      "formName": "frmOCSession",
+      "formClass": "TfrmOCSession",
+      "declaration": "inherited",
+      "caption": "Order Checks",
+      "childComponentCount": 12,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODActive.dfm",
+      "formName": "frmODActive",
+      "formClass": "TfrmODActive",
+      "declaration": "inherited",
+      "caption": "Copy active orders for selected event",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODAllgy.dfm",
+      "formName": "frmODAllergy",
+      "formClass": "TfrmODAllergy",
+      "declaration": "inherited",
+      "caption": "Enter Allergy Information",
+      "childComponentCount": 24,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODAuto.dfm",
+      "formName": "frmODAuto",
+      "formClass": "TfrmODAuto",
+      "declaration": "inherited",
+      "caption": "Auto-Accept Order",
+      "childComponentCount": 1,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODBase.dfm",
+      "formName": "frmODBase",
+      "formClass": "TfrmODBase",
+      "declaration": "inherited",
+      "caption": "",
+      "childComponentCount": 7,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODBBank.dfm",
+      "formName": "frmODBBank",
+      "formClass": "TfrmODBBank",
+      "declaration": "inherited",
+      "caption": "Blood Component and Diagnostic Test Order Form",
+      "childComponentCount": 52,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": true
+      }
+    },
+    {
+      "file": "Orders/fODChangeEvtDisp.dfm",
+      "formName": "frmChangeEventDisp",
+      "formClass": "TfrmChangeEventDisp",
+      "declaration": "inherited",
+      "caption": "Change release event",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODChangeUnreleasedRenew.dfm",
+      "formName": "frmODChangeUnreleasedRenew",
+      "formClass": "TfrmODChangeUnreleasedRenew",
+      "declaration": "inherited",
+      "caption": "Change Unreleased Renewed Order",
+      "childComponentCount": 14,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODChild.dfm",
+      "formName": "frmODChild",
+      "formClass": "TfrmODChild",
+      "declaration": "inherited",
+      "caption": "Associated Complex Orders",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODDiet.dfm",
+      "formName": "frmODDiet",
+      "formClass": "TfrmODDiet",
+      "declaration": "inherited",
+      "caption": "Diet Order",
+      "childComponentCount": 91,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": true
+      }
+    },
+    {
+      "file": "Orders/fODDietLT.dfm",
+      "formName": "frmODDietLT",
+      "formClass": "TfrmODDietLT",
+      "declaration": "inherited",
+      "caption": "Late Tray?",
+      "childComponentCount": 10,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODGen.dfm",
+      "formName": "frmODGen",
+      "formClass": "TfrmODGen",
+      "declaration": "inherited",
+      "caption": "frmODGen",
+      "childComponentCount": 3,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODLab.dfm",
+      "formName": "frmODLab",
+      "formClass": "TfrmODLab",
+      "declaration": "inherited",
+      "caption": "Order a Lab Test",
+      "childComponentCount": 51,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODLabImmedColl.dfm",
+      "formName": "frmODLabImmedColl",
+      "formClass": "TfrmODLabImmedColl",
+      "declaration": "inherited",
+      "caption": "Immediate Collection Times",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODLabOthCollSamp.dfm",
+      "formName": "frmODLabOthCollSamp",
+      "formClass": "TfrmODLabOthCollSamp",
+      "declaration": "inherited",
+      "caption": "Select Collection Sample",
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODLabOthSpec.dfm",
+      "formName": "frmODLabOthSpec",
+      "formClass": "TfrmODLabOthSpec",
+      "declaration": "inherited",
+      "caption": "Select Specimen",
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODMedComplex.dfm",
+      "formName": "frmODMedComplex",
+      "formClass": "TfrmODMedComplex",
+      "declaration": "inherited",
+      "caption": "Complex Dose",
+      "childComponentCount": 16,
+      "features": {
+        "hasGrid": true,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODMedFA.dfm",
+      "formName": "frmODMedFA",
+      "formClass": "TfrmODMedFA",
+      "declaration": "inherited",
+      "caption": "Formulary Alternatives",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODMedIn.dfm",
+      "formName": "frmODMedIn",
+      "formClass": "TfrmODMedIn",
+      "declaration": "inherited",
+      "caption": "Inpatient Medication Order",
+      "childComponentCount": 16,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODMedIV.dfm",
+      "formName": "frmODMedIV",
+      "formClass": "TfrmODMedIV",
+      "declaration": "inherited",
+      "caption": "Infusion Order",
+      "childComponentCount": 48,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": true
+      }
+    },
+    {
+      "file": "Orders/fODMedNVA.dfm",
+      "formName": "frmODMedNVA",
+      "formClass": "TfrmODMedNVA",
+      "declaration": "inherited",
+      "caption": "Document Herbal/OTC/Non-VA Medications",
+      "childComponentCount": 28,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": true
+      }
+    },
+    {
+      "file": "Orders/fODMedOIFA.dfm",
+      "formName": "frmODMedOIFA",
+      "formClass": "TfrmODMedOIFA",
+      "declaration": "inherited",
+      "caption": "Formulary Alternatives",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODMedOut.dfm",
+      "formName": "frmODMedOut",
+      "formClass": "TfrmODMedOut",
+      "declaration": "inherited",
+      "caption": "Outpatient Medication Order",
+      "childComponentCount": 31,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODMeds.dfm",
+      "formName": "frmODMeds",
+      "formClass": "TfrmODMeds",
+      "declaration": "inherited",
+      "caption": "Medication Order",
+      "childComponentCount": 68,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": true
+      }
+    },
+    {
+      "file": "Orders/fODMessage.dfm",
+      "formName": "frmODMessage",
+      "formClass": "TfrmODMessage",
+      "declaration": "inherited",
+      "caption": null,
+      "childComponentCount": 2,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODMisc.dfm",
+      "formName": "frmODMisc",
+      "formClass": "TfrmODMisc",
+      "declaration": "inherited",
+      "caption": "Patient Care Order",
+      "childComponentCount": 8,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODRad.dfm",
+      "formName": "frmODRad",
+      "formClass": "TfrmODRad",
+      "declaration": "inherited",
+      "caption": "Order an Imaging Procedure",
+      "childComponentCount": 42,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODRadApproval.dfm",
+      "formName": "frmODRadApproval",
+      "formClass": "TfrmODRadApproval",
+      "declaration": "inherited",
+      "caption": "Select Approving Radiologist",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODRadConShRes.dfm",
+      "formName": "frmODRadConShRes",
+      "formClass": "TfrmODRadConShRes",
+      "declaration": "inherited",
+      "caption": "Contract/Sharing/Research Source",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODRadImType.dfm",
+      "formName": "frmODRadImType",
+      "formClass": "TfrmODRadImType",
+      "declaration": "inherited",
+      "caption": "Select Imaging Type",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODReleaseEvent.dfm",
+      "formName": "frmOrdersReleaseEvent",
+      "formClass": "TfrmOrdersReleaseEvent",
+      "declaration": "inherited",
+      "caption": "Release to Service",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODRTC.dfm",
+      "formName": "frmODRTC",
+      "formClass": "TfrmODRTC",
+      "declaration": "inherited",
+      "caption": "Return To Clinic",
+      "childComponentCount": 25,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODSaveQuick.dfm",
+      "formName": "frmODQuick",
+      "formClass": "TfrmODQuick",
+      "declaration": "inherited",
+      "caption": "frmODQuick",
+      "childComponentCount": 11,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODTest.dfm",
+      "formName": "frmODTest",
+      "formClass": "TfrmODTest",
+      "declaration": "inherited",
+      "caption": "Test Order",
+      "childComponentCount": 23,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODText.dfm",
+      "formName": "frmODText",
+      "formClass": "TfrmODText",
+      "declaration": "inherited",
+      "caption": "Text Only Order",
+      "childComponentCount": 8,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODValidateAction.dfm",
+      "formName": "frmInvalidActionList",
+      "formClass": "TfrmInvalidActionList",
+      "declaration": "inherited",
+      "caption": "Invalidated action orders",
+      "childComponentCount": 9,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fODVitals.dfm",
+      "formName": "frmODVitals",
+      "formClass": "TfrmODVitals",
+      "declaration": "inherited",
+      "caption": "Vital Measurement Order",
+      "childComponentCount": 27,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOMAction.dfm",
+      "formName": "frmOMAction",
+      "formClass": "TfrmOMAction",
+      "declaration": "inherited",
+      "caption": "frmOMAction",
+      "childComponentCount": 0,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOMHTML.dfm",
+      "formName": "frmOMHTML",
+      "formClass": "TfrmOMHTML",
+      "declaration": "inherited",
+      "caption": "HTML Ordering",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOMNavA.dfm",
+      "formName": "frmOMNavA",
+      "formClass": "TfrmOMNavA",
+      "declaration": "inherited",
+      "caption": "Order Menu",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOMProgress.dfm",
+      "formName": "frmOMProgress",
+      "formClass": "TfrmOMProgress",
+      "declaration": "inherited",
+      "caption": "Order Set Progress",
+      "childComponentCount": 2,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOMSet.dfm",
+      "formName": "frmOMSet",
+      "formClass": "TfrmOMSet",
+      "declaration": "inherited",
+      "caption": "Selected Orders",
+      "childComponentCount": 2,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOMVerify.dfm",
+      "formName": "frmOMVerify",
+      "formClass": "TfrmOMVerify",
+      "declaration": "inherited",
+      "caption": "New Order",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrderComment.dfm",
+      "formName": "frmWardComments",
+      "formClass": "TfrmWardComments",
+      "declaration": "inherited",
+      "caption": "Comments for Order",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrderFlag.dfm",
+      "formName": "frmFlagOrder",
+      "formClass": "TfrmFlagOrder",
+      "declaration": "inherited",
+      "caption": "Flag Order",
+      "childComponentCount": 7,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrders.dfm",
+      "formName": "frmOrders",
+      "formClass": "TfrmOrders",
+      "declaration": "inherited",
+      "caption": "Orders Page",
+      "childComponentCount": 90,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrdersAlert.dfm",
+      "formName": "frmAlertOrders",
+      "formClass": "TfrmAlertOrders",
+      "declaration": "inherited",
+      "caption": "Alert when Results Available",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrderSaveQuick.dfm",
+      "formName": "frmSaveQuickOrder",
+      "formClass": "TfrmSaveQuickOrder",
+      "declaration": "inherited",
+      "caption": "Add to Common List (Meds, Inpatient)",
+      "childComponentCount": 16,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrdersComplete.dfm",
+      "formName": "frmCompleteOrders",
+      "formClass": "TfrmCompleteOrders",
+      "declaration": "inherited",
+      "caption": "Complete Orders",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrdersCopy.dfm",
+      "formName": "frmCopyOrders",
+      "formClass": "TfrmCopyOrders",
+      "declaration": "inherited",
+      "caption": "Copy Orders",
+      "childComponentCount": 13,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrdersCV.dfm",
+      "formName": "frmChgEvent",
+      "formClass": "TfrmChgEvent",
+      "declaration": "inherited",
+      "caption": "Change Release Event",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrdersDC.dfm",
+      "formName": "frmDCOrders",
+      "formClass": "TfrmDCOrders",
+      "declaration": "inherited",
+      "caption": "Discontinue / Cancel Orders",
+      "childComponentCount": 8,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrdersEvntRelease.dfm",
+      "formName": "frmOrdersEvntRelease",
+      "formClass": "TfrmOrdersEvntRelease",
+      "declaration": "inherited",
+      "caption": "Auto DC/Release Event Orders",
+      "childComponentCount": 15,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrdersHold.dfm",
+      "formName": "frmHoldOrders",
+      "formClass": "TfrmHoldOrders",
+      "declaration": "inherited",
+      "caption": "Hold Orders",
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrdersOnChart.dfm",
+      "formName": "frmOnChartOrders",
+      "formClass": "TfrmOnChartOrders",
+      "declaration": "inherited",
+      "caption": "Signature on Chart",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrdersPickEvent.dfm",
+      "formName": "frmOrdersPickEvent",
+      "formClass": "TfrmOrdersPickEvent",
+      "declaration": "inherited",
+      "caption": "Delayed Orders Exist for this Patient",
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrdersPrint.dfm",
+      "formName": "frmOrdersPrint",
+      "formClass": "TfrmOrdersPrint",
+      "declaration": "inherited",
+      "caption": "Print orders",
+      "childComponentCount": 18,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrdersRefill.dfm",
+      "formName": "frmRefillOrders",
+      "formClass": "TfrmRefillOrders",
+      "declaration": "inherited",
+      "caption": "Refill Orders",
+      "childComponentCount": 10,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrdersRelease.dfm",
+      "formName": "frmReleaseOrders",
+      "formClass": "TfrmReleaseOrders",
+      "declaration": "inherited",
+      "caption": "Release Orders to Service(s)",
+      "childComponentCount": 10,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrdersRenew.dfm",
+      "formName": "frmRenewOrders",
+      "formClass": "TfrmRenewOrders",
+      "declaration": "inherited",
+      "caption": "Renew Orders",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrdersSign.dfm",
+      "formName": "frmSignOrders",
+      "formClass": "TfrmSignOrders",
+      "declaration": "inherited",
+      "caption": "Sign Orders",
+      "childComponentCount": 19,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrdersTS.dfm",
+      "formName": "frmOrdersTS",
+      "formClass": "TfrmOrdersTS",
+      "declaration": "inherited",
+      "caption": "Release Orders",
+      "childComponentCount": 13,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrdersUnhold.dfm",
+      "formName": "frmUnholdOrders",
+      "formClass": "TfrmUnholdOrders",
+      "declaration": "inherited",
+      "caption": "Release Orders from Hold",
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrdersVerify.dfm",
+      "formName": "frmVerifyOrders",
+      "formClass": "TfrmVerifyOrders",
+      "declaration": "inherited",
+      "caption": "Verify Orders",
+      "childComponentCount": 8,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrderUnflag.dfm",
+      "formName": "frmUnflagOrder",
+      "formClass": "TfrmUnflagOrder",
+      "declaration": "inherited",
+      "caption": "Unflag Order",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOrderVw.dfm",
+      "formName": "frmOrderView",
+      "formClass": "TfrmOrderView",
+      "declaration": "inherited",
+      "caption": "Custom Order View",
+      "childComponentCount": 22,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Orders/fOtherSchedule.dfm",
+      "formName": "frmOtherSchedule",
+      "formClass": "TfrmOtherSchedule",
+      "declaration": "inherited",
+      "caption": "Order with schedule ",
+      "childComponentCount": 29,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Templates/fFindingTemplates.dfm",
+      "formName": "frmFindingTemplates",
+      "formClass": "TfrmFindingTemplates",
+      "declaration": "object",
+      "caption": "Finding Template",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Templates/fTemplateAutoGen.dfm",
+      "formName": "frmTemplateAutoGen",
+      "formClass": "TfrmTemplateAutoGen",
+      "declaration": "inherited",
+      "caption": "Generate Template",
+      "childComponentCount": 7,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Templates/fTemplateDialog.dfm",
+      "formName": "frmTemplateDialog",
+      "formClass": "TfrmTemplateDialog",
+      "declaration": "inherited",
+      "caption": "Text Dialog",
+      "childComponentCount": 9,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Templates/fTemplateEditor.dfm",
+      "formName": "frmTemplateEditor",
+      "formClass": "TfrmTemplateEditor",
+      "declaration": "inherited",
+      "caption": "Template Editor",
+      "childComponentCount": 188,
+      "features": {
+        "hasGrid": false,
+        "hasTree": true,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Templates/fTemplateFieldEditor.dfm",
+      "formName": "frmTemplateFieldEditor",
+      "formClass": "TfrmTemplateFieldEditor",
+      "declaration": "inherited",
+      "caption": "Template Field Editor",
+      "childComponentCount": 91,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Templates/fTemplateFields.dfm",
+      "formName": "frmTemplateFields",
+      "formClass": "TfrmTemplateFields",
+      "declaration": "inherited",
+      "caption": "Insert Template Field",
+      "childComponentCount": 13,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Templates/fTemplateImport.dfm",
+      "formName": "frmTemplateImport",
+      "formClass": "TfrmTemplateImport",
+      "declaration": "inherited",
+      "caption": "Importing Word Document",
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Templates/fTemplateObjects.dfm",
+      "formName": "frmTemplateObjects",
+      "formClass": "TfrmTemplateObjects",
+      "declaration": "inherited",
+      "caption": "Insert Patient Data (Object)",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Templates/fTemplateView.dfm",
+      "formName": "frmTemplateView",
+      "formClass": "TfrmTemplateView",
+      "declaration": "inherited",
+      "caption": "View Template",
+      "childComponentCount": 9,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Templates/mTemplateFieldButton.dfm",
+      "formName": "fraTemplateFieldButton",
+      "formClass": "TfraTemplateFieldButton",
+      "declaration": "object",
+      "caption": null,
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Tools/fGN_RPCLog.dfm",
+      "formName": "frmRPCLog",
+      "formClass": "TfrmRPCLog",
+      "declaration": "object",
+      "caption": "RPC Log",
+      "childComponentCount": 100,
+      "features": {
+        "hasGrid": true,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Vitals/fVitalsDate.dfm",
+      "formName": "frmVitalsDate",
+      "formClass": "TfrmVitalsDate",
+      "declaration": "inherited",
+      "caption": "Vitals Date & Time",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Womens Health/fWVEIEReasonsDlg.dfm",
+      "formName": "frmWVEIEReasonsDlg",
+      "formClass": "TfrmWVEIEReasonsDlg",
+      "declaration": "object",
+      "caption": "Women",
+      "childComponentCount": 7,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "Womens Health/fWVPregLacStatusUpdate.dfm",
+      "formName": "frmWVPregLacStatusUpdate",
+      "formClass": "TfrmWVPregLacStatusUpdate",
+      "declaration": "object",
+      "caption": "Women",
+      "childComponentCount": 40,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/508/Source/VA508AccessibilityCompileInfo.dfm",
+      "formName": "frmProgress",
+      "formClass": "TfrmProgress",
+      "declaration": "object",
+      "caption": "VA 508 Compile Scan",
+      "childComponentCount": 25,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/508/Source/VA508AccessibilityManagerEditor.dfm",
+      "formName": "va508CollectionEditor",
+      "formClass": "Tva508CollectionEditor",
+      "declaration": "object",
+      "caption": "508 Accessibility Manager",
+      "childComponentCount": 23,
+      "features": {
+        "hasGrid": true,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/508/Source/VA508ImageListLabelerPE.dfm",
+      "formName": "frmImageListEditor",
+      "formClass": "TfrmImageListEditor",
+      "declaration": "object",
+      "caption": "Graphic Labels",
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/508/VA 508 JAWS Framework/Source/fVA508DispatcherHiddenWindow.dfm",
+      "formName": "frmVA508JawsDispatcherHiddenWindow",
+      "formClass": "TfrmVA508JawsDispatcherHiddenWindow",
+      "declaration": "object",
+      "caption": "Dispatcher",
+      "childComponentCount": 2,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/508/VA 508 JAWS Framework/Source/fVA508HiddenJawsDataWindow.dfm",
+      "formName": "frmVA508HiddenJawsDataWindow",
+      "formClass": "TfrmVA508HiddenJawsDataWindow",
+      "declaration": "object",
+      "caption": "VA 508 SR DLL Hidden Jaws Window",
+      "childComponentCount": 1,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/508/VA 508 JAWS Framework/Source/fVA508HiddenJawsMainWindow.dfm",
+      "formName": "frmVA508HiddenJawsMainWindow",
+      "formClass": "TfrmVA508HiddenJawsMainWindow",
+      "declaration": "object",
+      "caption": "Main Window",
+      "childComponentCount": 3,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/508/VA 508 JAWS Framework/Source/U_SplashScreen.dfm",
+      "formName": "SplashScrn",
+      "formClass": "TSplashScrn",
+      "declaration": "object",
+      "caption": "Jaws Framework",
+      "childComponentCount": 21,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Broker/Source/AddServer.dfm",
+      "formName": "frmAddServer",
+      "formClass": "TfrmAddServer",
+      "declaration": "object",
+      "caption": "Add Server",
+      "childComponentCount": 10,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Broker/Source/fDebugInfo.dfm",
+      "formName": "frmDebugInfo",
+      "formClass": "TfrmDebugInfo",
+      "declaration": "object",
+      "caption": "RPCBroker Debug Info",
+      "childComponentCount": 3,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Broker/Source/fPlinkpw.dfm",
+      "formName": "fPlinkPassword",
+      "formClass": "TfPlinkPassword",
+      "declaration": "object",
+      "caption": "Enter Plink Password",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Broker/Source/frmSignonMessage.dfm",
+      "formName": "frmSignonMsg",
+      "formClass": "TfrmSignonMsg",
+      "declaration": "object",
+      "caption": "System Use Notification",
+      "childComponentCount": 7,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Broker/Source/fRPCBErrMsg.dfm",
+      "formName": "frmErrMsg",
+      "formClass": "TfrmErrMsg",
+      "declaration": "object",
+      "caption": "Error Encountered",
+      "childComponentCount": 3,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Broker/Source/fSgnonDlg.dfm",
+      "formName": "frmSignonDialog",
+      "formClass": "TfrmSignonDialog",
+      "declaration": "object",
+      "caption": "Configuration Selection Question",
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Broker/Source/fSSHUsername.dfm",
+      "formName": "SSHUsername",
+      "formClass": "TSSHUsername",
+      "declaration": "object",
+      "caption": "Enter SSH username",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Broker/Source/Loginfrm.dfm",
+      "formName": "frmSignon",
+      "formClass": "TfrmSignon",
+      "declaration": "object",
+      "caption": "VistA Sign-on",
+      "childComponentCount": 27,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Broker/Source/RpcbErr.dfm",
+      "formName": "frmRpcbError",
+      "formClass": "TfrmRpcbError",
+      "declaration": "object",
+      "caption": "Error!",
+      "childComponentCount": 11,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Broker/Source/Rpcconf1.dfm",
+      "formName": "rpcConfig",
+      "formClass": "TrpcConfig",
+      "declaration": "object",
+      "caption": "Connect To",
+      "childComponentCount": 14,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Broker/Source/Rpcnet.dfm",
+      "formName": "RPCFRM1",
+      "formClass": "TRPCFRM1",
+      "declaration": "object",
+      "caption": "DLL",
+      "childComponentCount": 1,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Broker/Source/SelDiv.dfm",
+      "formName": "SelDivForm",
+      "formClass": "TSelDivForm",
+      "declaration": "object",
+      "caption": "Select Division",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Broker/Source/SgnonCnf.dfm",
+      "formName": "frmSignonConfig",
+      "formClass": "TfrmSignonConfig",
+      "declaration": "object",
+      "caption": "Sign-on Properties",
+      "childComponentCount": 13,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Broker/Source/Splvista.dfm",
+      "formName": "frmVistaSplash",
+      "formClass": "TfrmVistaSplash",
+      "declaration": "object",
+      "caption": null,
+      "childComponentCount": 3,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Broker/Source/VCEdit.dfm",
+      "formName": "frmVCEdit",
+      "formClass": "TfrmVCEdit",
+      "declaration": "object",
+      "caption": "Change VistA Verify Code",
+      "childComponentCount": 10,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Broker/Source/XWBSSOi.dfm",
+      "formName": "XWBSSOiFrm",
+      "formClass": "TXWBSSOiFrm",
+      "declaration": "object",
+      "caption": "Authenticate User",
+      "childComponentCount": 3,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/ExceptionLogger/Source/AVCatcher.dfm",
+      "formName": "AppExcept",
+      "formClass": "TAppExcept",
+      "declaration": "object",
+      "caption": "Error Dialog",
+      "childComponentCount": 19,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/OR/Source/OR2006Compatibility.dfm",
+      "formName": "frm2006Compatibility",
+      "formClass": "Tfrm2006Compatibility",
+      "declaration": "object",
+      "caption": "frm2006Compatibility",
+      "childComponentCount": 1,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/OR/Source/ORDtTm.dfm",
+      "formName": "ORfrmDtTm",
+      "formClass": "TORfrmDtTm",
+      "declaration": "object",
+      "caption": "Select Date/Time",
+      "childComponentCount": 17,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/OR/Source/ORDtTmRng.dfm",
+      "formName": "ORfrmDateRange",
+      "formClass": "TORfrmDateRange",
+      "declaration": "object",
+      "caption": "Date Range",
+      "childComponentCount": 7,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/PKI/Source/fPKIPINPrompt.dfm",
+      "formName": "frmPKIPINPrompt",
+      "formClass": "TfrmPKIPINPrompt",
+      "declaration": "object",
+      "caption": "PIV card PIN entry",
+      "childComponentCount": 11,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/AddServer.dfm",
+      "formName": "frmAddServer",
+      "formClass": "TfrmAddServer",
+      "declaration": "object",
+      "caption": "Add Server",
+      "childComponentCount": 10,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/AVCatcher.dfm",
+      "formName": "AppExcept",
+      "formClass": "TAppExcept",
+      "declaration": "object",
+      "caption": "Error Dialog",
+      "childComponentCount": 19,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/fDebugInfo.dfm",
+      "formName": "frmDebugInfo",
+      "formClass": "TfrmDebugInfo",
+      "declaration": "object",
+      "caption": "RPCBroker Debug Info",
+      "childComponentCount": 3,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/fPKIPINPrompt.dfm",
+      "formName": "frmPKIPINPrompt",
+      "formClass": "TfrmPKIPINPrompt",
+      "declaration": "object",
+      "caption": "PIV card PIN entry",
+      "childComponentCount": 11,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/fPlinkpw.dfm",
+      "formName": "fPlinkPassword",
+      "formClass": "TfPlinkPassword",
+      "declaration": "object",
+      "caption": "Enter Plink Password",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/frmSignonMessage.dfm",
+      "formName": "frmSignonMsg",
+      "formClass": "TfrmSignonMsg",
+      "declaration": "object",
+      "caption": "System Use Notification",
+      "childComponentCount": 7,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/fRPCBErrMsg.dfm",
+      "formName": "frmErrMsg",
+      "formClass": "TfrmErrMsg",
+      "declaration": "object",
+      "caption": "Error Encountered",
+      "childComponentCount": 3,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/fSgnonDlg.dfm",
+      "formName": "frmSignonDialog",
+      "formClass": "TfrmSignonDialog",
+      "declaration": "object",
+      "caption": "Configuration Selection Question",
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/fSSHUsername.dfm",
+      "formName": "SSHUsername",
+      "formClass": "TSSHUsername",
+      "declaration": "object",
+      "caption": "Enter SSH username",
+      "childComponentCount": 5,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/Loginfrm.dfm",
+      "formName": "frmSignon",
+      "formClass": "TfrmSignon",
+      "declaration": "object",
+      "caption": "VistA Sign-on",
+      "childComponentCount": 27,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/OR2006Compatibility.dfm",
+      "formName": "frm2006Compatibility",
+      "formClass": "Tfrm2006Compatibility",
+      "declaration": "object",
+      "caption": "frm2006Compatibility",
+      "childComponentCount": 1,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/ORDtTm.dfm",
+      "formName": "ORfrmDtTm",
+      "formClass": "TORfrmDtTm",
+      "declaration": "object",
+      "caption": "Select Date/Time",
+      "childComponentCount": 17,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/ORDtTmRng.dfm",
+      "formName": "ORfrmDateRange",
+      "formClass": "TORfrmDateRange",
+      "declaration": "object",
+      "caption": "Date Range",
+      "childComponentCount": 7,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/RpcbErr.dfm",
+      "formName": "frmRpcbError",
+      "formClass": "TfrmRpcbError",
+      "declaration": "object",
+      "caption": "Error!",
+      "childComponentCount": 11,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/Rpcconf1.dfm",
+      "formName": "rpcConfig",
+      "formClass": "TrpcConfig",
+      "declaration": "object",
+      "caption": "Connect To",
+      "childComponentCount": 14,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/Rpcnet.dfm",
+      "formName": "RPCFRM1",
+      "formClass": "TRPCFRM1",
+      "declaration": "object",
+      "caption": "DLL",
+      "childComponentCount": 1,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/SelDiv.dfm",
+      "formName": "SelDivForm",
+      "formClass": "TSelDivForm",
+      "declaration": "object",
+      "caption": "Select Division",
+      "childComponentCount": 6,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/SgnonCnf.dfm",
+      "formName": "frmSignonConfig",
+      "formClass": "TfrmSignonConfig",
+      "declaration": "object",
+      "caption": "Sign-on Properties",
+      "childComponentCount": 13,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/Splvista.dfm",
+      "formName": "frmVistaSplash",
+      "formClass": "TfrmVistaSplash",
+      "declaration": "object",
+      "caption": null,
+      "childComponentCount": 3,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/VA508AccessibilityCompileInfo.dfm",
+      "formName": "frmProgress",
+      "formClass": "TfrmProgress",
+      "declaration": "object",
+      "caption": "VA 508 Compile Scan",
+      "childComponentCount": 25,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/VA508AccessibilityManagerEditor.dfm",
+      "formName": "va508CollectionEditor",
+      "formClass": "Tva508CollectionEditor",
+      "declaration": "object",
+      "caption": "508 Accessibility Manager",
+      "childComponentCount": 23,
+      "features": {
+        "hasGrid": true,
+        "hasTree": false,
+        "hasMemo": true,
+        "hasListBox": true,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/VA508ImageListLabelerPE.dfm",
+      "formName": "frmImageListEditor",
+      "formClass": "TfrmImageListEditor",
+      "declaration": "object",
+      "caption": "Graphic Labels",
+      "childComponentCount": 4,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/VCEdit.dfm",
+      "formName": "frmVCEdit",
+      "formClass": "TfrmVCEdit",
+      "declaration": "object",
+      "caption": "Change VistA Verify Code",
+      "childComponentCount": 10,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    },
+    {
+      "file": "XE8/Resource/XWBSSOi.dfm",
+      "formName": "XWBSSOiFrm",
+      "formClass": "TXWBSSOiFrm",
+      "declaration": "object",
+      "caption": "Authenticate User",
+      "childComponentCount": 3,
+      "features": {
+        "hasGrid": false,
+        "hasTree": false,
+        "hasMemo": false,
+        "hasListBox": false,
+        "hasPageControl": false
+      }
+    }
+  ],
+  "byFolder": {
+    "BA": [
+      "frmBALocalDiagnoses",
+      "frmBAOptionsDiagnoses"
+    ],
+    "Consults": [
+      "frmConsMedRslt",
+      "frm513Print",
+      "frmConsultAction",
+      "frmConsultAlertsTo",
+      "frmConsultsByDate",
+      "frmConsultsByService",
+      "frmConsultsByStatus",
+      "frmConsults",
+      "frmConsultsView",
+      "frmCsltNote",
+      "frmEditCslt",
+      "frmEditProc",
+      "frmODCslt",
+      "frmODProc",
+      "frmPrerequisites"
+    ],
+    "Cover Sheet": [
+      "frmCoverSheet",
+      "frmCoverSheetDetailDisplay",
+      "fraCoverSheetDisplayPanel",
+      "fraCoverSheetDisplayPanel_CPRS",
+      "fraCoverSheetDisplayPanel_CPRS_ActiveMeds",
+      "fraCoverSheetDisplayPanel_CPRS_Allergies",
+      "fraCoverSheetDisplayPanel_CPRS_Appts",
+      "fraCoverSheetDisplayPanel_CPRS_Immunizations",
+      "fraCoverSheetDisplayPanel_CPRS_Labs",
+      "fraCoverSheetDisplayPanel_CPRS_Postings",
+      "fraCoverSheetDisplayPanel_CPRS_ProblemList",
+      "fraCoverSheetDisplayPanel_CPRS_Reminders",
+      "fraCoverSheetDisplayPanel_CPRS_Vitals",
+      "fraCoverSheetDisplayPanel_CPRS_WH",
+      "fraCoverSheetDisplayPanel_Web",
+      "fraCoverSheetDisplayPanel_WidgetClock",
+      "fraGridPanelFrame"
+    ],
+    "(root)": [
+      "dmodShared",
+      "frmAbout",
+      "frmActivateDeactive",
+      "frmAddlSigners",
+      "frmAlertForward",
+      "frmAlertNoteSelector",
+      "frmAllgyBox",
+      "frmAllgyFind",
+      "frmAutoResize",
+      "frmARTAllergy",
+      "frmARTFreeTextMsg",
+      "frmAutoSz",
+      "frmBase508Form",
+      "frmClinicWardMeds",
+      "frmCombatVet",
+      "frmCover",
+      "frmDateRange",
+      "frmDCSumm",
+      "frmDCSummProperties",
+      "frmDebugReport",
+      "frmDefaultEvent",
+      "frmDeferDialog",
+      "frmDeviceSelect",
+      "frmDrawers",
+      "frmDupPts",
+      "frmEffectDate",
+      "frmEncounter",
+      "frmEncounter",
+      "dlgFocusedControls",
+      "frmFrame",
+      "frmGraphData",
+      "frmGraphOthers",
+      "frmGraphProfiles",
+      "frmGraphs",
+      "frmGraphSettings",
+      "frmHP",
+      "frmHSplit",
+      "frmIconLegend",
+      "frmLabCollectTimes",
+      "frmLabInfo",
+      "frmLabPrint",
+      "frmLabs",
+      "frmLabTest",
+      "frmLabTestGroups",
+      "frmLabTests",
+      "frmLaunch",
+      "frmLkUpLocation",
+      "frmMedCopy",
+      "frmMeds",
+      "frmMHTest",
+      "frmNotesByAuthor",
+      "frmNotesByDate",
+      "frmNoteCPFields",
+      "frmNoteConsult",
+      "frmNoteDelReason",
+      "frmNoteIDParents",
+      "frmNoteProperties",
+      "frmNotePrint",
+      "frmNotes",
+      "frmNotesBP",
+      "frmNotesSearchText",
+      "frmSearchStop",
+      "frmNotificationProcessor",
+      "frmPage",
+      "frmFlags",
+      "frmPostings",
+      "frmPrintList",
+      "frmPrintLocation",
+      "frmProbCmt",
+      "frmdlgProb",
+      "frmPlVuFilt",
+      "frmProbFreetext",
+      "frmPLLex",
+      "frmProblems",
+      "frmPtCWAD",
+      "frmPtDemo",
+      "frmPtSel",
+      "frmPtSelDemog",
+      "frmPtSelMsg",
+      "frmPtSelOptns",
+      "frmPtSelOptSave",
+      "frmPtSens",
+      "frmRemCoverPreview",
+      "frmRemCoverSheet",
+      "frmRemDlg",
+      "frmReminderTree",
+      "frmRemVisitInfo",
+      "frmRename",
+      "frmRenewOutMed",
+      "frmReports",
+      "frmReportsAdhocComponent1",
+      "frmReportsAdhocSubItem1",
+      "frmReportPrt",
+      "frmReview",
+      "frmReportBox",
+      "frmSignItem",
+      "frmSpellNotify",
+      "frmSplash",
+      "frmSurgery",
+      "frmSurgeryView",
+      "frmTimeout",
+      "frmTIUView",
+      "frmViewNotifications",
+      "frmVisit",
+      "frmVit",
+      "frmVitals",
+      "frmBroker",
+      "frmDbgList",
+      "frmDbgServer",
+      "ColumnTreeFrame",
+      "fraCoPayDesc",
+      "fraDrawers",
+      "fraEvntDelayList",
+      "fraImgText",
+      "RadioLVFrame",
+      "TreeGridFrame"
+    ],
+    "Encounter": [
+      "frmDiagnoses",
+      "frmEncounterFrame",
+      "frmEncVitals",
+      "frmExams",
+      "frmGAF",
+      "frmHealthFactors",
+      "frmHFSearch",
+      "frmImmunizations",
+      "frmPatientEd",
+      "frmPCEBase",
+      "frmPCEBaseGrid",
+      "frmPCEBaseMain",
+      "frmPCEEdit",
+      "frmPCELex",
+      "frmPCEOther",
+      "frmPCEProvider",
+      "frmProcedures",
+      "frmSkinTests",
+      "frmVisitType",
+      "fraVisitRelated"
+    ],
+    "Options": [
+      "frmOptions",
+      "frmOptionsCombinations",
+      "frmOptionsDays",
+      "frmOptionsLists",
+      "frmOptionsNewList",
+      "frmOptionsNotes",
+      "frmOptionsOther",
+      "frmOptionsPatientSelection",
+      "frmOptionsPrimaryList",
+      "frmOptionsReminders",
+      "frmOptionsReportsCustom",
+      "frmOptionsReportsDefault",
+      "frmOptionsSubscribe",
+      "frmOptionsSurrogate",
+      "frmOptionsTeams",
+      "frmOptionsTitles"
+    ],
+    "Orders": [
+      "frmCSRemaining",
+      "frmIVRoutes",
+      "frmOCAccept",
+      "frmOCMonograph",
+      "frmOCSession",
+      "frmODActive",
+      "frmODAllergy",
+      "frmODAuto",
+      "frmODBase",
+      "frmODBBank",
+      "frmChangeEventDisp",
+      "frmODChangeUnreleasedRenew",
+      "frmODChild",
+      "frmODDiet",
+      "frmODDietLT",
+      "frmODGen",
+      "frmODLab",
+      "frmODLabImmedColl",
+      "frmODLabOthCollSamp",
+      "frmODLabOthSpec",
+      "frmODMedComplex",
+      "frmODMedFA",
+      "frmODMedIn",
+      "frmODMedIV",
+      "frmODMedNVA",
+      "frmODMedOIFA",
+      "frmODMedOut",
+      "frmODMeds",
+      "frmODMessage",
+      "frmODMisc",
+      "frmODRad",
+      "frmODRadApproval",
+      "frmODRadConShRes",
+      "frmODRadImType",
+      "frmOrdersReleaseEvent",
+      "frmODRTC",
+      "frmODQuick",
+      "frmODTest",
+      "frmODText",
+      "frmInvalidActionList",
+      "frmODVitals",
+      "frmOMAction",
+      "frmOMHTML",
+      "frmOMNavA",
+      "frmOMProgress",
+      "frmOMSet",
+      "frmOMVerify",
+      "frmWardComments",
+      "frmFlagOrder",
+      "frmOrders",
+      "frmAlertOrders",
+      "frmSaveQuickOrder",
+      "frmCompleteOrders",
+      "frmCopyOrders",
+      "frmChgEvent",
+      "frmDCOrders",
+      "frmOrdersEvntRelease",
+      "frmHoldOrders",
+      "frmOnChartOrders",
+      "frmOrdersPickEvent",
+      "frmOrdersPrint",
+      "frmRefillOrders",
+      "frmReleaseOrders",
+      "frmRenewOrders",
+      "frmSignOrders",
+      "frmOrdersTS",
+      "frmUnholdOrders",
+      "frmVerifyOrders",
+      "frmUnflagOrder",
+      "frmOrderView",
+      "frmOtherSchedule"
+    ],
+    "Templates": [
+      "frmFindingTemplates",
+      "frmTemplateAutoGen",
+      "frmTemplateDialog",
+      "frmTemplateEditor",
+      "frmTemplateFieldEditor",
+      "frmTemplateFields",
+      "frmTemplateImport",
+      "frmTemplateObjects",
+      "frmTemplateView",
+      "fraTemplateFieldButton"
+    ],
+    "Tools": [
+      "frmRPCLog"
+    ],
+    "Vitals": [
+      "frmVitalsDate"
+    ],
+    "Womens Health": [
+      "frmWVEIEReasonsDlg",
+      "frmWVPregLacStatusUpdate"
+    ],
+    "XE8": [
+      "frmProgress",
+      "va508CollectionEditor",
+      "frmImageListEditor",
+      "frmVA508JawsDispatcherHiddenWindow",
+      "frmVA508HiddenJawsDataWindow",
+      "frmVA508HiddenJawsMainWindow",
+      "SplashScrn",
+      "frmAddServer",
+      "frmDebugInfo",
+      "fPlinkPassword",
+      "frmSignonMsg",
+      "frmErrMsg",
+      "frmSignonDialog",
+      "SSHUsername",
+      "frmSignon",
+      "frmRpcbError",
+      "rpcConfig",
+      "RPCFRM1",
+      "SelDivForm",
+      "frmSignonConfig",
+      "frmVistaSplash",
+      "frmVCEdit",
+      "XWBSSOiFrm",
+      "AppExcept",
+      "frm2006Compatibility",
+      "ORfrmDtTm",
+      "ORfrmDateRange",
+      "frmPKIPINPrompt",
+      "frmAddServer",
+      "AppExcept",
+      "frmDebugInfo",
+      "frmPKIPINPrompt",
+      "fPlinkPassword",
+      "frmSignonMsg",
+      "frmErrMsg",
+      "frmSignonDialog",
+      "SSHUsername",
+      "frmSignon",
+      "frm2006Compatibility",
+      "ORfrmDtTm",
+      "ORfrmDateRange",
+      "frmRpcbError",
+      "rpcConfig",
+      "RPCFRM1",
+      "SelDivForm",
+      "frmSignonConfig",
+      "frmVistaSplash",
+      "frmProgress",
+      "va508CollectionEditor",
+      "frmImageListEditor",
+      "frmVCEdit",
+      "XWBSSOiFrm"
+    ]
+  },
+  "summary": {
+    "totalForms": 323,
+    "withCaption": 292,
+    "withoutCaption": 31,
+    "inheritedForms": 242,
+    "objectForms": 81,
+    "folderCount": 12
+  }
+}
