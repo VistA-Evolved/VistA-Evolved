@@ -76,7 +76,7 @@ function createDraft(type: ServerDraft['type'], dfn: string, requiredRpc: string
     syncAttempts: 0,
   };
   drafts.set(id, draft);
-  console.log(`[DRAFT] Created ${type} draft ${id} for DFN=${dfn} (RPC: ${requiredRpc})`);
+  log.info("Draft created", { type, draftId: id, dfn, requiredRpc });
   // Phase 15C: centralized audit for draft creation
   centralAudit("clinical.draft-create", "success", { duz: "system" }, {
     patientDfn: dfn,

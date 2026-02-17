@@ -1,8 +1,22 @@
-# Phase 15: Enterprise Hardening (Security + HIPAA Posture + Reliability + Observability)
+# Phase 15B: Enterprise Hardening — VistA-first Security
 
-## What Changed
+## What Changed (Phase 15B — supersedes Phase 15)
 
-### 15A - Security Baseline
+### 15B-Security — Auth Gateway + CORS Lockdown + Response Scrubbing
+- Modified `apps/api/src/middleware/security.ts`: Auth gateway with path-based rules (none/session/admin), CORS origin allowlist (`ALLOWED_ORIGINS`), origin check for state-changing requests, centralized response scrubber (`sanitizeClientError`), error handler no longer leaks stack traces
+- Modified `apps/api/src/index.ts`: CORS locked to `corsOriginValidator`, `auditActor(request)` replaces all `{ duz: "system" }`, `safeErr()` helper, `safeCallRpc`/`safeCallRpcWithList` imported
+- Modified `apps/api/src/auth/auth-routes.ts`: `rotateSession()` on login, token removed from response body, login error hardcoded to "Authentication failed"
+- Modified `apps/api/src/lib/logger.ts`: `AsyncLocalStorage` for concurrency-safe request IDs
+- Modified `apps/api/src/lib/rpc-resilience.ts`: `safeCallRpc()` and `safeCallRpcWithList()` drop-in wrappers
+- Modified `apps/api/src/lib/audit.ts`: Added `security.origin-rejected` action
+- Modified `apps/api/src/routes/write-backs.ts`: Replaced `console.log` with structured logger
+
+### Prompts Directory Repair
+- Renamed `12-PHASE-13` → `15-PHASE-13`, `15-PHASE-14` → `16-PHASE-14`, `16-PHASE-15` → `17-PHASE-15`
+- Fixed file prefixes in `14-PHASE-12-CPRS-PARITY-WIRING` from 12-xx to 14-xx
+- Updated all internal references (verifier scripts, ops artifacts)
+
+### Previous 15A - Security Baseline
 - New `apps/api/src/lib/logger.ts`: Structured JSON/text logger with credential/PHI redaction (SSN, Bearer tokens, access codes)
 - New `apps/api/src/lib/validation.ts`: Zod schemas for all POST bodies (LoginBodySchema, PatientSearchQuerySchema, etc.)
 - New `apps/api/src/middleware/security.ts`: Request IDs, security headers, rate limiting (200 general/60s, 10 login/60s), global error handler, graceful shutdown
@@ -58,18 +72,14 @@ curl -X POST http://127.0.0.1:3001/auth/login -H "Content-Type: application/json
 ## Verifier Output
 
 ```
-Phase 15 Enterprise Hardening Verification
-PASS: 92, FAIL: 0, WARN: 0, INFO: 0
-*** ALL CHECKS PASSED - 0 WARN ***
+Phase 15B Enterprise Hardening Verification
+PASS: TBD (run scripts/verify-phase15b-enterprise-hardening.ps1)
 ```
 
-INFO items:
-- ORWORB UNSIG ORDERS - expected-missing on WorldVistA Docker
-- ORWORB FASTUSER - expected-missing on WorldVistA Docker
-
 ## Follow-ups
+- Wire `safeCallRpc`/`safeCallRpcWithList` into all 12 endpoint handlers
 - Production audit sink (file/SIEM instead of memory)
-- Wire `resilientRpc()`/`cachedRpc()` into actual RPC calls
-- RBAC enforcement on admin endpoints
+- RBAC with VistA security keys
 - TLS termination / reverse proxy
+- CSRF token implementation
 - Log aggregation (ELK/Splunk/CloudWatch)

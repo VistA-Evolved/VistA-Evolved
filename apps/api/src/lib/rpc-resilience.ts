@@ -13,6 +13,7 @@
 
 import { RPC_CONFIG, CACHE_CONFIG } from "../config/server-config.js";
 import { log } from "./logger.js";
+import { callRpc, callRpcWithList, type RpcParam } from "../vista/rpcBrokerClient.js";
 
 /* ================================================================== */
 /* Circuit Breaker                                                     */
@@ -387,4 +388,39 @@ export function getRpcHealthSummary(): {
     totalTimeouts,
     rpcMetrics: getRpcMetrics(),
   };
+}
+
+/* ================================================================== */
+/* Drop-in wrappers: rpc + circuit breaker + timeout + metrics          */
+/* ================================================================== */
+
+/**
+ * Drop-in replacement for callRpc that adds timeout, circuit breaker,
+ * retry (for reads), and per-RPC metrics.
+ */
+export async function safeCallRpc(
+  rpcName: string,
+  params: string[],
+  opts?: { idempotent?: boolean; timeoutMs?: number },
+): Promise<string[]> {
+  return resilientRpc(
+    () => callRpc(rpcName, params),
+    rpcName,
+    { idempotent: opts?.idempotent ?? true, timeoutMs: opts?.timeoutMs },
+  );
+}
+
+/**
+ * Drop-in replacement for callRpcWithList that adds resilience.
+ */
+export async function safeCallRpcWithList(
+  rpcName: string,
+  params: RpcParam[],
+  opts?: { idempotent?: boolean; timeoutMs?: number },
+): Promise<string[]> {
+  return resilientRpc(
+    () => callRpcWithList(rpcName, params),
+    rpcName,
+    { idempotent: opts?.idempotent ?? true, timeoutMs: opts?.timeoutMs },
+  );
 }

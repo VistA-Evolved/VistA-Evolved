@@ -13,13 +13,38 @@ import capabilityRoutes from "./routes/capabilities.js";
 import writeBackRoutes from "./routes/write-backs.js";
 import imagingRoutes from "./routes/imaging.js";
 // Phase 15: Enterprise hardening imports
-import { registerSecurityMiddleware } from "./middleware/security.js";
+import { registerSecurityMiddleware, corsOriginValidator } from "./middleware/security.js";
 import { log } from "./lib/logger.js";
 import { audit, queryAuditEvents, getAuditStats } from "./lib/audit.js";
-import { getRpcHealthSummary, getCircuitBreakerStats, resetCircuitBreaker, invalidateCache } from "./lib/rpc-resilience.js";
+import { getRpcHealthSummary, getCircuitBreakerStats, resetCircuitBreaker, invalidateCache, safeCallRpc, safeCallRpcWithList } from "./lib/rpc-resilience.js";
+
+/* ================================================================== */
+/* Phase 15B helpers: safe error + session-based audit actor             */
+/* ================================================================== */
+
+/** Sanitize error for client response - never leak VistA internals. */
+function safeErr(err: unknown): string {
+  if (err instanceof Error) {
+    const m = err.message;
+    if (m.includes("credential") || m.includes("VISTA_")) return "Configuration error";
+    if (m.includes("ECONNREFUSED") || m.includes("timeout")) return "VistA service unavailable";
+    // Strip MUMPS routine refs, file paths
+    let s = m.replace(/\^[A-Z][A-Z0-9]*/g, "").replace(/[A-Z]:\\[^\s]+/g, "").trim();
+    if (s.length > 120) s = s.slice(0, 120) + "...";
+    return s || "Operation failed";
+  }
+  return "Operation failed";
+}
+
+/** Extract audit actor from request session (set by auth gateway). */
+function auditActor(request: any): { duz: string; name?: string; role?: string } {
+  const s = request.session;
+  if (s) return { duz: s.duz, name: s.userName, role: s.role };
+  return { duz: "system" };
+}
 
 const server = Fastify();
-server.register(cors, { origin: true, credentials: true });
+server.register(cors, { origin: corsOriginValidator as any, credentials: true });
 server.register(cookie);
 server.register(websocket);
 
@@ -172,7 +197,7 @@ server.get("/vista/patient-search", async (request) => {
     disconnect();
 
     // Phase 15C: Audit patient search
-    audit("phi.patient-search", "success", { duz: "system" }, {
+    audit("phi.patient-search", "success", auditActor(request), {
       requestId: (request as any).requestId,
       sourceIp: request.ip,
       detail: { query: q.trim(), resultCount: results.length },
@@ -232,7 +257,7 @@ server.get("/vista/patient-demographics", async (request) => {
     }
 
     // Phase 15C: Audit demographics view
-    audit("phi.demographics-view", "success", { duz: "system" }, {
+    audit("phi.demographics-view", "success", auditActor(request), {
       patientDfn: String(dfn),
       requestId: (request as any).requestId,
       sourceIp: request.ip,
@@ -288,7 +313,7 @@ server.get("/vista/allergies", async (request) => {
       .filter((r) => r !== null);
 
     // Phase 15C: Audit allergies view
-    audit("phi.allergies-view", "success", { duz: "system" }, {
+    audit("phi.allergies-view", "success", auditActor(request), {
       patientDfn: String(dfn),
       requestId: (request as any).requestId,
       sourceIp: request.ip,
@@ -404,7 +429,7 @@ server.post("/vista/allergies", async (request) => {
     }
 
     // Phase 15C: Audit allergy add
-    audit("clinical.allergy-add", "success", { duz: "system" }, {
+    audit("clinical.allergy-add", "success", auditActor(request), {
       patientDfn: String(dfn),
       requestId: (request as any).requestId,
       sourceIp: request.ip,
@@ -488,7 +513,7 @@ server.get("/vista/vitals", async (request) => {
       .filter((r) => r !== null);
 
     // Phase 15C: Audit vitals view
-    audit("phi.vitals-view", "success", { duz: "system" }, {
+    audit("phi.vitals-view", "success", auditActor(request), {
       patientDfn: String(dfn),
       requestId: (request as any).requestId,
       sourceIp: request.ip,
@@ -570,7 +595,7 @@ server.post("/vista/vitals", async (request) => {
     }
 
     // Phase 15C: Audit vital add
-    audit("clinical.vitals-add", "success", { duz: "system" }, {
+    audit("clinical.vitals-add", "success", auditActor(request), {
       patientDfn: String(dfn),
       requestId: (request as any).requestId,
       sourceIp: request.ip,
@@ -692,7 +717,7 @@ server.get("/vista/notes", async (request) => {
       .filter(Boolean);
 
     // Phase 15C: Audit notes view (never log note text content — HIPAA)
-    audit("phi.notes-view", "success", { duz: "system" }, {
+    audit("phi.notes-view", "success", auditActor(request), {
       patientDfn: String(dfn),
       requestId: (request as any).requestId,
       sourceIp: request.ip,
@@ -816,7 +841,7 @@ server.post("/vista/notes", async (request) => {
     }
 
     // Phase 15C: Audit note creation (never log note text — HIPAA)
-    audit("clinical.note-create", "success", { duz: "system" }, {
+    audit("clinical.note-create", "success", auditActor(request), {
       patientDfn: String(dfn),
       requestId: (request as any).requestId,
       sourceIp: request.ip,
@@ -939,7 +964,7 @@ server.get("/vista/medications", async (request) => {
     }));
 
     // Phase 15C: Audit medications view
-    audit("phi.medications-view", "success", { duz: "system" }, {
+    audit("phi.medications-view", "success", auditActor(request), {
       patientDfn: String(dfn),
       requestId: (request as any).requestId,
       sourceIp: request.ip,
@@ -1109,7 +1134,7 @@ server.post("/vista/medications", async (request) => {
     const orderIEN = (raw.split(/[\^;]/)[0]?.trim() || raw).replace(/^~/, "");
 
     // Phase 15C: Audit medication add
-    audit("clinical.medication-add", "success", { duz: "system" }, {
+    audit("clinical.medication-add", "success", auditActor(request), {
       patientDfn: String(dfn),
       requestId: (request as any).requestId,
       sourceIp: request.ip,
@@ -1135,7 +1160,7 @@ server.post("/vista/medications", async (request) => {
 });
 
 // Phase 4A: Real RPC call to get default patient list
-server.get("/vista/default-patient-list", async () => {
+server.get("/vista/default-patient-list", async (request) => {
   try {
     validateCredentials();
   } catch (err: any) {
@@ -1164,7 +1189,7 @@ server.get("/vista/default-patient-list", async () => {
     disconnect();
 
     // Phase 15C: Audit default patient list access
-    audit("phi.patient-list", "success", { duz: "system" }, {
+    audit("phi.patient-list", "success", auditActor(request), {
       detail: { count: results.length },
     });
 
@@ -1252,7 +1277,7 @@ server.get("/vista/problems", async (request) => {
       .filter((r) => r !== null);
 
     // Phase 15C: Audit problems view
-    audit("phi.problems-view", "success", { duz: "system" }, {
+    audit("phi.problems-view", "success", auditActor(request), {
       patientDfn: String(dfn),
       requestId: (request as any).requestId,
       sourceIp: request.ip,
