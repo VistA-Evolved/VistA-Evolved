@@ -290,6 +290,49 @@
 
 ---
 
+## Phase 21 — VistA HL7/HLO Interop Telemetry
+
+### BUG-023: Fastify preHandler with non-void return causes infinite route hang
+
+| | |
+|---|---|
+| **Symptom** | Any route registered inside a Fastify plugin with `preHandler: [requireSession]` would accept the TCP connection but send 0 bytes — the request hangs forever until timeout |
+| **What was tried** | Added diagnostic logging to the handler — it never fired. Replaced the handler with a static `{ ok: true }` — still hung. Added a direct test route in `index.ts` (outside the plugin) — that worked. |
+| **Root cause** | `requireSession()` returns a `SessionData` object. Fastify interprets any non-void/non-undefined return value from a `preHandler` hook as a response payload. This creates a deadlock: Fastify thinks the response was already sent (by the preHandler's return value), so it never invokes the route handler. But the return value isn't a proper `reply.send()`, so nothing actually goes to the client. The request hangs in limbo. |
+| **Fix** | Removed `preHandler: [requireSession]` from all 5 route definitions. Instead, call `requireSession(request, reply)` inside the handler body (ignoring the return value for routing purposes). This matches the established pattern used by all other working route modules (`interop.ts`, `admin.ts`, etc.). |
+| **Preventive** | **NEVER use `requireSession` as a Fastify `preHandler`.** It returns data, which Fastify misinterprets. Always call it inside the handler body. If you need a true preHandler, write a wrapper that calls `requireSession()` but returns `undefined`. |
+
+### BUG-024: MUMPS `KILL ^DIC(19,IEN,"RPC")` destroyed all context entries
+
+| | |
+|---|---|
+| **Symptom** | After running VEMCTX2.m to add 4 new RPCs to OR CPRS GUI CHART, all 1053 existing RPC entries in the context were deleted. This would have broken all CPRS-style RPC calls. |
+| **What was tried** | VEMCTX2.m used `KILL ^DIC(19,8552,"RPC")` to clear the subfile before adding the 4 VE INTEROP RPCs — the intent was a clean slate, but it destroyed everything |
+| **Root cause** | `KILL` on a global node removes the entire subtree. `^DIC(19,8552,"RPC")` contains ALL 1053 RPC-to-context mappings for OR CPRS GUI CHART. A KILL there is catastrophic. |
+| **Fix** | (1) Restarted Docker container — the WorldVistA image has internal volumes that persist data, so the original 1053 entries survived a `docker compose down/up` cycle. (2) Created VEMCTX3.m which safely appends by finding the next available sub-IEN (`$O(^DIC(19,CTXIEN,"RPC",""),-1)+1`) and writing only the new entries. |
+| **Preventive** | **NEVER use `KILL` on VistA globals to "rebuild" — always append.** VistA subnodes often contain thousands of cross-referenced entries. Find the max IEN in the subfile, add +1, and SET only your new entries. Always verify the count before and after: `W $O(^DIC(19,8552,"RPC",""),-1)`. |
+
+### BUG-025: Shell quoting through Windows → Docker → bash → MUMPS is catastrophically fragile
+
+| | |
+|---|---|
+| **Symptom** | Complex MUMPS commands passed as inline strings through PowerShell → `docker exec` → `su -c` → `mumps -r %XCMD` would silently misparse, drop characters, or fail with cryptic MUMPS syntax errors |
+| **What was tried** | Various escaping approaches — backticks, single quotes, double quotes, `$()` substitution, `@"..."@` here-strings — all broke in different ways at different escaping layers |
+| **Root cause** | 4+ layers of escaping: PowerShell → Docker CLI → container's bash → `su -c` → MUMPS. Each layer has different quote/escape rules. A single `$` sign is interpreted by PowerShell, bash, AND MUMPS. Properly escaping for all layers simultaneously is nearly impossible for non-trivial code. |
+| **Fix** | Write M routines as `.m` files on the host, `docker cp` them into the container at `/home/wv/r/`, then execute with `docker exec wv su - wv -c "mumps -run ROUTINENAME"`. This completely avoids inline quoting. |
+| **Preventive** | **Never pass non-trivial MUMPS code as inline strings.** Always write `.m` files and `docker cp` + `mumps -run`. For simple one-liners, use only basic ASCII with no special characters. Keep a `services/vista/` directory for all custom M routines. |
+
+### BUG-026: PowerShell `Invoke-WebRequest` blocks on IE security dialog
+
+| | |
+|---|---|
+| **Symptom** | `Invoke-WebRequest` calls from scripts hang waiting for user input, blocking automated testing |
+| **Root cause** | Windows PowerShell 5.1's `Invoke-WebRequest` uses the IE engine by default. On systems where Internet Explorer first-launch config hasn't completed, it pops a modal dialog that blocks the pipeline |
+| **Fix** | Always add `-UseBasicParsing` flag to `Invoke-WebRequest` calls |
+| **Preventive** | **Every `Invoke-WebRequest` in scripts and automation must include `-UseBasicParsing`.** Alternatively, use `curl.exe` (built into Windows 10+) which has no such issue. |
+
+---
+
 ## Cross-Cutting Lessons
 
 ### Lesson 1: VistA XWB Protocol Is Byte-Exact
@@ -379,3 +422,7 @@ CPRS sends. If your code disagrees with CPRS, your code is wrong.
 | First match is a header, not an allergy | BUG-020 | Skip lines where source (piece 3) is empty |
 | Vitals value/datetime swapped | BUG-021 | Wire format is `ien^type^value^datetime`, not what comment says |
 | Vitals value/datetime swapped | BUG-021 | Wire format is `ien^type^value^datetime`, not what comment says |
+| Fastify route hangs forever | BUG-023 | Never use `requireSession` as `preHandler` — call inside handler body |
+| KILL destroyed all context RPCs | BUG-024 | Never KILL VistA globals to rebuild — always append |
+| Docker MUMPS quoting breaks | BUG-025 | Write .m files locally, `docker cp`, then `mumps -run ROUTINE` |
+| PowerShell curl blocks on dialog | BUG-026 | Always use `-UseBasicParsing` with `Invoke-WebRequest` |

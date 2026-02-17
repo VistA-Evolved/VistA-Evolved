@@ -73,6 +73,8 @@ names like `"OR CPRS GUI CHART"`.
 ```
 apps/api/src/
   index.ts              — Fastify server, all routes (GET+POST)
+  routes/
+    vista-interop.ts    — VistA HL7/HLO interop telemetry (Phase 21)
   vista/
     config.ts           — env var loader + credential docs
     rpcBroker.ts        — TCP probe for /vista/ping (no auth)
@@ -80,9 +82,13 @@ apps/api/src/
 
 apps/web/src/app/
   patient-search/       — Patient search, demographics, allergies, add allergy
+  cprs/admin/integrations/ — Integration console + VistA HL7/HLO telemetry tab
 
 services/vista/
   docker-compose.yml    — WorldVistA container (port 9430)
+  ZVEMIOP.m             — Production M routine (4 interop RPC entry points)
+  ZVEMINS.m             — RPC registration installer
+  VEMCTX3.m             — Safe context adder (appends, never KILLs)
 
 docs/runbooks/          — Step-by-step guides for each phase
 scripts/                — Verification scripts
@@ -135,6 +141,23 @@ items across Phases 1–5D and reports PASS/FAIL for each.
 7. **GMRAGNT format is `NAME^IEN;file_root`** (semicolon between IEN and root).
 8. **All 6 OREDITED fields mandatory** for `ORWDAL32 SAVE ALLERGY` — see
    `docs/runbooks/vista-rpc-add-allergy.md`.
+9. **Never use `requireSession` as a Fastify `preHandler`.** It returns
+   `SessionData`, which Fastify interprets as a response payload, causing
+   the route to hang forever with 0 bytes sent. Always call
+   `requireSession(request, reply)` inside the handler body. See BUG-023.
+10. **Never `KILL` VistA global subtrees to rebuild.** `KILL ^DIC(19,IEN,"RPC")`
+    destroyed 1053 existing context entries. Always find the max sub-IEN and
+    append with `$O(node,"",-1)+1`. See BUG-024.
+11. **Never pass complex MUMPS as inline shell strings.** Write `.m` files in
+    `services/vista/`, `docker cp` into the container, then `mumps -run`.
+    4 layers of quoting (PowerShell → Docker → bash → MUMPS) will break. BUG-025.
+12. **Always use `-UseBasicParsing` with `Invoke-WebRequest`.** Without it,
+    PowerShell 5.1 may pop an IE security dialog that blocks automation.
+    Or use `curl.exe` instead. See BUG-026.
+13. **Interop RPCs must be installed in Docker.** Run
+    `scripts/install-interop-rpcs.ps1` after a fresh container pull.
+    The RPCs (IENs 3108–3111) survive `docker compose down/up` because
+    the WorldVistA image has internal volumes.
 
 ---
 
@@ -143,7 +166,7 @@ items across Phases 1–5D and reports PASS/FAIL for each.
 A comprehensive log of every bug, challenge, and fix from Phase 1 through
 Phase 5D lives in **[`docs/BUG-TRACKER.md`](docs/BUG-TRACKER.md)**.
 
-It covers 20 bugs with:
+It covers 26 bugs with:
 - What was attempted
 - The exact error or symptom
 - Root cause analysis
