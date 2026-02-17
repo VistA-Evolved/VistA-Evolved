@@ -1,8 +1,8 @@
 {
-  "feature_title": "Phase 22 - Imaging Platform V1 (Orthanc + OHIF + DICOMweb Proxy)",
+  "feature_title": "Fix All Known Gaps (Post-Phase 22) — BUG-038/039/040",
   "stage": "verified",
   "status": "complete",
-  "prompt_ref_path": "prompts/24-PHASE-22-IMAGING-PLATFORM/24-01-imaging-platform-IMPLEMENT.md",
+  "prompt_ref_path": "prompts/24-PHASE-22-IMAGING-PLATFORM/24-03-known-gaps-fix-IMPLEMENT.md",
   "runbook_path": "docs/runbooks/imaging-orthanc-ohif-local.md",
   "verify_script": "scripts/verify-phase22-imaging.ps1",
   "verify_results": {

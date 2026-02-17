@@ -223,14 +223,36 @@ let sock: Socket | null = null;
 let connected = false;
 let readBuf = ""; // persistent buffer across readToEOT calls
 let sessionDuz = ""; // DUZ of authenticated user (set during connect)
+let lastActivityMs = 0; // timestamp of last successful socket I/O
+
+/** Max idle time before we consider the socket potentially half-open (5 min). */
+const SOCKET_MAX_IDLE_MS = 5 * 60 * 1000;
+
+/** Check if the socket is likely still alive (not half-open). */
+function isSocketHealthy(): boolean {
+  if (!sock || sock.destroyed || !connected) return false;
+  // If we haven't used the socket in > SOCKET_MAX_IDLE_MS, assume it may be half-open
+  if (lastActivityMs > 0 && Date.now() - lastActivityMs > SOCKET_MAX_IDLE_MS) {
+    dbg("STALE", `Socket idle for ${Date.now() - lastActivityMs}ms, forcing reconnect`);
+    return false;
+  }
+  return true;
+}
+
+/** Record a successful socket interaction. */
+function touchActivity(): void {
+  lastActivityMs = Date.now();
+}
 
 /** Send raw bytes to broker (latin1 preserves byte values). */
 function rawSend(data: string): Promise<void> {
   return new Promise((resolve, reject) => {
     if (!sock || sock.destroyed) return reject(new Error("Socket closed"));
-    sock.write(Buffer.from(data, "latin1"), (err) =>
-      err ? reject(new Error("Send: " + err.message)) : resolve()
-    );
+    sock.write(Buffer.from(data, "latin1"), (err) => {
+      if (err) return reject(new Error("Send: " + err.message));
+      touchActivity();
+      resolve();
+    });
   });
 }
 
@@ -244,6 +266,7 @@ function readToEOT(): Promise<string> {
     if (existing !== -1) {
       const result = readBuf.substring(0, existing);
       readBuf = readBuf.substring(existing + 1);
+      touchActivity();
       return resolve(result);
     }
 
@@ -254,6 +277,7 @@ function readToEOT(): Promise<string> {
         cleanup();
         const result = readBuf.substring(0, i);
         readBuf = readBuf.substring(i + 1);
+        touchActivity();
         resolve(result);
       }
     }
@@ -305,7 +329,17 @@ function readToEOT(): Promise<string> {
  *           XUS AV CODE (encrypted) -> XWB CREATE CONTEXT (encrypted)
  */
 export async function connect(): Promise<void> {
-  if (connected && sock && !sock.destroyed) return;
+  // AGENTS.md #14: detect half-open sockets via staleness check
+  if (connected && sock && !sock.destroyed && isSocketHealthy()) return;
+  // If socket exists but is stale, clean it up first
+  if (sock && !sock.destroyed) {
+    dbg("RECONNECT", "Cleaning up stale socket before reconnecting");
+    try { sock.destroy(); } catch { /* best effort */ }
+    sock = null;
+    connected = false;
+    readBuf = "";
+    sessionDuz = "";
+  }
 
   validateCredentials();
 
@@ -313,6 +347,8 @@ export async function connect(): Promise<void> {
   dbg("CONNECT", VISTA_HOST + ":" + VISTA_PORT);
   sock = await new Promise<Socket>((resolve, reject) => {
     const s = createConnection({ host: VISTA_HOST, port: VISTA_PORT });
+    // Enable TCP keepalive to detect dead peers (AGENTS.md #14)
+    s.setKeepAlive(true, 30_000); // probe every 30s
     const timer = setTimeout(() => {
       s.destroy();
       reject(new Error("TCP connect timeout"));
@@ -327,6 +363,12 @@ export async function connect(): Promise<void> {
     });
   });
   readBuf = "";
+
+  // Detect half-open state: mark disconnected on unexpected close/error
+  // (AGENTS.md #14 - half-open socket detection)
+  sock.once("close", () => { connected = false; });
+  sock.on("error", () => { connected = false; });
+  touchActivity();
 
   // 2. XWB TCPConnect handshake
   const tcpMsg = buildTCPConnect("127.0.0.1", 0);
@@ -396,13 +438,15 @@ export async function connect(): Promise<void> {
   dbg("READY", "Broker authenticated, context set");
 }
 
-/** Disconnect from broker (sends #BYE# then closes socket). */
+/** Disconnect from broker (sends properly-framed BYE then closes socket). */
 export function disconnect(): void {
   if (sock && !sock.destroyed) {
     try {
-      sock.write(Buffer.from("#BYE#", "latin1"));
+      // Use XWB-framed BYE message (fixes BUG-036 / AGENTS.md #28 dead-code gap)
+      const bye = buildBye();
+      sock.write(Buffer.from(bye, "latin1"));
     } catch {
-      // best-effort
+      // best-effort — socket may already be half-closed
     }
     sock.destroy();
   }

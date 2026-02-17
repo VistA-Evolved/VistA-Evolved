@@ -233,9 +233,9 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
     // Attach session to request for downstream audit attribution
     request.session = session;
 
-    // Admin role check
+    // Admin role check — strict admin-only (AGENTS.md #24 RBAC tightening)
     if (requiredAuth === "admin") {
-      if (session.role !== "admin" && session.role !== "provider") {
+      if (session.role !== "admin") {
         audit("security.rbac-denied", "denied", {
           duz: session.duz, name: session.userName, role: session.role,
         }, { sourceIp: request.ip, detail: { url, requiredRole: "admin" } });

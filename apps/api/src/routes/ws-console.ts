@@ -71,8 +71,8 @@ export default async function wsConsoleRoutes(server: FastifyInstance): Promise<
       return;
     }
 
-    // RBAC: admin and provider roles can access console
-    const allowedRoles = ["admin", "provider"];
+    // RBAC: admin-only console access (AGENTS.md #24 tightening)
+    const allowedRoles = ["admin"];
     if (!allowedRoles.includes(session.role)) {
       auditWs(session, "DENIED", undefined, "Insufficient role for console access");
       socket.send(JSON.stringify({ type: "error", message: `Console access requires one of: ${allowedRoles.join(", ")}. Your role: ${session.role}`, ts: new Date().toISOString() }));

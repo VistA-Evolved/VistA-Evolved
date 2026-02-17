@@ -69,9 +69,9 @@ function requireSession(request: FastifyRequest, reply: FastifyReply): SessionDa
   return s;
 }
 
-/** Require admin role — sends 403 if not admin/provider. */
+/** Require admin role — sends 403 if not admin. RBAC-tight (AGENTS.md #24). */
 function requireAdmin(session: SessionData, reply: FastifyReply): boolean {
-  if (session.role !== "admin" && session.role !== "provider") {
+  if (session.role !== "admin") {
     reply.code(403).send({ ok: false, error: "Admin access required" });
     return false;
   }

@@ -165,10 +165,11 @@ most recent phase verifier and reports PASS/FAIL for each gate.
     The RPCs (IENs 3108–3111) survive `docker compose down/up` because
     the WorldVistA image has internal volumes. **But `docker compose down -v`
     or `docker system prune --volumes` destroys them** — re-run the installer.
-14. **`connect()` reuse is idempotent but doesn't detect half-open sockets.**
-    The guard `if (connected && sock && !sock.destroyed) return;` skips
-    reconnection, but a TCP half-open state (remote closed, local doesn't
-    know) passes the check. **Use `withBrokerLock()` for concurrent safety** —
+14. **`connect()` reuse is idempotent and now detects half-open sockets.**
+    The guard checks `isSocketHealthy()` which tracks `lastActivityMs` — if
+    the socket has been idle for >5 min, it forces reconnection. TCP keepalive
+    is enabled (30s probe interval) and `close`/`error` events automatically
+    mark `connected = false`. **Use `withBrokerLock()` for concurrent safety** —
     the async mutex in `rpcBrokerClient.ts` serializes all socket operations.
     `safeCallRpc` and `safeCallRpcWithList` use it automatically.
 15. **`authenticateUser()` uses a fully separate temp socket.** It creates its
@@ -202,9 +203,10 @@ most recent phase verifier and reports PASS/FAIL for each gate.
     fail verification.
 23. **Sandbox credentials on the login page are gated by NODE_ENV.** They only
     display when `NODE_ENV !== 'production'`. See BUG-035.
-24. **`/admin/*` routes require admin role check.** Use `requireRole(session,
-    'admin')` — not just session validation. Currently `provider` role also
-    gets admin access (known debt for RBAC tightening).
+24. **`/admin/*` routes require strict admin role check.** Use `requireRole(session,
+    'admin')` — not just session validation. RBAC is now strict admin-only in
+    `security.ts`, `imaging-proxy.ts`, and `ws-console.ts`. The sandbox user
+    PROVIDER,CLYDE is mapped to admin role in `session-store.ts`.
 25. **WebSocket console blocks `XUS AV CODE` and `XUS SET VISITOR` RPCs.**
     The `/ws/console` gateway has an explicit blocklist to prevent credential
     theft or privilege escalation through the debug console.
@@ -212,12 +214,13 @@ most recent phase verifier and reports PASS/FAIL for each gate.
     `VISTA_CAPABILITY_TTL_MS`). Stale capabilities can cause wrong fallback
     behavior. The system distinguishes `expectedMissing` (known absent in
     sandbox) from `unexpectedMissing` (should alarm operators).
-27. **Graceful shutdown doesn't disconnect the RPC broker.** `server.close()`
-    is called but `disconnect()` on the global socket is not. VistA-side
-    jobs may be left orphaned. Known debt for production hardening.
-28. **`buildBye()` is dead code.** `disconnect()` sends raw `#BYE#` instead
-    of the properly XWB-framed message. Works only because the socket is
-    destroyed immediately after. See BUG-036.
+27. **Graceful shutdown now disconnects the RPC broker.** The `security.ts`
+    middleware registers SIGINT/SIGTERM handlers that call
+    `disconnectRpcBroker()` before `server.close()`.
+28. **`buildBye()` is now used by `disconnect()`.** The properly XWB-framed
+    `#BYE#` message is sent before socket destroy. Previously `disconnect()`
+    sent raw `#BYE#` which only worked because the socket was destroyed
+    immediately after. See BUG-036.
 
 ---
 

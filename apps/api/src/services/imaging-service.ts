@@ -139,6 +139,8 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
   server.get("/vista/imaging/status", async (request) => {
     const mag4Check = optionalRpc("MAG4 REMOTE PROCEDURE");
     const raCheck = optionalRpc("RA DETAILED REPORT");
+    const maggPhotosCheck = optionalRpc("MAGG PAT PHOTOS");
+    const mag4ImagesCheck = optionalRpc("MAG4 PAT GET IMAGES");
 
     // Check integration registry for imaging systems
     const tenantId = (request as any).session?.tenantId || "default";
@@ -153,6 +155,16 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
           available: mag4Check.available,
           rpc: "MAG4 REMOTE PROCEDURE",
           status: mag4Check.available ? "active" : "not-available-on-distro",
+        },
+        patientPhotos: {
+          available: maggPhotosCheck.available,
+          rpc: "MAGG PAT PHOTOS",
+          status: maggPhotosCheck.available ? "active" : "not-available-on-distro",
+        },
+        patientImages: {
+          available: mag4ImagesCheck.available,
+          rpc: "MAG4 PAT GET IMAGES",
+          status: mag4ImagesCheck.available ? "active" : "not-available-on-distro",
         },
         radiology: {
           available: raCheck.available,
@@ -376,6 +388,128 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
         dicomwebEndpoints: dicomwebEntries.length,
       },
     };
+  });
+
+  /**
+   * GET /vista/imaging/patient-photos?dfn=1
+   *
+   * Patient photos from VistA Imaging (MAGG PAT PHOTOS).
+   * Returns photo IDs/metadata. Gracefully degrades if RPC unavailable.
+   */
+  server.get("/vista/imaging/patient-photos", async (request, reply) => {
+    const { dfn } = request.query as any;
+    if (!dfn) {
+      return reply.code(400).send({ ok: false, error: "Missing dfn" });
+    }
+
+    const rpcCheck = optionalRpc("MAGG PAT PHOTOS");
+    if (!rpcCheck.available) {
+      return {
+        ok: true,
+        available: false,
+        photos: [],
+        message: "MAGG PAT PHOTOS not available on this VistA distro. Photo display requires VistA Imaging package.",
+        rpc: "MAGG PAT PHOTOS",
+        rpcStatus: "not-available-on-distro",
+      };
+    }
+
+    try {
+      validateCredentials();
+      await connect();
+      const resp = await callRpc("MAGG PAT PHOTOS", [String(dfn)]);
+      disconnect();
+
+      // Parse MAGG PAT PHOTOS response: each line is "IEN^description^date^..."
+      const photos = resp
+        .filter((line) => line && !line.startsWith("0^"))
+        .map((line) => {
+          const parts = line.split("^");
+          return {
+            imageIen: parts[0] || "",
+            description: parts[1] || "",
+            dateTime: parts[2] || "",
+            imageType: parts[3] || "photo",
+          };
+        });
+
+      audit("phi.imaging-view", "success", auditActor(request), {
+        patientDfn: String(dfn),
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+        detail: { rpc: "MAGG PAT PHOTOS", photoCount: photos.length },
+      });
+
+      return { ok: true, available: true, photos, count: photos.length, rpcUsed: "MAGG PAT PHOTOS" };
+    } catch (err: any) {
+      disconnect();
+      log.warn("MAGG PAT PHOTOS failed", { error: err.message, dfn });
+      return { ok: true, available: false, photos: [], error: err.message };
+    }
+  });
+
+  /**
+   * GET /vista/imaging/patient-images?dfn=1
+   *
+   * Full image list from VistA Imaging (MAG4 PAT GET IMAGES).
+   * Returns image metadata (IEN, group, study references).
+   * Gracefully degrades if RPC unavailable.
+   */
+  server.get("/vista/imaging/patient-images", async (request, reply) => {
+    const { dfn } = request.query as any;
+    if (!dfn) {
+      return reply.code(400).send({ ok: false, error: "Missing dfn" });
+    }
+
+    const rpcCheck = optionalRpc("MAG4 PAT GET IMAGES");
+    if (!rpcCheck.available) {
+      return {
+        ok: true,
+        available: false,
+        images: [],
+        message: "MAG4 PAT GET IMAGES not available on this VistA distro. Full image listing requires VistA Imaging package.",
+        rpc: "MAG4 PAT GET IMAGES",
+        rpcStatus: "not-available-on-distro",
+      };
+    }
+
+    try {
+      validateCredentials();
+      await connect();
+      const resp = await callRpc("MAG4 PAT GET IMAGES", [String(dfn)]);
+      disconnect();
+
+      // Parse MAG4 PAT GET IMAGES response
+      // First line: count^status, subsequent lines: image records
+      const images = resp
+        .filter((line, idx) => idx > 0 && line && !line.startsWith("0^"))
+        .map((line) => {
+          const parts = line.split("^");
+          return {
+            imageIen: parts[0] || "",
+            groupIen: parts[1] || "",
+            description: parts[2] || "",
+            dateTime: parts[3] || "",
+            imageType: parts[4] || "",
+            absPath: parts[5] || "",          // abstract (thumbnail) path
+            fullPath: parts[6] || "",         // full resolution path
+            studyIen: parts[7] || "",
+          };
+        });
+
+      audit("phi.imaging-view", "success", auditActor(request), {
+        patientDfn: String(dfn),
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+        detail: { rpc: "MAG4 PAT GET IMAGES", imageCount: images.length },
+      });
+
+      return { ok: true, available: true, images, count: images.length, rpcUsed: "MAG4 PAT GET IMAGES" };
+    } catch (err: any) {
+      disconnect();
+      log.warn("MAG4 PAT GET IMAGES failed", { error: err.message, dfn });
+      return { ok: true, available: false, images: [], error: err.message };
+    }
   });
 
   /**

@@ -463,6 +463,39 @@
 
 ---
 
+### BUG-038: `disconnect()` sends raw `#BYE#` — `buildBye()` was dead code
+
+| | |
+|---|---|
+| **Symptom** | `buildBye()` constructed a properly XWB-framed `#BYE#` message but was never called. `disconnect()` sent `\x00\x00\x00\x04#BYE#\x04` (raw, unframed) |
+| **Root cause** | `buildBye()` was added for correctness but `disconnect()` was never updated to use it |
+| **Fix** | Changed `disconnect()` to call `buildBye()` for proper XWB-framed disconnect. Referenced as AGENTS.md #28 |
+| **Preventive** | When adding builder functions, wire them into the caller immediately. Dead code breeds protocol drift |
+
+---
+
+### BUG-039: RBAC allowed `provider` role admin-level access
+
+| | |
+|---|---|
+| **Symptom** | Any user with `provider` role could access `/admin/*` routes, WebSocket console, and imaging admin — nearly identical to `admin` |
+| **Root cause** | `requireAdmin()` in imaging-proxy.ts, the auth gateway in security.ts, and `allowedRoles` in ws-console.ts all accepted both `admin` and `provider` roles |
+| **Fix** | Tightened all three checks to strict `admin`-only. The sandbox user PROVIDER,CLYDE maps to `admin` via `session-store.ts` `mapUserRole()`, so sandbox testing is unaffected |
+| **Preventive** | Never treat `provider` as equivalent to `admin`. Design RBAC with least-privilege from the start |
+
+---
+
+### BUG-040: `connect()` didn't detect half-open TCP sockets
+
+| | |
+|---|---|
+| **Symptom** | If VistA closed the TCP connection while our side was idle, the next `connect()` call would see `connected=true && !sock.destroyed` and skip reconnection. The subsequent RPC call would fail |
+| **Root cause** | The connect guard `if (connected && sock && !sock.destroyed) return;` can't detect remote-close when the OS hasn't yet delivered a FIN (half-open state) |
+| **Fix** | Added `isSocketHealthy()` which checks a `lastActivityMs` timestamp — if idle >5 min, forces reconnect. Also: TCP keepalive enabled (30s probe), socket `close`/`error` events mark `connected=false`, `touchActivity()` called on every successful send/receive |
+| **Preventive** | Always enable TCP keepalive on long-lived sockets. Track last-activity timestamps for staleness detection |
+
+---
+
 ## Cross-Cutting Lessons
 
 ### Lesson 1: VistA XWB Protocol Is Byte-Exact
@@ -608,5 +641,7 @@ Phase 21 interop routes do NOT currently use this pattern (known debt).
 | New notes don't appear after creation | BUG-033 | Query both CONTEXT=1 (signed) and CONTEXT=2 (unsigned), merge |
 | `Bearer undefined` sent on page refresh | BUG-034 | Remove token from client context; use httpOnly cookie auth |
 | Sandbox credentials visible in production | BUG-035 | Gate behind `NODE_ENV !== 'production'` |
-| `buildBye()` dead code / unframed disconnect | BUG-036 | Known debt — `disconnect()` sends raw `#BYE#` instead |
+| `buildBye()` dead code / unframed disconnect | BUG-036, BUG-038 | Fixed — `disconnect()` now uses `buildBye()` |
 | `verify-latest.ps1` doesn't test Phase 21 | BUG-037 | Update to delegate to newest phase verifier |
+| RBAC allows provider=admin access | BUG-039 | Strict admin-only in security.ts, imaging-proxy.ts, ws-console.ts |
+| Half-open TCP socket not detected | BUG-040 | `isSocketHealthy()` + keepalive + lastActivityMs staleness check |
