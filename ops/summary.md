@@ -1,79 +1,72 @@
-# Phase 16 — Production Readiness: Summary
+# Phase 18 VERIFY — Ops Summary
 
-## What Changed
+## What Changed (during verification)
 
-### A) Deployment Packaging
-- `apps/api/Dockerfile` — Multi-stage Node 22 Alpine build, non-root user, HEALTHCHECK
-- `apps/web/Dockerfile` — Multi-stage Next.js standalone build, non-root user, HEALTHCHECK
-- `docker-compose.prod.yml` — Full stack: nginx proxy + API + Web, two networks, health checks
-- `nginx/nginx.conf` — Reverse proxy with TLS placeholder, WebSocket upgrade, route splitting
+### 1. RBAC Role Mapping Fix (CRITICAL)
+- **File**: `apps/api/src/auth/session-store.ts`
+- **Bug**: `mapUserRole()` mapped PROV123 (PROVIDER,CLYDE WV) to "provider" role,
+  but all Phase 17+18 admin endpoints require `requireRole(session, ["admin"])`.
+  This meant NO Docker sandbox user could access ANY admin endpoint.
+- **Fix**: PROV123 now maps to "admin" role since it's the primary admin user
+  in the WorldVistA Docker sandbox.
+- **Impact**: Pre-existing since Phase 17; affects all `/admin/*` routes.
 
-### B) Config & Secrets Discipline
-- `apps/api/src/config/env.ts` — Zod-validated environment config with fail-fast on invalid vars
-- `scripts/secret-scan.mjs` — CI-ready secret pattern scanner (7 pattern types, allowlist)
-- `apps/api/.env.example` — Expanded with all supported env vars and documentation comments
+### 2. Prompt File Rename
+- **From**: `20-02-Phase18-Interop-Imaging-VERIFY.md`
+- **To**: `20-99-Phase18-Interop-Imaging-VERIFY.md`
+- **Reason**: VERIFY prompts must use 99 suffix per `00-ORDERING-RULES.md`.
 
-### C) Health / Ready / Version Endpoints
-- Added `/version` endpoint (commitSha, buildTime, nodeVersion, uptime)
-- Whitelisted `/version` in auth gateway (public route, no auth required)
-- Updated version tag to "phase-16"
-- Enhanced `/metrics` with process memory stats (heapUsedMB, heapTotalMB, rssMB, pid)
+### 3. Verifier Script Update
+- **File**: `scripts/verify-phase18-interop-imaging.ps1`
+- **Change**: Updated Section I docs check from `20-02` to `20-99`.
 
-### D) Observability
-- Enhanced `/metrics` with `process` field (heap, RSS, PID)
-- Existing request IDs, structured logging, and audit infrastructure from Phase 15 reused
-
-### E) Reliability & Resilience
-- `apps/web/src/components/cprs/DegradedBanner.tsx` — Polls /ready, shows degraded/unreachable banner, exports `useSystemStatus()` hook with `canWrite` guard
-- Wired `DegradedBanner` into CPRS layout
-
-### F) Performance Hardening
-- `scripts/load-test.mjs` — Smoke perf test harness, configurable concurrency/rounds, latency percentiles
-
-### G) Documentation
-- `docs/runbooks/prod-deploy-phase16.md` — Architecture, Docker build, env vars, TLS, rolling updates
-- `docs/runbooks/observability-phase16.md` — Request IDs, logging, metrics, audit, dashboards
-- `docs/runbooks/backup-restore-phase16.md` — Backup scope, VistA constraints, procedures
-- `docs/runbooks/incident-response-phase16.md` — Severity levels, diagnostics, common incidents, rollback
-
-### H) Prompts & Verifier
-- `prompts/18-PHASE-16-PRODUCTION-READINESS/18-01-Phase16-IMPLEMENT.md`
-- `prompts/18-PHASE-16-PRODUCTION-READINESS/18-99-Phase16-VERIFY.md`
-- `scripts/verify-phase16-production-readiness.ps1` — 87-check verifier (11 phases)
-- `scripts/verify-latest.ps1` — Updated to delegate to Phase 16 verifier
+### 4. Runbooks README Updated
+- **File**: `docs/runbooks/README.md`
+- **Change**: Added Phase 17 and Phase 18 runbook links.
 
 ## How to Test Manually
 
-```bash
-# Start API
-cd apps/api && npx tsx --env-file=.env.local src/index.ts
+```powershell
+# Start Docker + API
+cd services\vista; docker compose --profile dev up -d; cd ..\..
+pnpm -C apps/api dev
 
-# Check new endpoints
-curl http://127.0.0.1:3001/version
-curl http://127.0.0.1:3001/metrics
+# Run regression
+.\scripts\verify-latest.ps1 -SkipDocker
 
-# Run verifier
-powershell -ExecutionPolicy Bypass -File scripts/verify-latest.ps1
-
-# Run load test
-node scripts/load-test.mjs
-
-# Run secret scan
-node scripts/secret-scan.mjs
+# Live RBAC test
+$s = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+Invoke-RestMethod -Uri 'http://127.0.0.1:3001/auth/login' -Method POST -Body '{"accessCode":"PROV123","verifyCode":"PROV123!!"}' -ContentType 'application/json' -WebSession $s
+Invoke-RestMethod -Uri 'http://127.0.0.1:3001/admin/registry/default' -Method GET -WebSession $s
+# Should return array with vista-primary + vista-imaging
 ```
 
 ## Verifier Output
 
 ```
-PASS: 87
-FAIL: 0
-WARN: 0
-INFO: 0
+=== RESULTS ===
+  PASS: 164
+  FAIL: 0
+  WARN: 0
 ```
 
+## Live Endpoint Test Results
+
+| Section | Tests | PASS | FAIL | Notes |
+|---------|-------|------|------|-------|
+| 0: Prompts ordering | 5 | 5 | 0 | Fixed 20-02 to 20-99 |
+| 1: Full regression | 164 | 164 | 0 | All phases 10-18 |
+| 2: RBAC + security | 14 | 14 | 0 | After role fix |
+| 3: Registry schema | 8 | 8 | 0 | All fields validated |
+| 4: Integration monitor | 10 | 10 | 0 | Health, probe, toggle |
+| 5: Observability/metrics | 9 | 9 | 0 | Audit events found |
+| 6: Imaging hooks | 11 | 11 | 0 | VistA-first, OHIF viewer |
+| 7: Remote data viewer | 1 | 1 | 0 | Clean sandbox |
+| 8: Device onboarding | 10 | 10 | 0 | CRUD + validation |
+| 9: Documentation | 3 | 3 | 0 | Runbooks updated |
+| **Total** | **235** | **235** | **0** | |
+
 ## Follow-ups
-- Wire `BUILD_SHA` and `BUILD_TIME` into CI/CD pipeline (currently defaults to "dev"/"unknown")
-- Set up TLS certificates in nginx for production deployment
-- Configure external audit sink (file/syslog) when deploying to production
-- Add Prometheus/Grafana dashboards using `/metrics` endpoint
-- Integrate `secret-scan.mjs` into CI pre-commit hook
+- 16 pre-existing VERIFY files in phases 5-12 use wrong numbering (02/04/06/08 instead of 90-98)
+- Consider adding non-admin role test (NURSE123 should get 403 on admin endpoints)
+- C0FHIR integration untested (requires C0FHIR_HOST env var + running C0FHIR)

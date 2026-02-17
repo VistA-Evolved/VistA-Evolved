@@ -33,5 +33,17 @@ Runbooks are step-by-step operational guides for developers.
 | Backup & Restore | [backup-restore-phase16.md](backup-restore-phase16.md) |
 | Incident Response | [incident-response-phase16.md](incident-response-phase16.md) |
 
+## Phase 17 — Multi-Tenant Control Plane
+
+| Topic | Runbook |
+|-------|--------|
+| Multi-Tenant Admin & RBAC | [multitenant-control-plane-phase17.md](multitenant-control-plane-phase17.md) |
+
+## Phase 18 — Interop + Imaging Platform Integration
+
+| Topic | Runbook |
+|-------|--------|
+| Integration Registry, Imaging & Device Onboarding | [interop-imaging-phase18.md](interop-imaging-phase18.md) |
+
 ## Rule
 If someone gets stuck twice on the same thing, write a runbook.

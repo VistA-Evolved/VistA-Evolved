@@ -258,7 +258,7 @@ Write-Host "--- I: Documentation ---" -ForegroundColor White
 
 Assert-Check "Phase 18 runbook exists" (Test-Path "$repoRoot\docs\runbooks\interop-imaging-phase18.md")
 Assert-Check "Phase 18 IMPLEMENT prompt exists" (Test-Path "$repoRoot\prompts\20-PHASE-18-INTEROP-IMAGING\20-01-Phase18-Interop-Imaging-IMPLEMENT.md")
-Assert-Check "Phase 18 VERIFY prompt exists" (Test-Path "$repoRoot\prompts\20-PHASE-18-INTEROP-IMAGING\20-02-Phase18-Interop-Imaging-VERIFY.md")
+Assert-Check "Phase 18 VERIFY prompt exists" (Test-Path "$repoRoot\prompts\20-PHASE-18-INTEROP-IMAGING\20-99-Phase18-Interop-Imaging-VERIFY.md")
 
 $runbook = if (Test-Path "$repoRoot\docs\runbooks\interop-imaging-phase18.md") {
   Get-Content "$repoRoot\docs\runbooks\interop-imaging-phase18.md" -Raw

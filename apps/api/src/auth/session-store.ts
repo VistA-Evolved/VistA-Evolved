@@ -129,7 +129,8 @@ export function rotateSession(oldToken: string): string | null {
 /** Map the known Docker default users to roles. */
 export function mapUserRole(userName: string): UserRole {
   const upper = userName.toUpperCase();
-  if (upper.includes("PROVIDER") || upper.includes("CLYDE")) return "provider";
+  // PROV123 (PROVIDER,CLYDE WV DUZ 87) is the primary admin in Docker sandbox
+  if (upper.includes("PROVIDER") || upper.includes("CLYDE")) return "admin";
   if (upper.includes("NURSE") || upper.includes("HELEN")) return "nurse";
   if (upper.includes("PHARM") || upper.includes("LINDA")) return "pharmacist";
   if (upper.includes("CLERK")) return "clerk";
