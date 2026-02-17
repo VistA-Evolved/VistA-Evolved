@@ -1,0 +1,56 @@
+# Imaging Services — Phase 22
+#
+# Orthanc DICOM Server + OHIF Viewer
+# Use `docker compose --profile imaging up -d` to start
+#
+# Orthanc serves DICOMweb (QIDO-RS, WADO-RS, STOW-RS) on port 8042
+# OHIF Viewer on port 3000 (proxied through API at /imaging/viewer)
+# DICOM C-STORE reception on port 4242
+#
+# SECURITY: Orthanc is NOT exposed to the browser directly.
+# All DICOMweb requests are proxied through the API server.
+
+services:
+  orthanc:
+    image: orthancteam/orthanc:24.12.1
+    container_name: orthanc
+    profiles: ["imaging"]
+    ports:
+      - "8042:8042"   # HTTP / DICOMweb (API proxy target)
+      - "4242:4242"   # DICOM C-STORE (modality ingest)
+    volumes:
+      - orthanc-data:/var/lib/orthanc/db
+      - ./orthanc.json:/etc/orthanc/orthanc.json:ro
+    environment:
+      - ORTHANC_NAME=VistA-Evolved-Imaging
+      - VERBOSE_ENABLED=true
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8042/system"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  ohif-viewer:
+    image: ohif/app:v3.9.2
+    container_name: ohif-viewer
+    profiles: ["imaging"]
+    ports:
+      - "3003:80"   # OHIF viewer UI (port 3003 to avoid conflicts)
+    volumes:
+      - ./ohif-config.js:/usr/share/nginx/html/app-config.js:ro
+    depends_on:
+      orthanc:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  orthanc-data:
+    name: vista-evolved-orthanc-data

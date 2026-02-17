@@ -22,6 +22,7 @@ import {
   DCSummPanel,
   LabsPanel,
   ReportsPanel,
+  ImagingPanel,
 } from '@/components/cprs/panels';
 import styles from '@/components/cprs/cprs.module.css';
 
@@ -42,6 +43,7 @@ function TabContent({ dfn, tab }: { dfn: string; tab: string }) {
     case 'dcsumm':     return <DCSummPanel     dfn={dfn} />;
     case 'labs':       return <LabsPanel       dfn={dfn} />;
     case 'reports':    return <ReportsPanel    dfn={dfn} />;
+    case 'imaging':    return <ImagingPanel    dfn={dfn} />;
     default:
       return (
         <div style={{ padding: 24 }}>
@@ -52,7 +54,7 @@ function TabContent({ dfn, tab }: { dfn: string; tab: string }) {
   }
 }
 
-const VALID_TABS = new Set(['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports']);
+const VALID_TABS = new Set(['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports', 'imaging']);
 
 export default function CPRSChartPage({ params }: ChartPageProps) {
   const { dfn, tab } = use(params);
@@ -104,7 +106,7 @@ export default function CPRSChartPage({ params }: ChartPageProps) {
             flexDirection: 'column',
             gap: 2,
           }}>
-            {['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports']
+            {['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports', 'imaging']
               .filter((t) => isModuleEnabled(t))
               .map((t) => (
               <a

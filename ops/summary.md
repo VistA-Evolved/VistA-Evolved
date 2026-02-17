@@ -1,8 +1,53 @@
-# Phase 21 — VistA HL7/HLO Interop Telemetry — Ops Summary
+# Phase 22 - Imaging Platform V1 - Ops Summary
 
-## What Changed (Hardening Pass)
+## What Changed
 
-### Original Delivery (Phase 21 initial)
+### Docker Services (services/imaging/)
+- Orthanc DICOM Server (v24.12.1) on port 8042 (DICOMweb) + 4242 (DICOM C-STORE)
+- OHIF Viewer (v3.9.2) on port 3003
+- Docker Compose profile `imaging` isolates from VistA dev profile
+
+### API - DICOMweb Proxy (apps/api/src/routes/imaging-proxy.ts)
+- Session-gated proxy: browser never talks directly to Orthanc
+- QIDO-RS, WADO-RS, STOW-RS routes under /imaging/dicom-web/*
+- Demo upload, health check, viewer URL endpoints
+- QIDO cache with configurable TTL
+
+### API - Config (apps/api/src/config/server-config.ts)
+- New IMAGING_CONFIG with env-var overrides for Orthanc/OHIF URLs, timeouts, cache
+
+### API - Imaging Service Enhancements
+- 3-tier study cascade: VistA MAG4 -> Orthanc QIDO-RS -> registry DICOMweb
+- Status, viewer URL, metadata endpoints enhanced with Orthanc fallback
+
+### Audit
+- New actions: imaging.study-view, imaging.series-view, imaging.dicom-upload, imaging.proxy-request, imaging.orthanc-health
+
+### UI - Imaging Tab
+- ImagingPanel.tsx with study list, modality filters, OHIF viewer modal
+- Added to CPRS tab routing and modern sidebar
+
+## How to Test Manually
+
+```powershell
+cd services\imaging
+docker compose --profile imaging up -d
+curl.exe http://localhost:8042/system
+curl.exe http://localhost:3001/imaging/health
+```
+
+## Verifier Output
+
+```
+Phase 22: 46 PASS, 0 FAIL, 1 WARN (Docker skipped)
+ALL GATES PASSED
+```
+
+## Follow-ups
+- Wire MAG4 PAT GET IMAGES when VistA MAG routines available
+- Wire MAGG PAT PHOTOS for patient banner photo
+- Add dcm4chee as optional long-term archive
+- E2E Cypress tests for imaging tab
 1. **M Routine (ZVEMIOP.m)** — 4 read-only RPC entry points for VistA HL7/HLO telemetry
    - LINKS: HL7 logical links from file #870
    - MSGS: Message stats from files #773/#772

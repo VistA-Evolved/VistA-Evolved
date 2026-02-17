@@ -8,3 +8,4 @@ export { default as SurgeryPanel } from './SurgeryPanel';
 export { default as DCSummPanel } from './DCSummPanel';
 export { default as LabsPanel } from './LabsPanel';
 export { default as ReportsPanel } from './ReportsPanel';
+export { default as ImagingPanel } from './ImagingPanel';

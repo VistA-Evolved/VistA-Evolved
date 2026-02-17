@@ -109,6 +109,28 @@ export const CACHE_CONFIG = {
 } as const;
 
 /* ------------------------------------------------------------------ */
+/* Imaging (Phase 22)                                                  */
+/* ------------------------------------------------------------------ */
+
+export const IMAGING_CONFIG = {
+  /** Orthanc server base URL (DICOMweb + REST) */
+  orthancUrl: process.env.ORTHANC_URL || "http://localhost:8042",
+  /** OHIF viewer base URL */
+  ohifUrl: process.env.OHIF_URL || "http://localhost:3003",
+  /** DICOMweb root path on Orthanc */
+  dicomWebRoot: process.env.ORTHANC_DICOMWEB_ROOT || "/dicom-web",
+  /** Proxy timeout for DICOMweb requests (ms) */
+  proxyTimeoutMs: Number(process.env.IMAGING_PROXY_TIMEOUT_MS || 30_000),
+  /** Cache TTL for QIDO-RS study list responses (ms). Default: 30s */
+  qidoCacheTtlMs: Number(process.env.IMAGING_QIDO_CACHE_TTL_MS || 30_000),
+  /** Enable demo upload endpoint (admin only). Default: false in prod */
+  enableDemoUpload: process.env.IMAGING_ENABLE_DEMO_UPLOAD === "true" ||
+    process.env.NODE_ENV !== "production",
+  /** Max DICOM upload size in bytes. Default: 512 MB */
+  maxUploadBytes: Number(process.env.IMAGING_MAX_UPLOAD_BYTES || 512 * 1024 * 1024),
+} as const;
+
+/* ------------------------------------------------------------------ */
 /* Rate limits                                                         */
 /* ------------------------------------------------------------------ */
 

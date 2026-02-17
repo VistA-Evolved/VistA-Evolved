@@ -78,6 +78,12 @@ export type AuditAction =
   | "integration.dashboard-view"
   | "integration.device-onboard"
   | "imaging.viewer-launch"
+  // Phase 22: Imaging platform audit events
+  | "imaging.study-view"
+  | "imaging.series-view"
+  | "imaging.dicom-upload"
+  | "imaging.proxy-request"
+  | "imaging.orthanc-health"
   // Phase 19: Reporting & export governance audit events
   | "report.generate"
   | "export.request"

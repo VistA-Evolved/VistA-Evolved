@@ -1,0 +1,54 @@
+{
+  "Name": "VistA-Evolved-Imaging",
+  "RemoteAccessAllowed": true,
+  "AuthenticationEnabled": false,
+
+  "DicomAet": "VISTAEVOLVED",
+  "DicomPort": 4242,
+  "DefaultEncoding": "Latin1",
+
+  "HttpPort": 8042,
+  "HttpCompressionEnabled": true,
+
+  "StableAge": 60,
+
+  "StorageDirectory": "/var/lib/orthanc/db",
+  "IndexDirectory": "/var/lib/orthanc/db",
+
+  "DicomWeb": {
+    "Enable": true,
+    "Root": "/dicom-web/",
+    "EnableWado": true,
+    "WadoRoot": "/wado",
+    "Host": "0.0.0.0",
+    "Ssl": false,
+    "StudiesMetadata": "Full",
+    "SeriesMetadata": "Full"
+  },
+
+  "Plugins": [
+    "/usr/share/orthanc/plugins/"
+  ],
+
+  "StorageCompression": false,
+  "MaximumStorageSize": 0,
+  "MaximumPatientCount": 0,
+
+  "LuaScripts": [],
+
+  "DicomCheckCalledAet": false,
+  "DicomAlwaysAllowEcho": true,
+  "DicomAlwaysAllowStore": true,
+  "DicomAlwaysAllowFind": true,
+  "DicomAlwaysAllowFindWorklist": true,
+  "DicomAlwaysAllowGet": true,
+  "DicomAlwaysAllowMove": true,
+
+  "OverwriteInstances": true,
+  "KeepAlive": true,
+  "TcpNoDelay": true,
+  "HttpDescribeErrors": true,
+
+  "UserMetadata": {},
+  "UserContentType": {}
+}

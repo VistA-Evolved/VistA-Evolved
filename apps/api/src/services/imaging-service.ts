@@ -1,13 +1,14 @@
 /**
- * Imaging Integration Service — Phase 18C.
+ * Imaging Integration Service — Phase 18C + Phase 22 enhancements.
  *
  * Enhances Phase 14D imaging routes with enterprise capabilities:
  *   - Patient image list from VistA Imaging (MAG4)
  *   - Radiology report text from RA DETAILED REPORT
  *   - DICOMweb integration for external PACS/VNA (Orthanc, dcm4chee)
- *   - OHIF viewer URL generation
+ *   - OHIF viewer URL generation (now uses IMAGING_CONFIG)
  *   - Image metadata retrieval
  *   - Integration registry-aware: uses configured imaging entries
+ *   - Phase 22: Orthanc-first studies endpoint, patient-keyed study lookup
  *
  * VistA Imaging file binding:
  *   Metadata is stored in VistA FileMan — the platform reads it via RPCs:
@@ -24,14 +25,14 @@
  *   Open-source stack: OHIF (viewer) + Orthanc (DICOM server) + dcm4chee.
  *
  * VistA-first: all imaging queries start with VistA RPCs.
- * Falls back to external DICOMweb endpoints if configured.
+ * Falls back to Orthanc DICOMweb, then registry integrations.
  *
  * See: docs/imaging-grounding.md
  *
  * Routes:
  *   GET /vista/imaging/status           — overall imaging status (Phase 14D, enhanced)
  *   GET /vista/imaging/report           — radiology report text (Phase 14D)
- *   GET /vista/imaging/studies          — patient study list
+ *   GET /vista/imaging/studies          — patient study list (VistA + Orthanc + registry)
  *   GET /vista/imaging/viewer-url       — generate viewer URL for a study
  *   GET /vista/imaging/metadata         — image metadata for a study
  *   GET /vista/imaging/registry-status  — status from integration registry
@@ -46,6 +47,7 @@ import {
   getIntegrationHealthSummary,
   type IntegrationEntry,
 } from "../config/integration-registry.js";
+import { IMAGING_CONFIG } from "../config/server-config.js";
 import { audit } from "../lib/audit.js";
 import { log } from "../lib/logger.js";
 
@@ -157,6 +159,15 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
           rpc: "RA DETAILED REPORT",
           status: raCheck.available ? "active" : "not-available-on-distro",
         },
+        orthanc: {
+          configured: true,
+          url: IMAGING_CONFIG.orthancUrl,
+          dicomWebRoot: IMAGING_CONFIG.dicomWebRoot,
+        },
+        ohifViewer: {
+          configured: true,
+          url: IMAGING_CONFIG.ohifUrl,
+        },
         plugins: plugins.map((p) => ({
           name: p.name,
           version: p.version,
@@ -176,7 +187,7 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
           ? "Imaging APIs detected. Viewer integration active."
           : imagingEntries.length > 0
             ? `${imagingEntries.length} external imaging system(s) configured.`
-            : "Imaging APIs not available on this distro. Plugin interface ready.",
+            : "Imaging APIs not available on this distro. Orthanc + OHIF configured as fallback.",
     };
   });
 
@@ -271,7 +282,43 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
       }
     }
 
-    // 2. Try DICOMweb (QIDO-RS) from registered integrations
+    // 2. Try Orthanc local DICOMweb (Phase 22)
+    if (studies.length === 0 || !mag4Check.available) {
+      try {
+        const qidoUrl = `${IMAGING_CONFIG.orthancUrl}${IMAGING_CONFIG.dicomWebRoot}/studies?PatientID=${dfn}&limit=50`;
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 10000);
+        const resp = await fetch(qidoUrl, {
+          headers: { Accept: "application/dicom+json" },
+          signal: controller.signal,
+        });
+        clearTimeout(timeout);
+
+        if (resp.ok) {
+          const data = (await resp.json()) as any[];
+          for (const study of data) {
+            const uid = study["0020000D"]?.Value?.[0] || "";
+            // Deduplicate against studies already from VistA
+            if (!studies.some((s) => s.studyInstanceUid === uid)) {
+              studies.push({
+                studyId: uid,
+                studyDate: study["00080020"]?.Value?.[0] || "",
+                modality: study["00080060"]?.Value?.[0] || "",
+                description: study["00081030"]?.Value?.[0] || "",
+                imageCount: study["00201208"]?.Value?.[0] || 0,
+                status: "available",
+                source: "dicomweb",
+                studyInstanceUid: uid,
+              });
+            }
+          }
+        }
+      } catch (err: any) {
+        log.warn("Orthanc QIDO-RS query failed", { error: err.message, dfn });
+      }
+    }
+
+    // 3. Try DICOMweb from registered integrations (Phase 18C)
     const dicomwebEntries = getImagingIntegrations(tenantId).filter(
       (e) => e.type === "dicomweb" && e.status === "connected",
     );
@@ -349,12 +396,21 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
     );
 
     if (pacsEntries.length === 0) {
+      // Phase 22: Use OHIF from IMAGING_CONFIG as default viewer
+      const url = `${IMAGING_CONFIG.ohifUrl}/viewer?StudyInstanceUIDs=${studyUid}`;
+
+      audit("imaging.viewer-launch" as any, "success", auditActor(request), {
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+        detail: { studyUid, viewerUrl: url, source: "imaging-config-default" },
+      });
+
       return {
         ok: true,
         viewer: {
-          url: "",
-          viewerType: "none",
-          message: "No PACS/VNA or DICOMweb viewer configured. Add one via Admin > Integration Registry.",
+          url,
+          viewerType: "ohif",
+          message: "Viewer URL generated from default OHIF config.",
         } as ViewerUrlResult,
       };
     }
@@ -396,11 +452,30 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
     );
 
     if (dicomwebEntries.length === 0) {
-      return {
-        ok: true,
-        available: false,
-        message: "No DICOMweb endpoints configured for metadata retrieval.",
-      };
+      // Phase 22: Try Orthanc directly via IMAGING_CONFIG
+      try {
+        const url = `${IMAGING_CONFIG.orthancUrl}${IMAGING_CONFIG.dicomWebRoot}/studies/${studyUid}/metadata`;
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 10000);
+        const resp = await fetch(url, {
+          headers: { Accept: "application/dicom+json" },
+          signal: controller.signal,
+        });
+        clearTimeout(timeout);
+
+        if (!resp.ok) {
+          return { ok: false, error: `Orthanc metadata request returned ${resp.status}` };
+        }
+        const metadata = await resp.json();
+        return { ok: true, available: true, studyUid, metadata, source: "orthanc" };
+      } catch (err: any) {
+        return {
+          ok: true,
+          available: false,
+          message: "No DICOMweb endpoints configured and Orthanc is unavailable.",
+          error: err.message,
+        };
+      }
     }
 
     const entry = dicomwebEntries[0];

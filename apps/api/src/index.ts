@@ -12,6 +12,7 @@ import { discoverCapabilities, getCapabilities, optionalRpc, isRpcAvailable, get
 import capabilityRoutes from "./routes/capabilities.js";
 import writeBackRoutes from "./routes/write-backs.js";
 import imagingRoutes from "./services/imaging-service.js";
+import imagingProxyRoutes from "./routes/imaging-proxy.js";
 import adminRoutes from "./routes/admin.js";
 import interopRoutes from "./routes/interop.js";
 import vistaInteropRoutes from "./routes/vista-interop.js";
@@ -91,6 +92,9 @@ server.register(writeBackRoutes);
 
 // Register imaging routes (Phase 14D)
 server.register(imagingRoutes);
+
+// Register imaging proxy routes (Phase 22)
+server.register(imagingProxyRoutes);
 
 // Register admin/tenant routes (Phase 17B)
 server.register(adminRoutes);
