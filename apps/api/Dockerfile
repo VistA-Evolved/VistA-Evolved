@@ -1,25 +1,21 @@
 # VistA-Evolved API — Production Dockerfile
-# Multi-stage build: install deps → compile TypeScript → minimal runtime image
+# Two-stage build: install all deps → slim runtime with tsx
+# tsx is required because the project uses ESM + TypeScript path resolution
+# that tsc alone cannot produce runnable output for.
 
-# ---- Stage 1: Install + build ----
-FROM node:22-alpine AS builder
+# ---- Stage 1: Install dependencies ----
+FROM node:22-alpine AS deps
 WORKDIR /app
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Copy workspace manifest + lockfile
+# Copy workspace manifest + lockfile first for layer caching
 COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
 COPY apps/api/package.json apps/api/
 
-# Install production deps only
+# Install ALL deps (tsx + typescript needed at runtime & type-check)
 RUN pnpm install --frozen-lockfile --filter @vista-evolved/api
-
-# Copy API source
-COPY apps/api/ apps/api/
-
-# Compile TypeScript
-RUN cd apps/api && pnpm build
 
 # ---- Stage 2: Minimal runtime ----
 FROM node:22-alpine AS runtime
@@ -28,13 +24,20 @@ WORKDIR /app
 # Non-root user for security
 RUN addgroup -g 1001 appgroup && adduser -u 1001 -G appgroup -D appuser
 
-# Install pnpm for runtime
+# Install pnpm (needed for node_modules resolution)
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Copy built output + node_modules
-COPY --from=builder /app/apps/api/dist ./dist
-COPY --from=builder /app/apps/api/package.json ./
-COPY --from=builder /app/apps/api/node_modules ./node_modules
+# Copy deps from builder
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/apps/api/node_modules ./apps/api/node_modules
+COPY --from=deps /app/apps/api/package.json ./apps/api/
+
+# Copy source (tsx compiles on the fly)
+COPY apps/api/src ./apps/api/src
+COPY apps/api/tsconfig.json ./apps/api/
+
+# Copy workspace root files needed for pnpm resolution
+COPY pnpm-workspace.yaml package.json ./
 
 # Create logs directory
 RUN mkdir -p /app/logs && chown -R appuser:appgroup /app
@@ -58,6 +61,6 @@ USER appuser
 EXPOSE 3001
 
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-  CMD wget -q --spider http://localhost:3001/health || exit 1
+  CMD wget -q --spider http://127.0.0.1:3001/health || exit 1
 
-CMD ["node", "--enable-source-maps", "dist/index.js"]
+CMD ["npx", "tsx", "apps/api/src/index.ts"]
