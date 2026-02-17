@@ -1,0 +1,40 @@
+{
+  "feature": "Phase 20 — VistA-First Grounding",
+  "stage": "completed",
+  "status": "merged-to-main",
+  "promptRef": "prompts/22-PHASE-20-VISTA-FIRST-GROUNDING/22-01-Phase20-VistaFirst-Grounding-IMPLEMENT.md",
+  "verifyRef": "prompts/22-PHASE-20-VISTA-FIRST-GROUNDING/22-99-Phase20-VistaFirst-Grounding-VERIFY.md",
+  "runbookPath": "docs/runbooks/README.md (Phase 20 section)",
+  "verifyScript": "scripts/verify-latest.ps1",
+  "commitSHA": "e6aee8d",
+  "artifacts": [
+    "docs/vista-capability-matrix.md",
+    "docs/interop-grounding.md",
+    "docs/imaging-grounding.md",
+    "docs/reporting-grounding.md",
+    "docs/fhir-posture.md",
+    "docs/octo-analytics-plan.md",
+    "docs/ai-gateway-plan.md"
+  ],
+  "codeChanges": [
+    "apps/api/src/routes/interop.ts (header comment)",
+    "apps/api/src/services/imaging-service.ts (header comment)",
+    "apps/api/src/config/integration-registry.ts (header comment)",
+    "apps/api/src/routes/reporting.ts (header + route rename)",
+    "apps/api/src/lib/export-governance.ts (type update)",
+    "scripts/verify-phase19-reporting-governance.ps1 (route check update)",
+    "docs/runbooks/vista-reporting-export-governance.md (route reference)",
+    "ops/summary.md (curl command)"
+  ],
+  "commits": [
+    "02395d9 Phase20A: VistA capability matrix",
+    "95702e5 Phase20B: Interop grounding",
+    "d4489c5 Phase20C: Imaging grounding",
+    "492cc06 Phase20D: Reporting grounding",
+    "88b2121 Phase20E: FHIR posture, Octo analytics, AI Gateway",
+    "4f0d045 Phase20F: Phase 18/19 enforcement prompts",
+    "c9b98c3 Phase20G: Phase 20 prompts + VERIFY + runbooks",
+    "24002a5 Phase20H: Code corrections",
+    "e6aee8d Merge to main"
+  ]
+}
