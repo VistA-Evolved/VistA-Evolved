@@ -1,4 +1,4 @@
-# 12-03 — API Scaffold Generator (IMPLEMENT)
+# Phase 10D — API Scaffold Generator (IMPLEMENT)
 
 ## User Request
 In apps/api, add a scaffold generator that reads `design/contracts/cprs/v1/rpc_catalog.json`

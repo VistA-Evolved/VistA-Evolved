@@ -225,12 +225,16 @@ Assert-Check "ops/notion-update.json updated" ((Get-Content "$repoRoot\ops\notio
 # =========================================================================
 Write-Phase "P8" "TypeScript Compilation"
 
-$apiTscOutput = & npx tsc --noEmit --project "$repoRoot\apps\api\tsconfig.json" 2>&1 | Out-String
-$apiErrors = ($apiTscOutput | Select-String -Pattern 'error TS\d+' -AllMatches).Matches.Count
+Push-Location "$repoRoot\apps\api"
+$apiTscOutput = & pnpm exec tsc --noEmit 2>&1 | Out-String
+Pop-Location
+$apiErrors = ([regex]::Matches($apiTscOutput, 'error TS\d+')).Count
 Assert-Check "API compiles clean (tsc --noEmit)" ($apiErrors -eq 0) $(if ($apiErrors -gt 0) { "Errors: $apiErrors" } else { "0 errors" })
 
-$webTscOutput = & npx tsc --noEmit --project "$repoRoot\apps\web\tsconfig.json" 2>&1 | Out-String
-$webErrors = ($webTscOutput | Select-String -Pattern 'error TS\d+' -AllMatches).Matches.Count
+Push-Location "$repoRoot\apps\web"
+$webTscOutput = & pnpm exec tsc --noEmit 2>&1 | Out-String
+Pop-Location
+$webErrors = ([regex]::Matches($webTscOutput, 'error TS\d+')).Count
 Assert-Check "Web compiles clean (tsc --noEmit)" ($webErrors -eq 0) $(if ($webErrors -gt 0) { "Errors: $webErrors" } else { "0 errors" })
 
 # =========================================================================
@@ -317,10 +321,10 @@ if (-not $SkipLive) {
             Assert-Check "Session cookie set" ($null -ne $sessionCookie)
             Assert-Check "No token in login response body" ($null -eq $loginJson.session.token) "Token should not be exposed in response"
 
-            # Use session cookie to access clinical endpoint
+            # Use Bearer token for authenticated requests (PS5.1 Cookie header is unreliable)
             if ($sessionCookie) {
-                $cookieVal = ($sessionCookie -split ';')[0]
-                $headers = @{ Cookie = $cookieVal }
+                $tokenVal = (($sessionCookie -split ';')[0] -split '=',2)[1]
+                $headers = @{ Authorization = "Bearer $tokenVal" }
 
                 # Patient search with auth
                 try {
