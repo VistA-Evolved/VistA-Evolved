@@ -51,5 +51,20 @@ Runbooks are step-by-step operational guides for developers.
 |-------|--------|
 | Reporting, Export Governance & Ops Analytics | [vista-reporting-export-governance.md](vista-reporting-export-governance.md) |
 
+## Phase 20 — VistA-First Grounding
+
+Phase 20 is a **documentation + governance phase** (no new endpoints/UI).
+Grounding documents live in `docs/` (not in `runbooks/`):
+
+| Document | Purpose |
+|----------|---------|
+| [../vista-capability-matrix.md](../vista-capability-matrix.md) | Full screen→VistA package→RPC→FileMan mapping |
+| [../interop-grounding.md](../interop-grounding.md) | HL7/HLO file architecture → Interop Monitor binding |
+| [../imaging-grounding.md](../imaging-grounding.md) | VistA Imaging files → OHIF/Orthanc build strategy |
+| [../reporting-grounding.md](../reporting-grounding.md) | Clinical vs. platform reporting separation |
+| [../fhir-posture.md](../fhir-posture.md) | VistA-first, FHIR-second interop strategy |
+| [../octo-analytics-plan.md](../octo-analytics-plan.md) | Platform telemetry architecture |
+| [../ai-gateway-plan.md](../ai-gateway-plan.md) | Governed clinical AI integration plan |
+
 ## Rule
 If someone gets stuck twice on the same thing, write a runbook.
