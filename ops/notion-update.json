@@ -1,28 +1,30 @@
 {
-  "featureTitle": "Phase 15: Enterprise Hardening (Security + HIPAA Posture + Reliability + Observability)",
+  "featureTitle": "Phase 15B: Enterprise Hardening — VistA-first Security + Prompts Repair",
   "stage": "verified",
   "status": "complete",
-  "promptRef": "prompts/16-PHASE-15-ENTERPRISE-HARDENING/16-01-enterprise-hardening-IMPLEMENT.md",
-  "runbookPath": "docs/runbooks/enterprise-hardening-phase15.md",
-  "verifyScript": "scripts/verify-phase1-to-phase15-enterprise-hardening.ps1",
+  "promptRef": "prompts/17-PHASE-15-ENTERPRISE-HARDENING/17-01-enterprise-hardening-IMPLEMENT.md",
+  "runbookPath": "docs/runbooks/enterprise-hardening-phase15b.md",
+  "verifyScript": "scripts/verify-phase15b-enterprise-hardening.ps1",
   "verifyResult": {
-    "pass": 92,
+    "pass": 63,
     "fail": 0,
     "warn": 0,
-    "info": 0,
-    "total": 92
+    "info": 1,
+    "total": 64
   },
-  "commitSHA": "d6249ba",
+  "commitSHA": "47328fb",
   "highlights": [
-    "Structured logger with credential/PHI redaction",
-    "HIPAA-posture audit logging wired into all 12 clinical endpoints",
-    "Circuit breaker + retries + per-RPC metrics",
-    "Zod request validation on all POST bodies",
-    "Security headers (nosniff, DENY, HSTS, no-store) + rate limiting",
-    "Session hardening (configurable TTLs + idle timeout + rotation)",
-    "ErrorBoundary wrapping CPRS UI",
-    "ws-console and write-backs migrated to centralized audit",
-    "92 PASS, 0 FAIL, 0 WARN"
+    "Auth gateway: path-based session/admin/public endpoint gating",
+    "CORS lockdown: origin allowlist replaces origin:true",
+    "Response scrubber: centralized sanitization of all error messages",
+    "Session fixation prevention: rotateSession on login",
+    "Token removed from login response body (cookie-only)",
+    "Audit actor attribution: real session user replaces { duz: system }",
+    "AsyncLocalStorage for concurrency-safe request IDs",
+    "Origin validation for state-changing requests",
+    "safeCallRpc/safeCallRpcWithList drop-in RPC wrappers",
+    "Prompts directory ordering fixed (no duplicate folder 12)",
+    "console.log replaced with structured logger in write-backs"
   ],
   "newEndpoints": [
     "GET /health",

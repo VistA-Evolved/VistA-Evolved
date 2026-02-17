@@ -102,8 +102,13 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
         divisionIen: userInfo.divisionIen,
       });
 
-      // Set cookie
-      reply.setCookie(COOKIE_NAME, token, COOKIE_OPTS);
+      // Rotate session token to prevent fixation (Phase 15B)
+      const finalToken = SESSION_CONFIG.rotateOnLogin
+        ? (rotateSession(token) ?? token)
+        : token;
+
+      // Set cookie (httpOnly — no JS access)
+      reply.setCookie(COOKIE_NAME, finalToken, COOKIE_OPTS);
 
       // Phase 15C: Audit successful login
       audit("auth.login", "success", {
@@ -112,10 +117,10 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
 
       log.info("User authenticated", { duz: userInfo.duz, role });
 
+      // Phase 15B: Do NOT expose token in response body — cookie-only transport
       return {
         ok: true,
         session: {
-          token,
           duz: userInfo.duz,
           userName: userInfo.userName,
           role,
@@ -132,7 +137,7 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
       log.warn("Login failed", { error: err.message, sourceIp });
       return reply.code(401).send({
         ok: false,
-        error: err.message || "Authentication failed",
+        error: "Authentication failed",
       });
     }
   });

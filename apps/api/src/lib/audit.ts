@@ -54,6 +54,7 @@ export type AuditAction =
   | "security.rate-limited"
   | "security.invalid-input"
   | "security.session-hijack-attempt"
+  | "security.origin-rejected"
   | "system.startup"
   | "system.shutdown"
   | "system.circuit-breaker-open"

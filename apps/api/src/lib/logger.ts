@@ -14,6 +14,7 @@
  */
 
 import { LOG_CONFIG, PHI_CONFIG } from "../config/server-config.js";
+import { AsyncLocalStorage } from "async_hooks";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -110,23 +111,35 @@ function redactObject(obj: unknown, depth = 0): unknown {
 }
 
 /* ------------------------------------------------------------------ */
-/* Async-local request context                                          */
+/* Async-local request context (thread-safe under concurrency)          */
 /* ------------------------------------------------------------------ */
 
-/** Current request ID — set per-request via Fastify onRequest hook. */
-let _requestId: string | undefined;
+const requestContext = new AsyncLocalStorage<{ requestId: string }>();
 
 export function setRequestId(id: string): void {
+  // Legacy compat — called from onRequest hook.  The preferred API is
+  // runWithRequestId() but setRequestId is kept for the existing hook.
   _requestId = id;
 }
 
 export function getRequestId(): string | undefined {
-  return _requestId;
+  return requestContext.getStore()?.requestId ?? _requestId;
 }
 
 export function clearRequestId(): void {
   _requestId = undefined;
 }
+
+/**
+ * Run a callback in an async-local context that carries the request ID.
+ * This is the concurrency-safe alternative to set/clearRequestId.
+ */
+export function runWithRequestId<T>(id: string, fn: () => T): T {
+  return requestContext.run({ requestId: id }, fn);
+}
+
+/** @deprecated — module-global fallback; prefer runWithRequestId. */
+let _requestId: string | undefined;
 
 /* ------------------------------------------------------------------ */
 /* Logger implementation                                                */
@@ -142,7 +155,8 @@ function emit(level: LogLevel, msg: string, meta?: Record<string, unknown>): voi
     ...(meta ? (redactObject(meta) as Record<string, unknown>) : {}),
   };
 
-  if (_requestId) entry.requestId = _requestId;
+  const rid = getRequestId();
+  if (rid) entry.requestId = rid;
 
   if (LOG_CONFIG.json) {
     const fn = level === "error" || level === "fatal" ? console.error

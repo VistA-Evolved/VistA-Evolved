@@ -231,8 +231,8 @@ Assert-Check "Plugin-ready interface" ($imgContent -match "integrationReady")
 Write-Phase "PHASE 14E" "Documentation & Prompts"
 # =========================================================================
 
-Assert-Check "Phase 14 IMPLEMENT prompt" (Test-Path "$repoRoot\prompts\15-PHASE-14-PARITY-CLOSURE\15-01-Phase14A-Compat-Layer-IMPLEMENT.md")
-Assert-Check "Phase 14 VERIFY prompt" (Test-Path "$repoRoot\prompts\15-PHASE-14-PARITY-CLOSURE\15-02-Phase14A-Compat-Layer-VERIFY.md")
+Assert-Check "Phase 14 IMPLEMENT prompt" (Test-Path "$repoRoot\prompts\16-PHASE-14-PARITY-CLOSURE\16-01-Phase14A-Compat-Layer-IMPLEMENT.md")
+Assert-Check "Phase 14 VERIFY prompt" (Test-Path "$repoRoot\prompts\16-PHASE-14-PARITY-CLOSURE\16-02-Phase14A-Compat-Layer-VERIFY.md")
 Assert-Check "Phase 14 runbook" (Test-Path "$repoRoot\docs\runbooks\cprs-parity-closure-phase14.md")
 
 # index.ts registers new routes
