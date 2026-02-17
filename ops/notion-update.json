@@ -1,10 +1,10 @@
 {
-  "feature_title": "Phase 21 — VistA HL7/HLO Interop Telemetry + CI + Ops Hardening",
-  "stage": "implemented",
+  "feature_title": "Phase 21B — VistA HL7/HLO Interop Telemetry (Hardened)",
+  "stage": "hardened",
   "status": "complete",
   "prompt_ref_path": "prompts/23-PHASE-21-INTEROP-REALITY/23-01-interop-reality-IMPLEMENT.md",
   "runbook_path": "docs/runbooks/interop-rpcs.md",
-  "verify_script": "prompts/23-PHASE-21-INTEROP-REALITY/23-99-interop-reality-VERIFY.md",
+  "verify_script": "scripts/verify-phase21-interop-reality.ps1",
   "verify_results": {
     "pass": 130,
     "fail": 0,

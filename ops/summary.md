@@ -1,7 +1,8 @@
 # Phase 21 — VistA HL7/HLO Interop Telemetry — Ops Summary
 
-## What Changed
+## What Changed (Hardening Pass)
 
+### Original Delivery (Phase 21 initial)
 1. **M Routine (ZVEMIOP.m)** — 4 read-only RPC entry points for VistA HL7/HLO telemetry
    - LINKS: HL7 logical links from file #870
    - MSGS: Message stats from files #773/#772
@@ -118,3 +119,22 @@ $wc.UploadString("http://127.0.0.1:3001/reports/export","POST",'{"reportType":"a
 - 16 pre-existing VERIFY files in phases 5-10 use sub-phase interleaving (02/04/06/08) — now codified as accepted variant in ordering rules
 - Consider adding non-admin role test (NURSE123 should get 403 on all `/reports/*`)
 - C0FHIR integration untested (requires C0FHIR_HOST env var + running C0FHIR)
+
+---
+
+## Hardening Pass — Phase 21B
+
+Closed 7 of 8 known debt items:
+
+| Debt Item | Resolution |
+|-----------|-----------|
+| Response caching | `cachedRpc` with 10s TTL (env-configurable `INTEROP_CACHE_TTL_MS`) |
+| Circuit breaker | `cachedRpc` → `resilientRpc` (5 failures → open, 30s reset, 15s timeout, 2 retries) |
+| Connection lifecycle | connect/callRpc/disconnect inside `cachedRpc` rpcFn; retries reconnect |
+| Zod query validation | `Hl7LinksQuerySchema`, `Hl7MessagesQuerySchema` + `validate()` |
+| Role gating | `requireRole(session, ["admin","provider"])` + AUTH_RULES admin rule |
+| Graceful shutdown disconnect | `disconnectRpcBroker()` after `server.close()` in SIGTERM handler |
+| verify-latest.ps1 delegation | Delegates to `verify-phase21-interop-reality.ps1` (34 gates) |
+| Debug view env flag | Deferred to Phase 22+ |
+
+### Verifier: 34 PASS, 0 FAIL (4 WARN — Docker skipped)

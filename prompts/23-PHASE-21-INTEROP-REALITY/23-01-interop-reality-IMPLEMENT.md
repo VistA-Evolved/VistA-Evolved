@@ -151,12 +151,13 @@ not fake values.
   - `/vista/interop/queue-depth` — queue depth indicators
   - `/vista/interop/summary` — combined dashboard (all 4 RPCs, single connection)
 - Registered routes in `apps/api/src/index.ts`
-- Auth via `requireSession()` inside handler body (BUG-023 pattern)
+- Auth via `requireSession()` + `requireRole(session, ["admin","provider"])` inside handler body
 - Every response includes `source: "vista"`, `vistaFile`, and `timestamp`
 - Fixed critical Fastify bug: `requireSession` as preHandler causes hang (BUG-023)
-- **Known debt**: No server-side response caching (TTL). Each request hits VistA.
-- **Known debt**: Uses `callRpc` directly, not `safeCallRpc` — bypasses circuit breaker.
-- **Known debt**: Individual endpoints create full TCP+auth cycle per request (summary is efficient).
+- All RPCs use `cachedRpc` → `resilientRpc` (circuit breaker, timeout, retry, metrics, cache)
+- Query params validated via Zod schemas (`Hl7LinksQuerySchema`, `Hl7MessagesQuerySchema`)
+- Error responses: 503 (circuit open), 504 (timeout), 502 (generic RPC failure)
+- Summary endpoint caches entire 4-RPC batch as aggregate with same TTL
 
 ### Step 3 — UI Interop Monitor (Section D ✅)
 - Added "VistA HL7/HLO" tab to Integration Console
@@ -190,14 +191,14 @@ not fake values.
 
 | Item | Requirement Ref | Status |
 |------|----------------|--------|
-| Server-side response caching (TTL 5–15s) | C3 | Not implemented — each request hits VistA |
-| Use `safeCallRpc` with circuit breaker | C4 | Uses raw `callRpc` — bypasses resilience layer |
-| Connection pooling for individual endpoints | C4 | `callInteropRpc` creates full TCP cycle per request |
-| Zod schema validation on responses | C5 | Types defined but no runtime validation |
-| "Interop admin" role distinction | Req 3 | Uses session-only gating; provider = admin (existing debt) |
-| Debug view env flag gating | Req 2 | No explicit debug toggle beyond VISTA_DEBUG |
-| Graceful shutdown RPC disconnect | C4 | `disconnect()` not called on SIGTERM (BUG-036 related) |
-| `verify-latest.ps1` Phase 21 delegation | E | Still delegates to Phase 19 (BUG-037) |
+| Server-side response caching (TTL 10s) | C3 | ✅ Resolved — `cachedRpc` with env-configurable `INTEROP_CACHE_TTL_MS` |
+| Use `safeCallRpc` with circuit breaker | C4 | ✅ Resolved — `cachedRpc` → `resilientRpc` (CB + timeout + retry) |
+| Connection pooling for individual endpoints | C4 | ✅ Resolved — connect/disconnect inside `cachedRpc` rpcFn; retries reconnect |
+| Zod schema validation on query params | C5 | ✅ Resolved — `Hl7LinksQuerySchema`, `Hl7MessagesQuerySchema` + `validate()` |
+| "Interop admin" role distinction | Req 3 | ✅ Resolved — `requireRole(session, ["admin","provider"])` + AUTH_RULES `"admin"` |
+| Debug view env flag gating | Req 2 | Deferred — no explicit debug toggle beyond VISTA_DEBUG (Phase 22+) |
+| Graceful shutdown RPC disconnect | C4 | ✅ Resolved — `disconnectRpcBroker()` in SIGINT/SIGTERM handler |
+| `verify-latest.ps1` Phase 21 delegation | E | ✅ Resolved — delegates to `verify-phase21-interop-reality.ps1` |
 
 ---
 

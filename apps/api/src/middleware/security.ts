@@ -17,6 +17,7 @@ import { audit } from "../lib/audit.js";
 import { RATE_LIMIT_CONFIG } from "../config/server-config.js";
 import { getSession } from "../auth/session-store.js";
 import type { SessionData } from "../auth/session-store.js";
+import { disconnect as disconnectRpcBroker } from "../vista/rpcBrokerClient.js";
 
 /* ================================================================== */
 /* CORS origin allowlist                                                */
@@ -66,6 +67,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/admin\/my-tenant$/, auth: "session" }, // Phase 17: client tenant config (any user)
   { pattern: /^\/(admin|audit|reports)\//, auth: "admin" },
   { pattern: /^\/ws\//, auth: "session" }, // WebSocket console (has own role check too)
+  { pattern: /^\/vista\/interop\//, auth: "admin" }, // Phase 21: interop telemetry requires admin/provider
   { pattern: /^\/vista\//, auth: "session" },
   // Default: session required for anything else
 ];
@@ -339,6 +341,8 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
       });
       try {
         await server.close();
+        // Phase 21: disconnect RPC broker to prevent orphaned VistA jobs
+        try { disconnectRpcBroker(); } catch { /* socket may already be closed */ }
         log.info("Server closed gracefully");
       } catch (err: any) {
         log.error("Error during shutdown", { error: err.message });
