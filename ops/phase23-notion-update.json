@@ -1,0 +1,16 @@
+{
+  "feature": "Phase 23 — Imaging Workflow V2 VERIFY",
+  "stage": "verify-complete",
+  "status": "done",
+  "promptRef": "prompts/25-PHASE-23-IMAGING-WORKFLOW/25-99-imaging-workflow-VERIFY.md",
+  "runbooks": [
+    "docs/runbooks/imaging-worklist.md",
+    "docs/runbooks/imaging-ingest-reconciliation.md",
+    "docs/runbooks/imaging-device-onboarding.md",
+    "docs/runbooks/imaging-grounding.md"
+  ],
+  "verifyScript": "scripts/verify-phase23-imaging-workflow.ps1",
+  "verifyResult": "80 PASS, 0 FAIL, 1 WARN",
+  "commitSHA": "5f1c912",
+  "bugFixed": "Ingest idempotency — duplicate linkage on re-ingest (imaging-ingest.ts)"
+}

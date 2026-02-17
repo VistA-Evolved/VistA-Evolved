@@ -169,6 +169,16 @@ interface ReconcileResult {
 function reconcileStudy(payload: OrthancStableStudyPayload): ReconcileResult {
   const { orthancStudyId, studyInstanceUid, patientId, accessionNumber, modality } = payload;
 
+  // Idempotency guard: if this studyInstanceUid is already linked, return existing
+  const existingLinkage = getLinkageByStudyUid(studyInstanceUid);
+  if (existingLinkage) {
+    log.info("Duplicate ingest — study already linked (idempotent)", {
+      studyUid: studyInstanceUid,
+      existingLinkageId: existingLinkage.id,
+    });
+    return { matched: true, linkage: existingLinkage, matchType: "already-linked" };
+  }
+
   // Strategy 1: Exact AccessionNumber match
   if (accessionNumber) {
     const order = findByAccession(accessionNumber);
@@ -248,6 +258,17 @@ function createLinkage(
 }
 
 function quarantineStudy(payload: OrthancStableStudyPayload, reason: string): UnmatchedStudy {
+  // Idempotency guard: don't re-quarantine same study
+  for (const u of unmatchedStore.values()) {
+    if (u.studyInstanceUid === payload.studyInstanceUid && !u.resolved) {
+      log.info("Duplicate ingest — study already quarantined (idempotent)", {
+        studyUid: payload.studyInstanceUid,
+        existingUnmatchedId: u.id,
+      });
+      return u;
+    }
+  }
+
   const unmatched: UnmatchedStudy = {
     id: randomUUID(),
     orthancStudyId: payload.orthancStudyId,
