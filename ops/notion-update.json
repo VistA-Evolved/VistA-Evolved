@@ -1,38 +1,34 @@
 {
-  "feature_title": "Phase 21B — VistA HL7/HLO Interop Telemetry (Hardened)",
-  "stage": "hardened",
+  "feature_title": "Phase 21 VERIFY — VistA HL7/HLO Interop Telemetry (Full Verification)",
+  "stage": "verified",
   "status": "complete",
-  "prompt_ref_path": "prompts/23-PHASE-21-INTEROP-REALITY/23-01-interop-reality-IMPLEMENT.md",
-  "runbook_path": "docs/runbooks/interop-rpcs.md",
+  "prompt_ref_path": "prompts/23-PHASE-21-INTEROP-REALITY/23-99-interop-reality-VERIFY.md",
+  "runbook_path": "docs/verify/phase21-verify-summary.md",
   "verify_script": "scripts/verify-phase21-interop-reality.ps1",
   "verify_results": {
-    "pass": 130,
+    "pass": 48,
     "fail": 0,
     "warn": 0,
-    "live_tests": 160
+    "live_tests": 6
   },
   "verify_sections": [
-    "0: Prompts ordering — 4 fixes applied, contiguous 00→21",
-    "1: Full regression gate — 130 PASS / 0 FAIL",
-    "2: RBAC gating — 401 without auth, 200 with admin, all 5 endpoints",
-    "3: Data minimization — clinical=counts only, audit=DFN only, clinical export blocked",
-    "4: Export governance — job lifecycle, retention, history, download auth",
-    "5: Pagination/limits — clampPageSize, maxAuditRangeDays, maxExportRows, cache TTLs",
-    "6: Ops analytics — circuit breaker, RPC metrics, integration health",
-    "7: Documentation — runbook exists + linked in README"
+    "A: Interop route structure — 9 PASS",
+    "B: Zod query validation — 5 PASS",
+    "C: Circuit breaker + caching — 7 PASS",
+    "D: Role gating — 3 PASS",
+    "E: Security middleware — 4 PASS",
+    "F: TypeScript compilation — 2 PASS",
+    "G: Docker gates (M routine + RPCs) — 5 PASS",
+    "H: Regression gates — 4 PASS",
+    "I: Security/PHI gates — 9 PASS"
   ],
   "files_changed": [
-    "prompts/00-ORDERING-RULES.md",
-    "prompts/13-PHASE-11-CPRS-WEB-REPLICA/13-99-Phase11-CPRS-Web-Replica-VERIFY.md",
-    "prompts/16-PHASE-14-PARITY-CLOSURE/16-99-Phase14A-Compat-Layer-VERIFY.md",
-    "prompts/19-PHASE-17-MULTITENANT-CONTROL-PLANE/19-99-Phase17-ControlPlane-VERIFY.md",
-    "prompts/00-PLAYBOOKS/00-02-AUDIT-PHASES-15-18-VISTA-ALIGNMENT.md",
-    "prompts/21-PHASE-19-REPORTING-GOVERNANCE/21-01-Phase19-Reporting-Governance-IMPLEMENT.md",
-    "prompts/21-PHASE-19-REPORTING-GOVERNANCE/21-99-Phase19-Reporting-Governance-VERIFY.md",
-    "scripts/verify-phase19-reporting-governance.ps1",
-    "docs/runbooks/README.md",
+    "scripts/verify-phase21-interop-reality.ps1",
+    "scripts/install-interop-rpcs.ps1",
+    "services/vista/VECHECK.m",
+    "docs/verify/phase21-verify-summary.md",
     "ops/summary.md",
     "ops/notion-update.json"
   ],
-  "commit_sha": "9931315"
+  "commit_sha": "d3f41e1"
 }

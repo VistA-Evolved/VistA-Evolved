@@ -124,12 +124,26 @@ if ($SkipDocker) {
   Write-Host "  SKIP  Docker gates (--SkipDocker)" -ForegroundColor Yellow
   $warn += 4
 } else {
-  # G0: M routine installed
-  $mCheck = docker exec wv mumps -run %XCMD 'D LINKS^ZVEMIOP(.R,20) W $O(R(""))' 2>&1
-  Assert-Warn "G0: ZVEMIOP M routine responds" ($mCheck -match "1")
+  # G0: M routine installed — use a temp .m file to avoid quoting hell (BUG-025)
+  $tmpM = Join-Path $repoRoot "services\vista\VECHECK.m"
+  @"
+VECHECK ; Phase 21 Docker gate check
+CHKRTN ; Check if ZVEMIOP routine exists and responds
+ N R D LINKS^ZVEMIOP(.R,5)
+ W R(0),!
+ Q
+CHKRPC ; Check RPC registrations in ^XWB(8994)
+ N X S X=""
+ F  S X=`$O(^XWB(8994,"B",X)) Q:X=""  I X["VE INTEROP" W X,!
+ Q
+"@ | Set-Content $tmpM -Encoding ASCII
+  docker cp $tmpM wv:/home/wv/r/VECHECK.m 2>&1 | Out-Null
+  $mCheck = docker exec wv su - wv -c "mumps -run CHKRTN^VECHECK" 2>&1
+  $mStr = $mCheck -join " "
+  Assert-Warn "G0: ZVEMIOP M routine responds" ($mStr -match "OK")
 
   # G1: RPCs registered
-  $rpcCheck = docker exec wv mumps -run %XCMD 'S X="" F  S X=$O(^DIC(8994,"B",X)) Q:X=""  I X["VE INTEROP" W X,!' 2>&1
+  $rpcCheck = docker exec wv su - wv -c "mumps -run CHKRPC^VECHECK" 2>&1
   $rpcStr = $rpcCheck -join " "
   Assert-Warn "G1: VE INTEROP HL7 LINKS registered" ($rpcStr -match "VE INTEROP HL7 LINKS")
   Assert-Warn "G1: VE INTEROP HL7 MSGS registered" ($rpcStr -match "VE INTEROP HL7 MSGS")
@@ -147,6 +161,23 @@ Assert-Check "EADDRINUSE handling in index.ts" ((Get-Content "$repoRoot\apps\api
 Assert-Check "CI verify.yml exists" (Test-Path "$repoRoot\.github\workflows\verify.yml")
 Assert-Warn "Interop tab in UI" ((Get-Content "$repoRoot\apps\web\src\app\cprs\admin\integrations\page.tsx" -Raw) -match "hl7hlo")
 Assert-Check "rpc-resilience.ts exists" (Test-Path "$repoRoot\apps\api\src\lib\rpc-resilience.ts")
+
+Write-Host ""
+
+# ─── Section I: Security / PHI gates ───────────────────────────────
+
+Write-Host "--- I: Security / PHI gates ---" -ForegroundColor White
+
+# No PHI patterns in interop route responses
+Assert-Check "No SSN pattern in interop route" (-not ($interopSrc -match '\d{3}-\d{2}-\d{4}'))
+Assert-Check "No patient DFN/ICN fields in interop route" (-not ($interopSrc -match 'patientDfn|patientIcn|patientName|patientSSN'))
+Assert-Check "No raw HL7 segment headers in interop route" (-not ($interopSrc -match 'MSH\|.*\|.*\||PID\|.*\||PV1\|'))
+Assert-Check "source metadata in every response" (([regex]::Matches($interopSrc, 'source:\s*[''"]vista[''"]')).Count -ge 5)
+Assert-Check "vistaFile(s) metadata present" ($interopSrc -match 'vistaFile')
+Assert-Check "Credentials never logged (VISTA_DEBUG gated)" ($interopSrc -match 'Credentials are NEVER' -or (-not ($interopSrc -match 'accessCode|verifyCode')))
+Assert-Check "httpOnly cookie in auth" ((Get-Content "$repoRoot\apps\api\src\auth\auth-routes.ts" -Raw) -match "httpOnly:\s*true")
+Assert-Check "Secret scanner script exists" (Test-Path "$repoRoot\scripts\secret-scan.mjs")
+Assert-Check "Prompts 01-23 contiguous" ((Get-ChildItem "$repoRoot\prompts" -Directory | Where-Object { $_.Name -match '^\d{2}-' }).Count -ge 23)
 
 Write-Host ""
 

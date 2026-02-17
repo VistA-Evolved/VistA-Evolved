@@ -138,3 +138,38 @@ Closed 7 of 8 known debt items:
 | Debug view env flag | Deferred to Phase 22+ |
 
 ### Verifier: 34 PASS, 0 FAIL (4 WARN — Docker skipped)
+
+---
+
+## VERIFY Pass — Phase 21 Full
+
+Comprehensive 9-step verification (regression, live VistA, security, performance, UI, CI, prompts):
+
+### Verifier Enhancement
+- Added Section I: 9 security/PHI gates (SSN, DFN/ICN, HL7 segments, source metadata, credentials, httpOnly, secret scanner, prompts contiguity)
+- Fixed Docker gates: VECHECK.m temp file approach, corrected `^XWB(8994)` global
+- Fixed install-interop-rpcs.ps1: UTF-8 BOM removal for PowerShell 5.1
+
+### Results: 48 PASS, 0 FAIL, 0 WARN
+
+| Section | Gates | Status |
+|---------|-------|--------|
+| A — Interop route structure | 9 | ALL PASS |
+| B — Zod query validation | 5 | ALL PASS |
+| C — Circuit breaker + caching | 7 | ALL PASS |
+| D — Role gating | 3 | ALL PASS |
+| E — Security middleware | 4 | ALL PASS |
+| F — TypeScript compilation | 2 | ALL PASS |
+| G — Docker gates (M routine + RPCs) | 5 | ALL PASS |
+| H — Regression gates | 4 | ALL PASS |
+| I — Security / PHI gates | 9 | ALL PASS |
+
+### Live Endpoint Test Results
+All 5 interop endpoints return real VistA data with `source: "vista"`, `vistaFile` metadata, and proper `available` flags. Auth enforcement confirmed (401 without session).
+
+### Known Debt (Not Blocking)
+1. `VISTA_DEBUG` not admin-role-gated (env-only, off by default)
+2. `RPC_CONNECT_TIMEOUT_MS` not wired to raw broker (hardcodes 10s)
+3. Single global socket — no connection pooling/mutex
+4. Interop routes use direct `callRpc` instead of `safeCallRpc`
+5. `buildBye()` dead code (BUG-036)

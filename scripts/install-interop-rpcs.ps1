@@ -54,8 +54,8 @@ Write-Host "`n[3/4] Running RPC registration (ZVEMINS)..."
 $output = docker exec $ContainerName su - wv -c "mumps -run RUN^ZVEMINS" 2>&1
 Write-Host $output
 
-# 4. Quick verification — call each RPC tag directly
-Write-Host "`n[4/4] Quick smoke test — calling LINKS^ZVEMIOP..."
+# 4. Quick verification â€” call each RPC tag directly
+Write-Host "`n[4/4] Quick smoke test â€” calling LINKS^ZVEMIOP..."
 $smoke = docker exec $ContainerName su - wv -c "mumps -run %XCMD 'N R D LINKS^ZVEMIOP(.R,5) W R(0)'" 2>&1
 Write-Host "  LINKS result(0): $smoke"
 
@@ -64,3 +64,4 @@ if ($smoke -match "OK") {
 } else {
     Write-Host "`n=== Installation completed (check output above for warnings) ===" -ForegroundColor Yellow
 }
+
