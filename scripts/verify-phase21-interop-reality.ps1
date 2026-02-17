@@ -181,6 +181,31 @@ Assert-Check "Prompts 01-23 contiguous" ((Get-ChildItem "$repoRoot\prompts" -Dir
 
 Write-Host ""
 
+# ─── Section J: Known-debt fixes ──────────────────────────────────
+
+Write-Host "--- J: Known-debt fixes ---" -ForegroundColor White
+
+$brokerSrc = if (Test-Path "$repoRoot\apps\api\src\vista\rpcBrokerClient.ts") { Get-Content "$repoRoot\apps\api\src\vista\rpcBrokerClient.ts" -Raw } else { "" }
+$resilienceSrc = if (Test-Path "$repoRoot\apps\api\src\lib\rpc-resilience.ts") { Get-Content "$repoRoot\apps\api\src\lib\rpc-resilience.ts" -Raw } else { "" }
+
+# Fix 1: Debug output uses structured logger, not console.log
+# Strip comments before checking (// and /* */ and * lines)
+$brokerCode = ($brokerSrc -split "`n" | Where-Object { $_ -notmatch '^\s*(\*|//|/\*)' }) -join "`n"
+Assert-Check "Debug uses structured logger (no console.log in code)" (-not ($brokerCode -match 'console\.log'))
+Assert-Check "Debug imports log from logger" ($brokerSrc -match "import.*log.*from.*logger")
+
+# Fix 2: Broker timeout wired to RPC_CONFIG (not hardcoded)
+Assert-Check "TIMEOUT_MS wired to RPC_CONFIG.connectTimeoutMs" ($brokerSrc -match "RPC_CONFIG\.connectTimeoutMs")
+Assert-Check "Imports RPC_CONFIG from server-config" ($brokerSrc -match "import.*RPC_CONFIG.*server-config")
+
+# Fix 3: Async mutex for connection safety
+Assert-Check "withBrokerLock exported" ($brokerSrc -match "export async function withBrokerLock")
+Assert-Check "Mutex acquire/release functions defined" ($brokerSrc -match "acquireMutex" -and $brokerSrc -match "releaseMutex")
+Assert-Check "safeCallRpc uses withBrokerLock" ($resilienceSrc -match "withBrokerLock.*callRpc")
+Assert-Check "safeCallRpcWithList uses withBrokerLock" ($resilienceSrc -match "withBrokerLock.*callRpcWithList")
+
+Write-Host ""
+
 # ─── Summary ────────────────────────────────────────────────────────
 
 Write-Host "=== Phase 21 Verifier Summary ===" -ForegroundColor Cyan

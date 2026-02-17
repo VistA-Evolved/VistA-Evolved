@@ -136,7 +136,8 @@ most recent phase verifier and reports PASS/FAIL for each gate.
 ## 6. Key Gotchas for Future Work
 
 1. **Don't fabricate protocol bytes.** The XWB protocol is finicky about exact
-   byte sequences. Use `VISTA_DEBUG=true` to see hex dumps.
+   byte sequences. Use `VISTA_DEBUG=true` to see hex dumps (routed through
+   the structured logger at `debug` level, not raw `console.log`).
 2. **Don't guess credentials.** They're documented on Docker Hub and in this file.
 3. **`.env.local` is git-ignored.** You must create it yourself — see `.env.example`.
 4. **Port 9430 takes ~15s to be ready** after Docker container starts.
@@ -167,8 +168,9 @@ most recent phase verifier and reports PASS/FAIL for each gate.
 14. **`connect()` reuse is idempotent but doesn't detect half-open sockets.**
     The guard `if (connected && sock && !sock.destroyed) return;` skips
     reconnection, but a TCP half-open state (remote closed, local doesn't
-    know) passes the check. The `/interop/summary` endpoint relies on this
-    for 4 sequential RPCs over one connection.
+    know) passes the check. **Use `withBrokerLock()` for concurrent safety** —
+    the async mutex in `rpcBrokerClient.ts` serializes all socket operations.
+    `safeCallRpc` and `safeCallRpcWithList` use it automatically.
 15. **`authenticateUser()` uses a fully separate temp socket.** It creates its
     own `tmpSock` with independent send/receive functions. This is intentional
     isolation so login requests don't interfere with in-flight RPC calls.
@@ -184,14 +186,17 @@ most recent phase verifier and reports PASS/FAIL for each gate.
     both signed and unsigned contexts and merge. See BUG-030, BUG-033.
 19. **Use `safeCallRpc` from `rpc-resilience.ts`, not direct `callRpc`.**
     The circuit breaker (5 failures → open, 30s half-open, 2 retries + backoff)
-    prevents hammering a failing VistA. Direct calls bypass it. Phase 21
-    interop routes are known debt that skip this.
+    prevents hammering a failing VistA. Direct calls bypass it. `safeCallRpc`
+    also wraps calls in `withBrokerLock()` for concurrent socket safety.
+    Phase 21 interop routes use `cachedRpc` which delegates to `resilientRpc`.
 20. **All new fetches must use `credentials: 'include'`.** Auth uses httpOnly
     cookies, not Bearer tokens. Any `fetch()` without credentials won't
     send the session cookie and will get 401.
 21. **Never add `console.log` freely.** Phase 16 verifier caps at ≤6 total
     across the entire codebase. Use the structured logger with
-    `AsyncLocalStorage` for automatic request ID propagation.
+    `AsyncLocalStorage` for automatic request ID propagation. The RPC broker
+    debug logging (`VISTA_DEBUG=true`) now uses `log.debug()` instead of
+    `console.log`, so production log-level filtering suppresses it.
 22. **No hardcoded `PROV123` outside the login page.** The Phase 16 secret
     scan exempts only `page.tsx`. Credentials in any other `.ts` file will
     fail verification.

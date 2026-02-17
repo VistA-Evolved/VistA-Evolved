@@ -7,6 +7,8 @@ import {
   VISTA_CONTEXT,
   validateCredentials,
 } from "./config";
+import { RPC_CONFIG } from "../config/server-config.js";
+import { log } from "../lib/logger.js";
 
 /**
  * XWB RPC Broker client for VistA.
@@ -19,23 +21,69 @@ import {
  *   - XWBTCPL.m, XWBBRK.m, XUSRB.m routines in VistA/MUMPS source
  *
  * Debug: set VISTA_DEBUG=true in environment to log protocol steps.
- *        Credentials are NEVER logged.
+ *        Output goes through the structured logger (level=debug),
+ *        not raw console.log. Credentials are NEVER logged.
  */
 
 // ---- Constants ----------------------------------------------------------
 
-const TIMEOUT_MS = 10000;
+/** Broker timeout wired to RPC_CONFIG.connectTimeoutMs (env: RPC_CONNECT_TIMEOUT_MS) */
+const TIMEOUT_MS = RPC_CONFIG.connectTimeoutMs;
 const EOT = "\x04"; // End-of-transmission marker used by XWB
 const PREFIX = "[XWB]"; // Every client message starts with this
 
 // ---- Debug logging (never logs credentials) -----------------------------
+// Gated by VISTA_DEBUG env var AND routed through structured logger (level=debug)
+// so production log-level filtering (default: "info") suppresses debug output
+// even if VISTA_DEBUG=true is accidentally set.
 
 function dbg(step: string, detail?: string): void {
   if (process.env.VISTA_DEBUG !== "true") return;
   const safe = detail
     ? detail.replace(/[\x00-\x03\x05-\x09\x0b\x0c\x0e-\x1f]/g, ".")
     : "";
-  console.log(`[RPC-DEBUG] ${step}${safe ? ": " + safe : ""}`);
+  log.debug(`[RPC-DEBUG] ${step}`, { detail: safe || undefined });
+}
+
+// ---- Async mutex for connection safety ----------------------------------
+// Prevents concurrent requests from interleaving connect/callRpc/disconnect
+// on the shared global socket. Callers must acquire the lock before any
+// socket operation sequence.
+
+let _mutexQueue: Array<() => void> = [];
+let _mutexLocked = false;
+
+function acquireMutex(): Promise<void> {
+  return new Promise<void>((resolve) => {
+    if (!_mutexLocked) {
+      _mutexLocked = true;
+      resolve();
+    } else {
+      _mutexQueue.push(resolve);
+    }
+  });
+}
+
+function releaseMutex(): void {
+  const next = _mutexQueue.shift();
+  if (next) {
+    next(); // hand lock to next waiter
+  } else {
+    _mutexLocked = false;
+  }
+}
+
+/**
+ * Execute a function while holding the RPC broker mutex.
+ * Ensures only one socket operation sequence runs at a time.
+ */
+export async function withBrokerLock<T>(fn: () => Promise<T>): Promise<T> {
+  await acquireMutex();
+  try {
+    return await fn();
+  } finally {
+    releaseMutex();
+  }
 }
 
 // ---- XWB framing helpers ------------------------------------------------
@@ -166,7 +214,7 @@ function stripNulls(s: string): string {
 function dbgHex(label: string, data: string): void {
   if (process.env.VISTA_DEBUG !== "true") return;
   const hex = Buffer.from(data, "latin1").toString("hex").substring(0, 400);
-  console.log(`[RPC-HEX] ${label}: ${hex}`);
+  log.debug(`[RPC-HEX] ${label}`, { hex });
 }
 
 // ---- Socket I/O with proper EOT-based framing ---------------------------

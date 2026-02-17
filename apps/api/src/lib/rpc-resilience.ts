@@ -13,7 +13,7 @@
 
 import { RPC_CONFIG, CACHE_CONFIG } from "../config/server-config.js";
 import { log } from "./logger.js";
-import { callRpc, callRpcWithList, type RpcParam } from "../vista/rpcBrokerClient.js";
+import { callRpc, callRpcWithList, withBrokerLock, type RpcParam } from "../vista/rpcBrokerClient.js";
 
 /* ================================================================== */
 /* Circuit Breaker                                                     */
@@ -396,7 +396,7 @@ export function getRpcHealthSummary(): {
 
 /**
  * Drop-in replacement for callRpc that adds timeout, circuit breaker,
- * retry (for reads), and per-RPC metrics.
+ * retry (for reads), per-RPC metrics, and mutex-protected socket access.
  */
 export async function safeCallRpc(
   rpcName: string,
@@ -404,14 +404,14 @@ export async function safeCallRpc(
   opts?: { idempotent?: boolean; timeoutMs?: number },
 ): Promise<string[]> {
   return resilientRpc(
-    () => callRpc(rpcName, params),
+    () => withBrokerLock(() => callRpc(rpcName, params)),
     rpcName,
     { idempotent: opts?.idempotent ?? true, timeoutMs: opts?.timeoutMs },
   );
 }
 
 /**
- * Drop-in replacement for callRpcWithList that adds resilience.
+ * Drop-in replacement for callRpcWithList that adds resilience + mutex.
  */
 export async function safeCallRpcWithList(
   rpcName: string,
@@ -419,7 +419,7 @@ export async function safeCallRpcWithList(
   opts?: { idempotent?: boolean; timeoutMs?: number },
 ): Promise<string[]> {
   return resilientRpc(
-    () => callRpcWithList(rpcName, params),
+    () => withBrokerLock(() => callRpcWithList(rpcName, params)),
     rpcName,
     { idempotent: opts?.idempotent ?? true, timeoutMs: opts?.timeoutMs },
   );
