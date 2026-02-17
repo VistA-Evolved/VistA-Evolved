@@ -9,8 +9,24 @@
  *   - Image metadata retrieval
  *   - Integration registry-aware: uses configured imaging entries
  *
+ * VistA Imaging file binding:
+ *   Metadata is stored in VistA FileMan — the platform reads it via RPCs:
+ *     - #2005   IMAGE                — master image record (patient, procedure, paths, UID)
+ *     - #2005.1 IMAGE AUDIT           — access/modification audit trail
+ *     - #2005.2 NETWORK LOCATION      — storage tier definitions
+ *     - #2006.034 IMAGING SITE PARAMS  — site-level imaging config
+ *     - #74    RAD/NUC MED REPORTS    — radiology report text
+ *     - #70    RAD/NUC MED PATIENT    — patient radiology exams/orders
+ *   Imaging RPCs: MAG4 REMOTE PROCEDURE, MAG4 PAT GET IMAGES,
+ *     MAG4 IMAGE INFO, MAGG PAT PHOTOS, RA DETAILED REPORT,
+ *     MAGV RAD EXAM LIST.
+ *   We do NOT rebuild VA's proprietary Clinical Display / VistARad clients.
+ *   Open-source stack: OHIF (viewer) + Orthanc (DICOM server) + dcm4chee.
+ *
  * VistA-first: all imaging queries start with VistA RPCs.
  * Falls back to external DICOMweb endpoints if configured.
+ *
+ * See: docs/imaging-grounding.md
  *
  * Routes:
  *   GET /vista/imaging/status           — overall imaging status (Phase 14D, enhanced)

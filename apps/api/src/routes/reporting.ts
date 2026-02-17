@@ -1,21 +1,29 @@
 /**
  * Reporting & export routes — Phase 19A.
  *
- * Provides admin-only reporting endpoints for operations, integrations,
- * audit trails, and clinical summary statistics. All reports are:
+ * PLATFORM OPERATIONAL REPORTS ONLY.
+ * These endpoints track system health, integration status, audit events,
+ * and clinical activity metrics. They are NOT VistA clinical reports.
+ *
+ * VistA clinical reports (Health Summary, lab cumulatives, etc.) are served
+ * via ORWRP REPORT TEXT in the main VistA routes (index.ts).
+ *
+ * All reports are:
  *   - RBAC-gated (admin role required)
  *   - Paginated with configurable limits
  *   - Cached with short TTLs
  *   - Fully audited
  *
+ * See: docs/reporting-grounding.md
+ *
  * Routes:
- *   GET  /reports/operations     — RPC health, circuit breaker, cache, process metrics
- *   GET  /reports/integrations   — integration health summary + per-entry queue metrics
- *   GET  /reports/audit          — audit event summary + filtered event list
- *   GET  /reports/clinical       — clinical action counts (no PHI text)
- *   POST /reports/export         — create audited export job (CSV/JSON)
- *   GET  /reports/export/jobs    — list export jobs
- *   GET  /reports/export/:jobId  — download completed export
+ *   GET  /reports/operations        — RPC health, circuit breaker, cache, process metrics
+ *   GET  /reports/integrations      — integration health summary + per-entry queue metrics
+ *   GET  /reports/audit             — audit event summary + filtered event list
+ *   GET  /reports/clinical-activity — clinical action counts (no PHI text)
+ *   POST /reports/export            — create audited export job (CSV/JSON)
+ *   GET  /reports/export/jobs       — list export jobs
+ *   GET  /reports/export/:jobId     — download completed export
  */
 
 import type { FastifyInstance } from "fastify";
@@ -220,8 +228,8 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
     };
   });
 
-  /* ── GET /reports/clinical ───────────────────────────────────── */
-  server.get("/reports/clinical", async (request, reply) => {
+  /* ── GET /reports/clinical-activity ──────────────────────────── */
+  server.get("/reports/clinical-activity", async (request, reply) => {
     const session = requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
@@ -292,9 +300,9 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
     const format = (body?.format || "csv") as ExportFormat;
     const filters = body?.filters || {};
 
-    if (!reportType || !["operations", "integrations", "audit", "clinical"].includes(reportType)) {
+    if (!reportType || !["operations", "integrations", "audit", "clinical-activity", "clinical"].includes(reportType)) {
       reply.code(400);
-      return { ok: false, error: "reportType must be one of: operations, integrations, audit, clinical" };
+      return { ok: false, error: "reportType must be one of: operations, integrations, audit, clinical-activity" };
     }
 
     const actor = auditActor(request);

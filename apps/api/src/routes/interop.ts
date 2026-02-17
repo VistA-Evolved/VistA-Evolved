@@ -4,8 +4,20 @@
  * API endpoints for managing the integration registry, probing integrations,
  * and onboarding devices/modalities.
  *
+ * VistA HL7/HLO file binding:
+ *   The integration registry is a PLATFORM connector catalog. For hl7v2-type
+ *   integrations, the ground-truth HL7 link status lives in VistA files:
+ *     - #870  HL LOGICAL LINK       — link definitions, status, address/port
+ *     - #772  HL7 MESSAGE TEXT       — raw HL7 message segments
+ *     - #773  HL7 MESSAGE ADMIN      — message-level status/tracking
+ *     - #776  HL MONITOR JOB         — background filer job health
+ *     - #779.x HLO registries/queues — HLO app registry, subscriptions, queues
+ *   Future: read VistA HL7 files via custom RPCs (see docs/interop-grounding.md).
+ *
  * All endpoints are admin-only (enforced by AUTH_RULES in security.ts which
  * matches /admin/* to require admin role).
+ *
+ * See: docs/interop-grounding.md
  *
  * Routes:
  *   GET    /admin/registry/:tenantId                    — list integrations
