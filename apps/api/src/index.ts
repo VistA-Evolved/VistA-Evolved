@@ -14,6 +14,7 @@ import writeBackRoutes from "./routes/write-backs.js";
 import imagingRoutes from "./services/imaging-service.js";
 import adminRoutes from "./routes/admin.js";
 import interopRoutes from "./routes/interop.js";
+import vistaInteropRoutes from "./routes/vista-interop.js";
 import reportingRoutes from "./routes/reporting.js";
 // Phase 15: Enterprise hardening imports
 import { registerSecurityMiddleware, corsOriginValidator } from "./middleware/security.js";
@@ -96,6 +97,9 @@ server.register(adminRoutes);
 
 // Register interop routes (Phase 18B/D)
 server.register(interopRoutes);
+
+// Register VistA interop telemetry routes (Phase 21)
+server.register(vistaInteropRoutes);
 
 // Register reporting & export routes (Phase 19A)
 server.register(reportingRoutes);
@@ -1765,9 +1769,17 @@ try {
   await server.listen({ port, host });
   log.info("Server listening", { host, port, url: `http://${host}:${port}` });
   audit("system.startup", "success", { duz: "system", name: "system", role: "system" }, {
-    detail: { host, port, phase: "16-production-readiness", commitSha: process.env.BUILD_SHA || "dev" },
+    detail: { host, port, phase: "21-interop-telemetry", commitSha: process.env.BUILD_SHA || "dev" },
   });
 } catch (err) {
-  log.fatal("Server failed to start", { error: (err as Error).message });
+  const e = err as NodeJS.ErrnoException;
+  if (e.code === "EADDRINUSE") {
+    log.fatal(`Port ${port} already in use. Kill the existing process or pick another port.`, {
+      error: e.message,
+      hint: "See docs/runbooks/windows-port-3001-fix.md",
+    });
+  } else {
+    log.fatal("Server failed to start", { error: e.message });
+  }
   process.exit(1);
 }

@@ -1,13 +1,60 @@
-# Phase 19 VERIFY — Reporting + Export Governance — Ops Summary
+# Phase 21 — VistA HL7/HLO Interop Telemetry — Ops Summary
 
-## What Changed (VERIFY pass)
+## What Changed
 
-### Prompts Ordering Fixes
-- Renamed VERIFY files from `-02-` to `-99-` in folders 13-PHASE-11, 16-PHASE-14, 19-PHASE-17
-- Moved `prompts/21-AUDIT-PHASES-15-18-VISTA-ALIGNMENT.md` → `prompts/00-PLAYBOOKS/00-02-AUDIT-*.md`
-- Renumbered Phase 19 folder: `22-PHASE-19-*` → `21-PHASE-19-*` (contiguous numbering)
-- Updated internal file prefixes from `22-` to `21-`
-- Codified sub-phase interleaving pattern in `00-ORDERING-RULES.md`
+1. **M Routine (ZVEMIOP.m)** — 4 read-only RPC entry points for VistA HL7/HLO telemetry
+   - LINKS: HL7 logical links from file #870
+   - MSGS: Message stats from files #773/#772
+   - HLOSTAT: HLO system params + app registry
+   - QLENGTH: Queue depth indicators
+
+2. **API Endpoints (vista-interop.ts)** — 5 GET routes serving real VistA data
+   - /vista/interop/hl7-links, hl7-messages, hlo-status, queue-depth, summary
+
+3. **UI (integrations/page.tsx)** — New "VistA HL7/HLO" tab on Integration Console
+   - 4 summary cards + logical links table + refresh button
+
+4. **CI (verify.yml)** — TypeScript type-check + secret scan + build
+
+5. **API Hardening (index.ts)** — EADDRINUSE detection with runbook reference
+
+## How to Test Manually
+
+```powershell
+# 1. Start Docker
+cd services\vista; docker compose --profile dev up -d
+
+# 2. Install RPCs (first time only)
+.\scripts\install-interop-rpcs.ps1
+
+# 3. Start API
+pnpm -C apps/api dev
+
+# 4. Login + curl
+curl.exe -s -c cookies.txt http://127.0.0.1:3001/auth/login -X POST -H "Content-Type: application/json" -d '{"accessCode":"PROV123","verifyCode":"PROV123!!"}'
+curl.exe -s -b cookies.txt http://127.0.0.1:3001/vista/interop/summary --max-time 30
+# Expect: {"ok":true,"source":"vista","elapsedMs":...,"hl7":{...},"hlo":{...},"queues":{...}}
+
+# 5. Start web
+pnpm -C apps/web dev
+# Navigate to /cprs/admin/integrations → "VistA HL7/HLO" tab
+```
+
+## Verifier Output
+
+All 5 API endpoints tested and returning real VistA data:
+- hl7-links: 260 logical links available, returns configurable sample
+- hl7-messages: Message stats for configurable lookback window
+- hlo-status: Domain=HL7.BETA.VISTA-OFFICE.ORG, Mode=TEST, 8 apps
+- queue-depth: 60 total HL7 messages, 6 pending, 0 errors
+- summary: Aggregates all 4 RPCs in ~3.3s round-trip
+
+## Follow-ups
+
+- Add HL7 link state probing (currently all "unknown" — need TCPIP tests)
+- Add message flow sparklines to UI
+- Add auto-refresh interval option
+- WebSocket push for real-time queue monitoring
 
 ### Documentation
 - Added Phase 19 section to `docs/runbooks/README.md`

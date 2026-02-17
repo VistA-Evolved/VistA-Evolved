@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Admin Integration Console — Phase 18B/D.
+ * Admin Integration Console — Phase 18B/D + Phase 21.
  *
  * Enterprise integration dashboard with:
  *   - Integration registry table (all types: VistA RPC, FHIR, DICOM, HL7v2, devices)
@@ -11,6 +11,7 @@
  *   - Error log viewer
  *   - Device onboarding form
  *   - Legacy connector view (Phase 17F compatibility)
+ *   - VistA HL7/HLO Telemetry (Phase 21) — real-time data from VistA globals
  *
  * Accessible at /cprs/admin/integrations.
  */
@@ -64,6 +65,48 @@ interface Connector {
   lastChecked: string | null;
 }
 
+/* VistA HL7/HLO Telemetry types (Phase 21) */
+interface HL7Link {
+  ien: number;
+  name: string;
+  type: string;
+  state: string;
+  device: string;
+  port: string;
+}
+
+interface InteropSummary {
+  ok: boolean;
+  source: string;
+  elapsedMs: number;
+  hl7: {
+    linkCount: number;
+    linkSample: HL7Link[];
+    messageStats: {
+      total: number;
+      outbound: number;
+      inbound: number;
+      completed: number;
+      errors: number;
+      pending: number;
+      lookbackHours: number;
+    };
+  };
+  hlo: {
+    domain: string;
+    mode: string;
+    appCount: number;
+  };
+  queues: {
+    hl7Messages: { total: number; pending: number; errors: number };
+    hloMessages: { total: number };
+    monitorJobs: { count: number };
+  };
+  rpcsUsed: string[];
+  vistaFiles: string[];
+  timestamp: string;
+}
+
 /* ------------------------------------------------------------------ */
 /* Type labels                                                         */
 /* ------------------------------------------------------------------ */
@@ -88,7 +131,7 @@ const TYPE_LABELS: Record<string, string> = {
 
 export default function IntegrationsPage() {
   const { user, hasRole } = useSession();
-  const [tab, setTab] = useState<'registry' | 'legacy' | 'onboard'>('registry');
+  const [tab, setTab] = useState<'registry' | 'legacy' | 'onboard' | 'hl7hlo'>('registry');
   const [integrations, setIntegrations] = useState<Integration[]>([]);
   const [connectors, setConnectors] = useState<Connector[]>([]);
   const [healthSummary, setHealthSummary] = useState<HealthSummary | null>(null);
@@ -97,6 +140,12 @@ export default function IntegrationsPage() {
   const [error, setError] = useState<string | null>(null);
   const [selectedError, setSelectedError] = useState<string | null>(null);
   const [errorLogEntries, setErrorLogEntries] = useState<Integration['errorLog']>([]);
+
+  // VistA HL7/HLO telemetry state (Phase 21)
+  const [interopSummary, setInteropSummary] = useState<InteropSummary | null>(null);
+  const [interopLoading, setInteropLoading] = useState(false);
+  const [interopError, setInteropError] = useState<string | null>(null);
+  const [interopLastFetch, setInteropLastFetch] = useState<Date | null>(null);
 
   // Device onboarding form state
   const [deviceForm, setDeviceForm] = useState({
@@ -140,10 +189,37 @@ export default function IntegrationsPage() {
     setLoading(false);
   }, [fetchRegistry, fetchHealthSummary, fetchConnectors]);
 
+  /** Fetch VistA HL7/HLO interop telemetry (Phase 21) */
+  const fetchInteropSummary = useCallback(async () => {
+    setInteropLoading(true);
+    setInteropError(null);
+    try {
+      const res = await fetch(`${API_BASE}/vista/interop/summary`, {
+        credentials: 'include',
+        signal: AbortSignal.timeout(30000),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setInteropSummary(data as InteropSummary);
+        setInteropLastFetch(new Date());
+      } else {
+        setInteropError(data.error || 'Failed to fetch interop telemetry');
+      }
+    } catch (e: unknown) {
+      setInteropError((e as Error).message || 'Network error');
+    } finally {
+      setInteropLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
-    if (hasRole('admin')) fetchAll();
-    else setLoading(false);
-  }, [hasRole, fetchAll]);
+    if (hasRole('admin')) {
+      fetchAll();
+      fetchInteropSummary();
+    } else {
+      setLoading(false);
+    }
+  }, [hasRole, fetchAll, fetchInteropSummary]);
 
   /* ── Actions ───────────────────────────────────────────────────── */
 
@@ -278,7 +354,7 @@ export default function IntegrationsPage() {
 
         {/* ── Tab Nav ──────────────────────────────────────────────── */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-          {(['registry', 'onboard', 'legacy'] as const).map((t) => (
+          {(['registry', 'hl7hlo', 'onboard', 'legacy'] as const).map((t) => (
             <button key={t} className={styles.btn} onClick={() => setTab(t)}
               style={{
                 fontSize: 12,
@@ -286,7 +362,7 @@ export default function IntegrationsPage() {
                 borderBottom: tab === t ? '2px solid var(--cprs-primary)' : '2px solid transparent',
                 borderRadius: 0,
               }}>
-              {t === 'registry' ? 'Integration Registry' : t === 'onboard' ? 'Device Onboarding' : 'Legacy Connectors'}
+              {t === 'registry' ? 'Integration Registry' : t === 'hl7hlo' ? 'VistA HL7/HLO' : t === 'onboard' ? 'Device Onboarding' : 'Legacy Connectors'}
             </button>
           ))}
           <div style={{ flex: 1 }} />
@@ -507,9 +583,193 @@ export default function IntegrationsPage() {
           </>
         )}
 
+        {/* ── VistA HL7/HLO Telemetry Tab (Phase 21) ────────────────── */}
+        {tab === 'hl7hlo' && (
+          <>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+              <div>
+                <h3 style={{ fontSize: 14, margin: 0 }}>VistA HL7 / HLO Interop Telemetry</h3>
+                <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', margin: '2px 0 0' }}>
+                  Real-time data from VistA globals via ZVEMIOP M routine (read-only RPCs).
+                </p>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                {interopLastFetch && (
+                  <span style={{ fontSize: 10, color: 'var(--cprs-text-muted)' }}>
+                    Last: {interopLastFetch.toLocaleTimeString()}
+                  </span>
+                )}
+                <button
+                  className={styles.btn}
+                  onClick={fetchInteropSummary}
+                  disabled={interopLoading}
+                  style={{ fontSize: 12 }}
+                >
+                  {interopLoading ? 'Loading...' : 'Refresh'}
+                </button>
+              </div>
+            </div>
+
+            {interopError && (
+              <p style={{ color: 'var(--cprs-danger)', fontSize: 12, marginBottom: 8 }}>{interopError}</p>
+            )}
+
+            {interopLoading && !interopSummary && (
+              <p style={{ fontSize: 12, color: 'var(--cprs-text-muted)' }}>Fetching VistA telemetry...</p>
+            )}
+
+            {interopSummary && (
+              <>
+                {/* Summary Cards */}
+                <div style={{
+                  display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                  gap: 12, marginBottom: 16,
+                }}>
+                  {/* HLO System */}
+                  <div style={{
+                    padding: 12, border: '1px solid var(--cprs-border)', borderRadius: 6,
+                    background: 'var(--cprs-bg)',
+                  }}>
+                    <div style={{ fontSize: 11, color: 'var(--cprs-text-muted)', marginBottom: 4 }}>HLO Engine</div>
+                    <div style={{ fontSize: 18, fontWeight: 700 }}>{interopSummary.hlo.mode}</div>
+                    <div style={{ fontSize: 11, color: 'var(--cprs-text-muted)', marginTop: 2 }}>
+                      Domain: <span style={{ fontFamily: 'monospace' }}>{interopSummary.hlo.domain}</span>
+                    </div>
+                    <div style={{ fontSize: 11, color: 'var(--cprs-text-muted)' }}>
+                      Registered Apps: <strong>{interopSummary.hlo.appCount}</strong>
+                    </div>
+                  </div>
+
+                  {/* HL7 Links */}
+                  <div style={{
+                    padding: 12, border: '1px solid var(--cprs-border)', borderRadius: 6,
+                    background: 'var(--cprs-bg)',
+                  }}>
+                    <div style={{ fontSize: 11, color: 'var(--cprs-text-muted)', marginBottom: 4 }}>HL7 Logical Links</div>
+                    <div style={{ fontSize: 18, fontWeight: 700 }}>{interopSummary.hl7.linkCount}</div>
+                    <div style={{ fontSize: 11, color: 'var(--cprs-text-muted)', marginTop: 2 }}>
+                      From file #870 (HL LOGICAL LINK)
+                    </div>
+                  </div>
+
+                  {/* Message Stats */}
+                  <div style={{
+                    padding: 12, border: '1px solid var(--cprs-border)', borderRadius: 6,
+                    background: 'var(--cprs-bg)',
+                  }}>
+                    <div style={{ fontSize: 11, color: 'var(--cprs-text-muted)', marginBottom: 4 }}>
+                      HL7 Messages ({interopSummary.hl7.messageStats.lookbackHours}h)
+                    </div>
+                    <div style={{ fontSize: 18, fontWeight: 700 }}>{interopSummary.hl7.messageStats.total}</div>
+                    <div style={{ fontSize: 11, display: 'flex', gap: 8, marginTop: 2 }}>
+                      <span style={{ color: '#16a34a' }}>{interopSummary.hl7.messageStats.completed} completed</span>
+                      <span style={{ color: '#d97706' }}>{interopSummary.hl7.messageStats.pending} pending</span>
+                      <span style={{ color: '#dc2626' }}>{interopSummary.hl7.messageStats.errors} errors</span>
+                    </div>
+                  </div>
+
+                  {/* Queue Depth */}
+                  <div style={{
+                    padding: 12, border: '1px solid var(--cprs-border)', borderRadius: 6,
+                    background: 'var(--cprs-bg)',
+                  }}>
+                    <div style={{ fontSize: 11, color: 'var(--cprs-text-muted)', marginBottom: 4 }}>Queue Depth</div>
+                    <div style={{ fontSize: 18, fontWeight: 700 }}>
+                      {interopSummary.queues.hl7Messages.total + interopSummary.queues.hloMessages.total}
+                    </div>
+                    <div style={{ fontSize: 11, display: 'flex', gap: 8, marginTop: 2 }}>
+                      <span>{interopSummary.queues.hl7Messages.pending} pending</span>
+                      <span style={{ color: interopSummary.queues.hl7Messages.errors > 0 ? '#dc2626' : 'inherit' }}>
+                        {interopSummary.queues.hl7Messages.errors} errors
+                      </span>
+                      <span>{interopSummary.queues.monitorJobs.count} monitor jobs</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* RPC / elapsed info */}
+                <div style={{
+                  display: 'flex', gap: 16, marginBottom: 12, fontSize: 11,
+                  color: 'var(--cprs-text-muted)',
+                }}>
+                  <span>Fetched in <strong>{interopSummary.elapsedMs}ms</strong></span>
+                  <span>RPCs: {interopSummary.rpcsUsed.length}</span>
+                  <span>VistA files: {interopSummary.vistaFiles.join(', ')}</span>
+                </div>
+
+                {/* HL7 Logical Links Table */}
+                <h4 style={{ fontSize: 13, margin: '0 0 8px' }}>HL7 Logical Links (sample)</h4>
+                {interopSummary.hl7.linkSample.length === 0 ? (
+                  <p style={{ fontSize: 12, color: 'var(--cprs-text-muted)' }}>No links available.</p>
+                ) : (
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12, marginBottom: 12 }}>
+                    <thead>
+                      <tr style={{ borderBottom: '2px solid var(--cprs-border)' }}>
+                        <th style={{ textAlign: 'left', padding: '4px 8px' }}>IEN</th>
+                        <th style={{ textAlign: 'left', padding: '4px 8px' }}>Name</th>
+                        <th style={{ textAlign: 'left', padding: '4px 8px' }}>Type</th>
+                        <th style={{ textAlign: 'left', padding: '4px 8px' }}>State</th>
+                        <th style={{ textAlign: 'left', padding: '4px 8px' }}>Device</th>
+                        <th style={{ textAlign: 'left', padding: '4px 8px' }}>Port</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {interopSummary.hl7.linkSample.map((link) => (
+                        <tr key={link.ien} style={{ borderBottom: '1px solid var(--cprs-border)' }}>
+                          <td style={{ padding: '4px 8px', fontFamily: 'monospace' }}>{link.ien}</td>
+                          <td style={{ padding: '4px 8px', fontWeight: 500 }}>{link.name}</td>
+                          <td style={{ padding: '4px 8px' }}>
+                            <span style={{ padding: '1px 6px', borderRadius: 4, background: 'var(--cprs-bg)', fontSize: 11 }}>
+                              {link.type}
+                            </span>
+                          </td>
+                          <td style={{ padding: '4px 8px' }}>
+                            <span style={{
+                              display: 'inline-block', padding: '1px 6px', borderRadius: 10, fontSize: 10,
+                              fontWeight: 600, color: '#fff',
+                              background: link.state === 'active' ? '#16a34a' : link.state === 'error' ? '#dc2626' : '#6b7280',
+                            }}>
+                              {link.state}
+                            </span>
+                          </td>
+                          <td style={{ padding: '4px 8px', fontFamily: 'monospace', fontSize: 11 }}>
+                            {link.device || '-'}
+                          </td>
+                          <td style={{ padding: '4px 8px', fontFamily: 'monospace', fontSize: 11 }}>
+                            {link.port || '-'}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+
+                {/* RPCs Used */}
+                <div style={{
+                  padding: 10, background: 'var(--cprs-bg)', border: '1px solid var(--cprs-border)',
+                  borderRadius: 6, fontSize: 11,
+                }}>
+                  <strong>RPCs used:</strong>{' '}
+                  {interopSummary.rpcsUsed.map((rpc, i) => (
+                    <span key={rpc}>
+                      <code style={{ fontSize: 10, background: 'rgba(0,0,0,0.05)', padding: '1px 4px', borderRadius: 3 }}>
+                        {rpc}
+                      </code>
+                      {i < interopSummary.rpcsUsed.length - 1 ? ', ' : ''}
+                    </span>
+                  ))}
+                  <span style={{ marginLeft: 8, color: 'var(--cprs-text-muted)' }}>
+                    M routine: ZVEMIOP
+                  </span>
+                </div>
+              </>
+            )}
+          </>
+        )}
+
         {/* ── Integration Architecture Note ────────────────────────── */}
         <div style={{ marginTop: 24, padding: 12, background: 'var(--cprs-bg)', border: '1px solid var(--cprs-border)', borderRadius: 6, fontSize: 11, color: 'var(--cprs-text-muted)' }}>
-          <strong>Integration Architecture (Phase 18):</strong>
+          <strong>Integration Architecture (Phase 18 + Phase 21):</strong>
           <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
             <li><strong>VistA-first:</strong> VistA RPC Broker is always the primary connection</li>
             <li><strong>FHIR:</strong> C0FHIR Suite (MUMPS-native FHIR R4) or external FHIR servers</li>
@@ -517,6 +777,7 @@ export default function IntegrationsPage() {
             <li><strong>HL7v2:</strong> MLLP feeds for ADT, ORM, ORU messages</li>
             <li><strong>Devices:</strong> Config-not-code onboarding for DICOM modalities, LIS instruments, bedside monitors</li>
             <li><strong>Probes:</strong> TCP socket (DICOM/HL7v2), HTTP (FHIR/DICOMweb), XWB (VistA RPC)</li>
+            <li><strong>HL7/HLO Telemetry (Phase 21):</strong> Real-time read from VistA globals via ZVEMIOP M routine — files #870, #773, #772, #779.x, #778, #776</li>
           </ul>
         </div>
       </div>

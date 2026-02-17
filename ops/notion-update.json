@@ -1,10 +1,10 @@
 {
-  "feature_title": "Phase 19 VERIFY — Reporting + Export Governance + Data Minimization",
-  "stage": "verified",
+  "feature_title": "Phase 21 — VistA HL7/HLO Interop Telemetry + CI + Ops Hardening",
+  "stage": "implemented",
   "status": "complete",
-  "prompt_ref_path": "prompts/21-PHASE-19-REPORTING-GOVERNANCE/21-99-Phase19-Reporting-Governance-VERIFY.md",
-  "runbook_path": "docs/runbooks/vista-reporting-export-governance.md",
-  "verify_script": "scripts/verify-phase19-reporting-governance.ps1",
+  "prompt_ref_path": "prompts/23-PHASE-21-INTEROP-REALITY/23-01-interop-reality-IMPLEMENT.md",
+  "runbook_path": "docs/runbooks/interop-rpcs.md",
+  "verify_script": "prompts/23-PHASE-21-INTEROP-REALITY/23-99-interop-reality-VERIFY.md",
   "verify_results": {
     "pass": 130,
     "fail": 0,
