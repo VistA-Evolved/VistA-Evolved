@@ -32,6 +32,8 @@ export interface SessionData {
   facilityName: string;
   /** Division IEN */
   divisionIen: string;
+  /** Resolved tenant ID (Phase 17) */
+  tenantId: string;
   /** Created timestamp */
   createdAt: number;
   /** Last activity timestamp */

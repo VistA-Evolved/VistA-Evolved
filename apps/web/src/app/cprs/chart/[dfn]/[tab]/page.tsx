@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { usePatient } from '@/stores/patient-context';
 import { useDataCache } from '@/stores/data-cache';
 import { useCPRSUI } from '@/stores/cprs-ui-state';
+import { useTenant } from '@/stores/tenant-context';
 import { getTabIdMap } from '@/lib/contracts/loader';
 import CPRSMenuBar from '@/components/cprs/CPRSMenuBar';
 import PatientBanner from '@/components/cprs/PatientBanner';
@@ -58,6 +59,7 @@ export default function CPRSChartPage({ params }: ChartPageProps) {
   const { dfn: currentDfn, selectPatient } = usePatient();
   const { fetchAll } = useDataCache();
   const { preferences } = useCPRSUI();
+  const { isModuleEnabled } = useTenant();
 
   // Validate tab
   if (!VALID_TABS.has(tab)) {
@@ -102,7 +104,9 @@ export default function CPRSChartPage({ params }: ChartPageProps) {
             flexDirection: 'column',
             gap: 2,
           }}>
-            {['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports'].map((t) => (
+            {['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports']
+              .filter((t) => isModuleEnabled(t))
+              .map((t) => (
               <a
                 key={t}
                 href={`/cprs/chart/${dfn}/${t}`}
@@ -124,7 +128,16 @@ export default function CPRSChartPage({ params }: ChartPageProps) {
         )}
         <main className={styles.content} style={{ flex: 1, overflow: 'auto', padding: isModern ? 16 : 8 }}>
           <ErrorBoundary name={`Tab: ${tab}`}>
-            <TabContent dfn={dfn} tab={tab} />
+            {!isModuleEnabled(tab) ? (
+              <div style={{ padding: 32, textAlign: 'center', color: 'var(--cprs-text-muted)' }}>
+                <h3 style={{ fontSize: 16, margin: '0 0 8px' }}>Module Disabled</h3>
+                <p style={{ fontSize: 13 }}>
+                  This module has been disabled by your facility administrator.
+                </p>
+              </div>
+            ) : (
+              <TabContent dfn={dfn} tab={tab} />
+            )}
           </ErrorBoundary>
         </main>
       </div>

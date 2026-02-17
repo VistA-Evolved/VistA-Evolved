@@ -1,14 +1,27 @@
 'use client';
 
 import { useCPRSUI, type DensityMode, type LayoutMode } from '@/stores/cprs-ui-state';
+import { useFacilityDefaults } from '@/stores/tenant-context';
 import styles from '@/components/cprs/cprs.module.css';
 
 /**
  * Preferences page — matches frmFrame "Tools > Options" in CPRS Delphi.
  * Phase 13G: adds layout mode and extended density options.
+ * Phase 17D: adds "Reset to facility defaults" button.
  */
 export default function CPRSPreferencesPage() {
   const { preferences, updatePreferences } = useCPRSUI();
+  const facilityDefaults = useFacilityDefaults();
+
+  const handleResetToFacilityDefaults = () => {
+    updatePreferences({
+      theme: facilityDefaults.theme,
+      density: facilityDefaults.density,
+      layoutMode: facilityDefaults.layoutMode,
+      initialTab: facilityDefaults.initialTab,
+      enableDragReorder: facilityDefaults.enableDragReorder,
+    });
+  };
 
   return (
     <div className={styles.shell} style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -102,6 +115,20 @@ export default function CPRSPreferencesPage() {
         <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', marginTop: 16 }}>
           Preferences are saved to browser localStorage and persist across sessions.
         </p>
+        <button
+          onClick={handleResetToFacilityDefaults}
+          style={{
+            marginTop: 12,
+            padding: '6px 16px',
+            fontSize: 12,
+            cursor: 'pointer',
+            background: 'var(--cprs-surface, #f5f5f5)',
+            border: '1px solid var(--cprs-border, #ccc)',
+            borderRadius: 4,
+          }}
+        >
+          Reset to Facility Defaults
+        </button>
       </div>
     </div>
   );

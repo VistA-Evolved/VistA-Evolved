@@ -17,6 +17,7 @@ import {
   type SessionData,
 } from "./session-store.js";
 import { SESSION_CONFIG } from "../config/server-config.js";
+import { resolveTenantId } from "../config/tenant-config.js";
 import { log } from "../lib/logger.js";
 import { audit } from "../lib/audit.js";
 import { LoginBodySchema, validate } from "../lib/validation.js";
@@ -93,6 +94,7 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
 
       // Create session
       const role = mapUserRole(userInfo.userName);
+      const tenantId = resolveTenantId(userInfo.facilityStation);
       const token = createSession({
         duz: userInfo.duz,
         userName: userInfo.userName,
@@ -100,6 +102,7 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
         facilityStation: userInfo.facilityStation,
         facilityName: userInfo.facilityName,
         divisionIen: userInfo.divisionIen,
+        tenantId,
       });
 
       // Rotate session token to prevent fixation (Phase 15B)
@@ -127,6 +130,7 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
           facilityStation: userInfo.facilityStation,
           facilityName: userInfo.facilityName,
           divisionIen: userInfo.divisionIen,
+          tenantId,
         },
       };
     } catch (err: any) {
@@ -184,6 +188,7 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
         facilityStation: session.facilityStation,
         facilityName: session.facilityName,
         divisionIen: session.divisionIen,
+        tenantId: session.tenantId,
       },
     };
   });

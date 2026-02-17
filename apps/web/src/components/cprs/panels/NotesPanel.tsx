@@ -1,14 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useDataCache, type Note } from '@/stores/data-cache';
+import { useTenant } from '@/stores/tenant-context';
 import styles from '../cprs.module.css';
 
 /* ------------------------------------------------------------------ */
-/* Local note templates                                                */
+/* Local note templates (fallbacks when no facility templates exist)    */
 /* ------------------------------------------------------------------ */
 
-const NOTE_TEMPLATES = [
+const LOCAL_TEMPLATES = [
   { id: 't-soap', name: 'SOAP Note', text: 'S: \nO: \nA: \nP: \n' },
   { id: 't-progress', name: 'Progress Note', text: 'Date: \nProvider: \n\nSubjective:\n\nObjective:\n\nAssessment:\n\nPlan:\n' },
   { id: 't-telephone', name: 'Telephone Encounter', text: 'Call from: \nReason: \nAdvice given: \nFollow-up: \n' },
@@ -20,6 +21,7 @@ interface Props { dfn: string; }
 
 export default function NotesPanel({ dfn }: Props) {
   const cache = useDataCache();
+  const { noteTemplates, isFeatureEnabled } = useTenant();
   const [selected, setSelected] = useState<Note | null>(null);
   const [showNewNote, setShowNewNote] = useState(false);
   const [noteTitle, setNoteTitle] = useState('');
@@ -27,6 +29,21 @@ export default function NotesPanel({ dfn }: Props) {
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState<string | null>(null);
+
+  // Merge facility-managed templates with local fallbacks (Phase 17E)
+  const NOTE_TEMPLATES = useMemo(() => {
+    if (!isFeatureEnabled('notes.templates')) return LOCAL_TEMPLATES;
+    if (noteTemplates.length === 0) return LOCAL_TEMPLATES;
+    // Facility templates first, then local templates not duplicated by id
+    const facilityTemplates = noteTemplates.map((t) => ({
+      id: t.id,
+      name: t.title,
+      text: t.body,
+    }));
+    const facilityIds = new Set(facilityTemplates.map((t) => t.id));
+    const localOnly = LOCAL_TEMPLATES.filter((t) => !facilityIds.has(t.id));
+    return [...facilityTemplates, ...localOnly];
+  }, [noteTemplates, isFeatureEnabled]);
 
   useEffect(() => { cache.fetchDomain(dfn, 'notes'); }, [dfn]); // eslint-disable-line react-hooks/exhaustive-deps
 

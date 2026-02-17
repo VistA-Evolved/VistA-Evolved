@@ -12,6 +12,7 @@ import { discoverCapabilities, getCapabilities, optionalRpc, isRpcAvailable, get
 import capabilityRoutes from "./routes/capabilities.js";
 import writeBackRoutes from "./routes/write-backs.js";
 import imagingRoutes from "./routes/imaging.js";
+import adminRoutes from "./routes/admin.js";
 // Phase 15: Enterprise hardening imports
 import { registerSecurityMiddleware, corsOriginValidator } from "./middleware/security.js";
 import { log } from "./lib/logger.js";
@@ -85,6 +86,9 @@ server.register(writeBackRoutes);
 
 // Register imaging routes (Phase 14D)
 server.register(imagingRoutes);
+
+// Register admin/tenant routes (Phase 17B)
+server.register(adminRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);
