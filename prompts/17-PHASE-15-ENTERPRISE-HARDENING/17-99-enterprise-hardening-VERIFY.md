@@ -38,8 +38,8 @@
 - [ ] `apps/api/src/config/server-config.ts` exports SESSION_CONFIG, LOG_CONFIG, PHI_CONFIG, AUDIT_CONFIG, RPC_CONFIG, CACHE_CONFIG, RATE_LIMIT_CONFIG
 
 ### 15G — Docs
-- [ ] Prompt file exists at `prompts/16-PHASE-15-ENTERPRISE-HARDENING/16-01-*.md`
-- [ ] Verify file exists at `prompts/16-PHASE-15-ENTERPRISE-HARDENING/16-99-*.md`
+- [ ] Prompt file exists at `prompts/17-PHASE-15-ENTERPRISE-HARDENING/17-01-*.md`
+- [ ] Verify file exists at `prompts/17-PHASE-15-ENTERPRISE-HARDENING/17-99-*.md`
 - [ ] Runbook exists at `docs/runbooks/enterprise-hardening-phase15.md`
 
 ### 15H — Regression

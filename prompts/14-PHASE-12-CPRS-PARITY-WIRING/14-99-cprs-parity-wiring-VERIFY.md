@@ -1,6 +1,6 @@
 # Phase 12: CPRS Parity Wiring — VERIFY
 
-> Prompt ref: `prompts/12-PHASE-12-CPRS-PARITY-WIRING/12-99-cprs-parity-wiring-VERIFY.md`
+> Prompt ref: `prompts/14-PHASE-12-CPRS-PARITY-WIRING/14-99-cprs-parity-wiring-VERIFY.md`
 
 ## Verification Checklist
 

@@ -283,8 +283,8 @@ Write-Phase "PHASE 12E" "Documentation Artifacts"
 # =========================================================================
 
 Assert-Check "Parity coverage report exists" (Test-Path "$repoRoot\docs\parity-coverage-report.md")
-Assert-Check "Phase 12 IMPLEMENT prompt exists" (Test-Path "$repoRoot\prompts\14-PHASE-12-CPRS-PARITY-WIRING\12-01-cprs-parity-wiring-IMPLEMENT.md")
-Assert-Check "Phase 12 VERIFY prompt exists" (Test-Path "$repoRoot\prompts\14-PHASE-12-CPRS-PARITY-WIRING\12-99-cprs-parity-wiring-VERIFY.md")
+Assert-Check "Phase 12 IMPLEMENT prompt exists" (Test-Path "$repoRoot\prompts\14-PHASE-12-CPRS-PARITY-WIRING\14-01-cprs-parity-wiring-IMPLEMENT.md")
+Assert-Check "Phase 12 VERIFY prompt exists" (Test-Path "$repoRoot\prompts\14-PHASE-12-CPRS-PARITY-WIRING\14-99-cprs-parity-wiring-VERIFY.md")
 Assert-Check "Phase 12 runbook exists" (Test-Path "$repoRoot\docs\runbooks\vista-rpc-phase12-parity.md")
 
 # =========================================================================

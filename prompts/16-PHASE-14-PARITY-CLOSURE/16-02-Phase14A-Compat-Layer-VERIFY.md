@@ -33,7 +33,7 @@
 - [ ] Plugin interface documented
 
 ### 14E — Documentation
-- [ ] prompts/15-PHASE-14-PARITY-CLOSURE/ exists with IMPLEMENT + VERIFY
+- [ ] prompts/16-PHASE-14-PARITY-CLOSURE/ exists with IMPLEMENT + VERIFY
 - [ ] docs/runbooks/cprs-parity-closure-phase14.md exists
 - [ ] Verifier script created and 0 WARN
 

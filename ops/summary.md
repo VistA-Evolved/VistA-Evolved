@@ -32,8 +32,8 @@
 - New `apps/api/src/config/server-config.ts`: Centralized config for sessions, logging, PHI, audit, RPC circuit breaker, cache, rate limits
 
 ### 15G - Documentation
-- New prompt: `prompts/16-PHASE-15-ENTERPRISE-HARDENING/16-01-enterprise-hardening-IMPLEMENT.md`
-- New prompt: `prompts/16-PHASE-15-ENTERPRISE-HARDENING/16-99-enterprise-hardening-VERIFY.md`
+- New prompt: `prompts/17-PHASE-15-ENTERPRISE-HARDENING/17-01-enterprise-hardening-IMPLEMENT.md`
+- New prompt: `prompts/17-PHASE-15-ENTERPRISE-HARDENING/17-99-enterprise-hardening-VERIFY.md`
 - New runbook: `docs/runbooks/enterprise-hardening-phase15.md`
 - New verifier: `scripts/verify-phase1-to-phase15-enterprise-hardening.ps1`
 

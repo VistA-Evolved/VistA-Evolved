@@ -1,6 +1,6 @@
 # Phase 12: CPRS Parity Wiring — IMPLEMENT
 
-> Prompt ref: `prompts/12-PHASE-12-CPRS-PARITY-WIRING/12-01-cprs-parity-wiring-IMPLEMENT.md`
+> Prompt ref: `prompts/14-PHASE-12-CPRS-PARITY-WIRING/14-01-cprs-parity-wiring-IMPLEMENT.md`
 
 ## User Request
 

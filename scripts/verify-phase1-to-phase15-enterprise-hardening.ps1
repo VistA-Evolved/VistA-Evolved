@@ -238,8 +238,8 @@ Assert-Check "Session store checks idle timeout" ($ssContent -match "idleTtl|las
 
 Write-Phase "PHASE 15G" "Documentation"
 
-Assert-Check "Phase 15 IMPLEMENT prompt" (Test-Path "$repoRoot\prompts\16-PHASE-15-ENTERPRISE-HARDENING\16-01-enterprise-hardening-IMPLEMENT.md")
-Assert-Check "Phase 15 VERIFY prompt" (Test-Path "$repoRoot\prompts\16-PHASE-15-ENTERPRISE-HARDENING\16-99-enterprise-hardening-VERIFY.md")
+Assert-Check "Phase 15 IMPLEMENT prompt" (Test-Path "$repoRoot\prompts\17-PHASE-15-ENTERPRISE-HARDENING\17-01-enterprise-hardening-IMPLEMENT.md")
+Assert-Check "Phase 15 VERIFY prompt" (Test-Path "$repoRoot\prompts\17-PHASE-15-ENTERPRISE-HARDENING\17-99-enterprise-hardening-VERIFY.md")
 Assert-Check "Phase 15 runbook" (Test-Path "$repoRoot\docs\runbooks\enterprise-hardening-phase15.md")
 
 # =========================================================================

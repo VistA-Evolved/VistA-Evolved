@@ -288,8 +288,8 @@ Write-Phase "PHASE 12E" "Documentation Artifacts"
 # =========================================================================
 
 Assert-Check "Parity coverage report exists" (Test-Path "$repoRoot\docs\parity-coverage-report.md")
-Assert-Check "Phase 12 IMPLEMENT prompt exists" (Test-Path "$repoRoot\prompts\14-PHASE-12-CPRS-PARITY-WIRING\12-01-cprs-parity-wiring-IMPLEMENT.md")
-Assert-Check "Phase 12 VERIFY prompt exists" (Test-Path "$repoRoot\prompts\14-PHASE-12-CPRS-PARITY-WIRING\12-99-cprs-parity-wiring-VERIFY.md")
+Assert-Check "Phase 12 IMPLEMENT prompt exists" (Test-Path "$repoRoot\prompts\14-PHASE-12-CPRS-PARITY-WIRING\14-01-cprs-parity-wiring-IMPLEMENT.md")
+Assert-Check "Phase 12 VERIFY prompt exists" (Test-Path "$repoRoot\prompts\14-PHASE-12-CPRS-PARITY-WIRING\14-99-cprs-parity-wiring-VERIFY.md")
 Assert-Check "Phase 12 runbook exists" (Test-Path "$repoRoot\docs\runbooks\vista-rpc-phase12-parity.md")
 
 # =========================================================================
@@ -454,8 +454,8 @@ Assert-Check "Preferences has density options" ($prefsPage -match "density.*comf
 Write-Phase "PHASE 13H" "Documentation & Prompts"
 # =========================================================================
 
-Assert-Check "Phase 13 IMPLEMENT prompt exists" (Test-Path "$repoRoot\prompts\12-PHASE-13-CPRS-OPERATIONALIZATION\12-01-cprs-operationalization-IMPLEMENT.md")
-Assert-Check "Phase 13 VERIFY prompt exists" (Test-Path "$repoRoot\prompts\12-PHASE-13-CPRS-OPERATIONALIZATION\12-99-cprs-operationalization-VERIFY.md")
+Assert-Check "Phase 13 IMPLEMENT prompt exists" (Test-Path "$repoRoot\prompts\15-PHASE-13-CPRS-OPERATIONALIZATION\15-01-cprs-operationalization-IMPLEMENT.md")
+Assert-Check "Phase 13 VERIFY prompt exists" (Test-Path "$repoRoot\prompts\15-PHASE-13-CPRS-OPERATIONALIZATION\15-99-cprs-operationalization-VERIFY.md")
 Assert-Check "Phase 13 runbook exists" (Test-Path "$repoRoot\docs\runbooks\vista-rpc-phase13-operationalization.md")
 
 # =========================================================================

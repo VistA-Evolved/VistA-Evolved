@@ -89,4 +89,4 @@
 | `apps/web/src/app/cprs/chart/[dfn]/[tab]/page.tsx` | ErrorBoundary wrapper |
 
 ## Verification Steps
-See `16-99-enterprise-hardening-VERIFY.md`
+See `17-99-enterprise-hardening-VERIFY.md`

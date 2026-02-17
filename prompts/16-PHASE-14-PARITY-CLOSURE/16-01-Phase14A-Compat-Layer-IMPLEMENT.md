@@ -61,7 +61,7 @@ availability checks, and structured fallback behavior for missing RPCs.
 8. Register all new routes in `apps/api/src/index.ts`
 
 ### 14E — Documentation
-9. Create prompts/15-PHASE-14-PARITY-CLOSURE/
+9. Create prompts/16-PHASE-14-PARITY-CLOSURE/
 10. Create docs/runbooks/cprs-parity-closure-phase14.md
 11. Update known-gaps documentation
 
@@ -91,4 +91,4 @@ availability checks, and structured fallback behavior for missing RPCs.
 - scripts/verify-phase1-to-phase14-parity-closure.ps1 (NEW)
 - scripts/verify-latest.ps1 (MODIFIED)
 - docs/runbooks/cprs-parity-closure-phase14.md (NEW)
-- prompts/15-PHASE-14-PARITY-CLOSURE/* (NEW)
+- prompts/16-PHASE-14-PARITY-CLOSURE/* (NEW)
