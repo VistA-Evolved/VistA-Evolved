@@ -1,0 +1,114 @@
+# VistA-Evolved — Production Docker Compose
+#
+# Usage:
+#   docker compose -f docker-compose.prod.yml up -d
+#
+# Prerequisites:
+#   - Create .env.prod from .env.example and fill in credentials
+#   - VistA sandbox must be accessible (either via services/vista or remote)
+#
+# Architecture:
+#   nginx (reverse proxy, TLS termination) → api (Fastify) + web (Next.js)
+#   api → VistA RPC Broker (port 9430)
+
+services:
+  # ---------- Reverse proxy (TLS termination placeholder) ----------
+  proxy:
+    image: nginx:alpine
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      # Mount TLS certs here:
+      # - ./certs/cert.pem:/etc/nginx/certs/cert.pem:ro
+      # - ./certs/key.pem:/etc/nginx/certs/key.pem:ro
+    depends_on:
+      api:
+        condition: service_healthy
+      web:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - frontend
+
+  # ---------- API server (Fastify) ----------
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      args:
+        BUILD_SHA: ${BUILD_SHA:-dev}
+        BUILD_TIME: ${BUILD_TIME:-unknown}
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=3001
+      # VistA connection (from .env.prod or secrets manager)
+      - VISTA_HOST=${VISTA_HOST:-vista}
+      - VISTA_PORT=${VISTA_PORT:-9430}
+      - VISTA_ACCESS_CODE=${VISTA_ACCESS_CODE}
+      - VISTA_VERIFY_CODE=${VISTA_VERIFY_CODE}
+      - VISTA_CONTEXT=${VISTA_CONTEXT:-OR CPRS GUI CHART}
+      # Observability
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_FORMAT=json
+      - AUDIT_SINK=file
+      - AUDIT_FILE_PATH=/app/logs/audit.jsonl
+      # Security
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-https://ehr.local}
+      - SESSION_COOKIE=ehr_session
+      # Performance
+      - RPC_CALL_TIMEOUT_MS=${RPC_CALL_TIMEOUT_MS:-15000}
+      - CACHE_DEFAULT_TTL_MS=${CACHE_DEFAULT_TTL_MS:-60000}
+    volumes:
+      - api-logs:/app/logs
+    expose:
+      - "3001"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3001/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - frontend
+      - backend
+
+  # ---------- Web frontend (Next.js) ----------
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://api:3001
+        BUILD_SHA: ${BUILD_SHA:-dev}
+        BUILD_TIME: ${BUILD_TIME:-unknown}
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    expose:
+      - "3000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - frontend
+
+volumes:
+  api-logs:
+    driver: local
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge

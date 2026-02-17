@@ -6,6 +6,7 @@ import { DataCacheProvider } from '@/stores/data-cache';
 import { SessionProvider } from '@/stores/session-context';
 import CPRSModals from '@/components/cprs/CPRSModals';
 import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
+import { DegradedBanner } from '@/components/cprs/DegradedBanner';
 
 export default function CPRSLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -14,6 +15,7 @@ export default function CPRSLayout({ children }: { children: React.ReactNode }) 
         <CPRSUIProvider>
           <PatientProvider>
             <DataCacheProvider>
+              <DegradedBanner />
               <ErrorBoundary name="CPRS Content">
                 {children}
               </ErrorBoundary>

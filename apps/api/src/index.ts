@@ -94,7 +94,7 @@ server.get("/health", async () => ({
   ok: true,
   uptime: process.uptime(),
   timestamp: new Date().toISOString(),
-  version: "phase-15",
+  version: "phase-16",
 }));
 
 // Phase 15D: Readiness probe (checks VistA connectivity)
@@ -107,12 +107,29 @@ server.get("/ready", async () => {
   }
 });
 
-// Phase 15D: Metrics endpoint (RPC health, circuit breaker, cache)
+// Phase 16: Version/build metadata endpoint
+server.get("/version", async () => ({
+  ok: true,
+  version: "phase-16",
+  commitSha: process.env.BUILD_SHA || "dev",
+  buildTime: process.env.BUILD_TIME || "unknown",
+  nodeVersion: process.version,
+  uptime: process.uptime(),
+}));
+
+// Phase 16: Enhanced metrics endpoint (RPC health, circuit breaker, cache, process)
 server.get("/metrics", async () => {
+  const mem = process.memoryUsage();
   return {
     ok: true,
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
+    process: {
+      heapUsedMB: Math.round(mem.heapUsed / 1024 / 1024 * 100) / 100,
+      heapTotalMB: Math.round(mem.heapTotal / 1024 / 1024 * 100) / 100,
+      rssMB: Math.round(mem.rss / 1024 / 1024 * 100) / 100,
+      pid: process.pid,
+    },
     rpcHealth: getRpcHealthSummary(),
   };
 });
@@ -1733,7 +1750,7 @@ try {
   await server.listen({ port, host });
   log.info("Server listening", { host, port, url: `http://${host}:${port}` });
   audit("system.startup", "success", { duz: "system", name: "system", role: "system" }, {
-    detail: { host, port, phase: "15-enterprise-hardening" },
+    detail: { host, port, phase: "16-production-readiness", commitSha: process.env.BUILD_SHA || "dev" },
   });
 } catch (err) {
   log.fatal("Server failed to start", { error: (err as Error).message });

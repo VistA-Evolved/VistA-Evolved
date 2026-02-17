@@ -1,38 +1,15 @@
 {
-  "featureTitle": "Phase 15B: Enterprise Hardening — VistA-first Security + Prompts Repair",
+  "feature": "Phase 16 — Production Readiness (Deploy + Observability + DR + Perf)",
   "stage": "verified",
   "status": "complete",
-  "promptRef": "prompts/17-PHASE-15-ENTERPRISE-HARDENING/17-01-enterprise-hardening-IMPLEMENT.md",
-  "runbookPath": "docs/runbooks/enterprise-hardening-phase15b.md",
-  "verifyScript": "scripts/verify-phase15b-enterprise-hardening.ps1",
-  "verifyResult": {
-    "pass": 63,
-    "fail": 0,
-    "warn": 0,
-    "info": 1,
-    "total": 64
-  },
-  "commitSHA": "47328fb",
-  "highlights": [
-    "Auth gateway: path-based session/admin/public endpoint gating",
-    "CORS lockdown: origin allowlist replaces origin:true",
-    "Response scrubber: centralized sanitization of all error messages",
-    "Session fixation prevention: rotateSession on login",
-    "Token removed from login response body (cookie-only)",
-    "Audit actor attribution: real session user replaces { duz: system }",
-    "AsyncLocalStorage for concurrency-safe request IDs",
-    "Origin validation for state-changing requests",
-    "safeCallRpc/safeCallRpcWithList drop-in RPC wrappers",
-    "Prompts directory ordering fixed (no duplicate folder 12)",
-    "console.log replaced with structured logger in write-backs"
+  "promptRef": "prompts/18-PHASE-16-PRODUCTION-READINESS/18-01-Phase16-IMPLEMENT.md",
+  "runbooks": [
+    "docs/runbooks/prod-deploy-phase16.md",
+    "docs/runbooks/observability-phase16.md",
+    "docs/runbooks/backup-restore-phase16.md",
+    "docs/runbooks/incident-response-phase16.md"
   ],
-  "newEndpoints": [
-    "GET /health",
-    "GET /ready",
-    "GET /metrics",
-    "GET /audit/events",
-    "GET /audit/stats",
-    "POST /admin/circuit-breaker/reset",
-    "POST /admin/cache/invalidate"
-  ]
+  "verifyScript": "scripts/verify-phase16-production-readiness.ps1",
+  "verifyResult": "87 PASS, 0 FAIL, 0 WARN",
+  "commitSha": "da2b28c"
 }

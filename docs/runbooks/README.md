@@ -24,5 +24,14 @@ Runbooks are step-by-step operational guides for developers.
 | 15 — Enterprise Hardening Baseline | [enterprise-hardening-phase15.md](enterprise-hardening-phase15.md) |
 | 15B — VistA-first Security | [enterprise-hardening-phase15b.md](enterprise-hardening-phase15b.md) |
 
+## Phase 16 — Production Readiness
+
+| Topic | Runbook |
+|-------|--------|
+| Production Deployment | [prod-deploy-phase16.md](prod-deploy-phase16.md) |
+| Observability | [observability-phase16.md](observability-phase16.md) |
+| Backup & Restore | [backup-restore-phase16.md](backup-restore-phase16.md) |
+| Incident Response | [incident-response-phase16.md](incident-response-phase16.md) |
+
 ## Rule
 If someone gets stuck twice on the same thing, write a runbook.

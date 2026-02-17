@@ -61,7 +61,7 @@ interface AuthRule {
  * Routes are matched top-to-bottom; first match wins.
  */
 const AUTH_RULES: AuthRule[] = [
-  { pattern: /^\/(health|ready|vista\/ping|metrics)$/, auth: "none" },
+  { pattern: /^\/(health|ready|vista\/ping|metrics|version)$/, auth: "none" },
   { pattern: /^\/auth\//, auth: "none" },
   { pattern: /^\/(admin|audit)\//, auth: "admin" },
   { pattern: /^\/ws\//, auth: "session" }, // WebSocket console (has own role check too)
