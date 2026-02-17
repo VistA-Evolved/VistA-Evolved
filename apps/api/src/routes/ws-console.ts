@@ -20,36 +20,33 @@ import type { FastifyInstance } from "fastify";
 import { getSession, type SessionData } from "../auth/session-store.js";
 import { validateCredentials } from "../vista/config.js";
 import { connect, disconnect, callRpc } from "../vista/rpcBrokerClient.js";
+import { audit as centralAudit, queryAuditEvents } from "../lib/audit.js";
+import { log } from "../lib/logger.js";
+import type { AuditAction } from "../lib/audit.js";
 
 /* ------------------------------------------------------------------ */
-/* Audit log                                                           */
+/* Centralized audit helper (Phase 15C migration)                       */
 /* ------------------------------------------------------------------ */
 
-interface AuditEntry {
-  ts: string;
-  duz: string;
-  userName: string;
-  action: string;
-  rpcName?: string;
-  result?: string;
-}
+const WS_ACTION_MAP: Record<string, AuditAction> = {
+  CONNECT: "rpc.console-connect",
+  DISCONNECT: "rpc.console-disconnect",
+  RPC_CALL: "rpc.console-call",
+  RPC_OK: "rpc.console-call",
+  RPC_ERROR: "rpc.console-call",
+  BLOCKED_RPC: "security.rbac-denied",
+  DENIED: "security.rbac-denied",
+  API_CALL: "rpc.console-call",
+};
 
-const auditLog: AuditEntry[] = [];
-const MAX_AUDIT_ENTRIES = 500;
-
-function audit(session: SessionData, action: string, rpcName?: string, result?: string): void {
-  const entry: AuditEntry = {
-    ts: new Date().toISOString(),
-    duz: session.duz,
-    userName: session.userName,
-    action,
-    rpcName,
-    result: result?.substring(0, 200),
-  };
-  auditLog.push(entry);
-  if (auditLog.length > MAX_AUDIT_ENTRIES) auditLog.shift();
-  // Never log credentials
-  console.log(`[WS-AUDIT] ${entry.ts} DUZ=${entry.duz} action=${action}${rpcName ? ` rpc=${rpcName}` : ''}`);
+function auditWs(session: SessionData, action: string, rpcName?: string, result?: string): void {
+  const mapped = WS_ACTION_MAP[action] || "rpc.console-call";
+  const outcome = (action === "DENIED" || action === "BLOCKED_RPC" || action === "RPC_ERROR")
+    ? "denied" as const
+    : "success" as const;
+  centralAudit(mapped, outcome, { duz: session.duz, name: session.userName, role: session.role }, {
+    detail: { wsAction: action, rpcName, result: result?.substring(0, 200) },
+  });
 }
 
 /* ------------------------------------------------------------------ */
@@ -73,13 +70,13 @@ export default async function wsConsoleRoutes(server: FastifyInstance): Promise<
     // RBAC: admin and provider roles can access console
     const allowedRoles = ["admin", "provider"];
     if (!allowedRoles.includes(session.role)) {
-      audit(session, "DENIED", undefined, "Insufficient role for console access");
+      auditWs(session, "DENIED", undefined, "Insufficient role for console access");
       socket.send(JSON.stringify({ type: "error", message: `Console access requires one of: ${allowedRoles.join(", ")}. Your role: ${session.role}`, ts: new Date().toISOString() }));
       socket.close(4003, "Forbidden");
       return;
     }
 
-    audit(session, "CONNECT");
+    auditWs(session, "CONNECT");
 
     socket.send(JSON.stringify({
       type: "info",
@@ -109,12 +106,12 @@ export default async function wsConsoleRoutes(server: FastifyInstance): Promise<
         // Security: block credential-related RPCs from console
         const blocked = ["XUS AV CODE", "XUS SET VISITOR"];
         if (blocked.includes(rpcName.toUpperCase())) {
-          audit(session, "BLOCKED_RPC", rpcName);
+          auditWs(session, "BLOCKED_RPC", rpcName);
           socket.send(JSON.stringify({ type: "error", message: `RPC "${rpcName}" is blocked for security`, ts: new Date().toISOString() }));
           return;
         }
 
-        audit(session, "RPC_CALL", rpcName);
+        auditWs(session, "RPC_CALL", rpcName);
 
         try {
           validateCredentials();
@@ -128,7 +125,7 @@ export default async function wsConsoleRoutes(server: FastifyInstance): Promise<
             count: lines.length,
             ts: new Date().toISOString(),
           }));
-          audit(session, "RPC_OK", rpcName, `${lines.length} lines`);
+          auditWs(session, "RPC_OK", rpcName, `${lines.length} lines`);
         } catch (err: any) {
           disconnect();
           socket.send(JSON.stringify({
@@ -137,7 +134,7 @@ export default async function wsConsoleRoutes(server: FastifyInstance): Promise<
             rpcName,
             ts: new Date().toISOString(),
           }));
-          audit(session, "RPC_ERROR", rpcName, err.message);
+          auditWs(session, "RPC_ERROR", rpcName, err.message);
         }
       } else if (msg.type === "api") {
         // Execute a local API GET request
@@ -147,7 +144,7 @@ export default async function wsConsoleRoutes(server: FastifyInstance): Promise<
           return;
         }
 
-        audit(session, "API_CALL", undefined, path);
+        auditWs(session, "API_CALL", undefined, path);
 
         try {
           const resp = await server.inject({ method: "GET", url: path });
@@ -175,16 +172,22 @@ export default async function wsConsoleRoutes(server: FastifyInstance): Promise<
     });
 
     socket.on("close", () => {
-      audit(session, "DISCONNECT");
+      auditWs(session, "DISCONNECT");
     });
   });
 
-  // GET /admin/audit-log — retrieve console audit log (admin only)
-  server.get("/admin/audit-log", async (_request, reply) => {
+  // GET /admin/audit-log — retrieve console audit log from centralized system
+  server.get("/admin/audit-log", async (_request, _reply) => {
+    // Filter centralized audit events to ws-console-related actions
+    const events = queryAuditEvents({ limit: 100 });
+    const wsEvents = events.filter(e =>
+      e.action.startsWith("rpc.console-") ||
+      (e.action === "security.rbac-denied" && (e as any).detail?.wsAction)
+    );
     return {
       ok: true,
-      count: auditLog.length,
-      entries: auditLog.slice(-100),
+      count: wsEvents.length,
+      entries: wsEvents,
     };
   });
 }

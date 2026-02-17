@@ -5,18 +5,23 @@ import { CPRSUIProvider } from '@/stores/cprs-ui-state';
 import { DataCacheProvider } from '@/stores/data-cache';
 import { SessionProvider } from '@/stores/session-context';
 import CPRSModals from '@/components/cprs/CPRSModals';
+import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
 
 export default function CPRSLayout({ children }: { children: React.ReactNode }) {
   return (
-    <SessionProvider>
-      <CPRSUIProvider>
-        <PatientProvider>
-          <DataCacheProvider>
-            {children}
-            <CPRSModals />
-          </DataCacheProvider>
-        </PatientProvider>
-      </CPRSUIProvider>
-    </SessionProvider>
+    <ErrorBoundary name="CPRS Application">
+      <SessionProvider>
+        <CPRSUIProvider>
+          <PatientProvider>
+            <DataCacheProvider>
+              <ErrorBoundary name="CPRS Content">
+                {children}
+              </ErrorBoundary>
+              <CPRSModals />
+            </DataCacheProvider>
+          </PatientProvider>
+        </CPRSUIProvider>
+      </SessionProvider>
+    </ErrorBoundary>
   );
 }

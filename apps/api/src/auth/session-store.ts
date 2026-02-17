@@ -1,13 +1,15 @@
 /**
- * In-memory session store for Phase 13.
+ * In-memory session store for Phase 13 (hardened in Phase 15).
  *
  * Each session maps a random token → user metadata (DUZ, name, role, facility).
- * Sessions expire after SESSION_TTL_MS (default 8 hours).
+ * Sessions expire after absolute TTL or idle timeout (configurable via server-config).
+ * Session tokens are rotated on login to prevent fixation attacks.
  *
  * Production would swap this for Redis or a database-backed store.
  */
 
 import { randomBytes } from "crypto";
+import { SESSION_CONFIG } from "../config/server-config.js";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -37,13 +39,6 @@ export interface SessionData {
 }
 
 /* ------------------------------------------------------------------ */
-/* Config                                                              */
-/* ------------------------------------------------------------------ */
-
-const SESSION_TTL_MS = 8 * 60 * 60 * 1000; // 8 hours
-const CLEANUP_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
-
-/* ------------------------------------------------------------------ */
 /* Store                                                               */
 /* ------------------------------------------------------------------ */
 
@@ -53,11 +48,13 @@ const sessions = new Map<string, SessionData>();
 setInterval(() => {
   const now = Date.now();
   for (const [token, session] of sessions) {
-    if (now - session.lastActivity > SESSION_TTL_MS) {
+    const absoluteExpired = now - session.createdAt > SESSION_CONFIG.absoluteTtlMs;
+    const idleExpired = now - session.lastActivity > SESSION_CONFIG.idleTtlMs;
+    if (absoluteExpired || idleExpired) {
       sessions.delete(token);
     }
   }
-}, CLEANUP_INTERVAL_MS);
+}, SESSION_CONFIG.cleanupIntervalMs);
 
 /* ------------------------------------------------------------------ */
 /* Public API                                                          */
@@ -75,11 +72,18 @@ export function createSession(data: Omit<SessionData, "token" | "createdAt" | "l
 export function getSession(token: string): SessionData | null {
   const session = sessions.get(token);
   if (!session) return null;
-  if (Date.now() - session.lastActivity > SESSION_TTL_MS) {
+  const now = Date.now();
+  // Check absolute TTL
+  if (now - session.createdAt > SESSION_CONFIG.absoluteTtlMs) {
     sessions.delete(token);
     return null;
   }
-  session.lastActivity = Date.now();
+  // Check idle timeout
+  if (now - session.lastActivity > SESSION_CONFIG.idleTtlMs) {
+    sessions.delete(token);
+    return null;
+  }
+  session.lastActivity = now;
   return session;
 }
 
@@ -93,13 +97,31 @@ export function listSessions(): SessionData[] {
   const now = Date.now();
   const result: SessionData[] = [];
   for (const [token, session] of sessions) {
-    if (now - session.lastActivity > SESSION_TTL_MS) {
+    const absoluteExpired = now - session.createdAt > SESSION_CONFIG.absoluteTtlMs;
+    const idleExpired = now - session.lastActivity > SESSION_CONFIG.idleTtlMs;
+    if (absoluteExpired || idleExpired) {
       sessions.delete(token);
     } else {
       result.push(session);
     }
   }
   return result;
+}
+
+/**
+ * Rotate session token (Phase 15 — session fixation prevention).
+ * Creates a new token for an existing session, deletes the old one.
+ * Returns the new token.
+ */
+export function rotateSession(oldToken: string): string | null {
+  const session = sessions.get(oldToken);
+  if (!session) return null;
+  sessions.delete(oldToken);
+  const newToken = randomBytes(32).toString("hex");
+  session.token = newToken;
+  session.lastActivity = Date.now();
+  sessions.set(newToken, session);
+  return newToken;
 }
 
 /** Map the known Docker default users to roles. */

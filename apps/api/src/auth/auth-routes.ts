@@ -1,8 +1,8 @@
 /**
- * Auth routes — Phase 13.
+ * Auth routes — Phase 13 (hardened in Phase 15).
  *
- * POST /auth/login   — authenticate with VistA, create session
- * POST /auth/logout  — destroy session
+ * POST /auth/login   — authenticate with VistA, create session, audit
+ * POST /auth/logout  — destroy session, audit
  * GET  /auth/session — return current session info
  */
 
@@ -12,18 +12,22 @@ import {
   createSession,
   getSession,
   destroySession,
+  rotateSession,
   mapUserRole,
   type SessionData,
 } from "./session-store.js";
+import { SESSION_CONFIG } from "../config/server-config.js";
+import { log } from "../lib/logger.js";
+import { audit } from "../lib/audit.js";
+import { LoginBodySchema, validate } from "../lib/validation.js";
 
-const COOKIE_NAME = "ehr_session";
+const COOKIE_NAME = SESSION_CONFIG.cookieName;
 const COOKIE_OPTS = {
   path: "/",
   httpOnly: true,
   sameSite: "lax" as const,
-  // Secure only in production (behind HTTPS)
   secure: process.env.NODE_ENV === "production",
-  maxAge: 8 * 60 * 60, // 8 hours in seconds
+  maxAge: Math.floor(SESSION_CONFIG.absoluteTtlMs / 1000),
 };
 
 /** Extract session token from cookie or Authorization header. */
@@ -65,17 +69,23 @@ export function requireRole(session: SessionData, roles: string[], reply: any): 
 export default async function authRoutes(server: FastifyInstance): Promise<void> {
   // POST /auth/login
   server.post("/auth/login", async (request, reply) => {
-    const body = request.body as any;
-    const accessCode = body?.accessCode;
-    const verifyCode = body?.verifyCode;
+    const requestId = (request as any).requestId;
+    const sourceIp = request.ip;
 
-    if (!accessCode || !verifyCode) {
+    // Phase 15A: Validate input with zod
+    const parsed = validate(LoginBodySchema, request.body);
+    if (!parsed.ok) {
+      audit("security.invalid-input", "failure", { duz: "anonymous" }, {
+        requestId, sourceIp, detail: { endpoint: "/auth/login", errors: parsed.details },
+      });
       return reply.code(400).send({
         ok: false,
-        error: "Missing accessCode or verifyCode",
-        hint: 'Body: { "accessCode": "PROV123", "verifyCode": "PROV123!!" }',
+        error: "Invalid request body",
+        details: parsed.details,
       });
     }
+
+    const { accessCode, verifyCode } = parsed.data;
 
     try {
       // Authenticate against VistA
@@ -95,6 +105,13 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
       // Set cookie
       reply.setCookie(COOKIE_NAME, token, COOKIE_OPTS);
 
+      // Phase 15C: Audit successful login
+      audit("auth.login", "success", {
+        duz: userInfo.duz, name: userInfo.userName, role,
+      }, { requestId, sourceIp });
+
+      log.info("User authenticated", { duz: userInfo.duz, role });
+
       return {
         ok: true,
         session: {
@@ -108,8 +125,11 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
         },
       };
     } catch (err: any) {
-      // Never log the credentials themselves
-      console.error("[AUTH] Login failed:", err.message);
+      // Phase 15C: Audit failed login (never log credentials)
+      audit("auth.failed", "failure", { duz: "anonymous" }, {
+        requestId, sourceIp, detail: { error: err.message },
+      });
+      log.warn("Login failed", { error: err.message, sourceIp });
       return reply.code(401).send({
         ok: false,
         error: err.message || "Authentication failed",
@@ -120,10 +140,21 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
   // POST /auth/logout
   server.post("/auth/logout", async (request, reply) => {
     const token = extractToken(request);
+    const session = token ? getSession(token) : null;
+
     if (token) {
       destroySession(token);
     }
     reply.clearCookie(COOKIE_NAME, { path: "/" });
+
+    // Phase 15C: Audit logout
+    audit("auth.logout", "success", {
+      duz: session?.duz, name: session?.userName, role: session?.role,
+    }, {
+      requestId: (request as any).requestId,
+      sourceIp: request.ip,
+    });
+
     return { ok: true };
   });
 

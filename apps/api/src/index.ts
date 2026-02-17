@@ -12,11 +12,19 @@ import { discoverCapabilities, getCapabilities, optionalRpc, isRpcAvailable, get
 import capabilityRoutes from "./routes/capabilities.js";
 import writeBackRoutes from "./routes/write-backs.js";
 import imagingRoutes from "./routes/imaging.js";
+// Phase 15: Enterprise hardening imports
+import { registerSecurityMiddleware } from "./middleware/security.js";
+import { log } from "./lib/logger.js";
+import { audit, queryAuditEvents, getAuditStats } from "./lib/audit.js";
+import { getRpcHealthSummary, getCircuitBreakerStats, resetCircuitBreaker, invalidateCache } from "./lib/rpc-resilience.js";
 
 const server = Fastify();
 server.register(cors, { origin: true, credentials: true });
 server.register(cookie);
 server.register(websocket);
+
+// Phase 15: Register security middleware (request IDs, headers, rate limiting, error handler)
+await registerSecurityMiddleware(server);
 
 // Accept empty-body POSTs with any Content-Type (e.g., logout)
 server.addContentTypeParser(
@@ -56,7 +64,64 @@ server.register(imagingRoutes);
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);
 
-server.get("/health", async () => ({ ok: true }));
+// Phase 15D: Enhanced health check
+server.get("/health", async () => ({
+  ok: true,
+  uptime: process.uptime(),
+  timestamp: new Date().toISOString(),
+  version: "phase-15",
+}));
+
+// Phase 15D: Readiness probe (checks VistA connectivity)
+server.get("/ready", async () => {
+  try {
+    await probeConnect();
+    return { ok: true, vista: "reachable", uptime: process.uptime() };
+  } catch {
+    return { ok: false, vista: "unreachable", uptime: process.uptime() };
+  }
+});
+
+// Phase 15D: Metrics endpoint (RPC health, circuit breaker, cache)
+server.get("/metrics", async () => {
+  return {
+    ok: true,
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    rpcHealth: getRpcHealthSummary(),
+  };
+});
+
+// Phase 15C: Audit event query endpoint
+server.get("/audit/events", async (request) => {
+  const { actionPrefix, actorDuz, patientDfn, since, limit } = request.query as any;
+  const events = queryAuditEvents({
+    actionPrefix,
+    actorDuz,
+    patientDfn,
+    since,
+    limit: limit ? Number(limit) : undefined,
+  });
+  return { ok: true, count: events.length, events };
+});
+
+// Phase 15C: Audit stats endpoint
+server.get("/audit/stats", async () => {
+  return { ok: true, ...getAuditStats() };
+});
+
+// Phase 15B: Circuit breaker admin endpoints
+server.post("/admin/circuit-breaker/reset", async () => {
+  resetCircuitBreaker();
+  return { ok: true, state: getCircuitBreakerStats() };
+});
+
+// Phase 15B: Cache invalidation endpoint
+server.post("/admin/cache/invalidate", async (request) => {
+  const { pattern } = request.body as any || {};
+  const count = invalidateCache(pattern);
+  return { ok: true, invalidated: count };
+});
 
 // Phase 3 connectivity endpoint remains available (retain behavior)
 server.get("/vista/ping", async () => {
@@ -105,6 +170,13 @@ server.get("/vista/patient-search", async (request) => {
       .filter((r) => r !== null);
 
     disconnect();
+
+    // Phase 15C: Audit patient search
+    audit("phi.patient-search", "success", { duz: "system" }, {
+      requestId: (request as any).requestId,
+      sourceIp: request.ip,
+      detail: { query: q.trim(), resultCount: results.length },
+    });
 
     return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
   } catch (err: any) {
@@ -159,6 +231,13 @@ server.get("/vista/patient-demographics", async (request) => {
       dob = `${y}-${m}-${d}`;
     }
 
+    // Phase 15C: Audit demographics view
+    audit("phi.demographics-view", "success", { duz: "system" }, {
+      patientDfn: String(dfn),
+      requestId: (request as any).requestId,
+      sourceIp: request.ip,
+    });
+
     return {
       ok: true,
       patient: { dfn: String(dfn), name, dob, sex },
@@ -207,6 +286,14 @@ server.get("/vista/allergies", async (request) => {
         return { id, allergen, severity, reactions };
       })
       .filter((r) => r !== null);
+
+    // Phase 15C: Audit allergies view
+    audit("phi.allergies-view", "success", { duz: "system" }, {
+      patientDfn: String(dfn),
+      requestId: (request as any).requestId,
+      sourceIp: request.ip,
+      detail: { count: results.length },
+    });
 
     return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
   } catch (err: any) {
@@ -316,6 +403,14 @@ server.post("/vista/allergies", async (request) => {
       return { ok: false, error: errMsg, hint: "The allergy could not be saved" };
     }
 
+    // Phase 15C: Audit allergy add
+    audit("clinical.allergy-add", "success", { duz: "system" }, {
+      patientDfn: String(dfn),
+      requestId: (request as any).requestId,
+      sourceIp: request.ip,
+      detail: { allergen: matchEntry.name },
+    });
+
     return {
       ok: true,
       message: "Allergy created",
@@ -392,6 +487,14 @@ server.get("/vista/vitals", async (request) => {
       })
       .filter((r) => r !== null);
 
+    // Phase 15C: Audit vitals view
+    audit("phi.vitals-view", "success", { duz: "system" }, {
+      patientDfn: String(dfn),
+      requestId: (request as any).requestId,
+      sourceIp: request.ip,
+      detail: { count: results.length },
+    });
+
     return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
   } catch (err: any) {
     disconnect();
@@ -465,6 +568,14 @@ server.post("/vista/vitals", async (request) => {
         hint: "The vital could not be saved",
       };
     }
+
+    // Phase 15C: Audit vital add
+    audit("clinical.vitals-add", "success", { duz: "system" }, {
+      patientDfn: String(dfn),
+      requestId: (request as any).requestId,
+      sourceIp: request.ip,
+      detail: { type, value },
+    });
 
     return {
       ok: true,
@@ -579,6 +690,14 @@ server.get("/vista/notes", async (request) => {
         return { id, title, date, author, location, status };
       })
       .filter(Boolean);
+
+    // Phase 15C: Audit notes view (never log note text content — HIPAA)
+    audit("phi.notes-view", "success", { duz: "system" }, {
+      patientDfn: String(dfn),
+      requestId: (request as any).requestId,
+      sourceIp: request.ip,
+      detail: { count: results.length },
+    });
 
     return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
   } catch (err: any) {
@@ -696,6 +815,14 @@ server.post("/vista/notes", async (request) => {
       };
     }
 
+    // Phase 15C: Audit note creation (never log note text — HIPAA)
+    audit("clinical.note-create", "success", { duz: "system" }, {
+      patientDfn: String(dfn),
+      requestId: (request as any).requestId,
+      sourceIp: request.ip,
+      detail: { noteId, titleIen: TITLE_IEN },
+    });
+
     return {
       ok: true,
       id: noteId,
@@ -810,6 +937,14 @@ server.get("/vista/medications", async (request) => {
       sig: m.sig,
       status: m.status.toLowerCase() || "active",
     }));
+
+    // Phase 15C: Audit medications view
+    audit("phi.medications-view", "success", { duz: "system" }, {
+      patientDfn: String(dfn),
+      requestId: (request as any).requestId,
+      sourceIp: request.ip,
+      detail: { count: results.length },
+    });
 
     return { ok: true, count: results.length, results, rpcUsed: "ORWPS ACTIVE" };
   } catch (err: any) {
@@ -973,6 +1108,14 @@ server.post("/vista/medications", async (request) => {
     // Extract order IEN from response (first field before ^ or ;, strip leading ~)
     const orderIEN = (raw.split(/[\^;]/)[0]?.trim() || raw).replace(/^~/, "");
 
+    // Phase 15C: Audit medication add
+    audit("clinical.medication-add", "success", { duz: "system" }, {
+      patientDfn: String(dfn),
+      requestId: (request as any).requestId,
+      sourceIp: request.ip,
+      detail: { quickOrder: qo.name, orderIEN },
+    });
+
     return {
       ok: true,
       message: `Medication order created (unsigned): ${qo.name}`,
@@ -1019,6 +1162,11 @@ server.get("/vista/default-patient-list", async () => {
       .filter((r) => r !== null);
 
     disconnect();
+
+    // Phase 15C: Audit default patient list access
+    audit("phi.patient-list", "success", { duz: "system" }, {
+      detail: { count: results.length },
+    });
 
     return { ok: true, count: results.length, results };
   } catch (err: any) {
@@ -1102,6 +1250,14 @@ server.get("/vista/problems", async (request) => {
         };
       })
       .filter((r) => r !== null);
+
+    // Phase 15C: Audit problems view
+    audit("phi.problems-view", "success", { duz: "system" }, {
+      patientDfn: String(dfn),
+      requestId: (request as any).requestId,
+      sourceIp: request.ip,
+      detail: { count: results.length },
+    });
 
     return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
   } catch (err: any) {
@@ -1550,8 +1706,11 @@ const host = process.env.HOST || "127.0.0.1"
 
 try {
   await server.listen({ port, host });
-  console.log(`Server listening on http://${host}:${port}`);
+  log.info("Server listening", { host, port, url: `http://${host}:${port}` });
+  audit("system.startup", "success", { duz: "system", name: "system", role: "system" }, {
+    detail: { host, port, phase: "15-enterprise-hardening" },
+  });
 } catch (err) {
-  console.error(err);
+  log.fatal("Server failed to start", { error: (err as Error).message });
   process.exit(1);
 }

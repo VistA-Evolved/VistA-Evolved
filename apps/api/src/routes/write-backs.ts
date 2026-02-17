@@ -24,6 +24,9 @@ import type { FastifyInstance } from "fastify";
 import { validateCredentials } from "../vista/config.js";
 import { connect, disconnect, callRpc, getDuz } from "../vista/rpcBrokerClient.js";
 import { optionalRpc, isRpcAvailable, getCapabilities } from "../vista/rpcCapabilities.js";
+import { audit as centralAudit, queryAuditEvents } from "../lib/audit.js";
+import { log } from "../lib/logger.js";
+import type { AuditAction } from "../lib/audit.js";
 
 /* ------------------------------------------------------------------ */
 /* Server-side draft store                                             */
@@ -74,6 +77,11 @@ function createDraft(type: ServerDraft['type'], dfn: string, requiredRpc: string
   };
   drafts.set(id, draft);
   console.log(`[DRAFT] Created ${type} draft ${id} for DFN=${dfn} (RPC: ${requiredRpc})`);
+  // Phase 15C: centralized audit for draft creation
+  centralAudit("clinical.draft-create", "success", { duz: "system" }, {
+    patientDfn: dfn,
+    detail: { draftId: id, type, requiredRpc },
+  });
   return draft;
 }
 
@@ -96,7 +104,7 @@ function markDraftFailed(id: string, error: string): void {
 }
 
 /* ------------------------------------------------------------------ */
-/* Audit trail                                                         */
+/* Audit trail (Phase 15C: wired to centralized audit)                  */
 /* ------------------------------------------------------------------ */
 
 interface WriteAuditEntry {
@@ -112,9 +120,29 @@ interface WriteAuditEntry {
 const MAX_AUDIT = 500;
 const writeAuditLog: WriteAuditEntry[] = [];
 
+/** Dual-write: local legacy log + centralized audit system */
 function auditWrite(entry: WriteAuditEntry) {
   writeAuditLog.push(entry);
   if (writeAuditLog.length > MAX_AUDIT) writeAuditLog.shift();
+
+  // Map to centralized audit
+  const actionMap: Record<string, AuditAction> = {
+    'order-sign': 'clinical.order-sign',
+    'order-release': 'clinical.order-release',
+    'lab-ack': 'clinical.lab-ack',
+    'consult-create': 'clinical.consult-create',
+    'surgery-create': 'clinical.surgery-create',
+    'problem-save': 'clinical.problem-save',
+  };
+  const mapped = actionMap[entry.action] || 'clinical.order-sign';
+  const outcome = entry.status === 'success' ? 'success' as const
+    : entry.status === 'failed' ? 'failure' as const
+    : 'success' as const; // draft-stored is a successful draft creation
+
+  centralAudit(mapped, outcome, { duz: entry.user || 'system' }, {
+    patientDfn: entry.dfn,
+    detail: { rpc: entry.rpc, mode: entry.status, info: entry.detail },
+  });
 }
 
 /* ------------------------------------------------------------------ */
@@ -346,7 +374,8 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
   server.get("/vista/write-audit", async (request) => {
     const { limit } = request.query as any;
     const n = Math.min(Number(limit) || 50, MAX_AUDIT);
+    // Return both legacy entries and hint about centralized audit
     const entries = writeAuditLog.slice(-n);
-    return { ok: true, count: entries.length, entries };
+    return { ok: true, count: entries.length, entries, note: "Write-back events also available at /audit/events" };
   });
 }

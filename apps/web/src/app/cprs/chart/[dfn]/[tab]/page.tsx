@@ -9,6 +9,7 @@ import { getTabIdMap } from '@/lib/contracts/loader';
 import CPRSMenuBar from '@/components/cprs/CPRSMenuBar';
 import PatientBanner from '@/components/cprs/PatientBanner';
 import CPRSTabStrip from '@/components/cprs/CPRSTabStrip';
+import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
 import {
   CoverSheetPanel,
   ProblemsPanel,
@@ -122,7 +123,9 @@ export default function CPRSChartPage({ params }: ChartPageProps) {
           </nav>
         )}
         <main className={styles.content} style={{ flex: 1, overflow: 'auto', padding: isModern ? 16 : 8 }}>
-          <TabContent dfn={dfn} tab={tab} />
+          <ErrorBoundary name={`Tab: ${tab}`}>
+            <TabContent dfn={dfn} tab={tab} />
+          </ErrorBoundary>
         </main>
       </div>
     </div>

@@ -1,81 +1,66 @@
-# Phase 14: CPRS Parity Gap Closure + Compatibility Layer
+# Phase 15: Enterprise Hardening (Security + HIPAA Posture + Reliability + Observability)
 
 ## What Changed
 
-### 14A - RPC Capability Discovery + Cache
-- New `apps/api/src/vista/rpcCapabilities.ts`: Runtime RPC capability discovery engine with 5-min TTL cache. Probes 39 RPCs across 12 domains. Exports `discoverCapabilities()`, `requireRpc()`, `optionalRpc()`, `isRpcAvailable()`, `getCapabilities()`, `getDomainCapabilities()`.
-- New `apps/api/src/routes/capabilities.ts`: `GET /vista/rpc-capabilities` endpoint with `?refresh=true` and `?domain=` filters. Returns per-domain availability summaries.
-- `WORLDVISTA_EXPECTED_MISSING` list (15 RPCs) prevents false alarms on known sandbox gaps.
+### 15A - Security Baseline
+- New `apps/api/src/lib/logger.ts`: Structured JSON/text logger with credential/PHI redaction (SSN, Bearer tokens, access codes)
+- New `apps/api/src/lib/validation.ts`: Zod schemas for all POST bodies (LoginBodySchema, PatientSearchQuerySchema, etc.)
+- New `apps/api/src/middleware/security.ts`: Request IDs, security headers, rate limiting (200 general/60s, 10 login/60s), global error handler, graceful shutdown
+- Modified `apps/api/src/auth/session-store.ts`: Configurable TTLs (absolute + idle), session rotation
+- Modified `apps/api/src/auth/auth-routes.ts`: Zod validation, structured logging, audit events on login/logout/failure
 
-### 14B - WARN Gap Closure
-- Modified `apps/api/src/routes/inbox.ts`: Replaced raw `rpcErrors` with structured `featureStatus` array using `optionalRpc()`. Status values: `available`, `expected-missing`, `error`. Backward-compat `rpcErrors` field retained.
-- Result: 2 former WARNs (ORWORB UNSIG ORDERS, ORWORB FASTUSER) now report as INFO/expected-missing.
+### 15B - RPC Reliability
+- New `apps/api/src/lib/rpc-resilience.ts`: Circuit breaker (closed->open after 5 failures, half-open after 30s), per-RPC timeouts (15s), retries (max 2), TTL cache, per-RPC metrics (calls, successes, failures, avgDuration, p95)
 
-### 14C - Write-back Parity Upgrades
-- New `apps/api/src/routes/write-backs.ts`: 6 write-back endpoints + 3 utility endpoints.
-  - `POST /vista/orders/sign` - ORWDX SAVE or draft
-  - `POST /vista/orders/release` - ORWDXA VERIFY or draft
-  - `POST /vista/labs/ack` - ORWLRR ACK or draft
-  - `POST /vista/consults/create` - ORQQCN2 or draft
-  - `POST /vista/surgery/create` - always draft (no RPC available)
-  - `POST /vista/problems/save` - ORQQPL ADD SAVE or draft
-  - `GET /vista/drafts`, `GET /vista/drafts/stats`, `GET /vista/write-audit`
-- Modified `apps/web/src/stores/data-cache.tsx`: `signOrder`, `releaseOrder` now async with API calls. Added `acknowledgeLabs`, `fetchCapabilities`, `capabilities` state.
-- Modified `apps/web/src/components/cprs/panels/LabsPanel.tsx`: Server-side ack with mode display.
+### 15C - Audit Logging (HIPAA Posture)
+- New `apps/api/src/lib/audit.ts`: 40+ typed audit actions, memory/file/stdout sinks, query + stats API
+- Modified `apps/api/src/index.ts`: Audit wired into ALL 12 clinical endpoints (patient-search, demographics, allergies, vitals, notes, medications, problems + all write-backs)
+- Modified `apps/api/src/routes/ws-console.ts`: Migrated from local audit to centralized system
+- Modified `apps/api/src/routes/write-backs.ts`: Migrated to centralized audit (dual-write pattern)
 
-### 14D - Imaging Viewer Integration
-- New `apps/api/src/routes/imaging.ts`: `GET /vista/imaging/status`, `GET /vista/imaging/report`. Plugin interface (`ImagingViewerPlugin`) for future imaging viewer integration.
+### 15D - Observability
+- New endpoints: `/health` (uptime, version), `/ready` (VistA probe), `/metrics` (circuit breaker + RPC stats), `/audit/events`, `/audit/stats`
+- Admin endpoints: `/admin/circuit-breaker/reset`, `/admin/cache/invalidate`
+- Security headers on every response: X-Request-Id, nosniff, DENY, HSTS, no-store
 
-### 14E - Documentation
-- New prompt: `prompts/15-PHASE-14-PARITY-CLOSURE/15-01-Phase14A-Compat-Layer-IMPLEMENT.md`
-- New prompt: `prompts/15-PHASE-14-PARITY-CLOSURE/15-02-Phase14A-Compat-Layer-VERIFY.md`
-- New runbook: `docs/runbooks/cprs-parity-closure-phase14.md`
-- New verifier: `scripts/verify-phase1-to-phase14-parity-closure.ps1`
+### 15E - UI Reliability
+- New `apps/web/src/components/ui/ErrorBoundary.tsx`: ErrorBoundary + LoadingPanel + EmptyState
+- New `apps/web/src/lib/useDebounce.ts`: Debounce hook
+- Modified CPRS layout + chart tab pages: wrapped in ErrorBoundary
 
-### Infrastructure
-- Modified `apps/api/src/index.ts`: Registered 3 new route plugins.
-- Modified `scripts/verify-latest.ps1`: Points to Phase 14 verifier.
+### 15F - Compliance Configuration
+- New `apps/api/src/config/server-config.ts`: Centralized config for sessions, logging, PHI, audit, RPC circuit breaker, cache, rate limits
+
+### 15G - Documentation
+- New prompt: `prompts/16-PHASE-15-ENTERPRISE-HARDENING/16-01-enterprise-hardening-IMPLEMENT.md`
+- New prompt: `prompts/16-PHASE-15-ENTERPRISE-HARDENING/16-99-enterprise-hardening-VERIFY.md`
+- New runbook: `docs/runbooks/enterprise-hardening-phase15.md`
+- New verifier: `scripts/verify-phase1-to-phase15-enterprise-hardening.ps1`
 
 ## How to Test Manually
 
 ```bash
-# Start Docker sandbox
-cd services/vista && docker compose --profile dev up -d
-
 # Start API
-pnpm -C apps/api dev
+cd apps/api && npx tsx src/index.ts
 
-# Test capabilities
-curl http://127.0.0.1:3001/vista/rpc-capabilities
+# Health + observability
+curl http://127.0.0.1:3001/health
+curl http://127.0.0.1:3001/metrics
+curl http://127.0.0.1:3001/audit/stats
 
-# Test write-backs
-curl -X POST http://127.0.0.1:3001/vista/orders/sign \
-  -H 'Content-Type: application/json' \
-  -d '{"dfn":"1","orderId":"test","orderName":"Test","signedBy":"PROVIDER"}'
+# Security headers
+curl -v http://127.0.0.1:3001/health 2>&1 | grep -i "x-request-id"
 
-# Test imaging
-curl http://127.0.0.1:3001/vista/imaging/status
-
-# Test inbox (should show featureStatus, not WARNs)
-curl http://127.0.0.1:3001/vista/inbox
-
-# Check drafts
-curl http://127.0.0.1:3001/vista/drafts
-curl http://127.0.0.1:3001/vista/drafts/stats
-curl http://127.0.0.1:3001/vista/write-audit
+# Zod validation (400 + field errors)
+curl -X POST http://127.0.0.1:3001/auth/login -H "Content-Type: application/json" -d "{}"
 ```
 
 ## Verifier Output
 
 ```
-PASS: 128
-FAIL: 0
-WARN: 0
-INFO: 2
-TOTAL: 130
-
+Phase 15 Enterprise Hardening Verification
+PASS: 92, FAIL: 0, WARN: 0, INFO: 0
 *** ALL CHECKS PASSED - 0 WARN ***
-(INFO items are documented expected-missing RPCs on this distro)
 ```
 
 INFO items:
@@ -83,8 +68,8 @@ INFO items:
 - ORWORB FASTUSER - expected-missing on WorldVistA Docker
 
 ## Follow-ups
-- Wire imaging plugin to an actual DICOM/VistA Imaging viewer when available
-- Add persistent draft storage (database) to replace in-memory Map
-- Implement full order dialog parameter mapping for ORWDX SAVE
-- Add lab acknowledgement sync when ORWLRR ACK is available on distro
-- Add consult RPC support when ORQQCN2 is available
+- Production audit sink (file/SIEM instead of memory)
+- Wire `resilientRpc()`/`cachedRpc()` into actual RPC calls
+- RBAC enforcement on admin endpoints
+- TLS termination / reverse proxy
+- Log aggregation (ELK/Splunk/CloudWatch)
