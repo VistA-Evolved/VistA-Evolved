@@ -50,6 +50,8 @@ import {
 import { IMAGING_CONFIG } from "../config/server-config.js";
 import { audit } from "../lib/audit.js";
 import { log } from "../lib/logger.js";
+import { getLinkagesForPatient, getLinkageByStudyUid } from "./imaging-ingest.js";
+import { findByPatientDfn as findOrdersByPatient } from "./imaging-worklist.js";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -65,6 +67,12 @@ export interface ImagingStudy {
   source: "vista" | "orthanc" | "dicomweb" | "pacs";
   /** Study Instance UID for DICOMweb */
   studyInstanceUid?: string;
+  /** Phase 23: Linked order ID (if reconciled) */
+  linkedOrderId?: string;
+  /** Phase 23: Accession number from order linkage */
+  accessionNumber?: string;
+  /** Phase 23: Whether this study is linked to an order */
+  orderLinked?: boolean;
 }
 
 export interface ViewerUrlResult {
@@ -378,6 +386,21 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
       detail: { studyCount: studies.length },
     });
 
+    // Phase 23: Enrich studies with order linkage data
+    const linkages = getLinkagesForPatient(String(dfn));
+    const orders = findOrdersByPatient(String(dfn));
+    for (const study of studies) {
+      const uid = study.studyInstanceUid || study.studyId;
+      const linkage = uid ? getLinkageByStudyUid(uid) : undefined;
+      if (linkage) {
+        study.linkedOrderId = linkage.orderId;
+        study.accessionNumber = linkage.accessionNumber;
+        study.orderLinked = true;
+      } else {
+        study.orderLinked = false;
+      }
+    }
+
     return {
       ok: true,
       dfn,
@@ -386,6 +409,12 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
       sources: {
         vistaImaging: mag4Check.available,
         dicomwebEndpoints: dicomwebEntries.length,
+      },
+      // Phase 23: Include orders and linkage summary
+      orderSummary: {
+        totalOrders: orders.length,
+        linkedStudies: linkages.length,
+        unmatchedStudies: studies.filter((s) => !s.orderLinked).length,
       },
     };
   });

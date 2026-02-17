@@ -84,6 +84,13 @@ export type AuditAction =
   | "imaging.dicom-upload"
   | "imaging.proxy-request"
   | "imaging.orthanc-health"
+  // Phase 23: Imaging workflow audit events
+  | "imaging.order-create"
+  | "imaging.order-status-change"
+  | "imaging.worklist-view"
+  | "imaging.study-linked"
+  | "imaging.study-quarantined"
+  | "imaging.study-ingested"
   // Phase 19: Reporting & export governance audit events
   | "report.generate"
   | "export.request"

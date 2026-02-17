@@ -1,48 +1,49 @@
 {
-  "feature_title": "Fix All Known Gaps (Post-Phase 22) — BUG-038/039/040",
-  "stage": "verified",
-  "status": "complete",
-  "prompt_ref_path": "prompts/24-PHASE-22-IMAGING-PLATFORM/24-03-known-gaps-fix-IMPLEMENT.md",
-  "runbook_path": "docs/runbooks/imaging-orthanc-ohif-local.md",
-  "verify_script": "scripts/verify-phase22-imaging.ps1",
+  "feature_title": "Phase 23 — Imaging Workflow V2 (Order→Acquire→View)",
+  "stage": "implemented",
+  "status": "needs-verification",
+  "prompt_ref_path": "prompts/25-PHASE-23-IMAGING-WORKFLOW/25-01-imaging-workflow-IMPLEMENT.md",
+  "verify_prompt_path": "prompts/25-PHASE-23-IMAGING-WORKFLOW/25-99-imaging-workflow-VERIFY.md",
+  "runbook_paths": [
+    "docs/runbooks/imaging-worklist.md",
+    "docs/runbooks/imaging-ingest-reconciliation.md",
+    "docs/runbooks/imaging-device-onboarding.md",
+    "docs/runbooks/imaging-grounding.md"
+  ],
+  "verify_script": "manual (see 25-99-imaging-workflow-VERIFY.md)",
   "verify_results": {
-    "pass": 46,
-    "fail": 0,
-    "warn": 1
+    "gate1_typescript": "PASS (exit 0 both apps)",
+    "gate2_worklist": "pending manual test",
+    "gate3_ingest": "pending manual test",
+    "gate4_chart": "pending manual test",
+    "gate5_ui": "pending manual test",
+    "gate6_orthanc_lua": "pending integration test",
+    "gate7_security": "pending manual test",
+    "gate8_regression": "pending",
+    "gate9_docs": "PASS"
   },
-  "verify_sections": [
-    "A: Docker Service Files - 10 PASS",
-    "B: API DICOMweb Proxy - 9 PASS",
-    "C: IMAGING_CONFIG - 5 PASS",
-    "D: Route Registration - 2 PASS",
-    "E: Imaging Service Enhancements - 3 PASS",
-    "F: Audit Actions - 4 PASS",
-    "G: UI Imaging Panel - 7 PASS",
-    "H: Docs and Prompts - 3 PASS",
-    "I: API Compilation - 1 PASS",
-    "J: Docker Connectivity - 1 WARN (skipped)",
-    "K: Security Scan - 2 PASS"
+  "files_created": [
+    "apps/api/src/services/imaging-worklist.ts",
+    "apps/api/src/services/imaging-ingest.ts",
+    "services/imaging/on-stable-study.lua",
+    "services/imaging/ae-title-template.json",
+    "docs/runbooks/imaging-worklist.md",
+    "docs/runbooks/imaging-ingest-reconciliation.md",
+    "docs/runbooks/imaging-device-onboarding.md",
+    "docs/runbooks/imaging-grounding.md",
+    "prompts/25-PHASE-23-IMAGING-WORKFLOW/25-01-imaging-workflow-IMPLEMENT.md",
+    "prompts/25-PHASE-23-IMAGING-WORKFLOW/25-99-imaging-workflow-VERIFY.md"
   ],
-  "files_changed": [
-    "services/imaging/docker-compose.yml",
-    "services/imaging/orthanc.json",
-    "services/imaging/ohif-config.js",
-    "services/imaging/README.md",
-    "apps/api/src/routes/imaging-proxy.ts",
-    "apps/api/src/config/server-config.ts",
-    "apps/api/src/services/imaging-service.ts",
-    "apps/api/src/lib/audit.ts",
+  "files_modified": [
     "apps/api/src/index.ts",
+    "apps/api/src/config/server-config.ts",
+    "apps/api/src/lib/audit.ts",
+    "apps/api/src/middleware/security.ts",
+    "apps/api/src/services/imaging-service.ts",
+    "services/imaging/orthanc.json",
+    "services/imaging/docker-compose.yml",
     "apps/web/src/components/cprs/panels/ImagingPanel.tsx",
-    "apps/web/src/components/cprs/panels/index.ts",
-    "apps/web/src/app/cprs/chart/[dfn]/[tab]/page.tsx",
-    "prompts/24-PHASE-22-IMAGING-PLATFORM/24-01-imaging-platform-IMPLEMENT.md",
-    "prompts/24-PHASE-22-IMAGING-PLATFORM/24-99-imaging-platform-VERIFY.md",
-    "docs/runbooks/imaging-orthanc-ohif-local.md",
-    "scripts/verify-phase22-imaging.ps1",
-    "scripts/verify-latest.ps1",
-    "ops/summary.md",
-    "ops/notion-update.json"
+    "AGENTS.md"
   ],
-  "commit_sha": "893a5f6"
+  "commit_sha": "7aca7c6"
 }

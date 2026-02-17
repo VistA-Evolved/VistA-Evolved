@@ -1,64 +1,80 @@
-﻿# Ops Summary  Fix All Known Gaps (Post-Phase 22)
+﻿# Ops Summary — Phase 23: Imaging Workflow V2
 
 ## What Changed
 
-### 1. `disconnect()` now uses `buildBye()` (BUG-038)
-`rpcBrokerClient.ts` `disconnect()` was sending raw `#BYE#` bytes instead of
-the properly XWB-framed message from `buildBye()`. Now fixed.
+### New Files
+| File | Purpose |
+|------|---------|
+| `apps/api/src/services/imaging-worklist.ts` | In-memory worklist sidecar: 5 REST endpoints for imaging order lifecycle |
+| `apps/api/src/services/imaging-ingest.ts` | Orthanc ingest reconciliation: 3 strategies (accession, fuzzy, quarantine) + 5 endpoints |
+| `services/imaging/on-stable-study.lua` | Orthanc Lua callback: fires on OnStableStudy, POSTs to API ingest endpoint |
+| `services/imaging/ae-title-template.json` | DICOM AE Title device config template |
+| `docs/runbooks/imaging-worklist.md` | Worklist API documentation |
+| `docs/runbooks/imaging-ingest-reconciliation.md` | Ingest reconciliation architecture + API docs |
+| `docs/runbooks/imaging-device-onboarding.md` | DICOM device onboarding procedure |
+| `docs/runbooks/imaging-grounding.md` | VistA-first linking plan + RPC availability matrix |
+| `prompts/25-PHASE-23-IMAGING-WORKFLOW/25-01-imaging-workflow-IMPLEMENT.md` | Implementation prompt |
+| `prompts/25-PHASE-23-IMAGING-WORKFLOW/25-99-imaging-workflow-VERIFY.md` | Verification prompt |
 
-### 2. RBAC strict admin-only (BUG-039)
-Three files allowed `provider` role to pass admin checks:
-- `security.ts` auth gateway
-- `imaging-proxy.ts` `requireAdmin()`
-- `ws-console.ts` `allowedRoles`
-
-All three now require strict `admin` role. The sandbox user PROVIDER,CLYDE
-maps to `admin` via `mapUserRole()`, so no regression in dev testing.
-
-### 3. VistA Imaging RPCs wired
-- `GET /vista/imaging/patient-photos?dfn=X`  calls MAGG PAT PHOTOS
-- `GET /vista/imaging/patient-images?dfn=X`  calls MAG4 PAT GET IMAGES
-- Both gracefully degrade (return `available:false`) when RPCs are absent
-- `GET /vista/imaging/status` now reports all 4 imaging RPC capabilities
-
-### 4. Half-open socket detection (BUG-040)
-- `lastActivityMs` timestamp tracks every successful send/receive
-- `isSocketHealthy()` detects idle sockets (>5 min) and forces reconnect
-- TCP keepalive enabled at 30s probe interval
-- Socket `close`/`error` events mark `connected = false`
-
-### 5. Documentation updates
-- AGENTS.md entries #14, #24, #27, #28 updated to reflect resolved status
-- BUG-TRACKER.md: Added BUG-038, BUG-039, BUG-040 with full details
-- Quick reference table updated
+### Modified Files
+| File | Change |
+|------|--------|
+| `apps/api/src/index.ts` | Register imaging-worklist + imaging-ingest route plugins |
+| `apps/api/src/config/server-config.ts` | Add `IMAGING_INGEST_WEBHOOK_SECRET` to IMAGING_CONFIG |
+| `apps/api/src/lib/audit.ts` | Add 6 new Phase 23 audit actions |
+| `apps/api/src/middleware/security.ts` | Add `"service"` AuthLevel + `/imaging/ingest/callback` rule |
+| `apps/api/src/services/imaging-service.ts` | Enrich studies with linkage data + orderSummary |
+| `services/imaging/orthanc.json` | Register Lua script |
+| `services/imaging/docker-compose.yml` | Mount Lua script + env vars for callback |
+| `apps/web/src/components/cprs/panels/ImagingPanel.tsx` | Tab bar, worklist view, order form, linkage badges |
+| `AGENTS.md` | Add gotchas #29–#33, update architecture map |
 
 ## How to Test Manually
 
-```bash
-# 1. Start the API
-cd apps/api
+### 1. Start services
+```powershell
+cd services/imaging
+docker compose --profile dev --profile imaging up -d
+cd ../../apps/api
 npx tsx --env-file=.env.local src/index.ts
-
-# 2. Log in
-curl -c cookies.txt -X POST http://127.0.0.1:3001/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"accessCode":"PROV123","verifyCode":"PROV123!!"}'
-
-# 3. Test MAGG PAT PHOTOS (expect graceful degradation on sandbox)
-curl -b cookies.txt http://127.0.0.1:3001/vista/imaging/patient-photos?dfn=100022
-
-# 4. Test MAG4 PAT GET IMAGES (expect graceful degradation on sandbox)
-curl -b cookies.txt http://127.0.0.1:3001/vista/imaging/patient-images?dfn=100022
-
-# 5. Check imaging status (should show 4 RPC capabilities)
-curl -b cookies.txt http://127.0.0.1:3001/vista/imaging/status
 ```
 
+### 2. Create an imaging order
+```powershell
+curl.exe -s -X POST http://127.0.0.1:3001/imaging/worklist/orders `
+  -H "Content-Type: application/json" -b "ehr_session=<cookie>" `
+  -d '{"patientDfn":"100022","scheduledProcedure":"CHEST 2 VIEWS","modality":"CR","priority":"routine","clinicalIndication":"Annual screening","scheduledTime":"2025-01-15T10:00:00Z","facility":"WORLDVISTA","location":"RADIOLOGY"}'
+```
+
+### 3. Simulate Orthanc ingest callback
+```powershell
+curl.exe -s -X POST http://127.0.0.1:3001/imaging/ingest/callback `
+  -H "Content-Type: application/json" `
+  -H "X-Service-Key: dev-imaging-ingest-key-change-in-production" `
+  -d '{"studyInstanceUid":"1.2.3.4.5","orthancStudyId":"test-abc","patientId":"100022","accessionNumber":"<accession>","modality":"CR","studyDate":"20250115","studyDescription":"CHEST","seriesCount":1,"instanceCount":2}'
+```
+
+### 4. Verify linkage
+```powershell
+curl.exe -s "http://127.0.0.1:3001/imaging/ingest/linkages/by-patient/100022"
+```
+
+### 5. UI verification
+- Open web app → patient chart → Imaging tab
+- Verify 3 tabs: Studies, Worklist, New Order
+- Create order via New Order tab  
+- Check worklist tab shows the order
+
 ## Verifier Output
-- `npx tsc --noEmit`  EXIT: 0 (clean compile)
-- VS Code diagnostics  0 errors across all 5 modified files
+```
+Gate 1: TypeScript Compilation — PASS (exit code 0, both apps)
+Gate 2-9: Manual verification required (see VERIFY prompt)
+```
 
 ## Follow-ups
-- Run `.\scripts\verify-phase22-imaging.ps1` when Docker is available
-- Write automated tests for half-open socket detection
-- Consider adding health-check pings to detect half-open state proactively
+1. VistA Radiology RPC integration — migrate sidecar to native VistA ordering
+2. DICOM MWL (Modality Worklist) — implement MWL SCP in Orthanc
+3. Persistent storage — migrate in-memory stores to VistA ^MAG(2005)
+4. StableAge tuning — current 60s may be too short for multi-series acquisitions
+5. Production webhook secret — change default key
+6. E2E automated verification script for Phase 23

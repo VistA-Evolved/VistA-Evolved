@@ -50,7 +50,7 @@ export function corsOriginValidator(origin: string, cb: (err: Error | null, allo
 /* Auth gateway — path-based auth requirements                          */
 /* ================================================================== */
 
-type AuthLevel = "none" | "session" | "admin";
+type AuthLevel = "none" | "session" | "admin" | "service";
 
 interface AuthRule {
   pattern: RegExp;
@@ -64,6 +64,7 @@ interface AuthRule {
 const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/(health|ready|vista\/ping|metrics|version)$/, auth: "none" },
   { pattern: /^\/auth\//, auth: "none" },
+  { pattern: /^\/imaging\/ingest\/callback$/, auth: "service" }, // Phase 23: Orthanc webhook (X-Service-Key)
   { pattern: /^\/admin\/my-tenant$/, auth: "session" }, // Phase 17: client tenant config (any user)
   { pattern: /^\/(admin|audit|reports)\//, auth: "admin" },
   { pattern: /^\/ws\//, auth: "session" }, // WebSocket console (has own role check too)
@@ -216,6 +217,12 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
     }
 
     if (requiredAuth === "none") return;
+
+    // Service auth — X-Service-Key header (Phase 23: ingest callbacks)
+    if (requiredAuth === "service") {
+      // Service endpoints bypass session auth — validated in route handler
+      return;
+    }
 
     // Extract and validate session
     const token = extractToken(request);

@@ -128,6 +128,9 @@ export const IMAGING_CONFIG = {
     process.env.NODE_ENV !== "production",
   /** Max DICOM upload size in bytes. Default: 512 MB */
   maxUploadBytes: Number(process.env.IMAGING_MAX_UPLOAD_BYTES || 512 * 1024 * 1024),
+  // Phase 23: Ingest workflow
+  /** Shared secret for Orthanc ingest webhook (X-Service-Key header) */
+  ingestWebhookSecret: process.env.IMAGING_INGEST_WEBHOOK_SECRET || "dev-imaging-ingest-key-change-in-production",
 } as const;
 
 /* ------------------------------------------------------------------ */

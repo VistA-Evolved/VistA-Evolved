@@ -1,0 +1,516 @@
+/**
+ * Imaging Ingest & Reconciliation Service — Phase 23.
+ *
+ * Handles DICOM study ingest callbacks from Orthanc and reconciles
+ * incoming studies to imaging orders via AccessionNumber + PatientID.
+ *
+ * Architecture:
+ *   Orthanc → OnStableStudy Lua → POST /imaging/ingest/callback → Reconcile
+ *   Unmatched studies go to quarantine for manual linking.
+ *
+ * Routes:
+ *   POST /imaging/ingest/callback              — Orthanc stable-study webhook
+ *   GET  /imaging/ingest/unmatched              — Quarantine queue (admin)
+ *   POST /imaging/ingest/unmatched/:id/link     — Manual reconciliation (admin)
+ *   GET  /imaging/ingest/linkages               — All study-order linkages
+ *   GET  /imaging/ingest/linkages/by-patient/:dfn — Linkages for a patient
+ *
+ * Auth: /imaging/ingest/callback uses X-Service-Key header.
+ *       All other routes use session auth (admin role).
+ */
+
+import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import { randomUUID } from "crypto";
+import { audit } from "../lib/audit.js";
+import { log } from "../lib/logger.js";
+import { IMAGING_CONFIG } from "../config/server-config.js";
+import {
+  findByAccession,
+  findByPatientDfn,
+  updateWorklistItem,
+  getWorklistItem,
+  type WorklistItem,
+} from "./imaging-worklist.js";
+
+/* ================================================================== */
+/* Types                                                               */
+/* ================================================================== */
+
+/** A study-to-order linkage record. */
+export interface StudyLinkage {
+  id: string;
+  /** Worklist/order ID */
+  orderId: string;
+  /** Patient DFN */
+  patientDfn: string;
+  /** DICOM StudyInstanceUID */
+  studyInstanceUid: string;
+  /** Orthanc internal study ID */
+  orthancStudyId: string;
+  /** DICOM AccessionNumber used for matching */
+  accessionNumber: string;
+  /** DICOM modality (from study) */
+  modality: string;
+  /** Study date (YYYYMMDD from DICOM) */
+  studyDate: string;
+  /** Study description */
+  studyDescription: string;
+  /** Number of series in the study */
+  seriesCount: number;
+  /** Number of instances in the study */
+  instanceCount: number;
+  /** How the linkage was established */
+  reconciliationType: "automatic-accession" | "automatic-patient-modality" | "manual";
+  /** Source of linkage metadata — "prototype-sidecar" until VistA MAG is wired */
+  source: "prototype-sidecar" | "vista-mag-2005";
+  /** Timestamp of linkage creation */
+  linkedAt: string;
+}
+
+/** An unmatched (quarantined) study. */
+export interface UnmatchedStudy {
+  id: string;
+  /** Orthanc internal study ID */
+  orthancStudyId: string;
+  /** DICOM StudyInstanceUID */
+  studyInstanceUid: string;
+  /** PatientID from DICOM tags */
+  dicomPatientId: string;
+  /** PatientName from DICOM tags */
+  dicomPatientName: string;
+  /** AccessionNumber from DICOM tags */
+  accessionNumber: string;
+  /** Modality */
+  modality: string;
+  /** Study date */
+  studyDate: string;
+  /** Study description */
+  studyDescription: string;
+  /** Series count */
+  seriesCount: number;
+  /** Instance count */
+  instanceCount: number;
+  /** Reason reconciliation failed */
+  reason: string;
+  /** When the study was quarantined */
+  quarantinedAt: string;
+  /** Whether it has been resolved */
+  resolved: boolean;
+}
+
+/** Orthanc OnStableStudy callback payload. */
+interface OrthancStableStudyPayload {
+  /** Orthanc resource type — always "study" */
+  type?: string;
+  /** Orthanc internal study ID */
+  orthancStudyId: string;
+  /** DICOM tags extracted by Orthanc (populated by our Lua script) */
+  studyInstanceUid: string;
+  patientId: string;
+  patientName?: string;
+  accessionNumber?: string;
+  modality?: string;
+  studyDate?: string;
+  studyDescription?: string;
+  seriesCount?: number;
+  instanceCount?: number;
+}
+
+/* ================================================================== */
+/* In-Memory Stores (prototype — migrate to VistA ^MAG(2005))          */
+/* ================================================================== */
+
+/**
+ * PROTOTYPE LINKAGE STORE — Phase 23 sidecar.
+ *
+ * Migration plan:
+ * 1. Target: VistA Image file ^MAG(2005) — each entry links a DICOM
+ *    study to a patient and optionally to an order/TIU note.
+ * 2. Write linkage via MAG4 ADD IMAGE (if available) or direct
+ *    FileMan SET on file 2005 via XWBFM.
+ * 3. Read linkage via MAG4 PAT GET IMAGES / MAGG PAT PHOTOS
+ *    (already wired in Phase 22).
+ */
+const linkageStore = new Map<string, StudyLinkage>();
+const unmatchedStore = new Map<string, UnmatchedStudy>();
+
+/* ================================================================== */
+/* Service key validation                                              */
+/* ================================================================== */
+
+function validateServiceKey(request: FastifyRequest): boolean {
+  const key = request.headers["x-service-key"] as string | undefined;
+  if (!key) return false;
+  const expected = IMAGING_CONFIG.ingestWebhookSecret;
+  if (!expected) {
+    log.warn("IMAGING_INGEST_WEBHOOK_SECRET not configured — rejecting all ingest callbacks");
+    return false;
+  }
+  // Constant-time comparison
+  if (key.length !== expected.length) return false;
+  let result = 0;
+  for (let i = 0; i < key.length; i++) {
+    result |= key.charCodeAt(i) ^ expected.charCodeAt(i);
+  }
+  return result === 0;
+}
+
+/* ================================================================== */
+/* Reconciliation logic                                                */
+/* ================================================================== */
+
+interface ReconcileResult {
+  matched: boolean;
+  linkage?: StudyLinkage;
+  unmatched?: UnmatchedStudy;
+  matchType?: string;
+}
+
+function reconcileStudy(payload: OrthancStableStudyPayload): ReconcileResult {
+  const { orthancStudyId, studyInstanceUid, patientId, accessionNumber, modality } = payload;
+
+  // Strategy 1: Exact AccessionNumber match
+  if (accessionNumber) {
+    const order = findByAccession(accessionNumber);
+    if (order && order.patientDfn === patientId) {
+      const linkage = createLinkage(order, payload, "automatic-accession");
+      return { matched: true, linkage, matchType: "accession-exact" };
+    }
+    // AccessionNumber exists but patient mismatch — safety: quarantine
+    if (order && order.patientDfn !== patientId) {
+      const unmatched = quarantineStudy(payload,
+        `AccessionNumber ${accessionNumber} found but patient mismatch: order DFN=${order.patientDfn}, DICOM PatientID=${patientId}`);
+      return { matched: false, unmatched };
+    }
+  }
+
+  // Strategy 2: PatientID + Modality + date fuzzy match (same-day, same modality)
+  if (patientId && modality) {
+    const patientOrders = findByPatientDfn(patientId);
+    const today = (payload.studyDate || new Date().toISOString().slice(0, 10)).replace(/-/g, "");
+    const candidates = patientOrders.filter((o) =>
+      o.modality === modality.toUpperCase() &&
+      o.status !== "cancelled" &&
+      o.status !== "discontinued" &&
+      o.status !== "completed" &&
+      !o.linkedStudyUid &&
+      o.scheduledTime.replace(/-/g, "").startsWith(today.slice(0, 8))
+    );
+    if (candidates.length === 1) {
+      const linkage = createLinkage(candidates[0], payload, "automatic-patient-modality");
+      return { matched: true, linkage, matchType: "patient-modality-date" };
+    }
+    if (candidates.length > 1) {
+      const unmatched = quarantineStudy(payload,
+        `Multiple unlinked ${modality} orders for patient ${patientId} on ${today} — ambiguous`);
+      return { matched: false, unmatched };
+    }
+  }
+
+  // No match — quarantine
+  const unmatched = quarantineStudy(payload,
+    `No matching order found for PatientID=${patientId}, AccessionNumber=${accessionNumber || "none"}`);
+  return { matched: false, unmatched };
+}
+
+function createLinkage(
+  order: WorklistItem,
+  payload: OrthancStableStudyPayload,
+  type: StudyLinkage["reconciliationType"],
+): StudyLinkage {
+  const linkage: StudyLinkage = {
+    id: randomUUID(),
+    orderId: order.id,
+    patientDfn: order.patientDfn,
+    studyInstanceUid: payload.studyInstanceUid,
+    orthancStudyId: payload.orthancStudyId,
+    accessionNumber: order.accessionNumber,
+    modality: payload.modality || order.modality,
+    studyDate: payload.studyDate || "",
+    studyDescription: payload.studyDescription || order.scheduledProcedure,
+    seriesCount: payload.seriesCount || 0,
+    instanceCount: payload.instanceCount || 0,
+    reconciliationType: type,
+    source: "prototype-sidecar",
+    linkedAt: new Date().toISOString(),
+  };
+
+  linkageStore.set(linkage.id, linkage);
+
+  // Update the worklist item
+  updateWorklistItem(order.id, {
+    status: "completed",
+    linkedStudyUid: payload.studyInstanceUid,
+    linkedOrthancStudyId: payload.orthancStudyId,
+  });
+
+  return linkage;
+}
+
+function quarantineStudy(payload: OrthancStableStudyPayload, reason: string): UnmatchedStudy {
+  const unmatched: UnmatchedStudy = {
+    id: randomUUID(),
+    orthancStudyId: payload.orthancStudyId,
+    studyInstanceUid: payload.studyInstanceUid,
+    dicomPatientId: payload.patientId,
+    dicomPatientName: payload.patientName || "",
+    accessionNumber: payload.accessionNumber || "",
+    modality: payload.modality || "",
+    studyDate: payload.studyDate || "",
+    studyDescription: payload.studyDescription || "",
+    seriesCount: payload.seriesCount || 0,
+    instanceCount: payload.instanceCount || 0,
+    reason,
+    quarantinedAt: new Date().toISOString(),
+    resolved: false,
+  };
+
+  unmatchedStore.set(unmatched.id, unmatched);
+  return unmatched;
+}
+
+/* ================================================================== */
+/* Public accessors (for imaging-service chart integration)             */
+/* ================================================================== */
+
+export function getLinkagesForPatient(dfn: string): StudyLinkage[] {
+  return [...linkageStore.values()].filter((l) => l.patientDfn === dfn);
+}
+
+export function getLinkageByStudyUid(studyUid: string): StudyLinkage | undefined {
+  for (const l of linkageStore.values()) {
+    if (l.studyInstanceUid === studyUid) return l;
+  }
+  return undefined;
+}
+
+export function getLinkageByOrderId(orderId: string): StudyLinkage | undefined {
+  for (const l of linkageStore.values()) {
+    if (l.orderId === orderId) return l;
+  }
+  return undefined;
+}
+
+export function getAllUnmatched(): UnmatchedStudy[] {
+  return [...unmatchedStore.values()].filter((u) => !u.resolved);
+}
+
+/* ================================================================== */
+/* Route definitions                                                   */
+/* ================================================================== */
+
+export default async function imagingIngestRoutes(server: FastifyInstance): Promise<void> {
+  /**
+   * POST /imaging/ingest/callback — Orthanc OnStableStudy webhook.
+   * Auth: X-Service-Key header (not session cookie).
+   */
+  server.post("/imaging/ingest/callback", async (request: FastifyRequest, reply: FastifyReply) => {
+    // Service auth — NOT session auth
+    if (!validateServiceKey(request)) {
+      audit("security.rbac-denied", "denied", { duz: "service" }, {
+        sourceIp: request.ip,
+        detail: { endpoint: "/imaging/ingest/callback", reason: "invalid-service-key" },
+      });
+      reply.code(403).send({ ok: false, error: "Invalid service key" });
+      return;
+    }
+
+    const payload = request.body as OrthancStableStudyPayload;
+    if (!payload?.orthancStudyId || !payload?.studyInstanceUid || !payload?.patientId) {
+      reply.code(400).send({
+        ok: false,
+        error: "Missing required fields: orthancStudyId, studyInstanceUid, patientId",
+      });
+      return;
+    }
+
+    log.info("Ingest callback received", {
+      orthancStudyId: payload.orthancStudyId,
+      patientId: payload.patientId,
+      accessionNumber: payload.accessionNumber || "none",
+      modality: payload.modality || "unknown",
+    });
+
+    const result = reconcileStudy(payload);
+
+    if (result.matched && result.linkage) {
+      log.info("Study reconciled to order", {
+        linkageId: result.linkage.id,
+        orderId: result.linkage.orderId,
+        matchType: result.matchType,
+        studyUid: result.linkage.studyInstanceUid,
+      });
+
+      audit("imaging.study-linked", "success", { duz: "service" }, {
+        patientDfn: result.linkage.patientDfn,
+        detail: {
+          linkageId: result.linkage.id,
+          orderId: result.linkage.orderId,
+          matchType: result.matchType,
+          accession: result.linkage.accessionNumber,
+        },
+      });
+
+      return {
+        ok: true,
+        reconciled: true,
+        matchType: result.matchType,
+        linkage: result.linkage,
+      };
+    }
+
+    // Quarantined
+    log.warn("Study quarantined — no matching order", {
+      unmatchedId: result.unmatched?.id,
+      reason: result.unmatched?.reason,
+      patientId: payload.patientId,
+    });
+
+    audit("imaging.study-quarantined", "failure", { duz: "service" }, {
+      detail: {
+        unmatchedId: result.unmatched?.id,
+        reason: result.unmatched?.reason,
+        patientId: payload.patientId,
+        accessionNumber: payload.accessionNumber || "none",
+      },
+    });
+
+    reply.code(202).send({
+      ok: true,
+      reconciled: false,
+      quarantined: true,
+      reason: result.unmatched?.reason,
+      unmatchedId: result.unmatched?.id,
+    });
+  });
+
+  /**
+   * GET /imaging/ingest/unmatched — List quarantined studies (admin).
+   */
+  server.get("/imaging/ingest/unmatched", async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = (request as any).session;
+    if (!session) { reply.code(401).send({ ok: false, error: "Authentication required" }); return; }
+    if (session.role !== "admin") {
+      reply.code(403).send({ ok: false, error: "Admin role required" });
+      return;
+    }
+
+    const items = getAllUnmatched();
+    return {
+      ok: true,
+      count: items.length,
+      items,
+    };
+  });
+
+  /**
+   * POST /imaging/ingest/unmatched/:id/link — Manual reconciliation.
+   * Body: { orderId: string }
+   */
+  server.post("/imaging/ingest/unmatched/:id/link", async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = (request as any).session;
+    if (!session) { reply.code(401).send({ ok: false, error: "Authentication required" }); return; }
+    if (session.role !== "admin") {
+      reply.code(403).send({ ok: false, error: "Admin role required" });
+      return;
+    }
+
+    const { id } = request.params as { id: string };
+    const body = request.body as { orderId?: string };
+
+    const unmatched = unmatchedStore.get(id);
+    if (!unmatched || unmatched.resolved) {
+      reply.code(404).send({ ok: false, error: "Unmatched study not found or already resolved" });
+      return;
+    }
+
+    if (!body?.orderId) {
+      reply.code(400).send({ ok: false, error: "Missing required field: orderId" });
+      return;
+    }
+
+    const order = getWorklistItem(body.orderId);
+    if (!order) {
+      reply.code(404).send({ ok: false, error: "Order not found" });
+      return;
+    }
+
+    // Create manual linkage
+    const payload: OrthancStableStudyPayload = {
+      orthancStudyId: unmatched.orthancStudyId,
+      studyInstanceUid: unmatched.studyInstanceUid,
+      patientId: unmatched.dicomPatientId,
+      patientName: unmatched.dicomPatientName,
+      accessionNumber: unmatched.accessionNumber,
+      modality: unmatched.modality,
+      studyDate: unmatched.studyDate,
+      studyDescription: unmatched.studyDescription,
+      seriesCount: unmatched.seriesCount,
+      instanceCount: unmatched.instanceCount,
+    };
+
+    const linkage = createLinkage(order, payload, "manual");
+
+    // Mark unmatched as resolved
+    unmatched.resolved = true;
+    unmatchedStore.set(id, unmatched);
+
+    log.info("Manual reconciliation", {
+      unmatchedId: id,
+      linkageId: linkage.id,
+      orderId: order.id,
+    });
+
+    audit("imaging.study-linked", "success", {
+      duz: session.duz, name: session.userName, role: session.role,
+    }, {
+      patientDfn: order.patientDfn,
+      detail: {
+        linkageId: linkage.id,
+        orderId: order.id,
+        matchType: "manual",
+        previouslyQuarantined: id,
+      },
+    });
+
+    return { ok: true, linkage };
+  });
+
+  /**
+   * GET /imaging/ingest/linkages — All study-order linkages (admin).
+   */
+  server.get("/imaging/ingest/linkages", async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = (request as any).session;
+    if (!session) { reply.code(401).send({ ok: false, error: "Authentication required" }); return; }
+
+    const q = request.query as Record<string, string>;
+    let linkages = [...linkageStore.values()];
+
+    if (q.patientDfn) linkages = linkages.filter((l) => l.patientDfn === q.patientDfn);
+    if (q.orderId) linkages = linkages.filter((l) => l.orderId === q.orderId);
+
+    return {
+      ok: true,
+      count: linkages.length,
+      linkages,
+    };
+  });
+
+  /**
+   * GET /imaging/ingest/linkages/by-patient/:dfn — Linkages for a patient.
+   */
+  server.get("/imaging/ingest/linkages/by-patient/:dfn", async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = (request as any).session;
+    if (!session) { reply.code(401).send({ ok: false, error: "Authentication required" }); return; }
+
+    const { dfn } = request.params as { dfn: string };
+    const linkages = getLinkagesForPatient(dfn);
+
+    return {
+      ok: true,
+      patientDfn: dfn,
+      count: linkages.length,
+      linkages,
+    };
+  });
+}

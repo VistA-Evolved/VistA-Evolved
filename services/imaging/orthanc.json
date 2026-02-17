@@ -34,7 +34,7 @@
   "MaximumStorageSize": 0,
   "MaximumPatientCount": 0,
 
-  "LuaScripts": [],
+  "LuaScripts": ["/etc/orthanc/on-stable-study.lua"],
 
   "DicomCheckCalledAet": false,
   "DicomAlwaysAllowEcho": true,

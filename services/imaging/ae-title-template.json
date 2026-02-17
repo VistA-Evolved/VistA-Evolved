@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DICOM AE Title Configuration Template",
+  "description": "Template for onboarding a new modality or DICOM device to VistA-Evolved imaging.",
+  "type": "object",
+  "properties": {
+    "aet": {
+      "type": "string",
+      "description": "Application Entity Title (max 16 chars, uppercase, no spaces)",
+      "pattern": "^[A-Z0-9_]{1,16}$",
+      "examples": ["CT_SCANNER_1", "MR_SIEMENS_3T", "CR_FUJI_MAIN"]
+    },
+    "host": {
+      "type": "string",
+      "description": "IP address or hostname of the modality",
+      "examples": ["192.168.1.100", "ct-scanner-1.radiology.local"]
+    },
+    "port": {
+      "type": "integer",
+      "description": "DICOM port on the modality (default: 104)",
+      "default": 104,
+      "minimum": 1,
+      "maximum": 65535
+    },
+    "modality": {
+      "type": "string",
+      "description": "DICOM modality code",
+      "enum": ["CR", "CT", "MR", "US", "XA", "NM", "PT", "MG", "DX", "RF", "OT"]
+    },
+    "manufacturer": {
+      "type": "string",
+      "description": "Device manufacturer",
+      "examples": ["GE Healthcare", "Siemens Healthineers", "Philips", "Canon Medical", "Fujifilm"]
+    },
+    "model": {
+      "type": "string",
+      "description": "Device model name",
+      "examples": ["Revolution CT", "MAGNETOM Vida", "Aquilion ONE"]
+    },
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "cStore": { "type": "boolean", "description": "Can send images via C-STORE", "default": true },
+        "cFind": { "type": "boolean", "description": "Supports C-FIND (query)", "default": false },
+        "mwl": { "type": "boolean", "description": "Supports Modality Worklist C-FIND", "default": false },
+        "mpps": { "type": "boolean", "description": "Supports Modality Performed Procedure Step", "default": false }
+      }
+    },
+    "routing": {
+      "type": "object",
+      "description": "Orthanc routing rules for incoming studies from this AE",
+      "properties": {
+        "autoForward": {
+          "type": "boolean",
+          "description": "Forward received studies to another DICOM node",
+          "default": false
+        },
+        "forwardAet": {
+          "type": "string",
+          "description": "Target AET for forwarding (long-term archive)"
+        },
+        "storeOriginals": {
+          "type": "boolean",
+          "description": "Keep original DICOM in Orthanc",
+          "default": true
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free-text notes about this device"
+    }
+  },
+  "required": ["aet", "host", "port", "modality"]
+}

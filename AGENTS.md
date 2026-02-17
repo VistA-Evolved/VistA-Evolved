@@ -75,6 +75,9 @@ apps/api/src/
   index.ts              — Fastify server, all routes (GET+POST)
   routes/
     vista-interop.ts    — VistA HL7/HLO interop telemetry (Phase 21)
+  services/
+    imaging-worklist.ts — Imaging order worklist sidecar (Phase 23)
+    imaging-ingest.ts   — Orthanc ingest reconciliation + linkage (Phase 23)
   vista/
     config.ts           — env var loader + credential docs
     rpcBroker.ts        — TCP probe for /vista/ping (no auth)
@@ -84,11 +87,19 @@ apps/web/src/app/
   patient-search/       — Patient search, demographics, allergies, add allergy
   cprs/admin/integrations/ — Integration console + VistA HL7/HLO telemetry tab
 
+apps/web/src/components/cprs/panels/
+  ImagingPanel.tsx      — Studies/Worklist/Orders tabs, order form (Phase 23)
+
 services/vista/
   docker-compose.yml    — WorldVistA container (port 9430)
   ZVEMIOP.m             — Production M routine (4 interop RPC entry points)
   ZVEMINS.m             — RPC registration installer
   VEMCTX3.m             — Safe context adder (appends, never KILLs)
+
+services/imaging/
+  docker-compose.yml    — Orthanc (8042/4242) + OHIF (3003) containers
+  orthanc.json          — Orthanc config (DICOMweb, Lua scripts)
+  on-stable-study.lua   — OnStableStudy webhook to API ingest (Phase 23)
 
 docs/runbooks/          — Step-by-step guides for each phase
 scripts/                — Verification scripts
@@ -221,6 +232,33 @@ most recent phase verifier and reports PASS/FAIL for each gate.
     `#BYE#` message is sent before socket destroy. Previously `disconnect()`
     sent raw `#BYE#` which only worked because the socket was destroyed
     immediately after. See BUG-036.
+29. **Imaging worklist + ingest are in-memory sidecar stores (Phase 23).**
+    `imaging-worklist.ts` and `imaging-ingest.ts` use `Map<>` stores that
+    reset on API restart. This is intentional — VistA Radiology RPCs
+    (`ORWDXR NEW ORDER`, `RAD/NUC MED REGISTER`) are not available in the
+    WorldVistA sandbox. Each store has a documented 4-step migration plan
+    to VistA-native storage. Don't attempt to persist to SQLite or similar
+    without first checking VistA Rad/Nuc Med file availability.
+30. **Orthanc `OnStableStudy` Lua callback needs `StableAge` tuning.**
+    Default is 60s in `orthanc.json`. If studies arrive incrementally (e.g.
+    CT slices over 90s), the callback fires mid-acquisition. For production,
+    increase to 120–300s. The Lua script (`on-stable-study.lua`) reads
+    `INGEST_CALLBACK_URL` and `INGEST_SERVICE_KEY` from env vars set in
+    `services/imaging/docker-compose.yml`.
+31. **`/imaging/ingest/callback` uses service-to-service auth, not session.**
+    It expects `X-Service-Key` header validated with constant-time comparison.
+    The `"service"` AuthLevel in `security.ts` bypasses session checks for
+    this route. The webhook secret is configured via `IMAGING_INGEST_WEBHOOK_SECRET`
+    env var (default: `dev-imaging-ingest-key-change-in-production`).
+    **Change it in production.**
+32. **Imaging order accession numbers use `VE-YYYYMMDD-NNNN` format.**
+    The daily counter resets with API restart (in-memory). When migrating
+    to VistA, use the native accession number generator (`RA ASSIGN ACC#`).
+33. **Three ingest reconciliation strategies run in order:** (1) accession-exact
+    match, (2) patient+modality+date fuzzy match, (3) quarantine. If accession
+    matches a worklist order, the study is linked immediately. Quarantined
+    studies appear in `/imaging/ingest/unmatched` (admin-only) and can be
+    manually linked via POST `/imaging/ingest/unmatched/:id/link`.
 
 ---
 

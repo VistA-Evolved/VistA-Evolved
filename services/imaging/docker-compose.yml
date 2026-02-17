@@ -21,9 +21,12 @@ services:
     volumes:
       - orthanc-data:/var/lib/orthanc/db
       - ./orthanc.json:/etc/orthanc/orthanc.json:ro
+      - ./on-stable-study.lua:/etc/orthanc/on-stable-study.lua:ro
     environment:
       - ORTHANC_NAME=VistA-Evolved-Imaging
       - VERBOSE_ENABLED=true
+      - INGEST_CALLBACK_URL=${INGEST_CALLBACK_URL:-http://host.docker.internal:3001/imaging/ingest/callback}
+      - INGEST_SERVICE_KEY=${INGEST_SERVICE_KEY:-dev-imaging-ingest-key-change-in-production}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8042/system"]
