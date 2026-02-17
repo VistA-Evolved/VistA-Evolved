@@ -45,5 +45,11 @@ Runbooks are step-by-step operational guides for developers.
 |-------|--------|
 | Integration Registry, Imaging & Device Onboarding | [interop-imaging-phase18.md](interop-imaging-phase18.md) |
 
+## Phase 19 — Reporting + Export Governance
+
+| Topic | Runbook |
+|-------|--------|
+| Reporting, Export Governance & Ops Analytics | [vista-reporting-export-governance.md](vista-reporting-export-governance.md) |
+
 ## Rule
 If someone gets stuck twice on the same thing, write a runbook.

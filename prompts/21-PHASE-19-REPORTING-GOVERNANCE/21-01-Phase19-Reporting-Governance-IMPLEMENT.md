@@ -54,8 +54,8 @@ Implement Phase 19 with five deliverables:
 - `apps/web/src/app/cprs/admin/rcm/page.tsx` (NEW)
 - `docs/runbooks/vista-reporting-export-governance.md` (NEW)
 - `scripts/verify-latest.ps1` (EDIT — Phase 19 checks)
-- `prompts/22-PHASE-19-REPORTING-GOVERNANCE/22-01-*.md` (NEW)
-- `prompts/22-PHASE-19-REPORTING-GOVERNANCE/22-99-*.md` (NEW)
+- `prompts/21-PHASE-19-REPORTING-GOVERNANCE/21-01-*.md` (NEW)
+- `prompts/21-PHASE-19-REPORTING-GOVERNANCE/21-99-*.md` (NEW)
 
 ## Verification Steps
 - All Phase 10→18 tests still pass
