@@ -74,7 +74,7 @@ const SECRET_PATTERNS = [
     name: "Hardcoded VistA creds in non-doc",
     regex: /(?:PROV123|NURSE123|PHARM123)(?:!!)?/g,
     allow: [".md", ".env.example", "AGENTS.md", "BUG-TRACKER.md", "secret-scan.mjs",
-            "verify-", "login/page.tsx", "load-test.mjs", "patient-context.tsx"], // login page uses NODE_ENV gate
+            "verify-", "test-", "login/page.tsx", "load-test.mjs", "patient-context.tsx"], // login page + test scripts use Docker dev creds
   },
 ];
 
