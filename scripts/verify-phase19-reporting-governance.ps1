@@ -226,8 +226,8 @@ Write-Host ""
 Write-Host "--- J: Documentation ---" -ForegroundColor White
 
 Assert-Check "Runbook exists" (Test-Path "$repoRoot\docs\runbooks\vista-reporting-export-governance.md")
-Assert-Check "Prompt 22-01 exists" (Test-Path "$repoRoot\prompts\22-PHASE-19-REPORTING-GOVERNANCE\22-01-Phase19-Reporting-Governance-IMPLEMENT.md")
-Assert-Check "Prompt 22-99 exists" (Test-Path "$repoRoot\prompts\22-PHASE-19-REPORTING-GOVERNANCE\22-99-Phase19-Reporting-Governance-VERIFY.md")
+Assert-Check "Prompt 21-01 exists" (Test-Path "$repoRoot\prompts\21-PHASE-19-REPORTING-GOVERNANCE\21-01-Phase19-Reporting-Governance-IMPLEMENT.md")
+Assert-Check "Prompt 21-99 exists" (Test-Path "$repoRoot\prompts\21-PHASE-19-REPORTING-GOVERNANCE\21-99-Phase19-Reporting-Governance-VERIFY.md")
 
 $runbook = if (Test-Path "$repoRoot\docs\runbooks\vista-reporting-export-governance.md") {
   Get-Content "$repoRoot\docs\runbooks\vista-reporting-export-governance.md" -Raw

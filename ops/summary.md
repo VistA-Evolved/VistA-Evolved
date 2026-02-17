@@ -1,77 +1,54 @@
-# Phase 19 — Reporting + Export Governance — Ops Summary
+# Phase 19 VERIFY — Reporting + Export Governance — Ops Summary
 
-## What Changed
+## What Changed (VERIFY pass)
 
-### New Files
-- `apps/api/src/config/report-config.ts` — REPORT_CONFIG + EXPORT_CONFIG constants
-- `apps/api/src/lib/export-governance.ts` — Export policy engine, job model, CSV/JSON generators
-- `apps/api/src/routes/reporting.ts` — 7 reporting/export API endpoints (admin-only)
-- `apps/web/src/app/cprs/admin/reports/page.tsx` — 5-tab reporting dashboard
-- `apps/web/src/app/cprs/admin/rcm/page.tsx` — RCM placeholder (feature-flagged)
-- `docs/runbooks/vista-reporting-export-governance.md` — Runbook
-- `scripts/verify-phase19-reporting-governance.ps1` — 130-check verifier
+### Prompts Ordering Fixes
+- Renamed VERIFY files from `-02-` to `-99-` in folders 13-PHASE-11, 16-PHASE-14, 19-PHASE-17
+- Moved `prompts/21-AUDIT-PHASES-15-18-VISTA-ALIGNMENT.md` → `prompts/00-PLAYBOOKS/00-02-AUDIT-*.md`
+- Renumbered Phase 19 folder: `22-PHASE-19-*` → `21-PHASE-19-*` (contiguous numbering)
+- Updated internal file prefixes from `22-` to `21-`
+- Codified sub-phase interleaving pattern in `00-ORDERING-RULES.md`
 
-### Edited Files
-- `apps/api/src/index.ts` — Register reportingRoutes
-- `apps/api/src/middleware/security.ts` — /reports/ in AUTH_RULES
-- `apps/api/src/lib/audit.ts` — 4 new audit actions
-- `apps/api/src/config/tenant-config.ts` — rcm.enabled feature flag
-- `scripts/verify-latest.ps1` — Points to Phase 19
+### Documentation
+- Added Phase 19 section to `docs/runbooks/README.md`
 
-## Verifier Output
-```
-130 PASS, 0 FAIL, 0 WARN
-```
-
-## How to Test
-```bash
-curl http://127.0.0.1:3001/reports/operations -b cookies.txt
-curl http://127.0.0.1:3001/reports/clinical -b cookies.txt
-curl -X POST http://127.0.0.1:3001/reports/export -H 'Content-Type: application/json' -d '{"reportType":"audit","format":"csv"}' -b cookies.txt
-```
-- **File**: `apps/api/src/auth/session-store.ts`
-- **Bug**: `mapUserRole()` mapped PROV123 (PROVIDER,CLYDE WV) to "provider" role,
-  but all Phase 17+18 admin endpoints require `requireRole(session, ["admin"])`.
-  This meant NO Docker sandbox user could access ANY admin endpoint.
-- **Fix**: PROV123 now maps to "admin" role since it's the primary admin user
-  in the WorldVistA Docker sandbox.
-- **Impact**: Pre-existing since Phase 17; affects all `/admin/*` routes.
-
-### 2. Prompt File Rename
-- **From**: `20-02-Phase18-Interop-Imaging-VERIFY.md`
-- **To**: `20-99-Phase18-Interop-Imaging-VERIFY.md`
-- **Reason**: VERIFY prompts must use 99 suffix per `00-ORDERING-RULES.md`.
-
-### 3. Verifier Script Update
-- **File**: `scripts/verify-phase18-interop-imaging.ps1`
-- **Change**: Updated Section I docs check from `20-02` to `20-99`.
-
-### 4. Runbooks README Updated
-- **File**: `docs/runbooks/README.md`
-- **Change**: Added Phase 17 and Phase 18 runbook links.
+### Reference Updates
+- `scripts/verify-phase19-reporting-governance.ps1` — updated path references from `22-` to `21-`
+- `ops/notion-update.json` — updated prompt_ref_path
+- `prompts/21-PHASE-19-*/21-01-*.md` — updated self-references
 
 ## How to Test Manually
 
 ```powershell
 # Start Docker + API
 cd services\vista; docker compose --profile dev up -d; cd ..\..
-pnpm -C apps/api dev
+pnpm -C apps/api start
 
-# Run regression
-.\scripts\verify-latest.ps1 -SkipDocker
+# Login (captures cookie)
+$body = '{"accessCode":"PROV123","verifyCode":"PROV123!!"}'
+$wc = New-Object Net.WebClient
+$wc.Headers["Content-Type"] = "application/json"
+$wc.UploadString("http://127.0.0.1:3001/auth/login","POST",$body)
+# Copy ehr_session cookie value from Set-Cookie header
 
-# Live RBAC test
-$s = New-Object Microsoft.PowerShell.Commands.WebRequestSession
-Invoke-RestMethod -Uri 'http://127.0.0.1:3001/auth/login' -Method POST -Body '{"accessCode":"PROV123","verifyCode":"PROV123!!"}' -ContentType 'application/json' -WebSession $s
-Invoke-RestMethod -Uri 'http://127.0.0.1:3001/admin/registry/default' -Method GET -WebSession $s
-# Should return array with vista-primary + vista-imaging
+# Test reports (with cookie)
+$wc.Headers["Cookie"] = "ehr_session=<TOKEN>"
+$wc.DownloadString("http://127.0.0.1:3001/reports/operations")
+$wc.DownloadString("http://127.0.0.1:3001/reports/clinical")
+
+# Test export
+$wc.Headers["Content-Type"] = "application/json"
+$wc.UploadString("http://127.0.0.1:3001/reports/export","POST",'{"reportType":"audit","format":"csv"}')
+
+# Run verifier
+.\scripts\verify-latest.ps1
 ```
 
 ## Verifier Output
 
 ```
 === RESULTS ===
-  PASS: 164
+  PASS: 130
   FAIL: 0
   WARN: 0
 ```
@@ -80,19 +57,17 @@ Invoke-RestMethod -Uri 'http://127.0.0.1:3001/admin/registry/default' -Method GE
 
 | Section | Tests | PASS | FAIL | Notes |
 |---------|-------|------|------|-------|
-| 0: Prompts ordering | 5 | 5 | 0 | Fixed 20-02 to 20-99 |
-| 1: Full regression | 164 | 164 | 0 | All phases 10-18 |
-| 2: RBAC + security | 14 | 14 | 0 | After role fix |
-| 3: Registry schema | 8 | 8 | 0 | All fields validated |
-| 4: Integration monitor | 10 | 10 | 0 | Health, probe, toggle |
-| 5: Observability/metrics | 9 | 9 | 0 | Audit events found |
-| 6: Imaging hooks | 11 | 11 | 0 | VistA-first, OHIF viewer |
-| 7: Remote data viewer | 1 | 1 | 0 | Clean sandbox |
-| 8: Device onboarding | 10 | 10 | 0 | CRUD + validation |
-| 9: Documentation | 3 | 3 | 0 | Runbooks updated |
-| **Total** | **235** | **235** | **0** | |
+| 0: Prompts ordering | 4 | 4 | 0 | 3 renames, 1 move, 1 renumber, ordering rules updated |
+| 1: Full regression | 130 | 130 | 0 | verify-phase19-reporting-governance.ps1 |
+| 2: RBAC gating | 7 | 7 | 0 | 5 endpoints return 401 without auth, admin gets 200 |
+| 3: Data minimization | 4 | 4 | 0 | Clinical = counts only; audit export = DFN only; clinical export blocked |
+| 4: Export governance | 5 | 5 | 0 | Job create, policy check, listing, download, concurrent limit |
+| 5: Pagination/limits | 5 | 5 | 0 | Page clamping, max audit range, export row cap, cache TTLs |
+| 6: Ops analytics | 3 | 3 | 0 | Circuit breaker, RPC metrics, integration health |
+| 7: Documentation | 2 | 2 | 0 | Runbook exists, linked in README |
+| **Total** | **160** | **160** | **0** | |
 
 ## Follow-ups
-- 16 pre-existing VERIFY files in phases 5-12 use wrong numbering (02/04/06/08 instead of 90-98)
-- Consider adding non-admin role test (NURSE123 should get 403 on admin endpoints)
+- 16 pre-existing VERIFY files in phases 5-10 use sub-phase interleaving (02/04/06/08) — now codified as accepted variant in ordering rules
+- Consider adding non-admin role test (NURSE123 should get 403 on all `/reports/*`)
 - C0FHIR integration untested (requires C0FHIR_HOST env var + running C0FHIR)
