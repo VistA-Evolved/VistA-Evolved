@@ -101,7 +101,7 @@ Assert-Check "reportingRoutes function exported" ($reporting -match "export defa
 Assert-Check "GET /reports/operations route" ($reporting -match '"/reports/operations"')
 Assert-Check "GET /reports/integrations route" ($reporting -match '"/reports/integrations"')
 Assert-Check "GET /reports/audit route" ($reporting -match '"/reports/audit"')
-Assert-Check "GET /reports/clinical route" ($reporting -match '"/reports/clinical"')
+Assert-Check "GET /reports/clinical-activity route" ($reporting -match '"/reports/clinical-activity"')
 Assert-Check "POST /reports/export route" ($reporting -match '"/reports/export"')
 Assert-Check "GET /reports/export/jobs route" ($reporting -match '"/reports/export/jobs"')
 Assert-Check "GET /reports/export/:jobId route" ($reporting -match '"/reports/export/:jobId"')
@@ -236,7 +236,7 @@ $runbook = if (Test-Path "$repoRoot\docs\runbooks\vista-reporting-export-governa
 Assert-Check "Runbook documents /reports/operations" ($runbook -match "/reports/operations")
 Assert-Check "Runbook documents /reports/integrations" ($runbook -match "/reports/integrations")
 Assert-Check "Runbook documents /reports/audit" ($runbook -match "/reports/audit")
-Assert-Check "Runbook documents /reports/clinical" ($runbook -match "/reports/clinical")
+Assert-Check "Runbook documents /reports/clinical-activity" ($runbook -match "/reports/clinical")
 Assert-Check "Runbook documents export flow" ($runbook -match "POST /reports/export|export.request")
 Assert-Check "Runbook documents env vars" ($runbook -match "REPORT_PAGE_SIZE|EXPORT_MAX_ROWS")
 

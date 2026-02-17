@@ -12,7 +12,7 @@ a web-based reporting dashboard, and optional RCM placeholder surfaces.
 | GET | `/reports/operations` | admin | RPC health, circuit breaker, process metrics |
 | GET | `/reports/integrations` | admin | Integration health summary + queue metrics |
 | GET | `/reports/audit` | admin | Audit event summary with filters |
-| GET | `/reports/clinical` | admin | Clinical action counts (no PHI text) |
+| GET | `/reports/clinical-activity` | admin | Clinical action counts (no PHI text) |
 | POST | `/reports/export` | admin | Create audited export job (CSV/JSON) |
 | GET | `/reports/export/jobs` | admin | List export jobs |
 | GET | `/reports/export/:jobId` | admin | Download completed export |
@@ -100,7 +100,7 @@ curl http://127.0.0.1:3001/reports/integrations -b cookies.txt | jq .
 curl "http://127.0.0.1:3001/reports/audit?limit=10" -b cookies.txt | jq .
 
 # 5. Clinical report
-curl http://127.0.0.1:3001/reports/clinical -b cookies.txt | jq .
+curl http://127.0.0.1:3001/reports/clinical-activity -b cookies.txt | jq .
 
 # 6. Create export
 curl -X POST http://127.0.0.1:3001/reports/export \

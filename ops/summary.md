@@ -34,7 +34,7 @@ $wc.UploadString("http://127.0.0.1:3001/auth/login","POST",$body)
 # Test reports (with cookie)
 $wc.Headers["Cookie"] = "ehr_session=<TOKEN>"
 $wc.DownloadString("http://127.0.0.1:3001/reports/operations")
-$wc.DownloadString("http://127.0.0.1:3001/reports/clinical")
+$wc.DownloadString("http://127.0.0.1:3001/reports/clinical-activity")
 
 # Test export
 $wc.Headers["Content-Type"] = "application/json"

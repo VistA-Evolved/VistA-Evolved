@@ -24,7 +24,7 @@ import { log } from "./logger.js";
 
 export type ExportJobStatus = "pending" | "processing" | "completed" | "failed" | "expired";
 
-export type ExportReportType = "operations" | "integrations" | "audit" | "clinical";
+export type ExportReportType = "operations" | "integrations" | "audit" | "clinical-activity" | "clinical";
 
 export interface ExportJob {
   id: string;

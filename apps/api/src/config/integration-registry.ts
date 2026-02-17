@@ -14,6 +14,12 @@
  * VistA-first: uses known RPCs (MAG4 REMOTE PROCEDURE, RA DETAILED REPORT,
  *   C0FHIR GET FULL BUNDLE, VPR GET PATIENT DATA JSON) when available.
  *
+ * VistA HL7 binding:
+ *   The `hl7v2` type currently probes TCP connectivity only. Ground-truth
+ *   HL7 link status lives in VistA file #870 (HL LOGICAL LINK). Future
+ *   work will add RPCs to read #870, #772, #773, #776, and #779.x for
+ *   real-time HL7 engine monitoring. See docs/interop-grounding.md.
+ *
  * Config-not-code: devices and modalities are configured entries, not
  *   hard-coded. New devices are onboarded via admin API.
  *
