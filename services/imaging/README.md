@@ -4,8 +4,8 @@ Local Docker stack for medical imaging:
 
 | Service | Image | Port | Purpose |
 |---------|-------|------|---------|
-| **Orthanc** | `orthancteam/orthanc:24.12.1` | 8042 (HTTP), 4242 (DICOM) | DICOM server, DICOMweb API |
-| **OHIF Viewer** | `ohif/app:v3.9.2` | 3003 | Web-based DICOM viewer |
+| **Orthanc** | `orthancteam/orthanc:25.12.3-full` | 8042 (HTTP), 4242 (DICOM) | DICOM server, DICOMweb API |
+| **OHIF Viewer** | `ohif/app:latest` | 3003 | Web-based DICOM viewer |
 
 ## Quick Start
 

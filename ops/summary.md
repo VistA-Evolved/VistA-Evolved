@@ -3,8 +3,8 @@
 ## What Changed
 
 ### Docker Services (services/imaging/)
-- Orthanc DICOM Server (v24.12.1) on port 8042 (DICOMweb) + 4242 (DICOM C-STORE)
-- OHIF Viewer (v3.9.2) on port 3003
+- Orthanc DICOM Server (25.12.3-full) on port 8042 (DICOMweb) + 4242 (DICOM C-STORE)
+- OHIF Viewer (latest) on port 3003
 - Docker Compose profile `imaging` isolates from VistA dev profile
 
 ### API - DICOMweb Proxy (apps/api/src/routes/imaging-proxy.ts)

@@ -282,6 +282,160 @@ if ($consoleLogCount -le 6) {
     Gate-Fail "console.log count: $consoleLogCount (exceeds 6 cap)"
 }
 
+# --- L: Live API End-to-End ---
+
+Write-Host ""
+Write-Host "--- L: Live API End-to-End ---" -ForegroundColor White
+
+$apiUp = $false
+try {
+    $apiResp = Invoke-WebRequest -Uri "http://127.0.0.1:3001/health" -UseBasicParsing -TimeoutSec 5 -ErrorAction Stop
+    if ($apiResp.StatusCode -eq 200) { $apiUp = $true; Gate-Pass "API server responding on 3001" }
+    else { Gate-Warn "API returned status $($apiResp.StatusCode)" }
+} catch {
+    Gate-Warn "API not reachable on 3001 (start with: npx tsx --env-file=.env.local src/index.ts)"
+}
+
+if ($apiUp) {
+    # Auth enforcement: unauthenticated imaging endpoints must return 401
+    $authEndpoints = @(
+        "/imaging/dicom-web/studies",
+        "/imaging/health",
+        "/vista/imaging/studies",
+        "/vista/imaging/status"
+    )
+    $authOk = $true
+    foreach ($ep in $authEndpoints) {
+        try {
+            $r = Invoke-WebRequest -Uri "http://127.0.0.1:3001$ep" -UseBasicParsing -TimeoutSec 5 -ErrorAction Stop
+            Gate-Fail "Unauthenticated access allowed on $ep (got $($r.StatusCode))"
+            $authOk = $false
+        } catch {
+            $sc = $_.Exception.Response.StatusCode.value__
+            if ($sc -eq 401) {
+                # expected
+            } else {
+                Gate-Warn "Unexpected status $sc for unauthenticated $ep"
+                $authOk = $false
+            }
+        }
+    }
+    if ($authOk) { Gate-Pass "All imaging endpoints enforce auth (401 without session)" }
+
+    # Login to get session cookie for authenticated tests
+    $loginBody = '{"accessCode":"PROV123","verifyCode":"PROV123!!"}'
+    $tmpLogin = [System.IO.Path]::GetTempFileName()
+    Set-Content -Path $tmpLogin -Value $loginBody -NoNewline
+    $loginResult = $null
+    try {
+        $tmpCookie = [System.IO.Path]::GetTempFileName()
+        $loginOut = curl.exe -s -c $tmpCookie -X POST -H "Content-Type: application/json" -d "@$tmpLogin" "http://127.0.0.1:3001/auth/login" 2>&1
+        $loginResult = $loginOut | ConvertFrom-Json -ErrorAction SilentlyContinue
+    } catch { }
+    Remove-Item $tmpLogin -ErrorAction SilentlyContinue
+
+    if ($loginResult -and $loginResult.ok) {
+        Gate-Pass "API login successful (DUZ=$($loginResult.session.duz))"
+
+        # Test imaging health with auth
+        $healthOut = curl.exe -s -b $tmpCookie "http://127.0.0.1:3001/imaging/health" 2>&1
+        $healthJson = $healthOut | ConvertFrom-Json -ErrorAction SilentlyContinue
+        if ($healthJson -and $healthJson.ok) {
+            Gate-Pass "Imaging health: orthanc=$($healthJson.orthanc.status)"
+        } else {
+            Gate-Warn "Imaging health check returned unexpected result"
+        }
+
+        # Test imaging status
+        $statusOut = curl.exe -s -b $tmpCookie "http://127.0.0.1:3001/vista/imaging/status" 2>&1
+        $statusJson = $statusOut | ConvertFrom-Json -ErrorAction SilentlyContinue
+        if ($statusJson -and $statusJson.ok) {
+            Gate-Pass "Imaging status reports capabilities"
+            if ($statusJson.capabilities.orthanc.configured) {
+                Gate-Pass "Orthanc configured in imaging status"
+            } else {
+                Gate-Warn "Orthanc not configured in status"
+            }
+        } else {
+            Gate-Warn "Imaging status returned unexpected result"
+        }
+
+        # Test viewer URL generation
+        $viewerOut = curl.exe -s -b $tmpCookie "http://127.0.0.1:3001/vista/imaging/viewer-url?studyUid=1.2.3.4.5" 2>&1
+        $viewerJson = $viewerOut | ConvertFrom-Json -ErrorAction SilentlyContinue
+        if ($viewerJson -and $viewerJson.ok) {
+            if ($viewerJson.viewer.url -match "3003" -or $viewerJson.viewer.url -match "ohif") {
+                Gate-Pass "Viewer URL points to OHIF (not VistA)"
+            } else {
+                Gate-Fail "Viewer URL does not point to OHIF: $($viewerJson.viewer.url)"
+            }
+        } else {
+            Gate-Warn "Viewer URL endpoint returned unexpected result"
+        }
+
+        Remove-Item $tmpCookie -ErrorAction SilentlyContinue
+    } else {
+        Gate-Warn "API login failed (VistA may not be running)"
+    }
+} else {
+    Gate-Warn "API E2E tests skipped (API not running)"
+}
+
+# --- M: Demo DICOM End-to-End ---
+
+Write-Host ""
+Write-Host "--- M: Demo DICOM End-to-End ---" -ForegroundColor White
+
+$orthancUp = $false
+try {
+    $orthancCheck = Invoke-WebRequest -Uri "http://localhost:8042/system" -UseBasicParsing -TimeoutSec 5 -ErrorAction Stop
+    if ($orthancCheck.StatusCode -eq 200) { $orthancUp = $true }
+} catch { }
+
+if ($orthancUp -and $apiUp -and $loginResult -and $loginResult.ok) {
+    # Check Orthanc has studies
+    $studiesOut = curl.exe -s "http://localhost:8042/studies" 2>&1
+    $studiesArr = $studiesOut | ConvertFrom-Json -ErrorAction SilentlyContinue
+    if ($studiesArr -and $studiesArr.Count -gt 0) {
+        Gate-Pass "Orthanc has $($studiesArr.Count) studies loaded"
+    } else {
+        Gate-Warn "No studies in Orthanc (run: python scripts/generate-demo-dicom.py)"
+    }
+
+    # Check QIDO-RS via proxy returns studies
+    $tmpCookie2 = [System.IO.Path]::GetTempFileName()
+    $tmpLogin2 = [System.IO.Path]::GetTempFileName()
+    Set-Content -Path $tmpLogin2 -Value '{"accessCode":"PROV123","verifyCode":"PROV123!!"}' -NoNewline
+    curl.exe -s -c $tmpCookie2 -X POST -H "Content-Type: application/json" -d "@$tmpLogin2" "http://127.0.0.1:3001/auth/login" 2>&1 | Out-Null
+    Remove-Item $tmpLogin2 -ErrorAction SilentlyContinue
+
+    $qidoOut = curl.exe -s -b $tmpCookie2 "http://127.0.0.1:3001/imaging/dicom-web/studies" 2>&1
+    $qidoData = $qidoOut | ConvertFrom-Json -ErrorAction SilentlyContinue
+    if ($qidoData -and $qidoData.Count -gt 0) {
+        Gate-Pass "DICOMweb proxy returns $($qidoData.Count) studies via QIDO-RS"
+    } else {
+        Gate-Warn "DICOMweb proxy returned no studies"
+    }
+
+    # Check VistA imaging studies endpoint with DFN
+    $patStudies = curl.exe -s -b $tmpCookie2 "http://127.0.0.1:3001/vista/imaging/studies?dfn=100022" 2>&1
+    $patJson = $patStudies | ConvertFrom-Json -ErrorAction SilentlyContinue
+    if ($patJson -and $patJson.ok -and $patJson.count -gt 0) {
+        Gate-Pass "Patient imaging studies: $($patJson.count) studies for DFN=100022"
+        $sources = ($patJson.studies | ForEach-Object { $_.source }) | Select-Object -Unique
+        $sourceStr = $sources -join ","
+        Gate-Pass "Study sources: $sourceStr"
+    } else {
+        Gate-Warn "Patient imaging studies returned no data for DFN=100022"
+    }
+
+    Remove-Item $tmpCookie2 -ErrorAction SilentlyContinue
+} else {
+    if (-not $orthancUp) { Gate-Warn "Demo DICOM tests skipped (Orthanc not running)" }
+    elseif (-not $apiUp) { Gate-Warn "Demo DICOM tests skipped (API not running)" }
+    else { Gate-Warn "Demo DICOM tests skipped (no auth session)" }
+}
+
 # --- Summary ---
 
 Write-Host ""

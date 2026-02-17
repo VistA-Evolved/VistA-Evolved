@@ -12,7 +12,7 @@
 
 services:
   orthanc:
-    image: orthancteam/orthanc:24.12.1
+    image: orthancteam/orthanc:25.12.3-full
     container_name: orthanc
     profiles: ["imaging"]
     ports:
@@ -33,7 +33,7 @@ services:
       start_period: 10s
 
   ohif-viewer:
-    image: ohif/app:v3.9.2
+    image: ohif/app:latest
     container_name: ohif-viewer
     profiles: ["imaging"]
     ports:

@@ -26,7 +26,7 @@ This starts:
 ```powershell
 # Check Orthanc
 curl.exe http://localhost:8042/system
-# Should return: {"ApiVersion":"...","Version":"24.12.1",...}
+# Should return: {"ApiVersion":"...","Version":"25.12.3",...}
 
 # Check OHIF
 curl.exe -s http://localhost:3003 | Select-String "<title>"

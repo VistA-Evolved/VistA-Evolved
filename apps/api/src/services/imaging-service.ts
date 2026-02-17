@@ -62,7 +62,7 @@ export interface ImagingStudy {
   description: string;
   imageCount: number;
   status: string;
-  source: "vista" | "dicomweb" | "pacs";
+  source: "vista" | "orthanc" | "dicomweb" | "pacs";
   /** Study Instance UID for DICOMweb */
   studyInstanceUid?: string;
 }
@@ -285,7 +285,7 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
     // 2. Try Orthanc local DICOMweb (Phase 22)
     if (studies.length === 0 || !mag4Check.available) {
       try {
-        const qidoUrl = `${IMAGING_CONFIG.orthancUrl}${IMAGING_CONFIG.dicomWebRoot}/studies?PatientID=${dfn}&limit=50`;
+        const qidoUrl = `${IMAGING_CONFIG.orthancUrl}${IMAGING_CONFIG.dicomWebRoot}/studies?PatientID=${dfn}&limit=50&includefield=00081030`;
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 10000);
         const resp = await fetch(qidoUrl, {
@@ -303,11 +303,11 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
               studies.push({
                 studyId: uid,
                 studyDate: study["00080020"]?.Value?.[0] || "",
-                modality: study["00080060"]?.Value?.[0] || "",
+                modality: (study["00080061"]?.Value || []).join("/") || study["00080060"]?.Value?.[0] || "",
                 description: study["00081030"]?.Value?.[0] || "",
                 imageCount: study["00201208"]?.Value?.[0] || 0,
                 status: "available",
-                source: "dicomweb",
+                source: "orthanc",
                 studyInstanceUid: uid,
               });
             }
@@ -342,7 +342,7 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
             studies.push({
               studyId: study["0020000D"]?.Value?.[0] || "", // StudyInstanceUID
               studyDate: study["00080020"]?.Value?.[0] || "",
-              modality: study["00080060"]?.Value?.[0] || "",
+              modality: (study["00080061"]?.Value || []).join("/") || study["00080060"]?.Value?.[0] || "",
               description: study["00081030"]?.Value?.[0] || "",
               imageCount: study["00201208"]?.Value?.[0] || 0,
               status: "available",
@@ -392,7 +392,13 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
 
     const tenantId = (request as any).session?.tenantId || "default";
     const pacsEntries = getImagingIntegrations(tenantId).filter(
-      (e) => (e.type === "pacs-vna" || e.type === "dicomweb") && e.enabled,
+      (e) =>
+        (e.type === "pacs-vna" || e.type === "dicomweb") &&
+        e.enabled &&
+        // Only include entries that can actually serve a viewer
+        (e.config.kind === "dicomweb" ||
+          (e.config.kind === "pacs-vna" &&
+            (e.config.viewerUrlTemplate || e.config.supportsDicomWeb))),
     );
 
     if (pacsEntries.length === 0) {
