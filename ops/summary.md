@@ -1,8 +1,34 @@
-# Phase 18 VERIFY — Ops Summary
+# Phase 19 — Reporting + Export Governance — Ops Summary
 
-## What Changed (during verification)
+## What Changed
 
-### 1. RBAC Role Mapping Fix (CRITICAL)
+### New Files
+- `apps/api/src/config/report-config.ts` — REPORT_CONFIG + EXPORT_CONFIG constants
+- `apps/api/src/lib/export-governance.ts` — Export policy engine, job model, CSV/JSON generators
+- `apps/api/src/routes/reporting.ts` — 7 reporting/export API endpoints (admin-only)
+- `apps/web/src/app/cprs/admin/reports/page.tsx` — 5-tab reporting dashboard
+- `apps/web/src/app/cprs/admin/rcm/page.tsx` — RCM placeholder (feature-flagged)
+- `docs/runbooks/vista-reporting-export-governance.md` — Runbook
+- `scripts/verify-phase19-reporting-governance.ps1` — 130-check verifier
+
+### Edited Files
+- `apps/api/src/index.ts` — Register reportingRoutes
+- `apps/api/src/middleware/security.ts` — /reports/ in AUTH_RULES
+- `apps/api/src/lib/audit.ts` — 4 new audit actions
+- `apps/api/src/config/tenant-config.ts` — rcm.enabled feature flag
+- `scripts/verify-latest.ps1` — Points to Phase 19
+
+## Verifier Output
+```
+130 PASS, 0 FAIL, 0 WARN
+```
+
+## How to Test
+```bash
+curl http://127.0.0.1:3001/reports/operations -b cookies.txt
+curl http://127.0.0.1:3001/reports/clinical -b cookies.txt
+curl -X POST http://127.0.0.1:3001/reports/export -H 'Content-Type: application/json' -d '{"reportType":"audit","format":"csv"}' -b cookies.txt
+```
 - **File**: `apps/api/src/auth/session-store.ts`
 - **Bug**: `mapUserRole()` mapped PROV123 (PROVIDER,CLYDE WV) to "provider" role,
   but all Phase 17+18 admin endpoints require `requireRole(session, ["admin"])`.

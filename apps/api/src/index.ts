@@ -14,6 +14,7 @@ import writeBackRoutes from "./routes/write-backs.js";
 import imagingRoutes from "./services/imaging-service.js";
 import adminRoutes from "./routes/admin.js";
 import interopRoutes from "./routes/interop.js";
+import reportingRoutes from "./routes/reporting.js";
 // Phase 15: Enterprise hardening imports
 import { registerSecurityMiddleware, corsOriginValidator } from "./middleware/security.js";
 import { log } from "./lib/logger.js";
@@ -95,6 +96,9 @@ server.register(adminRoutes);
 
 // Register interop routes (Phase 18B/D)
 server.register(interopRoutes);
+
+// Register reporting & export routes (Phase 19A)
+server.register(reportingRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

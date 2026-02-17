@@ -43,7 +43,8 @@ export type FeatureFlagId =
   | "rpc.console"
   | "write-backs.enabled"
   | "drag-reorder.coversheet"
-  | "remote-data.enabled";
+  | "remote-data.enabled"
+  | "rcm.enabled";
 
 /** Per-tenant feature flags. */
 export interface FeatureFlags {
@@ -60,6 +61,7 @@ export const DEFAULT_FEATURE_FLAGS: FeatureFlags = {
   "write-backs.enabled": true,
   "drag-reorder.coversheet": true,
   "remote-data.enabled": true,
+  "rcm.enabled": false,
 };
 
 /** UI defaults that a facility admin can set as base preferences. */
