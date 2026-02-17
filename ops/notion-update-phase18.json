@@ -1,0 +1,23 @@
+{
+  "feature": "Phase 18 — Enterprise Interop + Imaging Platform Integration",
+  "stage": "implemented",
+  "status": "verified-clean",
+  "promptRef": "prompts/20-PHASE-18-INTEROP-IMAGING/20-01-Phase18-Interop-Imaging-IMPLEMENT.md",
+  "runbookPath": "docs/runbooks/interop-imaging-phase18.md",
+  "verifyScript": "scripts/verify-phase18-interop-imaging.ps1",
+  "verifyResult": "164 PASS, 0 FAIL, 0 WARN",
+  "branch": "feature/phase18-interop-imaging",
+  "commitSHA": "9d9bc50",
+  "deliverables": [
+    "A: Integration Registry Model (11 types, per-tenant store, health monitoring)",
+    "B: Admin Integration API (CRUD, probe, toggle, health-summary, error-log)",
+    "C: Imaging Integration Service (studies, viewer-url, metadata, DICOMweb, OHIF)",
+    "D: Device Onboarding (config-not-code, modality worklist fields)",
+    "E: Admin Console UI (3-tab: Registry, Device Onboarding, Legacy Connectors)",
+    "F: Imaging Views in CPRS Web (ReportsPanel status, study list, viewer launch)",
+    "G: Remote Data Viewer Upgrade (registry-aware external sources)",
+    "H: Metrics + Audit (5 new audit actions, integration health in /metrics)"
+  ],
+  "filesChanged": 12,
+  "typescriptCompile": "clean (both apps/api and apps/web)"
+}

@@ -11,13 +11,16 @@ import wsConsoleRoutes from "./routes/ws-console.js";
 import { discoverCapabilities, getCapabilities, optionalRpc, isRpcAvailable, getDomainCapabilities } from "./vista/rpcCapabilities.js";
 import capabilityRoutes from "./routes/capabilities.js";
 import writeBackRoutes from "./routes/write-backs.js";
-import imagingRoutes from "./routes/imaging.js";
+import imagingRoutes from "./services/imaging-service.js";
 import adminRoutes from "./routes/admin.js";
+import interopRoutes from "./routes/interop.js";
 // Phase 15: Enterprise hardening imports
 import { registerSecurityMiddleware, corsOriginValidator } from "./middleware/security.js";
 import { log } from "./lib/logger.js";
 import { audit, queryAuditEvents, getAuditStats } from "./lib/audit.js";
 import { getRpcHealthSummary, getCircuitBreakerStats, resetCircuitBreaker, invalidateCache, safeCallRpc, safeCallRpcWithList } from "./lib/rpc-resilience.js";
+// Phase 18: Integration registry for metrics
+import { getIntegrationHealthSummary } from "./config/integration-registry.js";
 
 /* ================================================================== */
 /* Phase 15B helpers: safe error + session-based audit actor             */
@@ -90,6 +93,9 @@ server.register(imagingRoutes);
 // Register admin/tenant routes (Phase 17B)
 server.register(adminRoutes);
 
+// Register interop routes (Phase 18B/D)
+server.register(interopRoutes);
+
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);
 
@@ -135,6 +141,7 @@ server.get("/metrics", async () => {
       pid: process.pid,
     },
     rpcHealth: getRpcHealthSummary(),
+    integrations: getIntegrationHealthSummary("default"),
   };
 });
 

@@ -1,10 +1,22 @@
 'use client';
 
+/**
+ * Remote Data Viewer — Phase 18E enhanced.
+ *
+ * View clinical data from remote facilities and external systems.
+ * Phase 18 upgrades:
+ *   - Lists configured external FHIR and interop sources from the integration registry
+ *   - Shows C0FHIR Suite, external FHIR servers, HL7v2 feeds alongside VistA CIRN
+ *   - Architecture hooks for ORWCIRN FACLIST + ORWCIRN HDRA remain
+ */
+
 import { useState, useEffect } from 'react';
 import { usePatient } from '@/stores/patient-context';
 import CPRSMenuBar from '@/components/cprs/CPRSMenuBar';
 import PatientBanner from '@/components/cprs/PatientBanner';
 import styles from '@/components/cprs/cprs.module.css';
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -22,6 +34,16 @@ interface RemoteDataDomain {
   label: string;
   description: string;
   rpcContract: string;
+}
+
+interface ExternalSource {
+  id: string;
+  label: string;
+  type: string;
+  status: string;
+  enabled: boolean;
+  host: string;
+  port: number;
 }
 
 /* ------------------------------------------------------------------ */
@@ -46,6 +68,7 @@ const REMOTE_DOMAINS: RemoteDataDomain[] = [
 export default function RemoteDataViewerPage() {
   const { dfn, demographics } = usePatient();
   const [facilities, setFacilities] = useState<RemoteFacility[]>([]);
+  const [externalSources, setExternalSources] = useState<ExternalSource[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedFacility, setSelectedFacility] = useState<string | null>(null);
   const [selectedDomain, setSelectedDomain] = useState<string>('allergies');
@@ -53,22 +76,47 @@ export default function RemoteDataViewerPage() {
   const [querying, setQuerying] = useState(false);
 
   useEffect(() => {
-    // In Docker sandbox, no remote facilities exist.
-    // Architecture hook: would call ORWCIRN FACLIST RPC here.
-    const timer = setTimeout(() => {
-      setFacilities([]);
+    async function init() {
+      // 1. Check for CIRN remote facilities (Docker sandbox → none)
+      const facTimer = setTimeout(() => setFacilities([]), 500);
+
+      // 2. Fetch external sources from integration registry (Phase 18E)
+      try {
+        const res = await fetch(`${API_BASE}/admin/registry/default`, { credentials: 'include' });
+        const data = await res.json();
+        if (data.ok && data.integrations) {
+          // Filter to FHIR, HL7v2, and external types (exclude internal RPC + devices)
+          const external = data.integrations.filter(
+            (i: any) => i.enabled && ['fhir', 'fhir-c0fhir', 'fhir-vpr', 'hl7v2', 'external'].includes(i.type),
+          );
+          setExternalSources(external);
+        }
+      } catch { /* ignore — admin API may not be accessible for non-admin users */ }
+
       setLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
+      return () => clearTimeout(facTimer);
+    }
+    init();
   }, []);
 
   function handleQuery() {
     if (!selectedFacility) return;
     setQuerying(true);
     setQueryResult(null);
-    // Simulated delay — in production, would call ORWCIRN HDRA
+    // Simulated delay — in production, would call ORWCIRN HDRA or FHIR query
     setTimeout(() => {
-      setQueryResult('No remote data available in Docker sandbox. This endpoint would call ORWCIRN HDRA with the selected facility station number and data domain.');
+      const source = externalSources.find((s) => s.id === selectedFacility);
+      if (source) {
+        setQueryResult(
+          `External source: ${source.label} (${source.type})\n` +
+          `Endpoint: ${source.host}:${source.port}\n` +
+          `Status: ${source.status}\n\n` +
+          `In production, this would query the ${source.type === 'fhir-c0fhir' ? 'C0FHIR Suite' : source.type.toUpperCase()} endpoint ` +
+          `for ${REMOTE_DOMAINS.find((d) => d.id === selectedDomain)?.label || selectedDomain} data.`
+        );
+      } else {
+        setQueryResult('No remote data available in Docker sandbox. This endpoint would call ORWCIRN HDRA with the selected facility station number and data domain.');
+      }
       setQuerying(false);
     }, 800);
   }
@@ -81,22 +129,21 @@ export default function RemoteDataViewerPage() {
       <div style={{ padding: 16 }}>
         <h1 style={{ fontSize: 18, margin: '0 0 4px' }}>Remote Data Viewer</h1>
         <p style={{ fontSize: 12, color: 'var(--cprs-text-muted)', margin: '0 0 16px' }}>
-          View clinical data from other connected facilities via Health Information Exchange.
-          Contract: ORWCIRN FACLIST, ORWCIRN HDRA
+          View clinical data from other connected facilities and external systems via Health Information Exchange.
+          Contract: ORWCIRN FACLIST, ORWCIRN HDRA | Phase 18: Integration Registry sources
         </p>
 
         <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: 16, minHeight: 400 }}>
-          {/* Left: Facilities + Domains */}
+          {/* Left: Facilities + External Sources + Domains */}
           <div>
-            <div className={styles.panelTitle}>Connected Facilities</div>
+            <div className={styles.panelTitle}>Connected Facilities (CIRN)</div>
             {loading ? (
               <p style={{ fontSize: 12, color: 'var(--cprs-text-muted)' }}>Querying remote facilities...</p>
             ) : facilities.length === 0 ? (
-              <div style={{ padding: 16, border: '1px dashed var(--cprs-border)', borderRadius: 6, marginBottom: 12 }}>
+              <div style={{ padding: 12, border: '1px dashed var(--cprs-border)', borderRadius: 6, marginBottom: 12 }}>
                 <p style={{ fontSize: 12, fontWeight: 600, margin: '0 0 4px' }}>No Remote Facilities</p>
                 <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', margin: 0 }}>
-                  The Docker sandbox does not have remote facility connections.
-                  In production, facilities are discovered via ORWCIRN FACLIST.
+                  Docker sandbox has no CIRN connections. In production, discovered via ORWCIRN FACLIST.
                 </p>
               </div>
             ) : (
@@ -106,10 +153,7 @@ export default function RemoteDataViewerPage() {
                     key={f.id}
                     className={styles.btn}
                     style={{
-                      display: 'block',
-                      width: '100%',
-                      textAlign: 'left',
-                      marginBottom: 4,
+                      display: 'block', width: '100%', textAlign: 'left', marginBottom: 4,
                       ...(selectedFacility === f.id ? { background: 'var(--cprs-selected)', fontWeight: 600 } : {}),
                     }}
                     onClick={() => setSelectedFacility(f.id)}
@@ -123,17 +167,45 @@ export default function RemoteDataViewerPage() {
               </div>
             )}
 
+            {/* Phase 18E: External integration sources from registry */}
+            {externalSources.length > 0 && (
+              <>
+                <div className={styles.panelTitle} style={{ marginTop: 12 }}>External Sources (Registry)</div>
+                <div style={{ marginBottom: 12 }}>
+                  {externalSources.map((s) => (
+                    <button
+                      key={s.id}
+                      className={styles.btn}
+                      style={{
+                        display: 'block', width: '100%', textAlign: 'left', marginBottom: 4, fontSize: 12,
+                        ...(selectedFacility === s.id ? { background: 'var(--cprs-selected)', fontWeight: 600 } : {}),
+                      }}
+                      onClick={() => setSelectedFacility(s.id)}
+                    >
+                      {s.label}
+                      <span style={{ float: 'right', fontSize: 10 }}>
+                        <span style={{
+                          display: 'inline-block', padding: '1px 4px', borderRadius: 4,
+                          background: s.status === 'connected' ? '#dcfce7' : '#fef2f2',
+                          color: s.status === 'connected' ? '#16a34a' : '#dc2626',
+                          fontSize: 9,
+                        }}>
+                          {s.type}
+                        </span>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+
             <div className={styles.panelTitle} style={{ marginTop: 16 }}>Data Domains</div>
             {REMOTE_DOMAINS.map((d) => (
               <button
                 key={d.id}
                 className={styles.btn}
                 style={{
-                  display: 'block',
-                  width: '100%',
-                  textAlign: 'left',
-                  marginBottom: 4,
-                  fontSize: 12,
+                  display: 'block', width: '100%', textAlign: 'left', marginBottom: 4, fontSize: 12,
                   ...(selectedDomain === d.id ? { background: 'var(--cprs-selected)', fontWeight: 600 } : {}),
                 }}
                 onClick={() => setSelectedDomain(d.id)}
@@ -156,7 +228,14 @@ export default function RemoteDataViewerPage() {
           <div style={{ border: '1px solid var(--cprs-border)', borderRadius: 6, padding: 16 }}>
             <div className={styles.panelTitle}>
               {REMOTE_DOMAINS.find((d) => d.id === selectedDomain)?.label || 'Results'}
-              {selectedFacility && <span style={{ fontSize: 11, fontWeight: 400, color: 'var(--cprs-text-muted)' }}> — {facilities.find((f) => f.id === selectedFacility)?.name}</span>}
+              {selectedFacility && (
+                <span style={{ fontSize: 11, fontWeight: 400, color: 'var(--cprs-text-muted)' }}>
+                  {' — '}
+                  {facilities.find((f) => f.id === selectedFacility)?.name
+                    || externalSources.find((s) => s.id === selectedFacility)?.label
+                    || selectedFacility}
+                </span>
+              )}
             </div>
 
             {queryResult ? (
@@ -166,7 +245,7 @@ export default function RemoteDataViewerPage() {
             ) : (
               <div style={{ textAlign: 'center', padding: 40 }}>
                 <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--cprs-text-muted)' }}>
-                  {facilities.length === 0 ? 'No Remote Facilities Available' : 'Select a facility and domain, then click Query'}
+                  {(facilities.length === 0 && externalSources.length === 0) ? 'No Remote Sources Available' : 'Select a source and domain, then click Query'}
                 </p>
                 <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', maxWidth: 400, margin: '8px auto' }}>
                   Patient: {demographics?.name || `DFN ${dfn}`}
@@ -176,12 +255,13 @@ export default function RemoteDataViewerPage() {
             )}
 
             <div style={{ marginTop: 16, padding: 8, background: 'var(--cprs-bg)', borderRadius: 4, fontSize: 11, color: 'var(--cprs-text-muted)' }}>
-              <strong>Architecture:</strong>
+              <strong>Architecture (Phase 18E):</strong>
               <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
-                <li>ORWCIRN FACLIST — Lists connected remote facilities</li>
+                <li>ORWCIRN FACLIST — Lists connected remote VistA facilities</li>
                 <li>ORWCIRN HDRA — Retrieves remote patient data by facility + domain</li>
+                <li>C0FHIR Suite — FHIR R4 via MUMPS-native RPC (WorldVistA)</li>
+                <li>External FHIR servers and HL7v2 feeds from Integration Registry</li>
                 <li>Patient correlation via ICN (Integration Control Number)</li>
-                <li>FHIR R4 bridge available for modern interoperability</li>
               </ul>
             </div>
           </div>
