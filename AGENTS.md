@@ -108,7 +108,9 @@ cp apps/api/.env.example apps/api/.env.local
 # Edit .env.local with PROV123 / PROV123!!
 
 # 3. Start the API
-pnpm -C apps/api dev
+cd apps/api
+npx tsx --env-file=.env.local src/index.ts
+# NOTE: Do NOT use "pnpm -C apps/api dev" — it does NOT load .env.local (BUG-010)
 
 # 4. Verify
 curl http://127.0.0.1:3001/vista/default-patient-list
@@ -119,12 +121,15 @@ curl http://127.0.0.1:3001/vista/default-patient-list
 
 ## 5. Verification Script
 
-Run `scripts/verify-phase1-to-phase5b.ps1` from the repo root. It checks
-items across Phases 1–5D and reports PASS/FAIL for each.
+Run `scripts/verify-latest.ps1` from the repo root. It delegates to the
+most recent phase verifier and reports PASS/FAIL for each gate.
 
 ```powershell
-.\scripts\verify-phase1-to-phase5b.ps1
+.\scripts\verify-latest.ps1
 ```
+
+> **Note**: `verify-latest.ps1` currently delegates to Phase 19. Phase 20/21
+> checks require manual curl commands — see BUG-037.
 
 ---
 
@@ -157,7 +162,57 @@ items across Phases 1–5D and reports PASS/FAIL for each.
 13. **Interop RPCs must be installed in Docker.** Run
     `scripts/install-interop-rpcs.ps1` after a fresh container pull.
     The RPCs (IENs 3108–3111) survive `docker compose down/up` because
-    the WorldVistA image has internal volumes.
+    the WorldVistA image has internal volumes. **But `docker compose down -v`
+    or `docker system prune --volumes` destroys them** — re-run the installer.
+14. **`connect()` reuse is idempotent but doesn't detect half-open sockets.**
+    The guard `if (connected && sock && !sock.destroyed) return;` skips
+    reconnection, but a TCP half-open state (remote closed, local doesn't
+    know) passes the check. The `/interop/summary` endpoint relies on this
+    for 4 sequential RPCs over one connection.
+15. **`authenticateUser()` uses a fully separate temp socket.** It creates its
+    own `tmpSock` with independent send/receive functions. This is intentional
+    isolation so login requests don't interfere with in-flight RPC calls.
+    Do NOT consolidate it with the global socket.
+16. **`ORWPS ACTIVE` returns multi-line grouped records** — medication header
+    lines start with `~`, continuation lines start with whitespace or `\`.
+    Parse by splitting on `~` prefix first, not by newline. See BUG-028.
+17. **LOCK/UNLOCK is mandatory for all VistA order writes.** Call `ORWDX LOCK`
+    before any ordering RPC, `ORWDX UNLOCK` after. Forgetting UNLOCK leaves
+    the patient locked for other providers. See BUG-029.
+18. **Unsigned orders/notes don't appear in standard read RPCs.** POST may
+    succeed but GET won't show the record until it's signed/verified. Query
+    both signed and unsigned contexts and merge. See BUG-030, BUG-033.
+19. **Use `safeCallRpc` from `rpc-resilience.ts`, not direct `callRpc`.**
+    The circuit breaker (5 failures → open, 30s half-open, 2 retries + backoff)
+    prevents hammering a failing VistA. Direct calls bypass it. Phase 21
+    interop routes are known debt that skip this.
+20. **All new fetches must use `credentials: 'include'`.** Auth uses httpOnly
+    cookies, not Bearer tokens. Any `fetch()` without credentials won't
+    send the session cookie and will get 401.
+21. **Never add `console.log` freely.** Phase 16 verifier caps at ≤6 total
+    across the entire codebase. Use the structured logger with
+    `AsyncLocalStorage` for automatic request ID propagation.
+22. **No hardcoded `PROV123` outside the login page.** The Phase 16 secret
+    scan exempts only `page.tsx`. Credentials in any other `.ts` file will
+    fail verification.
+23. **Sandbox credentials on the login page are gated by NODE_ENV.** They only
+    display when `NODE_ENV !== 'production'`. See BUG-035.
+24. **`/admin/*` routes require admin role check.** Use `requireRole(session,
+    'admin')` — not just session validation. Currently `provider` role also
+    gets admin access (known debt for RBAC tightening).
+25. **WebSocket console blocks `XUS AV CODE` and `XUS SET VISITOR` RPCs.**
+    The `/ws/console` gateway has an explicit blocklist to prevent credential
+    theft or privilege escalation through the debug console.
+26. **RPC capability cache has configurable TTL** (default 5 min, env var
+    `VISTA_CAPABILITY_TTL_MS`). Stale capabilities can cause wrong fallback
+    behavior. The system distinguishes `expectedMissing` (known absent in
+    sandbox) from `unexpectedMissing` (should alarm operators).
+27. **Graceful shutdown doesn't disconnect the RPC broker.** `server.close()`
+    is called but `disconnect()` on the global socket is not. VistA-side
+    jobs may be left orphaned. Known debt for production hardening.
+28. **`buildBye()` is dead code.** `disconnect()` sends raw `#BYE#` instead
+    of the properly XWB-framed message. Works only because the socket is
+    destroyed immediately after. See BUG-036.
 
 ---
 
@@ -166,14 +221,14 @@ items across Phases 1–5D and reports PASS/FAIL for each.
 A comprehensive log of every bug, challenge, and fix from Phase 1 through
 Phase 5D lives in **[`docs/BUG-TRACKER.md`](docs/BUG-TRACKER.md)**.
 
-It covers 26 bugs with:
+It covers 37 bugs with:
 - What was attempted
 - The exact error or symptom
 - Root cause analysis
 - The fix applied
 - Preventive measures
 
-Plus 8 cross-cutting lessons and a quick-reference error → fix lookup table.
+Plus 13 cross-cutting lessons and a quick-reference error → fix lookup table.
 
 **Update this file whenever a new bug is found and fixed.** It's the single
 source of debugging wisdom for VistA-Evolved.

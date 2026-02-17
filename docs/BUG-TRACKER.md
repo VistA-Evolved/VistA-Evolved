@@ -1,10 +1,10 @@
-# Bug Tracker & Lessons Learned — VistA-Evolved (Phase 1 → Phase 7B)
+# Bug Tracker & Lessons Learned — VistA-Evolved (Phase 1 → Phase 21)
 
 > **Purpose**: A single-source log of every significant bug, challenge, and
-> hard-won fix from the project's inception through Phase 7B. Share this with
+> hard-won fix from the project's inception through Phase 21. Share this with
 > new developers and AI agents so they don't repeat the same mistakes.
 >
-> **Last updated**: 2026-02-11 (Phase 7B complete)
+> **Last updated**: 2026-02-18 (comprehensive audit Phases 8–21)
 
 ---
 
@@ -21,7 +21,12 @@
 9. [Phase 5D — Add Allergy (First Write/CRUD)](#phase-5d--add-allergy-first-writecrud)
 10. [Phase 6A — Vitals Display](#phase-6a--vitals-display)
 11. [Phase 7B — Create Note](#phase-7b--create-note)
-12. [Cross-Cutting Lessons](#cross-cutting-lessons)
+12. [Phase 8A — Medications](#phase-8a--medications)
+13. [Phase 9B — Add Problem](#phase-9b--add-problem)
+14. [Phase 12 — CPRS Parity Wiring](#phase-12--cprs-parity-wiring)
+15. [Phase 15 — Enterprise Hardening](#phase-15--enterprise-hardening)
+16. [Phase 21 — VistA HL7/HLO Interop Telemetry](#phase-21--vista-hl7hlo-interop-telemetry)
+17. [Cross-Cutting Lessons](#cross-cutting-lessons)
 
 ---
 
@@ -290,6 +295,112 @@
 
 ---
 
+## Phase 8A — Medications
+
+### BUG-027: `^PSDRUG` incomplete in WorldVistA Docker — drug names blank in ORWPS ACTIVE
+
+| Field | Detail |
+|-------|--------|
+| **What we tried** | Parsing `ORWPS ACTIVE` response for medication names |
+| **Error** | Drug name field (piece 3 of `~` header line) is frequently empty — no error, just blank |
+| **Root cause** | `^PSDRUG` entries are missing in the WorldVistA Docker image. The routine `OCL^PSOORRL` reads `$P($G(^PSDRUG(+$P(RX0,"^",6),0)),"^")` which returns empty when the entry doesn't exist |
+| **Fix** | Added a secondary RPC call to `ORWORR GETTXT` using the order IEN to resolve the display name as a fallback |
+| **Preventive** | Never assume VistA lookup tables are populated in the Docker sandbox. Always code a fallback display strategy when primary fields are blank |
+
+### BUG-028: ORWPS ACTIVE uses multi-line grouped wire format with `~` prefix
+
+| Field | Detail |
+|-------|--------|
+| **What we tried** | Splitting RPC response on newlines, parsing each line as a separate medication record |
+| **Error** | Continuation lines (`Qty:`, `\ Sig:`) were treated as separate medications — data garbled |
+| **Root cause** | `ORWPS ACTIVE` returns each medication as a *group* of lines. Header lines start with `~`, continuation lines start with whitespace or `\`. Format: `~TYPE^rxIEN;kind^drugName^?^?^?^?^?^orderIEN^status^...`. This is unlike all other RPCs. |
+| **Fix** | Parser splits on `~` prefix first to identify medication boundaries, then joins continuation lines within each group |
+| **Preventive** | Not all VistA RPCs return one-record-per-line. Check for grouped/multi-line formats before writing parsers. `ORWPS ACTIVE` is the canonical example of this pattern |
+
+### BUG-029: ORWDX LOCK/UNLOCK required before/after placing orders
+
+| Field | Detail |
+|-------|--------|
+| **What we tried** | Calling `ORWDXM AUTOACK` directly to place a medication order |
+| **Error** | Succeeded in single-user sandbox but would be unsafe in multi-user environments |
+| **Root cause** | Patient must be locked via `ORWDX LOCK` (returns `"1"` on success) before any ordering RPC, and unlocked via `ORWDX UNLOCK` afterward. Without locking, concurrent orders from multiple providers can corrupt patient data |
+| **Fix** | API wrapper calls LOCK → order → UNLOCK in sequence. If LOCK returns non-`"1"`, the order is rejected |
+| **Preventive** | ALL VistA write operations that modify patient orders require LOCK/UNLOCK wrapping. This includes medications, consults, and radiology orders |
+
+### BUG-030: Unsigned orders don't appear in GET /vista/medications
+
+| Field | Detail |
+|-------|--------|
+| **What we tried** | POST /vista/medications (via AUTOACK), then GET /vista/medications to confirm |
+| **Error** | POST returned `ok:true` but the new medication didn't appear in the list |
+| **Root cause** | `ORWPS ACTIVE` only returns pharmacy-verified active prescriptions. Orders placed via AUTOACK are created with `*UNSIGNED*` status in `^OR(100)` — they haven't been dispensed by pharmacy, so they don't appear |
+| **Fix** | Documented as a known limitation. A separate endpoint or order status check would be needed to see unsigned orders |
+| **Preventive** | VistA write operations often don't immediately reflect in read operations. The ordering workflow is: Place → Sign → Verify → Dispense → Active. Only "Active" shows in ORWPS ACTIVE |
+
+---
+
+## Phase 9B — Add Problem
+
+### BUG-031: GMPLUTL.CREATE not exposed as an RPC — no broker path for problem creation
+
+| Field | Detail |
+|-------|--------|
+| **What we tried** | Searching for a "create problem" RPC in `^XWB(8994)` |
+| **Error** | No RPC found. The utility `CREATE^GMPLUTL` exists but is an internal MUMPS routine, not registered as a broker RPC |
+| **Root cause** | VistA's problem list creation requires ICD-9/ICD-10 diagnosis codes, 8 service condition flags (SC, AO, IR, EC, HNC, MST, CV, SHD), duplicate detection, provider role validation, and Lexicon mapping (file 757.01). None of this is exposed through a single RPC |
+| **Fix** | POST /vista/problems intentionally returns `ok:false` with a structured blocker response explaining all required steps, rather than a partial/unsafe implementation |
+| **Preventive** | Not all VistA functionality is available via the RPC broker. If a write operation requires complex MUMPS internals, prefer an honest blocker response over a half-baked implementation. Custom M wrapper RPCs are the production path |
+
+---
+
+## Phase 12 — CPRS Parity Wiring
+
+### BUG-032: TIU DOCUMENTS BY CONTEXT — CLASS=244 for Discharge Summaries, not CLASS=3
+
+| Field | Detail |
+|-------|--------|
+| **What we tried** | Using CLASS=3 to query discharge summaries |
+| **Error** | Query returned 0 results — no error, just empty data |
+| **Root cause** | Progress notes use CLASS=3 (file 8925.1), but Discharge Summaries use CLASS=244. Using the wrong class silently returns empty results |
+| **Fix** | D/C summaries use `TIU DOCUMENTS BY CONTEXT` with `CLASS=244` |
+| **Preventive** | VistA document classes are NOT sequential. Each document type has a specific CLASS value. Check `^TIU(8925.1)` for the correct IEN |
+
+### BUG-033: Newly created notes invisible — must merge CONTEXT=1 + CONTEXT=2
+
+| Field | Detail |
+|-------|--------|
+| **What we tried** | Querying notes with only CONTEXT=1 (signed notes) after creating a new note |
+| **Error** | Freshly created notes didn't appear in the list, mimicking a failed write |
+| **Root cause** | Newly created notes are unsigned (CONTEXT=2). If you only query CONTEXT=1 (signed), they won't appear. The GET endpoint must query both contexts and deduplicate by IEN |
+| **Fix** | GET /vista/notes queries with both CONTEXT=1 and CONTEXT=2, merges results, and deduplicates by TIU IEN |
+| **Preventive** | After any VistA write operation, verify the read uses a context/filter broad enough to include the newly created record's initial state (which is almost always unsigned/unverified) |
+
+---
+
+## Phase 15 — Enterprise Hardening
+
+### BUG-034: Client stored literal string `"undefined"` in localStorage after auth migration
+
+| Field | Detail |
+|-------|--------|
+| **What we tried** | Phase 15B removed the token from the login response body (correctly, for httpOnly cookie transport) |
+| **Error** | Web client still read `data.session.token` → stored the literal string `"undefined"` → sent `Authorization: Bearer undefined` on every session resume |
+| **Root cause** | The auth model migrated from `localStorage` token + `Authorization: Bearer` header to `httpOnly` cookie with `credentials: 'include'`. But the client-side code wasn't updated simultaneously — it still destructured `.token` from the response |
+| **Fix** | Removed token from session context interface, replaced with an `authenticated` boolean. Client uses `credentials: 'include'` on all fetches. WebSocket console changed from `?token=` query param to `request.session` cookie |
+| **Preventive** | When migrating auth mechanisms, update BOTH server and client in the same commit. Test session resumption (page refresh) explicitly — not just initial login |
+
+### BUG-035: Login page displayed sandbox credentials in production
+
+| Field | Detail |
+|-------|--------|
+| **What we tried** | Login page showed PROV123/NURSE123/PHARM123 credentials for convenience |
+| **Error** | These would be visible to any user in production, undermining trust |
+| **Root cause** | No environment check gated the credential display |
+| **Fix** | Gated behind `NODE_ENV !== 'production'` — credentials only shown in development/sandbox |
+| **Preventive** | Any convenience feature that exposes credentials or internal details must be gated behind `NODE_ENV !== 'production'` |
+
+---
+
 ## Phase 21 — VistA HL7/HLO Interop Telemetry
 
 ### BUG-023: Fastify preHandler with non-void return causes infinite route hang
@@ -330,6 +441,25 @@
 | **Root cause** | Windows PowerShell 5.1's `Invoke-WebRequest` uses the IE engine by default. On systems where Internet Explorer first-launch config hasn't completed, it pops a modal dialog that blocks the pipeline |
 | **Fix** | Always add `-UseBasicParsing` flag to `Invoke-WebRequest` calls |
 | **Preventive** | **Every `Invoke-WebRequest` in scripts and automation must include `-UseBasicParsing`.** Alternatively, use `curl.exe` (built into Windows 10+) which has no such issue. |
+
+### BUG-036: `buildBye()` is dead code — `disconnect()` sends raw `#BYE#` without XWB framing
+
+| | |
+|---|---|
+| **Symptom** | `buildBye()` constructs a proper XWB-framed disconnect message, but `disconnect()` sends raw `Buffer.from("#BYE#", "latin1")` instead |
+| **Root cause** | `disconnect()` and `tmpDisconnect()` both send raw `#BYE#` without calling `buildBye()`. VistA expects XWB-framed messages, but the raw disconnect "works" because the socket is destroyed immediately after — the server never parses the malformed message |
+| **Risk** | If VistA ever expects a clean protocol shutdown (for session cleanup or audit trailing), the job may be left orphaned on the VistA side. Could lead to resource leaks under load |
+| **Fix** | Known technical debt. Should be changed to use `buildBye()` for correctness, though functionally harmless in current usage |
+| **Preventive** | When adding new protocol message builders, verify they're actually called. Dead code in protocol implementations is especially dangerous because it suggests correctness that doesn't exist |
+
+### BUG-037: `verify-latest.ps1` doesn't include Phase 20/21 checks — CI coverage gap
+
+| | |
+|---|---|
+| **Symptom** | Running `verify-latest.ps1` (as required by build protocol Step 3) gives a false sense of coverage — Phase 21 features are completely untested |
+| **Root cause** | `verify-latest.ps1` is a one-liner that delegates to `verify-phase19-reporting-governance.ps1`. There's no `verify-phase21-*.ps1` script. Phase 21 VERIFY has only manual curl commands |
+| **Fix** | Phase 21 checks must be done via manual curl commands from the Phase 21 VERIFY prompt until a dedicated script is written |
+| **Preventive** | When adding new phases, always update `verify-latest.ps1` to delegate to the newest verifier. Each phase should have an automated verification script, not just manual steps |
 
 ---
 
@@ -403,6 +533,49 @@ When in doubt about how an RPC should be called, look at how CPRS does it.
 The MUMPS source in `ORWDAL32.m`, `GMRAGUI1.m`, etc. always matches what
 CPRS sends. If your code disagrees with CPRS, your code is wrong.
 
+### Lesson 9: VistA Multi-Step Write Flows Are the Norm
+
+Most VistA write operations require multiple dependent RPC calls, not a single
+"create" endpoint. Examples:
+- **Medications**: LOCK → AUTOACK/SAVE → UNLOCK
+- **Notes**: CREATE RECORD → SET TEXT
+- **Orders**: LOCK → SAVE → SAVECHK → SEND (with e-sig) → UNLOCK
+
+Each step depends on the prior step's output. Never assume one RPC call
+suffices for a write operation.
+
+### Lesson 10: VistA Write-Read Asymmetry
+
+Data written via VistA RPCs often doesn't immediately appear in read RPCs:
+- Unsigned orders don't appear in `ORWPS ACTIVE` (BUG-030)
+- Unsigned notes need CONTEXT=2 merge in `TIU DOCUMENTS BY CONTEXT` (BUG-033)
+- Allergies may need a cache refresh after `ORWDAL32 SAVE ALLERGY`
+
+Always use a broad enough context/filter to capture newly created records in
+their initial unsigned/unverified state.
+
+### Lesson 11: Auth Migration — Server and Client Must Move Together
+
+The Phase 15 migration from Bearer token to httpOnly cookie caused BUG-034
+because the server removed the token from responses before the client stopped
+reading it. Auth mechanism changes must update both layers atomically and
+test session resumption (page refresh), not just initial login.
+
+### Lesson 12: In-Memory State Is Lost on Restart
+
+Several subsystems (integration registry, export jobs, rate limit buckets)
+store state in JavaScript `Map`s that are lost on process restart. This is
+acceptable for sandbox/MVP but must be replaced with persistent storage
+(Redis, database) before multi-instance production deployments.
+
+### Lesson 13: Use `safeCallRpc`, Not Direct `callRpc`
+
+Phase 15 introduced a circuit breaker in `rpc-resilience.ts` (`safeCallRpc`)
+with closed→open after 5 failures, half-open after 30s, max 2 retries
+with exponential backoff. All RPC calls should use this wrapper. Direct
+`callRpc` bypasses the circuit breaker and could hammer a failing VistA.
+Phase 21 interop routes do NOT currently use this pattern (known debt).
+
 ---
 
 ## Quick Reference: Error → Fix Lookup
@@ -426,3 +599,14 @@ CPRS sends. If your code disagrees with CPRS, your code is wrong.
 | KILL destroyed all context RPCs | BUG-024 | Never KILL VistA globals to rebuild — always append |
 | Docker MUMPS quoting breaks | BUG-025 | Write .m files locally, `docker cp`, then `mumps -run ROUTINE` |
 | PowerShell curl blocks on dialog | BUG-026 | Always use `-UseBasicParsing` with `Invoke-WebRequest` |
+| Blank drug names in ORWPS ACTIVE | BUG-027 | Use `ORWORR GETTXT` fallback for display names |
+| Medication continuation lines parsed as separate records | BUG-028 | Split on `~` prefix first, then join continuation lines |
+| Concurrent order corruption in multi-user | BUG-029 | Wrap orders in `ORWDX LOCK` / `ORWDX UNLOCK` |
+| POST succeeds but GET doesn't show new med | BUG-030 | Unsigned orders don't appear in ORWPS ACTIVE — by design |
+| No "create problem" RPC found | BUG-031 | `GMPLUTL.CREATE` is internal only — use honest blocker response |
+| D/C summary query returns empty | BUG-032 | Use CLASS=244 for Discharge Summaries, not CLASS=3 |
+| New notes don't appear after creation | BUG-033 | Query both CONTEXT=1 (signed) and CONTEXT=2 (unsigned), merge |
+| `Bearer undefined` sent on page refresh | BUG-034 | Remove token from client context; use httpOnly cookie auth |
+| Sandbox credentials visible in production | BUG-035 | Gate behind `NODE_ENV !== 'production'` |
+| `buildBye()` dead code / unframed disconnect | BUG-036 | Known debt — `disconnect()` sends raw `#BYE#` instead |
+| `verify-latest.ps1` doesn't test Phase 21 | BUG-037 | Update to delegate to newest phase verifier |
