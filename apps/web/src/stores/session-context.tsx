@@ -24,8 +24,6 @@ export interface SessionContextValue {
   authenticated: boolean;
   /** Current user info (null if not authenticated) */
   user: SessionUser | null;
-  /** Session token (for API calls) */
-  token: string | null;
   /** Login with access/verify codes */
   login: (accessCode: string, verifyCode: string) => Promise<{ ok: boolean; error?: string }>;
   /** Logout and clear session */
@@ -39,7 +37,6 @@ export interface SessionContextValue {
 /* ------------------------------------------------------------------ */
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
-const LS_TOKEN_KEY = 'ehr_session_token';
 
 /* ------------------------------------------------------------------ */
 /* Context + Provider                                                  */
@@ -51,32 +48,19 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
   const [user, setUser] = useState<SessionUser | null>(null);
-  const [token, setToken] = useState<string | null>(null);
 
-  /** Check existing session on mount. */
+  /** Check existing session on mount (cookie sent automatically). */
   useEffect(() => {
-    const savedToken = localStorage.getItem(LS_TOKEN_KEY);
-    if (!savedToken) {
-      setReady(true);
-      return;
-    }
-
-    fetch(`${API_BASE}/auth/session`, {
-      credentials: 'include',
-      headers: { Authorization: `Bearer ${savedToken}` },
-    })
+    fetch(`${API_BASE}/auth/session`, { credentials: 'include' })
       .then((res) => res.json())
       .then((data) => {
         if (data.ok && data.authenticated && data.session) {
           setUser(data.session);
-          setToken(savedToken);
           setAuthenticated(true);
-        } else {
-          localStorage.removeItem(LS_TOKEN_KEY);
         }
       })
       .catch(() => {
-        localStorage.removeItem(LS_TOKEN_KEY);
+        // no valid session — stay unauthenticated
       })
       .finally(() => setReady(true));
   }, []);
@@ -92,9 +76,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       const data = await res.json();
       if (data.ok && data.session) {
         setUser(data.session);
-        setToken(data.session.token);
         setAuthenticated(true);
-        localStorage.setItem(LS_TOKEN_KEY, data.session.token);
         return { ok: true };
       }
       return { ok: false, error: data.error || 'Login failed' };
@@ -104,24 +86,16 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = useCallback(async () => {
-    const savedToken = localStorage.getItem(LS_TOKEN_KEY);
-    if (savedToken) {
-      try {
-        await fetch(`${API_BASE}/auth/logout`, {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${savedToken}`,
-          },
-          body: '{}',
-        });
-      } catch { /* best-effort */ }
-    }
+    try {
+      await fetch(`${API_BASE}/auth/logout`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}',
+      });
+    } catch { /* best-effort */ }
     setUser(null);
-    setToken(null);
     setAuthenticated(false);
-    localStorage.removeItem(LS_TOKEN_KEY);
   }, []);
 
   const hasRole = useCallback((...roles: UserRole[]) => {
@@ -130,7 +104,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }, [user]);
 
   return (
-    <SessionContext.Provider value={{ ready, authenticated, user, token, login, logout, hasRole }}>
+    <SessionContext.Provider value={{ ready, authenticated, user, login, logout, hasRole }}>
       {children}
     </SessionContext.Provider>
   );

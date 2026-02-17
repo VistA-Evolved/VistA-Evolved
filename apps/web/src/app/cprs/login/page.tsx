@@ -80,7 +80,7 @@ export default function CPRSLoginPage() {
               type="text"
               value={accessCode}
               onChange={(e) => setAccessCode(e.target.value)}
-              placeholder="PROV123"
+              placeholder={process.env.NODE_ENV !== 'production' ? 'PROV123' : 'Access Code'}
               autoFocus
             />
           </div>
@@ -91,7 +91,7 @@ export default function CPRSLoginPage() {
               type="password"
               value={verifyCode}
               onChange={(e) => setVerifyCode(e.target.value)}
-              placeholder="PROV123!!"
+              placeholder={process.env.NODE_ENV !== 'production' ? 'PROV123!!' : 'Verify Code'}
             />
           </div>
           <button
@@ -104,16 +104,18 @@ export default function CPRSLoginPage() {
           </button>
         </form>
 
-        <div style={{ marginTop: 16, padding: 8, background: 'var(--cprs-bg)', borderRadius: 4, fontSize: 11, color: 'var(--cprs-text-muted)' }}>
-          <strong>Sandbox accounts:</strong>
-          <table style={{ width: '100%', marginTop: 4, fontSize: 10 }}>
-            <tbody>
-              <tr><td>PROV123 / PROV123!!</td><td>Provider (Clyde)</td></tr>
-              <tr><td>NURSE123 / NURSE123!!</td><td>Nurse (Helen)</td></tr>
-              <tr><td>PHARM123 / PHARM123!!</td><td>Pharmacist (Linda)</td></tr>
-            </tbody>
-          </table>
-        </div>
+        {process.env.NODE_ENV !== 'production' && (
+          <div style={{ marginTop: 16, padding: 8, background: 'var(--cprs-bg)', borderRadius: 4, fontSize: 11, color: 'var(--cprs-text-muted)' }}>
+            <strong>Sandbox accounts:</strong>
+            <table style={{ width: '100%', marginTop: 4, fontSize: 10 }}>
+              <tbody>
+                <tr><td>PROV123 / PROV123!!</td><td>Provider (Clyde)</td></tr>
+                <tr><td>NURSE123 / NURSE123!!</td><td>Nurse (Helen)</td></tr>
+                <tr><td>PHARM123 / PHARM123!!</td><td>Pharmacist (Linda)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );

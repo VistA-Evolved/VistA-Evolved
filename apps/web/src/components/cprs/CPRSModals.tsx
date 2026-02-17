@@ -172,7 +172,7 @@ function GraphingModal({ onClose }: { onClose: () => void }) {
 }
 
 function LegacyConsoleModal({ onClose }: { onClose: () => void }) {
-  const { token, hasRole } = useSession();
+  const { authenticated, hasRole } = useSession();
   const [output, setOutput] = useState<string[]>([
     '> Legacy RPC Console — Phase 13 (WebSocket)',
     '> Type a command and press Enter.',
@@ -186,7 +186,7 @@ function LegacyConsoleModal({ onClose }: { onClose: () => void }) {
 
   // Connect WebSocket on mount
   useEffect(() => {
-    if (!token) {
+    if (!authenticated) {
       setOutput((prev) => [...prev, '[ERROR] Not authenticated. Please log in first.']);
       return;
     }
@@ -197,7 +197,8 @@ function LegacyConsoleModal({ onClose }: { onClose: () => void }) {
 
     let ws: WebSocket;
     try {
-      const wsUrl = `ws://127.0.0.1:3001/ws/console?token=${token}`;
+      // Cookie is sent automatically by the browser on WS upgrade request
+      const wsUrl = `ws://127.0.0.1:3001/ws/console`;
       ws = new WebSocket(wsUrl);
     } catch {
       setOutput((prev) => [...prev, '[ERROR] Failed to create WebSocket connection.']);
@@ -252,7 +253,7 @@ function LegacyConsoleModal({ onClose }: { onClose: () => void }) {
 
     setWsRef(ws);
     return () => { ws.close(); };
-  }, [token, hasRole]);
+  }, [authenticated, hasRole]);
 
   async function handleExecute() {
     const cmd = input.trim();
