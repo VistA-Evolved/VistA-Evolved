@@ -1,31 +1,35 @@
 {
-  "feature_title": "Phase 18 VERIFY — Enterprise Interop + Imaging Platform Integration",
-  "stage": "verified",
+  "feature_title": "Phase 19 — Reporting + Export Governance + Ops Analytics + Optional RCM",
+  "stage": "implemented",
   "status": "complete",
-  "prompt_ref_path": "prompts/20-PHASE-18-INTEROP-IMAGING/20-99-Phase18-Interop-Imaging-VERIFY.md",
-  "runbook_path": "docs/runbooks/interop-imaging-phase18.md",
-  "verify_script": "scripts/verify-phase18-interop-imaging.ps1",
+  "prompt_ref_path": "prompts/22-PHASE-19-REPORTING-GOVERNANCE/22-01-Phase19-Reporting-Governance-IMPLEMENT.md",
+  "runbook_path": "docs/runbooks/vista-reporting-export-governance.md",
+  "verify_script": "scripts/verify-phase19-reporting-governance.ps1",
   "verify_results": {
-    "pass": 164,
+    "pass": 130,
     "fail": 0,
     "warn": 0
   },
-  "live_test_results": {
-    "total_pass": 235,
-    "total_fail": 0,
-    "sections_tested": 10
-  },
-  "fixes_applied": [
-    "RBAC role mapping: PROV123 now maps to admin (was provider)",
-    "Prompt rename: 20-02 to 20-99 (VERIFY suffix)",
-    "Verifier script updated for 20-99",
-    "Runbooks README: added Phase 17+18 links"
+  "deliverables": [
+    "A: Reporting API (4 GET + export POST + job listing + download)",
+    "B: Export governance (policy engine, job model, CSV/JSON, audit trail)",
+    "C: Admin reports UI (5-tab dashboard at /cprs/admin/reports)",
+    "D: RCM placeholder (feature-flagged at /cprs/admin/rcm)",
+    "E: Prompts, runbook, verifier (130 checks)"
   ],
   "files_changed": [
-    "apps/api/src/auth/session-store.ts",
-    "docs/runbooks/README.md",
-    "prompts/20-PHASE-18-INTEROP-IMAGING/20-99-Phase18-Interop-Imaging-VERIFY.md",
-    "scripts/verify-phase18-interop-imaging.ps1"
+    "apps/api/src/config/report-config.ts",
+    "apps/api/src/lib/export-governance.ts",
+    "apps/api/src/routes/reporting.ts",
+    "apps/api/src/index.ts",
+    "apps/api/src/middleware/security.ts",
+    "apps/api/src/lib/audit.ts",
+    "apps/api/src/config/tenant-config.ts",
+    "apps/web/src/app/cprs/admin/reports/page.tsx",
+    "apps/web/src/app/cprs/admin/rcm/page.tsx",
+    "docs/runbooks/vista-reporting-export-governance.md",
+    "scripts/verify-phase19-reporting-governance.ps1",
+    "scripts/verify-latest.ps1"
   ],
-  "commit_sha": "337df2d"
+  "commit_sha": "pending"
 }

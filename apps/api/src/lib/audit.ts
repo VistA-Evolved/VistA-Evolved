@@ -77,7 +77,12 @@ export type AuditAction =
   | "integration.probe"
   | "integration.dashboard-view"
   | "integration.device-onboard"
-  | "imaging.viewer-launch";
+  | "imaging.viewer-launch"
+  // Phase 19: Reporting & export governance audit events
+  | "report.generate"
+  | "export.request"
+  | "export.download"
+  | "export.policy-check";
 
 export type AuditOutcome = "success" | "failure" | "denied" | "error";
 

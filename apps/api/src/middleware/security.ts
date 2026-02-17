@@ -64,7 +64,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/(health|ready|vista\/ping|metrics|version)$/, auth: "none" },
   { pattern: /^\/auth\//, auth: "none" },
   { pattern: /^\/admin\/my-tenant$/, auth: "session" }, // Phase 17: client tenant config (any user)
-  { pattern: /^\/(admin|audit)\//, auth: "admin" },
+  { pattern: /^\/(admin|audit|reports)\//, auth: "admin" },
   { pattern: /^\/ws\//, auth: "session" }, // WebSocket console (has own role check too)
   { pattern: /^\/vista\//, auth: "session" },
   // Default: session required for anything else
