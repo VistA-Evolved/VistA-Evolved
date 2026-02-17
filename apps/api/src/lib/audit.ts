@@ -71,7 +71,13 @@ export type AuditAction =
   | "rpc.console-call"
   | "clinical.draft-create"
   | "clinical.draft-submit"
-  | "clinical.draft-delete";
+  | "clinical.draft-delete"
+  // Phase 18: Integration + Imaging audit events
+  | "integration.config-change"
+  | "integration.probe"
+  | "integration.dashboard-view"
+  | "integration.device-onboard"
+  | "imaging.viewer-launch";
 
 export type AuditOutcome = "success" | "failure" | "denied" | "error";
 
