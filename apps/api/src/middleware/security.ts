@@ -18,6 +18,7 @@ import { RATE_LIMIT_CONFIG } from "../config/server-config.js";
 import { getSession } from "../auth/session-store.js";
 import type { SessionData } from "../auth/session-store.js";
 import { disconnect as disconnectRpcBroker } from "../vista/rpcBrokerClient.js";
+import { stopAggregationJob } from "../services/analytics-aggregator.js";
 
 /* ================================================================== */
 /* CORS origin allowlist                                                */
@@ -69,6 +70,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/imaging\/devices/, auth: "session" }, // Phase 24: device registry (imaging_admin checked in handler)
   { pattern: /^\/imaging\/audit/, auth: "session" }, // Phase 24: imaging audit (imaging_admin checked in handler)
   { pattern: /^\/security\/break-glass/, auth: "session" }, // Phase 24: break-glass
+  { pattern: /^\/analytics\//, auth: "session" }, // Phase 25: analytics (permission checked in handler)
   { pattern: /^\/admin\/my-tenant$/, auth: "session" }, // Phase 17: client tenant config (any user)
   { pattern: /^\/(admin|audit|reports)\//, auth: "admin" },
   { pattern: /^\/ws\//, auth: "session" }, // WebSocket console (has own role check too)
@@ -354,6 +356,8 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
         await server.close();
         // Phase 21: disconnect RPC broker to prevent orphaned VistA jobs
         try { disconnectRpcBroker(); } catch { /* socket may already be closed */ }
+        // Phase 25: stop analytics aggregation job
+        try { stopAggregationJob(); } catch { /* timer may already be cleared */ }
         log.info("Server closed gracefully");
       } catch (err: any) {
         log.error("Error during shutdown", { error: err.message });

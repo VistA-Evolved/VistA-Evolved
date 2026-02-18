@@ -1,0 +1,39 @@
+# Analytics SQL Layer — Phase 25D
+#
+# YottaDB/Octo (ROcto for read-only SQL access).
+# This provides the SQL analytics endpoint for BI tool integration.
+#
+# Octo is the SQL front-end for YottaDB, and ROcto is the read-only
+# PostgreSQL-wire-compatible endpoint that BI tools (Metabase, Tableau,
+# Grafana, etc.) connect to.
+#
+# Start: docker compose -f services/analytics/docker-compose.yml up -d
+# Connect: psql -h 127.0.0.1 -p 1338 -U bi_readonly -d analytics
+#
+# IMPORTANT: This is for AGGREGATED metrics only. No PHI passes through
+# this SQL layer. See docs/analytics/phase25-data-classification.md.
+
+services:
+  octo:
+    image: yottadb/octo:latest-master
+    container_name: ve-analytics-octo
+    ports:
+      - "1338:1338"   # ROcto (PostgreSQL wire protocol)
+    environment:
+      ydb_dist: /opt/yottadb/current
+      ydb_gbldir: /data/octo.gld
+      ydb_routines: "/data/o(/data/r) /opt/yottadb/current/plugin/o(/opt/yottadb/current/plugin/r) /opt/yottadb/current/utf8/libyottadbutil.so"
+      ydb_ci: /opt/yottadb/current/plugin/octo/calltab.ci
+      ROCTO_PORT: "1338"
+    volumes:
+      - octo-data:/data
+      - ./octo-seed.sql:/docker-entrypoint-initdb.d/seed.sql:ro
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo 'SELECT 1;' | /opt/yottadb/current/plugin/bin/octo"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+volumes:
+  octo-data:

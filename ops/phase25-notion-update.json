@@ -1,0 +1,23 @@
+{
+  "featureTitle": "Phase 25 — Enterprise BI + Analytics + Clinical Reporting",
+  "stage": "Implemented",
+  "status": "Complete",
+  "promptRefPath": "prompts/27-PHASE-25-BI-ANALYTICS/27-01-bi-analytics-IMPLEMENT.md",
+  "verifyPromptPath": "prompts/27-PHASE-25-BI-ANALYTICS/27-99-bi-analytics-VERIFY.md",
+  "runbookPath": "docs/runbooks/analytics-octo-rocto.md",
+  "classificationDocPath": "docs/analytics/phase25-data-classification.md",
+  "verifyScriptUsed": "scripts/verify-phase25-bi-analytics.ps1",
+  "commitSHA": "pending",
+  "deliverables": [
+    "Data classification document (4 classes)",
+    "Analytics config (analytics-config.ts)",
+    "PHI-safe analytics event store (ring buffer, hashed users)",
+    "Hourly/daily aggregation engine (percentiles, series)",
+    "Enhanced VistA clinical report pipeline (cached, sanitized, audited)",
+    "Analytics REST routes (dashboards, events, export, health, clinical-reports)",
+    "Analytics dashboard UI (4 tabs: Ops, Clinical, Events, Export)",
+    "Octo/ROcto Docker compose + SQL schema (7 tables, 2 views)",
+    "Security middleware integration (AUTH_RULES, shutdown)",
+    "Verification script (60+ gates)"
+  ]
+}

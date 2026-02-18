@@ -22,6 +22,7 @@ import adminRoutes from "./routes/admin.js";
 import interopRoutes from "./routes/interop.js";
 import vistaInteropRoutes from "./routes/vista-interop.js";
 import reportingRoutes from "./routes/reporting.js";
+import analyticsRoutes from "./routes/analytics-routes.js";
 // Phase 15: Enterprise hardening imports
 import { registerSecurityMiddleware, corsOriginValidator } from "./middleware/security.js";
 import { log } from "./lib/logger.js";
@@ -29,6 +30,8 @@ import { audit, queryAuditEvents, getAuditStats } from "./lib/audit.js";
 import { getRpcHealthSummary, getCircuitBreakerStats, resetCircuitBreaker, invalidateCache, safeCallRpc, safeCallRpcWithList } from "./lib/rpc-resilience.js";
 // Phase 18: Integration registry for metrics
 import { getIntegrationHealthSummary } from "./config/integration-registry.js";
+// Phase 25: Analytics aggregation engine
+import { startAggregationJob, stopAggregationJob } from "./services/analytics-aggregator.js";
 
 /* ================================================================== */
 /* Phase 15B helpers: safe error + session-based audit actor             */
@@ -127,6 +130,9 @@ server.register(vistaInteropRoutes);
 
 // Register reporting & export routes (Phase 19A)
 server.register(reportingRoutes);
+
+// Register analytics & BI routes (Phase 25)
+server.register(analyticsRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);
@@ -1793,8 +1799,10 @@ try {
   await server.listen({ port, host });
   log.info("Server listening", { host, port, url: `http://${host}:${port}` });
   audit("system.startup", "success", { duz: "system", name: "system", role: "system" }, {
-    detail: { host, port, phase: "21-interop-telemetry", commitSha: process.env.BUILD_SHA || "dev" },
+    detail: { host, port, phase: "25-bi-analytics", commitSha: process.env.BUILD_SHA || "dev" },
   });
+  // Phase 25: Start analytics aggregation background job
+  startAggregationJob();
 } catch (err) {
   const e = err as NodeJS.ErrnoException;
   if (e.code === "EADDRINUSE") {

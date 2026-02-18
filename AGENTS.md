@@ -286,6 +286,32 @@ most recent phase verifier and reports PASS/FAIL for each gate.
     Phase 24 switched from raw `requireAdmin()` (role check) to
     `requireImagingAdmin()` (imaging permission check). This means the same
     permission model applies to all imaging write operations.
+40. **Analytics events NEVER contain patient DFN.** The `AnalyticsEvent`
+    schema in `analytics-store.ts` structurally lacks a DFN field. User IDs
+    are salted SHA-256 hashed via `hashUserId()`. Tags are sanitized by
+    `sanitizeAnalyticsTags()` to strip PHI patterns. See
+    `docs/analytics/phase25-data-classification.md` for the 4-class model.
+41. **Analytics permissions are role-mapped, not new session fields.**
+    `analytics_viewer` and `analytics_admin` permissions are derived from
+    `UserRole` via `ANALYTICS_ROLE_PERMISSIONS` in `analytics-config.ts`.
+    Providers/nurses/pharmacists get `analytics_viewer`; only admins get
+    `analytics_admin` (exports + forced aggregation). Clerks get neither.
+42. **Analytics aggregation runs on a background interval timer.**
+    `startAggregationJob()` is called at server startup in `index.ts`.
+    `stopAggregationJob()` is called during graceful shutdown in
+    `security.ts`. The interval defaults to 1 hour (`ANALYTICS_AGGREGATION_INTERVAL_MS`).
+43. **Clinical report pipeline caches per user+patient with short TTL.**
+    `clinical-reports.ts` caches `ORWRP REPORT TEXT` results for 30s
+    (configurable via `CLINICAL_REPORT_CACHE_TTL_MS`). The cache key
+    includes DUZ, DFN, report ID, and HS type. Max 200 cache entries.
+44. **ROcto SQL is read-only by design.** The Octo/ROcto container
+    (port 1338) exposes PostgreSQL wire protocol for BI tools. Only
+    aggregated metrics tables — no PHI. The `bi_readonly` user has
+    SELECT-only access. ETL writer is a future enhancement.
+45. **Analytics `AUTH_RULE` uses `"session"` auth level, not `"admin"`.**
+    `/analytics/*` routes match `{ pattern: /^\/analytics\//, auth: "session" }`.
+    Fine-grained permission checks (`analytics_viewer`, `analytics_admin`)
+    happen inside route handlers via `requireAnalyticsPermission()`.
 
 ---
 
@@ -313,6 +339,34 @@ docs/runbooks/
 
 scripts/
   verify-imaging-devices.ps1  — Device registry test harness (Phase 24)
+```
+
+## 7b. Architecture Quick Map (Phase 25 additions)
+
+```
+apps/api/src/
+  config/
+    analytics-config.ts       — Analytics permissions, event/aggregation/SQL config (Phase 25)
+  services/
+    analytics-store.ts        — PHI-safe analytics event stream (ring buffer, hashing) (Phase 25)
+    analytics-aggregator.ts   — Hourly/daily aggregation engine (Phase 25)
+    clinical-reports.ts       — Enhanced VistA clinical report pipeline (Phase 25)
+  routes/
+    analytics-routes.ts       — Analytics REST endpoints (Phase 25)
+
+apps/web/src/app/cprs/admin/analytics/
+  page.tsx                    — Analytics dashboard UI (4 tabs) (Phase 25)
+
+services/analytics/
+  docker-compose.yml          — YottaDB/Octo/ROcto for SQL analytics (Phase 25)
+  octo-seed.sql               — SQL DDL for aggregated metrics tables (Phase 25)
+
+docs/
+  analytics/phase25-data-classification.md — Data classification document (Phase 25)
+  runbooks/analytics-octo-rocto.md         — Analytics SQL runbook (Phase 25)
+
+scripts/
+  verify-phase25-bi-analytics.ps1          — Phase 25 verification (60+ gates)
 ```
 
 ---
