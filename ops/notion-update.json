@@ -1,31 +1,37 @@
 {
-  "feature_title": "Phase 31 — Patient-Directed Sharing + Exports + SHC Lane",
+  "feature_title": "Phase 32 — Secure Messaging + Refill Requests + Tasks (VistA-first)",
   "stage": "implemented",
   "status": "complete",
-  "prompt_ref_path": "prompts/33-PHASE-31-SHARING-EXPORTS/33-01-sharing-exports-IMPLEMENT.md",
+  "prompt_ref_path": "prompts/34-PHASE-32-MESSAGING-REFILLS/34-01-messaging-refills-IMPLEMENT.md",
   "runbook_paths": [
-    "docs/runbooks/phase31-sharing-exports.md"
+    "docs/runbooks/phase32-messaging-refills.md"
   ],
-  "verify_script": "scripts/verify-phase31-sharing-exports.ps1",
+  "verify_script": "manual-tsc-check",
   "verify_results": {
-    "api_tsc": "PASS — 0 errors",
-    "portal_tsc": "PASS — 0 errors"
+    "api_tsc": "PASS -- 0 errors",
+    "web_tsc": "PASS -- 0 errors",
+    "portal_tsc": "PASS -- 0 errors"
   },
   "files_created": [
-    "apps/api/src/services/portal-shc.ts",
-    "apps/portal/src/app/dashboard/sharing/page.tsx",
-    "apps/portal/src/app/dashboard/exports/page.tsx",
-    "docs/runbooks/phase31-sharing-exports.md",
-    "scripts/verify-phase31-sharing-exports.ps1",
-    "prompts/33-PHASE-31-SHARING-EXPORTS/33-01-sharing-exports-IMPLEMENT.md"
+    "apps/api/src/services/portal-refills.ts",
+    "apps/api/src/services/portal-tasks.ts",
+    "apps/web/src/components/cprs/panels/MessagingTasksPanel.tsx",
+    "apps/portal/src/app/dashboard/refills/page.tsx",
+    "apps/portal/src/app/dashboard/tasks/page.tsx",
+    "docs/runbooks/phase32-messaging-refills.md",
+    "prompts/34-PHASE-32-MESSAGING-REFILLS/34-01-messaging-refills-IMPLEMENT.md"
   ],
   "files_modified": [
-    "apps/api/src/services/portal-sharing.ts",
-    "apps/api/src/services/portal-pdf.ts",
+    "apps/api/src/services/portal-messaging.ts",
     "apps/api/src/services/portal-audit.ts",
     "apps/api/src/routes/portal-core.ts",
+    "apps/web/src/lib/contracts/data/tabs.json",
+    "apps/web/src/components/cprs/CPRSTabStrip.tsx",
+    "apps/web/src/components/cprs/panels/index.ts",
+    "apps/web/src/app/cprs/chart/[dfn]/[tab]/page.tsx",
     "apps/portal/src/components/portal-nav.tsx",
     "apps/portal/src/lib/api.ts",
+    "apps/portal/src/app/dashboard/medications/page.tsx",
     "ops/summary.md",
     "ops/notion-update.json"
   ],

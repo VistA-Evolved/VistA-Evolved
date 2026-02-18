@@ -1,11 +1,40 @@
-﻿# Ops Summary — Phase 31: Patient-Directed Sharing + Exports + SHC Lane
+﻿# Ops Summary — Phase 32: Secure Messaging + Refill Requests + Tasks
 
 ## What Changed
 
-### Enhanced Sharing Service
-- `portal-sharing.ts` — TTL reduced to 60 min (was 72h), max 24h (was 7d). Lockout after 3 attempts (was 5). One-time redeem option (auto-revokes after first access). CAPTCHA stub validation. Curated section subset enforcement (meds, allergies, problems, immunizations, labs only).
+Phase 32 adds secure messaging enhancements, medication refill requests,
+and a unified tasks/notifications system to the patient portal and CPRS shell.
 
-### New Export Capabilities
+### Component A: Messaging Enhancements
+- Proxy send-on-behalf, clinician reply from CPRS Tasks tab
+- Staff message queue, rate limiter (10/hr), blocklist, attachments OFF by default
+
+### Component B: Refill Requests (VistA-first)
+- Patient-initiated refill workflow (requested -> pending_review -> approved/denied)
+- Target RPC: PSO RENEW (pending_filing in sandbox)
+- Rate limiter (5/hr), duplicate detection, patient cancel
+
+### Component C: Tasks & Notifications
+- 6 categories, 4 priority levels, auto-expiry, badge counts
+- Patient dismiss/complete, staff queue
+
+### Component D: CPRS Integration
+- New Tasks tab (CT_TASKS, id: 14) with Messages/Refills/Tasks sub-tabs
+
+## Files
+
+7 new + 10 modified (see docs/runbooks/phase32-messaging-refills.md)
+
+## Verify
+
+TSC --noEmit: PASS (all 3 apps)
+
+## Follow-ups
+
+- Wire PSO RENEW when production VistA has it
+- Task auto-generation on appointment/message events
+- ORB notification bridge
+- Staff role check on /portal/staff/* routes
 - `portal-pdf.ts` — Added immunizations + labs formatters. Added `buildStructuredJsonExport()` for FHIR-mappable JSON export.
 - New JSON export route: `GET /portal/export/json` with optional `?sections=` filter.
 

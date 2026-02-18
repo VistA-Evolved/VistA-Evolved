@@ -1,5 +1,5 @@
 /**
- * Portal Core Routes — Phase 27 → Phase 31 enhancements
+ * Portal Core Routes — Phase 27 → Phase 32 enhancements
  *
  * Registers all Phase 27+ portal routes:
  *   - POST /portal/export/section/:section — PDF export per section
@@ -26,6 +26,17 @@
  *   - POST /portal/proxy/grant — Grant proxy access
  *   - POST /portal/proxy/revoke — Revoke proxy access
  *   - GET /portal/proxy/list — List proxies for patient
+ *   Phase 32:
+ *   - GET /portal/refills — Patient refill requests
+ *   - POST /portal/refills — Submit refill request
+ *   - POST /portal/refills/:id/cancel — Cancel refill request
+ *   - GET /portal/tasks — Patient tasks/notifications
+ *   - GET /portal/tasks/counts — Badge counts by category
+ *   - POST /portal/tasks/:id/dismiss — Dismiss a task
+ *   - POST /portal/tasks/:id/complete — Complete a task
+ *   - GET /portal/staff/refills — Staff refill queue
+ *   - POST /portal/staff/refills/:id/review — Approve/deny refill
+ *   - GET /portal/staff/tasks — Staff task queue
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
@@ -87,6 +98,24 @@ import {
   getProxiesForPatient,
   evaluateSensitivity,
 } from "../services/portal-sensitivity.js";
+import {
+  getPatientRefills,
+  requestRefill,
+  cancelRefill,
+  getStaffRefillQueue,
+  reviewRefill,
+} from "../services/portal-refills.js";
+import {
+  getPatientTasks,
+  getPatientTaskCounts,
+  getStaffTaskQueue,
+  dismissTask,
+  completeTask,
+} from "../services/portal-tasks.js";
+import {
+  getStaffMessageQueue,
+  clinicianReply,
+} from "../services/portal-messaging.js";
 
 /* ------------------------------------------------------------------ */
 /* Session import — reuse from portal-auth                              */
@@ -695,5 +724,164 @@ export default async function portalCoreRoutes(
     return reply.send({ ok: true, filters });
   });
 
-  log.info("Portal core routes registered (Phase 27 → Phase 31)");
+  /* ================================================================ */
+  /* Refill Requests (Phase 32)                                         */
+  /* ================================================================ */
+
+  server.get("/portal/refills", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    const refills = getPatientRefills(session.patientDfn);
+    return reply.send({ ok: true, refills });
+  });
+
+  server.post("/portal/refills", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    const body = (request.body as any) || {};
+
+    if (!body.medicationName || !body.medicationId) {
+      return reply.code(400).send({ ok: false, error: "medicationName and medicationId are required" });
+    }
+
+    const result = requestRefill({
+      patientDfn: session.patientDfn,
+      patientName: session.patientName,
+      medicationName: body.medicationName,
+      medicationId: body.medicationId,
+      submittedBy: session.patientDfn,
+      submittedByName: session.patientName,
+      isProxy: false,
+    });
+
+    if ("error" in result) {
+      return reply.code(429).send({ ok: false, error: result.error });
+    }
+    return reply.code(201).send({ ok: true, refill: result });
+  });
+
+  server.post("/portal/refills/:id/cancel", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    const { id } = request.params as { id: string };
+
+    const cancelled = cancelRefill(id, session.patientDfn);
+    if (!cancelled) {
+      return reply.code(404).send({ ok: false, error: "Refill request not found or cannot be cancelled" });
+    }
+    return reply.send({ ok: true, refill: cancelled });
+  });
+
+  /* ================================================================ */
+  /* Tasks & Notifications (Phase 32)                                   */
+  /* ================================================================ */
+
+  server.get("/portal/tasks", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    const query = (request.query as any) || {};
+
+    const statusFilter = query.status ? query.status.split(",") : undefined;
+    const categoryFilter = query.category ? query.category.split(",") : undefined;
+
+    const tasks = getPatientTasks(session.patientDfn, { statusFilter, categoryFilter });
+    return reply.send({ ok: true, tasks });
+  });
+
+  server.get("/portal/tasks/counts", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    const counts = getPatientTaskCounts(session.patientDfn);
+    return reply.send({ ok: true, ...counts });
+  });
+
+  server.post("/portal/tasks/:id/dismiss", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    const { id } = request.params as { id: string };
+
+    const dismissed = dismissTask(id, session.patientDfn);
+    if (!dismissed) {
+      return reply.code(404).send({ ok: false, error: "Task not found or already resolved" });
+    }
+    return reply.send({ ok: true, task: dismissed });
+  });
+
+  server.post("/portal/tasks/:id/complete", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    const { id } = request.params as { id: string };
+
+    const completed = completeTask(id, session.patientDfn);
+    if (!completed) {
+      return reply.code(404).send({ ok: false, error: "Task not found or already resolved" });
+    }
+    return reply.send({ ok: true, task: completed });
+  });
+
+  /* ================================================================ */
+  /* Staff Routes (Phase 32)                                            */
+  /* ================================================================ */
+
+  server.get("/portal/staff/refills", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    // In production: check staff role. For now, any authenticated portal user can view.
+    const queue = getStaffRefillQueue();
+    return reply.send({ ok: true, refills: queue });
+  });
+
+  server.post("/portal/staff/refills/:id/review", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    const { id } = request.params as { id: string };
+    const body = (request.body as any) || {};
+
+    if (!body.action || !["approve", "deny"].includes(body.action)) {
+      return reply.code(400).send({ ok: false, error: "action must be 'approve' or 'deny'" });
+    }
+
+    const result = reviewRefill(
+      id,
+      body.action,
+      session.patientDfn,   // Using session DFN as clinician ID in sandbox
+      session.patientName,
+      body.note || "",
+    );
+
+    if ("error" in result) {
+      return reply.code(404).send({ ok: false, error: result.error });
+    }
+    return reply.send({ ok: true, refill: result });
+  });
+
+  server.get("/portal/staff/tasks", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    const query = (request.query as any) || {};
+    const categoryFilter = query.category ? query.category.split(",") : undefined;
+
+    const tasks = getStaffTaskQueue({ categoryFilter });
+    return reply.send({ ok: true, tasks });
+  });
+
+  server.get("/portal/staff/messages", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    const queue = getStaffMessageQueue();
+    return reply.send({ ok: true, messages: queue });
+  });
+
+  server.post("/portal/staff/messages/:id/reply", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    const { id } = request.params as { id: string };
+    const body = (request.body as any) || {};
+
+    if (!body.body) {
+      return reply.code(400).send({ ok: false, error: "body is required" });
+    }
+
+    const result = clinicianReply({
+      replyToId: id,
+      clinicianDuz: session.patientDfn,   // clinician DUZ in sandbox
+      clinicianName: session.patientName,  // clinician name
+      body: body.body,
+    });
+
+    if (!result || "error" in result) {
+      return reply.code(404).send({ ok: false, error: (result && "error" in result) ? result.error : "Message not found or not a patient message" });
+    }
+    return reply.send({ ok: true, message: result });
+  });
+
+  log.info("Portal core routes registered (Phase 27 → Phase 32)");
 }

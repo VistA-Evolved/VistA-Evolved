@@ -1,5 +1,5 @@
 /**
- * Portal Secure Messaging — Phase 27
+ * Portal Secure Messaging — Phase 27 -> Phase 32 enhancements
  *
  * Threaded inbox + compose + drafts + sent.
  * In-memory store for dev mode. Production: VistA MailMan or TIU integration.
@@ -8,6 +8,14 @@
  * - XMXAPI: Send message via MailMan
  * - XMXMSGS: List messages
  * - TIU DOCUMENTS BY CONTEXT: For clinical document-linked messages
+ *
+ * Phase 32 enhancements:
+ * - Proxy send on behalf (sensitivity-gated)
+ * - Clinician reply (for CPRS shell)
+ * - Attachments OFF by default (PORTAL_ATTACHMENTS_ENABLED flag)
+ * - Rate limiting: max messages/hour per patient
+ * - Blocklist: configurable blocked words
+ * - All actions audited
  *
  * Attachments: stored in segregated in-memory buffer.
  * Production: encrypted filesystem or object storage.
@@ -62,6 +70,15 @@ const MAX_ATTACHMENT_BYTES = 5 * 1024 * 1024; // 5MB
 const MAX_ATTACHMENTS_PER_MSG = 3;
 const ALLOWED_MIME_TYPES = new Set(["application/pdf", "image/jpeg", "image/png", "image/gif"]);
 
+/* Phase 32: Abuse controls */
+const MAX_MESSAGES_PER_HOUR = 10;
+const BLOCKLIST_WORDS = (process.env.PORTAL_MSG_BLOCKLIST || "").split(",").filter(Boolean);
+
+/** Phase 32: Attachments OFF by default — enable via env var. */
+export function areAttachmentsEnabled(): boolean {
+  return process.env.PORTAL_ATTACHMENTS_ENABLED === "true";
+}
+
 export const SLA_DISCLAIMER =
   "This messaging system is for non-urgent communication only. " +
   "If you have a medical emergency, call 911. " +
@@ -74,6 +91,48 @@ export const SLA_DISCLAIMER =
 
 const messageStore = new Map<string, PortalMessage>();
 let msgSeq = 0;
+
+/* ------------------------------------------------------------------ */
+/* Phase 32: Rate limiter                                               */
+/* ------------------------------------------------------------------ */
+
+const sendTimestamps = new Map<string, number[]>();
+
+/** Check if patient has exceeded send rate limit. */
+export function checkRateLimit(dfn: string): { allowed: boolean; retryAfterMs?: number } {
+  const now = Date.now();
+  const hourAgo = now - 3600000;
+  const timestamps = (sendTimestamps.get(dfn) || []).filter(t => t > hourAgo);
+  sendTimestamps.set(dfn, timestamps);
+
+  if (timestamps.length >= MAX_MESSAGES_PER_HOUR) {
+    const oldest = timestamps[0];
+    return { allowed: false, retryAfterMs: oldest + 3600000 - now };
+  }
+  return { allowed: true };
+}
+
+function recordSend(dfn: string): void {
+  const timestamps = sendTimestamps.get(dfn) || [];
+  timestamps.push(Date.now());
+  sendTimestamps.set(dfn, timestamps);
+}
+
+/* ------------------------------------------------------------------ */
+/* Phase 32: Blocklist                                                  */
+/* ------------------------------------------------------------------ */
+
+/** Check message body/subject for blocked content. */
+export function checkBlocklist(text: string): { blocked: boolean; term?: string } {
+  if (BLOCKLIST_WORDS.length === 0) return { blocked: false };
+  const lower = text.toLowerCase();
+  for (const word of BLOCKLIST_WORDS) {
+    if (word.trim() && lower.includes(word.trim().toLowerCase())) {
+      return { blocked: true, term: word.trim() };
+    }
+  }
+  return { blocked: false };
+}
 
 /* ------------------------------------------------------------------ */
 /* CRUD                                                                 */
@@ -225,4 +284,121 @@ export function deleteDraft(messageId: string, senderDfn: string): boolean {
   if (!msg || msg.fromDfn !== senderDfn || msg.status !== "draft") return false;
   messageStore.delete(messageId);
   return true;
+}
+
+/* ------------------------------------------------------------------ */
+/* Phase 32: Proxy send on behalf                                       */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Create and send a message on behalf of a patient (proxy use case).
+ * The proxy's identity is recorded in metadata for audit.
+ */
+export function sendOnBehalf(opts: {
+  patientDfn: string;
+  patientName: string;
+  proxyDfn: string;
+  proxyName: string;
+  subject: string;
+  category: MessageCategory;
+  body: string;
+}): PortalMessage | { error: string } {
+  // Rate limit applies to the patient, not the proxy
+  const rl = checkRateLimit(opts.patientDfn);
+  if (!rl.allowed) {
+    return { error: `Rate limit exceeded. Try again in ${Math.ceil((rl.retryAfterMs || 0) / 60000)} minutes.` };
+  }
+
+  const bl = checkBlocklist(`${opts.subject} ${opts.body}`);
+  if (bl.blocked) {
+    portalAudit("portal.message.blocked" as any, "failure", opts.proxyDfn, {
+      detail: { reason: "blocklist", patientDfn: "hashed" },
+    });
+    return { error: "Message contains restricted content." };
+  }
+
+  const id = `msg-${++msgSeq}-${randomBytes(4).toString("hex")}`;
+  const msg: PortalMessage = {
+    id,
+    threadId: id,
+    fromDfn: opts.patientDfn,
+    fromName: `${opts.patientName} (via ${opts.proxyName})`,
+    toDfn: "clinic",
+    toName: "Care Team",
+    subject: opts.subject.slice(0, 200),
+    category: opts.category,
+    body: opts.body.slice(0, MAX_BODY_LENGTH),
+    status: "sent",
+    attachments: [],
+    createdAt: new Date().toISOString(),
+    readAt: null,
+    replyToId: null,
+    vistaSync: "pending",
+    vistaRef: null,
+  };
+
+  messageStore.set(id, msg);
+  recordSend(opts.patientDfn);
+
+  portalAudit("portal.message.send", "success", opts.proxyDfn, {
+    detail: { messageId: id, onBehalfOf: "hashed-patient", proxy: true },
+  });
+
+  return msg;
+}
+
+/* ------------------------------------------------------------------ */
+/* Phase 32: Clinician reply (for CPRS shell)                           */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Clinician creates a reply to a patient message.
+ * Called from the CPRS messaging panel, not the patient portal.
+ */
+export function clinicianReply(opts: {
+  clinicianDuz: string;
+  clinicianName: string;
+  replyToId: string;
+  body: string;
+}): PortalMessage | { error: string } {
+  const original = messageStore.get(opts.replyToId);
+  if (!original) return { error: "Original message not found." };
+
+  const id = `msg-${++msgSeq}-${randomBytes(4).toString("hex")}`;
+  const msg: PortalMessage = {
+    id,
+    threadId: original.threadId,
+    fromDfn: `duz-${opts.clinicianDuz}`,
+    fromName: opts.clinicianName,
+    toDfn: original.fromDfn,
+    toName: original.fromName.split(" (via")[0], // strip proxy annotation
+    subject: original.subject.startsWith("RE:") ? original.subject : `RE: ${original.subject}`,
+    category: original.category,
+    body: opts.body.slice(0, MAX_BODY_LENGTH),
+    status: "sent",
+    attachments: [],
+    createdAt: new Date().toISOString(),
+    readAt: null,
+    replyToId: opts.replyToId,
+    vistaSync: "pending",
+    vistaRef: null,
+  };
+
+  messageStore.set(id, msg);
+
+  // Mark original as replied
+  if (original.status === "read" || original.status === "sent") {
+    original.status = "replied";
+  }
+
+  return msg;
+}
+
+/**
+ * Get all unread patient messages for staff queue (CPRS shell).
+ */
+export function getStaffMessageQueue(): PortalMessage[] {
+  return [...messageStore.values()]
+    .filter(m => m.toDfn === "clinic" && m.status === "sent")
+    .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 }

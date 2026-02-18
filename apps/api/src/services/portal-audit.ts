@@ -41,7 +41,20 @@ export type PortalAuditAction =
   | "portal.telehealth.room.created"
   | "portal.telehealth.joined"
   | "portal.telehealth.ended"
-  | "portal.telehealth.device.check";
+  | "portal.telehealth.device.check"
+  /* Phase 32: Refills */
+  | "portal.refill.request"
+  | "portal.refill.cancel"
+  | "portal.refill.approve"
+  | "portal.refill.deny"
+  /* Phase 32: Tasks */
+  | "portal.task.create"
+  | "portal.task.complete"
+  | "portal.task.dismiss"
+  /* Phase 32: Messaging enhancements */
+  | "portal.message.proxy"
+  | "portal.message.clinician.reply"
+  | "portal.message.blocked";
 
 export interface PortalAuditEvent {
   id: string;

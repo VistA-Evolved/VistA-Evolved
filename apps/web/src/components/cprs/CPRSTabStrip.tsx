@@ -19,6 +19,7 @@ const TAB_TO_MODULE: Record<string, string> = {
   reports: 'reports',
   intake: 'intake',
   telehealth: 'telehealth',
+  tasks: 'tasks',
 };
 
 interface CPRSTabStripProps {

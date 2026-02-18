@@ -317,3 +317,39 @@ export async function submitDeviceCheckReport(report: Record<string, unknown>) {
     body: JSON.stringify(report),
   });
 }
+
+// ─── Refills (Phase 32) ───
+
+export async function fetchRefills() {
+  return portalFetch("/portal/refills");
+}
+
+export async function requestRefill(medicationName: string, medicationId: string) {
+  return portalFetch("/portal/refills", {
+    method: "POST",
+    body: JSON.stringify({ medicationName, medicationId }),
+  });
+}
+
+export async function cancelRefill(refillId: string) {
+  return portalFetch(`/portal/refills/${refillId}/cancel`, { method: "POST" });
+}
+
+// ─── Tasks (Phase 32) ───
+
+export async function fetchTasks(status?: string) {
+  const qs = status ? `?status=${status}` : "";
+  return portalFetch(`/portal/tasks${qs}`);
+}
+
+export async function fetchTaskCounts() {
+  return portalFetch("/portal/tasks/counts");
+}
+
+export async function dismissTask(taskId: string) {
+  return portalFetch(`/portal/tasks/${taskId}/dismiss`, { method: "POST" });
+}
+
+export async function completeTask(taskId: string) {
+  return portalFetch(`/portal/tasks/${taskId}/complete`, { method: "POST" });
+}

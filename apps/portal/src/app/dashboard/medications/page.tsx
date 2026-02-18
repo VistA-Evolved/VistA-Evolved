@@ -91,9 +91,24 @@ export default function MedicationsPage() {
           <h3 style={{ margin: 0 }}>Refill Requests</h3>
           <DataSourceBadge source="pending" />
         </div>
-        <div className="empty-state" style={{ padding: "1.5rem" }}>
-          <h3>Coming Soon</h3>
-          <p>Medication refill requests will be available in a future update.</p>
+        <div style={{ padding: "1rem" }}>
+          <p style={{ fontSize: "0.875rem", color: "#64748b", marginBottom: "0.75rem" }}>
+            Need a medication refill? Submit a request and track its progress.
+          </p>
+          <a
+            href="/dashboard/refills"
+            style={{
+              display: "inline-block",
+              padding: "0.375rem 0.75rem",
+              fontSize: "0.8125rem",
+              background: "#2563eb",
+              color: "#fff",
+              borderRadius: 4,
+              textDecoration: "none",
+            }}
+          >
+            Go to Refill Requests
+          </a>
         </div>
       </div>
     </div>

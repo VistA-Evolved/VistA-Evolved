@@ -143,6 +143,17 @@
       "tabPosition": "tpBottom",
       "align": "alBottom",
       "isBottomTab": true
+    },
+    {
+      "constant": "CT_TASKS",
+      "label": "Tasks",
+      "creationOrder": 12,
+      "conditional": false,
+      "id": 14,
+      "description": "chart tab - messaging, refill requests, and task queue (Phase 32)",
+      "tabPosition": "tpBottom",
+      "align": "alBottom",
+      "isBottomTab": true
     }
   ],
   "subTabs": [

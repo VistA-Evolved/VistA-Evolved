@@ -14,8 +14,10 @@ import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Home", icon: "🏠" },
-  { href: "/dashboard/health", label: "Health Records", icon: "📋" },
+  { href: "/dashboard/tasks", label: "Tasks", icon: "📋" },
+  { href: "/dashboard/health", label: "Health Records", icon: "🏥" },
   { href: "/dashboard/medications", label: "Medications", icon: "💊" },
+  { href: "/dashboard/refills", label: "Refill Requests", icon: "🔄" },
   { href: "/dashboard/messages", label: "Messages", icon: "✉️" },
   { href: "/dashboard/appointments", label: "Appointments", icon: "📅" },
   { href: "/dashboard/telehealth", label: "Telehealth", icon: "📹" },
