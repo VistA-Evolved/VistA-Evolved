@@ -1,13 +1,71 @@
-﻿# Ops Summary — Phase 27: Portal Core (Records, Messaging, Appointments, Sharing, Settings)
+﻿# Ops Summary — Phase 31: Patient-Directed Sharing + Exports + SHC Lane
 
 ## What Changed
 
-### Backend Services (6 new files)
-- `portal-pdf.ts` — Minimal PDF 1.4 builder, no external deps. Section formatters for allergies, problems, vitals, medications, demographics.
-- `portal-messaging.ts` — Threaded secure messaging. Inbox/drafts/sent CRUD. Attachments (5MB, PDF/JPEG/PNG/GIF). SLA disclaimer.
-- `portal-appointments.ts` — Demo seed data + request/cancel/reschedule flows.
-- `portal-sharing.ts` — Time-limited share links with access codes. DOB verification. Lock after 5 failures.
-- `portal-settings.ts` — Language (7), notification toggles, display prefs, MFA stub.
+### Enhanced Sharing Service
+- `portal-sharing.ts` — TTL reduced to 60 min (was 72h), max 24h (was 7d). Lockout after 3 attempts (was 5). One-time redeem option (auto-revokes after first access). CAPTCHA stub validation. Curated section subset enforcement (meds, allergies, problems, immunizations, labs only).
+
+### New Export Capabilities
+- `portal-pdf.ts` — Added immunizations + labs formatters. Added `buildStructuredJsonExport()` for FHIR-mappable JSON export.
+- New JSON export route: `GET /portal/export/json` with optional `?sections=` filter.
+
+### SMART Health Cards (Feature-Flagged)
+- `portal-shc.ts` — New SHC adapter. Feature-flagged via `PORTAL_SHC_ENABLED` env var. Minimal FHIR Bundle builder for immunizations. Dev-mode JWS signing (HS256 stub). `shc:/` numeric URI generator for QR codes.
+- New routes: `GET /portal/shc/capabilities`, `GET /portal/export/shc/:dataset`
+
+### New Portal UI Pages
+- `/dashboard/sharing` — Create/manage share links with one-time redeem, TTL selection, curated sections
+- `/dashboard/exports` — PDF, structured JSON, and SHC downloads in one page
+
+### Audit Trail Additions
+- New actions: `portal.export.json`, `portal.export.shc`, `portal.share.view`
+
+### Navigation
+- Added "Share Records" and "Export" entries to portal sidebar (12 items total)
+
+### API Client
+- Added `exportJson()`, `getShcCapabilities()`, `exportShc()` functions
+- Updated `verifyShare()` to accept optional `captchaToken`
+
+## How to Test Manually
+
+```bash
+# 1. Start API
+cd apps/api && npx tsx --env-file=.env.local src/index.ts
+
+# 2. Start portal
+cd apps/portal && pnpm dev
+
+# 3. Login at http://localhost:3002, navigate to Share Records or Export
+
+# 4. Test share creation via API
+curl -X POST http://localhost:3001/portal/shares \
+  -H "Content-Type: application/json" \
+  -b "portal_session=<token>" \
+  -d '{"sections":["medications","allergies"],"ttlMinutes":30,"oneTimeRedeem":true}'
+
+# 5. Test JSON export
+curl http://localhost:3001/portal/export/json -b "portal_session=<token>"
+
+# 6. Test SHC capabilities
+curl http://localhost:3001/portal/shc/capabilities
+
+# 7. Test SHC export (requires PORTAL_SHC_ENABLED=true)
+curl http://localhost:3001/portal/export/shc/immunizations -b "portal_session=<token>"
+```
+
+## Verifier Output
+
+```
+scripts/verify-phase31-sharing-exports.ps1 — pending
+```
+
+## Follow-ups
+- Integrate real CAPTCHA provider (reCAPTCHA v3 or hCaptcha)
+- Production SHC signing with ES256 + published JWKS
+- VistA immunization RPCs (`PX IMMUNIZATION LIST`) for real data
+- VistA lab results RPCs (`ORWLR CUMULATIVE REPORT`) for real data
+- QR code rendering in portal UI for SHC credentials
 - `portal-sensitivity.ts` — Proxy engine with 6 sensitivity rules.
 
 ### Route Registration

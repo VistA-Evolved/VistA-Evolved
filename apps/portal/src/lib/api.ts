@@ -229,11 +229,26 @@ export async function previewShare(token: string) {
   return portalFetch(`/portal/share/preview/${token}`);
 }
 
-export async function verifyShare(token: string, body: { accessCode: string; patientDob: string }) {
+export async function verifyShare(token: string, body: { accessCode: string; patientDob: string; captchaToken?: string }) {
   return portalFetch(`/portal/share/verify/${token}`, {
     method: "POST",
     body: JSON.stringify(body),
   });
+}
+
+// ─── Exports (Phase 31) ───
+
+export async function exportJson(sections?: string[]) {
+  const query = sections?.length ? `?sections=${sections.join(",")}` : "";
+  return portalFetch(`/portal/export/json${query}`);
+}
+
+export async function getShcCapabilities() {
+  return portalFetch("/portal/shc/capabilities");
+}
+
+export async function exportShc(dataset: string) {
+  return portalFetch(`/portal/export/shc/${dataset}`);
 }
 
 // ─── Settings (Phase 27) ───

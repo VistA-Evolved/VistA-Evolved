@@ -1,40 +1,33 @@
 {
-  "feature_title": "Phase 27 — Portal Core (Records, Messaging, Appointments, Sharing, Settings)",
+  "feature_title": "Phase 31 — Patient-Directed Sharing + Exports + SHC Lane",
   "stage": "implemented",
   "status": "complete",
-  "prompt_ref_path": "prompts/29-PHASE-27-PORTAL-CORE/29-01-portal-core-IMPLEMENT.md",
+  "prompt_ref_path": "prompts/33-PHASE-31-SHARING-EXPORTS/33-01-sharing-exports-IMPLEMENT.md",
   "runbook_paths": [
-    "docs/runbooks/portal-core.md",
-    "docs/contracts/portal/known-gaps.md"
+    "docs/runbooks/phase31-sharing-exports.md"
   ],
-  "verify_script": "scripts/verify-phase1-to-phase26-portal.ps1",
+  "verify_script": "scripts/verify-phase31-sharing-exports.ps1",
   "verify_results": {
     "api_tsc": "PASS — 0 errors",
-    "portal_build": "PASS — 10 pages, 1 dynamic route",
-    "phase26_regression": "76 PASS / 0 FAIL / 0 WARN"
+    "portal_tsc": "PASS — 0 errors"
   },
   "files_created": [
-    "apps/api/src/services/portal-appointments.ts",
-    "apps/api/src/services/portal-sharing.ts",
-    "apps/api/src/services/portal-settings.ts",
-    "apps/api/src/routes/portal-core.ts",
-    "apps/portal/src/app/share/[token]/page.tsx",
-    "docs/runbooks/portal-core.md",
-    "docs/contracts/portal/known-gaps.md"
+    "apps/api/src/services/portal-shc.ts",
+    "apps/portal/src/app/dashboard/sharing/page.tsx",
+    "apps/portal/src/app/dashboard/exports/page.tsx",
+    "docs/runbooks/phase31-sharing-exports.md",
+    "scripts/verify-phase31-sharing-exports.ps1",
+    "prompts/33-PHASE-31-SHARING-EXPORTS/33-01-sharing-exports-IMPLEMENT.md"
   ],
   "files_modified": [
-    "apps/api/src/index.ts",
-    "apps/api/src/routes/portal-auth.ts",
+    "apps/api/src/services/portal-sharing.ts",
+    "apps/api/src/services/portal-pdf.ts",
     "apps/api/src/services/portal-audit.ts",
+    "apps/api/src/routes/portal-core.ts",
+    "apps/portal/src/components/portal-nav.tsx",
     "apps/portal/src/lib/api.ts",
-    "apps/portal/src/app/dashboard/page.tsx",
-    "apps/portal/src/app/dashboard/health/page.tsx",
-    "apps/portal/src/app/dashboard/medications/page.tsx",
-    "apps/portal/src/app/dashboard/messages/page.tsx",
-    "apps/portal/src/app/dashboard/appointments/page.tsx",
-    "apps/portal/src/app/dashboard/profile/page.tsx",
     "ops/summary.md",
     "ops/notion-update.json"
   ],
-  "commit_sha": "08440b6"
+  "commit_sha": "pending"
 }

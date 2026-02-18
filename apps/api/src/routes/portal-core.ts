@@ -1,9 +1,12 @@
 /**
- * Portal Core Routes — Phase 27
+ * Portal Core Routes — Phase 27 → Phase 31 enhancements
  *
- * Registers all Phase 27 portal routes:
+ * Registers all Phase 27+ portal routes:
  *   - POST /portal/export/section/:section — PDF export per section
  *   - POST /portal/export/full — Full record bundle PDF
+ *   - GET  /portal/export/json — Structured JSON export (Phase 31)
+ *   - GET  /portal/export/shc/:dataset — SMART Health Card (Phase 31)
+ *   - GET  /portal/shc/capabilities — SHC feature status (Phase 31)
  *   - GET/POST /portal/messages — Inbox + compose
  *   - GET /portal/messages/drafts — Draft list
  *   - GET /portal/messages/sent — Sent list
@@ -35,6 +38,9 @@ import {
   formatVitalsForPdf,
   formatMedicationsForPdf,
   formatDemographicsForPdf,
+  formatImmunizationsForPdf,
+  formatLabsForPdf,
+  buildStructuredJsonExport,
 } from "../services/portal-pdf.js";
 import {
   createDraft,
@@ -63,8 +69,13 @@ import {
   revokeShare,
   getSharePreview,
   verifyShareAccess,
+  SHAREABLE_CURATED_SECTIONS,
 } from "../services/portal-sharing.js";
 import type { ShareableSection } from "../services/portal-sharing.js";
+import {
+  generateShcCredential,
+  getShcCapabilities,
+} from "../services/portal-shc.js";
 import {
   getSettings,
   updateSettings,
@@ -196,7 +207,7 @@ export default async function portalCoreRoutes(
   /* PDF Export                                                         */
   /* ================================================================ */
 
-  const EXPORTABLE_SECTIONS = ["allergies", "problems", "vitals", "medications", "demographics"];
+  const EXPORTABLE_SECTIONS = ["allergies", "problems", "vitals", "medications", "demographics", "immunizations", "labs"];
 
   server.get("/portal/export/section/:section", async (request, reply) => {
     const session = requirePortalSession(request, reply);
@@ -215,6 +226,8 @@ export default async function portalCoreRoutes(
       case "vitals": sec_data = formatVitalsForPdf(data as any[]); break;
       case "medications": sec_data = formatMedicationsForPdf(data as any[]); break;
       case "demographics": sec_data = formatDemographicsForPdf(data as any[]); break;
+      case "immunizations": sec_data = formatImmunizationsForPdf(data as any[]); break;
+      case "labs": sec_data = formatLabsForPdf(data as any[]); break;
     }
 
     const title = `${section.charAt(0).toUpperCase() + section.slice(1)} — ${session.patientName}`;
@@ -244,6 +257,8 @@ export default async function portalCoreRoutes(
         case "vitals": sec_data = formatVitalsForPdf(data as any[]); break;
         case "medications": sec_data = formatMedicationsForPdf(data as any[]); break;
         case "demographics": sec_data = formatDemographicsForPdf(data as any[]); break;
+        case "immunizations": sec_data = formatImmunizationsForPdf(data as any[]); break;
+        case "labs": sec_data = formatLabsForPdf(data as any[]); break;
       }
       sections.push(sec_data);
     }
@@ -259,6 +274,61 @@ export default async function portalCoreRoutes(
     reply.header("Content-Type", "application/pdf");
     reply.header("Content-Disposition", `attachment; filename="health-record-${Date.now()}.pdf"`);
     return reply.send(Buffer.from(pdf));
+  });
+
+  /* ================================================================ */
+  /* Phase 31: Structured JSON Export                                   */
+  /* ================================================================ */
+
+  server.get("/portal/export/json", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    const query = request.query as { sections?: string };
+    const requestedSections = query.sections
+      ? query.sections.split(",").filter(s => EXPORTABLE_SECTIONS.includes(s.trim()))
+      : EXPORTABLE_SECTIONS;
+
+    const sectionData: Record<string, unknown[]> = {};
+    for (const sec of requestedSections) {
+      sectionData[sec] = await fetchHealthData(session.patientDfn, sec);
+    }
+
+    const jsonExport = buildStructuredJsonExport(session.patientName, sectionData);
+
+    portalAudit("portal.export.json", "success", session.patientDfn, {
+      sourceIp: request.ip,
+      detail: { sections: requestedSections, totalRecords: jsonExport.metadata.totalRecords },
+    });
+
+    reply.header("Content-Type", "application/json");
+    reply.header("Content-Disposition", `attachment; filename="health-record-${Date.now()}.json"`);
+    return reply.send(jsonExport);
+  });
+
+  /* ================================================================ */
+  /* Phase 31: SMART Health Cards (SHC)                                 */
+  /* ================================================================ */
+
+  server.get("/portal/shc/capabilities", async (request, reply) => {
+    return reply.send({ ok: true, ...getShcCapabilities() });
+  });
+
+  server.get("/portal/export/shc/:dataset", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    const { dataset } = request.params as { dataset: string };
+
+    const data = await fetchHealthData(session.patientDfn, dataset);
+    const result = generateShcCredential(dataset as any, session.patientName, data as any[]);
+
+    if ("error" in result) {
+      return reply.code(400).send({ ok: false, error: result.error });
+    }
+
+    portalAudit("portal.export.shc", "success", session.patientDfn, {
+      sourceIp: request.ip,
+      detail: { dataset, recordCount: result.meta.recordCount, devMode: result.meta.devMode },
+    });
+
+    return reply.send({ ok: true, credential: result });
   });
 
   /* ================================================================ */
@@ -482,7 +552,10 @@ export default async function portalCoreRoutes(
       patientDob: dob,
       sections: body.sections as ShareableSection[],
       label: body.label || "Shared record",
-      ttlMs: body.ttlHours ? body.ttlHours * 60 * 60 * 1000 : undefined,
+      ttlMs: body.ttlMinutes ? body.ttlMinutes * 60 * 1000
+           : body.ttlHours ? body.ttlHours * 60 * 60 * 1000
+           : undefined,
+      oneTimeRedeem: body.oneTimeRedeem ?? false,
     });
 
     if ("error" in result) {
@@ -524,7 +597,7 @@ export default async function portalCoreRoutes(
     }
 
     const ip = (request.headers["x-forwarded-for"] as string)?.split(",")[0]?.trim() || request.ip;
-    const result = verifyShareAccess(token, body.accessCode, body.patientDob, ip);
+    const result = verifyShareAccess(token, body.accessCode, body.patientDob, ip, body.captchaToken);
 
     if ("error" in result) {
       const status = result.retryable ? 403 : 410;
@@ -622,5 +695,5 @@ export default async function portalCoreRoutes(
     return reply.send({ ok: true, filters });
   });
 
-  log.info("Portal core routes registered (Phase 27)");
+  log.info("Portal core routes registered (Phase 27 → Phase 31)");
 }

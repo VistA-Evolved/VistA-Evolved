@@ -1,9 +1,11 @@
 /**
- * Portal PDF Export — Phase 27
+ * Portal PDF Export — Phase 27 → Phase 31 enhancements
  *
  * Server-side PDF generation for health record sections.
  * No external dependencies — builds simple text-based PDF manually.
  * Each export is audited. No PHI leaks to client logs.
+ *
+ * Phase 31: added immunizations + labs formatters, structured JSON export
  *
  * Target VistA integration: ORWRP REPORT TEXT (for full clinical reports)
  */
@@ -167,5 +169,101 @@ export function formatDemographicsForPdf(data: any[]): { heading: string; lines:
   return {
     heading: "Demographics",
     lines: d ? [`Name: ${d.name}`, `DOB: ${d.dob}`, `Sex: ${d.sex}`] : ["No demographics available"],
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/* Phase 31: New section formatters                                     */
+/* ------------------------------------------------------------------ */
+
+export function formatImmunizationsForPdf(data: any[]): { heading: string; lines: string[] } {
+  return {
+    heading: "Immunizations",
+    lines: data.length > 0
+      ? data.map(i => `${i.vaccine || "Unknown"} — Date: ${i.date || "N/A"}${i.series ? ` | Series: ${i.series}` : ""}${i.facility ? ` | Facility: ${i.facility}` : ""}`)
+      : ["No immunization data available — VistA integration pending"],
+  };
+}
+
+export function formatLabsForPdf(data: any[]): { heading: string; lines: string[] } {
+  return {
+    heading: "Lab Results",
+    lines: data.length > 0
+      ? data.map(l => `${l.testName || "Unknown"}: ${l.result || "N/A"} ${l.units || ""} [${l.flag || ""}] — ${l.collectedAt || ""}`)
+      : ["No lab results available — VistA integration pending"],
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/* Phase 31: Structured JSON export                                     */
+/* ------------------------------------------------------------------ */
+
+export interface StructuredExportSection {
+  section: string;
+  label: string;
+  records: unknown[];
+  recordCount: number;
+}
+
+export interface StructuredJsonExport {
+  version: "1.0";
+  format: "vista-evolved-health-record";
+  generatedAt: string;
+  patient: {
+    name: string;
+    /** DOB intentionally omitted in export metadata — present only in demographics section */
+  };
+  sections: StructuredExportSection[];
+  metadata: {
+    source: "VistA-Evolved Health Portal";
+    exportType: "patient-directed";
+    sectionCount: number;
+    totalRecords: number;
+  };
+}
+
+/**
+ * Build a structured JSON export from fetched health data.
+ * FHIR-mappable structure for portability.
+ */
+export function buildStructuredJsonExport(
+  patientName: string,
+  sectionData: Record<string, unknown[]>,
+): StructuredJsonExport {
+  const SECTION_LABELS: Record<string, string> = {
+    allergies: "Allergies",
+    medications: "Medications",
+    problems: "Active Problems",
+    vitals: "Vitals",
+    demographics: "Demographics",
+    immunizations: "Immunizations",
+    labs: "Lab Results",
+  };
+
+  const sections: StructuredExportSection[] = [];
+  let totalRecords = 0;
+
+  for (const [key, records] of Object.entries(sectionData)) {
+    sections.push({
+      section: key,
+      label: SECTION_LABELS[key] || key,
+      records,
+      recordCount: records.length,
+    });
+    totalRecords += records.length;
+  }
+
+  return {
+    version: "1.0",
+    format: "vista-evolved-health-record",
+    generatedAt: new Date().toISOString(),
+    patient: { name: patientName },
+    sections,
+    metadata: {
+      source: "VistA-Evolved Health Portal",
+      exportType: "patient-directed",
+      sectionCount: sections.length,
+      totalRecords,
+    },
   };
 }

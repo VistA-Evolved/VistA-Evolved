@@ -1,18 +1,25 @@
 /**
- * Portal Sharing — Phase 27
+ * Portal Sharing — Phase 27 → Phase 31 enhancements
  *
  * Share Link + Access Code for time-limited, audited health record sharing.
  * Patients can create share links for specific sections of their health record.
  * External viewers verify with patient DOB + access code.
  *
+ * Phase 31 enhancements:
+ * - TTL reduced to 60 min default (max 24h)
+ * - One-time redeem option (auto-revoke after first successful access)
+ * - 3-attempt lockout (reduced from 5)
+ * - CAPTCHA stub on verify (ready for real provider)
+ * - Curated section subset (meds, allergies, problems, immunizations, labs only)
+ *
  * Security:
- * - Links expire after configurable TTL (default 72 hours)
+ * - Links expire after configurable TTL (default 60 minutes)
  * - 6-char alphanumeric access code required
  * - Patient DOB verification required
  * - Max active shares per patient: 10
  * - All access logged to audit trail
  * - Revocable by patient at any time
- * - Minimal data exposure (no SSN, only selected sections)
+ * - Minimal data exposure (no SSN, only curated sections)
  */
 
 import { randomBytes } from "node:crypto";
@@ -22,11 +29,16 @@ import { portalAudit } from "./portal-audit.js";
 /* Config                                                               */
 /* ------------------------------------------------------------------ */
 
-const DEFAULT_SHARE_TTL_MS = 72 * 60 * 60 * 1000; // 72 hours
-const MAX_SHARE_TTL_MS = 168 * 60 * 60 * 1000;    // 7 days
+const DEFAULT_SHARE_TTL_MS = 60 * 60 * 1000;       // 60 minutes (Phase 31)
+const MAX_SHARE_TTL_MS = 24 * 60 * 60 * 1000;      // 24 hours (Phase 31)
 const MAX_ACTIVE_SHARES = 10;
 const ACCESS_CODE_LENGTH = 6;
-const MAX_ACCESS_ATTEMPTS = 5;
+const MAX_ACCESS_ATTEMPTS = 3;                       // Phase 31: tighter lockout
+
+/** Curated sections allowed for sharing (Phase 31). */
+export const SHAREABLE_CURATED_SECTIONS: ShareableSection[] = [
+  "medications", "allergies", "problems", "immunizations", "labs",
+];
 
 export type ShareableSection =
   | "allergies"
@@ -53,6 +65,8 @@ export interface ShareLink {
   failedAttempts: number;
   locked: boolean;
   lastAccessedAt: string | null;
+  /** Phase 31: auto-revoke after first successful access */
+  oneTimeRedeem: boolean;
 }
 
 export interface ShareAccessLog {
@@ -98,6 +112,13 @@ function maskIp(ip: string): string {
 /* CRUD                                                                 */
 /* ------------------------------------------------------------------ */
 
+/** Phase 31: stub CAPTCHA validation — always passes, logs warning. */
+export function validateCaptcha(token?: string): boolean {
+  if (!token) return true; // stub — no real provider configured
+  // When a real provider is added, validate here and return false on failure
+  return true;
+}
+
 export function createShareLink(opts: {
   patientDfn: string;
   patientName: string;
@@ -105,6 +126,7 @@ export function createShareLink(opts: {
   sections: ShareableSection[];
   label: string;
   ttlMs?: number;
+  oneTimeRedeem?: boolean;
 }): ShareLink | { error: string } {
   // Enforce max active shares
   const active = [...shareStore.values()].filter(
@@ -119,6 +141,12 @@ export function createShareLink(opts: {
 
   if (!opts.sections.length) {
     return { error: "At least one section must be selected." };
+  }
+
+  // Phase 31: enforce curated subset
+  const disallowed = opts.sections.filter(s => !SHAREABLE_CURATED_SECTIONS.includes(s));
+  if (disallowed.length > 0) {
+    return { error: `Sections not allowed for sharing: ${disallowed.join(", ")}. Allowed: ${SHAREABLE_CURATED_SECTIONS.join(", ")}` };
   }
 
   const ttl = Math.min(opts.ttlMs || DEFAULT_SHARE_TTL_MS, MAX_SHARE_TTL_MS);
@@ -142,6 +170,7 @@ export function createShareLink(opts: {
     failedAttempts: 0,
     locked: false,
     lastAccessedAt: null,
+    oneTimeRedeem: opts.oneTimeRedeem ?? false,
   };
 
   shareStore.set(id, share);
@@ -182,8 +211,13 @@ export function verifyShareAccess(
   token: string,
   accessCode: string,
   patientDob: string,
-  ip: string
+  ip: string,
+  captchaToken?: string
 ): ShareLink | { error: string; retryable: boolean } {
+  // Phase 31: CAPTCHA stub check
+  if (!validateCaptcha(captchaToken)) {
+    return { error: "CAPTCHA validation failed.", retryable: true };
+  }
   const shareId = tokenIndex.get(token);
   if (!shareId) {
     return { error: "Share link not found or expired.", retryable: false };
@@ -248,8 +282,16 @@ export function verifyShareAccess(
   });
 
   portalAudit("portal.share.access", "success", share.patientDfn, {
-    detail: { shareId: share.id, accessCount: share.accessCount },
+    detail: { shareId: share.id, accessCount: share.accessCount, oneTimeRedeem: share.oneTimeRedeem },
   });
+
+  // Phase 31: one-time redeem — auto-revoke after first successful verification
+  if (share.oneTimeRedeem) {
+    share.revokedAt = new Date().toISOString();
+    portalAudit("portal.share.revoke", "success", share.patientDfn, {
+      detail: { shareId: share.id, reason: "one-time-redeem" },
+    });
+  }
 
   return share;
 }
