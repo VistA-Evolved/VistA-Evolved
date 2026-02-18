@@ -1,33 +1,50 @@
-﻿# Ops Summary — Phase 26: Portal & Telehealth — VistA-First Contract + Skeleton
+﻿# Ops Summary — Phase 26 VERIFY: Portal Contract + License Guard + Smoke Tests
 
-## What Changed
+## What Changed (VERIFY pass)
 
-### New: Patient Portal Skeleton (`apps/portal/`)
-- Full Next.js 16 app on port 3002 (8 pages, no dead clicks)
-- `PortalNav` + `DataSourceBadge` components (plain-language, no VA terms)
-
-### New: Portal Auth + Health Proxy (API)
-- Separate session domain (`portal_session` cookie, 30min/15min TTL)
-- `POST /portal/auth/login|logout`, `GET /portal/auth/session`
-- 10 `/portal/health/*` DFN-scoped proxy routes
-- Rate-limited login (5/15min), PHI-safe audit trail
-
-### New: Contract Documents (`docs/contracts/portal/`)
-- VistA source inventory, reference repos inventory, competitive baseline
-- Portal contract YAML + capability matrix
-
-### New: License Guardrails
-- `scripts/license-guard.ps1` (10 gates)
-- `THIRD_PARTY_NOTICES.md`
+### New: Verification Infrastructure
+- `scripts/verify-phase1-to-phase26-portal.ps1` — 76 gates across 9 sections
+- `scripts/contract-validate-portal.ts` — YAML + matrix validator (52 checks)
+- `apps/portal/playwright.config.ts` — Playwright config for smoke tests
+- `apps/portal/e2e/portal-smoke.spec.ts` — 11 smoke tests (login, nav, badges)
 
 ### Modified
-- `apps/api/src/index.ts` — register portal routes
-- `apps/api/src/middleware/security.ts` — portal AUTH_RULES
+- `scripts/verify-latest.ps1` — delegates to Phase 26 verifier
+- `apps/portal/package.json` — added `@playwright/test` dev dependency
+
+## Verification Output (76 PASS / 0 FAIL / 0 WARN)
+
+| Section | Gates | Status |
+|---------|-------|--------|
+| 1. Regression (Phase 25) | 1 | PASS |
+| 2. Contract Integrity | 14 | PASS |
+| 3. Portal App Skeleton | 25 | PASS |
+| 4. API Portal Routes | 7 | PASS |
+| 5. Security Baseline | 11 | PASS |
+| 6. License Guard | 6 | PASS |
+| 7. Portal UI Sanity (Playwright + static) | 2 | PASS |
+| 8. Documentation | 4 | PASS |
+| 9. Web App Regression | 1 | PASS |
+| **TOTAL** | **76** | **ALL PASS** |
+
+### Playwright Smoke Tests (11/11)
+- Login page renders with form
+- All 7 dashboard pages return 200
+- Dashboard layout has all 7 nav items
+- Clicking each nav item navigates without error
+- DataSourceBadge visible on dashboard
 
 ## How to Test
-1. `pnpm install && pnpm -r build`
-2. Start API + Portal, login with `patient1`/`patient1`
-3. `.\scripts\license-guard.ps1`
+```powershell
+.\scripts\verify-phase1-to-phase26-portal.ps1 -SkipDocker
+# Or just Playwright:
+cd apps/portal && npx playwright test --reporter=list
+```
+
+## Follow-ups
+- Wire portal health routes to VistA RPCs
+- Secure messaging, scheduling, telehealth
+- Replace dev auth with OIDC/SAML
 
 ## Follow-ups
 - Wire portal health routes to VistA RPCs

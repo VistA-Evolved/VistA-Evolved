@@ -1,2 +1,2 @@
 # Always points to the newest full verification script
-& "$PSScriptRoot\verify-phase25-bi-analytics.ps1" @args
+& "$PSScriptRoot\verify-phase1-to-phase26-portal.ps1" @args

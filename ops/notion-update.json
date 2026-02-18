@@ -1,5 +1,5 @@
 {
-  "feature_title": "Phase 26 — Portal & Telehealth: VistA-First Contract + Skeleton",
+  "feature_title": "Phase 26 VERIFY — Portal Contract + License Guard + Smoke Tests",
   "stage": "verified",
   "status": "complete",
   "prompt_ref_path": "prompts/28-PHASE-26-PORTAL-TELEHEALTH/28-01-portal-telehealth-IMPLEMENT.md",
@@ -7,33 +7,30 @@
   "runbook_paths": [
     "docs/runbooks/portal-grounding.md"
   ],
-  "verify_script": "scripts/license-guard.ps1",
+  "verify_script": "scripts/verify-phase1-to-phase26-portal.ps1",
   "verify_results": {
-    "portal_build": "PASS — 10 routes, static generation",
-    "api_build": "PASS — tsc --noEmit clean",
-    "license_guard": "PASS — 11/11 gates",
-    "regression": "PASS — verify-latest 74/74 gates"
+    "total_gates": "76 PASS / 0 FAIL / 0 WARN",
+    "regression": "PASS — Phase 25 gates delegated",
+    "contract_integrity": "PASS — 14 gates (5 files + YAML validator + 8 matrix modules)",
+    "portal_skeleton": "PASS — 25 gates (10 pages, 7 nav routes, 7 DataSourceBadges, build clean)",
+    "api_routes": "PASS — 7 gates (auth routes, security rules, tsc clean)",
+    "security_baseline": "PASS — 11 gates (httpOnly, sameSite, rate limit, secret scan, VA terms, audit)",
+    "license_guard": "PASS — 6 gates (all 11 sub-checks pass)",
+    "playwright_smoke": "PASS — 11 tests (login, pages, nav clicks, badges)",
+    "documentation": "PASS — 4 gates",
+    "web_regression": "PASS — clinician web builds clean"
   },
   "files_created": [
-    "apps/portal/ (entire skeleton — 15+ files)",
-    "apps/api/src/routes/portal-auth.ts",
-    "apps/api/src/services/portal-audit.ts",
-    "docs/contracts/portal/vista-source-inventory.md",
-    "docs/contracts/portal/reference-repos-inventory.md",
-    "docs/contracts/portal/competitive-baseline.md",
-    "docs/contracts/portal/portal-contract-v1.yaml",
-    "docs/contracts/portal/portal-capability-matrix.md",
-    "scripts/license-guard.ps1",
-    "THIRD_PARTY_NOTICES.md",
-    "prompts/28-PHASE-26-PORTAL-TELEHEALTH/28-01-portal-telehealth-IMPLEMENT.md",
-    "prompts/28-PHASE-26-PORTAL-TELEHEALTH/28-99-portal-telehealth-VERIFY.md",
-    "docs/runbooks/portal-grounding.md"
+    "scripts/verify-phase1-to-phase26-portal.ps1",
+    "scripts/contract-validate-portal.ts",
+    "apps/portal/playwright.config.ts",
+    "apps/portal/e2e/portal-smoke.spec.ts"
   ],
   "files_modified": [
-    "apps/api/src/index.ts",
-    "apps/api/src/middleware/security.ts",
+    "scripts/verify-latest.ps1",
+    "apps/portal/package.json",
     "ops/summary.md",
     "ops/notion-update.json"
   ],
-  "commit_sha": "b622b98"
+  "commit_sha": "f497be8"
 }
