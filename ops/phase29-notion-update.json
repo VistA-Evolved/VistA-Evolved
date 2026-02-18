@@ -1,0 +1,10 @@
+{
+  "feature_title": "Phase 29 -- Portal IAM + Proxy Workflows + Access Logs",
+  "stage": "Implement",
+  "status": "Complete",
+  "prompt_ref_path": "prompts/31-PHASE-29-PATIENT-IAM/31-01-patient-iam-IMPLEMENT.md",
+  "runbook_path": "docs/runbooks/phase29-iam.md",
+  "security_doc_path": "docs/security/portal-iam.md",
+  "verify_script": "scripts/verify-phase1-to-phase29.ps1 (to be created in VERIFY phase)",
+  "commit_sha": "pending"
+}

@@ -30,6 +30,9 @@ import portalCoreRoutes, { initPortalCore } from "./routes/portal-core.js";
 // Phase 28: Enterprise Intake OS
 import intakeRoutes, { initIntakeRoutes } from "./intake/intake-routes.js";
 import "./intake/packs/index.js"; // registers 23 built-in packs
+// Phase 29: Portal IAM + Proxy Workflows + Access Logs
+import portalIamRoutes from "./portal-iam/portal-iam-routes.js";
+import { seedDevUsers } from "./portal-iam/portal-user-store.js";
 // Phase 15: Enterprise hardening imports
 import { registerSecurityMiddleware, corsOriginValidator } from "./middleware/security.js";
 import { log } from "./lib/logger.js";
@@ -164,6 +167,10 @@ initIntakeRoutes(
   }
 );
 server.register(intakeRoutes);
+
+// Register portal IAM routes -- identity, proxy invitations, access logs (Phase 29)
+await seedDevUsers();
+server.register(portalIamRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);
