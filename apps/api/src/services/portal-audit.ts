@@ -19,7 +19,22 @@ export type PortalAuditAction =
   | "portal.logout"
   | "portal.session.expired"
   | "portal.data.access"
-  | "portal.navigation";
+  | "portal.navigation"
+  | "portal.export.section"
+  | "portal.export.full"
+  | "portal.message.send"
+  | "portal.message.read"
+  | "portal.message.draft"
+  | "portal.appointment.view"
+  | "portal.appointment.request"
+  | "portal.appointment.cancel"
+  | "portal.share.create"
+  | "portal.share.access"
+  | "portal.share.revoke"
+  | "portal.proxy.grant"
+  | "portal.proxy.revoke"
+  | "portal.proxy.access"
+  | "portal.settings.update";
 
 export interface PortalAuditEvent {
   id: string;

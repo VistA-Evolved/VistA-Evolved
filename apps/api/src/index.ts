@@ -24,6 +24,8 @@ import vistaInteropRoutes from "./routes/vista-interop.js";
 import reportingRoutes from "./routes/reporting.js";
 import analyticsRoutes from "./routes/analytics-routes.js";
 import portalAuthRoutes from "./routes/portal-auth.js";
+import { getPortalSession } from "./routes/portal-auth.js";
+import portalCoreRoutes, { initPortalCore } from "./routes/portal-core.js";
 // Phase 15: Enterprise hardening imports
 import { registerSecurityMiddleware, corsOriginValidator } from "./middleware/security.js";
 import { log } from "./lib/logger.js";
@@ -139,6 +141,10 @@ server.register(analyticsRoutes);
 
 // Register portal auth + health proxy routes (Phase 26)
 server.register(portalAuthRoutes);
+
+// Register portal core routes — messaging, appointments, sharing, settings, export (Phase 27)
+initPortalCore(getPortalSession);
+server.register(portalCoreRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

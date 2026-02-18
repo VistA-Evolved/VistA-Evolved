@@ -1,36 +1,40 @@
 {
-  "feature_title": "Phase 26 VERIFY — Portal Contract + License Guard + Smoke Tests",
-  "stage": "verified",
+  "feature_title": "Phase 27 — Portal Core (Records, Messaging, Appointments, Sharing, Settings)",
+  "stage": "implemented",
   "status": "complete",
-  "prompt_ref_path": "prompts/28-PHASE-26-PORTAL-TELEHEALTH/28-01-portal-telehealth-IMPLEMENT.md",
-  "verify_prompt_path": "prompts/28-PHASE-26-PORTAL-TELEHEALTH/28-99-portal-telehealth-VERIFY.md",
+  "prompt_ref_path": "prompts/29-PHASE-27-PORTAL-CORE/29-01-portal-core-IMPLEMENT.md",
   "runbook_paths": [
-    "docs/runbooks/portal-grounding.md"
+    "docs/runbooks/portal-core.md",
+    "docs/contracts/portal/known-gaps.md"
   ],
   "verify_script": "scripts/verify-phase1-to-phase26-portal.ps1",
   "verify_results": {
-    "total_gates": "76 PASS / 0 FAIL / 0 WARN",
-    "regression": "PASS — Phase 25 gates delegated",
-    "contract_integrity": "PASS — 14 gates (5 files + YAML validator + 8 matrix modules)",
-    "portal_skeleton": "PASS — 25 gates (10 pages, 7 nav routes, 7 DataSourceBadges, build clean)",
-    "api_routes": "PASS — 7 gates (auth routes, security rules, tsc clean)",
-    "security_baseline": "PASS — 11 gates (httpOnly, sameSite, rate limit, secret scan, VA terms, audit)",
-    "license_guard": "PASS — 6 gates (all 11 sub-checks pass)",
-    "playwright_smoke": "PASS — 11 tests (login, pages, nav clicks, badges)",
-    "documentation": "PASS — 4 gates",
-    "web_regression": "PASS — clinician web builds clean"
+    "api_tsc": "PASS — 0 errors",
+    "portal_build": "PASS — 10 pages, 1 dynamic route",
+    "phase26_regression": "76 PASS / 0 FAIL / 0 WARN"
   },
   "files_created": [
-    "scripts/verify-phase1-to-phase26-portal.ps1",
-    "scripts/contract-validate-portal.ts",
-    "apps/portal/playwright.config.ts",
-    "apps/portal/e2e/portal-smoke.spec.ts"
+    "apps/api/src/services/portal-appointments.ts",
+    "apps/api/src/services/portal-sharing.ts",
+    "apps/api/src/services/portal-settings.ts",
+    "apps/api/src/routes/portal-core.ts",
+    "apps/portal/src/app/share/[token]/page.tsx",
+    "docs/runbooks/portal-core.md",
+    "docs/contracts/portal/known-gaps.md"
   ],
   "files_modified": [
-    "scripts/verify-latest.ps1",
-    "apps/portal/package.json",
+    "apps/api/src/index.ts",
+    "apps/api/src/routes/portal-auth.ts",
+    "apps/api/src/services/portal-audit.ts",
+    "apps/portal/src/lib/api.ts",
+    "apps/portal/src/app/dashboard/page.tsx",
+    "apps/portal/src/app/dashboard/health/page.tsx",
+    "apps/portal/src/app/dashboard/medications/page.tsx",
+    "apps/portal/src/app/dashboard/messages/page.tsx",
+    "apps/portal/src/app/dashboard/appointments/page.tsx",
+    "apps/portal/src/app/dashboard/profile/page.tsx",
     "ops/summary.md",
     "ops/notion-update.json"
   ],
-  "commit_sha": "f497be8"
+  "commit_sha": "08440b6"
 }

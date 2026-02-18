@@ -97,3 +97,183 @@ export async function fetchDemographics() {
 export async function fetchReports() {
   return portalFetch("/portal/health/reports");
 }
+
+// ─── PDF Export (Phase 27) ───
+
+export function exportSectionUrl(section: string): string {
+  return `${API_BASE}/portal/export/section/${section}`;
+}
+
+export function exportFullRecordUrl(): string {
+  return `${API_BASE}/portal/export/full`;
+}
+
+// ─── Secure Messaging (Phase 27) ───
+
+export async function fetchInbox() {
+  return portalFetch("/portal/messages");
+}
+
+export async function fetchDrafts() {
+  return portalFetch("/portal/messages/drafts");
+}
+
+export async function fetchSentMessages() {
+  return portalFetch("/portal/messages/sent");
+}
+
+export async function fetchMessage(id: string) {
+  return portalFetch(`/portal/messages/${id}`);
+}
+
+export async function fetchThread(messageId: string) {
+  return portalFetch(`/portal/messages/${messageId}/thread`);
+}
+
+export async function createMessageDraft(body: {
+  subject: string;
+  body: string;
+  category?: string;
+  toDfn?: string;
+}) {
+  return portalFetch("/portal/messages", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+export async function updateMessageDraft(id: string, patch: { subject?: string; body?: string }) {
+  return portalFetch(`/portal/messages/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(patch),
+  });
+}
+
+export async function deleteMessageDraft(id: string) {
+  return portalFetch(`/portal/messages/${id}`, { method: "DELETE" });
+}
+
+export async function sendMessageDraft(id: string) {
+  return portalFetch(`/portal/messages/${id}/send`, { method: "POST" });
+}
+
+export async function addMessageAttachment(
+  id: string,
+  attachment: { filename: string; mimeType: string; data: string }
+) {
+  return portalFetch(`/portal/messages/${id}/attachments`, {
+    method: "POST",
+    body: JSON.stringify(attachment),
+  });
+}
+
+// ─── Appointments (Phase 27) ───
+
+export async function fetchAppointments() {
+  return portalFetch("/portal/appointments");
+}
+
+export async function fetchAppointmentDetail(id: string) {
+  return portalFetch(`/portal/appointments/${id}`);
+}
+
+export async function requestNewAppointment(body: {
+  clinicName: string;
+  appointmentType?: string;
+  preferredDate: string;
+  reason: string;
+}) {
+  return portalFetch("/portal/appointments/request", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+export async function requestAppointmentCancellation(id: string, reason: string) {
+  return portalFetch(`/portal/appointments/${id}/cancel`, {
+    method: "POST",
+    body: JSON.stringify({ reason }),
+  });
+}
+
+export async function requestAppointmentReschedule(id: string, preference: string) {
+  return portalFetch(`/portal/appointments/${id}/reschedule`, {
+    method: "POST",
+    body: JSON.stringify({ preference }),
+  });
+}
+
+// ─── Record Sharing (Phase 27) ───
+
+export async function fetchShares() {
+  return portalFetch("/portal/shares");
+}
+
+export async function createShare(body: {
+  sections: string[];
+  label: string;
+  ttlHours?: number;
+  patientDob?: string;
+}) {
+  return portalFetch("/portal/shares", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+export async function revokeShareLink(id: string) {
+  return portalFetch(`/portal/shares/${id}/revoke`, { method: "POST" });
+}
+
+export async function previewShare(token: string) {
+  return portalFetch(`/portal/share/preview/${token}`);
+}
+
+export async function verifyShare(token: string, body: { accessCode: string; patientDob: string }) {
+  return portalFetch(`/portal/share/verify/${token}`, {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+// ─── Settings (Phase 27) ───
+
+export async function fetchSettings() {
+  return portalFetch("/portal/settings");
+}
+
+export async function updatePortalSettings(patch: {
+  language?: string;
+  notifications?: Record<string, boolean>;
+  display?: Record<string, unknown>;
+}) {
+  return portalFetch("/portal/settings", {
+    method: "PUT",
+    body: JSON.stringify(patch),
+  });
+}
+
+// ─── Proxy Access (Phase 27) ───
+
+export async function fetchProxies() {
+  return portalFetch("/portal/proxy/list");
+}
+
+export async function grantProxyAccess(body: {
+  proxyDfn: string;
+  proxyName: string;
+  relationship: string;
+  accessLevel?: string;
+}) {
+  return portalFetch("/portal/proxy/grant", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+export async function revokeProxyAccess(proxyId: string) {
+  return portalFetch("/portal/proxy/revoke", {
+    method: "POST",
+    body: JSON.stringify({ proxyId }),
+  });
+}

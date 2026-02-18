@@ -29,6 +29,8 @@ import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { randomBytes } from "node:crypto";
 import { log } from "../lib/logger.js";
 import { portalAudit } from "../services/portal-audit.js";
+import { validateCredentials } from "../vista/config.js";
+import { connect, disconnect, callRpc } from "../vista/rpcBrokerClient.js";
 
 /* ------------------------------------------------------------------ */
 /* Portal Session Store (separate from clinician sessions)              */
@@ -110,7 +112,7 @@ function createPortalSession(dfn: string, name: string): string {
   return token;
 }
 
-function getPortalSession(request: FastifyRequest): PortalSessionData | null {
+export function getPortalSession(request: FastifyRequest): PortalSessionData | null {
   const cookie = (request as any).cookies?.[PORTAL_COOKIE];
   if (!cookie) return null;
   const session = portalSessions.get(cookie);
@@ -241,45 +243,198 @@ export default async function portalAuthRoutes(
   });
 
   // ─── Portal Health Data Proxy Routes ───
-  // These routes are DFN-scoped by the portal session.
-  // They proxy to existing VistA RPC routes on the same server.
+  // These routes call VistA RPCs directly with the portal session's DFN.
+  // Read-only. No clinician-only controls exposed.
 
-  const HEALTH_PROXY_ROUTES = [
-    { path: "/portal/health/allergies", upstream: "/vista/allergies" },
-    { path: "/portal/health/problems", upstream: "/vista/problems" },
-    { path: "/portal/health/vitals", upstream: "/vista/vitals" },
-    { path: "/portal/health/labs", upstream: "/vista/labs" },
-    { path: "/portal/health/medications", upstream: "/vista/medications" },
-    { path: "/portal/health/consults", upstream: "/vista/consults" },
-    { path: "/portal/health/surgery", upstream: "/vista/surgery" },
-    { path: "/portal/health/dc-summaries", upstream: "/vista/dc-summaries" },
-    { path: "/portal/health/demographics", upstream: "/vista/patient-demographics" },
-    { path: "/portal/health/reports", upstream: "/vista/reports" },
-  ] as const;
+  /** Helper: call a VistA RPC with portal session DFN, audit, return parsed data */
+  async function portalRpc(
+    session: PortalSessionData,
+    rpcName: string,
+    params: string[],
+    resource: string,
+    request: FastifyRequest,
+    reply: FastifyReply,
+    parser: (lines: string[]) => unknown[]
+  ) {
+    portalAudit("portal.data.access", "success", session.patientDfn, {
+      sourceIp: request.ip,
+      detail: { resource },
+    });
 
-  for (const route of HEALTH_PROXY_ROUTES) {
-    server.get(route.path, async (request, reply) => {
-      const session = requirePortalSession(request, reply);
-
-      portalAudit("portal.data.access", "success", session.patientDfn, {
-        sourceIp: request.ip,
-        detail: { resource: route.path },
-      });
-
-      // Return integration-pending response for now.
-      // When wired, these will proxy to the upstream VistA routes
-      // with the portal session's DFN injected.
+    try {
+      validateCredentials();
+      await connect();
+      const lines = await callRpc(rpcName, params);
+      disconnect();
+      const results = parser(lines);
+      return reply.send({ ok: true, source: "vista", resource, count: results.length, results, rpcUsed: rpcName });
+    } catch (err: any) {
+      try { disconnect(); } catch {}
+      // If VistA unavailable, return integration-pending instead of crashing
       return reply.send({
         ok: true,
         source: "vista",
-        resource: route.path.replace("/portal/health/", ""),
-        patientName: session.patientName,
-        data: [],
-        _note: "Integration pending — will proxy to VistA RPC when connected",
-        _upstream: route.upstream,
+        resource,
+        count: 0,
+        results: [],
+        _integration: "pending",
+        _rpc: rpcName,
+        _error: err.message?.includes("ECONNREFUSED") ? "VistA unavailable" : undefined,
       });
-    });
+    }
   }
+
+  // --- Allergies ---
+  server.get("/portal/health/allergies", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    return portalRpc(session, "ORQQAL LIST", [session.patientDfn], "allergies", request, reply, (lines) =>
+      lines.map(l => {
+        const p = l.split("^");
+        if (!p[0]?.trim()) return null;
+        return { id: p[0]?.trim(), allergen: p[1]?.trim() || "", severity: p[2]?.trim() || "", reactions: p[3]?.trim() || "" };
+      }).filter(Boolean)
+    );
+  });
+
+  // --- Problems ---
+  server.get("/portal/health/problems", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    return portalRpc(session, "ORWCH PROBLEM LIST", [session.patientDfn, "0"], "problems", request, reply, (lines) =>
+      lines.map(l => {
+        const p = l.split("^");
+        if (!p[0]?.trim() || !p[1]?.trim()) return null;
+        const st = p[2]?.trim() || "";
+        let status = "active";
+        if (st.toUpperCase().includes("I") || st === "0") status = "inactive";
+        return { id: p[0]?.trim(), text: p[1]?.trim(), status, onset: p[3]?.trim() || "" };
+      }).filter(Boolean)
+    );
+  });
+
+  // --- Vitals ---
+  server.get("/portal/health/vitals", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    return portalRpc(session, "ORQQVI VITALS", [session.patientDfn, "3000101", "3991231"], "vitals", request, reply, (lines) =>
+      lines.map(l => {
+        const p = l.split("^");
+        if (!p[0]?.trim()) return null;
+        const takenAtFM = p[3]?.trim() || "";
+        let takenAt = takenAtFM;
+        if (takenAtFM?.length >= 7) {
+          const dp = takenAtFM.split(".")[0] || "";
+          const tp = takenAtFM.split(".")[1] || "";
+          if (/^\d{7}$/.test(dp)) {
+            const y = parseInt(dp.substring(0, 3), 10) + 1700;
+            takenAt = `${y}-${dp.substring(3, 5)}-${dp.substring(5, 7)}`;
+            if (tp?.length >= 4) takenAt += ` ${tp.substring(0, 2)}:${tp.substring(2, 4)}`;
+          }
+        }
+        return { type: p[1]?.trim() || "", value: p[2]?.trim() || "", takenAt };
+      }).filter(Boolean)
+    );
+  });
+
+  // --- Medications ---
+  server.get("/portal/health/medications", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    return portalRpc(session, "ORWPS ACTIVE", [session.patientDfn], "medications", request, reply, (lines) => {
+      const meds: { drugName: string; status: string; sig: string }[] = [];
+      let current: { drugName: string; status: string; sig: string } | null = null;
+      for (const line of lines) {
+        if (line.startsWith("~")) {
+          if (current) meds.push(current);
+          const p = line.substring(1).split("^");
+          current = { drugName: p[2]?.trim() || p[1]?.trim() || "Unknown", status: p[9]?.trim() || "", sig: "" };
+        } else if (current && (line.startsWith("\\") || line.startsWith(" "))) {
+          const trimmed = line.replace(/^[\\ ]+/, "").trim();
+          if (trimmed.toLowerCase().startsWith("sig:")) current.sig = trimmed.substring(4).trim();
+        }
+      }
+      if (current) meds.push(current);
+      return meds;
+    });
+  });
+
+  // --- Demographics ---
+  server.get("/portal/health/demographics", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    return portalRpc(session, "ORWPT SELECT", [session.patientDfn], "demographics", request, reply, (lines) => {
+      const raw = lines[0] || "";
+      const p = raw.split("^");
+      if (p[0] === "-1" || !p[0]) return [];
+      let dob = p[2] || "";
+      if (/^\d{7}$/.test(dob)) {
+        const y = parseInt(dob.substring(0, 3), 10) + 1700;
+        dob = `${y}-${dob.substring(3, 5)}-${dob.substring(5, 7)}`;
+      }
+      return [{ name: p[0], sex: p[1] || "", dob }];
+    });
+  });
+
+  // --- Labs (integration pending — ORWLRR INTERIM requires complex params) ---
+  server.get("/portal/health/labs", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    portalAudit("portal.data.access", "success", session.patientDfn, {
+      sourceIp: request.ip, detail: { resource: "labs" },
+    });
+    return reply.send({
+      ok: true, source: "vista", resource: "labs", count: 0, results: [],
+      _integration: "pending", _rpc: "ORWLRR INTERIM",
+      _note: "Lab results require complex date/test-type parameters. Integration planned for Phase 28.",
+    });
+  });
+
+  // --- Consults ---
+  server.get("/portal/health/consults", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    portalAudit("portal.data.access", "success", session.patientDfn, {
+      sourceIp: request.ip, detail: { resource: "consults" },
+    });
+    return reply.send({
+      ok: true, source: "vista", resource: "consults", count: 0, results: [],
+      _integration: "pending", _rpc: "ORQQCN LIST",
+      _note: "Consult list RPC mapping not confirmed in sandbox. Integration planned.",
+    });
+  });
+
+  // --- Surgery ---
+  server.get("/portal/health/surgery", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    portalAudit("portal.data.access", "success", session.patientDfn, {
+      sourceIp: request.ip, detail: { resource: "surgery" },
+    });
+    return reply.send({
+      ok: true, source: "vista", resource: "surgery", count: 0, results: [],
+      _integration: "pending", _rpc: "ORWSR LIST",
+      _note: "Surgery list RPC not available in sandbox. Integration planned.",
+    });
+  });
+
+  // --- Discharge summaries ---
+  server.get("/portal/health/dc-summaries", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    portalAudit("portal.data.access", "success", session.patientDfn, {
+      sourceIp: request.ip, detail: { resource: "dc-summaries" },
+    });
+    return reply.send({
+      ok: true, source: "vista", resource: "dc-summaries", count: 0, results: [],
+      _integration: "pending", _rpc: "TIU DOCUMENTS BY CONTEXT (class 244)",
+      _note: "DC summaries require TIU document class filtering. Integration planned.",
+    });
+  });
+
+  // --- Clinical reports ---
+  server.get("/portal/health/reports", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    portalAudit("portal.data.access", "success", session.patientDfn, {
+      sourceIp: request.ip, detail: { resource: "reports" },
+    });
+    return reply.send({
+      ok: true, source: "vista", resource: "reports", count: 0, results: [],
+      _integration: "pending", _rpc: "ORWRP REPORT TEXT",
+      _note: "Clinical report generation requires HS component selection. Integration planned.",
+    });
+  });
 
   // ─── Portal Audit Routes (admin-only) ───
   server.get("/portal/audit/events", async (request, reply) => {

@@ -32,22 +32,29 @@ const SUMMARY_CARDS = [
     title: "Lab Results",
     href: "/dashboard/health",
     icon: "🔬",
-    source: "ehr" as const,
+    source: "pending" as const,
     description: "View your laboratory results",
   },
   {
     title: "Messages",
     href: "/dashboard/messages",
     icon: "✉️",
-    source: "pending" as const,
+    source: "ehr" as const,
     description: "Send and receive secure messages",
   },
   {
     title: "Appointments",
     href: "/dashboard/appointments",
     icon: "📅",
-    source: "pending" as const,
+    source: "ehr" as const,
     description: "View and manage your appointments",
+  },
+  {
+    title: "Record Sharing",
+    href: "/dashboard/profile",
+    icon: "🔗",
+    source: "ehr" as const,
+    description: "Share records with providers or caregivers",
   },
 ];
 

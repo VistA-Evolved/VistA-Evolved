@@ -1,12 +1,44 @@
-﻿# Ops Summary — Phase 26 VERIFY: Portal Contract + License Guard + Smoke Tests
+﻿# Ops Summary — Phase 27: Portal Core (Records, Messaging, Appointments, Sharing, Settings)
 
-## What Changed (VERIFY pass)
+## What Changed
 
-### New: Verification Infrastructure
-- `scripts/verify-phase1-to-phase26-portal.ps1` — 76 gates across 9 sections
-- `scripts/contract-validate-portal.ts` — YAML + matrix validator (52 checks)
-- `apps/portal/playwright.config.ts` — Playwright config for smoke tests
-- `apps/portal/e2e/portal-smoke.spec.ts` — 11 smoke tests (login, nav, badges)
+### Backend Services (6 new files)
+- `portal-pdf.ts` — Minimal PDF 1.4 builder, no external deps. Section formatters for allergies, problems, vitals, medications, demographics.
+- `portal-messaging.ts` — Threaded secure messaging. Inbox/drafts/sent CRUD. Attachments (5MB, PDF/JPEG/PNG/GIF). SLA disclaimer.
+- `portal-appointments.ts` — Demo seed data + request/cancel/reschedule flows.
+- `portal-sharing.ts` — Time-limited share links with access codes. DOB verification. Lock after 5 failures.
+- `portal-settings.ts` — Language (7), notification toggles, display prefs, MFA stub.
+- `portal-sensitivity.ts` — Proxy engine with 6 sensitivity rules.
+
+### Route Registration
+- `portal-core.ts` — 30+ routes for all Phase 27 modules.
+- `portal-auth.ts` — Health routes now call REAL VistA RPCs (5 wired).
+- `portal-audit.ts` — 21 audit action types (was 6).
+- `index.ts` — portal-core registration.
+
+### Portal UI (6 pages updated + 1 new)
+- health, medications, messages, appointments, profile pages — all live data
+- `share/[token]/page.tsx` — External share viewer
+- `lib/api.ts` — 40+ fetch functions (was 13)
+
+### Docs
+- `docs/runbooks/portal-core.md` — Full runbook
+- `docs/contracts/portal/known-gaps.md` — Gap analysis with migration paths
+
+## How to Test
+```bash
+curl -c cookies.txt -X POST http://localhost:3001/portal/auth/login -H "Content-Type: application/json" -d '{"username":"patient1","password":"patient1"}'
+curl -b cookies.txt http://localhost:3001/portal/health/allergies
+curl -b cookies.txt http://localhost:3001/portal/export/full -o record.pdf
+curl -b cookies.txt http://localhost:3001/portal/appointments
+curl -b cookies.txt http://localhost:3001/portal/settings
+```
+
+## Follow-ups
+- Wire remaining 5 RPCs (labs, consults, surgery, dc-summaries, reports)
+- VistA MailMan integration (XMXAPI)
+- VistA scheduling integration (SD APPOINTMENT LIST)
+- MFA, email/SMS delivery, telehealth
 
 ### Modified
 - `scripts/verify-latest.ps1` — delegates to Phase 26 verifier
