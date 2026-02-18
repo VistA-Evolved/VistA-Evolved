@@ -1,0 +1,56 @@
+/**
+ * Department Packs: ED Triage + Outpatient Clinic
+ * Department-level overlays that add workflow-specific items
+ */
+import type { IntakePack } from "../types.js";
+
+export const edTriagePack: IntakePack = {
+  packId: "department-ed-triage-v1", version: "1.0.0",
+  title: "ED Triage Intake", description: "Emergency department triage with ESI-compatible severity assessment",
+  languages: ["en"],
+  applicableContexts: { departments: ["ed", "emergency", "urgent_care"], specialties: ["*"], visitTypes: ["emergency", "urgent", "walk_in"] },
+  requiredCoverage: ["triage", "safety"],
+  items: [
+    { linkId: "ed-arrival-mode", type: "choice", text: "How did you get here?", section: "triage", required: true, order: 5,
+      answerOption: [{ value: "self", display: "Drove myself / walked in" }, { value: "driven", display: "Someone drove me" }, { value: "ambulance", display: "Ambulance" }, { value: "police", display: "Police/law enforcement" }] },
+    { linkId: "ed-when-started", type: "choice", text: "When did this problem start?", section: "triage", required: true, order: 6,
+      answerOption: [{ value: "minutes", display: "Minutes ago" }, { value: "hours", display: "Hours ago" }, { value: "today", display: "Earlier today" }, { value: "yesterday", display: "Yesterday" }, { value: "days", display: "Days ago" }, { value: "weeks", display: "Weeks ago" }] },
+    { linkId: "ed-getting-worse", type: "boolean", text: "Is it getting worse?", section: "triage", required: true, order: 7,
+      redFlag: { condition: "true", message: "Acutely worsening symptoms", severity: "medium" } },
+    { linkId: "ed-pain-now", type: "integer", text: "Current pain level (0-10):", section: "triage", required: true, order: 8 },
+    { linkId: "ed-vital-danger", type: "boolean", text: "Do you feel like you or someone is in immediate danger?", section: "safety", required: true, order: 9,
+      redFlag: { condition: "true", message: "Reports immediate danger - triage priority", severity: "critical" } },
+    { linkId: "ed-last-ate", type: "string", text: "When did you last eat or drink?", section: "triage", required: false, order: 10 },
+    { linkId: "ed-meds-today", type: "boolean", text: "Have you taken any medications or treatments for this today?", section: "triage", required: true, order: 11 },
+    { linkId: "ed-meds-what", type: "string", text: "What did you take?", section: "triage", required: false, order: 12,
+      enableWhen: [{ question: "ed-meds-today", operator: "=", answer: true }] },
+    { linkId: "ed-similar-past", type: "boolean", text: "Have you had this problem before?", section: "triage", required: true, order: 13 },
+    { linkId: "ed-recent-er", type: "boolean", text: "Have you been to the ER in the past 30 days?", section: "triage", required: true, order: 14 },
+  ],
+  complaintClusters: [], specialtyTags: ["emergency_medicine"], departmentTags: ["ed", "emergency", "urgent_care"], priority: 90,
+  outputTemplates: { hpiTemplate: "ED ARRIVAL: Mode {{ed-arrival-mode}}. Onset: {{ed-when-started}}. Worsening: {{ed-getting-worse}}. Pain: {{ed-pain-now}}/10.", rosTemplate: "", noteTemplate: "TRIAGE: Arrival {{ed-arrival-mode}}, onset {{ed-when-started}}, worsening {{ed-getting-worse}}, pain {{ed-pain-now}}/10.\nPrior meds today: {{ed-meds-today}} ({{ed-meds-what}}). Last PO: {{ed-last-ate}}.\nPrior similar: {{ed-similar-past}}. Recent ED visit: {{ed-recent-er}}." },
+  scoringThresholds: [],
+};
+
+export const outpatientClinicPack: IntakePack = {
+  packId: "department-outpatient-clinic-v1", version: "1.0.0",
+  title: "Outpatient Clinic Intake", description: "Standard outpatient visit intake supplement",
+  languages: ["en"],
+  applicableContexts: { departments: ["outpatient", "clinic", "primary_care"], specialties: ["*"], visitTypes: ["follow_up", "new_patient", "annual_wellness", "return_visit"] },
+  requiredCoverage: ["visit_prep"],
+  items: [
+    { linkId: "op-visit-reason", type: "choice", text: "What is the type of visit?", section: "visit_prep", required: true, order: 5,
+      answerOption: [{ value: "follow_up", display: "Follow-up on existing problem" }, { value: "new_problem", display: "New problem" }, { value: "annual", display: "Annual wellness/physical" }, { value: "results", display: "Discuss test results" }, { value: "referral", display: "Referral follow-up" }] },
+    { linkId: "op-questions-for-provider", type: "string", text: "Do you have any specific questions for your provider? (optional)", section: "visit_prep", required: false, order: 6 },
+    { linkId: "op-advance-directive", type: "choice", text: "Do you have an advance directive or living will?", section: "visit_prep", required: true, order: 80,
+      answerOption: [{ value: "yes", display: "Yes" }, { value: "no", display: "No" }, { value: "unsure", display: "Not sure" }, { value: "want_info", display: "I would like information" }] },
+    { linkId: "op-interpreter", type: "boolean", text: "Do you need an interpreter?", section: "visit_prep", required: true, order: 81 },
+    { linkId: "op-interpreter-lang", type: "string", text: "What language?", section: "visit_prep", required: false, order: 82,
+      enableWhen: [{ question: "op-interpreter", operator: "=", answer: true }] },
+    { linkId: "op-mobility", type: "choice", text: "Any mobility or accessibility needs?", section: "visit_prep", required: true, order: 83,
+      answerOption: [{ value: "none", display: "No special needs" }, { value: "wheelchair", display: "Wheelchair access" }, { value: "walker", display: "Walker/cane" }, { value: "hearing", display: "Hearing assistance" }, { value: "vision", display: "Vision assistance" }] },
+  ],
+  complaintClusters: [], specialtyTags: [], departmentTags: ["outpatient", "clinic", "primary_care"], priority: 70,
+  outputTemplates: { hpiTemplate: "", rosTemplate: "", noteTemplate: "VISIT PREP: Type {{op-visit-reason}}. Questions: {{op-questions-for-provider}}.\nADVANCE DIRECTIVE: {{op-advance-directive}}. Interpreter: {{op-interpreter}} {{op-interpreter-lang}}. Mobility: {{op-mobility}}." },
+  scoringThresholds: [],
+};

@@ -121,6 +121,17 @@
       "tabPosition": "tpBottom",
       "align": "alBottom",
       "isBottomTab": true
+    },
+    {
+      "constant": "CT_INTAKE",
+      "label": "Intake",
+      "creationOrder": 10,
+      "conditional": false,
+      "id": 12,
+      "description": "chart tab - patient intake review",
+      "tabPosition": "tpBottom",
+      "align": "alBottom",
+      "isBottomTab": true
     }
   ],
   "subTabs": [

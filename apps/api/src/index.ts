@@ -7,6 +7,7 @@ import { validateCredentials } from "./vista/config";
 import { connect, disconnect, callRpc, callRpcWithList, getDuz } from "./vista/rpcBrokerClient";
 import { registerDomainRoutes } from "./routes/index.js";
 import authRoutes from "./auth/auth-routes.js";
+import { requireSession } from "./auth/auth-routes.js";
 import wsConsoleRoutes from "./routes/ws-console.js";
 import { discoverCapabilities, getCapabilities, optionalRpc, isRpcAvailable, getDomainCapabilities } from "./vista/rpcCapabilities.js";
 import capabilityRoutes from "./routes/capabilities.js";
@@ -26,6 +27,9 @@ import analyticsRoutes from "./routes/analytics-routes.js";
 import portalAuthRoutes from "./routes/portal-auth.js";
 import { getPortalSession } from "./routes/portal-auth.js";
 import portalCoreRoutes, { initPortalCore } from "./routes/portal-core.js";
+// Phase 28: Enterprise Intake OS
+import intakeRoutes, { initIntakeRoutes } from "./intake/intake-routes.js";
+import "./intake/packs/index.js"; // registers 23 built-in packs
 // Phase 15: Enterprise hardening imports
 import { registerSecurityMiddleware, corsOriginValidator } from "./middleware/security.js";
 import { log } from "./lib/logger.js";
@@ -145,6 +149,21 @@ server.register(portalAuthRoutes);
 // Register portal core routes — messaging, appointments, sharing, settings, export (Phase 27)
 initPortalCore(getPortalSession);
 server.register(portalCoreRoutes);
+
+// Register intake OS routes — adaptive questionnaire, packs, clinician review, kiosk (Phase 28)
+initIntakeRoutes(
+  (req: any) => {
+    const ps = getPortalSession(req);
+    return ps ? { patientDfn: ps.patientDfn, patientName: ps.patientName } : null;
+  },
+  (req: any) => {
+    try {
+      const session = requireSession(req, { code: () => ({ send: () => {} }) });
+      return session ? { duz: session.duz, name: session.userName } : null;
+    } catch { return null; }
+  }
+);
+server.register(intakeRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

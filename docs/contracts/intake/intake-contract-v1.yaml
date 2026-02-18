@@ -1,0 +1,256 @@
+# Intake OS Contract v1
+# VistA-Evolved Phase 28
+# Standards: FHIR Questionnaire/QuestionnaireResponse semantics, SDC-like adaptive $next-question
+
+non_negotiable_rules:
+  vista_first: "All clinical data filing goes through VistA RPCs after clinician review"
+  no_diagnosis: "Patient-facing intake never produces diagnosis or treatment recommendations"
+  draft_until_review: "All intake outputs are 'patient-reported draft' until clinician confirms"
+  phi_safe: "DOB/SSN/credentials redacted in all logs; no PHI in analytics"
+  auditable: "Every ask/answer/edit/submit/review/file action is logged immutably"
+  deterministic_default: "Default brain (rules provider) is fully deterministic and replayable"
+
+# ============================================================
+# Core Domain Models
+# ============================================================
+
+models:
+  IntakeSession:
+    description: "A single intake encounter (pre-visit or standalone)"
+    fields:
+      id: { type: string, format: uuid, required: true }
+      patientDfn: { type: string, required: false, description: "Null for anonymous/pre-auth kiosk start" }
+      appointmentId: { type: string, required: false, description: "Links to appointment if pre-visit" }
+      subjectType: { type: enum, values: [patient, proxy], required: true }
+      proxyDfn: { type: string, required: false, description: "If subjectType=proxy, the proxy's DFN" }
+      language: { type: string, default: "en", description: "ISO 639-1 code" }
+      context:
+        description: "Clinical context driving pack selection"
+        fields:
+          department: { type: string, required: false }
+          specialty: { type: string, required: false }
+          visitType: { type: string, required: false }
+          chiefComplaint: { type: string, required: false }
+          age: { type: number, required: false }
+          sex: { type: string, required: false }
+          pregnancyPossible: { type: boolean, required: false }
+      status:
+        type: enum
+        values:
+          - not_started
+          - in_progress
+          - submitted
+          - clinician_reviewed
+          - filed
+          - filed_pending_integration
+          - expired
+          - abandoned
+      brainProvider: { type: enum, values: [rules, vendor_adapter, llm_constrained], default: "rules" }
+      questionnaireResponseVersion: { type: number, default: 0 }
+      createdAt: { type: string, format: iso8601 }
+      updatedAt: { type: string, format: iso8601 }
+      expiresAt: { type: string, format: iso8601, required: false }
+
+  IntakeEvent:
+    description: "Immutable append-only event for full replay/audit"
+    fields:
+      id: { type: string, format: uuid }
+      sessionId: { type: string, format: uuid }
+      timestamp: { type: string, format: iso8601 }
+      type:
+        type: enum
+        values:
+          - session.created
+          - session.resumed
+          - session.expired
+          - question.asked
+          - question.answered
+          - question.skipped
+          - answer.edited
+          - navigation.forward
+          - navigation.back
+          - navigation.jump
+          - section.completed
+          - intake.submitted
+          - intake.save_draft
+          - clinician.opened
+          - clinician.edited
+          - clinician.reviewed
+          - clinician.filed
+          - clinician.exported
+          - summary.generated
+          - redflag.triggered
+          - sensitivity.withheld
+      actor: { type: string, description: "patient DFN, proxy DFN, or clinician DUZ" }
+      actorType: { type: enum, values: [patient, proxy, clinician, system] }
+      payload: { type: object, description: "Event-specific data; PHI redacted in logs" }
+      questionId: { type: string, required: false }
+      answerId: { type: string, required: false }
+
+  QuestionnaireResponseSnapshot:
+    description: "Versioned snapshot of patient responses"
+    fields:
+      id: { type: string, format: uuid }
+      sessionId: { type: string, format: uuid }
+      version: { type: number }
+      contentHash: { type: string, format: sha256, description: "Integrity check" }
+      questionnaireResponse: { type: object, description: "FHIR-like QR structure" }
+      createdAt: { type: string, format: iso8601 }
+      createdBy: { type: string }
+
+  DraftClinicianSummary:
+    description: "Structured output from intake for clinician review"
+    fields:
+      sessionId: { type: string }
+      version: { type: number }
+      generatedAt: { type: string, format: iso8601 }
+      generatedBy: { type: enum, values: [template, llm_constrained] }
+      sections:
+        hpiNarrative: { type: string, description: "History of present illness narrative" }
+        reviewOfSystems:
+          type: array
+          items:
+            system: { type: string }
+            findings: { type: string }
+            status: { type: enum, values: [positive, negative, not_asked] }
+        redFlags:
+          type: array
+          items:
+            flag: { type: string }
+            severity: { type: enum, values: [info, warning, critical] }
+            triggerQuestionId: { type: string }
+            triggerAnswerId: { type: string }
+        medicationsDelta:
+          type: object
+          fields:
+            newMedications: { type: array }
+            discontinuedMedications: { type: array }
+            changedMedications: { type: array }
+        allergiesDelta:
+          type: object
+          fields:
+            newAllergies: { type: array }
+            resolvedAllergies: { type: array }
+        contradictions:
+          type: array
+          description: "Answer pairs that contradict each other"
+          items:
+            questionIdA: { type: string }
+            questionIdB: { type: string }
+            description: { type: string }
+      draftNoteText: { type: string, description: "Pre-formatted note for TIU filing" }
+      citations:
+        type: array
+        description: "Maps each summary statement to source answer IDs"
+        items:
+          statement: { type: string }
+          answerIds: { type: array, items: { type: string } }
+
+# ============================================================
+# API Endpoints
+# ============================================================
+
+endpoints:
+  # --- Session management ---
+  POST /intake/sessions:
+    description: "Create new intake session"
+    input: { appointmentId?, subjectType, language?, context? }
+    output: IntakeSession
+    auth: portal_session | kiosk_session
+
+  GET /intake/sessions/:id:
+    description: "Get session state + current QR snapshot"
+    output: { session: IntakeSession, questionnaireResponse: object, progress: object }
+    auth: portal_session | kiosk_session | clinician_session
+
+  # --- Adaptive questioning ---
+  POST /intake/sessions/:id/next-question:
+    description: "SDC-like $next-question: given QR so far, return next items"
+    input: { questionnaireResponseSoFar: object, context?: object }
+    output:
+      nextItems: { type: array, description: "FHIR Questionnaire items to render next" }
+      progress: { percentComplete: number, requiredCoverageRemaining: string[] }
+      containedQuestionnaire: { type: object, description: "Questionnaire fragment for renderer" }
+    auth: portal_session | kiosk_session
+
+  # --- Answer submission ---
+  POST /intake/sessions/:id/answers:
+    description: "Submit answers for current question set"
+    input: { answers: array, saveAndContinue?: boolean }
+    output: { questionnaireResponse: object, version: number, nextItems?: array }
+    auth: portal_session | kiosk_session
+
+  # --- Save/submit ---
+  POST /intake/sessions/:id/save:
+    description: "Save draft (auto-save or manual)"
+    auth: portal_session | kiosk_session
+
+  POST /intake/sessions/:id/submit:
+    description: "Submit completed intake for clinician review"
+    output: { session: IntakeSession, summary: DraftClinicianSummary }
+    auth: portal_session | kiosk_session
+
+  # --- Clinician review ---
+  GET /intake/sessions/:id/review:
+    description: "Get intake for clinician review (summary + full QR)"
+    output: { session: IntakeSession, summary: DraftClinicianSummary, questionnaireResponse: object }
+    auth: clinician_session
+
+  PUT /intake/sessions/:id/review:
+    description: "Clinician edits/confirms answers"
+    input: { edits: array, reviewed: boolean }
+    auth: clinician_session
+
+  POST /intake/sessions/:id/file:
+    description: "File reviewed intake to VistA (or mark pending)"
+    input: { targets: array, noteText?: string }
+    output: { filingResults: array }
+    auth: clinician_session
+
+  POST /intake/sessions/:id/export:
+    description: "Export draft note text"
+    output: { noteText: string, format: string }
+    auth: clinician_session
+
+  # --- Kiosk ---
+  POST /kiosk/sessions:
+    description: "Start kiosk session with QR resume token"
+    input: { appointmentId?, resumeToken? }
+    output: { session: IntakeSession, resumeToken: string }
+    auth: kiosk_device_token
+
+  POST /kiosk/sessions/:id/resume-token:
+    description: "Generate opaque resume token (no PHI)"
+    output: { token: string, expiresAt: string }
+    auth: kiosk_device_token
+
+  # --- Pack management (admin) ---
+  GET /intake/packs:
+    description: "List available packs"
+    output: { packs: array }
+    auth: clinician_session
+
+  GET /intake/packs/:packId:
+    description: "Get pack detail"
+    output: IntakePack
+    auth: clinician_session
+
+  # --- Filing queue ---
+  GET /intake/filing-queue:
+    description: "List sessions pending filing"
+    output: { sessions: array }
+    auth: clinician_session
+
+# ============================================================
+# Status Flow
+# ============================================================
+
+status_flow:
+  not_started: [in_progress]
+  in_progress: [submitted, abandoned, expired]
+  submitted: [clinician_reviewed]
+  clinician_reviewed: [filed, filed_pending_integration]
+  filed: [] # terminal
+  filed_pending_integration: [filed] # when VistA RPC becomes available
+  expired: [] # terminal
+  abandoned: [] # terminal

@@ -1,0 +1,80 @@
+/**
+ * Complaint Pack: Abdominal Pain
+ * Covers GI differential, surgical abdomen red flags, location-based questioning
+ */
+import type { IntakePack } from "../types.js";
+
+const pack: IntakePack = {
+  packId: "complaint-abdominal-pain-v1",
+  version: "1.0.0",
+  title: "Abdominal Pain Intake",
+  description: "Focused abdominal pain history with surgical red flags",
+  languages: ["en"],
+  applicableContexts: {
+    departments: ["*"], specialties: ["*"], visitTypes: ["*"],
+    chiefComplaints: ["abdominal pain", "stomach pain", "belly pain", "stomach ache", "abd pain"],
+  },
+  requiredCoverage: ["hpi", "ros"],
+  items: [
+    { linkId: "abd-location", type: "choice", text: "Where is the pain?", section: "hpi", required: true, order: 30,
+      answerOption: [
+        { value: "ruq", display: "Right upper (under ribs)" },
+        { value: "luq", display: "Left upper" },
+        { value: "rlq", display: "Right lower" },
+        { value: "llq", display: "Left lower" },
+        { value: "epigastric", display: "Upper middle (stomach area)" },
+        { value: "periumbilical", display: "Around the belly button" },
+        { value: "suprapubic", display: "Lower middle (above pelvis)" },
+        { value: "diffuse", display: "All over" },
+      ] },
+    { linkId: "abd-quality", type: "choice", text: "How does the pain feel?", section: "hpi", required: true, order: 31,
+      answerOption: [
+        { value: "sharp", display: "Sharp/stabbing" },
+        { value: "crampy", display: "Cramping/colicky" },
+        { value: "burning", display: "Burning" },
+        { value: "dull", display: "Dull/aching" },
+        { value: "tearing", display: "Tearing" },
+      ] },
+    { linkId: "abd-constant", type: "choice", text: "Is the pain constant or does it come and go?", section: "hpi", required: true, order: 32,
+      answerOption: [
+        { value: "constant", display: "Constant" },
+        { value: "intermittent", display: "Comes and goes" },
+        { value: "worsening", display: "Getting progressively worse" },
+      ] },
+    { linkId: "abd-food-relation", type: "choice", text: "Does eating affect the pain?", section: "hpi", required: true, order: 33,
+      answerOption: [
+        { value: "better", display: "Eating helps" },
+        { value: "worse", display: "Eating makes it worse" },
+        { value: "no_change", display: "No effect" },
+        { value: "worse_fatty", display: "Worse with fatty/greasy food" },
+      ] },
+    { linkId: "abd-nausea", type: "boolean", text: "Nausea or vomiting?", section: "ros", required: true, order: 40 },
+    { linkId: "abd-vomit-blood", type: "boolean", text: "Any blood in vomit?", section: "ros", required: true, order: 41,
+      redFlag: { condition: "true", message: "Hematemesis - GI bleed concern", severity: "critical" } },
+    { linkId: "abd-diarrhea", type: "boolean", text: "Diarrhea?", section: "ros", required: true, order: 42 },
+    { linkId: "abd-constipation", type: "boolean", text: "Constipation?", section: "ros", required: true, order: 43 },
+    { linkId: "abd-blood-stool", type: "boolean", text: "Blood in stool or black/tarry stools?", section: "ros", required: true, order: 44,
+      redFlag: { condition: "true", message: "GI bleeding - melena/hematochezia", severity: "critical" } },
+    { linkId: "abd-fever", type: "boolean", text: "Fever or chills?", section: "ros", required: true, order: 45,
+      redFlag: { condition: "true", message: "Fever with abdominal pain - infectious/surgical concern", severity: "high" } },
+    { linkId: "abd-rigid", type: "boolean", text: "Does your belly feel very hard or rigid?", section: "ros", required: true, order: 46,
+      redFlag: { condition: "true", message: "Rigid abdomen - peritonitis concern", severity: "critical" } },
+    { linkId: "abd-weight-loss", type: "boolean", text: "Unintentional weight loss recently?", section: "ros", required: true, order: 47,
+      redFlag: { condition: "true", message: "Weight loss + abd pain - malignancy concern", severity: "medium" } },
+    { linkId: "abd-urinary", type: "boolean", text: "Pain with urination or blood in urine?", section: "ros", required: true, order: 48 },
+    { linkId: "abd-lmp", type: "string", text: "Date of last menstrual period (if applicable):", section: "ros", required: false, order: 49 },
+    { linkId: "abd-surgery-hx", type: "boolean", text: "Any previous abdominal surgeries?", section: "pmh", required: true, order: 50 },
+  ],
+  complaintClusters: ["abdominal_pain", "gi"],
+  specialtyTags: ["gastroenterology", "surgery"],
+  departmentTags: ["ed", "urgent_care"],
+  priority: 10,
+  outputTemplates: {
+    hpiTemplate: "Abdominal pain: {{abd-quality}}, {{abd-location}}. Pattern: {{abd-constant}}. Food relation: {{abd-food-relation}}.",
+    rosTemplate: "GI: Nausea/vomiting {{abd-nausea}}, hematemesis {{abd-vomit-blood}}, diarrhea {{abd-diarrhea}}, constipation {{abd-constipation}}, GI bleeding {{abd-blood-stool}}. GU: Urinary sx {{abd-urinary}}. GENERAL: Fever {{abd-fever}}, weight loss {{abd-weight-loss}}.",
+    noteTemplate: "",
+  },
+  scoringThresholds: [],
+};
+
+export default pack;

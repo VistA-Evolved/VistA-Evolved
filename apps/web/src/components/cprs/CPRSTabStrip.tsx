@@ -17,6 +17,7 @@ const TAB_TO_MODULE: Record<string, string> = {
   dcsumm: 'dcsumm',
   labs: 'labs',
   reports: 'reports',
+  intake: 'intake',
 };
 
 interface CPRSTabStripProps {

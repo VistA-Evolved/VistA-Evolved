@@ -1,0 +1,117 @@
+/**
+ * Complaint Packs: SOB, Sore Throat, Nausea, Skin Rash, Joint Pain
+ * Lighter packs for common presentations
+ */
+import type { IntakePack } from "../types.js";
+
+export const sobPack: IntakePack = {
+  packId: "complaint-sob-v1", version: "1.0.0",
+  title: "Shortness of Breath Intake", description: "Focused dyspnea history",
+  languages: ["en"],
+  applicableContexts: { departments: ["*"], specialties: ["*"], visitTypes: ["*"], chiefComplaints: ["shortness of breath", "sob", "dyspnea", "can't breathe", "difficulty breathing", "breathing problem"] },
+  requiredCoverage: ["hpi", "ros"],
+  items: [
+    { linkId: "sob-onset", type: "choice", text: "How did the breathing difficulty start?", section: "hpi", required: true, order: 30, answerOption: [{ value: "sudden", display: "Suddenly" }, { value: "gradual", display: "Gradually over days/weeks" }, { value: "worsening", display: "Chronic but getting worse" }] },
+    { linkId: "sob-exertion", type: "choice", text: "When does it happen?", section: "hpi", required: true, order: 31, answerOption: [{ value: "rest", display: "At rest" }, { value: "minimal", display: "With minimal activity" }, { value: "moderate", display: "With moderate activity" }, { value: "strenuous", display: "Only with strenuous activity" }] },
+    { linkId: "sob-orthopnea", type: "boolean", text: "Do you need extra pillows to breathe at night?", section: "hpi", required: true, order: 32 },
+    { linkId: "sob-pnd", type: "boolean", text: "Do you wake up at night gasping for air?", section: "hpi", required: true, order: 33 },
+    { linkId: "sob-chest-pain", type: "boolean", text: "Any chest pain?", section: "ros", required: true, order: 40, redFlag: { condition: "true", message: "CP + SOB - ACS/PE concern", severity: "high" } },
+    { linkId: "sob-leg-swelling", type: "boolean", text: "Any leg swelling?", section: "ros", required: true, order: 41, redFlag: { condition: "true", message: "Leg swelling + SOB - DVT/PE or CHF concern", severity: "high" } },
+    { linkId: "sob-cough", type: "boolean", text: "Cough?", section: "ros", required: true, order: 42 },
+    { linkId: "sob-wheeze", type: "boolean", text: "Wheezing?", section: "ros", required: true, order: 43 },
+    { linkId: "sob-fever", type: "boolean", text: "Fever?", section: "ros", required: true, order: 44 },
+    { linkId: "sob-at-rest-now", type: "boolean", text: "Are you short of breath right now at rest?", section: "ros", required: true, order: 45, redFlag: { condition: "true", message: "Resting dyspnea - acute respiratory distress", severity: "critical" } },
+    { linkId: "sob-hx-asthma", type: "boolean", text: "History of asthma or COPD?", section: "pmh", required: true, order: 50 },
+    { linkId: "sob-hx-chf", type: "boolean", text: "History of heart failure?", section: "pmh", required: true, order: 51 },
+  ],
+  complaintClusters: ["sob", "respiratory", "cardiac"], specialtyTags: ["pulmonology", "cardiology"], departmentTags: ["ed"], priority: 10,
+  outputTemplates: { hpiTemplate: "Dyspnea: onset {{sob-onset}}, triggers: {{sob-exertion}}. Orthopnea: {{sob-orthopnea}}. PND: {{sob-pnd}}.", rosTemplate: "CV: Chest pain {{sob-chest-pain}}, leg edema {{sob-leg-swelling}}. RESP: Cough {{sob-cough}}, wheeze {{sob-wheeze}}, resting dyspnea {{sob-at-rest-now}}. GENERAL: Fever {{sob-fever}}.", noteTemplate: "" },
+  scoringThresholds: [],
+};
+
+export const soreThroatPack: IntakePack = {
+  packId: "complaint-sore-throat-v1", version: "1.0.0",
+  title: "Sore Throat Intake", description: "Focused sore throat / pharyngitis history",
+  languages: ["en"],
+  applicableContexts: { departments: ["*"], specialties: ["*"], visitTypes: ["*"], chiefComplaints: ["sore throat", "throat pain", "pharyngitis", "strep throat", "tonsillitis"] },
+  requiredCoverage: ["hpi", "ros"],
+  items: [
+    { linkId: "st-duration", type: "choice", text: "How long have you had a sore throat?", section: "hpi", required: true, order: 30, answerOption: [{ value: "today", display: "Started today" }, { value: "days", display: "2-3 days" }, { value: "week", display: "About a week" }, { value: "longer", display: "More than a week" }] },
+    { linkId: "st-swallowing", type: "choice", text: "Any difficulty swallowing?", section: "hpi", required: true, order: 31, answerOption: [{ value: "none", display: "No difficulty" }, { value: "painful", display: "Painful but can swallow" }, { value: "severe", display: "Having trouble swallowing" }] },
+    { linkId: "st-drooling", type: "boolean", text: "Any drooling or inability to swallow saliva?", section: "hpi", required: true, order: 32, redFlag: { condition: "true", message: "Drooling/inability to swallow - peritonsillar abscess/epiglottitis concern", severity: "critical" } },
+    { linkId: "st-fever", type: "boolean", text: "Fever?", section: "ros", required: true, order: 40 },
+    { linkId: "st-swollen-nodes", type: "boolean", text: "Swollen glands in your neck?", section: "ros", required: true, order: 41 },
+    { linkId: "st-cough", type: "boolean", text: "Cough?", section: "ros", required: true, order: 42 },
+    { linkId: "st-runny-nose", type: "boolean", text: "Runny nose or congestion?", section: "ros", required: true, order: 43 },
+    { linkId: "st-rash", type: "boolean", text: "Any rash?", section: "ros", required: true, order: 44 },
+    { linkId: "st-voice", type: "boolean", text: "Any voice changes (muffled/hot potato voice)?", section: "ros", required: true, order: 45, redFlag: { condition: "true", message: "Muffled voice - peritonsillar abscess concern", severity: "high" } },
+  ],
+  complaintClusters: ["sore_throat", "ent", "infectious"], specialtyTags: ["ent", "primary_care"], departmentTags: [], priority: 10,
+  outputTemplates: { hpiTemplate: "Sore throat: {{st-duration}}. Swallowing: {{st-swallowing}}. Drooling: {{st-drooling}}.", rosTemplate: "ENT: Voice changes {{st-voice}}, lymphadenopathy {{st-swollen-nodes}}. RESP: Cough {{st-cough}}, rhinorrhea {{st-runny-nose}}. DERM: Rash {{st-rash}}. GENERAL: Fever {{st-fever}}.", noteTemplate: "" },
+  scoringThresholds: [],
+};
+
+export const nauseaPack: IntakePack = {
+  packId: "complaint-nausea-v1", version: "1.0.0",
+  title: "Nausea/Vomiting Intake", description: "Focused N/V history",
+  languages: ["en"],
+  applicableContexts: { departments: ["*"], specialties: ["*"], visitTypes: ["*"], chiefComplaints: ["nausea", "vomiting", "nausea and vomiting", "throwing up"] },
+  requiredCoverage: ["hpi", "ros"],
+  items: [
+    { linkId: "nv-duration", type: "choice", text: "How long have you been nauseous/vomiting?", section: "hpi", required: true, order: 30, answerOption: [{ value: "hours", display: "Hours" }, { value: "days", display: "Days" }, { value: "weeks", display: "Weeks" }, { value: "chronic", display: "Months" }] },
+    { linkId: "nv-frequency", type: "choice", text: "How often are you vomiting?", section: "hpi", required: true, order: 31, answerOption: [{ value: "none", display: "Nausea only, no vomiting" }, { value: "occasional", display: "A few times a day" }, { value: "frequent", display: "Every hour or more" }, { value: "bilious", display: "Non-stop" }] },
+    { linkId: "nv-blood", type: "boolean", text: "Any blood in vomit?", section: "hpi", required: true, order: 32, redFlag: { condition: "true", message: "Hematemesis", severity: "critical" } },
+    { linkId: "nv-abd-pain", type: "boolean", text: "Abdominal pain?", section: "ros", required: true, order: 40 },
+    { linkId: "nv-diarrhea", type: "boolean", text: "Diarrhea?", section: "ros", required: true, order: 41 },
+    { linkId: "nv-dehydration", type: "boolean", text: "Having trouble keeping fluids down?", section: "ros", required: true, order: 42, redFlag: { condition: "true", message: "Unable to tolerate PO - dehydration risk", severity: "medium" } },
+    { linkId: "nv-headache", type: "boolean", text: "Headache?", section: "ros", required: true, order: 43 },
+    { linkId: "nv-fever", type: "boolean", text: "Fever?", section: "ros", required: true, order: 44 },
+    { linkId: "nv-pregnant", type: "boolean", text: "Any chance of pregnancy?", section: "ros", required: false, order: 45 },
+  ],
+  complaintClusters: ["nausea", "gi"], specialtyTags: ["gastroenterology"], departmentTags: [], priority: 10,
+  outputTemplates: { hpiTemplate: "Nausea/vomiting: {{nv-duration}}, frequency: {{nv-frequency}}. Hematemesis: {{nv-blood}}.", rosTemplate: "GI: Abd pain {{nv-abd-pain}}, diarrhea {{nv-diarrhea}}, PO tolerance {{nv-dehydration}}. NEURO: Headache {{nv-headache}}. GENERAL: Fever {{nv-fever}}.", noteTemplate: "" },
+  scoringThresholds: [],
+};
+
+export const skinRashPack: IntakePack = {
+  packId: "complaint-skin-rash-v1", version: "1.0.0",
+  title: "Skin Rash Intake", description: "Focused dermatologic history",
+  languages: ["en"],
+  applicableContexts: { departments: ["*"], specialties: ["*"], visitTypes: ["*"], chiefComplaints: ["rash", "skin rash", "hives", "itching", "skin lesion", "skin problem"] },
+  requiredCoverage: ["hpi", "ros"],
+  items: [
+    { linkId: "rash-location", type: "open-choice", text: "Where is the rash?", section: "hpi", required: true, order: 30, answerOption: [{ value: "face", display: "Face" }, { value: "trunk", display: "Chest/back" }, { value: "arms", display: "Arms" }, { value: "legs", display: "Legs" }, { value: "widespread", display: "All over" }] },
+    { linkId: "rash-appearance", type: "choice", text: "What does the rash look like?", section: "hpi", required: true, order: 31, answerOption: [{ value: "red_flat", display: "Red flat spots" }, { value: "raised", display: "Raised bumps" }, { value: "blisters", display: "Blisters" }, { value: "hives", display: "Hives (raised, itchy welts)" }, { value: "scaly", display: "Scaly/flaky patches" }, { value: "other", display: "Other" }] },
+    { linkId: "rash-itchy", type: "boolean", text: "Is it itchy?", section: "hpi", required: true, order: 32 },
+    { linkId: "rash-spreading", type: "boolean", text: "Is the rash spreading?", section: "hpi", required: true, order: 33 },
+    { linkId: "rash-new-med", type: "boolean", text: "Did you start any new medication recently?", section: "hpi", required: true, order: 34 },
+    { linkId: "rash-fever", type: "boolean", text: "Fever?", section: "ros", required: true, order: 40, redFlag: { condition: "true", message: "Fever + rash - infectious/drug reaction concern", severity: "high" } },
+    { linkId: "rash-mucosal", type: "boolean", text: "Any mouth sores or eye redness?", section: "ros", required: true, order: 41, redFlag: { condition: "true", message: "Mucosal involvement - SJS/TEN concern", severity: "critical" } },
+    { linkId: "rash-breathing", type: "boolean", text: "Any difficulty breathing or facial swelling?", section: "ros", required: true, order: 42, redFlag: { condition: "true", message: "Airway involvement - anaphylaxis concern", severity: "critical" } },
+    { linkId: "rash-painful", type: "boolean", text: "Is the rash painful?", section: "ros", required: true, order: 43 },
+  ],
+  complaintClusters: ["rash", "dermatologic"], specialtyTags: ["dermatology"], departmentTags: [], priority: 10,
+  outputTemplates: { hpiTemplate: "Rash: {{rash-location}}, appearance: {{rash-appearance}}. Itchy: {{rash-itchy}}. Spreading: {{rash-spreading}}. New medication: {{rash-new-med}}.", rosTemplate: "DERM: Painful {{rash-painful}}. ENT: Mucosal involvement {{rash-mucosal}}. RESP: Airway sx {{rash-breathing}}. GENERAL: Fever {{rash-fever}}.", noteTemplate: "" },
+  scoringThresholds: [],
+};
+
+export const jointPainPack: IntakePack = {
+  packId: "complaint-joint-pain-v1", version: "1.0.0",
+  title: "Joint Pain Intake", description: "Focused arthralgia/arthritis history",
+  languages: ["en"],
+  applicableContexts: { departments: ["*"], specialties: ["*"], visitTypes: ["*"], chiefComplaints: ["joint pain", "knee pain", "hip pain", "shoulder pain", "wrist pain", "ankle pain", "arthritis"] },
+  requiredCoverage: ["hpi", "ros"],
+  items: [
+    { linkId: "jp-joints", type: "open-choice", text: "Which joint(s) are affected?", section: "hpi", required: true, order: 30, answerOption: [{ value: "knee", display: "Knee" }, { value: "hip", display: "Hip" }, { value: "shoulder", display: "Shoulder" }, { value: "wrist", display: "Wrist/hand" }, { value: "ankle", display: "Ankle/foot" }, { value: "multiple", display: "Multiple joints" }] },
+    { linkId: "jp-swelling", type: "boolean", text: "Is the joint swollen?", section: "hpi", required: true, order: 31 },
+    { linkId: "jp-stiffness", type: "choice", text: "Morning stiffness?", section: "hpi", required: true, order: 32, answerOption: [{ value: "none", display: "No stiffness" }, { value: "short", display: "Less than 30 minutes" }, { value: "long", display: "More than 30 minutes" }] },
+    { linkId: "jp-warmth", type: "boolean", text: "Is the joint warm or red?", section: "hpi", required: true, order: 33, redFlag: { condition: "true", message: "Hot/red joint - septic arthritis concern", severity: "high" } },
+    { linkId: "jp-injury", type: "boolean", text: "Any recent injury to the joint?", section: "hpi", required: true, order: 34 },
+    { linkId: "jp-fever", type: "boolean", text: "Fever?", section: "ros", required: true, order: 40, redFlag: { condition: "true", message: "Fever + joint pain/swelling - septic joint concern", severity: "critical" } },
+    { linkId: "jp-functional", type: "choice", text: "How much does it limit your activities?", section: "hpi", required: true, order: 35, answerOption: [{ value: "mild", display: "Mild - I can do most things" }, { value: "moderate", display: "Moderate - limits some activities" }, { value: "severe", display: "Severe - very limited" }] },
+    { linkId: "jp-rash", type: "boolean", text: "Any rash?", section: "ros", required: true, order: 41 },
+  ],
+  complaintClusters: ["joint_pain", "musculoskeletal"], specialtyTags: ["rheumatology", "orthopedics"], departmentTags: [], priority: 10,
+  outputTemplates: { hpiTemplate: "Joint pain: {{jp-joints}}. Swelling: {{jp-swelling}}. Morning stiffness: {{jp-stiffness}}. Warmth/erythema: {{jp-warmth}}. Injury: {{jp-injury}}. Functional impact: {{jp-functional}}.", rosTemplate: "DERM: Rash {{jp-rash}}. GENERAL: Fever {{jp-fever}}.", noteTemplate: "" },
+  scoringThresholds: [],
+};

@@ -1,0 +1,107 @@
+# Intake Pack Format v1
+# VistA-Evolved Phase 28
+# Packs are versioned bundles of clinical questions organized by context
+
+pack_schema:
+  packId: { type: string, required: true, description: "Unique pack identifier" }
+  version: { type: string, required: true, description: "Semver version" }
+  title: { type: string, required: true }
+  description: { type: string }
+  languages: { type: array, items: string, default: ["en"], description: "ISO 639-1 codes" }
+  applicableContexts:
+    department: { type: array, items: string, description: "ED, outpatient, inpatient, etc." }
+    specialty: { type: array, items: string, description: "primary_care, cardiology, etc." }
+    visitType: { type: array, items: string, description: "new_patient, follow_up, urgent, etc." }
+  requiredCoverage:
+    type: array
+    description: "Clinical domains this pack must cover before intake is 'complete'"
+    items: { type: string }
+    example: ["demographics", "chief_complaint", "hpi", "ros", "medications", "allergies", "social_history"]
+  complaintClusters:
+    type: array
+    description: "Chief complaint keywords that trigger this pack"
+    items: { type: string }
+  specialtyTags: { type: array, items: string }
+  departmentTags: { type: array, items: string }
+  priority: { type: number, default: 100, description: "Lower = higher priority in resolver ordering" }
+
+  # ---- Question Items (FHIR Questionnaire-aligned) ----
+  items:
+    type: array
+    description: "FHIR Questionnaire items with extensions"
+    items:
+      linkId: { type: string, required: true, description: "Unique within pack" }
+      text: { type: string, required: true, description: "Question text (EN)" }
+      text_tl: { type: string, required: false, description: "Question text (Tagalog)" }
+      type:
+        type: enum
+        values: [string, text, integer, decimal, boolean, choice, open-choice, date, dateTime, group, display]
+      required: { type: boolean, default: false }
+      repeats: { type: boolean, default: false }
+      section:
+        type: string
+        description: "Clinical section this question belongs to"
+        enum: [demographics, chief_complaint, hpi, ros, pmh, fh, sh, medications, allergies, vitals, screening, custom]
+      answerOption:
+        type: array
+        items:
+          valueCoding:
+            code: { type: string }
+            display: { type: string }
+            display_tl: { type: string, required: false }
+      answerValueSet: { type: string, required: false, description: "URI to value set" }
+      enableWhen:
+        type: array
+        description: "Conditional display rules (FHIR enableWhen semantics)"
+        items:
+          question: { type: string, description: "linkId of controlling question" }
+          operator: { type: enum, values: ["=", "!=", ">", "<", ">=", "<=", "exists"] }
+          answer: { type: any }
+      enableBehavior: { type: enum, values: [all, any], default: "all" }
+      item: { type: array, description: "Nested sub-items (for group type)" }
+      # Pack extensions (beyond FHIR)
+      redFlag:
+        type: object
+        required: false
+        description: "If answer matches, trigger a red flag"
+        fields:
+          condition: { type: string, description: "Answer value that triggers" }
+          severity: { type: enum, values: [info, warning, critical] }
+          message: { type: string }
+          message_tl: { type: string, required: false }
+      scoring:
+        type: object
+        required: false
+        description: "Point value for screening instruments"
+        fields:
+          answerScores: { type: object, description: "Map of answer code -> score" }
+      vistaTarget:
+        type: object
+        required: false
+        description: "VistA filing target for this question's answer"
+        fields:
+          file: { type: string, description: "VistA file number" }
+          field: { type: string, description: "VistA field number" }
+          rpc: { type: string, description: "RPC to call for filing" }
+          routine: { type: string, description: "M routine" }
+          noteSection: { type: string, description: "TIU note section name" }
+          integrationStatus: { type: enum, values: [available, pending, not_applicable] }
+
+  # ---- Output Templates ----
+  outputTemplates:
+    type: object
+    description: "Templates for generating clinician summary"
+    fields:
+      hpiTemplate: { type: string, description: "Mustache/Handlebars template for HPI narrative" }
+      rosTemplate: { type: string }
+      noteTemplate: { type: string, description: "Full TIU note template" }
+
+  # ---- Scoring Thresholds ----
+  scoringThresholds:
+    type: array
+    required: false
+    items:
+      instrument: { type: string, description: "PHQ-2, GAD-2, AUDIT-C, etc." }
+      threshold: { type: number }
+      action: { type: enum, values: [flag, escalate, require_followup] }
+      message: { type: string }
