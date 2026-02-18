@@ -19,6 +19,7 @@ import { getSession } from "../auth/session-store.js";
 import type { SessionData } from "../auth/session-store.js";
 import { disconnect as disconnectRpcBroker } from "../vista/rpcBrokerClient.js";
 import { stopAggregationJob } from "../services/analytics-aggregator.js";
+import { stopRoomCleanup } from "../telehealth/room-store.js";
 import { stopEtl } from "../services/analytics-etl.js";
 
 /* ================================================================== */
@@ -74,6 +75,9 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/analytics\//, auth: "session" }, // Phase 25: analytics (permission checked in handler)
   { pattern: /^\/portal\/auth\//, auth: "none" }, // Phase 26: portal login/logout/session (own auth)
   { pattern: /^\/portal\//, auth: "none" }, // Phase 26: portal routes (own session check in handler)
+  { pattern: /^\/telehealth\/health$/, auth: "session" }, // Phase 30: telehealth health (clinician)
+  { pattern: /^\/telehealth\/device-check\//, auth: "none" }, // Phase 30: device check requirements (public)
+  { pattern: /^\/telehealth\//, auth: "session" }, // Phase 30: telehealth rooms (clinician session)
   { pattern: /^\/admin\/my-tenant$/, auth: "session" }, // Phase 17: client tenant config (any user)
   { pattern: /^\/(admin|audit|reports)\//, auth: "admin" },
   { pattern: /^\/ws\//, auth: "session" }, // WebSocket console (has own role check too)
@@ -362,6 +366,8 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
         // Phase 25: stop analytics aggregation job and ETL writer
         try { stopAggregationJob(); } catch { /* timer may already be cleared */ }
         try { stopEtl(); } catch { /* connection may already be closed */ }
+        // Phase 30: stop telehealth room cleanup timer
+        try { stopRoomCleanup(); } catch { /* timer may already be cleared */ }
         log.info("Server closed gracefully");
       } catch (err: any) {
         log.error("Error during shutdown", { error: err.message });

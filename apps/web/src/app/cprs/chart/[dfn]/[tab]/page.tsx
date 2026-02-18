@@ -24,6 +24,7 @@ import {
   ReportsPanel,
   ImagingPanel,
   IntakePanel,
+  TelehealthPanel,
 } from '@/components/cprs/panels';
 import styles from '@/components/cprs/cprs.module.css';
 
@@ -46,6 +47,7 @@ function TabContent({ dfn, tab }: { dfn: string; tab: string }) {
     case 'reports':    return <ReportsPanel    dfn={dfn} />;
     case 'imaging':    return <ImagingPanel    dfn={dfn} />;
     case 'intake':     return <IntakePanel     dfn={dfn} />;
+    case 'telehealth': return <TelehealthPanel dfn={dfn} />;
     default:
       return (
         <div style={{ padding: 24 }}>
@@ -56,7 +58,7 @@ function TabContent({ dfn, tab }: { dfn: string; tab: string }) {
   }
 }
 
-const VALID_TABS = new Set(['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports', 'imaging', 'intake']);
+const VALID_TABS = new Set(['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports', 'imaging', 'intake', 'telehealth']);
 
 export default function CPRSChartPage({ params }: ChartPageProps) {
   const { dfn, tab } = use(params);

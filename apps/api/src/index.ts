@@ -33,6 +33,9 @@ import "./intake/packs/index.js"; // registers 23 built-in packs
 // Phase 29: Portal IAM + Proxy Workflows + Access Logs
 import portalIamRoutes from "./portal-iam/portal-iam-routes.js";
 import { seedDevUsers } from "./portal-iam/portal-user-store.js";
+// Phase 30: Telehealth provider adapters + device check + waiting room
+import telehealthRoutes, { initTelehealthRoutes } from "./routes/telehealth.js";
+import { startRoomCleanup, stopRoomCleanup } from "./telehealth/room-store.js";
 // Phase 15: Enterprise hardening imports
 import { registerSecurityMiddleware, corsOriginValidator } from "./middleware/security.js";
 import { log } from "./lib/logger.js";
@@ -171,6 +174,14 @@ server.register(intakeRoutes);
 // Register portal IAM routes -- identity, proxy invitations, access logs (Phase 29)
 await seedDevUsers();
 server.register(portalIamRoutes);
+
+// Register telehealth routes -- video visit lifecycle, device check, waiting room (Phase 30)
+initTelehealthRoutes(
+  getPortalSession,
+  (req: any, reply: any) => requireSession(req, reply)
+);
+server.register(telehealthRoutes);
+startRoomCleanup();
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

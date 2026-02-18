@@ -10,3 +10,4 @@ export { default as LabsPanel } from './LabsPanel';
 export { default as ReportsPanel } from './ReportsPanel';
 export { default as ImagingPanel } from './ImagingPanel';
 export { default as IntakePanel } from './IntakePanel';
+export { default as TelehealthPanel } from './TelehealthPanel';

@@ -277,3 +277,28 @@ export async function revokeProxyAccess(proxyId: string) {
     body: JSON.stringify({ proxyId }),
   });
 }
+
+// ─── Telehealth (Phase 30) ───
+
+export async function fetchTelehealthRoom(appointmentId: string) {
+  return portalFetch(`/portal/telehealth/appointment/${appointmentId}/room`);
+}
+
+export async function joinTelehealthRoom(roomId: string) {
+  return portalFetch(`/portal/telehealth/rooms/${roomId}/join`, { method: "POST" });
+}
+
+export async function getTelehealthWaitingRoom(roomId: string) {
+  return portalFetch(`/portal/telehealth/rooms/${roomId}/waiting`);
+}
+
+export async function getTelehealthDeviceRequirements() {
+  return portalFetch("/portal/telehealth/device-check");
+}
+
+export async function submitDeviceCheckReport(report: Record<string, unknown>) {
+  return portalFetch("/portal/telehealth/device-check/report", {
+    method: "POST",
+    body: JSON.stringify(report),
+  });
+}

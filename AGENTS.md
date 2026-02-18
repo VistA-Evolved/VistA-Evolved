@@ -362,6 +362,19 @@ most recent phase verifier and reports PASS/FAIL for each gate.
     brackets in `[param]` and `[...slug]` dirs are treated as wildcard character
     classes by PowerShell's `Test-Path`. Always use `-LiteralPath` when testing
     paths that contain brackets. See BUG-056.
+57. **Telehealth rooms are in-memory and reset on API restart (Phase 30).**
+    `room-store.ts` uses a `Map<>` store that clears on restart. This matches
+    the imaging worklist pattern from Phase 23. Room auto-expiry is 4 hours
+    (`TELEHEALTH_ROOM_TTL_MS`). Cleanup timer runs every 5 minutes.
+58. **No PHI in telehealth meeting URLs.** Room IDs are opaque hex tokens
+    (`ve-{randomBytes(12)}`). Patient names, DFN, and medical info must never
+    appear in Jitsi room names, JWT payloads, or join URLs.
+59. **Recording is OFF by default.** Jitsi config overrides disable local
+    recording and transcription. Enabling recording requires a consent
+    workflow that is not yet implemented. Do not enable without legal review.
+60. **`TELEHEALTH_PROVIDER` env var selects the adapter.** Default is `"jitsi"`.
+    `"stub"` is available for testing. Adding a new provider requires
+    implementing `TelehealthProvider` and registering in `providers/index.ts`.
 
 ---
 
@@ -420,6 +433,30 @@ docs/
 
 scripts/
   verify-phase25-bi-analytics.ps1          — Phase 25 verification (60+ gates)
+```
+
+## 7c. Architecture Quick Map (Phase 30 additions)
+
+```
+apps/api/src/
+  telehealth/
+    types.ts                — TelehealthProvider interface, room/device/waiting types (Phase 30)
+    room-store.ts           — In-memory room lifecycle store (Phase 30)
+    device-check.ts         — Device requirements + validation (Phase 30)
+    providers/
+      index.ts              — Provider registry/factory (Phase 30)
+      jitsi-provider.ts     — Jitsi Meet adapter (Phase 30)
+  routes/
+    telehealth.ts           — Telehealth REST endpoints (Phase 30)
+
+apps/web/src/components/cprs/panels/
+  TelehealthPanel.tsx       — Clinician telehealth panel (Phase 30)
+
+apps/portal/src/app/dashboard/telehealth/
+  page.tsx                  — Patient telehealth UI (device check, waiting room, visit) (Phase 30)
+
+docs/runbooks/
+  phase30-telehealth.md     — Telehealth runbook (Phase 30)
 ```
 
 ---

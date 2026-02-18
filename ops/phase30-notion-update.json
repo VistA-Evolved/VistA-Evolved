@@ -1,0 +1,9 @@
+{
+  "feature": "Phase 30: Telehealth Provider Adapters + Device Check + Waiting Room",
+  "stage": "implement",
+  "status": "complete",
+  "promptRef": "prompts/32-PHASE-30-TELEHEALTH/32-01-telehealth-IMPLEMENT.md",
+  "runbookPath": "docs/runbooks/phase30-telehealth.md",
+  "verifyScript": "scripts/verify-phase1-to-phase30.ps1",
+  "commitSha": "pending"
+}

@@ -34,7 +34,11 @@ export type PortalAuditAction =
   | "portal.proxy.grant"
   | "portal.proxy.revoke"
   | "portal.proxy.access"
-  | "portal.settings.update";
+  | "portal.settings.update"
+  | "portal.telehealth.room.created"
+  | "portal.telehealth.joined"
+  | "portal.telehealth.ended"
+  | "portal.telehealth.device.check";
 
 export interface PortalAuditEvent {
   id: string;

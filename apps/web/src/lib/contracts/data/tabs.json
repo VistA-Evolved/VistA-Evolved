@@ -132,6 +132,17 @@
       "tabPosition": "tpBottom",
       "align": "alBottom",
       "isBottomTab": true
+    },
+    {
+      "constant": "CT_TELEHEALTH",
+      "label": "Telehealth",
+      "creationOrder": 11,
+      "conditional": false,
+      "id": 13,
+      "description": "chart tab - telehealth video visits",
+      "tabPosition": "tpBottom",
+      "align": "alBottom",
+      "isBottomTab": true
     }
   ],
   "subTabs": [
