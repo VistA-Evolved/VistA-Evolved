@@ -1,4 +1,4 @@
-# 25-01 — Phase 23: Imaging Workflow V2 — IMPLEMENT
+# 25-01 — Phase 23: Imaging Workflow — IMPLEMENT
 
 ## User Request
 Phase 23 — Imaging Workflow V2 (VistA-first radiology workflow scaffolding).

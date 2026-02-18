@@ -15,6 +15,9 @@ import imagingRoutes from "./services/imaging-service.js";
 import imagingProxyRoutes from "./routes/imaging-proxy.js";
 import imagingWorklistRoutes from "./services/imaging-worklist.js";
 import imagingIngestRoutes from "./services/imaging-ingest.js";
+import { imagingAuthzRoutes } from "./services/imaging-authz.js";
+import { imagingDeviceRoutes } from "./services/imaging-devices.js";
+import { imagingAuditRoutes } from "./routes/imaging-audit-routes.js";
 import adminRoutes from "./routes/admin.js";
 import interopRoutes from "./routes/interop.js";
 import vistaInteropRoutes from "./routes/vista-interop.js";
@@ -103,6 +106,15 @@ server.register(imagingWorklistRoutes);
 
 // Register imaging ingest/reconciliation routes (Phase 23)
 server.register(imagingIngestRoutes);
+
+// Register imaging authorization & break-glass routes (Phase 24)
+server.register(imagingAuthzRoutes);
+
+// Register imaging device registry routes (Phase 24)
+server.register(imagingDeviceRoutes);
+
+// Register imaging audit trail routes (Phase 24)
+server.register(imagingAuditRoutes);
 
 // Register admin/tenant routes (Phase 17B)
 server.register(adminRoutes);

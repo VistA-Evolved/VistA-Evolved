@@ -1,10 +1,10 @@
-# Bug Tracker & Lessons Learned — VistA-Evolved (Phase 1 → Phase 21)
+# Bug Tracker & Lessons Learned — VistA-Evolved (Phase 1 → Phase 24)
 
 > **Purpose**: A single-source log of every significant bug, challenge, and
-> hard-won fix from the project's inception through Phase 21. Share this with
+> hard-won fix from the project's inception through Phase 24. Share this with
 > new developers and AI agents so they don't repeat the same mistakes.
 >
-> **Last updated**: 2026-02-18 (comprehensive audit Phases 8–21)
+> **Last updated**: 2026-02-18 (Phase 24 VERIFY — 5 new bugs found and fixed)
 
 ---
 
@@ -26,7 +26,8 @@
 14. [Phase 12 — CPRS Parity Wiring](#phase-12--cprs-parity-wiring)
 15. [Phase 15 — Enterprise Hardening](#phase-15--enterprise-hardening)
 16. [Phase 21 — VistA HL7/HLO Interop Telemetry](#phase-21--vista-hl7hlo-interop-telemetry)
-17. [Cross-Cutting Lessons](#cross-cutting-lessons)
+17. [Phase 24 — Imaging Enterprise Hardening](#phase-24--imaging-enterprise-hardening)
+18. [Cross-Cutting Lessons](#cross-cutting-lessons)
 
 ---
 
@@ -496,6 +497,67 @@
 
 ---
 
+## Phase 24 — Imaging Enterprise Hardening
+
+### BUG-041: `imagingAuditDenied()` corrupts JSONL audit file with orphaned entries
+
+| | |
+|---|---|
+| **Severity** | HIGH |
+| **Symptom** | JSONL persist file contains orphaned "success" entries for denied actions. Chain verification on JSONL replay fails |
+| **Root cause** | `imagingAuditDenied()` delegated to `imagingAudit()` which appended a "success" entry to BOTH in-memory chain AND JSONL file, then popped the in-memory entry and wrote a replacement "denied" entry. The JSONL file kept the orphaned success entry |
+| **Fix** | Rewrote `imagingAuditDenied()` to build the denied entry directly (same pattern as `imagingAudit()` but with `outcome: "denied"`). No more delegate-and-patch |
+| **Preventive** | Never use a "write-then-rollback" pattern when the write target is append-only (JSONL). Build the correct entry first, then append once |
+
+### BUG-042: CORS origin reflection in DICOMweb proxy creates open CORS vulnerability
+
+| | |
+|---|---|
+| **Severity** | MEDIUM |
+| **Symptom** | `proxyToOrthanc()` manually set `Access-Control-Allow-Origin: request.headers.origin || "*"` with `Access-Control-Allow-Credentials: true`, reflecting any origin. An attacker's site could read DICOMweb responses cross-origin |
+| **Root cause** | The Fastify CORS plugin validates origins at the framework level, but the manual header injection in `proxyToOrthanc` overwrote the plugin's headers |
+| **Fix** | Removed the manual CORS header injection. CORS is now handled exclusively by the Fastify CORS plugin |
+| **Preventive** | Never manually set CORS headers in route handlers when using a framework-level CORS plugin. The plugin handles preflight, origin validation, and credential headers consistently |
+
+### BUG-043: Decommissioned devices block AE Title re-registration
+
+| | |
+|---|---|
+| **Severity** | MEDIUM |
+| **Symptom** | After soft-deleting (decommissioning) a device, attempting to register a new device with the same AE Title returned 409 Conflict |
+| **Root cause** | The delete handler set `status = "decommissioned"` but did not remove the AE Title from `aeTitleIndex`. The uniqueness check still found the old mapping |
+| **Fix** | Added `aeTitleIndex.delete(device.aeTitle)` to the delete handler |
+| **Preventive** | When implementing soft-delete with uniqueness constraints, always update the uniqueness index. Test: create → delete → re-create with same key |
+
+### BUG-044: Negative `ttlMinutes` creates expired break-glass session
+
+| | |
+|---|---|
+| **Severity** | MEDIUM |
+| **Symptom** | `POST /security/break-glass/start` with `ttlMinutes: -5` created a session with `expiresAt` in the past. The 201 response claimed a valid session, but it was immediately expired |
+| **Root cause** | `Math.min(body.ttlMinutes * 60 * 1000, MAX_BREAK_GLASS_TTL_MS)` has no lower bound. Negative values pass through |
+| **Fix** | Added explicit rejection of `ttlMinutes <= 0` (returns 400), plus `Math.max(60_000, ...)` floor so minimum TTL is 1 minute |
+| **Preventive** | Always validate both upper AND lower bounds for time-based inputs. Test with negative, zero, and extremely large values |
+
+### BUG-045: PHI header strip list doesn't strip DICOM-relevant headers
+
+| | |
+|---|---|
+| **Severity** | MEDIUM |
+| **Symptom** | `STRIP_RESPONSE_HEADERS` only contained `"server"` and `"x-powered-by"`. The file-level comment (line 27) explicitly promised "PHI headers (PatientName, PatientID) are NOT forwarded to browser" but no code implemented this |
+| **Root cause** | Implementation oversight — the header strip set was incomplete |
+| **Fix** | Added `x-patient-name`, `x-patient-id`, and `content-description` (WADO-RS multipart can include patient info) to the strip set |
+| **Preventive** | When documenting security properties in code comments, implement them immediately. Add a verification gate that checks the strip set size matches expectations |
+
+### Additional findings (not bugs, noted for future hardening)
+
+- **`sanitizeDetail` was case-sensitive and non-recursive**: Fixed to lowercase-compare all keys and recurse into nested objects (up to depth 5). Prevents `{ patient: { SSN: "..." } }` bypass.
+- **`SessionData` type shadow in imaging-proxy.ts**: Local `SessionData` with optional fields shadowed the canonical type from `session-store.ts`. Fixed by importing the real type and removing `as any` casts.
+- **`/imaging/orthanc/studies` bypasses DICOMweb rate limiter**: Noted but not fixed (low risk — requires imaging_view, and this is a debug/admin route). Will address in Phase 25.
+- **Audit eviction breaks genesis verification**: After `MAX_MEMORY_ENTRIES` eviction, the first remaining entry's `prevHash` cannot be verified against its predecessor. `verifyChain()` skips the `i === 0` prevHash check. Production must use JSONL persistence to maintain full chain.
+
+---
+
 ## Cross-Cutting Lessons
 
 ### Lesson 1: VistA XWB Protocol Is Byte-Exact
@@ -645,3 +707,8 @@ Phase 21 interop routes do NOT currently use this pattern (known debt).
 | `verify-latest.ps1` doesn't test Phase 21 | BUG-037 | Update to delegate to newest phase verifier |
 | RBAC allows provider=admin access | BUG-039 | Strict admin-only in security.ts, imaging-proxy.ts, ws-console.ts |
 | Half-open TCP socket not detected | BUG-040 | `isSocketHealthy()` + keepalive + lastActivityMs staleness check |
+| JSONL audit file corrupted by imagingAuditDenied | BUG-041 | Build denied entry directly, never delegate-then-patch |
+| CORS origin reflection in DICOMweb proxy | BUG-042 | Remove manual CORS headers, let Fastify plugin handle |
+| Decommissioned device blocks AE Title re-use | BUG-043 | Free AE Title from index on soft-delete |
+| Negative TTL creates expired break-glass | BUG-044 | Reject ≤ 0, add Math.max floor |
+| PHI headers not stripped in proxy | BUG-045 | Add x-patient-name, x-patient-id, content-description to strip set |

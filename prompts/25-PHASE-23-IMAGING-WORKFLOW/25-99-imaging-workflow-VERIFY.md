@@ -1,4 +1,4 @@
-# Phase 23 — Imaging Workflow V2 — VERIFY
+# Phase 23 — Imaging Workflow — VERIFY
 
 ## Prerequisites
 - Docker running with `imaging` profile: `docker compose --profile dev --profile imaging up -d`

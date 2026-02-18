@@ -65,6 +65,10 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/(health|ready|vista\/ping|metrics|version)$/, auth: "none" },
   { pattern: /^\/auth\//, auth: "none" },
   { pattern: /^\/imaging\/ingest\/callback$/, auth: "service" }, // Phase 23: Orthanc webhook (X-Service-Key)
+  { pattern: /^\/imaging\/health$/, auth: "session" }, // Phase 24: imaging health check
+  { pattern: /^\/imaging\/devices/, auth: "session" }, // Phase 24: device registry (imaging_admin checked in handler)
+  { pattern: /^\/imaging\/audit/, auth: "session" }, // Phase 24: imaging audit (imaging_admin checked in handler)
+  { pattern: /^\/security\/break-glass/, auth: "session" }, // Phase 24: break-glass
   { pattern: /^\/admin\/my-tenant$/, auth: "session" }, // Phase 17: client tenant config (any user)
   { pattern: /^\/(admin|audit|reports)\//, auth: "admin" },
   { pattern: /^\/ws\//, auth: "session" }, // WebSocket console (has own role check too)

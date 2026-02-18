@@ -51,7 +51,43 @@ interface ImagingStatus {
 }
 
 type ModalityFilter = 'all' | 'CR' | 'CT' | 'MR' | 'US' | 'XR' | 'DX' | 'NM' | 'PT';
-type ImagingTab = 'studies' | 'worklist' | 'orders';
+type ImagingTab = 'studies' | 'worklist' | 'orders' | 'devices' | 'audit';
+
+/** Phase 24: Break-glass session info from API. */
+interface BreakGlassInfo {
+  id: string;
+  reason: string;
+  expiresAt: string;
+  patientDfn: string;
+}
+
+/** Phase 24: Device registry entry from API. */
+interface DeviceEntry {
+  id: string;
+  aeTitle: string;
+  hostname: string;
+  port: number;
+  modality: string;
+  description: string;
+  status: 'active' | 'inactive' | 'testing' | 'decommissioned';
+  tlsMode: string;
+  facility: string;
+  lastEchoAt: string | null;
+  lastEchoSuccess: boolean | null;
+}
+
+/** Phase 24: Imaging audit entry from API. */
+interface AuditEntry {
+  id: string;
+  seq: number;
+  timestamp: string;
+  action: string;
+  outcome: string;
+  actorName: string;
+  actorRole: string;
+  studyInstanceUid?: string;
+  patientDfn?: string;
+}
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -67,6 +103,22 @@ export default function ImagingPanel({ dfn }: Props) {
   const [viewerUrl, setViewerUrl] = useState<string | null>(null);
   const [viewerOpen, setViewerOpen] = useState(false);
   const [orderDialogOpen, setOrderDialogOpen] = useState(false);
+
+  // Phase 24: Break-glass state
+  const [breakGlass, setBreakGlass] = useState<BreakGlassInfo | null>(null);
+  const [breakGlassReason, setBreakGlassReason] = useState('');
+  const [breakGlassLoading, setBreakGlassLoading] = useState(false);
+
+  // Phase 24: Device registry state
+  const [devices, setDevices] = useState<DeviceEntry[]>([]);
+  const [devicesLoading, setDevicesLoading] = useState(false);
+
+  // Phase 24: Imaging audit state
+  const [auditEntries, setAuditEntries] = useState<AuditEntry[]>([]);
+  const [auditLoading, setAuditLoading] = useState(false);
+
+  // Phase 24: Session role (for showing admin tabs)
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const fetchStudies = useCallback(async () => {
     setLoading(true);
@@ -112,11 +164,126 @@ export default function ImagingPanel({ dfn }: Props) {
     }
   }, [dfn]);
 
+  // Phase 24: Check break-glass status
+  const fetchBreakGlass = useCallback(async () => {
+    try {
+      const resp = await fetch(`${API_BASE}/security/break-glass/active`, {
+        credentials: 'include',
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        const sessions = data.sessions || [];
+        const active = sessions.find((s: any) => s.patientDfn === dfn);
+        setBreakGlass(active || null);
+      }
+    } catch {
+      // Non-critical
+    }
+  }, [dfn]);
+
+  // Phase 24: Check if user is admin (for showing admin tabs)
+  const fetchSessionRole = useCallback(async () => {
+    try {
+      const resp = await fetch(`${API_BASE}/auth/me`, {
+        credentials: 'include',
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        setIsAdmin(data.session?.role === 'admin');
+      }
+    } catch {
+      // Non-critical
+    }
+  }, []);
+
+  // Phase 24: Fetch devices (admin only)
+  const fetchDevices = useCallback(async () => {
+    setDevicesLoading(true);
+    try {
+      const resp = await fetch(`${API_BASE}/imaging/devices`, {
+        credentials: 'include',
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        setDevices(data.devices || []);
+      }
+    } catch {
+      // Non-critical
+    } finally {
+      setDevicesLoading(false);
+    }
+  }, []);
+
+  // Phase 24: Fetch audit log (admin only)
+  const fetchAuditLog = useCallback(async () => {
+    setAuditLoading(true);
+    try {
+      const resp = await fetch(`${API_BASE}/imaging/audit/events?limit=50`, {
+        credentials: 'include',
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        setAuditEntries(data.entries || []);
+      }
+    } catch {
+      // Non-critical
+    } finally {
+      setAuditLoading(false);
+    }
+  }, []);
+
+  // Phase 24: Start break-glass access
+  const startBreakGlass = useCallback(async () => {
+    if (breakGlassReason.length < 10) return;
+    setBreakGlassLoading(true);
+    try {
+      const resp = await fetch(`${API_BASE}/security/break-glass/start`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason: breakGlassReason, patientDfn: dfn, ttlMinutes: 30 }),
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        setBreakGlass(data.session);
+        setBreakGlassReason('');
+      }
+    } catch (err: any) {
+      setError('Failed to start break-glass access');
+    } finally {
+      setBreakGlassLoading(false);
+    }
+  }, [dfn, breakGlassReason]);
+
+  // Phase 24: Stop break-glass access
+  const stopBreakGlass = useCallback(async () => {
+    if (!breakGlass) return;
+    try {
+      await fetch(`${API_BASE}/security/break-glass/stop`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ breakGlassId: breakGlass.id }),
+      });
+      setBreakGlass(null);
+    } catch {
+      // Non-critical
+    }
+  }, [breakGlass]);
+
   useEffect(() => {
     fetchStudies();
     fetchStatus();
     fetchWorklist();
-  }, [fetchStudies, fetchStatus, fetchWorklist]);
+    fetchBreakGlass();
+    fetchSessionRole();
+  }, [fetchStudies, fetchStatus, fetchWorklist, fetchBreakGlass, fetchSessionRole]);
+
+  // Phase 24: Load admin data when admin tabs are selected
+  useEffect(() => {
+    if (activeTab === 'devices' && isAdmin && devices.length === 0) fetchDevices();
+    if (activeTab === 'audit' && isAdmin && auditEntries.length === 0) fetchAuditLog();
+  }, [activeTab, isAdmin, devices.length, auditEntries.length, fetchDevices, fetchAuditLog]);
 
   const openViewer = useCallback(async (study: ImagingStudy) => {
     const uid = study.studyInstanceUid || study.studyId;
@@ -164,7 +331,38 @@ export default function ImagingPanel({ dfn }: Props) {
     <div>
       <div className={styles.panelTitle}>Imaging Studies</div>
 
-      {/* Phase 23: Tab bar */}
+      {/* Phase 24: Break-glass active banner */}
+      {breakGlass && (
+        <div style={{
+          background: '#fef2f2',
+          border: '2px solid #ef4444',
+          borderRadius: 4,
+          padding: '8px 12px',
+          marginBottom: 8,
+          fontSize: 11,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+          <div>
+            <strong style={{ color: '#dc2626' }}>⚠ BREAK-GLASS ACCESS ACTIVE</strong>
+            <span style={{ marginLeft: 8, color: '#7f1d1d' }}>
+              Reason: {breakGlass.reason} | Expires: {new Date(breakGlass.expiresAt).toLocaleTimeString()}
+            </span>
+          </div>
+          <button
+            onClick={stopBreakGlass}
+            style={{
+              background: '#dc2626', color: '#fff', border: 'none', borderRadius: 4,
+              padding: '3px 10px', cursor: 'pointer', fontSize: 11, fontWeight: 600,
+            }}
+          >
+            End Access
+          </button>
+        </div>
+      )}
+
+      {/* Phase 24: Tab bar with admin tabs */}
       <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid var(--cprs-border)', marginBottom: 8 }}>
         {(['studies', 'worklist', 'orders'] as ImagingTab[]).map((tab) => (
           <button
@@ -187,7 +385,81 @@ export default function ImagingPanel({ dfn }: Props) {
              'New Order'}
           </button>
         ))}
+        {/* Phase 24: Admin-only tabs */}
+        {isAdmin && (
+          <>
+            <button
+              onClick={() => setActiveTab('devices')}
+              style={{
+                padding: '4px 12px', fontSize: 11,
+                fontWeight: activeTab === 'devices' ? 600 : 400,
+                border: 'none',
+                borderBottom: activeTab === 'devices' ? '2px solid #7c3aed' : '2px solid transparent',
+                background: 'transparent',
+                color: activeTab === 'devices' ? '#7c3aed' : 'var(--cprs-text-muted)',
+                cursor: 'pointer',
+              }}
+            >
+              Devices
+            </button>
+            <button
+              onClick={() => setActiveTab('audit')}
+              style={{
+                padding: '4px 12px', fontSize: 11,
+                fontWeight: activeTab === 'audit' ? 600 : 400,
+                border: 'none',
+                borderBottom: activeTab === 'audit' ? '2px solid #7c3aed' : '2px solid transparent',
+                background: 'transparent',
+                color: activeTab === 'audit' ? '#7c3aed' : 'var(--cprs-text-muted)',
+                cursor: 'pointer',
+              }}
+            >
+              Audit Log
+            </button>
+          </>
+        )}
       </div>
+
+      {/* Phase 24: Break-glass request panel (shown when error contains 'permission') */}
+      {error && error.toLowerCase().includes('permission') && !breakGlass && (
+        <div style={{
+          background: '#fef3cd',
+          border: '1px solid #f59e0b',
+          borderRadius: 4,
+          padding: '8px 12px',
+          marginBottom: 8,
+          fontSize: 11,
+        }}>
+          <strong style={{ color: '#92400e' }}>Access Restricted:</strong>
+          <span style={{ marginLeft: 4, color: '#78350f' }}>
+            You need imaging_view permission. Request emergency break-glass access:
+          </span>
+          <div style={{ display: 'flex', gap: 4, marginTop: 6 }}>
+            <input
+              type="text"
+              placeholder="Clinical reason (min 10 chars)..."
+              value={breakGlassReason}
+              onChange={(e) => setBreakGlassReason(e.target.value)}
+              style={{
+                flex: 1, padding: '3px 8px', fontSize: 11,
+                border: '1px solid #d1d5db', borderRadius: 4,
+              }}
+            />
+            <button
+              onClick={startBreakGlass}
+              disabled={breakGlassReason.length < 10 || breakGlassLoading}
+              style={{
+                background: breakGlassReason.length >= 10 ? '#dc2626' : '#9ca3af',
+                color: '#fff', border: 'none', borderRadius: 4,
+                padding: '3px 12px', cursor: breakGlassReason.length >= 10 ? 'pointer' : 'not-allowed',
+                fontSize: 11, fontWeight: 600,
+              }}
+            >
+              {breakGlassLoading ? 'Requesting...' : 'Break Glass'}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Unmatched studies banner */}
       {studies.some((s) => s.orderLinked === false) && activeTab === 'studies' && (
@@ -270,6 +542,161 @@ export default function ImagingPanel({ dfn }: Props) {
       {/* ===== NEW ORDER TAB ===== */}
       {activeTab === 'orders' && (
         <ImagingOrderForm dfn={dfn} onCreated={() => { fetchWorklist(); setActiveTab('worklist'); }} />
+      )}
+
+      {/* ===== DEVICES TAB (Phase 24, admin only) ===== */}
+      {activeTab === 'devices' && isAdmin && (
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <span style={{ fontSize: 12, fontWeight: 600 }}>DICOM Device Registry</span>
+            <button
+              onClick={fetchDevices}
+              style={{ fontSize: 11, padding: '2px 8px', cursor: 'pointer' }}
+              className={styles.toolbarBtn}
+            >
+              Refresh
+            </button>
+          </div>
+          {devicesLoading ? (
+            <p style={{ fontSize: 12, color: 'var(--cprs-text-muted)' }}>Loading devices...</p>
+          ) : devices.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '32px 16px', color: 'var(--cprs-text-muted)' }}>
+              <p style={{ fontSize: 13 }}>No DICOM devices registered.</p>
+              <p style={{ fontSize: 11 }}>Use the API (POST /imaging/devices) to register devices.</p>
+            </div>
+          ) : (
+            <div style={{ border: '1px solid var(--cprs-border)', borderRadius: 4, overflow: 'auto', maxHeight: 400 }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                <thead>
+                  <tr style={{ background: 'var(--cprs-surface)', borderBottom: '1px solid var(--cprs-border)' }}>
+                    <th style={{ padding: '4px 8px', textAlign: 'left', fontWeight: 600 }}>AE Title</th>
+                    <th style={{ padding: '4px 8px', textAlign: 'left', fontWeight: 600 }}>Host</th>
+                    <th style={{ padding: '4px 8px', textAlign: 'center', fontWeight: 600 }}>Port</th>
+                    <th style={{ padding: '4px 8px', textAlign: 'center', fontWeight: 600 }}>Modality</th>
+                    <th style={{ padding: '4px 8px', textAlign: 'center', fontWeight: 600 }}>TLS</th>
+                    <th style={{ padding: '4px 8px', textAlign: 'center', fontWeight: 600 }}>Status</th>
+                    <th style={{ padding: '4px 8px', textAlign: 'center', fontWeight: 600 }}>Last Echo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {devices.map((dev, i) => (
+                    <tr key={dev.id} style={{
+                      borderBottom: '1px solid var(--cprs-border)',
+                      background: i % 2 === 0 ? 'transparent' : 'var(--cprs-surface, #f8f9fa)',
+                    }}>
+                      <td style={{ padding: '3px 8px', fontFamily: 'monospace', fontSize: 10 }}>{dev.aeTitle}</td>
+                      <td style={{ padding: '3px 8px' }}>{dev.hostname}</td>
+                      <td style={{ padding: '3px 8px', textAlign: 'center' }}>{dev.port}</td>
+                      <td style={{ padding: '3px 8px', textAlign: 'center' }}>
+                        <span style={{
+                          display: 'inline-block', padding: '1px 4px', borderRadius: 3,
+                          background: '#6366f1', color: '#fff', fontSize: 10, fontWeight: 600,
+                        }}>{dev.modality}</span>
+                      </td>
+                      <td style={{ padding: '3px 8px', textAlign: 'center', fontSize: 10 }}>
+                        {dev.tlsMode === 'required' ? '🔒' : dev.tlsMode === 'optional' ? '🔓' : '—'}
+                      </td>
+                      <td style={{ padding: '3px 8px', textAlign: 'center' }}>
+                        <span style={{
+                          fontSize: 10, padding: '1px 6px', borderRadius: 8,
+                          background: dev.status === 'active' ? '#d1fae5' : dev.status === 'testing' ? '#e0e7ff' : '#fecaca',
+                          color: dev.status === 'active' ? '#065f46' : dev.status === 'testing' ? '#3730a3' : '#991b1b',
+                        }}>{dev.status}</span>
+                      </td>
+                      <td style={{ padding: '3px 8px', textAlign: 'center', fontSize: 10 }}>
+                        {dev.lastEchoAt ? (
+                          <span style={{ color: dev.lastEchoSuccess ? '#059669' : '#dc2626' }}>
+                            {dev.lastEchoSuccess ? '✓' : '✗'} {new Date(dev.lastEchoAt).toLocaleDateString()}
+                          </span>
+                        ) : '—'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ===== AUDIT TAB (Phase 24, admin only) ===== */}
+      {activeTab === 'audit' && isAdmin && (
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <span style={{ fontSize: 12, fontWeight: 600 }}>Imaging Audit Trail (Hash-Chained)</span>
+            <div style={{ display: 'flex', gap: 4 }}>
+              <button
+                onClick={fetchAuditLog}
+                style={{ fontSize: 11, padding: '2px 8px', cursor: 'pointer' }}
+                className={styles.toolbarBtn}
+              >
+                Refresh
+              </button>
+              <button
+                onClick={() => window.open(`${API_BASE}/imaging/audit/export?format=csv`, '_blank')}
+                style={{ fontSize: 11, padding: '2px 8px', cursor: 'pointer' }}
+                className={styles.toolbarBtn}
+              >
+                Export CSV
+              </button>
+            </div>
+          </div>
+          {auditLoading ? (
+            <p style={{ fontSize: 12, color: 'var(--cprs-text-muted)' }}>Loading audit entries...</p>
+          ) : auditEntries.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '32px 16px', color: 'var(--cprs-text-muted)' }}>
+              <p style={{ fontSize: 13 }}>No imaging audit entries yet.</p>
+            </div>
+          ) : (
+            <div style={{ border: '1px solid var(--cprs-border)', borderRadius: 4, overflow: 'auto', maxHeight: 400 }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11 }}>
+                <thead>
+                  <tr style={{ background: 'var(--cprs-surface)', borderBottom: '1px solid var(--cprs-border)' }}>
+                    <th style={{ padding: '4px 6px', textAlign: 'left', fontWeight: 600 }}>#</th>
+                    <th style={{ padding: '4px 6px', textAlign: 'left', fontWeight: 600 }}>Time</th>
+                    <th style={{ padding: '4px 6px', textAlign: 'left', fontWeight: 600 }}>Action</th>
+                    <th style={{ padding: '4px 6px', textAlign: 'left', fontWeight: 600 }}>Outcome</th>
+                    <th style={{ padding: '4px 6px', textAlign: 'left', fontWeight: 600 }}>Actor</th>
+                    <th style={{ padding: '4px 6px', textAlign: 'left', fontWeight: 600 }}>Study UID</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {auditEntries.map((entry, i) => (
+                    <tr key={entry.id} style={{
+                      borderBottom: '1px solid var(--cprs-border)',
+                      background: entry.outcome === 'denied' ? '#fef2f2' :
+                                  i % 2 === 0 ? 'transparent' : 'var(--cprs-surface, #f8f9fa)',
+                    }}>
+                      <td style={{ padding: '2px 6px', fontFamily: 'monospace', fontSize: 10 }}>{entry.seq}</td>
+                      <td style={{ padding: '2px 6px', whiteSpace: 'nowrap', fontSize: 10 }}>
+                        {new Date(entry.timestamp).toLocaleTimeString()}
+                      </td>
+                      <td style={{ padding: '2px 6px' }}>
+                        <span style={{
+                          fontSize: 9, padding: '1px 4px', borderRadius: 3,
+                          background: entry.action.startsWith('BREAK_GLASS') ? '#fef3c7' :
+                                      entry.action.startsWith('DEVICE') ? '#e0e7ff' : '#f3f4f6',
+                          fontFamily: 'monospace',
+                        }}>{entry.action}</span>
+                      </td>
+                      <td style={{ padding: '2px 6px' }}>
+                        <span style={{
+                          fontSize: 10, fontWeight: 600,
+                          color: entry.outcome === 'success' ? '#059669' :
+                                 entry.outcome === 'denied' ? '#dc2626' : '#d97706',
+                        }}>{entry.outcome}</span>
+                      </td>
+                      <td style={{ padding: '2px 6px', fontSize: 10 }}>{entry.actorName || '—'}</td>
+                      <td style={{ padding: '2px 6px', fontFamily: 'monospace', fontSize: 9 }}>
+                        {entry.studyInstanceUid ? entry.studyInstanceUid.slice(0, 20) + '…' : '—'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
       )}
 
       {/* ===== STUDIES TAB (original content) ===== */}

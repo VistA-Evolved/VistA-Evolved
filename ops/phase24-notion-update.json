@@ -1,0 +1,33 @@
+{
+  "featureTitle": "Phase 24 — Imaging Enterprise Hardening + Device Onboarding",
+  "stage": "VERIFY",
+  "status": "complete",
+  "promptRefPath": "prompts/26-PHASE-24-IMAGING-ENTERPRISE/26-01-imaging-enterprise-IMPLEMENT.md",
+  "runbookPaths": [
+    "docs/runbooks/imaging-enterprise-security.md",
+    "docs/runbooks/imaging-device-onboarding-enterprise.md",
+    "docs/runbooks/imaging-audit.md"
+  ],
+  "verifyScriptUsed": "scripts/verify-phase24-imaging-enterprise.ps1",
+  "verifyResult": "84 PASS, 0 FAIL, 0 WARN",
+  "commitSHA": "2e0c3f7",
+  "deliverables": {
+    "newFiles": 7,
+    "modifiedFiles": 4,
+    "newRunbooks": 3,
+    "newScripts": 2,
+    "totalVerificationGates": 84
+  },
+  "keyFeaturesDelivered": [
+    "Imaging RBAC with 4 permissions (imaging_view/diagnostic/admin/break_glass)",
+    "Break-glass emergency access (patient-scoped, time-limited, max 4hr TTL)",
+    "SHA-256 hash-chained imaging audit trail (15 action types)",
+    "DICOM device registry (AE Title validation, C-ECHO, soft delete)",
+    "Multi-tenant imaging config (facility→Orthanc mapping)",
+    "DICOMweb-specific rate limiter (120 req/60s per user)",
+    "All DICOMweb routes gated by imaging_view permission",
+    "STOW-RS and demo upload gated by imaging_admin permission",
+    "Audit compliance endpoints (events, stats, verify, export)",
+    "UI: break-glass banner/request, admin Devices tab, admin Audit tab"
+  ]
+}

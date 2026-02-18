@@ -259,15 +259,70 @@ most recent phase verifier and reports PASS/FAIL for each gate.
     matches a worklist order, the study is linked immediately. Quarantined
     studies appear in `/imaging/ingest/unmatched` (admin-only) and can be
     manually linked via POST `/imaging/ingest/unmatched/:id/link`.
+34. **DICOMweb routes now require `imaging_view` permission (Phase 24).**
+    Session auth alone is no longer sufficient. Users without imaging_view
+    (e.g., clerks) get 403. Use break-glass for emergency access. The RBAC
+    check uses `hasImagingPermission()` from `imaging-authz.ts`, which checks
+    role-based permissions first, then active break-glass grants.
+35. **Break-glass sessions are patient-scoped and time-limited (Phase 24).**
+    Max TTL is 4 hours (`MAX_BREAK_GLASS_TTL_MS`), default 30 minutes.
+    They auto-expire via `setTimeout`. Each session is logged to both the
+    general audit trail and the imaging-specific hash-chained audit.
+    API: `POST /security/break-glass/start` with reason + patientDfn + ttlMinutes.
+36. **Imaging audit trail is hash-chained and separate from general audit.**
+    `imaging-audit.ts` maintains its own SHA-256 chain. Each entry hashes the
+    previous entry's hash. The chain can be verified via `GET /imaging/audit/verify`.
+    The `sanitizeDetail()` function strips pixel data, HL7 bodies, credentials,
+    SSN, and DOB from audit details before hashing.
+37. **DICOMweb has its own rate limiter (Phase 24).** Default: 120 req/60s
+    per user. Configured via `DICOMWEB_RATE_LIMIT` and `DICOMWEB_RATE_WINDOW_MS`
+    env vars. This is separate from the general API rate limiter in `security.ts`.
+    OHIF viewer can burst many requests; tune these values accordingly.
+38. **Device AE Titles must be uppercase, 1-16 chars, `[A-Z0-9_ ]` only.**
+    The device registry (`imaging-devices.ts`) validates this on create/update.
+    Duplicate AE Titles return 409. Deletion is soft (sets status to
+    `decommissioned`) to preserve audit trail references.
+39. **STOW-RS and demo upload now require `imaging_admin`, not just admin role.**
+    Phase 24 switched from raw `requireAdmin()` (role check) to
+    `requireImagingAdmin()` (imaging permission check). This means the same
+    permission model applies to all imaging write operations.
 
 ---
 
-## 7. Bug Tracker & Lessons Learned
+## 7. Architecture Quick Map (Phase 24 additions)
+
+```
+apps/api/src/
+  services/
+    imaging-authz.ts      — Imaging RBAC + break-glass (Phase 24)
+    imaging-audit.ts      — Hash-chained imaging audit trail (Phase 24)
+    imaging-devices.ts    — DICOM device registry + C-ECHO (Phase 24)
+  config/
+    imaging-tenant.ts     — Multi-tenant imaging config (Phase 24)
+  routes/
+    imaging-audit-routes.ts — Imaging audit compliance endpoints (Phase 24)
+    imaging-proxy.ts      — DICOMweb proxy (Phase 22, hardened Phase 24)
+
+apps/web/src/components/cprs/panels/
+  ImagingPanel.tsx        — +Devices tab, +Audit tab, +Break-glass banner (Phase 24)
+
+docs/runbooks/
+  imaging-enterprise-security.md           — RBAC + break-glass guide (Phase 24)
+  imaging-device-onboarding-enterprise.md  — Device registry guide (Phase 24)
+  imaging-audit.md                         — Audit trail guide (Phase 24)
+
+scripts/
+  verify-imaging-devices.ps1  — Device registry test harness (Phase 24)
+```
+
+---
+
+## 8. Bug Tracker & Lessons Learned
 
 A comprehensive log of every bug, challenge, and fix from Phase 1 through
-Phase 5D lives in **[`docs/BUG-TRACKER.md`](docs/BUG-TRACKER.md)**.
+Phase 24 lives in **[`docs/BUG-TRACKER.md`](docs/BUG-TRACKER.md)**.
 
-It covers 37 bugs with:
+It covers 45 bugs with:
 - What was attempted
 - The exact error or symptom
 - Root cause analysis

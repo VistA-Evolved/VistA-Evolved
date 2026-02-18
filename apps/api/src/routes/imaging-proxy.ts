@@ -1,10 +1,10 @@
 /**
- * DICOMweb Proxy Routes — Phase 22.
+ * DICOMweb Proxy Routes — Phase 22 + Phase 24 hardening.
  *
  * Proxies DICOMweb requests from authenticated browser clients to Orthanc.
  * The browser NEVER talks directly to Orthanc — all requests go through
- * the API server which enforces session auth, audit logging, and header
- * sanitization.
+ * the API server which enforces session auth, imaging RBAC, audit logging,
+ * and header sanitization.
  *
  * Routes:
  *   GET  /imaging/dicom-web/studies                        — QIDO-RS: search studies
@@ -18,28 +18,24 @@
  *   POST /imaging/demo/upload                              — Dev-only DICOM upload
  *   GET  /imaging/viewer                                   — OHIF viewer launch URL
  *
- * Security model:
+ * Security model (Phase 24):
  *   - All routes require valid session (httpOnly cookie)
- *   - STOW-RS and demo upload require admin role
+ *   - All DICOMweb read routes require imaging_view permission
+ *   - STOW-RS and demo upload require imaging_admin permission
+ *   - Break-glass grants imaging_view temporarily (time-limited, audited)
+ *   - DICOMweb-specific rate limiting (separate bucket from general API)
  *   - PHI headers (PatientName, PatientID) are NOT forwarded to browser
- *   - All access is audit-logged with patient DFN correlation
+ *   - All access is audit-logged with hash-chained imaging audit trail
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { IMAGING_CONFIG } from "../config/server-config.js";
 import { audit } from "../lib/audit.js";
 import { log } from "../lib/logger.js";
-
-/* ------------------------------------------------------------------ */
-/* Types                                                               */
-/* ------------------------------------------------------------------ */
-
-interface SessionData {
-  duz: string;
-  userName?: string;
-  role?: string;
-  tenantId?: string;
-}
+import { hasImagingPermission } from "../services/imaging-authz.js";
+import { imagingAudit, imagingAuditDenied } from "../services/imaging-audit.js";
+import type { AuditActor as ImagingAuditActor } from "../services/imaging-audit.js";
+import type { SessionData } from "../auth/session-store.js";
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
@@ -47,9 +43,9 @@ interface SessionData {
 
 /** Extract session from request — returns null if not authenticated. */
 function getSession(request: FastifyRequest): SessionData | null {
-  const s = (request as any).session;
+  const s = request.session;
   if (!s || !s.duz) return null;
-  return s as SessionData;
+  return s;
 }
 
 /** Build audit actor from session. */
@@ -78,10 +74,139 @@ function requireAdmin(session: SessionData, reply: FastifyReply): boolean {
   return true;
 }
 
-/** Headers that must NOT be forwarded to the browser (PHI protection). */
+/**
+ * Require imaging_view permission — sends 403 if not authorized.
+ * Checks role-based imaging RBAC + active break-glass grants.
+ * Phase 24: This is the primary gate for all DICOMweb read routes.
+ */
+function requireImagingView(
+  request: FastifyRequest,
+  session: SessionData,
+  reply: FastifyReply,
+): boolean {
+  const allowed = hasImagingPermission(session, "imaging_view");
+  if (!allowed) {
+    imagingAuditDenied(
+      "VIEW_STUDY",
+      { duz: session.duz, name: session.userName || "", role: session.role || "" },
+      session.tenantId || "default",
+      { requestId: (request as any).requestId, sourceIp: request.ip },
+    );
+    reply.code(403).send({ ok: false, error: "Imaging view permission required" });
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Require imaging_admin permission — sends 403 if not authorized.
+ * Phase 24: Used for STOW-RS, demo upload, and device management via DICOMweb.
+ */
+function requireImagingAdmin(
+  request: FastifyRequest,
+  session: SessionData,
+  reply: FastifyReply,
+): boolean {
+  const allowed = hasImagingPermission(session, "imaging_admin");
+  if (!allowed) {
+    imagingAuditDenied(
+      "STOW_UPLOAD",
+      { duz: session.duz, name: session.userName || "", role: session.role || "" },
+      session.tenantId || "default",
+      { requestId: (request as any).requestId, sourceIp: request.ip },
+    );
+    reply.code(403).send({ ok: false, error: "Imaging admin permission required" });
+    return false;
+  }
+  return true;
+}
+
+/* ------------------------------------------------------------------ */
+/* DICOMweb Rate Limiter (Phase 24)                                     */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Per-user DICOMweb rate limiter. Separate bucket from general API rate limits
+ * to prevent imaging-heavy workflows from affecting other API operations.
+ *
+ * Defaults: 120 requests per 60s window per user.
+ * Configurable via DICOMWEB_RATE_LIMIT and DICOMWEB_RATE_WINDOW_MS env vars.
+ */
+const DICOMWEB_RATE_LIMIT = Number(process.env.DICOMWEB_RATE_LIMIT || 120);
+const DICOMWEB_RATE_WINDOW_MS = Number(process.env.DICOMWEB_RATE_WINDOW_MS || 60000);
+
+interface RateBucket {
+  count: number;
+  windowStart: number;
+}
+
+const dicomwebRateBuckets = new Map<string, RateBucket>();
+
+/** Clean expired buckets periodically (every 5 min). */
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, bucket] of dicomwebRateBuckets) {
+    if (now - bucket.windowStart > DICOMWEB_RATE_WINDOW_MS * 2) {
+      dicomwebRateBuckets.delete(key);
+    }
+  }
+}, 5 * 60 * 1000).unref();
+
+/**
+ * Check DICOMweb rate limit for a user. Returns true if allowed, false if exceeded.
+ * Sends 429 response and logs to imaging audit on denial.
+ */
+function checkDicomwebRateLimit(
+  request: FastifyRequest,
+  session: SessionData,
+  reply: FastifyReply,
+): boolean {
+  const key = `dicomweb:${session.duz}`;
+  const now = Date.now();
+  let bucket = dicomwebRateBuckets.get(key);
+
+  if (!bucket || now - bucket.windowStart > DICOMWEB_RATE_WINDOW_MS) {
+    bucket = { count: 0, windowStart: now };
+    dicomwebRateBuckets.set(key, bucket);
+  }
+
+  bucket.count++;
+
+  if (bucket.count > DICOMWEB_RATE_LIMIT) {
+    const remaining = Math.ceil((bucket.windowStart + DICOMWEB_RATE_WINDOW_MS - now) / 1000);
+    reply.header("Retry-After", String(remaining));
+    reply.code(429).send({
+      ok: false,
+      error: "DICOMweb rate limit exceeded",
+      retryAfterSeconds: remaining,
+    });
+    log.warn("DICOMweb rate limit exceeded", { duz: session.duz, count: bucket.count });
+    return false;
+  }
+
+  return true;
+}
+
+/** Build imaging audit actor from session. */
+function buildImagingActor(session: SessionData): ImagingAuditActor {
+  return {
+    duz: session.duz,
+    name: session.userName || "",
+    role: session.role || "",
+  };
+}
+
+/**
+ * Headers that must NOT be forwarded to the browser.
+ * Includes server identification and any DICOM/WADO-RS headers that might
+ * contain PHI (patient name, ID). BUG-042: Added PHI-relevant headers.
+ */
 const STRIP_RESPONSE_HEADERS = new Set([
   "server",
   "x-powered-by",
+  "x-patient-name",
+  "x-patient-id",
+  "content-description",  // WADO-RS multipart can include patient info
 ]);
 
 /** Forward a request to Orthanc, streaming the response back. */
@@ -129,9 +254,10 @@ async function proxyToOrthanc(
       }
     }
 
-    // CORS headers for DICOMweb
-    reply.header("Access-Control-Allow-Origin", request.headers.origin || "*");
-    reply.header("Access-Control-Allow-Credentials", "true");
+    // Security note: CORS headers are managed by the Fastify CORS plugin.
+    // BUG-039: Do NOT manually set Access-Control-Allow-Origin here —
+    // reflecting the request origin with credentials:true is an open CORS vuln.
+    // The Fastify CORS plugin validates origins at the framework level.
 
     if (!upstream.ok) {
       const errorText = await upstream.text();
@@ -211,10 +337,13 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
   /**
    * GET /imaging/dicom-web/studies
    * QIDO-RS: Search studies. Cached.
+   * Phase 24: imaging_view RBAC + DICOMweb rate limit + imaging audit.
    */
   server.get("/imaging/dicom-web/studies", async (request, reply) => {
     const session = requireSession(request, reply);
     if (!session) return;
+    if (!requireImagingView(request, session, reply)) return;
+    if (!checkDicomwebRateLimit(request, session, reply)) return;
 
     // Build Orthanc path with query string
     const qs = new URL(request.url, "http://localhost").search;
@@ -254,6 +383,18 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
       reply.header("Content-Type", ct);
       reply.header("X-Cache", "MISS");
 
+      // Phase 24: Hash-chained imaging audit
+      imagingAudit(
+        "SEARCH_STUDIES",
+        buildImagingActor(session),
+        session.tenantId || "default",
+        {
+          requestId: (request as any).requestId,
+          sourceIp: request.ip,
+          detail: { query: qs },
+        },
+      );
+
       audit("phi.imaging-view", "success", auditActor(request), {
         requestId: (request as any).requestId,
         sourceIp: request.ip,
@@ -274,14 +415,28 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
   /**
    * GET /imaging/dicom-web/studies/:studyUid/series
    * QIDO-RS: Search series within a study.
+   * Phase 24: imaging_view RBAC + DICOMweb rate limit + imaging audit.
    */
   server.get("/imaging/dicom-web/studies/:studyUid/series", async (request, reply) => {
     const session = requireSession(request, reply);
     if (!session) return;
+    if (!requireImagingView(request, session, reply)) return;
+    if (!checkDicomwebRateLimit(request, session, reply)) return;
 
     const { studyUid } = request.params as any;
     const qs = new URL(request.url, "http://localhost").search;
     const orthancPath = `${IMAGING_CONFIG.dicomWebRoot}/studies/${studyUid}/series${qs}`;
+
+    imagingAudit(
+      "VIEW_SERIES",
+      buildImagingActor(session),
+      session.tenantId || "default",
+      {
+        studyInstanceUid: studyUid,
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+      },
+    );
 
     audit("phi.imaging-view", "success", auditActor(request), {
       requestId: (request as any).requestId,
@@ -295,13 +450,28 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
   /**
    * GET /imaging/dicom-web/studies/:studyUid/metadata
    * WADO-RS: Study-level metadata.
+   * Phase 24: imaging_view RBAC + DICOMweb rate limit + imaging audit.
    */
   server.get("/imaging/dicom-web/studies/:studyUid/metadata", async (request, reply) => {
     const session = requireSession(request, reply);
     if (!session) return;
+    if (!requireImagingView(request, session, reply)) return;
+    if (!checkDicomwebRateLimit(request, session, reply)) return;
 
     const { studyUid } = request.params as any;
     const orthancPath = `${IMAGING_CONFIG.dicomWebRoot}/studies/${studyUid}/metadata`;
+
+    imagingAudit(
+      "VIEW_STUDY",
+      buildImagingActor(session),
+      session.tenantId || "default",
+      {
+        studyInstanceUid: studyUid,
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+        detail: { action: "wado-metadata" },
+      },
+    );
 
     audit("phi.imaging-view", "success", auditActor(request), {
       requestId: (request as any).requestId,
@@ -315,10 +485,13 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
   /**
    * GET /imaging/dicom-web/studies/:studyUid/series/:seriesUid/instances
    * QIDO-RS: Instance list within a series.
+   * Phase 24: imaging_view RBAC + DICOMweb rate limit.
    */
   server.get("/imaging/dicom-web/studies/:studyUid/series/:seriesUid/instances", async (request, reply) => {
     const session = requireSession(request, reply);
     if (!session) return;
+    if (!requireImagingView(request, session, reply)) return;
+    if (!checkDicomwebRateLimit(request, session, reply)) return;
 
     const { studyUid, seriesUid } = request.params as any;
     const orthancPath = `${IMAGING_CONFIG.dicomWebRoot}/studies/${studyUid}/series/${seriesUid}/instances`;
@@ -329,13 +502,28 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
   /**
    * GET /imaging/dicom-web/studies/:studyUid/series/:seriesUid/instances/:instanceUid
    * WADO-RS: Retrieve a specific instance.
+   * Phase 24: imaging_view RBAC + DICOMweb rate limit + imaging audit.
    */
   server.get("/imaging/dicom-web/studies/:studyUid/series/:seriesUid/instances/:instanceUid", async (request, reply) => {
     const session = requireSession(request, reply);
     if (!session) return;
+    if (!requireImagingView(request, session, reply)) return;
+    if (!checkDicomwebRateLimit(request, session, reply)) return;
 
     const { studyUid, seriesUid, instanceUid } = request.params as any;
     const orthancPath = `${IMAGING_CONFIG.dicomWebRoot}/studies/${studyUid}/series/${seriesUid}/instances/${instanceUid}`;
+
+    imagingAudit(
+      "VIEW_STUDY",
+      buildImagingActor(session),
+      session.tenantId || "default",
+      {
+        studyInstanceUid: studyUid,
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+        detail: { seriesUid, instanceUid },
+      },
+    );
 
     await proxyToOrthanc(request, reply, orthancPath);
   });
@@ -343,28 +531,55 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
   /**
    * GET /imaging/dicom-web/studies/:studyUid/series/:seriesUid/instances/:instanceUid/frames/:frameList
    * WADO-RS: Retrieve pixel data frames.
+   * Phase 24: imaging_view RBAC + DICOMweb rate limit + imaging audit.
    */
   server.get("/imaging/dicom-web/studies/:studyUid/series/:seriesUid/instances/:instanceUid/frames/:frameList", async (request, reply) => {
     const session = requireSession(request, reply);
     if (!session) return;
+    if (!requireImagingView(request, session, reply)) return;
+    if (!checkDicomwebRateLimit(request, session, reply)) return;
 
     const { studyUid, seriesUid, instanceUid, frameList } = request.params as any;
     const orthancPath = `${IMAGING_CONFIG.dicomWebRoot}/studies/${studyUid}/series/${seriesUid}/instances/${instanceUid}/frames/${frameList}`;
+
+    imagingAudit(
+      "VIEW_STUDY",
+      buildImagingActor(session),
+      session.tenantId || "default",
+      {
+        studyInstanceUid: studyUid,
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+        detail: { seriesUid, instanceUid, frameList },
+      },
+    );
 
     await proxyToOrthanc(request, reply, orthancPath);
   });
 
   /**
    * POST /imaging/dicom-web/studies
-   * STOW-RS: Store DICOM instances. Admin only.
+   * STOW-RS: Store DICOM instances.
+   * Phase 24: imaging_admin RBAC (was admin role), imaging audit.
    */
   server.post("/imaging/dicom-web/studies", async (request, reply) => {
     const session = requireSession(request, reply);
     if (!session) return;
-    if (!requireAdmin(session, reply)) return;
+    if (!requireImagingAdmin(request, session, reply)) return;
 
     const contentType = request.headers["content-type"] || "application/dicom";
     const orthancPath = `${IMAGING_CONFIG.dicomWebRoot}/studies`;
+
+    imagingAudit(
+      "STOW_UPLOAD",
+      buildImagingActor(session),
+      session.tenantId || "default",
+      {
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+        detail: { contentType },
+      },
+    );
 
     audit("phi.imaging-view", "success", auditActor(request), {
       requestId: (request as any).requestId,
@@ -382,10 +597,12 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
   /**
    * GET /imaging/orthanc/studies
    * Orthanc REST API: list known studies (admin/debug).
+   * Phase 24: imaging_view RBAC.
    */
   server.get("/imaging/orthanc/studies", async (request, reply) => {
     const session = requireSession(request, reply);
     if (!session) return;
+    if (!requireImagingView(request, session, reply)) return;
 
     const orthancPath = "/studies?expand";
     await proxyToOrthanc(request, reply, orthancPath);
@@ -394,7 +611,8 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
   /**
    * POST /imaging/demo/upload
    * Dev-only: Upload a DICOM file to Orthanc via its REST API.
-   * Gated by IMAGING_CONFIG.enableDemoUpload and admin role.
+   * Gated by IMAGING_CONFIG.enableDemoUpload.
+   * Phase 24: imaging_admin RBAC (was admin role).
    */
   server.post("/imaging/demo/upload", async (request, reply) => {
     if (!IMAGING_CONFIG.enableDemoUpload) {
@@ -403,7 +621,7 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
 
     const session = requireSession(request, reply);
     if (!session) return;
-    if (!requireAdmin(session, reply)) return;
+    if (!requireImagingAdmin(request, session, reply)) return;
 
     try {
       const url = `${IMAGING_CONFIG.orthancUrl}/instances`;
@@ -422,6 +640,17 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
 
       const result = await upstream.json();
 
+      imagingAudit(
+        "STOW_UPLOAD",
+        buildImagingActor(session),
+        session.tenantId || "default",
+        {
+          requestId: (request as any).requestId,
+          sourceIp: request.ip,
+          detail: { action: "demo-upload" },
+        },
+      );
+
       audit("phi.imaging-view", "success", auditActor(request), {
         requestId: (request as any).requestId,
         sourceIp: request.ip,
@@ -438,10 +667,12 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
   /**
    * GET /imaging/viewer?studyUid=X
    * Generate an OHIF viewer URL for a study.
+   * Phase 24: imaging_view RBAC + imaging audit (VIEWER_LAUNCH).
    */
   server.get("/imaging/viewer", async (request, reply) => {
     const session = requireSession(request, reply);
     if (!session) return;
+    if (!requireImagingView(request, session, reply)) return;
 
     const { studyUid } = request.query as any;
     if (!studyUid) {
@@ -449,6 +680,18 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
     }
 
     const viewerUrl = `${IMAGING_CONFIG.ohifUrl}/viewer?StudyInstanceUIDs=${studyUid}`;
+
+    imagingAudit(
+      "VIEWER_LAUNCH",
+      buildImagingActor(session),
+      session.tenantId || "default",
+      {
+        studyInstanceUid: studyUid,
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+        detail: { viewerUrl },
+      },
+    );
 
     audit("imaging.viewer-launch", "success", auditActor(request), {
       requestId: (request as any).requestId,
@@ -469,9 +712,24 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
 
   /**
    * GET /imaging/health
-   * Check connectivity to Orthanc.
+   * Check connectivity to Orthanc + imaging subsystem status.
+   * Phase 24: Includes audit chain stats and DICOMweb rate limit info.
    */
   server.get("/imaging/health", async (_request, reply) => {
+    // Audit chain stats (fast, no DB call)
+    let auditStats: Record<string, unknown> = {};
+    try {
+      const { getChainStats } = await import("../services/imaging-audit.js");
+      const stats = getChainStats();
+      auditStats = {
+        auditChainLength: stats.totalEntries,
+        auditChainIntact: stats.chainValid,
+        lastSeq: stats.lastSeq,
+      };
+    } catch {
+      auditStats = { auditChainLength: 0, auditChainIntact: true, lastSeq: 0 };
+    }
+
     try {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 5000);
@@ -494,14 +752,23 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
             url: IMAGING_CONFIG.ohifUrl,
             status: "configured",
           },
+          security: {
+            rbacEnabled: true,
+            breakGlassEnabled: true,
+            dicomwebRateLimit: DICOMWEB_RATE_LIMIT,
+            dicomwebRateWindowMs: DICOMWEB_RATE_WINDOW_MS,
+          },
+          audit: auditStats,
         };
       }
-      return { ok: false, error: `Orthanc returned ${resp.status}` };
+      return { ok: false, error: `Orthanc returned ${resp.status}`, audit: auditStats };
     } catch (err: any) {
       return {
         ok: false,
         orthanc: { status: "disconnected", error: err.message },
         ohif: { url: IMAGING_CONFIG.ohifUrl, status: "unknown" },
+        security: { rbacEnabled: true, breakGlassEnabled: true },
+        audit: auditStats,
       };
     }
   });
