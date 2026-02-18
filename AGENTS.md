@@ -312,6 +312,17 @@ most recent phase verifier and reports PASS/FAIL for each gate.
     `/analytics/*` routes match `{ pattern: /^\/analytics\//, auth: "session" }`.
     Fine-grained permission checks (`analytics_viewer`, `analytics_admin`)
     happen inside route handlers via `requireAnalyticsPermission()`.
+46. **Guard `request.body` in optional-body POST routes.** Fastify leaves
+    `request.body` as `undefined` when no Content-Type header is sent.
+    Always use `const body = (request.body as any) || {}` before accessing
+    properties. See BUG-046.
+47. **Octo/ROcto entrypoint must source `ydb_env_set`.** The `yottadb/octo`
+    Docker image needs `/opt/yottadb/current/ydb_env_set` sourced at startup
+    to create `/data/o`, `/data/r`, set `$ZROUTINES`, and configure `$PATH`.
+    Overriding env vars like `ydb_dist`, `ydb_gbldir`, `ydb_routines` directly
+    conflicts with the image's init script. Use the image's `ydb_env_set` and
+    extend, don't replace. `rocto` binary is at
+    `/opt/yottadb/current/plugin/octo/bin/rocto`. See BUG-047.
 
 ---
 

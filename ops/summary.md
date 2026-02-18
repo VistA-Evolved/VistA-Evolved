@@ -1,8 +1,45 @@
-﻿# Ops Summary — Phase 23: Imaging Workflow V2
+﻿# Ops Summary — Phase 25 VERIFY: BI/Analytics Bug Fixes
 
-## What Changed
+## What Changed (during VERIFY)
 
-### New Files
+### Bug Fixes
+1. **BUG-046**: `POST /analytics/aggregate` crashed when no JSON body sent.
+   - File: `apps/api/src/routes/analytics-routes.ts`
+   - Fix: `const body = (request.body as any) || {}`
+
+2. **BUG-047**: Octo/ROcto Docker container crash-looped on startup.
+   - File: `services/analytics/docker-compose.yml`
+   - Fix: Custom entrypoint that sources `ydb_env_set`, seeds schema, runs `rocto` with full path
+
+### Documentation
+- `docs/BUG-TRACKER.md`: Added BUG-046, BUG-047 with root cause and preventive measures
+
+## How to Test Manually
+
+### Analytics Aggregate (BUG-046 fix)
+```bash
+curl -s -b cookies.txt -X POST http://127.0.0.1:3001/analytics/aggregate \
+  -H "Content-Type: application/json"
+# Should return {"ok":true,...} not 500
+```
+
+### Octo/ROcto (BUG-047 fix)
+```bash
+docker compose -f services/analytics/docker-compose.yml up -d
+# Wait 10s, then:
+docker ps --filter "name=ve-analytics"
+# Should show: Up X seconds (healthy)
+# Port 1338 should be reachable
+```
+
+## Verifier Output
+```
+verify-latest.ps1 (-SkipRegression -SkipDocker): 73 PASS / 0 FAIL / 0 WARN
+```
+
+## Follow-ups
+- ETL writer to push aggregated data into Octo tables (Phase 26 scope)
+- `bi_readonly` ROcto user authentication setup for production
 | File | Purpose |
 |------|---------|
 | `apps/api/src/services/imaging-worklist.ts` | In-memory worklist sidecar: 5 REST endpoints for imaging order lifecycle |

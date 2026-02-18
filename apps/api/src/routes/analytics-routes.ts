@@ -339,7 +339,7 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
     const session = requireSession(request, reply);
     requireAnalyticsPermission(session, "analytics_admin", reply);
 
-    const body = request.body as any;
+    const body = (request.body as any) || {};
     const result = runAggregation(body.since, body.until, body.tenantId || session.tenantId);
 
     audit("analytics.aggregate" as AuditAction, "success", auditActor(request), {

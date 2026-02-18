@@ -19,17 +19,22 @@ services:
     container_name: ve-analytics-octo
     ports:
       - "1338:1338"   # ROcto (PostgreSQL wire protocol)
-    environment:
-      ydb_dist: /opt/yottadb/current
-      ydb_gbldir: /data/octo.gld
-      ydb_routines: "/data/o(/data/r) /opt/yottadb/current/plugin/o(/opt/yottadb/current/plugin/r) /opt/yottadb/current/utf8/libyottadbutil.so"
-      ydb_ci: /opt/yottadb/current/plugin/octo/calltab.ci
-      ROCTO_PORT: "1338"
+    entrypoint:
+      - /bin/bash
+      - -c
+      - |
+        source /opt/yottadb/current/ydb_env_set
+        export ydb_gbldir="$$ydb_dir/$$ydb_rel/g/octo.gld"
+        # Seed schema if seed file exists and tables not yet created
+        if [ -f /docker-entrypoint-initdb.d/seed.sql ]; then
+          /opt/yottadb/current/plugin/octo/bin/octo -f /docker-entrypoint-initdb.d/seed.sql 2>/dev/null || true
+        fi
+        exec /opt/yottadb/current/plugin/octo/bin/rocto -p 1338
     volumes:
       - octo-data:/data
       - ./octo-seed.sql:/docker-entrypoint-initdb.d/seed.sql:ro
     healthcheck:
-      test: ["CMD", "bash", "-c", "echo 'SELECT 1;' | /opt/yottadb/current/plugin/bin/octo"]
+      test: ["CMD", "bash", "-c", "source /opt/yottadb/current/ydb_env_set && echo 'SELECT 1;' | /opt/yottadb/current/plugin/octo/bin/octo"]
       interval: 30s
       timeout: 10s
       retries: 3

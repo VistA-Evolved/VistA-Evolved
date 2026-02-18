@@ -549,6 +549,28 @@
 | **Fix** | Added `x-patient-name`, `x-patient-id`, and `content-description` (WADO-RS multipart can include patient info) to the strip set |
 | **Preventive** | When documenting security properties in code comments, implement them immediately. Add a verification gate that checks the strip set size matches expectations |
 
+### BUG-046: POST /analytics/aggregate crashes when no JSON body sent
+
+| | |
+|---|---|
+| **Phase** | 25 VERIFY |
+| **Severity** | MEDIUM |
+| **Symptom** | `POST /analytics/aggregate` with no request body returns 500. `TypeError: Cannot read properties of undefined (reading 'since')` |
+| **Root cause** | `const body = request.body as any;` — when no Content-Type: application/json header is sent, Fastify leaves `request.body` as `undefined`. Accessing `body.since` throws |
+| **Fix** | Changed to `const body = (request.body as any) || {};` to default to empty object |
+| **Preventive** | Always guard `request.body` with a fallback when the body is optional. Consider adding a JSON schema with Fastify's built-in validation |
+
+### BUG-047: Octo/ROcto Docker container crash-loops on startup
+
+| | |
+|---|---|
+| **Phase** | 25 VERIFY |
+| **Severity** | HIGH |
+| **Symptom** | `ve-analytics-octo` container enters `Restarting (1)` loop immediately after start. Log: `%YDB-E-ZROSYNTAX, $ZROUTINES syntax error: /data/o(/data/r) ... %YDB-E-FILEPARSE, Error parsing file specification: /data/o, %SYSTEM-E-ENO2, No such file or directory` |
+| **Root cause** | Two issues: (1) Custom `ydb_routines` env var referenced `/data/o` and `/data/r` directories that don't exist in a fresh volume. (2) Custom env vars (`ydb_dist`, `ydb_gbldir`, `ydb_ci`) conflicted with the image's built-in `/entrypoint.sh` which calls `source /opt/yottadb/current/ydb_env_set` to properly initialize all paths and create directories. (3) The `rocto` binary is at `/opt/yottadb/current/plugin/octo/bin/rocto`, not in `$PATH` |
+| **Fix** | Replaced custom environment block with custom entrypoint that: (a) sources `ydb_env_set` (creates dirs, sets paths), (b) seeds schema via `octo -f`, (c) runs `rocto` with full path. Removed conflicting env vars (`ydb_dist`, `ydb_gbldir`, `ydb_ci`). Updated healthcheck to also source `ydb_env_set` |
+| **Preventive** | When using Docker images with complex init scripts, inspect the default `ENTRYPOINT` and `CMD` before overriding. Use `docker inspect` and `cat /entrypoint.sh` to understand the init sequence. Prefer extending the default entrypoint over replacing it |
+
 ### Additional findings (not bugs, noted for future hardening)
 
 - **`sanitizeDetail` was case-sensitive and non-recursive**: Fixed to lowercase-compare all keys and recurse into nested objects (up to depth 5). Prevents `{ patient: { SSN: "..." } }` bypass.
@@ -712,3 +734,5 @@ Phase 21 interop routes do NOT currently use this pattern (known debt).
 | Decommissioned device blocks AE Title re-use | BUG-043 | Free AE Title from index on soft-delete |
 | Negative TTL creates expired break-glass | BUG-044 | Reject ≤ 0, add Math.max floor |
 | PHI headers not stripped in proxy | BUG-045 | Add x-patient-name, x-patient-id, content-description to strip set |
+| POST /analytics/aggregate crashes with no body | BUG-046 | Default `request.body` to `{}` when undefined |
+| Octo/ROcto Docker crash-loop on startup | BUG-047 | Source `ydb_env_set` in entrypoint, use full `rocto` path, remove conflicting env vars |

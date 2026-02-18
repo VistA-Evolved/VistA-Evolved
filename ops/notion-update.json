@@ -1,49 +1,29 @@
 {
-  "feature_title": "Phase 23 — Imaging Workflow V2 (Order→Acquire→View)",
-  "stage": "implemented",
-  "status": "needs-verification",
-  "prompt_ref_path": "prompts/25-PHASE-23-IMAGING-WORKFLOW/25-01-imaging-workflow-IMPLEMENT.md",
-  "verify_prompt_path": "prompts/25-PHASE-23-IMAGING-WORKFLOW/25-99-imaging-workflow-VERIFY.md",
+  "feature_title": "Phase 25 — Enterprise BI + Analytics + Clinical Reporting (VERIFY)",
+  "stage": "verified",
+  "status": "complete",
+  "prompt_ref_path": "prompts/27-PHASE-25-BI-ANALYTICS/27-01-bi-analytics-IMPLEMENT.md",
+  "verify_prompt_path": "prompts/27-PHASE-25-BI-ANALYTICS/27-99-bi-analytics-VERIFY.md",
   "runbook_paths": [
-    "docs/runbooks/imaging-worklist.md",
-    "docs/runbooks/imaging-ingest-reconciliation.md",
-    "docs/runbooks/imaging-device-onboarding.md",
-    "docs/runbooks/imaging-grounding.md"
+    "docs/runbooks/analytics-octo-rocto.md",
+    "docs/analytics/phase25-data-classification.md"
   ],
-  "verify_script": "manual (see 25-99-imaging-workflow-VERIFY.md)",
+  "verify_script": "scripts/verify-phase25-bi-analytics.ps1 + manual runtime tests",
   "verify_results": {
-    "gate1_typescript": "PASS (exit 0 both apps)",
-    "gate2_worklist": "pending manual test",
-    "gate3_ingest": "pending manual test",
-    "gate4_chart": "pending manual test",
-    "gate5_ui": "pending manual test",
-    "gate6_orthanc_lua": "pending integration test",
-    "gate7_security": "pending manual test",
-    "gate8_regression": "pending",
-    "gate9_docs": "PASS"
+    "regression": "PASS — 73/73 gates, 0 FAIL, 0 WARN",
+    "clinical_reports_e2e": "PASS — 23 reports from VistA, HTML-sanitized, audited",
+    "analytics_correctness": "PASS — events recorded, user IDs hashed, aggregation works, dashboards OK",
+    "octo_rocto_sql": "PASS — container healthy, 5 seed tables, ROcto port 1338 accepting connections",
+    "security_phi_scan": "PASS — no credentials outside allowed locations, no PHI in analytics events, role-gated",
+    "prompt_hygiene": "PASS — folders 01-27 contiguous, IMPLEMENT+VERIFY present",
+    "bugs_found_and_fixed": "BUG-046 (null body aggregate), BUG-047 (Octo docker crash)"
   },
-  "files_created": [
-    "apps/api/src/services/imaging-worklist.ts",
-    "apps/api/src/services/imaging-ingest.ts",
-    "services/imaging/on-stable-study.lua",
-    "services/imaging/ae-title-template.json",
-    "docs/runbooks/imaging-worklist.md",
-    "docs/runbooks/imaging-ingest-reconciliation.md",
-    "docs/runbooks/imaging-device-onboarding.md",
-    "docs/runbooks/imaging-grounding.md",
-    "prompts/25-PHASE-23-IMAGING-WORKFLOW/25-01-imaging-workflow-IMPLEMENT.md",
-    "prompts/25-PHASE-23-IMAGING-WORKFLOW/25-99-imaging-workflow-VERIFY.md"
-  ],
   "files_modified": [
-    "apps/api/src/index.ts",
-    "apps/api/src/config/server-config.ts",
-    "apps/api/src/lib/audit.ts",
-    "apps/api/src/middleware/security.ts",
-    "apps/api/src/services/imaging-service.ts",
-    "services/imaging/orthanc.json",
-    "services/imaging/docker-compose.yml",
-    "apps/web/src/components/cprs/panels/ImagingPanel.tsx",
-    "AGENTS.md"
+    "apps/api/src/routes/analytics-routes.ts",
+    "services/analytics/docker-compose.yml",
+    "docs/BUG-TRACKER.md",
+    "ops/summary.md",
+    "ops/notion-update.json"
   ],
-  "commit_sha": "7aca7c6"
+  "commit_sha": "pending"
 }
