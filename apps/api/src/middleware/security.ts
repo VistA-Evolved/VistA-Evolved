@@ -19,6 +19,7 @@ import { getSession } from "../auth/session-store.js";
 import type { SessionData } from "../auth/session-store.js";
 import { disconnect as disconnectRpcBroker } from "../vista/rpcBrokerClient.js";
 import { stopAggregationJob } from "../services/analytics-aggregator.js";
+import { stopEtl } from "../services/analytics-etl.js";
 
 /* ================================================================== */
 /* CORS origin allowlist                                                */
@@ -356,8 +357,9 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
         await server.close();
         // Phase 21: disconnect RPC broker to prevent orphaned VistA jobs
         try { disconnectRpcBroker(); } catch { /* socket may already be closed */ }
-        // Phase 25: stop analytics aggregation job
+        // Phase 25: stop analytics aggregation job and ETL writer
         try { stopAggregationJob(); } catch { /* timer may already be cleared */ }
+        try { stopEtl(); } catch { /* connection may already be closed */ }
         log.info("Server closed gracefully");
       } catch (err: any) {
         log.error("Error during shutdown", { error: err.message });

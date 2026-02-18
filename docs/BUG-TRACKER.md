@@ -571,6 +571,50 @@
 | **Fix** | Replaced custom environment block with custom entrypoint that: (a) sources `ydb_env_set` (creates dirs, sets paths), (b) seeds schema via `octo -f`, (c) runs `rocto` with full path. Removed conflicting env vars (`ydb_dist`, `ydb_gbldir`, `ydb_ci`). Updated healthcheck to also source `ydb_env_set` |
 | **Preventive** | When using Docker images with complex init scripts, inspect the default `ENTRYPOINT` and `CMD` before overriding. Use `docker inspect` and `cat /entrypoint.sh` to understand the init sequence. Prefer extending the default entrypoint over replacing it |
 
+### BUG-048: Octo v1.1 rejects bare TIMESTAMP type in CREATE TABLE
+
+| | |
+|---|---|
+| **Phase** | 25D |
+| **Severity** | HIGH |
+| **Symptom** | `octo -f seed.sql` fails with `syntax error, unexpected IDENTIFIER_ALONE` on every column using `TIMESTAMP` type |
+| **Root cause** | Octo v1.1 does not support the bare `TIMESTAMP` SQL type. Only `TIMESTAMP WITH TIME ZONE`, `VARCHAR`, `INTEGER`, `NUMERIC`, etc. are supported. The seed schema used `TIMESTAMP` for all date/time columns |
+| **Fix** | Replaced all `TIMESTAMP` columns with `VARCHAR(32)` and store ISO 8601 strings. Removed all `DEFAULT` clauses (also unsupported). Updated `bucketToInsert()` to emit `'value'` instead of `TIMESTAMP 'value'`. Removed SQL VIEWs that used `DATE()` function |
+| **Preventive** | Test seed SQL in the actual Octo container before committing. Octo's type system is a subset of PostgreSQL — always verify type support against the Octo version |
+
+### BUG-049: Octo v1.1 lacks CREATE USER SQL and --create-user CLI
+
+| | |
+|---|---|
+| **Phase** | 25D |
+| **Severity** | HIGH |
+| **Symptom** | `CREATE USER etl_writer WITH PASSWORD ...` returns `syntax error, unexpected PARENLESS_FUNCTION`. `rocto --create-user` flag doesn't exist |
+| **Root cause** | Octo v1.1 doesn't implement user management via SQL or CLI. Users are stored directly in YottaDB M globals |
+| **Fix** | Created `ZVEUSERS.m` M routine that writes users to `^%ydboctoocto("users",username)` in pg_authid pipe-delimited format. Passwords use `md5` + MD5(password + username) format. Run via `yottadb -run ZVEUSERS` in container entrypoint |
+| **Preventive** | Check Octo's actual feature set, not PostgreSQL docs. The M routine approach is idempotent and survives container restarts |
+
+### BUG-050: ROcto permissions=0 means read-only, not default
+
+| | |
+|---|---|
+| **Phase** | 25D |
+| **Severity** | HIGH |
+| **Symptom** | ETL INSERT returns `ERR_ROCTO_READONLY_USER: Cannot modify table: user 'etl_writer' has read-only permissions` despite `-w` flag on ROcto |
+| **Root cause** | `^%ydboctoocto("users",username,"permissions")` value `0` means readonly. Even with ROcto's `-w` (write-allow) flag, individual users still need `permissions=1` for write access |
+| **Fix** | Set `etl_writer` permissions to `1` (readwrite). Keep `bi_readonly` at `0`. Updated `ZVEUSERS.m` to also fix permissions on re-run (handles containers where user already existed with wrong permissions) |
+| **Preventive** | Always verify write access after user creation. ROcto `-w` flag enables global write capability, but per-user permissions are a separate check |
+
+### BUG-051: ROcto default address=127.0.0.1 blocks Docker port forwarding
+
+| | |
+|---|---|
+| **Phase** | 25D |
+| **Severity** | MEDIUM |
+| **Symptom** | Host cannot connect to ROcto on port 1338 despite Docker port mapping. `ECONNREFUSED 127.0.0.1:1338` from host |
+| **Root cause** | Default `octo.conf` sets `address = "127.0.0.1"`. Inside Docker, this only listens on container's loopback, not the Docker bridge network interface |
+| **Fix** | Created custom `octo.conf` with `address = "0.0.0.0"` and mounted via Docker volume to `/etc/octo/octo.conf`. Added `-c /etc/octo/octo.conf` flag to `rocto` command |
+| **Preventive** | Any database inside Docker must bind to `0.0.0.0` for port forwarding to work. Always test connectivity from the host, not just from inside the container |
+
 ### Additional findings (not bugs, noted for future hardening)
 
 - **`sanitizeDetail` was case-sensitive and non-recursive**: Fixed to lowercase-compare all keys and recurse into nested objects (up to depth 5). Prevents `{ patient: { SSN: "..." } }` bypass.
@@ -736,3 +780,7 @@ Phase 21 interop routes do NOT currently use this pattern (known debt).
 | PHI headers not stripped in proxy | BUG-045 | Add x-patient-name, x-patient-id, content-description to strip set |
 | POST /analytics/aggregate crashes with no body | BUG-046 | Default `request.body` to `{}` when undefined |
 | Octo/ROcto Docker crash-loop on startup | BUG-047 | Source `ydb_env_set` in entrypoint, use full `rocto` path, remove conflicting env vars |
+| Octo CREATE TABLE fails with TIMESTAMP type | BUG-048 | Use `VARCHAR(32)` instead of bare `TIMESTAMP`, remove `DEFAULT` clauses |
+| Octo CREATE USER SQL/CLI not supported | BUG-049 | Use M routine to write `^%ydboctoocto("users",...)` globals directly |
+| ROcto INSERT returns ERR_ROCTO_READONLY_USER | BUG-050 | Set `permissions=1` for write users (0=readonly, 1=readwrite) |
+| Host can't connect to ROcto in Docker | BUG-051 | Custom `octo.conf` with `address = "0.0.0.0"`, mount via volume |

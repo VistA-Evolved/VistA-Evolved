@@ -43,6 +43,10 @@ import {
   runAggregation,
 } from "../services/analytics-aggregator.js";
 import {
+  getEtlStatus,
+  syncBucketsToOcto,
+} from "../services/analytics-etl.js";
+import {
   getClinicalReportList,
   getClinicalReportText,
   getClinicalReportHealth,
@@ -400,6 +404,30 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
       session.tenantId,
     );
     return result;
+  });
+
+  /* ── GET /analytics/etl/status ──────────────────────────── */
+  server.get("/analytics/etl/status", async (request, reply) => {
+    const session = requireSession(request, reply);
+    requireAnalyticsPermission(session, "analytics_admin", reply);
+    return { ok: true, ...getEtlStatus() };
+  });
+
+  /* ── POST /analytics/etl/sync ──────────────────────────── */
+  server.post("/analytics/etl/sync", async (request, reply) => {
+    const session = requireSession(request, reply);
+    requireAnalyticsPermission(session, "analytics_admin", reply);
+
+    const { buckets: hourly } = queryAggregatedMetrics({ period: "hourly", limit: 5000 });
+    const { buckets: daily } = queryAggregatedMetrics({ period: "daily", limit: 5000 });
+
+    const result = await syncBucketsToOcto(hourly, daily);
+
+    audit("analytics.etl_sync" as AuditAction, "success", auditActor(request), {
+      detail: { ...result, hourlyTotal: hourly.length, dailyTotal: daily.length },
+    });
+
+    return { ok: true, ...result };
   });
 
   log.info("Analytics routes registered (Phase 25)");

@@ -32,6 +32,8 @@ import { getRpcHealthSummary, getCircuitBreakerStats, resetCircuitBreaker, inval
 import { getIntegrationHealthSummary } from "./config/integration-registry.js";
 // Phase 25: Analytics aggregation engine
 import { startAggregationJob, stopAggregationJob } from "./services/analytics-aggregator.js";
+import { initEtl } from "./services/analytics-etl.js";
+import { initAnalyticsStore } from "./services/analytics-store.js";
 
 /* ================================================================== */
 /* Phase 15B helpers: safe error + session-based audit actor             */
@@ -1801,8 +1803,11 @@ try {
   audit("system.startup", "success", { duz: "system", name: "system", role: "system" }, {
     detail: { host, port, phase: "25-bi-analytics", commitSha: process.env.BUILD_SHA || "dev" },
   });
-  // Phase 25: Start analytics aggregation background job
+  // Phase 25: Restore persisted analytics events and start aggregation
+  initAnalyticsStore();
   startAggregationJob();
+  // Phase 25: Initialize ETL writer (non-blocking — connects to ROcto lazily)
+  initEtl();
 } catch (err) {
   const e = err as NodeJS.ErrnoException;
   if (e.code === "EADDRINUSE") {

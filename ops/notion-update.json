@@ -1,29 +1,39 @@
 {
-  "feature_title": "Phase 25 — Enterprise BI + Analytics + Clinical Reporting (VERIFY)",
+  "feature_title": "Phase 25D — Risk Mitigation (ETL Writer + Auth + Persistence)",
   "stage": "verified",
   "status": "complete",
-  "prompt_ref_path": "prompts/27-PHASE-25-BI-ANALYTICS/27-01-bi-analytics-IMPLEMENT.md",
+  "prompt_ref_path": "prompts/27-PHASE-25-BI-ANALYTICS/27-02-phase25d-risk-mitigation-IMPLEMENT.md",
   "verify_prompt_path": "prompts/27-PHASE-25-BI-ANALYTICS/27-99-bi-analytics-VERIFY.md",
   "runbook_paths": [
     "docs/runbooks/analytics-octo-rocto.md",
     "docs/analytics/phase25-data-classification.md"
   ],
-  "verify_script": "scripts/verify-phase25-bi-analytics.ps1 + manual runtime tests",
+  "verify_script": "scripts/verify-phase25-bi-analytics.ps1",
   "verify_results": {
-    "regression": "PASS — 73/73 gates, 0 FAIL, 0 WARN",
-    "clinical_reports_e2e": "PASS — 23 reports from VistA, HTML-sanitized, audited",
-    "analytics_correctness": "PASS — events recorded, user IDs hashed, aggregation works, dashboards OK",
-    "octo_rocto_sql": "PASS — container healthy, 5 seed tables, ROcto port 1338 accepting connections",
-    "security_phi_scan": "PASS — no credentials outside allowed locations, no PHI in analytics events, role-gated",
-    "prompt_hygiene": "PASS — folders 01-27 contiguous, IMPLEMENT+VERIFY present",
-    "bugs_found_and_fixed": "BUG-046 (null body aggregate), BUG-047 (Octo docker crash)"
+    "regression": "PASS — 74/74 gates, 0 FAIL, 0 WARN (Phase 22-25)",
+    "etl_sync": "PASS — syncedH:2, syncedD:2, errors:0",
+    "etl_status": "PASS — connected:true, PG wire protocol working",
+    "octo_tables": "PASS — 7 tables created, SELECT returns data",
+    "event_persistence": "PASS — JSONL file created, events survive restart",
+    "rocto_auth": "PASS — MD5 handshake, 2 users (readwrite + readonly)",
+    "bugs_fixed": "BUG-048 (TIMESTAMP type), BUG-049 (CREATE USER), BUG-050 (permissions), BUG-051 (address binding)"
   },
   "files_modified": [
+    "apps/api/src/services/analytics-etl.ts",
+    "apps/api/src/services/analytics-store.ts",
+    "apps/api/src/services/analytics-aggregator.ts",
+    "apps/api/src/config/analytics-config.ts",
     "apps/api/src/routes/analytics-routes.ts",
+    "apps/api/src/index.ts",
+    "apps/api/src/middleware/security.ts",
     "services/analytics/docker-compose.yml",
-    "docs/BUG-TRACKER.md",
+    "services/analytics/octo-seed.sql",
+    "services/analytics/octo.conf",
+    "services/analytics/ZVEUSERS.m",
+    ".gitignore",
+    "AGENTS.md",
     "ops/summary.md",
     "ops/notion-update.json"
   ],
-  "commit_sha": "pending"
+  "commit_sha": "a780c3f"
 }

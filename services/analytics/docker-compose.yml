@@ -19,20 +19,34 @@ services:
     container_name: ve-analytics-octo
     ports:
       - "1338:1338"   # ROcto (PostgreSQL wire protocol)
+    environment:
+      BI_READONLY_PASSWORD: "${BI_READONLY_PASSWORD:-bi_readonly_pass}"
+      ETL_WRITER_PASSWORD: "${ETL_WRITER_PASSWORD:-etl_writer_pass}"
     entrypoint:
       - /bin/bash
       - -c
       - |
         source /opt/yottadb/current/ydb_env_set
         export ydb_gbldir="$$ydb_dir/$$ydb_rel/g/octo.gld"
+        OCTO=/opt/yottadb/current/plugin/octo/bin/octo
+        ROCTO=/opt/yottadb/current/plugin/octo/bin/rocto
+        # Rundown stale shared memory from previous container (required after restart)
+        $$ydb_dist/mupip rundown -reg "*" 2>/dev/null || true
         # Seed schema if seed file exists and tables not yet created
         if [ -f /docker-entrypoint-initdb.d/seed.sql ]; then
-          /opt/yottadb/current/plugin/octo/bin/octo -f /docker-entrypoint-initdb.d/seed.sql 2>/dev/null || true
+          $$OCTO -f /docker-entrypoint-initdb.d/seed.sql 2>/dev/null || true
         fi
-        exec /opt/yottadb/current/plugin/octo/bin/rocto -p 1338
+        # Create ROcto users via M routine (CREATE USER not supported in v1.1)
+        cp /docker-entrypoint-initdb.d/ZVEUSERS.m /data/r/ZVEUSERS.m 2>/dev/null || true
+        if [ -f /data/r/ZVEUSERS.m ]; then
+          $$ydb_dist/yottadb -run ZVEUSERS 2>&1 || true
+        fi
+        exec $$ROCTO -c /etc/octo/octo.conf -w
     volumes:
       - octo-data:/data
       - ./octo-seed.sql:/docker-entrypoint-initdb.d/seed.sql:ro
+      - ./octo.conf:/etc/octo/octo.conf:ro
+      - ./ZVEUSERS.m:/docker-entrypoint-initdb.d/ZVEUSERS.m:ro
     healthcheck:
       test: ["CMD", "bash", "-c", "source /opt/yottadb/current/ydb_env_set && echo 'SELECT 1;' | /opt/yottadb/current/plugin/octo/bin/octo"]
       interval: 30s

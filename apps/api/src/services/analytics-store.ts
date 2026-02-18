@@ -16,7 +16,7 @@
  */
 
 import { createHash, randomUUID } from "crypto";
-import { appendFileSync, mkdirSync, existsSync } from "fs";
+import { appendFileSync, mkdirSync, existsSync, readFileSync } from "fs";
 import { dirname } from "path";
 import { log } from "../lib/logger.js";
 import { ANALYTICS_EVENT_CONFIG } from "../config/analytics-config.js";
@@ -125,6 +125,43 @@ const eventBuffer: AnalyticsEvent[] = [];
 const MAX_EVENTS = ANALYTICS_EVENT_CONFIG.maxMemoryEvents;
 
 /**
+ * Restore events from JSONL file on startup.
+ * Loads the last MAX_EVENTS lines into the ring buffer.
+ */
+function restoreEventsFromFile(): void {
+  const file = ANALYTICS_EVENT_CONFIG.eventFilePath;
+  if (!file || !existsSync(file)) return;
+  try {
+    const content = readFileSync(file, "utf-8");
+    const lines = content.trim().split("\n").filter(Boolean);
+    const recent = lines.slice(-MAX_EVENTS);
+    let restored = 0;
+    for (const line of recent) {
+      try {
+        const event = JSON.parse(line) as AnalyticsEvent;
+        if (event.id && event.timestamp && event.category) {
+          eventBuffer.push(event);
+          restored++;
+        }
+      } catch { /* skip malformed lines */ }
+    }
+    if (restored > 0) {
+      log.info("Analytics: Restored events from file", { count: restored, file });
+    }
+  } catch (err) {
+    log.warn("Analytics: Failed to restore events from file", { error: String(err) });
+  }
+}
+
+/**
+ * Initialize the analytics store.
+ * Restores persisted events from JSONL file.
+ */
+export function initAnalyticsStore(): void {
+  restoreEventsFromFile();
+}
+
+/**
  * Record an analytics event.
  * This is the primary API for capturing metrics.
  */
@@ -167,6 +204,9 @@ export function recordAnalyticsEvent(
     eventBuffer.splice(0, excess);
   }
 
+  // Add to JSONL persistence queue
+  if (EVENT_FILE) pendingFlush.push(event);
+
   return event;
 }
 
@@ -194,20 +234,6 @@ function flushToFile(): void {
 // Periodic flush
 if (EVENT_FILE) {
   setInterval(flushToFile, FLUSH_INTERVAL);
-}
-
-// Hook: after recording, add to pending flush
-const originalRecord = recordAnalyticsEvent;
-// We patch via a wrapper to avoid circular dependency
-export function recordAndFlush(
-  category: AnalyticsEventCategory,
-  metric: string,
-  value: number,
-  opts: Parameters<typeof recordAnalyticsEvent>[3] = {},
-): AnalyticsEvent {
-  const event = originalRecord(category, metric, value, opts);
-  if (EVENT_FILE) pendingFlush.push(event);
-  return event;
 }
 
 /* ================================================================== */

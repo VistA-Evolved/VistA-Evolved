@@ -1,13 +1,23 @@
-﻿# Ops Summary — Phase 25 VERIFY: BI/Analytics Bug Fixes
+﻿# Ops Summary — Phase 25D: Risk Mitigation (ETL + Auth + Persistence)
 
-## What Changed (during VERIFY)
+## What Changed (during risk mitigation)
 
-### Bug Fixes
-1. **BUG-046**: `POST /analytics/aggregate` crashed when no JSON body sent.
-   - File: `apps/api/src/routes/analytics-routes.ts`
-   - Fix: `const body = (request.body as any) || {}`
+### Risk Fixes
+1. **ETL Writer** — New `analytics-etl.ts` with PG v3.0 wire protocol client
+   (zero npm dependencies). Syncs aggregated MetricBuckets to ROcto SQL tables.
+   Hooks into aggregator via `setOnBucketsCreated` callback + manual POST sync.
 
-2. **BUG-047**: Octo/ROcto Docker container crash-looped on startup.
+2. **ROcto User Auth** — New `ZVEUSERS.m` creates users via M globals
+   (Octo v1.1 lacks CREATE USER SQL). `etl_writer` readwrite, `bi_readonly`
+   read-only. Custom `octo.conf` binds 0.0.0.0 + MD5 auth.
+
+3. **Event Persistence** — JSONL flush every 10s to `data/analytics-events.jsonl`.
+   Restore on startup. Events survive API restart.
+
+### Octo v1.1 Compat
+- `TIMESTAMP` → `VARCHAR(32)` in 7 tables
+- Removed `DEFAULT` clauses and BI views
+- Fixed INSERT SQL literal syntax
    - File: `services/analytics/docker-compose.yml`
    - Fix: Custom entrypoint that sources `ydb_env_set`, seeds schema, runs `rocto` with full path
 
@@ -104,14 +114,17 @@ curl.exe -s "http://127.0.0.1:3001/imaging/ingest/linkages/by-patient/100022"
 
 ## Verifier Output
 ```
-Gate 1: TypeScript Compilation — PASS (exit code 0, both apps)
-Gate 2-9: Manual verification required (see VERIFY prompt)
+Phase 25 Verification Summary
+  PASS: 74
+  FAIL: 0
+  WARN: 0
+RESULT: ALL GATES PASSED
 ```
 
 ## Follow-ups
-1. VistA Radiology RPC integration — migrate sidecar to native VistA ordering
-2. DICOM MWL (Modality Worklist) — implement MWL SCP in Orthanc
-3. Persistent storage — migrate in-memory stores to VistA ^MAG(2005)
-4. StableAge tuning — current 60s may be too short for multi-series acquisitions
-5. Production webhook secret — change default key
-6. E2E automated verification script for Phase 23
+1. ETL sync count in verification script
+2. JSONL rotation/max-size guard for production
+3. SQL VIEWs for common BI queries
+4. ROcto passwords: env var rotation for production
+5. VistA Radiology RPC integration — migrate sidecar to native ordering
+6. DICOM MWL — implement MWL SCP in Orthanc

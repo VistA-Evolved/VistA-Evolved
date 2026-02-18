@@ -94,6 +94,18 @@ const MAX_BUCKETS = ANALYTICS_AGGREGATION_CONFIG.maxBuckets;
 
 let aggregationSeq = 0;
 
+/** Callback invoked after aggregation with newly created buckets. */
+let onBucketsCreatedCb: ((hourly: MetricBucket[], daily: MetricBucket[]) => void) | null = null;
+
+/**
+ * Register a callback for newly created buckets (used by ETL writer).
+ */
+export function setOnBucketsCreated(
+  cb: (hourly: MetricBucket[], daily: MetricBucket[]) => void,
+): void {
+  onBucketsCreatedCb = cb;
+}
+
 /**
  * Compute percentile from sorted array.
  */
@@ -159,6 +171,8 @@ export function runAggregation(
   }
 
   // Build hourly buckets
+  const newHourlyBuckets: MetricBucket[] = [];
+  const newDailyBuckets: MetricBucket[] = [];
   let hourlyCount = 0;
   for (const [key, groupEvents] of hourlyGroups) {
     const [category, metric, tid, periodStart] = key.split("::");
@@ -186,6 +200,7 @@ export function runAggregation(
       aggregatedAt: now.toISOString(),
     };
     hourlyBuckets.push(bucket);
+    newHourlyBuckets.push(bucket);
     hourlyCount++;
   }
 
@@ -217,7 +232,17 @@ export function runAggregation(
       aggregatedAt: now.toISOString(),
     };
     dailyBuckets.push(bucket);
+    newDailyBuckets.push(bucket);
     dailyCount++;
+  }
+
+  // Notify ETL writer of new buckets
+  if (onBucketsCreatedCb && (newHourlyBuckets.length > 0 || newDailyBuckets.length > 0)) {
+    try {
+      onBucketsCreatedCb(newHourlyBuckets, newDailyBuckets);
+    } catch (err) {
+      log.warn("Analytics: onBucketsCreated callback failed", { error: String(err) });
+    }
   }
 
   // Evict old buckets

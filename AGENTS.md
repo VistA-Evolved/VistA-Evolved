@@ -323,6 +323,36 @@ most recent phase verifier and reports PASS/FAIL for each gate.
     conflicts with the image's init script. Use the image's `ydb_env_set` and
     extend, don't replace. `rocto` binary is at
     `/opt/yottadb/current/plugin/octo/bin/rocto`. See BUG-047.
+48. **Octo v1.1 does NOT support bare `TIMESTAMP` type.** Use `VARCHAR(32)`
+    for timestamp columns and store ISO 8601 strings. Also does not support
+    `DEFAULT` clauses on CREATE TABLE. Remove all DEFAULTs and ensure callers
+    always provide every column value. See BUG-048.
+49. **Octo v1.1 does NOT support `CREATE USER` SQL or `--create-user` CLI.**
+    ROcto users must be created via direct M global manipulation:
+    `^%ydboctoocto("users",username)` stores a pipe-delimited pg_authid row,
+    and `^%ydboctoocto("users",username,"permissions")` must also be set.
+    Use `ZVEUSERS.m` in `services/analytics/` for idempotent user creation.
+    See BUG-049.
+50. **ROcto user permissions: `0`=readonly, `1`=readwrite.** The ETL writer
+    user must have `permissions=1` to INSERT. The BI readonly user should
+    have `permissions=0`. Setting the wrong value causes
+    `ERR_ROCTO_READONLY_USER`. See BUG-050.
+51. **ROcto default `address=127.0.0.1` blocks Docker port forwarding.**
+    Override with a custom `octo.conf` setting `address = "0.0.0.0"`.
+    Mount it via Docker volume to `/etc/octo/octo.conf`. See BUG-051.
+52. **ROcto MD5 password format:** `md5` + MD5(password + username).
+    Stored as 11th pipe-delimited field in the user global. Must include
+    the `md5` prefix. Salt-based challenge/response uses standard PG MD5
+    auth handshake. See `ZVEUSERS.m` for examples.
+53. **YottaDB requires `mupip rundown` after container restart.** Stale
+    shared memory from previous incarnation causes `REQRUNDOWN` errors.
+    Add `mupip rundown -reg "*"` to the container entrypoint before
+    running `octo` or `rocto`.
+54. **ETL writer uses minimal PG wire protocol (no npm deps).** The
+    `PgSimpleClient` in `analytics-etl.ts` implements PG v3.0 Simple
+    Query protocol using only Node.js `net` + `crypto`. Supports MD5
+    auth, single-statement queries, and error parsing. Do not add
+    `pg` or other database drivers — this is intentionally dependency-free.
 
 ---
 
@@ -361,6 +391,7 @@ apps/api/src/
   services/
     analytics-store.ts        — PHI-safe analytics event stream (ring buffer, hashing) (Phase 25)
     analytics-aggregator.ts   — Hourly/daily aggregation engine (Phase 25)
+    analytics-etl.ts          — ETL writer: PG wire protocol → ROcto (Phase 25D)
     clinical-reports.ts       — Enhanced VistA clinical report pipeline (Phase 25)
   routes/
     analytics-routes.ts       — Analytics REST endpoints (Phase 25)
@@ -370,7 +401,9 @@ apps/web/src/app/cprs/admin/analytics/
 
 services/analytics/
   docker-compose.yml          — YottaDB/Octo/ROcto for SQL analytics (Phase 25)
-  octo-seed.sql               — SQL DDL for aggregated metrics tables (Phase 25)
+  octo-seed.sql               — SQL DDL for aggregated metrics tables (Phase 25D)
+  octo.conf                   — ROcto config (0.0.0.0 binding, MD5 auth) (Phase 25D)
+  ZVEUSERS.m                  — M routine for idempotent ROcto user creation (Phase 25D)
 
 docs/
   analytics/phase25-data-classification.md — Data classification document (Phase 25)
@@ -385,9 +418,9 @@ scripts/
 ## 8. Bug Tracker & Lessons Learned
 
 A comprehensive log of every bug, challenge, and fix from Phase 1 through
-Phase 24 lives in **[`docs/BUG-TRACKER.md`](docs/BUG-TRACKER.md)**.
+Phase 25 lives in **[`docs/BUG-TRACKER.md`](docs/BUG-TRACKER.md)**.
 
-It covers 45 bugs with:
+It covers 54 bugs with:
 - What was attempted
 - The exact error or symptom
 - Root cause analysis

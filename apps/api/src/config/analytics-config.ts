@@ -36,8 +36,8 @@ export const ANALYTICS_ROLE_PERMISSIONS: Record<UserRole, AnalyticsPermission[]>
 export const ANALYTICS_EVENT_CONFIG = {
   /** Maximum in-memory events before ring buffer eviction. */
   maxMemoryEvents: Number(process.env.ANALYTICS_MAX_EVENTS || 50000),
-  /** JSONL persistence path (empty = no file persistence). */
-  eventFilePath: process.env.ANALYTICS_EVENT_FILE || "",
+  /** JSONL persistence path (set to empty string to disable). */
+  eventFilePath: process.env.ANALYTICS_EVENT_FILE ?? "data/analytics-events.jsonl",
   /** Retention days for event file (used by cleanup job). */
   retentionDays: Number(process.env.ANALYTICS_RETENTION_DAYS || 7),
   /** Salt for hashing user IDs in analytics (rotate periodically). */
@@ -100,6 +100,8 @@ export const ANALYTICS_SQL_CONFIG = {
   biReadOnlyUser: process.env.ANALYTICS_BI_USER || "bi_readonly",
   /** ETL writer user (for aggregation jobs). */
   etlWriterUser: process.env.ANALYTICS_ETL_USER || "etl_writer",
+  /** ETL writer password. Change in production. */
+  etlWriterPassword: process.env.ANALYTICS_ETL_PASSWORD || "etl_writer_pass",
   /** IP allowlist for ROcto connections (comma-separated CIDRs). */
   ipAllowlist: (process.env.ROCTO_IP_ALLOWLIST || "127.0.0.1/32,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16")
     .split(",").map(s => s.trim()).filter(Boolean),
