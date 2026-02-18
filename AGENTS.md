@@ -353,6 +353,15 @@ most recent phase verifier and reports PASS/FAIL for each gate.
     Query protocol using only Node.js `net` + `crypto`. Supports MD5
     auth, single-statement queries, and error parsing. Do not add
     `pg` or other database drivers — this is intentionally dependency-free.
+55. **Never use em-dash (U+2014) or non-ASCII chars in .ps1 files.**
+    PowerShell 5.1 reads UTF-8 files without BOM using Windows-1252 codepage.
+    UTF-8 byte `0x94` (part of em-dash `E2 80 94`) maps to right double-quote
+    `"` in CP1252, injecting phantom quotes that break string parsing. Use
+    ASCII hyphens (`-` or `--`) only. See BUG-055.
+56. **Use `Test-Path -LiteralPath` for Next.js dynamic route dirs.** Square
+    brackets in `[param]` and `[...slug]` dirs are treated as wildcard character
+    classes by PowerShell's `Test-Path`. Always use `-LiteralPath` when testing
+    paths that contain brackets. See BUG-056.
 
 ---
 

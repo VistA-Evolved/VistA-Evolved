@@ -1,0 +1,30 @@
+{
+  "feature_title": "Phase 27 VERIFY - Portal Core E2E + Security + Contract Drift",
+  "stage": "verify",
+  "status": "complete",
+  "prompt_ref": "prompts/29-PHASE-27-PORTAL-CORE/29-99-portal-core-VERIFY.md",
+  "runbook_path": "docs/runbooks/portal-core.md",
+  "verify_script": "scripts/verify-phase1-to-phase27-portal-core.ps1",
+  "commit_sha": "a80f94c",
+  "gates": {
+    "pass": 98,
+    "fail": 0,
+    "warn": 1
+  },
+  "sections": [
+    "Regression (Phase 26 delegation)",
+    "Backend Services (6 services + routes + audit)",
+    "Route Coverage (23 routes)",
+    "Portal UI Pages (share viewer + 5 live pages + build)",
+    "Security (cookies + secrets + VA terms + sharing + sensitivity + messaging)",
+    "Contract Drift (8 modules + auth routes + RPCs + known-gaps)",
+    "License Guard",
+    "Playwright E2E (spec + 11 coverage checks + runtime)",
+    "Documentation (runbook + known-gaps + prompts)",
+    "Web App Regression (clinician app build)"
+  ],
+  "bugs_found": [
+    "BUG-055: Em-dash (U+2014) in PS1 files causes parse errors on PS 5.1",
+    "BUG-056: Test-Path with [token] dir needs -LiteralPath"
+  ]
+}

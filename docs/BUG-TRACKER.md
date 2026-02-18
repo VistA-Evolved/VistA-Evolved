@@ -1,10 +1,10 @@
-# Bug Tracker & Lessons Learned — VistA-Evolved (Phase 1 → Phase 24)
+# Bug Tracker & Lessons Learned — VistA-Evolved (Phase 1 → Phase 27)
 
 > **Purpose**: A single-source log of every significant bug, challenge, and
-> hard-won fix from the project's inception through Phase 24. Share this with
+> hard-won fix from the project's inception through Phase 27. Share this with
 > new developers and AI agents so they don't repeat the same mistakes.
 >
-> **Last updated**: 2026-02-18 (Phase 24 VERIFY — 5 new bugs found and fixed)
+> **Last updated**: 2025-07-16 (Phase 27 VERIFY — 2 new bugs found and fixed)
 
 ---
 
@@ -27,7 +27,8 @@
 15. [Phase 15 — Enterprise Hardening](#phase-15--enterprise-hardening)
 16. [Phase 21 — VistA HL7/HLO Interop Telemetry](#phase-21--vista-hl7hlo-interop-telemetry)
 17. [Phase 24 — Imaging Enterprise Hardening](#phase-24--imaging-enterprise-hardening)
-18. [Cross-Cutting Lessons](#cross-cutting-lessons)
+18. [Phase 27 — Portal Core VERIFY](#phase-27--portal-core-verify)
+19. [Cross-Cutting Lessons](#cross-cutting-lessons)
 
 ---
 
@@ -624,6 +625,34 @@
 
 ---
 
+## Phase 27 — Portal Core VERIFY
+
+### BUG-055: Em-dash (U+2014) in PS1 files breaks PowerShell 5.1 parser
+
+- **Symptom**: `verify-phase1-to-phase27-portal-core.ps1` throws
+  `TerminatorExpectedAtEndOfString` and `MissingEndCurlyBrace` errors despite
+  syntactically correct code. Identical patterns work in Phase 26 verifier.
+- **Root cause**: UTF-8 em-dash `—` is bytes `E2 80 94`. PowerShell 5.1 reads
+  files without BOM using Windows-1252 codepage. Byte `0x94` maps to right
+  double quotation mark `"` (U+201D) in CP1252, injecting a phantom `"` into
+  the parser's view of the source. This breaks string delimiting from that
+  point forward, cascading to unrelated lines.
+- **Fix**: Replace all em-dashes with ASCII hyphens in `.ps1` files.
+- **Prevention**: Never use non-ASCII characters in PowerShell scripts. Add
+  encoding check to CI or use UTF-8 BOM for PS1 files.
+
+### BUG-056: Test-Path treats `[token]` directory as wildcard
+
+- **Symptom**: `Test-Path "$dir\[token]\page.tsx"` returns `$false` even
+  though the file exists at `apps/portal/src/app/share/[token]/page.tsx`.
+- **Root cause**: PowerShell's `Test-Path` interprets `[` and `]` as wildcard
+  character class brackets (e.g. `[token]` matches any single char t/o/k/e/n).
+- **Fix**: Use `Test-Path -LiteralPath` for paths containing brackets.
+- **Prevention**: Always use `-LiteralPath` when testing Next.js dynamic
+  route directories (`[param]`, `[...slug]`, etc.).
+
+---
+
 ## Cross-Cutting Lessons
 
 ### Lesson 1: VistA XWB Protocol Is Byte-Exact
@@ -784,3 +813,5 @@ Phase 21 interop routes do NOT currently use this pattern (known debt).
 | Octo CREATE USER SQL/CLI not supported | BUG-049 | Use M routine to write `^%ydboctoocto("users",...)` globals directly |
 | ROcto INSERT returns ERR_ROCTO_READONLY_USER | BUG-050 | Set `permissions=1` for write users (0=readonly, 1=readwrite) |
 | Host can't connect to ROcto in Docker | BUG-051 | Custom `octo.conf` with `address = "0.0.0.0"`, mount via volume |
+| Em-dash in PS1 breaks PS 5.1 parser | BUG-055 | Use ASCII hyphens only in .ps1 files |
+| `Test-Path` treats `[token]` as wildcard | BUG-056 | Use `Test-Path -LiteralPath` for bracket dirs |
