@@ -1,23 +1,38 @@
-﻿# Ops Summary — Phase 25D: Risk Mitigation (ETL + Auth + Persistence)
+﻿# Ops Summary — Phase 26: Portal & Telehealth — VistA-First Contract + Skeleton
 
-## What Changed (during risk mitigation)
+## What Changed
 
-### Risk Fixes
-1. **ETL Writer** — New `analytics-etl.ts` with PG v3.0 wire protocol client
-   (zero npm dependencies). Syncs aggregated MetricBuckets to ROcto SQL tables.
-   Hooks into aggregator via `setOnBucketsCreated` callback + manual POST sync.
+### New: Patient Portal Skeleton (`apps/portal/`)
+- Full Next.js 16 app on port 3002 (8 pages, no dead clicks)
+- `PortalNav` + `DataSourceBadge` components (plain-language, no VA terms)
 
-2. **ROcto User Auth** — New `ZVEUSERS.m` creates users via M globals
-   (Octo v1.1 lacks CREATE USER SQL). `etl_writer` readwrite, `bi_readonly`
-   read-only. Custom `octo.conf` binds 0.0.0.0 + MD5 auth.
+### New: Portal Auth + Health Proxy (API)
+- Separate session domain (`portal_session` cookie, 30min/15min TTL)
+- `POST /portal/auth/login|logout`, `GET /portal/auth/session`
+- 10 `/portal/health/*` DFN-scoped proxy routes
+- Rate-limited login (5/15min), PHI-safe audit trail
 
-3. **Event Persistence** — JSONL flush every 10s to `data/analytics-events.jsonl`.
-   Restore on startup. Events survive API restart.
+### New: Contract Documents (`docs/contracts/portal/`)
+- VistA source inventory, reference repos inventory, competitive baseline
+- Portal contract YAML + capability matrix
 
-### Octo v1.1 Compat
-- `TIMESTAMP` → `VARCHAR(32)` in 7 tables
-- Removed `DEFAULT` clauses and BI views
-- Fixed INSERT SQL literal syntax
+### New: License Guardrails
+- `scripts/license-guard.ps1` (10 gates)
+- `THIRD_PARTY_NOTICES.md`
+
+### Modified
+- `apps/api/src/index.ts` — register portal routes
+- `apps/api/src/middleware/security.ts` — portal AUTH_RULES
+
+## How to Test
+1. `pnpm install && pnpm -r build`
+2. Start API + Portal, login with `patient1`/`patient1`
+3. `.\scripts\license-guard.ps1`
+
+## Follow-ups
+- Wire portal health routes to VistA RPCs
+- Secure messaging, scheduling, telehealth
+- Replace dev auth with OIDC/SAML
    - File: `services/analytics/docker-compose.yml`
    - Fix: Custom entrypoint that sources `ydb_env_set`, seeds schema, runs `rocto` with full path
 

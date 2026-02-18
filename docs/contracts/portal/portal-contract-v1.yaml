@@ -1,0 +1,204 @@
+# Portal Contract v1 — VistA-Evolved Patient Portal
+# Phase 26: VistA-First Grounding + Skeleton
+# This contract defines modules, data sources, security rules, and guardrails.
+
+version: "1.0"
+phase: 26
+title: "Patient Portal — VistA-First Contract"
+commit_ref: "Phase26: Portal VistA-first contract + skeleton"
+
+# ─────────────────────────────────────────────────
+# NON-NEGOTIABLE RULES
+# ─────────────────────────────────────────────────
+rules:
+  vista_first:
+    description: >
+      Every module that displays clinical data MUST source it from VistA
+      via existing RPC broker calls. No parallel clinical engine. No shadow
+      database for clinical records.
+    enforcement: "Code review + automated contract test"
+
+  no_va_terminology:
+    description: >
+      Patient-facing UI must NEVER use VA-specific terms (CPRS, VistA,
+      DUZ, DFN, FileMan, MUMPS, M routine). Use plain-language labels
+      (Health Records, My Medications, My Appointments, etc.).
+    enforcement: "License guard script + UI string scan"
+
+  no_parallel_engine:
+    description: >
+      The portal MUST NOT duplicate clinical logic. It reads from VistA,
+      formats for display, and submits write requests back through the
+      API gateway for provider-authorized write-back.
+    enforcement: "Architecture review"
+
+  phi_safety:
+    description: >
+      No PHI in logs. No patient DFN in analytics events. Portal audit
+      trail uses hashed identifiers. All fetch() calls use
+      credentials: 'include'.
+    enforcement: "Structured logger + audit store"
+
+  license_guardrails:
+    description: >
+      HealtheMe (Apache 2.0): May reference patterns, must include NOTICE.
+      Ottehr (MIT+attribution): May reference patterns, retain attribution.
+      AIOTP (CC BY-NC-SA 4.0): Observe patterns ONLY. DO NOT copy code.
+    enforcement: "scripts/license-guard.ps1"
+
+# ─────────────────────────────────────────────────
+# MODULES
+# ─────────────────────────────────────────────────
+modules:
+  auth:
+    name: "Portal Authentication"
+    description: "Separate auth domain for portal users (not clinician sessions)"
+    api_routes:
+      - "POST /portal/auth/login"
+      - "POST /portal/auth/logout"
+      - "GET  /portal/auth/session"
+    session_cookie: "portal_session"
+    vista_source: "Patient file (DFN-scoped, dev-mode DFN map)"
+    security:
+      - "Separate session store from clinician sessions"
+      - "Rate-limited login (5 attempts / 15 min)"
+      - "httpOnly, SameSite=Strict cookie"
+      - "Audit all login/logout events"
+    status: "skeleton"
+    phase: 26
+
+  dashboard:
+    name: "Patient Dashboard"
+    description: "Landing page after login showing health summary cards"
+    screens:
+      - "Dashboard home — summary cards for each clinical domain"
+    vista_source: "Aggregated reads from multiple RPCs"
+    status: "skeleton"
+    phase: 26
+
+  health_records:
+    name: "Health Records"
+    description: "Read-only view of clinical data from VistA"
+    screens:
+      - "Allergies list"
+      - "Problems / Diagnoses"
+      - "Vitals history"
+      - "Lab results"
+      - "Imaging studies"
+      - "Consult history"
+      - "Surgery history"
+      - "Discharge summaries"
+      - "Clinical reports"
+    vista_rpcs:
+      - { rpc: "ORQQAL LIST", route: "GET /vista/allergies", mode: "read" }
+      - { rpc: "ORWCH PROBLEM LIST", route: "GET /vista/problems", mode: "read" }
+      - { rpc: "ORQQVI VITALS", route: "GET /vista/vitals", mode: "read" }
+      - { rpc: "ORWLRR INTERIM", route: "GET /vista/labs", mode: "read" }
+      - { rpc: "ORQQCN LIST", route: "GET /vista/consults", mode: "read" }
+      - { rpc: "ORWSR LIST", route: "GET /vista/surgery", mode: "read" }
+      - { rpc: "TIU DOCUMENTS BY CONTEXT (class 244)", route: "GET /vista/dc-summaries", mode: "read" }
+      - { rpc: "ORWRP REPORT TEXT", route: "GET /vista/reports/text", mode: "read" }
+    imaging_proxy:
+      - { route: "GET /imaging/dicom-web/studies", mode: "read" }
+    status: "skeleton"
+    phase: 26
+
+  medications:
+    name: "My Medications"
+    description: "View active medications, request refills (future)"
+    screens:
+      - "Active medications list"
+      - "Medication detail"
+      - "Refill request (future — placeholder)"
+    vista_rpcs:
+      - { rpc: "ORWPS ACTIVE", route: "GET /vista/medications", mode: "read" }
+      - { rpc: "ORWORR GETTXT", route: "GET /vista/medications (detail)", mode: "read" }
+    future_rpcs:
+      - { rpc: "ORWDXM AUTOACK", note: "Requires provider approval workflow" }
+    status: "skeleton"
+    phase: 26
+
+  messages:
+    name: "Secure Messages"
+    description: "Provider messaging (future — placeholder in Phase 26)"
+    screens:
+      - "Message inbox (placeholder)"
+      - "Compose message (placeholder)"
+    vista_source: "Future: SM API or custom RPC"
+    status: "placeholder"
+    phase: 26
+
+  appointments:
+    name: "My Appointments"
+    description: "View & manage appointments (future — placeholder in Phase 26)"
+    screens:
+      - "Upcoming appointments (placeholder)"
+      - "Past appointments (placeholder)"
+      - "Book appointment (placeholder)"
+    vista_source: "Future: SD scheduling RPCs"
+    status: "placeholder"
+    phase: 26
+
+  telehealth:
+    name: "Telehealth"
+    description: "Video visit capability (future — placeholder in Phase 26)"
+    screens:
+      - "Join video visit (placeholder)"
+      - "Waiting room (placeholder)"
+    vista_source: "N/A — external video service"
+    reference_pattern: "Ottehr waiting room UX, Jitsi WebRTC model (AIOTP)"
+    status: "placeholder"
+    phase: 26
+
+  profile:
+    name: "My Profile"
+    description: "Patient demographics and preferences"
+    screens:
+      - "Demographics display"
+      - "Contact information"
+      - "Notification preferences (future)"
+    vista_rpcs:
+      - { rpc: "ORWPT SELECT", route: "GET /vista/patient-demographics", mode: "read" }
+    status: "skeleton"
+    phase: 26
+
+# ─────────────────────────────────────────────────
+# PORTAL-SPECIFIC INFRASTRUCTURE
+# ─────────────────────────────────────────────────
+infrastructure:
+  audit:
+    description: "PHI-safe portal access audit trail"
+    store: "In-memory (same pattern as imaging-audit.ts)"
+    events:
+      - "portal.login"
+      - "portal.logout"
+      - "portal.data.access"
+      - "portal.navigation"
+    phi_policy: "No DFN in events; use hashed patient ID"
+
+  rate_limiting:
+    login: "5 requests / 15 minutes per IP"
+    api: "60 requests / 60 seconds per session"
+
+  dev_mode:
+    description: >
+      In development, portal login maps fixed demo credentials to a
+      patient DFN. In production, this would be replaced by OIDC/SAML
+      identity provider integration.
+    demo_patients:
+      - { name: "CARTER,DAVID", dfn: "100022" }
+      - { name: "Demo patient (sandbox)", dfn: "TBD" }
+
+# ─────────────────────────────────────────────────
+# FUTURE PHASES
+# ─────────────────────────────────────────────────
+future:
+  phase_27_candidates:
+    - "Secure messaging with VistA SM API"
+    - "Appointment scheduling with SD RPCs"
+    - "Medication refill request workflow"
+    - "Telehealth video integration (WebRTC)"
+    - "Patient self-report write-back (allergies, vitals)"
+    - "CCD/CCR export (Blue Button)"
+    - "OIDC/SAML production auth"
+    - "Proxy/delegate access for family members"

@@ -1,39 +1,39 @@
 {
-  "feature_title": "Phase 25D — Risk Mitigation (ETL Writer + Auth + Persistence)",
+  "feature_title": "Phase 26 — Portal & Telehealth: VistA-First Contract + Skeleton",
   "stage": "verified",
   "status": "complete",
-  "prompt_ref_path": "prompts/27-PHASE-25-BI-ANALYTICS/27-02-phase25d-risk-mitigation-IMPLEMENT.md",
-  "verify_prompt_path": "prompts/27-PHASE-25-BI-ANALYTICS/27-99-bi-analytics-VERIFY.md",
+  "prompt_ref_path": "prompts/28-PHASE-26-PORTAL-TELEHEALTH/28-01-portal-telehealth-IMPLEMENT.md",
+  "verify_prompt_path": "prompts/28-PHASE-26-PORTAL-TELEHEALTH/28-99-portal-telehealth-VERIFY.md",
   "runbook_paths": [
-    "docs/runbooks/analytics-octo-rocto.md",
-    "docs/analytics/phase25-data-classification.md"
+    "docs/runbooks/portal-grounding.md"
   ],
-  "verify_script": "scripts/verify-phase25-bi-analytics.ps1",
+  "verify_script": "scripts/license-guard.ps1",
   "verify_results": {
-    "regression": "PASS — 74/74 gates, 0 FAIL, 0 WARN (Phase 22-25)",
-    "etl_sync": "PASS — syncedH:2, syncedD:2, errors:0",
-    "etl_status": "PASS — connected:true, PG wire protocol working",
-    "octo_tables": "PASS — 7 tables created, SELECT returns data",
-    "event_persistence": "PASS — JSONL file created, events survive restart",
-    "rocto_auth": "PASS — MD5 handshake, 2 users (readwrite + readonly)",
-    "bugs_fixed": "BUG-048 (TIMESTAMP type), BUG-049 (CREATE USER), BUG-050 (permissions), BUG-051 (address binding)"
+    "portal_build": "PASS — 10 routes, static generation",
+    "api_build": "PASS — tsc --noEmit clean",
+    "license_guard": "PASS — 11/11 gates",
+    "regression": "PASS — verify-latest 74/74 gates"
   },
+  "files_created": [
+    "apps/portal/ (entire skeleton — 15+ files)",
+    "apps/api/src/routes/portal-auth.ts",
+    "apps/api/src/services/portal-audit.ts",
+    "docs/contracts/portal/vista-source-inventory.md",
+    "docs/contracts/portal/reference-repos-inventory.md",
+    "docs/contracts/portal/competitive-baseline.md",
+    "docs/contracts/portal/portal-contract-v1.yaml",
+    "docs/contracts/portal/portal-capability-matrix.md",
+    "scripts/license-guard.ps1",
+    "THIRD_PARTY_NOTICES.md",
+    "prompts/28-PHASE-26-PORTAL-TELEHEALTH/28-01-portal-telehealth-IMPLEMENT.md",
+    "prompts/28-PHASE-26-PORTAL-TELEHEALTH/28-99-portal-telehealth-VERIFY.md",
+    "docs/runbooks/portal-grounding.md"
+  ],
   "files_modified": [
-    "apps/api/src/services/analytics-etl.ts",
-    "apps/api/src/services/analytics-store.ts",
-    "apps/api/src/services/analytics-aggregator.ts",
-    "apps/api/src/config/analytics-config.ts",
-    "apps/api/src/routes/analytics-routes.ts",
     "apps/api/src/index.ts",
     "apps/api/src/middleware/security.ts",
-    "services/analytics/docker-compose.yml",
-    "services/analytics/octo-seed.sql",
-    "services/analytics/octo.conf",
-    "services/analytics/ZVEUSERS.m",
-    ".gitignore",
-    "AGENTS.md",
     "ops/summary.md",
     "ops/notion-update.json"
   ],
-  "commit_sha": "a780c3f"
+  "commit_sha": "b622b98"
 }

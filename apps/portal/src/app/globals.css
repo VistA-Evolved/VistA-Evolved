@@ -1,0 +1,217 @@
+:root {
+  --portal-bg: #f8f9fa;
+  --portal-surface: #ffffff;
+  --portal-primary: #2563eb;
+  --portal-primary-hover: #1d4ed8;
+  --portal-text: #1e293b;
+  --portal-text-muted: #64748b;
+  --portal-border: #e2e8f0;
+  --portal-success: #16a34a;
+  --portal-warning: #d97706;
+  --portal-danger: #dc2626;
+  --portal-radius: 8px;
+  --portal-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-geist-sans, system-ui, -apple-system, sans-serif);
+  background: var(--portal-bg);
+  color: var(--portal-text);
+  line-height: 1.6;
+}
+
+a {
+  color: var(--portal-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ─── Card ─── */
+.card {
+  background: var(--portal-surface);
+  border: 1px solid var(--portal-border);
+  border-radius: var(--portal-radius);
+  box-shadow: var(--portal-shadow);
+  padding: 1.25rem;
+}
+
+.card h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--portal-text-muted);
+  margin-bottom: 0.75rem;
+}
+
+/* ─── Buttons ─── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: var(--portal-radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+.btn-primary {
+  background: var(--portal-primary);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--portal-primary-hover);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--portal-border);
+  color: var(--portal-text);
+}
+
+.btn-outline:hover {
+  background: var(--portal-bg);
+}
+
+/* ─── Badge ─── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge-ehr {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.badge-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge-skeleton {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+/* ─── Layout helpers ─── */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+/* ─── Login page ─── */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-box {
+  background: var(--portal-surface);
+  border: 1px solid var(--portal-border);
+  border-radius: var(--portal-radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+.login-box h1 {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.login-box p {
+  color: var(--portal-text-muted);
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--portal-border);
+  border-radius: var(--portal-radius);
+  font-size: 0.875rem;
+}
+
+.form-group input:focus {
+  outline: 2px solid var(--portal-primary);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+.sandbox-hint {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: var(--portal-radius);
+  font-size: 0.75rem;
+  color: #92400e;
+}
+
+/* ─── Empty state ─── */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--portal-text-muted);
+}
+
+.empty-state h3 {
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+  color: var(--portal-text);
+}
+
+.empty-state p {
+  font-size: 0.875rem;
+  max-width: 360px;
+  margin: 0 auto;
+}
