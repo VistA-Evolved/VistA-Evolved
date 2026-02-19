@@ -48,17 +48,12 @@ export default function (data) {
   // RPC broker path even if VistA rejects the payload.
   group("add-allergy", function () {
     const payload = {
-      patientDfn: "100",
-      allergyName: "PENICILLIN",
-      allergyIen: "1;GMRD(120.82,",
-      severityCode: "3",
-      natureName: "DRUG",
-      reactions: ["ITCHING,WATERING EYES"],
-      comments: "k6 smoke test allergy - can be deleted",
+      dfn: "3",
+      allergyText: "PENICILLIN",
     };
 
     const res = http.post(
-      `${BASE_URL}/vista/patient/100/allergies`,
+      `${BASE_URL}/vista/allergies`,
       JSON.stringify(payload),
       { headers: { "Content-Type": "application/json" } }
     );

@@ -72,7 +72,7 @@ interface AuthRule {
  * Routes are matched top-to-bottom; first match wins.
  */
 const AUTH_RULES: AuthRule[] = [
-  { pattern: /^\/(health|ready|vista\/ping|metrics|version)$/, auth: "none" },
+  { pattern: /^\/(health|ready|vista\/ping|metrics(\/prometheus)?|version)$/, auth: "none" },
   { pattern: /^\/auth\//, auth: "none" },
   { pattern: /^\/imaging\/ingest\/callback$/, auth: "service" }, // Phase 23: Orthanc webhook (X-Service-Key)
   { pattern: /^\/imaging\/health$/, auth: "session" }, // Phase 24: imaging health check

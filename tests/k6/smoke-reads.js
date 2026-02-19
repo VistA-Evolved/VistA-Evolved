@@ -41,15 +41,15 @@ export function setup() {
 }
 
 export default function (data) {
-  // 1. Patient Search
+  // 1. Patient Search (query param: ?q=<search>)
   group("patient-search", function () {
-    const res = http.get(`${BASE_URL}/vista/patient-search?term=ZZ`);
+    const res = http.get(`${BASE_URL}/vista/patient-search?q=ZZ`);
     check(res, {
       "patient-search 200": (r) => r.status === 200,
       "patient-search ok": (r) => r.json("ok") === true,
-      "patient-search has patients": (r) => {
-        const patients = r.json("patients");
-        return Array.isArray(patients);
+      "patient-search has results": (r) => {
+        const results = r.json("results");
+        return Array.isArray(results);
       },
     });
   });
@@ -63,27 +63,30 @@ export default function (data) {
     });
   });
 
-  // 3. Patient Demographics (use DFN 100 -- ZZ PATIENT in sandbox)
+  // 3. Patient Demographics (query param: ?dfn=3 -- ZZ PATIENT,TEST THREE)
   group("demographics", function () {
-    const res = http.get(`${BASE_URL}/vista/patient/100/demographics`);
+    const res = http.get(`${BASE_URL}/vista/patient-demographics?dfn=3`);
     check(res, {
-      "demographics 200 or 404": (r) => r.status === 200 || r.status === 404,
+      "demographics 200": (r) => r.status === 200,
+      "demographics ok": (r) => r.json("ok") === true,
     });
   });
 
-  // 4. Allergies
+  // 4. Allergies (query param: ?dfn=3)
   group("allergies", function () {
-    const res = http.get(`${BASE_URL}/vista/patient/100/allergies`);
+    const res = http.get(`${BASE_URL}/vista/allergies?dfn=3`);
     check(res, {
-      "allergies 200 or 404": (r) => r.status === 200 || r.status === 404,
+      "allergies 200": (r) => r.status === 200,
+      "allergies ok": (r) => r.json("ok") === true,
     });
   });
 
-  // 5. Vitals
+  // 5. Vitals (query param: ?dfn=3)
   group("vitals", function () {
-    const res = http.get(`${BASE_URL}/vista/patient/100/vitals`);
+    const res = http.get(`${BASE_URL}/vista/vitals?dfn=3`);
     check(res, {
-      "vitals 200 or 404": (r) => r.status === 200 || r.status === 404,
+      "vitals 200": (r) => r.status === 200,
+      "vitals ok": (r) => r.json("ok") === true,
     });
   });
 

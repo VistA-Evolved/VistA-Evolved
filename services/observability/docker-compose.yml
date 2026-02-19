@@ -17,11 +17,9 @@ services:
       jaeger:
         condition: service_started
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:13133/"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+    # NOTE: No Docker healthcheck -- the contrib image is distroless (no wget/curl).
+    # The collector has its own health_check extension on :13133 that can be
+    # probed externally: curl http://localhost:13133/
 
   # --- Jaeger v2 (all-in-one) ---
   jaeger:
@@ -39,6 +37,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 10s
 
   # --- Prometheus ---
   prometheus:
@@ -55,7 +54,7 @@ services:
       - "9090:9090"   # Prometheus UI + API
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:9090/-/healthy"]
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:9090/-/healthy || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 3

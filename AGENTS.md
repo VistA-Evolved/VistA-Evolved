@@ -427,6 +427,21 @@ most recent phase verifier and reports PASS/FAIL for each gate.
 73. **k6 smoke tests require the API + VistA Docker to be running.** They
     are NOT unit tests. The write test (`smoke-write.js`) is expected to
     partially fail on the sandbox due to VistA data constraints.
+74. **OTel Collector contrib image is distroless -- no shell tools at all.**
+    Docker healthchecks using `wget`, `curl`, or any binary will fail. The
+    collector has its own internal `health_check` extension on `:13133`.
+    Probe it externally; do not add a Docker healthcheck. See BUG-057.
+75. **ESM projects must use `--import` for OTel auto-instrumentation.**
+    With `"type": "module"`, ESM hoists all imports before execution, so
+    `initTracing()` runs too late. Use `tsx --import ./src/telemetry/register.ts`
+    to register the OTel SDK before any module loads. The inline `initTracing()`
+    fallback only works in CJS. See BUG-059.
+76. **`/metrics/prometheus` must be in AUTH_RULES bypass list.** Prometheus
+    scraper has no session cookie. The regex must match both `/metrics` and
+    `/metrics/prometheus`. See BUG-058.
+77. **API routes use query params, not path params.** Routes are
+    `/vista/allergies?dfn=3`, NOT `/vista/patient/3/allergies`. k6 tests and
+    any external integrations must use query-param style. See BUG-060.
 
 ---
 
@@ -579,7 +594,7 @@ docs/runbooks/
 A comprehensive log of every bug, challenge, and fix from Phase 1 through
 Phase 25 lives in **[`docs/BUG-TRACKER.md`](docs/BUG-TRACKER.md)**.
 
-It covers 54 bugs with:
+It covers 58 bugs with:
 - What was attempted
 - The exact error or symptom
 - Root cause analysis

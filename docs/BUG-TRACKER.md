@@ -1,10 +1,10 @@
-# Bug Tracker & Lessons Learned — VistA-Evolved (Phase 1 → Phase 27)
+# Bug Tracker & Lessons Learned — VistA-Evolved (Phase 1 → Phase 36)
 
 > **Purpose**: A single-source log of every significant bug, challenge, and
-> hard-won fix from the project's inception through Phase 27. Share this with
+> hard-won fix from the project's inception through Phase 36. Share this with
 > new developers and AI agents so they don't repeat the same mistakes.
 >
-> **Last updated**: 2025-07-16 (Phase 27 VERIFY — 2 new bugs found and fixed)
+> **Last updated**: 2026-02-19 (Phase 36 VERIFY — 5 new bugs found and fixed)
 
 ---
 
@@ -28,6 +28,7 @@
 16. [Phase 21 — VistA HL7/HLO Interop Telemetry](#phase-21--vista-hl7hlo-interop-telemetry)
 17. [Phase 24 — Imaging Enterprise Hardening](#phase-24--imaging-enterprise-hardening)
 18. [Phase 27 — Portal Core VERIFY](#phase-27--portal-core-verify)
+19. [Phase 36 — Production Observability VERIFY](#phase-36--production-observability-verify)
 19. [Cross-Cutting Lessons](#cross-cutting-lessons)
 
 ---
@@ -815,3 +816,94 @@ Phase 21 interop routes do NOT currently use this pattern (known debt).
 | Host can't connect to ROcto in Docker | BUG-051 | Custom `octo.conf` with `address = "0.0.0.0"`, mount via volume |
 | Em-dash in PS1 breaks PS 5.1 parser | BUG-055 | Use ASCII hyphens only in .ps1 files |
 | `Test-Path` treats `[token]` as wildcard | BUG-056 | Use `Test-Path -LiteralPath` for bracket dirs |
+
+---
+
+## Phase 36 — Production Observability VERIFY
+
+### BUG-057: OTel Collector Docker healthcheck fails on distroless image
+
+**Symptom**: `ve-otel-collector` reported `unhealthy` in Docker despite running fine.
+
+**Root Cause**: The `otel/opentelemetry-collector-contrib:0.96.0` image is fully
+distroless -- no `wget`, `curl`, `ls`, `sh`, or any shell tools. Docker healthcheck
+commands using `wget` or `curl` always fail because the binaries don't exist.
+
+**Fix**: Removed Docker healthcheck entirely from the collector service definition.
+The collector has its own internal `health_check` extension on `:13133` that can be
+probed externally (`curl http://localhost:13133/`).
+
+**File**: `services/observability/docker-compose.yml`
+
+---
+
+### BUG-058: /metrics/prometheus returns 401 to Prometheus scraper
+
+**Symptom**: Prometheus scraper received 401 Unauthorized from the API.
+
+**Root Cause**: The AUTH_RULES regex `^\/(health|ready|vista\/ping|metrics|version)$`
+used a `$` anchor that only matched `/metrics` exactly, not `/metrics/prometheus`.
+
+**Fix**: Changed regex to `metrics(\/prometheus)?` to allow both paths unauthenticated.
+
+**File**: `apps/api/src/middleware/security.ts`
+
+---
+
+### BUG-059: OTel auto-instrumentation fails with ESM (--import required)
+
+**Symptom**: `vista-evolved-api` service never appeared in Jaeger. API structured
+logs had no `traceId`/`spanId` fields. No traces were exported.
+
+**Root Cause**: With `"type": "module"` in package.json, ESM hoists all `import`
+statements before any executable code runs. By the time `initTracing()` executed
+in index.ts, the `http`, `net`, and Fastify modules were already loaded. OTel
+auto-instrumentation works by patching `require`/`import` hooks, which must
+register BEFORE those modules are loaded.
+
+**Fix**: Created `apps/api/src/telemetry/register.ts` -- a standalone OTel
+bootstrap file loaded via Node.js `--import` flag before any application code:
+```
+tsx --import ./src/telemetry/register.ts --env-file=.env.local src/index.ts
+```
+Updated `package.json` scripts. The `tracing.ts` module now detects if the SDK
+was already started via `globalThis.__otelSdk` and skips re-initialization.
+
+**Prevention**: Any ESM project (`"type": "module"`) that uses OTel auto-instrumentation
+must use `--import` (Node >= 18.19) or `--require` (CJS fallback) to load the SDK
+before application code. Inline `initTracing()` calls are unreliable in ESM.
+
+**Files**: `apps/api/src/telemetry/register.ts` (new), `apps/api/src/telemetry/tracing.ts`,
+`apps/api/package.json`
+
+---
+
+### BUG-060: k6 smoke tests use wrong API URL patterns
+
+**Symptom**: `smoke-reads.js` requests to `/vista/patient/100/demographics` returned
+404. `smoke-write.js` POST to `/vista/patient/100/allergies` also returned 404.
+
+**Root Cause**: Tests were written with RESTful path-param conventions
+(`/vista/patient/:dfn/...`) but the actual API uses query-param routes
+(`/vista/patient-demographics?dfn=3`, `/vista/allergies?dfn=3`).
+
+**Fix**: Updated both files to use correct query-param URLs and DFN=3
+(a known test patient `ZZ PATIENT,TEST THREE` in the WorldVistA sandbox).
+
+**Files**: `tests/k6/smoke-reads.js`, `tests/k6/smoke-write.js`
+
+---
+
+### BUG-061: Phase 36 verifier tsc check runs from wrong directory
+
+**Symptom**: Gate "TypeScript compiles cleanly" reported FAIL with "0 errors".
+
+**Root Cause**: Verifier ran `npx tsc --noEmit --project apps/api/tsconfig.json`
+from the repo root, but TypeScript is only installed in `apps/api/node_modules`.
+The root-level `npx` couldn't find `tsc` and returned exit code 1 with a message
+"This is not the tsc command you are looking for".
+
+**Fix**: Changed verifier to `Push-Location "$root\apps\api"` before running
+`npx tsc --noEmit` and `Pop-Location` after.
+
+**File**: `scripts/verify-phase1-to-phase36.ps1`

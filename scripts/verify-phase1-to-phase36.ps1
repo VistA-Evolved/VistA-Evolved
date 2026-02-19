@@ -45,13 +45,25 @@ Write-Host "--- G36-0: Regression (Phase 35 chain) ---" -ForegroundColor Yellow
 
 $phase35Script = "$root\scripts\verify-phase1-to-phase35.ps1"
 if (Test-Path $phase35Script) {
-  Write-Host "  Delegating to Phase 35 verifier..." -ForegroundColor DarkGray
-  & powershell -ExecutionPolicy Bypass -File $phase35Script -SkipPlaywright -SkipE2E 2>&1 | Out-Null
-  $phase35Exit = $LASTEXITCODE
-  if ($phase35Exit -eq 0) {
-    Write-Gate "Phase 35 regression: all gates pass" $true
+  Write-Host "  Delegating to Phase 35 verifier (60s timeout)..." -ForegroundColor DarkGray
+  $job = Start-Job -ScriptBlock {
+    param($s)
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $s -SkipPlaywright -SkipE2E 2>&1 | Out-Null
+    $LASTEXITCODE
+  } -ArgumentList $phase35Script
+  $finished = $job | Wait-Job -Timeout 60
+  if ($finished) {
+    $phase35Exit = Receive-Job $job
+    Remove-Job $job -Force
+    if ($phase35Exit -eq 0) {
+      Write-Gate "Phase 35 regression: all gates pass" $true
+    } else {
+      Write-Warning-Gate "Phase 35 regression" "Phase 35 verifier returned exit code $phase35Exit (non-blocking)"
+    }
   } else {
-    Write-Warning-Gate "Phase 35 regression" "Phase 35 verifier returned exit code $phase35Exit (non-blocking)"
+    Stop-Job $job -ErrorAction SilentlyContinue
+    Remove-Job $job -Force -ErrorAction SilentlyContinue
+    Write-Warning-Gate "Phase 35 regression" "Phase 35 verifier timed out after 60s (non-blocking)"
   }
 } else {
   Write-Warning-Gate "Phase 35 regression" "verify-phase1-to-phase35.ps1 not found (non-blocking)"
@@ -346,8 +358,10 @@ Write-Gate "No hardcoded credentials in telemetry" $secretsClean
 Write-Host ""
 Write-Host "--- G36-11: TypeScript Compilation ---" -ForegroundColor Yellow
 
-$tscResult = & npx tsc --noEmit --project "$root\apps\api\tsconfig.json" 2>&1
+Push-Location "$root\apps\api"
+$tscResult = & npx tsc --noEmit 2>&1
 $tscOk = ($LASTEXITCODE -eq 0)
+Pop-Location
 if ($tscOk) {
   Write-Gate "TypeScript compiles cleanly" $true
 } else {

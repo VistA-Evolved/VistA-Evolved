@@ -1,0 +1,31 @@
+{
+  "featureTitle": "Phase 36 VERIFY -- Production Observability & Reliability",
+  "stage": "verified",
+  "status": "complete",
+  "promptRef": "prompts/38-PHASE-36-OBSERVABILITY-RELIABILITY/38-99-observability-reliability-VERIFY.md",
+  "runbookPath": "docs/runbooks/phase36-observability-reliability.md",
+  "verifyScript": "scripts/verify-phase1-to-phase36.ps1",
+  "verifyResult": "105 PASS / 0 FAIL / 1 WARN",
+  "bugsFound": ["BUG-057", "BUG-058", "BUG-059", "BUG-060", "BUG-061"],
+  "bugsFixed": ["BUG-057", "BUG-058", "BUG-059", "BUG-060", "BUG-061"],
+  "keyFindings": [
+    "OTel Collector distroless image has no shell tools -- cannot use Docker healthchecks",
+    "/metrics/prometheus needs explicit auth bypass for Prometheus scraper",
+    "ESM projects require --import flag for OTel auto-instrumentation",
+    "k6 smoke tests had wrong URL patterns (path params vs query params)",
+    "Verifier tsc check fails when run from repo root (TypeScript in apps/api only)"
+  ],
+  "filesChanged": [
+    "apps/api/src/telemetry/register.ts",
+    "apps/api/src/telemetry/tracing.ts",
+    "apps/api/package.json",
+    "apps/api/src/middleware/security.ts",
+    "services/observability/docker-compose.yml",
+    "tests/k6/smoke-reads.js",
+    "tests/k6/smoke-write.js",
+    "scripts/verify-phase1-to-phase36.ps1",
+    "docs/BUG-TRACKER.md",
+    "AGENTS.md",
+    "ops/phase36-verify-report.md"
+  ]
+}

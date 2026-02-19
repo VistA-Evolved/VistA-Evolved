@@ -33,15 +33,21 @@ const SERVICE_VERSION = process.env.BUILD_SHA || "dev";
 /* SDK Instance                                                        */
 /* ------------------------------------------------------------------ */
 
-let sdk: NodeSDK | null = null;
+/**
+ * SDK reference — set either by register.ts (via --import, preferred for ESM)
+ * or by initTracing() fallback (for backward compat / CJS).
+ */
+let sdk: NodeSDK | null = (globalThis as any).__otelSdk ?? null;
 
 /**
- * Initialize OTel SDK. Call once at startup, before creating Fastify.
- * No-op if OTEL_ENABLED !== "true".
+ * Initialize OTel SDK. No-op if already registered via --import register.ts
+ * (the preferred ESM path). Falls back to inline registration for CJS.
  */
 export function initTracing(): void {
   if (!OTEL_ENABLED) return;
+  if (sdk) return; // Already started by register.ts
 
+  // Fallback: inline registration (works in CJS, NOT reliable in ESM)
   const resource = resourceFromAttributes({
     [ATTR_SERVICE_NAME]: SERVICE_NAME,
     [ATTR_SERVICE_VERSION]: SERVICE_VERSION,
@@ -64,20 +70,12 @@ export function initTracing(): void {
     }),
     instrumentations: [
       getNodeAutoInstrumentations({
-        // Disable fs instrumentation (noisy, no value)
         "@opentelemetry/instrumentation-fs": { enabled: false },
-        // Disable DNS instrumentation (noisy)
         "@opentelemetry/instrumentation-dns": { enabled: false },
-        // HTTP: capture safe headers only
         "@opentelemetry/instrumentation-http": {
           enabled: true,
-          // Never capture request/response bodies (PHI risk)
-          requestHook: (_span: Span, _request: any) => {
-            // intentionally empty -- don't add body attributes
-          },
-          responseHook: (_span: Span, _response: any) => {
-            // intentionally empty -- don't add body attributes
-          },
+          requestHook: (_span: Span, _request: any) => {},
+          responseHook: (_span: Span, _response: any) => {},
         },
         "@opentelemetry/instrumentation-net": { enabled: true },
       }),
