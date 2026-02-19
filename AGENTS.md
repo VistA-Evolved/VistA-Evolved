@@ -442,6 +442,30 @@ most recent phase verifier and reports PASS/FAIL for each gate.
 77. **API routes use query params, not path params.** Routes are
     `/vista/allergies?dfn=3`, NOT `/vista/patient/3/allergies`. k6 tests and
     any external integrations must use query-param style. See BUG-060.
+78. **`DEPLOY_SKU` env var controls which modules are enabled (Phase 37C).**
+    Default is `FULL_SUITE` (all 12 modules). Set to `CLINICIAN_ONLY`,
+    `PORTAL_ONLY`, `TELEHEALTH_ONLY`, `RCM_ONLY`, `IMAGING_ONLY`, or
+    `INTEROP_ONLY` to restrict routes. The module guard middleware returns
+    403 for routes belonging to disabled modules.
+79. **`ADAPTER_<TYPE>` env vars select VistA vs stub adapters (Phase 37C).**
+    Five adapter types: `ADAPTER_CLINICAL_ENGINE`, `ADAPTER_SCHEDULING`,
+    `ADAPTER_BILLING`, `ADAPTER_IMAGING`, `ADAPTER_MESSAGING`. Value is
+    `vista` (default) or `stub`. Stub adapters return `{ok:false, pending:true}`
+    for all operations. If VistA adapter fails to load, it auto-falls back to stub.
+80. **Module IDs are system-level, not tab-level (Phase 37C).** The new
+    `module-registry.ts` uses 12 system modules (kernel, clinical, portal,
+    telehealth, imaging, analytics, interop, intake, ai, iam, rcm, scheduling).
+    The existing `tenant-config.ts` `ModuleId` type uses tab slugs (cover,
+    problems, meds, etc.) for fine-grained UI control within the clinical module.
+    These coexist at different granularity levels.
+81. **Capability resolution is tenant-scoped (Phase 37C).** The capability
+    service resolves effective status per tenant: disabled module → disabled,
+    stub adapter → pending, otherwise → configured status. Call
+    `resolveCapabilities(tenantId)` or hit `GET /api/capabilities`.
+82. **Per-tenant module overrides via `POST /api/modules/override` (Phase 37C).**
+    Admin-only. Pass `{tenantId, modules: [...]}` to override the SKU defaults
+    for a specific tenant. Pass `{tenantId, modules: null}` to clear overrides.
+    Dependency validation prevents enabling modules without their prerequisites.
 
 ---
 
@@ -585,6 +609,38 @@ tests/k6/
 
 docs/runbooks/
   phase36-observability-reliability.md — Observability runbook (Phase 36)
+```
+
+## 7f. Architecture Quick Map (Phase 37C additions)
+
+```
+config/
+  modules.json              — 12 module definitions (route patterns, deps, adapters) (Phase 37C)
+  skus.json                 — 7 SKU deploy profiles (Phase 37C)
+  capabilities.json         — 50+ capability definitions (status, module, adapter, RPC) (Phase 37C)
+
+apps/api/src/
+  modules/
+    module-registry.ts      — Module loader, SKU resolution, route guard (Phase 37C)
+    capability-service.ts   — Capability resolution (live/pending/disabled per tenant) (Phase 37C)
+  adapters/
+    types.ts                — BaseAdapter, AdapterResult<T>, clinical record types (Phase 37C)
+    adapter-loader.ts       — Central adapter registry, env-var selection, health (Phase 37C)
+    clinical-engine/        — ClinicalEngineAdapter: VistA + stub (Phase 37C)
+    scheduling/             — SchedulingAdapter: VistA + stub (Phase 37C)
+    billing/                — BillingAdapter: VistA + stub (Phase 37C)
+    imaging/                — ImagingAdapter: VistA + stub (Phase 37C)
+    messaging/              — MessagingAdapter: VistA + stub (Phase 37C)
+  middleware/
+    module-guard.ts         — Fastify onRequest hook for module toggle enforcement (Phase 37C)
+  routes/
+    module-capability-routes.ts — /api/modules/*, /api/capabilities/*, /api/adapters/* (Phase 37C)
+
+docs/architecture/
+  product-modularity-v1.md  — Full architecture specification (Phase 37C)
+
+scripts/
+  verify-phase37c-modularity.ps1 — Phase 37C verifier (65 gates) (Phase 37C)
 ```
 
 ---

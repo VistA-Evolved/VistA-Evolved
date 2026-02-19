@@ -1,0 +1,43 @@
+{
+  "feature": "Phase 37C -- Product Modularity (SKUs, Capability Registry, Adapters, Module Toggles)",
+  "stage": "Phase 37C",
+  "status": "Verified",
+  "promptRef": "prompts/41-PHASE-37C-PRODUCT-MODULARITY/IMPLEMENT.md",
+  "runbookPath": "docs/architecture/product-modularity-v1.md",
+  "verifyScript": "scripts/verify-phase37c-modularity.ps1",
+  "verifyResult": "PASS=65, FAIL=0, WARN=0",
+  "liveVerify": "7/7 gates PASS (G37C-0 through G37C-6)",
+  "verifyReport": "docs/verify/phase37c-verify-report.md",
+  "commitSha": "pending",
+  "artifacts": {
+    "configManifests": [
+      "config/modules.json",
+      "config/skus.json",
+      "config/capabilities.json"
+    ],
+    "moduleRegistry": "apps/api/src/modules/module-registry.ts",
+    "capabilityService": "apps/api/src/modules/capability-service.ts",
+    "adapterLoader": "apps/api/src/adapters/adapter-loader.ts",
+    "adapterTypes": [
+      "clinical-engine",
+      "scheduling",
+      "billing",
+      "imaging",
+      "messaging"
+    ],
+    "moduleGuard": "apps/api/src/middleware/module-guard.ts",
+    "apiRoutes": "apps/api/src/routes/module-capability-routes.ts",
+    "architectureDoc": "docs/architecture/product-modularity-v1.md",
+    "verifierScript": "scripts/verify-phase37c-modularity.ps1"
+  },
+  "highlights": [
+    "12 formal modules with route-pattern-to-module mapping",
+    "7 SKU deploy profiles (FULL_SUITE through single-purpose)",
+    "50+ capabilities with effective status resolution (live/pending/disabled)",
+    "5 adapter types with VistA + stub implementations",
+    "Module guard middleware blocking disabled-module routes",
+    "Env-var driven SKU + adapter selection",
+    "Per-tenant module override support",
+    "cross-referential validation (SKUs -> modules, capabilities -> modules + adapters)"
+  ]
+}

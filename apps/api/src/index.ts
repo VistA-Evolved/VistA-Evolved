@@ -55,6 +55,12 @@ import { getIntegrationHealthSummary } from "./config/integration-registry.js";
 import { startAggregationJob, stopAggregationJob } from "./services/analytics-aggregator.js";
 import { initEtl } from "./services/analytics-etl.js";
 import { initAnalyticsStore } from "./services/analytics-store.js";
+// Phase 37C: Product modularity — module registry, capability service, adapter loader, module guard
+import { initModuleRegistry } from "./modules/module-registry.js";
+import { initCapabilityService } from "./modules/capability-service.js";
+import { initAdapters } from "./adapters/adapter-loader.js";
+import { moduleGuardHook } from "./middleware/module-guard.js";
+import moduleCapabilityRoutes from "./routes/module-capability-routes.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -94,6 +100,12 @@ server.register(websocket);
 
 // Phase 15: Register security middleware (request IDs, headers, rate limiting, error handler)
 await registerSecurityMiddleware(server);
+
+// Phase 37C: Initialize module registry + capability service + adapters + guard
+initModuleRegistry();
+initCapabilityService();
+await initAdapters();
+server.addHook("onRequest", moduleGuardHook);
 
 // Accept empty-body POSTs with any Content-Type (e.g., logout)
 server.addContentTypeParser(
@@ -206,6 +218,9 @@ server.register(aiGatewayRoutes);
 
 // Register IAM routes -- audit, policy, biometric, OIDC (Phase 35)
 server.register(iamRoutes);
+
+// Register module & capability routes -- SKU, adapters, toggles (Phase 37C)
+server.register(moduleCapabilityRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);
@@ -320,6 +335,59 @@ server.get("/vista/ping", async () => {
     return { ok: true, vista: "reachable", port: Number(process.env.VISTA_PORT || 9430) };
   } catch (err: any) {
     return { ok: false, vista: "unreachable", error: err.message, port: Number(process.env.VISTA_PORT || 9430) };
+  }
+});
+
+// Phase 37B: RPC Catalog — list all registered RPCs from File 8994
+// Uses VE LIST RPCS custom RPC (installed via scripts/install-rpc-catalog.ps1)
+// Falls back to empty if RPC not available (sandbox may not have it installed)
+let rpcCatalogCache: { data: any; ts: number } | null = null;
+const RPC_CATALOG_TTL = 60_000; // 60 seconds cache
+
+server.get("/vista/rpc-catalog", async (request, reply) => {
+  const session = requireSession(request, reply);
+  if (!session) return;
+
+  // Return cached if fresh
+  if (rpcCatalogCache && Date.now() - rpcCatalogCache.ts < RPC_CATALOG_TTL) {
+    return rpcCatalogCache.data;
+  }
+
+  try { validateCredentials(); } catch (err: any) {
+    return { ok: false, error: err.message };
+  }
+
+  try {
+    await connect();
+    const lines = await callRpc("VE LIST RPCS", [""]);
+    disconnect();
+
+    // Parse: IEN|NAME|TAG|ROUTINE
+    const catalog = (Array.isArray(lines) ? lines : [lines])
+      .filter((l: string) => l && l.includes("|"))
+      .map((line: string) => {
+        const [ien, name, tag, routine] = line.split("|");
+        return { ien: ien?.trim(), name: name?.trim(), tag: tag?.trim(), routine: routine?.trim(), present: true };
+      })
+      .filter(r => r.name);
+
+    const result = { ok: true, rpc: "VE LIST RPCS", count: catalog.length, catalog };
+    rpcCatalogCache = { data: result, ts: Date.now() };
+    audit("config.rpc-catalog", "success", auditActor(request), { detail: { count: catalog.length } });
+    return result;
+  } catch (err: any) {
+    disconnect();
+    // RPC not installed — return empty catalog with hint
+    if (err.message?.includes("not found") || err.message?.includes("not registered") || err.message?.includes("Application")) {
+      return {
+        ok: true,
+        rpc: "VE LIST RPCS",
+        count: 0,
+        catalog: [],
+        hint: "VE LIST RPCS not installed. Run scripts/install-rpc-catalog.ps1",
+      };
+    }
+    return { ok: false, rpc: "VE LIST RPCS", error: safeErr(err) };
   }
 });
 

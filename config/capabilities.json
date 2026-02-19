@@ -1,0 +1,439 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "description": "VistA-Evolved capability registry — Phase 37C",
+    "generatedAt": "2026-02-20",
+    "statusValues": {
+      "live": "Fully implemented and tested against VistA RPC",
+      "pending": "Not yet implemented — shows integration-pending in UI",
+      "disabled": "Module or adapter not enabled — hidden from UI",
+      "external": "Handled by external system via adapter"
+    }
+  },
+  "capabilities": {
+    "clinical.patient.search": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORWPT LIST ALL",
+      "targetPackage": "OR",
+      "description": "Search patients by name"
+    },
+    "clinical.patient.demographics": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORWPT SELECT",
+      "targetPackage": "OR",
+      "description": "Get patient demographics"
+    },
+    "clinical.patient.defaultList": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQPT DEFAULT PATIENT LIST",
+      "targetPackage": "OR",
+      "description": "Get default patient list for provider"
+    },
+    "clinical.allergies.list": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQQAL LIST",
+      "targetPackage": "OR",
+      "description": "List patient allergies"
+    },
+    "clinical.allergies.add": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORWDAL32 SAVE ALLERGY",
+      "targetPackage": "OR",
+      "description": "Add new allergy to patient record"
+    },
+    "clinical.vitals.list": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQQVI VITALS",
+      "targetPackage": "OR",
+      "description": "List patient vitals"
+    },
+    "clinical.vitals.add": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "GMV ADD VM",
+      "targetPackage": "GMRV",
+      "description": "Add vital measurement"
+    },
+    "clinical.notes.list": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "TIU DOCUMENTS BY CONTEXT",
+      "targetPackage": "TIU",
+      "description": "List clinical notes"
+    },
+    "clinical.notes.create": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "TIU CREATE RECORD",
+      "targetPackage": "TIU",
+      "description": "Create a new clinical note"
+    },
+    "clinical.notes.getText": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "TIU GET RECORD TEXT",
+      "targetPackage": "TIU",
+      "description": "Get note text by IEN"
+    },
+    "clinical.medications.list": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORWPS ACTIVE",
+      "targetPackage": "OR",
+      "description": "List active medications"
+    },
+    "clinical.medications.order": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORWDXM AUTOACK",
+      "targetPackage": "OR",
+      "description": "Quick-order medication"
+    },
+    "clinical.problems.list": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQQPL PROBLEM LIST",
+      "targetPackage": "OR",
+      "description": "List patient problems"
+    },
+    "clinical.problems.add": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQQPL ADD SAVE",
+      "targetPackage": "GMPL",
+      "description": "Add new problem (write-back pending)"
+    },
+    "clinical.icd.search": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQQPL4 LEX",
+      "targetPackage": "OR",
+      "description": "Search ICD codes"
+    },
+    "clinical.consults.list": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQQCN LIST",
+      "targetPackage": "OR",
+      "description": "List consults"
+    },
+    "clinical.consults.detail": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQQCN DETAIL",
+      "targetPackage": "OR",
+      "description": "Get consult detail"
+    },
+    "clinical.surgery.list": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORWSR LIST",
+      "targetPackage": "OR",
+      "description": "List surgical cases"
+    },
+    "clinical.dcSummaries.list": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "TIU DOCUMENTS BY CONTEXT",
+      "targetPackage": "TIU",
+      "description": "List discharge summaries"
+    },
+    "clinical.labs.list": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORWLRR INTERIM",
+      "targetPackage": "OR",
+      "description": "List lab results"
+    },
+    "clinical.reports.list": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORWRP REPORT LISTS",
+      "targetPackage": "OR",
+      "description": "List available reports"
+    },
+    "clinical.reports.text": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORWRP REPORT TEXT",
+      "targetPackage": "OR",
+      "description": "Get report text"
+    },
+    "clinical.orders.sign": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORWDX SEND",
+      "targetPackage": "OR",
+      "description": "Sign orders"
+    },
+    "clinical.orders.create": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORWDX SAVE",
+      "targetPackage": "OR",
+      "description": "Create new order"
+    },
+    "imaging.viewer.open": {
+      "status": "live",
+      "module": "imaging",
+      "adapter": "imaging",
+      "targetRpc": null,
+      "targetPackage": "MAG",
+      "description": "Open OHIF DICOM viewer"
+    },
+    "imaging.studies.list": {
+      "status": "live",
+      "module": "imaging",
+      "adapter": "imaging",
+      "targetRpc": "MAG4 PAT GET IMAGES",
+      "targetPackage": "MAG",
+      "description": "List imaging studies for a patient"
+    },
+    "imaging.worklist.view": {
+      "status": "live",
+      "module": "imaging",
+      "adapter": "imaging",
+      "targetRpc": null,
+      "targetPackage": "RA",
+      "description": "View imaging worklist"
+    },
+    "imaging.order.create": {
+      "status": "pending",
+      "module": "imaging",
+      "adapter": "imaging",
+      "targetRpc": "ORWDXR NEW ORDER",
+      "targetPackage": "RA",
+      "description": "Create imaging order"
+    },
+    "imaging.devices.manage": {
+      "status": "live",
+      "module": "imaging",
+      "adapter": "imaging",
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Manage DICOM AE devices"
+    },
+    "imaging.audit.view": {
+      "status": "live",
+      "module": "imaging",
+      "adapter": "imaging",
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "View imaging audit trail"
+    },
+    "telehealth.room.create": {
+      "status": "live",
+      "module": "telehealth",
+      "adapter": "telehealth",
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Create telehealth room"
+    },
+    "telehealth.room.join": {
+      "status": "live",
+      "module": "telehealth",
+      "adapter": "telehealth",
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Join telehealth session"
+    },
+    "telehealth.device.check": {
+      "status": "live",
+      "module": "telehealth",
+      "adapter": "telehealth",
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Pre-visit device compatibility check"
+    },
+    "portal.health.view": {
+      "status": "live",
+      "module": "portal",
+      "adapter": "clinical-engine",
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "View patient health summary"
+    },
+    "portal.messaging.send": {
+      "status": "live",
+      "module": "portal",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Send secure message"
+    },
+    "portal.appointments.list": {
+      "status": "live",
+      "module": "portal",
+      "adapter": "scheduling",
+      "targetRpc": null,
+      "targetPackage": "SD",
+      "description": "List patient appointments"
+    },
+    "portal.refills.request": {
+      "status": "live",
+      "module": "portal",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": "PSO",
+      "description": "Request medication refill"
+    },
+    "portal.export.pdf": {
+      "status": "live",
+      "module": "portal",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Export health records to PDF"
+    },
+    "portal.sharing.create": {
+      "status": "live",
+      "module": "portal",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Create time-limited share link"
+    },
+    "analytics.dashboard.view": {
+      "status": "live",
+      "module": "analytics",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "View analytics dashboards"
+    },
+    "analytics.export": {
+      "status": "live",
+      "module": "analytics",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Export analytics data"
+    },
+    "interop.hl7.monitor": {
+      "status": "live",
+      "module": "interop",
+      "adapter": "messaging",
+      "targetRpc": "VEMHL LINKS",
+      "targetPackage": "HL",
+      "description": "Monitor HL7 interface links"
+    },
+    "interop.registry.manage": {
+      "status": "live",
+      "module": "interop",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Manage integration registry"
+    },
+    "intake.session.start": {
+      "status": "live",
+      "module": "intake",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Start intake questionnaire session"
+    },
+    "intake.kiosk.mode": {
+      "status": "live",
+      "module": "intake",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Kiosk-mode intake for waiting rooms"
+    },
+    "ai.assist.query": {
+      "status": "live",
+      "module": "ai",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "AI clinical decision support query"
+    },
+    "iam.audit.view": {
+      "status": "live",
+      "module": "iam",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "View IAM immutable audit trail"
+    },
+    "iam.policy.evaluate": {
+      "status": "live",
+      "module": "iam",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Evaluate policy decision"
+    },
+    "rcm.claims.view": {
+      "status": "pending",
+      "module": "rcm",
+      "adapter": "billing",
+      "targetRpc": null,
+      "targetPackage": "IB",
+      "description": "View billing claims"
+    },
+    "rcm.claims.submit": {
+      "status": "pending",
+      "module": "rcm",
+      "adapter": "billing",
+      "targetRpc": null,
+      "targetPackage": "IB",
+      "description": "Submit claim"
+    },
+    "rcm.eligibility.check": {
+      "status": "pending",
+      "module": "rcm",
+      "adapter": "billing",
+      "targetRpc": null,
+      "targetPackage": "IVM",
+      "description": "Check patient eligibility"
+    },
+    "scheduling.appointments.create": {
+      "status": "pending",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SD MAKE APPOINTMENT",
+      "targetPackage": "SD",
+      "description": "Create appointment"
+    },
+    "scheduling.slots.available": {
+      "status": "pending",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": null,
+      "targetPackage": "SD",
+      "description": "Get available appointment slots"
+    }
+  }
+}

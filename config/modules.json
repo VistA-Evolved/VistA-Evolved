@@ -1,0 +1,172 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "description": "VistA-Evolved module definitions — Phase 37C",
+    "generatedAt": "2026-02-20"
+  },
+  "modules": {
+    "kernel": {
+      "name": "Platform Kernel",
+      "description": "Authentication, authorization, audit, observability, tenant config, RPC broker",
+      "alwaysEnabled": true,
+      "routePatterns": [
+        "^/health$",
+        "^/ready$",
+        "^/version$",
+        "^/metrics",
+        "^/auth/",
+        "^/admin/",
+        "^/audit/",
+        "^/ws/",
+        "^/vista/ping$",
+        "^/vista/rpc-catalog$",
+        "^/vista/rpc-capabilities$"
+      ],
+      "dependencies": [],
+      "adapters": [],
+      "services": ["security", "audit", "session-store", "tenant-config", "rpc-broker", "logger", "telemetry"]
+    },
+    "clinical": {
+      "name": "Clinician CPRS Shell",
+      "description": "Patient search, demographics, allergies, vitals, notes, meds, problems, orders, consults, surgery, labs, reports, D/C summaries",
+      "alwaysEnabled": false,
+      "routePatterns": [
+        "^/vista/patient",
+        "^/vista/allergies",
+        "^/vista/vitals",
+        "^/vista/notes",
+        "^/vista/medications",
+        "^/vista/problems",
+        "^/vista/icd-search",
+        "^/vista/consults",
+        "^/vista/surgery",
+        "^/vista/dc-summaries",
+        "^/vista/tiu-text",
+        "^/vista/labs",
+        "^/vista/reports",
+        "^/vista/default-patient-list",
+        "^/vista/meds/",
+        "^/vista/orders/",
+        "^/vista/inbox"
+      ],
+      "dependencies": ["kernel"],
+      "adapters": ["clinical-engine"],
+      "services": ["clinical-reports", "rpc-resilience", "write-backs"]
+    },
+    "portal": {
+      "name": "Patient Portal",
+      "description": "Patient-facing health records, messaging, appointments, refills, exports, sharing",
+      "alwaysEnabled": false,
+      "routePatterns": [
+        "^/portal/"
+      ],
+      "dependencies": ["kernel"],
+      "adapters": ["clinical-engine"],
+      "services": ["portal-messaging", "portal-appointments", "portal-refills", "portal-sharing", "portal-pdf", "portal-shc", "portal-settings", "portal-tasks", "portal-audit", "portal-sensitivity"]
+    },
+    "telehealth": {
+      "name": "Telehealth / Video Visits",
+      "description": "Video visit rooms, waiting room, device checks, Jitsi integration",
+      "alwaysEnabled": false,
+      "routePatterns": [
+        "^/telehealth/"
+      ],
+      "dependencies": ["kernel"],
+      "adapters": ["telehealth"],
+      "services": ["room-store", "device-check"]
+    },
+    "imaging": {
+      "name": "Imaging / PACS",
+      "description": "DICOMweb proxy, OHIF viewer, worklist, ingest pipeline, device registry, break-glass",
+      "alwaysEnabled": false,
+      "routePatterns": [
+        "^/imaging/",
+        "^/vista/imaging/",
+        "^/security/break-glass/"
+      ],
+      "dependencies": ["kernel"],
+      "adapters": ["imaging"],
+      "services": ["imaging-worklist", "imaging-ingest", "imaging-authz", "imaging-audit", "imaging-devices", "imaging-service"]
+    },
+    "analytics": {
+      "name": "Analytics & Reports",
+      "description": "Operational analytics, clinical reports, ETL to ROcto, BI dashboards",
+      "alwaysEnabled": false,
+      "routePatterns": [
+        "^/analytics/",
+        "^/reports/"
+      ],
+      "dependencies": ["kernel"],
+      "adapters": [],
+      "services": ["analytics-store", "analytics-aggregator", "analytics-etl", "clinical-reports"]
+    },
+    "interop": {
+      "name": "Interop / HL7 / HLO",
+      "description": "HL7 interface telemetry, message monitoring, integration registry",
+      "alwaysEnabled": false,
+      "routePatterns": [
+        "^/vista/interop/",
+        "^/admin/registry/"
+      ],
+      "dependencies": ["kernel"],
+      "adapters": ["messaging"],
+      "services": ["integration-registry"]
+    },
+    "intake": {
+      "name": "Intake OS / Questionnaires",
+      "description": "Patient intake forms, questionnaire packs, kiosk mode, VistA filing",
+      "alwaysEnabled": false,
+      "routePatterns": [
+        "^/intake/",
+        "^/kiosk/"
+      ],
+      "dependencies": ["kernel"],
+      "adapters": [],
+      "services": ["intake-store", "pack-registry", "summary-provider"]
+    },
+    "ai": {
+      "name": "AI Gateway",
+      "description": "Clinical decision support, RAG engine, prompt registry, safety layer",
+      "alwaysEnabled": false,
+      "routePatterns": [
+        "^/ai/"
+      ],
+      "dependencies": ["kernel"],
+      "adapters": [],
+      "services": ["ai-gateway", "model-registry", "prompt-registry", "rag-engine", "safety-layer", "ai-audit"]
+    },
+    "iam": {
+      "name": "IAM / OIDC / Biometrics",
+      "description": "OIDC integration, biometric auth, policy engine, immutable audit",
+      "alwaysEnabled": false,
+      "routePatterns": [
+        "^/iam/"
+      ],
+      "dependencies": ["kernel"],
+      "adapters": [],
+      "services": ["oidc-provider", "jwt-validator", "biometric-providers", "immutable-audit"]
+    },
+    "rcm": {
+      "name": "Revenue Cycle Management",
+      "description": "Claims, billing, eligibility, EOB (future — adapter-ready)",
+      "alwaysEnabled": false,
+      "routePatterns": [
+        "^/rcm/"
+      ],
+      "dependencies": ["kernel", "clinical"],
+      "adapters": ["billing"],
+      "services": []
+    },
+    "scheduling": {
+      "name": "Scheduling",
+      "description": "Appointment scheduling, slot availability (future — adapter-ready)",
+      "alwaysEnabled": false,
+      "routePatterns": [
+        "^/scheduling/"
+      ],
+      "dependencies": ["kernel"],
+      "adapters": ["scheduling"],
+      "services": []
+    }
+  }
+}

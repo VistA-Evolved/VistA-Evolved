@@ -1,0 +1,44 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "description": "VistA-Evolved SKU deploy profiles — Phase 37C",
+    "generatedAt": "2026-02-20"
+  },
+  "skus": {
+    "FULL_SUITE": {
+      "name": "Full Suite",
+      "description": "All modules enabled — VA Medical Centers, large health systems",
+      "modules": ["kernel", "clinical", "portal", "telehealth", "imaging", "analytics", "interop", "intake", "ai", "iam", "rcm", "scheduling"]
+    },
+    "CLINICIAN_ONLY": {
+      "name": "Clinician CPRS",
+      "description": "Core clinical workflow only — small clinics, specialty practices",
+      "modules": ["kernel", "clinical", "analytics"]
+    },
+    "PORTAL_ONLY": {
+      "name": "Patient Portal",
+      "description": "Patient engagement portal — patient engagement companies",
+      "modules": ["kernel", "portal", "intake"]
+    },
+    "TELEHEALTH_ONLY": {
+      "name": "Telehealth",
+      "description": "Video visits and portal — rural health, telehealth startups",
+      "modules": ["kernel", "telehealth", "portal"]
+    },
+    "RCM_ONLY": {
+      "name": "Revenue Cycle",
+      "description": "Revenue cycle management — billing companies",
+      "modules": ["kernel", "clinical", "rcm", "analytics"]
+    },
+    "IMAGING_ONLY": {
+      "name": "Imaging / PACS",
+      "description": "Imaging workflow — radiology groups, imaging centers",
+      "modules": ["kernel", "clinical", "imaging"]
+    },
+    "INTEROP_ONLY": {
+      "name": "Interop Hub",
+      "description": "HL7/FHIR interop gateway — HIE organizations",
+      "modules": ["kernel", "interop", "analytics"]
+    }
+  }
+}
