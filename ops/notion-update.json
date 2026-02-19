@@ -1,9 +1,9 @@
 {
-    "commitSHA":  "pending",
-    "stage":  "implemented",
-    "verifyScript":  "scripts/verify-phase1-to-phase36.ps1",
-    "runbook":  "docs/runbooks/phase36-observability-reliability.md",
-    "promptRef":  "prompts/38-PHASE-36-OBSERVABILITY-RELIABILITY/",
-    "status":  "verified",
-    "feature":  "Phase 36 -- Production Observability \u0026 Reliability"
+    "commitSHA": "pending",
+    "stage": "implemented",
+    "verifyScript": "npx playwright test (apps/web) + npx vitest run (apps/api)",
+    "runbook": "docs/runbooks/phase37-quality-harness.md",
+    "promptRef": "prompts/39-PHASE-37-QUALITY-HARDENING/39-01-quality-hardening-IMPLEMENT.md",
+    "status": "verified",
+    "feature": "Phase 37 -- Release Candidate Hardening: Bug Bash Automation"
 }
