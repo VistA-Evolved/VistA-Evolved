@@ -1,0 +1,54 @@
+{
+  "roles": {
+    "provider": {
+      "description": "Clinical provider",
+      "allowed_actions": ["clinical.*", "phi.*", "imaging.view", "imaging.order"],
+      "denied_actions": ["admin.*", "system.config"]
+    },
+    "nurse": {
+      "description": "Nurse",
+      "allowed_actions": [
+        "clinical.vitals-add", "clinical.note-create",
+        "phi.*"
+      ],
+      "denied_actions": ["clinical.medication-add", "clinical.order-sign", "admin.*"]
+    },
+    "pharmacist": {
+      "description": "Pharmacist",
+      "allowed_actions": ["clinical.medication-add", "phi.*"],
+      "denied_actions": ["clinical.order-sign", "admin.*"]
+    },
+    "clerk": {
+      "description": "Clerk - read only",
+      "allowed_actions": ["phi.patient-search", "phi.patient-list", "phi.demographics-view"],
+      "denied_actions": ["clinical.*", "admin.*", "imaging.*"]
+    },
+    "admin": {
+      "description": "System administrator",
+      "allowed_actions": ["*"],
+      "denied_actions": []
+    },
+    "patient": {
+      "description": "Patient portal user",
+      "allowed_actions": ["portal.*"],
+      "denied_actions": ["clinical.*", "admin.*", "phi.*"]
+    },
+    "support": {
+      "description": "Support staff",
+      "allowed_actions": ["audit.view", "audit.query", "system.health", "system.metrics"],
+      "denied_actions": ["clinical.*", "phi.*", "admin.config"]
+    }
+  },
+  "environments": {
+    "development": {
+      "allow_break_glass": true,
+      "audit_level": "verbose",
+      "max_session_ttl_hours": 8
+    },
+    "production": {
+      "allow_break_glass": true,
+      "audit_level": "standard",
+      "max_session_ttl_hours": 4
+    }
+  }
+}

@@ -76,14 +76,14 @@ export interface DataCacheValue {
   addLocalItem: <K extends keyof ClinicalData>(dfn: string, domain: K, item: ClinicalData[K][number]) => void;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 /* ------------------------------------------------------------------ */
 /* Fetch helpers                                                       */
 /* ------------------------------------------------------------------ */
 
 async function fetchJSON<T>(path: string): Promise<T> {
-  const res = await fetch(`${API_BASE}${path}`);
+  const res = await fetch(`${API_BASE}${path}`, { credentials: 'include' });
   if (!res.ok) throw new Error(`API ${res.status}`);
   return res.json();
 }
@@ -249,6 +249,7 @@ export function DataCacheProvider({ children }: { children: ReactNode }) {
       const res = await fetch(`${API_BASE}/vista/orders/sign`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ dfn, orderId, signedBy }),
       });
       const data = await res.json();
@@ -272,6 +273,7 @@ export function DataCacheProvider({ children }: { children: ReactNode }) {
       const res = await fetch(`${API_BASE}/vista/orders/release`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ dfn, orderId }),
       });
       const data = await res.json();
@@ -286,6 +288,7 @@ export function DataCacheProvider({ children }: { children: ReactNode }) {
       const res = await fetch(`${API_BASE}/vista/labs/ack`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ dfn, labIds, acknowledgedBy }),
       });
       const data = await res.json();
@@ -299,7 +302,7 @@ export function DataCacheProvider({ children }: { children: ReactNode }) {
 
   const fetchCapabilities = useCallback(async () => {
     try {
-      const res = await fetch(`${API_BASE}/vista/rpc-capabilities`);
+      const res = await fetch(`${API_BASE}/vista/rpc-capabilities`, { credentials: 'include' });
       const data = await res.json();
       if (data.ok && data.rpcs) {
         const caps: Record<string, { available: boolean }> = {};

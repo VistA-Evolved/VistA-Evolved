@@ -5,7 +5,7 @@ import { useCPRSUI } from '../../../stores/cprs-ui-state';
 import { useDataCache } from '../../../stores/data-cache';
 import styles from '../cprs.module.css';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 /**
  * Edit Problem dialog — allows modifying status and notes on an existing problem.
@@ -33,6 +33,7 @@ export default function EditProblemDialog() {
       const res = await fetch(`${API_BASE}/vista/problems?dfn=${dfn}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ dfn, text: problem.description, status, note, icdCode: problem.icdCode }),
       });
       const data = await res.json();

@@ -5,7 +5,7 @@ import { useCPRSUI } from '../../../stores/cprs-ui-state';
 import { useDataCache, type Problem } from '../../../stores/data-cache';
 import styles from '../cprs.module.css';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 interface LexResult { id: string; icd: string; description: string; }
 
@@ -37,7 +37,7 @@ export default function AddProblemDialog() {
     if (q.trim().length < 2) { setSearchResults([]); return; }
     setSearching(true);
     try {
-      const res = await fetch(`${API_BASE}/vista/icd-search?q=${encodeURIComponent(q.trim())}`);
+      const res = await fetch(`${API_BASE}/vista/icd-search?q=${encodeURIComponent(q.trim())}`, { credentials: 'include' });
       const data = await res.json();
       setSearchResults(data.ok ? (data.results ?? []) : []);
     } catch {
@@ -70,6 +70,7 @@ export default function AddProblemDialog() {
       const res = await fetch(`${API_BASE}/vista/problems?dfn=${dfn}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ dfn, text: description, onset, status, icdCode }),
       });
       const data = await res.json();

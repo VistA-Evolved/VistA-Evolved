@@ -6,7 +6,7 @@ import { useSession } from '@/stores/session-context';
 import CPRSMenuBar from '@/components/cprs/CPRSMenuBar';
 import styles from '@/components/cprs/cprs.module.css';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -60,7 +60,7 @@ export default function InboxPage() {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch(`${API_BASE}/vista/inbox`);
+      const res = await fetch(`${API_BASE}/vista/inbox`, { credentials: 'include' });
       const data = await res.json();
       if (data.ok) {
         setItems(data.items || []);

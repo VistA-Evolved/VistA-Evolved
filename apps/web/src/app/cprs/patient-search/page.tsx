@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { usePatient } from '@/stores/patient-context';
+import { useSession } from '@/stores/session-context';
 import styles from '@/components/cprs/cprs.module.css';
 
-const API_BASE = 'http://127.0.0.1:3001';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 interface PatientSearchResult {
   dfn: string;
@@ -21,6 +22,7 @@ interface PatientSearchResult {
 export default function CPRSPatientSearchPage() {
   const router = useRouter();
   const { selectPatient } = usePatient();
+  const { authenticated, ready } = useSession();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<PatientSearchResult[]>([]);
   const [defaultList, setDefaultList] = useState<PatientSearchResult[]>([]);
@@ -28,11 +30,19 @@ export default function CPRSPatientSearchPage() {
   const [error, setError] = useState('');
   const [selected, setSelected] = useState<string | null>(null);
 
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (ready && !authenticated) {
+      router.push('/cprs/login');
+    }
+  }, [ready, authenticated, router]);
+
   // Load default patient list on mount
   useEffect(() => {
+    if (!authenticated) return;
     async function loadDefaults() {
       try {
-        const res = await fetch(`${API_BASE}/vista/default-patient-list`);
+        const res = await fetch(`${API_BASE}/vista/default-patient-list`, { credentials: 'include' });
         const data = await res.json();
         if (data.ok && Array.isArray(data.patients)) {
           setDefaultList(data.patients);
@@ -42,7 +52,7 @@ export default function CPRSPatientSearchPage() {
       }
     }
     loadDefaults();
-  }, []);
+  }, [authenticated]);
 
   async function handleSearch(e: React.FormEvent) {
     e.preventDefault();
@@ -50,7 +60,7 @@ export default function CPRSPatientSearchPage() {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch(`${API_BASE}/vista/patient-search?q=${encodeURIComponent(query.trim())}`);
+      const res = await fetch(`${API_BASE}/vista/patient-search?q=${encodeURIComponent(query.trim())}`, { credentials: 'include' });
       const data = await res.json();
       if (data.ok && Array.isArray(data.results)) {
         setResults(data.results);
@@ -76,6 +86,15 @@ export default function CPRSPatientSearchPage() {
   }
 
   const displayList = results.length > 0 ? results : defaultList;
+
+  // Show loading while checking session, or redirect if not authenticated
+  if (!ready || !authenticated) {
+    return (
+      <div className={styles.shell} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <p style={{ color: 'var(--cprs-text-muted)' }}>Checking session...</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.shell} style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>

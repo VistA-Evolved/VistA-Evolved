@@ -38,6 +38,8 @@ import telehealthRoutes, { initTelehealthRoutes } from "./routes/telehealth.js";
 import { startRoomCleanup, stopRoomCleanup } from "./telehealth/room-store.js";
 // Phase 33: AI Gateway (governed, grounded, safe)
 import aiGatewayRoutes, { initAiRoutes } from "./routes/ai-gateway.js";
+// Phase 35: Enterprise IAM, Policy Authorization & Immutable Audit
+import iamRoutes from "./routes/iam-routes.js";
 // Phase 15: Enterprise hardening imports
 import { registerSecurityMiddleware, corsOriginValidator } from "./middleware/security.js";
 import { log } from "./lib/logger.js";
@@ -191,6 +193,9 @@ initAiRoutes(
   getPortalSession
 );
 server.register(aiGatewayRoutes);
+
+// Register IAM routes -- audit, policy, biometric, OIDC (Phase 35)
+server.register(iamRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

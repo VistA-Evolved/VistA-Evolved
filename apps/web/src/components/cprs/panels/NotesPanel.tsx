@@ -50,7 +50,7 @@ export default function NotesPanel({ dfn }: Props) {
   const notes = cache.getDomain(dfn, 'notes');
   const loading = cache.isLoading(dfn, 'notes');
 
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
   async function handleSaveNote() {
     if (!noteTitle.trim() || !noteText.trim()) return;
@@ -60,6 +60,7 @@ export default function NotesPanel({ dfn }: Props) {
       const res = await fetch(`${API_BASE}/vista/notes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ dfn, title: noteTitle, text: noteText }),
       });
       const data = await res.json();

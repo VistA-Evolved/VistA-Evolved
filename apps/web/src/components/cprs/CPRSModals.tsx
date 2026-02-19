@@ -8,7 +8,7 @@ import { useDataCache, type Vital } from '@/stores/data-cache';
 import { AddProblemDialog, EditProblemDialog, AddMedicationDialog } from './dialogs';
 import styles from './cprs.module.css';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 /* ------------------------------------------------------------------ */
 /* Modal shell                                                         */
@@ -198,7 +198,7 @@ function LegacyConsoleModal({ onClose }: { onClose: () => void }) {
     let ws: WebSocket;
     try {
       // Cookie is sent automatically by the browser on WS upgrade request
-      const wsUrl = `ws://127.0.0.1:3001/ws/console`;
+      const wsUrl = `ws://localhost:3001/ws/console`;
       ws = new WebSocket(wsUrl);
     } catch {
       setOutput((prev) => [...prev, '[ERROR] Failed to create WebSocket connection.']);
@@ -298,7 +298,7 @@ function LegacyConsoleModal({ onClose }: { onClose: () => void }) {
       // HTTP fallback
       try {
         const url = cmd.startsWith('/') ? cmd : `/vista/${cmd}`;
-        const res = await fetch(`${API_BASE}${url}`);
+        const res = await fetch(`${API_BASE}${url}`, { credentials: 'include' });
         const text = await res.text();
         try {
           const obj = JSON.parse(text);

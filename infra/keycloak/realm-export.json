@@ -1,0 +1,382 @@
+{
+  "id": "vista-evolved",
+  "realm": "vista-evolved",
+  "displayName": "VistA Evolved",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": true,
+  "permanentLockout": false,
+  "maxFailureWaitSeconds": 900,
+  "minimumQuickLoginWaitSeconds": 60,
+  "waitIncrementSeconds": 60,
+  "quickLoginCheckMilliSeconds": 1000,
+  "maxDeltaTimeSeconds": 43200,
+  "failureFactor": 5,
+  "passwordPolicy": "length(12) and upperCase(1) and lowerCase(1) and digits(1) and specialChars(1) and notUsername",
+  "roles": {
+    "realm": [
+      {
+        "name": "provider",
+        "description": "Clinical provider - can view/write patient data",
+        "composite": false,
+        "clientRole": false
+      },
+      {
+        "name": "nurse",
+        "description": "Nurse - can view patient data, write vitals/notes",
+        "composite": false,
+        "clientRole": false
+      },
+      {
+        "name": "pharmacist",
+        "description": "Pharmacist - can view patient data, manage medications",
+        "composite": false,
+        "clientRole": false
+      },
+      {
+        "name": "clerk",
+        "description": "Clerk - limited read access",
+        "composite": false,
+        "clientRole": false
+      },
+      {
+        "name": "admin",
+        "description": "System administrator - full access",
+        "composite": false,
+        "clientRole": false
+      },
+      {
+        "name": "patient",
+        "description": "Patient portal user - own data only",
+        "composite": false,
+        "clientRole": false
+      },
+      {
+        "name": "support",
+        "description": "Support staff - read audit, no clinical writes",
+        "composite": false,
+        "clientRole": false
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "vista-evolved-web",
+      "name": "VistA Evolved Web App",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "dev-web-secret-change-in-production",
+      "redirectUris": [
+        "http://localhost:3000/*",
+        "http://127.0.0.1:3000/*"
+      ],
+      "webOrigins": [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000"
+      ],
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "fullScopeAllowed": true,
+      "defaultClientScopes": [
+        "openid",
+        "profile",
+        "email",
+        "roles"
+      ],
+      "protocolMappers": [
+        {
+          "name": "realm-roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "multivalued": "true",
+            "claim.name": "realm_roles",
+            "jsonType.label": "String",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        },
+        {
+          "name": "duz-attribute",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "duz",
+            "claim.name": "duz",
+            "jsonType.label": "String",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        },
+        {
+          "name": "facility-station",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "facilityStation",
+            "claim.name": "facility_station",
+            "jsonType.label": "String",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        },
+        {
+          "name": "tenant-id",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "tenantId",
+            "claim.name": "tenant_id",
+            "jsonType.label": "String",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "vista-evolved-api",
+      "name": "VistA Evolved API (Resource Server)",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "dev-api-secret-change-in-production",
+      "bearerOnly": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "fullScopeAllowed": true
+    },
+    {
+      "clientId": "vista-evolved-portal",
+      "name": "VistA Evolved Patient Portal",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "dev-portal-secret-change-in-production",
+      "redirectUris": [
+        "http://localhost:3002/*",
+        "http://127.0.0.1:3002/*"
+      ],
+      "webOrigins": [
+        "http://localhost:3002",
+        "http://127.0.0.1:3002"
+      ],
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "fullScopeAllowed": true,
+      "defaultClientScopes": [
+        "openid",
+        "profile",
+        "email",
+        "roles"
+      ]
+    }
+  ],
+  "authenticationFlows": [
+    {
+      "alias": "webauthn-passwordless-browser",
+      "description": "Browser flow with WebAuthn passwordless support",
+      "providerId": "basic-flow",
+      "topLevel": true,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticator": "auth-cookie",
+          "requirement": "ALTERNATIVE",
+          "priority": 10,
+          "authenticatorFlow": false
+        },
+        {
+          "authenticator": "auth-spnego",
+          "requirement": "DISABLED",
+          "priority": 20,
+          "authenticatorFlow": false
+        },
+        {
+          "authenticator": "identity-provider-redirector",
+          "requirement": "ALTERNATIVE",
+          "priority": 25,
+          "authenticatorFlow": false
+        },
+        {
+          "requirement": "ALTERNATIVE",
+          "priority": 30,
+          "flowAlias": "webauthn-passwordless-browser forms",
+          "authenticatorFlow": true
+        }
+      ]
+    },
+    {
+      "alias": "webauthn-passwordless-browser forms",
+      "description": "Username/password + optional WebAuthn passwordless",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticator": "auth-username-password-form",
+          "requirement": "REQUIRED",
+          "priority": 10,
+          "authenticatorFlow": false
+        },
+        {
+          "authenticator": "webauthn-authenticator-passwordless",
+          "requirement": "ALTERNATIVE",
+          "priority": 20,
+          "authenticatorFlow": false
+        }
+      ]
+    }
+  ],
+  "requiredActions": [
+    {
+      "alias": "webauthn-register-passwordless",
+      "name": "Webauthn Register Passwordless",
+      "providerId": "webauthn-register-passwordless",
+      "enabled": true,
+      "defaultAction": false,
+      "priority": 70,
+      "config": {
+        "webAuthnPolicyRpEntityName": "VistA Evolved",
+        "webAuthnPolicyAttestationConveyancePreference": "not specified",
+        "webAuthnPolicyAuthenticatorAttachment": "not specified",
+        "webAuthnPolicyRequireResidentKey": "not specified",
+        "webAuthnPolicyUserVerificationRequirement": "preferred",
+        "webAuthnPolicyCreateTimeout": "0",
+        "webAuthnPolicyAvoidSameAuthenticatorRegister": "false",
+        "webAuthnPolicyAcceptableAaguids": ""
+      }
+    }
+  ],
+  "users": [
+    {
+      "username": "provider.clyde",
+      "email": "clyde@vista-evolved.dev",
+      "firstName": "Clyde",
+      "lastName": "Provider",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "DevProvider123!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["provider", "admin"],
+      "attributes": {
+        "duz": ["87"],
+        "facilityStation": ["500"],
+        "tenantId": ["default"]
+      }
+    },
+    {
+      "username": "nurse.helen",
+      "email": "helen@vista-evolved.dev",
+      "firstName": "Helen",
+      "lastName": "Nurse",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "DevNurse123!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["nurse"],
+      "attributes": {
+        "duz": ["88"],
+        "facilityStation": ["500"],
+        "tenantId": ["default"]
+      }
+    },
+    {
+      "username": "pharmacist.linda",
+      "email": "linda@vista-evolved.dev",
+      "firstName": "Linda",
+      "lastName": "Pharmacist",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "DevPharm123!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["pharmacist"],
+      "attributes": {
+        "duz": ["89"],
+        "facilityStation": ["500"],
+        "tenantId": ["default"]
+      }
+    },
+    {
+      "username": "support.user",
+      "email": "support@vista-evolved.dev",
+      "firstName": "Support",
+      "lastName": "User",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "DevSupport123!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["support"],
+      "attributes": {
+        "duz": ["90"],
+        "facilityStation": ["500"],
+        "tenantId": ["default"]
+      }
+    },
+    {
+      "username": "patient.test",
+      "email": "patient@vista-evolved.dev",
+      "firstName": "Test",
+      "lastName": "Patient",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "DevPatient123!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["patient"],
+      "attributes": {
+        "tenantId": ["default"]
+      }
+    }
+  ],
+  "webAuthnPolicyPasswordlessRpEntityName": "VistA Evolved",
+  "webAuthnPolicyPasswordlessSignatureAlgorithms": ["ES256"],
+  "webAuthnPolicyPasswordlessRpId": "",
+  "webAuthnPolicyPasswordlessAttestationConveyancePreference": "not specified",
+  "webAuthnPolicyPasswordlessAuthenticatorAttachment": "not specified",
+  "webAuthnPolicyPasswordlessRequireResidentKey": "not specified",
+  "webAuthnPolicyPasswordlessUserVerificationRequirement": "preferred",
+  "webAuthnPolicyPasswordlessCreateTimeout": 0,
+  "webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister": false
+}

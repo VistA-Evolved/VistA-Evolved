@@ -14,7 +14,7 @@ import { useState, useEffect } from 'react';
 import { useDataCache, type ReportDef } from '../../../stores/data-cache';
 import styles from '../cprs.module.css';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 interface Props { dfn: string; }
 

@@ -6,7 +6,7 @@ import { createContext, useContext, useState, useCallback, useEffect, type React
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
-export type UserRole = 'provider' | 'nurse' | 'pharmacist' | 'clerk' | 'admin';
+export type UserRole = 'provider' | 'nurse' | 'pharmacist' | 'clerk' | 'admin' | 'support';
 
 export interface SessionUser {
   duz: string;
@@ -15,6 +15,10 @@ export interface SessionUser {
   facilityStation: string;
   facilityName: string;
   divisionIen: string;
+  /** Phase 35: OIDC tenant ID (if OIDC-sourced session) */
+  tenantId?: string;
+  /** Phase 35: Authentication method used */
+  authMethod?: 'vista-rpc' | 'oidc' | 'passkey';
 }
 
 export interface SessionContextValue {
@@ -36,7 +40,7 @@ export interface SessionContextValue {
 /* Constants                                                           */
 /* ------------------------------------------------------------------ */
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 /* ------------------------------------------------------------------ */
 /* Context + Provider                                                  */

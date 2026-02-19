@@ -16,7 +16,7 @@ import CPRSMenuBar from '@/components/cprs/CPRSMenuBar';
 import PatientBanner from '@/components/cprs/PatientBanner';
 import styles from '@/components/cprs/cprs.module.css';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */

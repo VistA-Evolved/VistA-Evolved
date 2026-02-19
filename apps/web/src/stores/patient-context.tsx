@@ -42,7 +42,7 @@ const PatientContext = createContext<PatientContextValue | null>(null);
 /* Provider                                                            */
 /* ------------------------------------------------------------------ */
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 export function PatientProvider({ children }: { children: ReactNode }) {
   const [dfn, setDfn] = useState('');
@@ -57,7 +57,7 @@ export function PatientProvider({ children }: { children: ReactNode }) {
     setDemographics(null);
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/vista/patient-demographics?dfn=${newDfn}`);
+      const res = await fetch(`${API_BASE}/vista/patient-demographics?dfn=${newDfn}`, { credentials: 'include' });
       const data = await res.json();
       if (data.ok && data.patient) {
         setDemographics(data.patient);

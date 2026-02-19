@@ -107,7 +107,7 @@ interface ProblemsResult {
   error?: string;
 }
 
-const API_BASE = "http://127.0.0.1:3001";
+const API_BASE = "http://localhost:3001";
 const DEBOUNCE_MS = 400;
 
 export default function PatientSearchPage() {
@@ -186,7 +186,8 @@ export default function PatientSearchPage() {
 
     try {
       const res = await fetch(
-        `${API_BASE}/vista/patient-search?q=${encodeURIComponent(trimmed)}`
+        `${API_BASE}/vista/patient-search?q=${encodeURIComponent(trimmed)}`,
+        { credentials: 'include' }
       );
       const data: SearchResult = await res.json();
 
@@ -219,7 +220,8 @@ export default function PatientSearchPage() {
     setAllergyError(null);
     try {
       const allergyRes = await fetch(
-        `${API_BASE}/vista/allergies?dfn=${encodeURIComponent(dfn)}`
+        `${API_BASE}/vista/allergies?dfn=${encodeURIComponent(dfn)}`,
+        { credentials: 'include' }
       );
       const allergyData: AllergiesResult = await allergyRes.json();
 
@@ -243,7 +245,8 @@ export default function PatientSearchPage() {
     setVitalsError(null);
     try {
       const res = await fetch(
-        `${API_BASE}/vista/vitals?dfn=${encodeURIComponent(dfn)}`
+        `${API_BASE}/vista/vitals?dfn=${encodeURIComponent(dfn)}`,
+        { credentials: 'include' }
       );
       const data: VitalsResult = await res.json();
 
@@ -267,7 +270,8 @@ export default function PatientSearchPage() {
     setNotesError(null);
     try {
       const res = await fetch(
-        `${API_BASE}/vista/notes?dfn=${encodeURIComponent(dfn)}`
+        `${API_BASE}/vista/notes?dfn=${encodeURIComponent(dfn)}`,
+        { credentials: 'include' }
       );
       const data: NotesResult = await res.json();
 
@@ -291,7 +295,8 @@ export default function PatientSearchPage() {
     setMedsError(null);
     try {
       const res = await fetch(
-        `${API_BASE}/vista/medications?dfn=${encodeURIComponent(dfn)}`
+        `${API_BASE}/vista/medications?dfn=${encodeURIComponent(dfn)}`,
+        { credentials: 'include' }
       );
       const data: MedicationsResult = await res.json();
 
@@ -315,7 +320,8 @@ export default function PatientSearchPage() {
     setProblemsError(null);
     try {
       const res = await fetch(
-        `${API_BASE}/vista/problems?dfn=${encodeURIComponent(dfn)}`
+        `${API_BASE}/vista/problems?dfn=${encodeURIComponent(dfn)}`,
+        { credentials: 'include' }
       );
       const data: ProblemsResult = await res.json();
 
@@ -344,6 +350,7 @@ export default function PatientSearchPage() {
       const res = await fetch(`${API_BASE}/vista/medications`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: 'include',
         body: JSON.stringify({ dfn: selected.dfn, drug: newMedDrug.trim() }),
       });
       const data = await res.json();
@@ -375,6 +382,7 @@ export default function PatientSearchPage() {
       const res = await fetch(`${API_BASE}/vista/problems`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: 'include',
         body: JSON.stringify({ dfn: selected.dfn, text: newProblemText.trim() }),
       });
       const data = await res.json();
@@ -430,7 +438,8 @@ export default function PatientSearchPage() {
 
     try {
       const res = await fetch(
-        `${API_BASE}/vista/patient-demographics?dfn=${encodeURIComponent(pt.dfn)}`
+        `${API_BASE}/vista/patient-demographics?dfn=${encodeURIComponent(pt.dfn)}`,
+        { credentials: 'include' }
       );
       const data: DemographicsResult = await res.json();
 
@@ -468,6 +477,7 @@ export default function PatientSearchPage() {
       const res = await fetch(`${API_BASE}/vista/allergies`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: 'include',
         body: JSON.stringify({ dfn: selected.dfn, allergyText: newAllergen.trim() }),
       });
       const data = await res.json();
@@ -501,6 +511,7 @@ export default function PatientSearchPage() {
       const res = await fetch(`${API_BASE}/vista/vitals`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: 'include',
         body: JSON.stringify({ dfn: selected.dfn, type: newVitalType, value: newVitalValue.trim() }),
       });
       const data = await res.json();
@@ -533,6 +544,7 @@ export default function PatientSearchPage() {
       const res = await fetch(`${API_BASE}/vista/notes`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: 'include',
         body: JSON.stringify({ dfn: selected.dfn, title: newNoteTitle.trim(), text: newNoteText.trim() }),
       });
       const data = await res.json();

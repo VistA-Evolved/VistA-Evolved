@@ -9,7 +9,7 @@ interface Props { dfn: string; }
 const ORDER_TYPES = ['med', 'lab', 'imaging', 'consult'] as const;
 type OrderType = typeof ORDER_TYPES[number];
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 /* ------------------------------------------------------------------ */
 /* Quick-order drug list (matches API backend Phase 8B)                */
@@ -48,6 +48,7 @@ export default function OrdersPanel({ dfn }: Props) {
       const res = await fetch(`${API_BASE}/vista/medications`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ dfn, drug: drug.trim() }),
       });
       const data = await res.json();

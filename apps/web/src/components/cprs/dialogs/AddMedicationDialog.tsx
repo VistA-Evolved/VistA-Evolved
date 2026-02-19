@@ -5,7 +5,7 @@ import { useCPRSUI } from '../../../stores/cprs-ui-state';
 import { useDataCache } from '../../../stores/data-cache';
 import styles from '../cprs.module.css';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 /* Quick-order IENs from Phase 8B */
 const QUICK_ORDERS = [
@@ -42,6 +42,7 @@ export default function AddMedicationDialog() {
       const res = await fetch(`${API_BASE}/vista/medications?dfn=${dfn}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ quickOrderIEN: selectedQO }),
       });
       const data = await res.json();

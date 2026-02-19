@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useDataCache, type Consult } from '../../../stores/data-cache';
 import styles from '../cprs.module.css';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 interface Props { dfn: string; }
 
@@ -31,7 +31,7 @@ export default function ConsultsPanel({ dfn }: Props) {
     setDetailText('');
     setDetailLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/vista/consults/detail?id=${c.id}`);
+      const res = await fetch(`${API_BASE}/vista/consults/detail?id=${c.id}`, { credentials: 'include' });
       const data = await res.json();
       setDetailText(data.ok ? (data.text ?? '(no detail text)') : 'Error loading detail');
     } catch {

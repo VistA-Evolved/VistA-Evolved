@@ -73,6 +73,9 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/imaging\/audit/, auth: "session" }, // Phase 24: imaging audit (imaging_admin checked in handler)
   { pattern: /^\/security\/break-glass/, auth: "session" }, // Phase 24: break-glass
   { pattern: /^\/analytics\//, auth: "session" }, // Phase 25: analytics (permission checked in handler)
+  { pattern: /^\/iam\/oidc\/config$/, auth: "none" }, // Phase 35: OIDC discovery (public)
+  { pattern: /^\/iam\/health$/, auth: "session" }, // Phase 35: IAM health
+  { pattern: /^\/iam\//, auth: "session" }, // Phase 35: IAM routes (role checked in handler)
   { pattern: /^\/portal\/auth\//, auth: "none" }, // Phase 26: portal login/logout/session (own auth)
   { pattern: /^\/portal\//, auth: "none" }, // Phase 26: portal routes (own session check in handler)
   { pattern: /^\/telehealth\/health$/, auth: "session" }, // Phase 30: telehealth health (clinician)

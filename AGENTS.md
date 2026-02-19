@@ -375,6 +375,30 @@ most recent phase verifier and reports PASS/FAIL for each gate.
 60. **`TELEHEALTH_PROVIDER` env var selects the adapter.** Default is `"jitsi"`.
     `"stub"` is available for testing. Adding a new provider requires
     implementing `TelehealthProvider` and registering in `providers/index.ts`.
+61. **Never bypass the policy engine.** All authorization decisions must flow
+    through `evaluatePolicy()` in `policy-engine.ts`. The engine is default-deny
+    with ~40 action mappings. Admin role gets superuser bypass. OPA-compatible
+    structure allows migration to external OPA sidecar for production.
+62. **Never log PHI in immutable audit.** `immutable-audit.ts` sanitizes SSN,
+    DOB, patient names, and clinical content from audit entries automatically.
+    IP addresses are hashed in production mode. The hash chain uses SHA-256
+    with each entry linking to its predecessor's hash.
+63. **OIDC is opt-in via `OIDC_ENABLED=true`.** Without it, VistA RPC auth
+    is the only path. JWT validation uses zero-dependency Node.js crypto.
+    JWKS is cached 10 min with auto-refresh on kid miss. Supports RS256-512
+    and ES256-384-512.
+64. **Passkey data never stored locally.** All WebAuthn credential management
+    delegated to Keycloak. The `PasskeysProvider` only stores challenges
+    (5-min TTL). Face verification is disabled by default and requires explicit
+    vendor configuration + legal review.
+65. **Immutable audit has dual sinks.** In-memory ring buffer (10K entries)
+    plus JSONL file at `logs/immutable-audit.jsonl`. Chain verification via
+    `GET /iam/audit/verify` (admin only). File chain verification available
+    via `verifyFileAuditChain()`.
+66. **Keycloak realm auto-imports on first boot.** The Docker compose mounts
+    `infra/keycloak/realm-export.json`. Five dev users are pre-configured
+    with DUZ mappings matching WorldVistA Docker accounts. WebAuthn
+    Passwordless is configured as a required action.
 
 ---
 
@@ -457,6 +481,44 @@ apps/portal/src/app/dashboard/telehealth/
 
 docs/runbooks/
   phase30-telehealth.md     — Telehealth runbook (Phase 30)
+```
+
+## 7d. Architecture Quick Map (Phase 35 additions)
+
+```
+apps/api/src/
+  auth/
+    oidc-provider.ts          — OIDC config, discovery caching, claims mapping (Phase 35)
+    jwt-validator.ts          — Zero-dep JWT validation (RS/ES256-512, JWKS) (Phase 35)
+    policy-engine.ts          — In-process policy engine (default-deny, ~40 actions) (Phase 35)
+    policies/
+      default-policy.ts       — Role definitions + environment policies (Phase 35)
+    biometric/
+      types.ts                — BiometricAuthProvider interface (Phase 35)
+      passkeys-provider.ts    — WebAuthn passkeys via Keycloak (Phase 35)
+      face-provider.ts        — Face verification scaffold (disabled) (Phase 35)
+      index.ts                — Provider registry (Phase 35)
+  lib/
+    immutable-audit.ts        — SHA-256 hash-chained append-only audit (Phase 35)
+  routes/
+    iam-routes.ts             — IAM REST endpoints (audit, policy, biometric) (Phase 35)
+
+apps/web/src/app/cprs/admin/
+  audit-viewer/page.tsx       — Immutable audit viewer (4 tabs) (Phase 35)
+
+services/keycloak/
+  docker-compose.yml          — Keycloak 24 + PostgreSQL 16 (Phase 35)
+
+infra/keycloak/
+  realm-export.json           — Full realm config (7 roles, 3 clients, WebAuthn) (Phase 35)
+  README.md                   — Keycloak setup guide (Phase 35)
+
+infra/opa/policy/
+  authz.rego                  — OPA-compatible Rego policy (Phase 35)
+  data.json                   — Role definitions + env configs (Phase 35)
+
+docs/runbooks/
+  phase35-iam-authz-audit.md  — IAM runbook (Phase 35)
 ```
 
 ---

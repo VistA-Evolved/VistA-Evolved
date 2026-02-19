@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useDataCache, type DCSummary } from '../../../stores/data-cache';
 import styles from '../cprs.module.css';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 interface Props { dfn: string; }
 
@@ -24,7 +24,7 @@ export default function DCSummPanel({ dfn }: Props) {
     setFullText('');
     setTextLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/vista/tiu-text?id=${s.id}`);
+      const res = await fetch(`${API_BASE}/vista/tiu-text?id=${s.id}`, { credentials: 'include' });
       const data = await res.json();
       setFullText(data.ok ? (data.text ?? '(no text)') : 'Error loading text');
     } catch {
