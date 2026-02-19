@@ -16,6 +16,19 @@
 import { LOG_CONFIG, PHI_CONFIG } from "../config/server-config.js";
 import { AsyncLocalStorage } from "async_hooks";
 
+// Phase 36: lazy-load tracer to avoid circular imports
+let _getTraceId: (() => string) | null = null;
+let _getSpanId: (() => string) | null = null;
+
+/** Called once from index.ts after tracing.ts is loaded. */
+export function bridgeTracingToLogger(
+  getTraceId: () => string,
+  getSpanId: () => string,
+): void {
+  _getTraceId = getTraceId;
+  _getSpanId = getSpanId;
+}
+
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
@@ -157,6 +170,16 @@ function emit(level: LogLevel, msg: string, meta?: Record<string, unknown>): voi
 
   const rid = getRequestId();
   if (rid) entry.requestId = rid;
+
+  // Phase 36: inject OTel trace/span IDs for log correlation
+  if (_getTraceId) {
+    const traceId = _getTraceId();
+    if (traceId) entry.traceId = traceId;
+  }
+  if (_getSpanId) {
+    const spanId = _getSpanId();
+    if (spanId) entry.spanId = spanId;
+  }
 
   if (LOG_CONFIG.json) {
     const fn = level === "error" || level === "fatal" ? console.error

@@ -399,6 +399,34 @@ most recent phase verifier and reports PASS/FAIL for each gate.
     `infra/keycloak/realm-export.json`. Five dev users are pre-configured
     with DUZ mappings matching WorldVistA Docker accounts. WebAuthn
     Passwordless is configured as a required action.
+67. **OTel tracing is opt-in via `OTEL_ENABLED=true`.** Without it, all
+    tracing functions are no-ops (return dummy spans). The SDK only
+    initializes when explicitly enabled. Auto-instrumentation covers HTTP
+    and net; fs and DNS are disabled to reduce noise.
+68. **PHI must never reach the OTel Collector storage.** The collector
+    config has an `attributes/strip-phi` processor that deletes request
+    bodies, response bodies, DB statements, and patient.* attributes.
+    API-side instrumentation also avoids capturing bodies. Both layers
+    must remain in place.
+69. **`sanitizeRoute()` prevents Prometheus label cardinality explosion.**
+    All metric labels for route use sanitized paths: UUIDs and numeric
+    segments are replaced with `:id`. Without this, each unique patient
+    DFN or resource ID creates a new time series.
+70. **Graceful shutdown now has a drain timeout (default 30s).** Configured
+    via `SHUTDOWN_DRAIN_TIMEOUT_MS`. The drain timer uses `unref()` so it
+    won't keep the process alive if everything completes early. The
+    previous behavior was to wait indefinitely for `server.close()`.
+71. **`/ready` returns `ok: false` when circuit breaker is open.** This
+    makes it safe for K8s readiness probes. `/health` always returns 200
+    (liveness). Don't gate liveness on the circuit breaker or the pod
+    will restart when VistA is temporarily down.
+72. **`bridgeTracingToLogger()` avoids circular imports.** The logger
+    module cannot import from telemetry (which might import things that
+    log). Instead, `bridgeTracingToLogger()` injects getter functions at
+    startup. Call it once in `index.ts` before creating the Fastify server.
+73. **k6 smoke tests require the API + VistA Docker to be running.** They
+    are NOT unit tests. The write test (`smoke-write.js`) is expected to
+    partially fail on the sandbox due to VistA data constraints.
 
 ---
 
@@ -519,6 +547,29 @@ infra/opa/policy/
 
 docs/runbooks/
   phase35-iam-authz-audit.md  — IAM runbook (Phase 35)
+```
+
+## 7e. Architecture Quick Map (Phase 36 additions)
+
+```
+apps/api/src/
+  telemetry/
+    tracing.ts              — OTel SDK init, PHI-safe span helpers (Phase 36)
+    metrics.ts              — prom-client registry, HTTP/RPC/CB metrics (Phase 36)
+
+services/observability/
+  docker-compose.yml        — OTel Collector + Jaeger + Prometheus (Phase 36)
+  otel-collector-config.yaml — Receivers, PHI-strip processor, exporters (Phase 36)
+  prometheus.yml            — Scrape configs for API + collector (Phase 36)
+
+tests/k6/
+  smoke-login.js            — Auth flow smoke test (Phase 36)
+  smoke-reads.js            — Read-only clinical endpoints smoke test (Phase 36)
+  smoke-write.js            — Write workflow smoke test (Phase 36)
+  run-smoke.ps1             — k6 test runner wrapper (Phase 36)
+
+docs/runbooks/
+  phase36-observability-reliability.md — Observability runbook (Phase 36)
 ```
 
 ---

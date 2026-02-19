@@ -21,6 +21,13 @@ import { disconnect as disconnectRpcBroker } from "../vista/rpcBrokerClient.js";
 import { stopAggregationJob } from "../services/analytics-aggregator.js";
 import { stopRoomCleanup } from "../telehealth/room-store.js";
 import { stopEtl } from "../services/analytics-etl.js";
+// Phase 36: Telemetry
+import { getCurrentTraceId } from "../telemetry/tracing.js";
+import {
+  httpRequestDuration, httpRequestsTotal, httpActiveRequests,
+  errorsTotal, sanitizeRoute,
+} from "../telemetry/metrics.js";
+import { shutdownTracing } from "../telemetry/tracing.js";
 
 /* ================================================================== */
 /* CORS origin allowlist                                                */
@@ -183,6 +190,13 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
 
     // Expose in response
     reply.header("X-Request-Id", requestId);
+
+    // Phase 36: trace ID header
+    const traceId = getCurrentTraceId();
+    if (traceId) reply.header("X-Trace-Id", traceId);
+
+    // Phase 36: track active requests
+    httpActiveRequests.inc();
   });
 
   /* ---- Security headers ---- */
@@ -319,11 +333,20 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
 
     if (reply.statusCode >= 500) {
       log.error("Request completed (5xx)", logData);
+      errorsTotal.inc({ category: "http_5xx" });
     } else if (reply.statusCode >= 400) {
       log.warn("Request completed (4xx)", logData);
     } else {
       log.info("Request completed", logData);
     }
+
+    // Phase 36: Prometheus metrics
+    const route = sanitizeRoute(request.url);
+    const method = request.method;
+    const statusCode = String(reply.statusCode);
+    httpRequestDuration.observe({ method, route, status_code: statusCode }, duration / 1000);
+    httpRequestsTotal.inc({ method, route, status_code: statusCode });
+    httpActiveRequests.dec();
 
     clearRequestId();
   });
@@ -362,6 +385,15 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
       audit("system.shutdown", "success", { duz: "system", name: "system", role: "system" }, {
         detail: { signal },
       });
+
+      // Phase 36: drain timeout -- force exit if graceful close takes too long
+      const DRAIN_TIMEOUT_MS = Number(process.env.SHUTDOWN_DRAIN_TIMEOUT_MS) || 30_000;
+      const drainTimer = setTimeout(() => {
+        log.error("Graceful shutdown timed out, forcing exit", { drainTimeoutMs: DRAIN_TIMEOUT_MS });
+        process.exit(1);
+      }, DRAIN_TIMEOUT_MS);
+      drainTimer.unref(); // don't keep process alive just for this timer
+
       try {
         await server.close();
         // Phase 21: disconnect RPC broker to prevent orphaned VistA jobs
@@ -371,10 +403,13 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
         try { stopEtl(); } catch { /* connection may already be closed */ }
         // Phase 30: stop telehealth room cleanup timer
         try { stopRoomCleanup(); } catch { /* timer may already be cleared */ }
+        // Phase 36: flush OTel traces/metrics
+        try { await shutdownTracing(); } catch { /* best effort */ }
         log.info("Server closed gracefully");
       } catch (err: any) {
         log.error("Error during shutdown", { error: err.message });
       }
+      clearTimeout(drainTimer);
       process.exit(0);
     });
   }

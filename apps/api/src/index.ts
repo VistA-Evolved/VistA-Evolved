@@ -40,6 +40,10 @@ import { startRoomCleanup, stopRoomCleanup } from "./telehealth/room-store.js";
 import aiGatewayRoutes, { initAiRoutes } from "./routes/ai-gateway.js";
 // Phase 35: Enterprise IAM, Policy Authorization & Immutable Audit
 import iamRoutes from "./routes/iam-routes.js";
+// Phase 36: Observability & Reliability
+import { initTracing, isTracingEnabled, getCurrentTraceId, getCurrentSpanId } from "./telemetry/tracing.js";
+import { getPrometheusMetrics, getMetricsContentType, circuitBreakerState as cbStateGauge } from "./telemetry/metrics.js";
+import { bridgeTracingToLogger } from "./lib/logger.js";
 // Phase 15: Enterprise hardening imports
 import { registerSecurityMiddleware, corsOriginValidator } from "./middleware/security.js";
 import { log } from "./lib/logger.js";
@@ -51,6 +55,12 @@ import { getIntegrationHealthSummary } from "./config/integration-registry.js";
 import { startAggregationJob, stopAggregationJob } from "./services/analytics-aggregator.js";
 import { initEtl } from "./services/analytics-etl.js";
 import { initAnalyticsStore } from "./services/analytics-store.js";
+
+/* ================================================================== */
+/* Phase 36: Initialize OTel tracing (must be before Fastify)           */
+/* ================================================================== */
+initTracing();
+bridgeTracingToLogger(getCurrentTraceId, getCurrentSpanId);
 
 /* ================================================================== */
 /* Phase 15B helpers: safe error + session-based audit actor             */
@@ -200,21 +210,40 @@ server.register(iamRoutes);
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);
 
-// Phase 15D: Enhanced health check
-server.get("/health", async () => ({
-  ok: true,
-  uptime: process.uptime(),
-  timestamp: new Date().toISOString(),
-  version: "phase-16",
-}));
+// Phase 15D: Enhanced health check (Phase 36: SLO-ready fields)
+server.get("/health", async () => {
+  const cbStats = getCircuitBreakerStats();
+  return {
+    ok: true,
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString(),
+    version: "phase-36",
+    circuitBreaker: cbStats.state,
+    tracingEnabled: isTracingEnabled(),
+  };
+});
 
-// Phase 15D: Readiness probe (checks VistA connectivity)
+// Phase 15D: Readiness probe (Phase 36: includes circuit breaker state)
 server.get("/ready", async () => {
+  const cbStats = getCircuitBreakerStats();
+  // Update Prometheus CB gauge
+  const cbVal = cbStats.state === "closed" ? 0 : cbStats.state === "open" ? 1 : 2;
+  cbStateGauge.set(cbVal);
   try {
     await probeConnect();
-    return { ok: true, vista: "reachable", uptime: process.uptime() };
+    return {
+      ok: cbStats.state !== "open",
+      vista: "reachable",
+      circuitBreaker: cbStats.state,
+      uptime: process.uptime(),
+    };
   } catch {
-    return { ok: false, vista: "unreachable", uptime: process.uptime() };
+    return {
+      ok: false,
+      vista: "unreachable",
+      circuitBreaker: cbStats.state,
+      uptime: process.uptime(),
+    };
   }
 });
 
@@ -244,6 +273,13 @@ server.get("/metrics", async () => {
     rpcHealth: getRpcHealthSummary(),
     integrations: getIntegrationHealthSummary("default"),
   };
+});
+
+// Phase 36: Prometheus exposition format endpoint
+server.get("/metrics/prometheus", async (_request, reply) => {
+  const metrics = await getPrometheusMetrics();
+  reply.header("Content-Type", getMetricsContentType());
+  return reply.send(metrics);
 });
 
 // Phase 15C: Audit event query endpoint

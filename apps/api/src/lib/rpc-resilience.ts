@@ -14,6 +14,9 @@
 import { RPC_CONFIG, CACHE_CONFIG } from "../config/server-config.js";
 import { log } from "./logger.js";
 import { callRpc, callRpcWithList, withBrokerLock, type RpcParam } from "../vista/rpcBrokerClient.js";
+// Phase 36: OTel tracing + Prometheus metrics
+import { startRpcSpan, endRpcSpan } from "../telemetry/tracing.js";
+import { rpcCallDuration, rpcCallsTotal, circuitBreakerTrips, rpcCacheSize as rpcCacheSizeGauge } from "../telemetry/metrics.js";
 
 /* ================================================================== */
 /* Circuit Breaker                                                     */
@@ -48,6 +51,7 @@ function transitionCircuit(newState: CircuitState): void {
   cbState = newState;
   cbLastStateChange = new Date().toISOString();
   log.warn("Circuit breaker state change", { from: prev, to: newState });
+  if (newState === "open") circuitBreakerTrips.inc();
 }
 
 function recordSuccess(): void {
@@ -255,6 +259,8 @@ export async function resilientRpc<T>(
   const timeoutMs = opts?.timeoutMs ?? RPC_CONFIG.callTimeoutMs;
   const maxRetries = (opts?.idempotent !== false) ? (opts?.maxRetries ?? RPC_CONFIG.maxRetries) : 0;
 
+  // Phase 36: OTel span for this RPC call
+  const span = startRpcSpan(rpcName);
   const start = Date.now();
 
   try {
@@ -268,6 +274,11 @@ export async function resilientRpc<T>(
     recordSuccess();
     updateMetrics(rpcName, durationMs, true, false);
 
+    // Phase 36: Prometheus + OTel
+    rpcCallDuration.observe({ rpc_name: rpcName, outcome: "success" }, durationMs / 1000);
+    rpcCallsTotal.inc({ rpc_name: rpcName, outcome: "success" });
+    endRpcSpan(span);
+
     log.debug("RPC completed", { rpcName, durationMs });
     return result;
   } catch (err: any) {
@@ -275,6 +286,12 @@ export async function resilientRpc<T>(
     const isTimeout = err instanceof RpcTimeoutError;
     recordFailure(err.message);
     updateMetrics(rpcName, durationMs, false, isTimeout);
+
+    // Phase 36: Prometheus + OTel
+    const outcome = isTimeout ? "timeout" : "error";
+    rpcCallDuration.observe({ rpc_name: rpcName, outcome }, durationMs / 1000);
+    rpcCallsTotal.inc({ rpc_name: rpcName, outcome });
+    endRpcSpan(span, err);
 
     log.error("RPC failed", { rpcName, durationMs, isTimeout, error: err.message });
     throw err;

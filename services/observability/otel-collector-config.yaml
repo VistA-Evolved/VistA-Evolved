@@ -1,0 +1,78 @@
+# OpenTelemetry Collector Configuration -- VistA-Evolved Phase 36
+# Receives OTLP from API, exports traces to Jaeger, metrics to Prometheus
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: "0.0.0.0:4317"
+      http:
+        endpoint: "0.0.0.0:4318"
+
+processors:
+  batch:
+    send_batch_size: 512
+    timeout: 5s
+
+  # Strip any attribute that might contain PHI before export
+  attributes/strip-phi:
+    actions:
+      - key: rpc.request.body
+        action: delete
+      - key: rpc.response.body
+        action: delete
+      - key: http.request.body
+        action: delete
+      - key: http.response.body
+        action: delete
+      - key: db.statement
+        action: delete
+      - key: patient.name
+        action: delete
+      - key: patient.ssn
+        action: delete
+      - key: patient.dob
+        action: delete
+      - key: patient.dfn
+        action: delete
+      - key: user.password
+        action: delete
+      - key: user.accessCode
+        action: delete
+      - key: user.verifyCode
+        action: delete
+
+  memory_limiter:
+    check_interval: 5s
+    limit_mib: 256
+    spike_limit_mib: 64
+
+exporters:
+  otlp/jaeger:
+    endpoint: "jaeger:4317"
+    tls:
+      insecure: true
+
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+    namespace: vista_evolved
+    send_timestamps: true
+
+  debug:
+    verbosity: basic
+
+extensions:
+  health_check:
+    endpoint: "0.0.0.0:13133"
+
+service:
+  extensions: [health_check]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [attributes/strip-phi, memory_limiter, batch]
+      exporters: [otlp/jaeger]
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [prometheus]

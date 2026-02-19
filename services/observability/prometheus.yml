@@ -1,0 +1,28 @@
+# Prometheus Configuration -- VistA-Evolved Phase 36
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  # VistA-Evolved API /metrics/prometheus endpoint
+  - job_name: "vista-evolved-api"
+    metrics_path: "/metrics/prometheus"
+    scheme: "http"
+    static_configs:
+      - targets: ["host.docker.internal:3001"]
+        labels:
+          service: "vista-evolved-api"
+          environment: "development"
+
+  # OTel Collector's own metrics
+  - job_name: "otel-collector"
+    static_configs:
+      - targets: ["otel-collector:8889"]
+        labels:
+          service: "otel-collector"
+
+  # Prometheus self-monitoring
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
