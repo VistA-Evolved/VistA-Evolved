@@ -1,18 +1,17 @@
 {
-  "feature_title": "Phase 33 -- AI Gateway (governed, grounded, safe) + initial assist use cases",
-  "stage": "implemented",
+  "feature_title": "Phase 35 -- Enterprise IAM, Policy Authorization & Immutable Audit (VERIFIED)",
+  "stage": "verified",
   "status": "complete",
-  "prompt_ref_path": "prompts/35-PHASE-33-AI-ASSIST-GATEWAY/35-01-ai-assist-IMPLEMENT.md",
+  "prompt_ref_path": "prompts/37-PHASE-35-IAM-AUTHZ-AUDIT/37-01-iam-authz-audit-IMPLEMENT.md",
   "runbook_paths": [
-    "docs/runbooks/phase33-ai.md",
-    "docs/ai/ai-governance.md",
-    "docs/ai/ai-risk-controls.md"
+    "docs/runbooks/phase35-iam-authz-audit.md"
   ],
-  "verify_script": "manual-tsc-check",
+  "verify_script": "scripts/verify-phase1-to-phase35.ps1",
   "verify_results": {
-    "api_tsc": "PASS -- 0 errors",
-    "web_tsc": "PASS -- 0 errors",
-    "portal_tsc": "PASS -- 0 errors"
+    "total_pass": 107,
+    "total_fail": 0,
+    "total_warn": 1,
+    "warn_detail": "Phase 34 regression (non-blocking)"
   },
   "files_created": [
     "apps/api/src/ai/types.ts",

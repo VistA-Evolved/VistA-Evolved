@@ -20,6 +20,7 @@ import { SESSION_CONFIG } from "../config/server-config.js";
 import { resolveTenantId } from "../config/tenant-config.js";
 import { log } from "../lib/logger.js";
 import { audit } from "../lib/audit.js";
+import { immutableAudit } from "../lib/immutable-audit.js";
 import { LoginBodySchema, validate } from "../lib/validation.js";
 
 const COOKIE_NAME = SESSION_CONFIG.cookieName;
@@ -118,6 +119,11 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
         duz: userInfo.duz, name: userInfo.userName, role,
       }, { requestId, sourceIp });
 
+      // Phase 35: Immutable audit (hash-chained)
+      immutableAudit("auth.login", "success", {
+        sub: userInfo.duz, name: userInfo.userName, roles: [role],
+      }, { requestId, sourceIp, tenantId });
+
       log.info("User authenticated", { duz: userInfo.duz, role });
 
       // Phase 15B: Do NOT expose token in response body — cookie-only transport
@@ -138,6 +144,11 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
       audit("auth.failed", "failure", { duz: "anonymous" }, {
         requestId, sourceIp, detail: { error: err.message },
       });
+
+      // Phase 35: Immutable audit (hash-chained)
+      immutableAudit("auth.failed", "failure", {
+        sub: "anonymous", name: "anonymous", roles: [],
+      }, { requestId, sourceIp, detail: { error: "authentication-failed" } });
       log.warn("Login failed", { error: err.message, sourceIp });
       return reply.code(401).send({
         ok: false,
@@ -159,6 +170,14 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
     // Phase 15C: Audit logout
     audit("auth.logout", "success", {
       duz: session?.duz, name: session?.userName, role: session?.role,
+    }, {
+      requestId: (request as any).requestId,
+      sourceIp: request.ip,
+    });
+
+    // Phase 35: Immutable audit (hash-chained)
+    immutableAudit("auth.logout", "success", {
+      sub: session?.duz || "unknown", name: session?.userName || "unknown", roles: [session?.role || "unknown"],
     }, {
       requestId: (request as any).requestId,
       sourceIp: request.ip,

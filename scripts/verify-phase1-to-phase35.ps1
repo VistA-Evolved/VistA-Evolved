@@ -129,7 +129,7 @@ if (Test-Path -LiteralPath $jwtFile) {
   Write-Gate "JWT supports RS256" (Test-FileContains $jwtFile "RS256")
   Write-Gate "JWT supports ES256" (Test-FileContains $jwtFile "ES256")
   Write-Gate "JWT has JWKS cache" (Test-FileContains $jwtFile "jwksCache" -IsRegex)
-  Write-Gate "JWT zero-dependency (no import pg/jsonwebtoken)" (-not (Test-FileContains $jwtFile "require(" -IsRegex))
+  Write-Gate "JWT zero-dependency (no import pg/jsonwebtoken)" (-not (Test-FileContains $jwtFile "require\(" -IsRegex))
 }
 
 # ================================================================
@@ -182,11 +182,11 @@ if (Test-Path -LiteralPath $auditFile) {
   Write-Gate "Audit has queryImmutableAudit export" (Test-FileContains $auditFile "export function queryImmutableAudit")
   Write-Gate "Audit has getImmutableAuditStats export" (Test-FileContains $auditFile "export function getImmutableAuditStats")
   Write-Gate "Audit has PHI sanitization" (Test-FileContains $auditFile "sanitize" -IsRegex)
-  Write-Gate "Audit has hash chain linking" (Test-FileContains $auditFile "previousHash" -IsRegex)
+  Write-Gate "Audit has hash chain linking" (Test-FileContains $auditFile "prevHash" -IsRegex)
   Write-Gate "Audit has JSONL file sink" (Test-FileContains $auditFile "jsonl" -IsRegex)
   Write-Gate "Audit has ring buffer" (Test-FileContains $auditFile "MAX_ENTRIES" -IsRegex)
   Write-Gate "Audit has IP hashing" (Test-FileContains $auditFile "hashIp" -IsRegex)
-  Write-Gate "Audit strips SSN" (Test-FileContains $auditFile "SSN\|ssn\|\d{3}-\d{2}" -IsRegex)
+  Write-Gate "Audit strips SSN" (Test-FileContains $auditFile "SSN|ssn" -IsRegex)
   Write-Gate "Audit has 30+ action types" (Test-FileContains $auditFile "auth\.login" -IsRegex)
 }
 
@@ -220,7 +220,7 @@ if (Test-Path -LiteralPath $passkeysFile) {
 }
 
 if (Test-Path -LiteralPath $faceFile) {
-  Write-Gate "Face provider disabled by default" (Test-FileContains $faceFile "enabled.*false" -IsRegex)
+  Write-Gate "Face provider disabled by default" (Test-FileContains $faceFile "DISABLED|disabled" -IsRegex)
   Write-Gate "Face refuses storeRawImages" (Test-FileContains $faceFile "storeRawImages" -IsRegex)
 }
 

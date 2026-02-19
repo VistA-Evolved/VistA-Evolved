@@ -1,13 +1,47 @@
-﻿# Ops Summary — Phase 33: AI Gateway (governed, grounded, safe)
+﻿# Ops Summary -- Phase 35: Enterprise IAM, Policy Authorization & Immutable Audit
 
 ## What Changed
 
-Phase 33 adds a governed AI Gateway with three initial use cases:
-intake summary (clinician note draft), lab education (patient portal),
-and portal search navigation assistant.
+Phase 35 adds enterprise-grade identity, authorization, and audit infrastructure:
 
-### Architecture
-- 11-step gateway pipeline: validate, rate limit, safety check, model resolve,
+### Verification Fixes (Phase 35 VERIFY)
+- **Immutable audit bridge:** Login, logout, and failed login events now flow to both the original audit system AND the new SHA-256 hash-chained immutable audit trail via `immutableAudit()` calls in `auth-routes.ts`.
+- **Verifier pattern corrections:** Fixed 4 regex patterns in `verify-phase1-to-phase35.ps1` (prevHash, SSN, face disabled, require).
+
+### Implementation (Phase 35 IMPLEMENT)
+- OIDC provider with discovery caching and claims extraction (opt-in via `OIDC_ENABLED`)
+- Zero-dependency JWT validator supporting RS256-512 and ES256-384-512 with JWKS cache
+- In-process policy engine with ~40 action mappings, default-deny, admin superuser bypass
+- SHA-256 hash-chained immutable audit with dual sinks (memory ring buffer + JSONL file)
+- Biometric abstraction: WebAuthn passkeys (Keycloak-delegated) + face verification scaffold
+- 8 new IAM REST endpoints under `/iam/`
+- Keycloak realm config with 7 roles, 3 clients, WebAuthn passwordless
+- OPA-compatible Rego policy for future external policy engine migration
+- Admin audit viewer UI with 4 tabs (Events, Stats, Chain, Policy)
+
+## How to Test Manually
+
+```powershell
+cd apps\api; npx tsx --env-file=.env.local src/index.ts
+curl.exe -s -X POST http://localhost:3001/auth/login -H "Content-Type: application/json" -d '{"accessCode":"PROV123","verifyCode":"PROV123!!"}' -c cookies.txt
+curl.exe -s -b cookies.txt http://localhost:3001/iam/audit/events
+curl.exe -s -b cookies.txt http://localhost:3001/iam/audit/verify
+curl.exe -s -b cookies.txt http://localhost:3001/iam/policy/capabilities
+curl.exe -s -b cookies.txt -X POST http://localhost:3001/iam/policy/evaluate -H "Content-Type: application/json" -d '{"role":"clerk","action":"clinical.note-create"}'
+```
+
+## Verifier Output
+
+```
+scripts/verify-phase1-to-phase35.ps1
+107 PASS, 0 FAIL, 1 WARN
+```
+
+## Follow-ups
+1. Start Keycloak and test OIDC login path end-to-end
+2. Test JWT validation with real JWKS from Keycloak
+3. Add passkey registration/authentication integration test when Keycloak WebAuthn is live
+4. Performance test immutable audit under sustained load (ring buffer eviction)
   RAG assembly, PHI redaction, prompt render, model call, post-safety, audit, return
 - Pluggable model registry with stub provider for dev
 - Versioned prompt templates with SHA-256 content hashes
