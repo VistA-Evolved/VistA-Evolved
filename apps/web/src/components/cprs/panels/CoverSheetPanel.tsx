@@ -47,7 +47,7 @@ function Section({
       {error && <p className={styles.errorText}>{error}</p>}
       {!loading && !error && children}
       {contractId && !loading && !error && (
-        <div style={{ position: 'absolute', top: 4, right: 8, fontSize: 9, opacity: 0.4 }}>{contractId}</div>
+        <div style={{ position: 'absolute', top: 4, right: 8, fontSize: 9, color: '#767676' }}>{contractId}</div>
       )}
       <div ref={handleRef} className={styles.resizeHandle} />
     </div>

@@ -190,11 +190,11 @@
   font-size: 12px;
 }
 .bannerLoading {
-  opacity: 0.6;
+  opacity: 0.7;
   font-style: italic;
 }
 .bannerEmpty {
-  opacity: 0.5;
+  opacity: 0.7;
 }
 
 /* --- Tab strip (bottom) ------------------------------------------- */
