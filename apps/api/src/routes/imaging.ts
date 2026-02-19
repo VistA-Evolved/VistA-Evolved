@@ -38,7 +38,7 @@ const plugins: ImagingViewerPlugin[] = [];
 
 export function registerImagingPlugin(plugin: ImagingViewerPlugin): void {
   plugins.push(plugin);
-  console.log(`[IMAGING] Registered plugin: ${plugin.name} v${plugin.version}`);
+  // Plugin registration logged via structured logger at startup
 }
 
 /* ------------------------------------------------------------------ */

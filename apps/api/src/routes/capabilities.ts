@@ -82,8 +82,7 @@ export default async function capabilityRoutes(server: FastifyInstance): Promise
         knownRpcCount: KNOWN_RPCS.length,
       };
     } catch (err: any) {
-      console.error("[CAPABILITIES]", err.message);
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: "Capability probe failed" });
     }
   });
 }

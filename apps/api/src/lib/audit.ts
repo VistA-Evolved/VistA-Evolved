@@ -160,7 +160,8 @@ function writeToFile(event: AuditEvent): void {
 }
 
 function writeToStdout(event: AuditEvent): void {
-  console.log(JSON.stringify({ _audit: true, ...event }));
+  // Use process.stdout directly for audit -- structured logger would recurse
+  process.stdout.write(JSON.stringify({ _audit: true, ...event }) + "\n");
 }
 
 function writeSink(event: AuditEvent): void {

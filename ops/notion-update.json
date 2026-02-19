@@ -1,10 +1,12 @@
 {
-  "feature_title": "Phase 32 — Secure Messaging + Refill Requests + Tasks (VistA-first)",
+  "feature_title": "Phase 33 -- AI Gateway (governed, grounded, safe) + initial assist use cases",
   "stage": "implemented",
   "status": "complete",
-  "prompt_ref_path": "prompts/34-PHASE-32-MESSAGING-REFILLS/34-01-messaging-refills-IMPLEMENT.md",
+  "prompt_ref_path": "prompts/35-PHASE-33-AI-ASSIST-GATEWAY/35-01-ai-assist-IMPLEMENT.md",
   "runbook_paths": [
-    "docs/runbooks/phase32-messaging-refills.md"
+    "docs/runbooks/phase33-ai.md",
+    "docs/ai/ai-governance.md",
+    "docs/ai/ai-risk-controls.md"
   ],
   "verify_script": "manual-tsc-check",
   "verify_results": {
@@ -13,25 +15,32 @@
     "portal_tsc": "PASS -- 0 errors"
   },
   "files_created": [
-    "apps/api/src/services/portal-refills.ts",
-    "apps/api/src/services/portal-tasks.ts",
-    "apps/web/src/components/cprs/panels/MessagingTasksPanel.tsx",
-    "apps/portal/src/app/dashboard/refills/page.tsx",
-    "apps/portal/src/app/dashboard/tasks/page.tsx",
-    "docs/runbooks/phase32-messaging-refills.md",
-    "prompts/34-PHASE-32-MESSAGING-REFILLS/34-01-messaging-refills-IMPLEMENT.md"
+    "apps/api/src/ai/types.ts",
+    "apps/api/src/ai/model-registry.ts",
+    "apps/api/src/ai/prompt-registry.ts",
+    "apps/api/src/ai/safety-layer.ts",
+    "apps/api/src/ai/redaction.ts",
+    "apps/api/src/ai/rag-engine.ts",
+    "apps/api/src/ai/ai-audit.ts",
+    "apps/api/src/ai/ai-gateway.ts",
+    "apps/api/src/ai/providers/stub-provider.ts",
+    "apps/api/src/ai/providers/index.ts",
+    "apps/api/src/routes/ai-gateway.ts",
+    "apps/web/src/components/cprs/panels/AIAssistPanel.tsx",
+    "apps/portal/src/app/dashboard/ai-help/page.tsx",
+    "docs/ai/ai-governance.md",
+    "docs/ai/ai-risk-controls.md",
+    "docs/runbooks/phase33-ai.md",
+    "prompts/35-PHASE-33-AI-ASSIST-GATEWAY/35-01-ai-assist-IMPLEMENT.md"
   ],
   "files_modified": [
-    "apps/api/src/services/portal-messaging.ts",
-    "apps/api/src/services/portal-audit.ts",
-    "apps/api/src/routes/portal-core.ts",
-    "apps/web/src/lib/contracts/data/tabs.json",
-    "apps/web/src/components/cprs/CPRSTabStrip.tsx",
+    "apps/api/src/index.ts",
     "apps/web/src/components/cprs/panels/index.ts",
+    "apps/web/src/components/cprs/CPRSTabStrip.tsx",
     "apps/web/src/app/cprs/chart/[dfn]/[tab]/page.tsx",
-    "apps/portal/src/components/portal-nav.tsx",
+    "apps/web/src/lib/contracts/data/tabs.json",
     "apps/portal/src/lib/api.ts",
-    "apps/portal/src/app/dashboard/medications/page.tsx",
+    "apps/portal/src/components/portal-nav.tsx",
     "ops/summary.md",
     "ops/notion-update.json"
   ],

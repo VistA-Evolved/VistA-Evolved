@@ -27,6 +27,7 @@ const NAV_ITEMS = [
   { href: "/dashboard/activity", label: "Activity Log", icon: "📜" },
   { href: "/dashboard/account", label: "Account", icon: "🔐" },
   { href: "/dashboard/profile", label: "My Profile", icon: "👤" },
+  { href: "/dashboard/ai-help", label: "AI Help", icon: "🤖" },
 ] as const;
 
 export function PortalNav() {

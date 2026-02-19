@@ -353,3 +353,19 @@ export async function dismissTask(taskId: string) {
 export async function completeTask(taskId: string) {
   return portalFetch(`/portal/tasks/${taskId}/complete`, { method: "POST" });
 }
+
+// --- AI Help (Phase 33) ---
+
+export async function fetchLabEducation(labName: string, labValue?: string) {
+  return portalFetch("/ai/portal/education", {
+    method: "POST",
+    body: JSON.stringify({ labName, labValue }),
+  });
+}
+
+export async function askPortalSearch(query: string) {
+  return portalFetch("/ai/portal/search", {
+    method: "POST",
+    body: JSON.stringify({ query }),
+  });
+}

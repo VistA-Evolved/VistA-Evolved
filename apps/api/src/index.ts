@@ -36,6 +36,8 @@ import { seedDevUsers } from "./portal-iam/portal-user-store.js";
 // Phase 30: Telehealth provider adapters + device check + waiting room
 import telehealthRoutes, { initTelehealthRoutes } from "./routes/telehealth.js";
 import { startRoomCleanup, stopRoomCleanup } from "./telehealth/room-store.js";
+// Phase 33: AI Gateway (governed, grounded, safe)
+import aiGatewayRoutes, { initAiRoutes } from "./routes/ai-gateway.js";
 // Phase 15: Enterprise hardening imports
 import { registerSecurityMiddleware, corsOriginValidator } from "./middleware/security.js";
 import { log } from "./lib/logger.js";
@@ -182,6 +184,13 @@ initTelehealthRoutes(
 );
 server.register(telehealthRoutes);
 startRoomCleanup();
+
+// Register AI Gateway routes -- governed AI assist (Phase 33)
+initAiRoutes(
+  (req: any, reply: any) => requireSession(req, reply),
+  getPortalSession
+);
+server.register(aiGatewayRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

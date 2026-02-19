@@ -1,0 +1,114 @@
+name: Quality Gates
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+# Cancel in-progress runs for the same branch/PR
+concurrency:
+  group: quality-gates-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ================================================================
+  # Unit gates -- no Docker/VistA required
+  # ================================================================
+  unit-gates:
+    name: Unit Gates (typecheck + test + scan)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.13.0'
+
+      - name: Install pnpm
+        run: npm install -g pnpm@10.29.2
+
+      - name: Install dependencies
+        run: pnpm -r install --frozen-lockfile
+
+      # --- Typecheck ---
+      - name: Typecheck API
+        run: pnpm -C apps/api exec tsc --noEmit
+
+      - name: Typecheck Web
+        run: pnpm -C apps/web exec tsc --noEmit
+
+      - name: Typecheck Portal
+        run: pnpm -C apps/portal exec tsc --noEmit
+
+      # --- Unit tests ---
+      - name: Unit tests (redaction + logger)
+        run: npx tsx --test apps/api/src/ai/redaction.test.ts apps/api/src/lib/logger.test.ts
+
+      # --- Security scans ---
+      - name: Secret scan
+        run: node scripts/secret-scan.mjs
+
+      - name: PHI leak scan
+        run: node scripts/phi-leak-scan.mjs
+
+      # --- Build ---
+      - name: Build all packages
+        run: pnpm -r build
+
+  # ================================================================
+  # Evidence bundle -- collects all gate results + SBOM
+  # ================================================================
+  evidence-bundle:
+    name: Generate Evidence Bundle
+    runs-on: ubuntu-latest
+    needs: [unit-gates]
+    timeout-minutes: 20
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.13.0'
+
+      - name: Install pnpm
+        run: npm install -g pnpm@10.29.2
+
+      - name: Install dependencies
+        run: pnpm -r install --frozen-lockfile
+
+      - name: Generate evidence bundle
+        run: node scripts/generate-evidence-bundle.mjs --build-id "ci-${{ github.run_number }}-${{ github.sha }}"
+
+      - name: Upload evidence bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-bundle-${{ github.run_number }}
+          path: artifacts/evidence/
+          retention-days: 90
+
+  # ================================================================
+  # Integration gates -- requires Docker (VistA sandbox)
+  # Skipped in standard CI; runs on self-hosted or manual dispatch.
+  # ================================================================
+  # integration-gates:
+  #   name: Integration Gates (VistA sandbox)
+  #   runs-on: self-hosted
+  #   if: github.event_name == 'workflow_dispatch'
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Start VistA sandbox
+  #       run: docker compose -f services/vista/docker-compose.yml up -d
+  #     - name: Wait for VistA
+  #       run: sleep 30
+  #     - name: Run full verification
+  #       run: pwsh scripts/verify-latest.ps1 -SkipPlaywright
+  #     - name: Stop VistA sandbox
+  #       run: docker compose -f services/vista/docker-compose.yml down
+  #
+  # Re-enable when self-hosted runner is provisioned.
+  # See: docs/runbooks/phase34-regulated-sdlc.md

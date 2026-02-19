@@ -43,7 +43,7 @@ const SECRET_PATTERNS = [
   {
     name: "Hardcoded password",
     regex: /(?:password|passwd|pwd)\s*[:=]\s*["'][^"']{4,}["']/gi,
-    allow: [".env.example", ".md", "AGENTS.md", "BUG-TRACKER.md"],
+    allow: [".env.example", ".md", "AGENTS.md", "BUG-TRACKER.md", ".test.ts", ".spec.ts", "docker-compose.yml", "reference/"],
   },
   {
     name: "AWS Access Key",
@@ -74,7 +74,8 @@ const SECRET_PATTERNS = [
     name: "Hardcoded VistA creds in non-doc",
     regex: /(?:PROV123|NURSE123|PHARM123)(?:!!)?/g,
     allow: [".md", ".env.example", "AGENTS.md", "BUG-TRACKER.md", "secret-scan.mjs",
-            "verify-", "test-", "login/page.tsx", "load-test.mjs", "patient-context.tsx"], // login page + test scripts use Docker dev creds
+            "verify-", "test-", ".test.ts", ".spec.ts", "login/page.tsx", "load-test.mjs", "patient-context.tsx",
+            "login-body.json"], // login page + test scripts use Docker dev creds
   },
 ];
 

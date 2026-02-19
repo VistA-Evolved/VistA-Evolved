@@ -252,7 +252,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
         },
       });
     } catch (err: any) {
-      reply.code(409).send({ ok: false, error: err.message || "Registration failed" });
+      reply.code(409).send({ ok: false, error: "Registration failed" });
     }
   });
 
@@ -662,7 +662,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
 
       return { ok: true, invitation };
     } catch (err: any) {
-      reply.code(400).send({ ok: false, error: err.message });
+      reply.code(400).send({ ok: false, error: "Invalid proxy invitation request" });
     }
   });
 

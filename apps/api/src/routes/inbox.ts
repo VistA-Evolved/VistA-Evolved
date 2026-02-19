@@ -36,7 +36,7 @@ export default async function inboxRoutes(server: FastifyInstance): Promise<void
     try {
       validateCredentials();
     } catch (err: any) {
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: "Inbox credential validation failed" });
     }
 
     const items: InboxItem[] = [];
@@ -133,7 +133,7 @@ export default async function inboxRoutes(server: FastifyInstance): Promise<void
       disconnect();
     } catch (err: any) {
       disconnect();
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: "Inbox query failed" });
     }
 
     return {

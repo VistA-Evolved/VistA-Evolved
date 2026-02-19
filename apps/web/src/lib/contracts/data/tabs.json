@@ -154,6 +154,17 @@
       "tabPosition": "tpBottom",
       "align": "alBottom",
       "isBottomTab": true
+    },
+    {
+      "constant": "CT_AIASSIST",
+      "label": "AI Assist",
+      "creationOrder": 13,
+      "conditional": false,
+      "id": 15,
+      "description": "chart tab - governed AI assist (Phase 33)",
+      "tabPosition": "tpBottom",
+      "align": "alBottom",
+      "isBottomTab": true
     }
   ],
   "subTabs": [

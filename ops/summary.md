@@ -1,9 +1,63 @@
-﻿# Ops Summary — Phase 32: Secure Messaging + Refill Requests + Tasks
+﻿# Ops Summary — Phase 33: AI Gateway (governed, grounded, safe)
 
 ## What Changed
 
-Phase 32 adds secure messaging enhancements, medication refill requests,
-and a unified tasks/notifications system to the patient portal and CPRS shell.
+Phase 33 adds a governed AI Gateway with three initial use cases:
+intake summary (clinician note draft), lab education (patient portal),
+and portal search navigation assistant.
+
+### Architecture
+- 11-step gateway pipeline: validate, rate limit, safety check, model resolve,
+  RAG assembly, PHI redaction, prompt render, model call, post-safety, audit, return
+- Pluggable model registry with stub provider for dev
+- Versioned prompt templates with SHA-256 content hashes
+- Safety layer blocking 6 disallowed categories (diagnosis, treatment, prescribing, ordering, prognosis, differential)
+- PHI redaction engine (10 patterns: SSN, phone, email, DOB, MRN, address, name, DFN, DUZ)
+- RAG engine with role-based source access control
+- Ring-buffer audit trail with hashed user/patient IDs
+
+### CPRS Integration
+- New AI Assist tab (CT_AIASSIST, id: 15) with Intake Summary, Lab Education, Audit sub-tabs
+- Governance banner on all AI outputs
+- Confirm/reject workflow for clinician review
+
+### Portal Integration
+- AI Help page with Lab Education and Portal Help sub-tabs
+- Educational disclaimer on all patient-facing outputs
+
+## How to Test
+
+```bash
+# Health check
+curl http://127.0.0.1:3001/ai/health
+
+# List models (requires auth)
+curl http://127.0.0.1:3001/ai/models -b "session=<cookie>"
+
+# Intake summary (requires auth + patient)
+curl -X POST http://127.0.0.1:3001/ai/request \
+  -H "Content-Type: application/json" \
+  -b "session=<cookie>" \
+  -d '{"useCase":"intake-summary","patientDfn":"3","userRole":"clinician","input":"Generate intake summary"}'
+
+# Lab education (portal)
+curl -X POST http://127.0.0.1:3001/ai/portal/education \
+  -H "Content-Type: application/json" \
+  -b "portal_session=<cookie>" \
+  -d '{"labName":"Hemoglobin A1c","labValue":"7.2%"}'
+```
+
+## Verify
+
+TSC --noEmit: pending
+
+## Follow-ups
+
+- Integrate real LLM providers (OpenAI, Anthropic, local models)
+- Prompt A/B testing
+- Patient consent workflow for AI features
+- Feedback loop from confirm/reject data
+- Multi-language lab education
 
 ### Component A: Messaging Enhancements
 - Proxy send-on-behalf, clinician reply from CPRS Tasks tab
