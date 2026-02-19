@@ -466,6 +466,36 @@ most recent phase verifier and reports PASS/FAIL for each gate.
     Admin-only. Pass `{tenantId, modules: [...]}` to override the SKU defaults
     for a specific tenant. Pass `{tenantId, modules: null}` to clear overrides.
     Dependency validation prevents enabling modules without their prerequisites.
+83. **RCM is VistA-first — do NOT reimplement billing logic.** The claim store
+    is in-memory (like imaging worklist Phase 23). VistA IB/AR files are the
+    source of truth. The `vistaChargeIen` and `vistaArIen` fields on `Claim`
+    ground every domain object to VistA globals. No SQLite, no Postgres for
+    claim persistence — use VistA or the in-memory store.
+84. **Connectors are swappable via payer `integrationMode`.** Four connector
+    types are registered at startup: sandbox, clearinghouse (US EDI), philhealth
+    (government portal), portal-batch (HMO batch upload). The connector registry
+    resolves the right connector from the payer's `integrationMode` field. To
+    add a new market, add a seed JSON in `data/payers/`, implement a connector,
+    and register it. No route changes needed.
+85. **Payer seed data lives in `data/payers/*.json`, not in code.** The payer
+    registry loads all JSON files from `data/payers/` at startup. Each file is
+    an array of `Payer` objects. Adding a new country/market is a data file,
+    not a code change. Files: `us_core.json` (12 US payers), `ph_hmos.json`
+    (15 PH payers including PhilHealth).
+86. **RCM audit is hash-chained and separate from general + imaging audit.**
+    `rcm-audit.ts` maintains its own SHA-256 chain (same pattern as
+    `imaging-audit.ts` and `immutable-audit.ts`). PHI is sanitized before
+    hashing. Verify via `GET /rcm/audit/verify`. Max 20K entries with FIFO
+    eviction.
+87. **EDI pipeline stages are tracked in-memory.** The 10-stage pipeline
+    (created → validated → transformed → enqueued → transmitted → acknowledged
+    → accepted → adjudicated → posted → reconciled) resets on API restart.
+    Each stage transition is timestamped. Query via `GET /rcm/edi/pipeline`.
+88. **PhilHealth connector maps X12 to CF1-CF4 forms internally.** The
+    `philhealth-connector.ts` translates 837P claims to CF2 (outpatient) and
+    837I to CF2+CF3+CF4 (inpatient). Member eligibility uses PhilHealth PIN
+    validation. Env vars: `PHILHEALTH_API_ENDPOINT`, `PHILHEALTH_FACILITY_CODE`,
+    `PHILHEALTH_API_TOKEN`, `PHILHEALTH_TEST_MODE`.
 
 ---
 
@@ -641,6 +671,55 @@ docs/architecture/
 
 scripts/
   verify-phase37c-modularity.ps1 — Phase 37C verifier (65 gates) (Phase 37C)
+```
+
+## 7g. Architecture Quick Map (Phase 38 additions)
+
+```
+data/payers/
+  us_core.json                — 12 US payer seed records (Phase 38)
+  ph_hmos.json                — 15 PH payer seed records (PhilHealth + HMOs) (Phase 38)
+
+apps/api/src/rcm/
+  domain/
+    claim.ts                  — Claim entity, lifecycle transitions, 9-state FSM (Phase 38)
+    payer.ts                  — Payer entity, IntegrationMode (6 modes) (Phase 38)
+    remit.ts                  — Remittance/EOB types for 835 processing (Phase 38)
+    claim-store.ts            — In-memory claim + remittance store (Phase 38)
+  payer-registry/
+    registry.ts               — Payer catalog, seed loader from data/payers/ (Phase 38)
+  edi/
+    types.ts                  — X12 transaction types (837/835/270-278/999/TA1) (Phase 38)
+    pipeline.ts               — EDI pipeline orchestration, 10-stage tracking (Phase 38)
+  validation/
+    engine.ts                 — Multi-layer validation (15+ rules, 5 categories) (Phase 38)
+  connectors/
+    types.ts                  — RcmConnector interface + registry (Phase 38)
+    clearinghouse-connector.ts — US EDI clearinghouse transport (Phase 38)
+    philhealth-connector.ts   — PhilHealth eClaims API adapter (Phase 38)
+    sandbox-connector.ts      — Simulated transport for dev/testing (Phase 38)
+    portal-batch-connector.ts — HMO portal/batch upload adapter (Phase 38)
+  audit/
+    rcm-audit.ts              — Hash-chained PHI-safe RCM audit trail (Phase 38)
+  rcm-routes.ts               — ~30 RCM REST endpoints (Phase 38)
+
+apps/web/src/app/cprs/admin/rcm/
+  page.tsx                    — RCM dashboard (4 tabs: Claims, Payers, Connectors, Audit) (Phase 38)
+
+docs/runbooks/
+  rcm-payer-connectivity.md   — Main RCM runbook (Phase 38)
+  rcm-philhealth-eclaims.md   — PhilHealth integration guide (Phase 38)
+  rcm-us-edi-clearinghouse.md — US EDI clearinghouse guide (Phase 38)
+  payer-registry.md           — Payer registry reference (Phase 38)
+
+docs/architecture/
+  rcm-gateway-architecture.md — RCM architecture spec (Phase 38)
+
+docs/security/
+  rcm-phi-handling.md         — RCM PHI safeguards + HIPAA compliance (Phase 38)
+
+scripts/
+  verify-phase38-rcm.ps1      — Phase 38 verifier (Phase 38)
 ```
 
 ---

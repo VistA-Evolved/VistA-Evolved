@@ -396,7 +396,7 @@
       "description": "Evaluate policy decision"
     },
     "rcm.claims.view": {
-      "status": "pending",
+      "status": "configured",
       "module": "rcm",
       "adapter": "billing",
       "targetRpc": null,
@@ -404,20 +404,60 @@
       "description": "View billing claims"
     },
     "rcm.claims.submit": {
-      "status": "pending",
+      "status": "configured",
       "module": "rcm",
       "adapter": "billing",
       "targetRpc": null,
       "targetPackage": "IB",
-      "description": "Submit claim"
+      "description": "Submit claim to payer via EDI pipeline"
     },
     "rcm.eligibility.check": {
-      "status": "pending",
+      "status": "configured",
       "module": "rcm",
       "adapter": "billing",
       "targetRpc": null,
       "targetPackage": "IVM",
-      "description": "Check patient eligibility"
+      "description": "Check patient eligibility (270/271)"
+    },
+    "rcm.claims.validate": {
+      "status": "configured",
+      "module": "rcm",
+      "adapter": "billing",
+      "targetRpc": null,
+      "targetPackage": "IB",
+      "description": "Validate claim against payer rules"
+    },
+    "rcm.payers.manage": {
+      "status": "configured",
+      "module": "rcm",
+      "adapter": "billing",
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Manage payer registry"
+    },
+    "rcm.remittances.import": {
+      "status": "configured",
+      "module": "rcm",
+      "adapter": "billing",
+      "targetRpc": null,
+      "targetPackage": "IB",
+      "description": "Import remittance advice (835)"
+    },
+    "rcm.edi.pipeline": {
+      "status": "configured",
+      "module": "rcm",
+      "adapter": "billing",
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "EDI pipeline monitoring"
+    },
+    "rcm.audit.view": {
+      "status": "configured",
+      "module": "rcm",
+      "adapter": "billing",
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "View RCM audit trail"
     },
     "scheduling.appointments.create": {
       "status": "pending",

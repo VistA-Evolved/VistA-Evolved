@@ -148,14 +148,14 @@
     },
     "rcm": {
       "name": "Revenue Cycle Management",
-      "description": "Claims, billing, eligibility, EOB (future — adapter-ready)",
+      "description": "Claims lifecycle, EDI pipeline, payer registry, eligibility, remittance posting (Phase 38)",
       "alwaysEnabled": false,
       "routePatterns": [
         "^/rcm/"
       ],
       "dependencies": ["kernel", "clinical"],
       "adapters": ["billing"],
-      "services": []
+      "services": ["claim-store", "payer-registry", "edi-pipeline", "validation-engine", "rcm-audit", "clearinghouse-connector", "philhealth-connector", "sandbox-connector", "portal-batch-connector"]
     },
     "scheduling": {
       "name": "Scheduling",

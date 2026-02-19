@@ -91,6 +91,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/api\/capabilities/, auth: "session" }, // Phase 37C: capability resolution (session)
   { pattern: /^\/api\/modules/, auth: "session" }, // Phase 37C: module status (admin checked in handler)
   { pattern: /^\/api\/adapters/, auth: "session" }, // Phase 37C: adapter info (admin checked in handler)
+  { pattern: /^\/rcm\//, auth: "session" }, // Phase 38: RCM routes (permission checked in handler)
   { pattern: /^\/admin\/my-tenant$/, auth: "session" }, // Phase 17: client tenant config (any user)
   { pattern: /^\/(admin|audit|reports)\//, auth: "admin" },
   { pattern: /^\/ws\//, auth: "session" }, // WebSocket console (has own role check too)

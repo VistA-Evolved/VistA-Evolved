@@ -1,0 +1,17 @@
+{
+  "feature": "Phase 38: VistA-First RCM + Payer Connectivity Platform",
+  "stage": "implemented",
+  "status": "verified",
+  "promptRef": "prompts/42-PHASE-38-RCM-PAYER-CONNECTIVITY/42-01-rcm-payer-platform-IMPLEMENT.md",
+  "runbooks": [
+    "docs/runbooks/rcm-payer-connectivity.md",
+    "docs/runbooks/rcm-philhealth-eclaims.md",
+    "docs/runbooks/rcm-us-edi-clearinghouse.md",
+    "docs/runbooks/payer-registry.md"
+  ],
+  "architecture": "docs/architecture/rcm-gateway-architecture.md",
+  "security": "docs/security/rcm-phi-handling.md",
+  "verifyScript": "scripts/verify-phase38-rcm.ps1",
+  "verifyResult": "95/95 PASS + TypeScript 0 errors",
+  "commitSha": "4b5838c"
+}

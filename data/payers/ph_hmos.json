@@ -1,0 +1,209 @@
+{
+  "_meta": {
+    "description": "Philippines payer seed data: PhilHealth + licensed HMOs (Phase 38)",
+    "source": "Insurance Commission of the Philippines HMO directory + PhilHealth public data",
+    "lastUpdated": "2026-02-20",
+    "notes": "PhilHealth is the universal health insurer. HMOs are supplemental. List covers major licensed HMOs."
+  },
+  "payers": [
+    {
+      "payerId": "PH-PHIC",
+      "name": "Philippine Health Insurance Corporation (PhilHealth)",
+      "country": "PH",
+      "integrationMode": "government_portal",
+      "status": "active",
+      "philhealthCode": "PHIC",
+      "category": "government",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "All healthcare facilities must be PhilHealth-accredited. eClaims submission via PhilHealth portal or API.",
+      "enrollmentUrl": "https://www.philhealth.gov.ph/partners/providers/",
+      "endpoints": [
+        { "purpose": "claims", "protocol": "rest", "url": "https://eclaims.philhealth.gov.ph/api/v1", "notes": "PhilHealth eClaims REST API (versioned)" },
+        { "purpose": "eligibility", "protocol": "rest", "url": "https://eclaims.philhealth.gov.ph/api/v1/member/eligibility" }
+      ],
+      "aliases": ["PhilHealth", "PHIC"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "PH-MAXICARE",
+      "name": "Maxicare Healthcare Corporation",
+      "country": "PH",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "Provider accreditation required. Claims via Maxicare provider portal.",
+      "endpoints": [
+        { "purpose": "claims", "protocol": "portal", "url": "https://provider.maxicare.com.ph/" }
+      ],
+      "aliases": ["Maxicare"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "PH-INTELLICARE",
+      "name": "Intellicare Inc.",
+      "country": "PH",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo",
+      "enrollmentRequired": true,
+      "endpoints": [
+        { "purpose": "claims", "protocol": "portal" }
+      ],
+      "aliases": ["Intellicare"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "PH-MEDICARD",
+      "name": "Medicard Philippines Inc.",
+      "country": "PH",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo",
+      "enrollmentRequired": true,
+      "endpoints": [],
+      "aliases": ["Medicard"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "PH-PHILAM-CARE",
+      "name": "PhilamCare Health Systems (AIA)",
+      "country": "PH",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo",
+      "enrollmentRequired": true,
+      "endpoints": [],
+      "aliases": ["PhilamCare", "AIA Philam"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "PH-VALUCARE",
+      "name": "ValuCare Health Systems",
+      "country": "PH",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo",
+      "enrollmentRequired": true,
+      "endpoints": [],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "PH-ASIANLIFE",
+      "name": "Asian Life General Assurance Corporation",
+      "country": "PH",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo",
+      "enrollmentRequired": true,
+      "endpoints": [],
+      "aliases": ["AsianLife"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "PH-CARITAS",
+      "name": "Caritas Health Shield Inc.",
+      "country": "PH",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo",
+      "enrollmentRequired": true,
+      "endpoints": [],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "PH-INSULAR",
+      "name": "Insular Health Care Inc.",
+      "country": "PH",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo",
+      "enrollmentRequired": true,
+      "endpoints": [],
+      "aliases": ["InLife Health Care"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "PH-LACSON-LACSON",
+      "name": "Lacson & Lacson Insurance Brokers",
+      "country": "PH",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo",
+      "enrollmentRequired": true,
+      "endpoints": [],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "PH-PACIFIC-CROSS",
+      "name": "Pacific Cross Insurance Inc.",
+      "country": "PH",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo",
+      "enrollmentRequired": true,
+      "endpoints": [],
+      "aliases": ["Pacific Cross", "Blue Cross PH"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "PH-COCOLIFE",
+      "name": "Cocolife Healthcare Inc.",
+      "country": "PH",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo",
+      "enrollmentRequired": true,
+      "endpoints": [],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "PH-ETIQA",
+      "name": "Etiqa Life and General Assurance Philippines",
+      "country": "PH",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo",
+      "enrollmentRequired": true,
+      "endpoints": [],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "PH-KAISER-INTL",
+      "name": "Kaiser International Healthgroup Inc.",
+      "country": "PH",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo",
+      "enrollmentRequired": true,
+      "endpoints": [],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "PH-FORTUNE-MEDICARE",
+      "name": "Fortune Medicare Inc.",
+      "country": "PH",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo",
+      "enrollmentRequired": true,
+      "endpoints": [],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    }
+  ]
+}

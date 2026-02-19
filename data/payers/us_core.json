@@ -1,0 +1,202 @@
+{
+  "_meta": {
+    "description": "US core payer seed data for RCM payer registry (Phase 38)",
+    "source": "Placeholder — import full clearinghouse payer roster in production",
+    "lastUpdated": "2026-02-20",
+    "notes": "Top US payers by market share + government programs. PayerIds use clearinghouse format."
+  },
+  "payers": [
+    {
+      "payerId": "US-CMS-MEDICARE-A",
+      "name": "Medicare Part A (CMS)",
+      "country": "US",
+      "integrationMode": "clearinghouse_edi",
+      "status": "active",
+      "clearinghousePayerId": "00882",
+      "category": "government",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "Requires Medicare provider enrollment (PECOS). EDI enrollment via CEDI or MAC.",
+      "endpoints": [
+        { "purpose": "claims", "protocol": "edi_sftp", "receiverId": "CMS" },
+        { "purpose": "eligibility", "protocol": "edi_https", "receiverId": "CMS" },
+        { "purpose": "claimStatus", "protocol": "edi_https", "receiverId": "CMS" }
+      ],
+      "aliases": ["Medicare", "CMS"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "US-CMS-MEDICARE-B",
+      "name": "Medicare Part B (CMS)",
+      "country": "US",
+      "integrationMode": "clearinghouse_edi",
+      "status": "active",
+      "clearinghousePayerId": "00882",
+      "category": "government",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "Same enrollment as Part A. Claims route through MAC.",
+      "endpoints": [
+        { "purpose": "claims", "protocol": "edi_sftp", "receiverId": "CMS" }
+      ],
+      "aliases": ["Medicare Part B"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "US-MEDICAID-GENERIC",
+      "name": "Medicaid (State Programs)",
+      "country": "US",
+      "integrationMode": "clearinghouse_edi",
+      "status": "active",
+      "category": "government",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "Each state has separate enrollment. Use state-specific payer ID from clearinghouse roster.",
+      "endpoints": [],
+      "aliases": ["Medicaid"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "US-TRICARE",
+      "name": "TRICARE (DoD)",
+      "country": "US",
+      "integrationMode": "clearinghouse_edi",
+      "status": "active",
+      "clearinghousePayerId": "99726",
+      "category": "government",
+      "enrollmentRequired": true,
+      "endpoints": [
+        { "purpose": "claims", "protocol": "edi_sftp", "receiverId": "TRICARE" }
+      ],
+      "aliases": ["CHAMPUS", "DoD Healthcare"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "US-CHAMPVA",
+      "name": "CHAMPVA (VA)",
+      "country": "US",
+      "integrationMode": "clearinghouse_edi",
+      "status": "active",
+      "clearinghousePayerId": "84146",
+      "category": "government",
+      "enrollmentRequired": true,
+      "endpoints": [
+        { "purpose": "claims", "protocol": "edi_sftp", "receiverId": "VA-HAC" }
+      ],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "US-BCBS-GENERIC",
+      "name": "Blue Cross Blue Shield (Multi-Plan)",
+      "country": "US",
+      "integrationMode": "clearinghouse_edi",
+      "status": "active",
+      "category": "commercial",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "36 independent BCBS plans. Use plan-specific payer ID from clearinghouse.",
+      "endpoints": [],
+      "naic": "varies",
+      "aliases": ["BCBS", "Blue Cross", "Blue Shield", "Anthem"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "US-UNITEDHEALTHCARE",
+      "name": "UnitedHealthcare",
+      "country": "US",
+      "integrationMode": "clearinghouse_edi",
+      "status": "active",
+      "clearinghousePayerId": "87726",
+      "naic": "79413",
+      "category": "commercial",
+      "enrollmentRequired": true,
+      "endpoints": [
+        { "purpose": "claims", "protocol": "edi_sftp", "receiverId": "87726" },
+        { "purpose": "eligibility", "protocol": "edi_https", "receiverId": "87726" },
+        { "purpose": "claimStatus", "protocol": "edi_https", "receiverId": "87726" }
+      ],
+      "aliases": ["UHC", "Optum", "UnitedHealth Group"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "US-AETNA",
+      "name": "Aetna (CVS Health)",
+      "country": "US",
+      "integrationMode": "clearinghouse_edi",
+      "status": "active",
+      "clearinghousePayerId": "60054",
+      "naic": "60054",
+      "category": "commercial",
+      "enrollmentRequired": true,
+      "endpoints": [
+        { "purpose": "claims", "protocol": "edi_sftp", "receiverId": "60054" },
+        { "purpose": "eligibility", "protocol": "edi_https", "receiverId": "60054" }
+      ],
+      "aliases": ["CVS Aetna"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "US-CIGNA",
+      "name": "Cigna Healthcare",
+      "country": "US",
+      "integrationMode": "clearinghouse_edi",
+      "status": "active",
+      "clearinghousePayerId": "62308",
+      "naic": "62308",
+      "category": "commercial",
+      "enrollmentRequired": true,
+      "endpoints": [
+        { "purpose": "claims", "protocol": "edi_sftp", "receiverId": "62308" }
+      ],
+      "aliases": ["Cigna", "Evernorth"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "US-HUMANA",
+      "name": "Humana Inc.",
+      "country": "US",
+      "integrationMode": "clearinghouse_edi",
+      "status": "active",
+      "clearinghousePayerId": "61101",
+      "naic": "61101",
+      "category": "commercial",
+      "enrollmentRequired": true,
+      "endpoints": [
+        { "purpose": "claims", "protocol": "edi_sftp", "receiverId": "61101" }
+      ],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "US-KAISER",
+      "name": "Kaiser Permanente",
+      "country": "US",
+      "integrationMode": "clearinghouse_edi",
+      "status": "active",
+      "category": "commercial",
+      "enrollmentRequired": true,
+      "endpoints": [],
+      "aliases": ["Kaiser", "KP"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "US-WORKERS-COMP-GENERIC",
+      "name": "Workers Compensation (State Programs)",
+      "country": "US",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "workers_comp",
+      "enrollmentRequired": false,
+      "enrollmentNotes": "WC billing varies by state. Some accept EDI, many require portal or paper.",
+      "endpoints": [],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    }
+  ]
+}
