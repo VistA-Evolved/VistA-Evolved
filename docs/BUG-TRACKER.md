@@ -971,3 +971,22 @@ interferes with the global broker connection.
 The broker cannot handle rapid sequential authentications reliably.
 
 **Files**: `apps/web/e2e/login-flow.spec.ts`
+
+---
+
+### BUG-062: PowerShell 5.1 Set-Content UTF8 BOM breaks curl @file (Phase 38)
+
+**Symptom**: `curl.exe -d "@loginfile.json"` sends empty body to API. The
+`Set-Content -Encoding UTF8` in PowerShell 5.1 prepends a 3-byte BOM
+(`EF BB BF`) to the file. curl reads the BOM bytes as part of the JSON,
+causing Zod validation to reject the body (`accessCode: expected string,
+received undefined`).
+
+**Root cause**: PowerShell 5.1's `-Encoding UTF8` always adds BOM. PowerShell
+7+ has `-Encoding UTF8NoBOM` but we target 5.1 for Windows compatibility.
+
+**Fix**: Use `[System.IO.File]::WriteAllText($path, $content)` which writes
+UTF-8 without BOM by default. Applied to all curl `@file` references in
+`verify-phase38-rcm.ps1`.
+
+**Files**: `scripts/verify-phase38-rcm.ps1`
