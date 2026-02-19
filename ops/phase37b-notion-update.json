@@ -1,0 +1,31 @@
+{
+  "feature": "Phase 37B -- VistA/Vivian Grounding + CPRS Parity Enforcement",
+  "stage": "Development",
+  "status": "Complete",
+  "promptRef": "prompts/40-PHASE-37B-CPRS-PARITY-GROUNDING/40-01-cprs-parity-grounding-IMPLEMENT.md",
+  "runbookPath": "docs/grounding/parity-matrix.md",
+  "verifyScript": "scripts/verify-phase37b-parity.ps1",
+  "commitSHA": "pending",
+  "artifacts": {
+    "cprsContract": "docs/grounding/cprs-contract.extracted.json",
+    "vivianIndex": "docs/grounding/vivian-index.json",
+    "parityMatrixJson": "docs/grounding/parity-matrix.json",
+    "parityMatrixMd": "docs/grounding/parity-matrix.md",
+    "mRoutine": "services/vista/ZVERPC.m",
+    "rpcInstaller": "scripts/install-rpc-catalog.ps1",
+    "contractExtractor": "scripts/extract_cprs_contract.mjs",
+    "vivianSnapshot": "scripts/vivian_snapshot.ts",
+    "matrixBuilder": "scripts/build_parity_matrix.ts",
+    "e2eClinicalFlows": "apps/web/e2e/clinical-flows.spec.ts",
+    "e2eParityEnforcement": "apps/web/e2e/parity-enforcement.spec.ts"
+  },
+  "summary": {
+    "rpcsWired": 25,
+    "rpcsTotal": 975,
+    "tabsWired": 10,
+    "tabsTotal": 14,
+    "unhandledUiActions": 0,
+    "vivianPackages": 16,
+    "e2eTestsAdded": 17
+  }
+}

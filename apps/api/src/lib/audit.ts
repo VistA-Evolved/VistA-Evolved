@@ -57,6 +57,7 @@ export type AuditAction =
   | "config.template-upsert"
   | "config.template-delete"
   | "config.connector-update"
+  | "config.rpc-catalog"
   | "security.rbac-denied"
   | "security.rate-limited"
   | "security.invalid-input"
