@@ -56,7 +56,18 @@ export type RcmAuditAction =
   | 'vista.encounters.read'
   | 'vista.claim-drafts.created'
   | 'vista.coverage.read'
-  | 'vista.rpc-check';
+  | 'vista.rpc-check'
+  | 'ack.ingested'
+  | 'status.ingested'
+  | 'workqueue.created'
+  | 'workqueue.updated'
+  | 'workqueue.resolved'
+  | 'rule.created'
+  | 'rule.updated'
+  | 'rule.deleted'
+  | 'rule.evaluated'
+  | 'remit.processed'
+  | 'remit.denied';
 
 export interface RcmAuditEntry {
   id: string;

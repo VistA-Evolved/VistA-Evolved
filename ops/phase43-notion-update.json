@@ -1,0 +1,10 @@
+{
+  "feature": "Phase 43 — Enterprise RCM Loop: Acks + Remits + Denial Workqueues + Rules",
+  "stage": "Phase 43",
+  "status": "complete",
+  "promptRef": "prompts/47-PHASE-43-RCM-LOOP/prompt.md",
+  "runbookPath": "docs/runbooks/rcm-claim-quality-loop.md",
+  "verifyScript": "vitest run tests/rcm-quality-loop.test.ts",
+  "testResults": "25/25 pass",
+  "commitSHA": "pending"
+}

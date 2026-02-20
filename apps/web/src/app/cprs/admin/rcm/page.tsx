@@ -18,7 +18,7 @@ import styles from '@/components/cprs/cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
-type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista';
+type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules';
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
@@ -37,8 +37,10 @@ export default function RcmPage() {
 
   const tabs: { id: Tab; label: string }[] = [
     { id: 'claims', label: 'Claim Workqueue' },
+    { id: 'workqueues', label: 'Denial Workqueues' },
     { id: 'draft-from-vista', label: 'Draft from VistA' },
     { id: 'payers', label: 'Payer Registry' },
+    { id: 'rules', label: 'Payer Rules' },
     { id: 'connectors', label: 'Connectors & EDI' },
     { id: 'vista-billing', label: 'VistA Billing' },
     { id: 'audit', label: 'Audit Trail' },
@@ -86,8 +88,10 @@ export default function RcmPage() {
 
       <div style={{ padding: 20 }}>
         {tab === 'claims' && <ClaimsTab />}
+        {tab === 'workqueues' && <WorkqueuesTab />}
         {tab === 'draft-from-vista' && <DraftFromVistaTab />}
         {tab === 'payers' && <PayersTab />}
+        {tab === 'rules' && <RulesTab />}
         {tab === 'connectors' && <ConnectorsTab />}
         {tab === 'vista-billing' && <VistaBillingTab />}
         {tab === 'audit' && <AuditTab />}
@@ -983,6 +987,245 @@ function VistaBillingTab() {
       {pendingPanel(charges, 'IB Charges')}
       {pendingPanel(claimsStatus, 'Claims Tracking')}
       {pendingPanel(arStatus, 'Accounts Receivable')}
+    </div>
+  );
+}
+
+/* ─── Denial Workqueues Tab (Phase 43) ────────────────────────────── */
+
+function WorkqueuesTab() {
+  const [items, setItems] = useState<any[]>([]);
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [filterType, setFilterType] = useState<string>('');
+  const [filterStatus, setFilterStatus] = useState<string>('open');
+
+  const refresh = useCallback(() => {
+    setLoading(true);
+    const params = new URLSearchParams();
+    if (filterType) params.set('type', filterType);
+    if (filterStatus) params.set('status', filterStatus);
+    params.set('limit', '100');
+
+    Promise.all([
+      apiFetch(`/rcm/workqueues?${params.toString()}`),
+      apiFetch('/rcm/workqueues/stats'),
+    ]).then(([wqData, statsData]) => {
+      setItems(wqData.items ?? []);
+      setStats(statsData.stats ?? null);
+      setLoading(false);
+    }).catch(() => setLoading(false));
+  }, [filterType, filterStatus]);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  const priorityColors: Record<string, string> = {
+    critical: '#dc3545', high: '#fd7e14', medium: '#ffc107', low: '#198754',
+  };
+  const typeLabels: Record<string, string> = {
+    rejection: 'Rejection (999/277CA)', denial: 'Denial (835)', missing_info: 'Missing Info (277)',
+  };
+
+  return (
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <h3 style={{ margin: 0, fontSize: 15 }}>Denial Workqueues</h3>
+        <button onClick={refresh} style={{ padding: '6px 14px', fontSize: 12, cursor: 'pointer', borderRadius: 4, border: '1px solid #dee2e6', background: '#fff' }}>
+          Refresh
+        </button>
+      </div>
+
+      {/* Stats */}
+      {stats && (
+        <div style={{ display: 'flex', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
+          {Object.entries(stats.byType ?? {}).map(([type, count]) => (
+            <div key={type} style={{ padding: '8px 14px', background: '#f8f9fa', borderRadius: 4, border: '1px solid #dee2e6', fontSize: 12 }}>
+              <span style={{ fontWeight: 600, textTransform: 'capitalize' }}>{type.replace('_', ' ')}</span>
+              <span style={{ marginLeft: 8 }}>{count as number}</span>
+            </div>
+          ))}
+          <div style={{ padding: '8px 14px', background: '#f8f9fa', borderRadius: 4, border: '1px solid #dee2e6', fontSize: 12 }}>
+            <span style={{ fontWeight: 600 }}>Total</span>
+            <span style={{ marginLeft: 8 }}>{stats.total ?? 0}</span>
+          </div>
+        </div>
+      )}
+
+      {/* Filters */}
+      <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
+        <select value={filterType} onChange={(e) => setFilterType(e.target.value)}
+          style={{ padding: '4px 8px', border: '1px solid #ced4da', borderRadius: 4, fontSize: 12 }}>
+          <option value="">All Types</option>
+          <option value="rejection">Rejections</option>
+          <option value="denial">Denials</option>
+          <option value="missing_info">Missing Info</option>
+        </select>
+        <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}
+          style={{ padding: '4px 8px', border: '1px solid #ced4da', borderRadius: 4, fontSize: 12 }}>
+          <option value="">All Statuses</option>
+          <option value="open">Open</option>
+          <option value="in_progress">In Progress</option>
+          <option value="resolved">Resolved</option>
+          <option value="escalated">Escalated</option>
+        </select>
+      </div>
+
+      {loading ? (
+        <p style={{ color: '#6c757d', fontSize: 13 }}>Loading workqueue items...</p>
+      ) : items.length === 0 ? (
+        <p style={{ color: '#6c757d', fontSize: 13 }}>No workqueue items match the filters.</p>
+      ) : (
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+          <thead>
+            <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+              <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Priority</th>
+              <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Type</th>
+              <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Claim</th>
+              <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Reason Code</th>
+              <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Description</th>
+              <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Recommended Action</th>
+              <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Status</th>
+              <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map(item => (
+              <tr key={item.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                <td style={{ padding: '6px 10px' }}>
+                  <span style={{ padding: '2px 8px', borderRadius: 10, fontSize: 10, fontWeight: 600, color: '#fff', background: priorityColors[item.priority] ?? '#6c757d' }}>
+                    {item.priority}
+                  </span>
+                </td>
+                <td style={{ padding: '6px 10px', textTransform: 'capitalize' }}>{typeLabels[item.type] ?? item.type}</td>
+                <td style={{ padding: '6px 10px', fontFamily: 'monospace', fontSize: 11 }}>{item.claimId?.slice(0, 12)}...</td>
+                <td style={{ padding: '6px 10px' }}>
+                  <code style={{ background: '#e9ecef', padding: '1px 4px', borderRadius: 2, fontSize: 11 }}>{item.reasonCode}</code>
+                  {item.reasonCategory && <span style={{ marginLeft: 4, fontSize: 10, color: '#6c757d' }}>({item.reasonCategory})</span>}
+                </td>
+                <td style={{ padding: '6px 10px', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={item.reasonDescription}>
+                  {item.reasonDescription}
+                </td>
+                <td style={{ padding: '6px 10px', maxWidth: 250, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: '#0d6efd' }} title={item.recommendedAction}>
+                  {item.recommendedAction}
+                </td>
+                <td style={{ padding: '6px 10px' }}>
+                  <span style={{ padding: '2px 8px', borderRadius: 10, fontSize: 10, fontWeight: 600,
+                    background: item.status === 'open' ? '#ffc107' : item.status === 'resolved' ? '#198754' : '#17a2b8',
+                    color: item.status === 'open' ? '#000' : '#fff' }}>
+                    {item.status}
+                  </span>
+                </td>
+                <td style={{ padding: '6px 10px', color: '#6c757d', fontSize: 11 }}>{item.createdAt?.slice(0, 16)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}
+
+/* ─── Payer Rules Tab (Phase 43) ──────────────────────────────────── */
+
+function RulesTab() {
+  const [rules, setRules] = useState<any[]>([]);
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  const refresh = useCallback(() => {
+    setLoading(true);
+    Promise.all([
+      apiFetch('/rcm/rules?limit=200'),
+      apiFetch('/rcm/rules/stats'),
+    ]).then(([rulesData, statsData]) => {
+      setRules(rulesData.rules ?? []);
+      setStats(statsData.stats ?? null);
+      setLoading(false);
+    }).catch(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  return (
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <h3 style={{ margin: 0, fontSize: 15 }}>Payer Rules</h3>
+        <button onClick={refresh} style={{ padding: '6px 14px', fontSize: 12, cursor: 'pointer', borderRadius: 4, border: '1px solid #dee2e6', background: '#fff' }}>
+          Refresh
+        </button>
+      </div>
+
+      {/* Stats */}
+      {stats && (
+        <div style={{ display: 'flex', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
+          <div style={{ padding: '8px 14px', background: '#f8f9fa', borderRadius: 4, border: '1px solid #dee2e6', fontSize: 12 }}>
+            <span style={{ fontWeight: 600 }}>Total Rules</span>
+            <span style={{ marginLeft: 8 }}>{stats.total ?? 0}</span>
+          </div>
+          <div style={{ padding: '8px 14px', background: '#f8f9fa', borderRadius: 4, border: '1px solid #dee2e6', fontSize: 12 }}>
+            <span style={{ fontWeight: 600, color: '#198754' }}>Enabled</span>
+            <span style={{ marginLeft: 8 }}>{stats.enabled ?? 0}</span>
+          </div>
+          <div style={{ padding: '8px 14px', background: '#f8f9fa', borderRadius: 4, border: '1px solid #dee2e6', fontSize: 12 }}>
+            <span style={{ fontWeight: 600, color: '#dc3545' }}>Disabled</span>
+            <span style={{ marginLeft: 8 }}>{stats.disabled ?? 0}</span>
+          </div>
+          {Object.entries(stats.byCategory ?? {}).map(([cat, count]) => (
+            <div key={cat} style={{ padding: '8px 14px', background: '#f8f9fa', borderRadius: 4, border: '1px solid #dee2e6', fontSize: 12 }}>
+              <span style={{ fontWeight: 600, textTransform: 'capitalize' }}>{cat.replace('_', ' ')}</span>
+              <span style={{ marginLeft: 8 }}>{count as number}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {loading ? (
+        <p style={{ color: '#6c757d', fontSize: 13 }}>Loading rules...</p>
+      ) : rules.length === 0 ? (
+        <p style={{ color: '#6c757d', fontSize: 13 }}>No payer rules configured.</p>
+      ) : (
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+          <thead>
+            <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+              <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Payer</th>
+              <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Name</th>
+              <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Category</th>
+              <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Severity</th>
+              <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Condition</th>
+              <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Action on Fail</th>
+              <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Enabled</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rules.map(rule => (
+              <tr key={rule.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                <td style={{ padding: '6px 10px', fontWeight: 600 }}>{rule.payerId === '*' ? 'ALL' : rule.payerId}</td>
+                <td style={{ padding: '6px 10px' }}>{rule.name}</td>
+                <td style={{ padding: '6px 10px', textTransform: 'capitalize' }}>{rule.category?.replace('_', ' ')}</td>
+                <td style={{ padding: '6px 10px' }}>
+                  <span style={{ padding: '2px 8px', borderRadius: 10, fontSize: 10, fontWeight: 600,
+                    background: rule.severity === 'error' ? '#dc3545' : rule.severity === 'warning' ? '#ffc107' : '#17a2b8',
+                    color: rule.severity === 'warning' ? '#000' : '#fff' }}>
+                    {rule.severity}
+                  </span>
+                </td>
+                <td style={{ padding: '6px 10px', fontFamily: 'monospace', fontSize: 10, maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                    title={JSON.stringify(rule.condition)}>
+                  {rule.condition?.type}: {rule.condition?.field ?? rule.condition?.maxDaysFromService ?? rule.condition?.minCents ?? ''}
+                </td>
+                <td style={{ padding: '6px 10px', maxWidth: 250, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={rule.actionOnFail}>
+                  {rule.actionOnFail}
+                </td>
+                <td style={{ padding: '6px 10px' }}>
+                  {rule.enabled
+                    ? <span style={{ color: '#198754', fontWeight: 600, fontSize: 11 }}>YES</span>
+                    : <span style={{ color: '#dc3545', fontWeight: 600, fontSize: 11 }}>NO</span>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }

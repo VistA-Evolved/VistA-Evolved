@@ -107,6 +107,25 @@ import { validateCredentials } from '../vista/config.js';
 import { connect, disconnect, callRpc } from '../vista/rpcBrokerClient.js';
 import { log } from '../lib/logger.js';
 
+// Phase 43 -- Ack/Status/Remit processors, workqueues, payer rules
+import {
+  ingestAck, ingestStatusUpdate,
+  listAcks, getAck, getAcksForClaim, getAckStats,
+  listStatusUpdates, getStatusUpdate, getStatusUpdatesForClaim, getStatusStats,
+} from './edi/ack-status-processor.js';
+import {
+  ingestRemittance as processRemittance, getRemitProcessorStats,
+} from './edi/remit-processor.js';
+import {
+  createWorkqueueItem, getWorkqueueItem, updateWorkqueueItem,
+  listWorkqueueItems, getWorkqueueItemsForClaim, getWorkqueueStats,
+} from './workqueues/workqueue-store.js';
+import {
+  seedDefaultRules, addRule, getRule, updateRule as updatePayerRule, deleteRule,
+  listRules, evaluateRules, getRuleStats,
+} from './rules/payer-rules.js';
+import { lookupCarc, lookupRarc, CARC_CODES, RARC_CODES } from './reference/carc-rarc.js';
+
 /* ─── Submission safety (Phase 40) ───────────────────────────────── */
 
 function isSubmissionEnabled(): boolean {
@@ -138,6 +157,9 @@ async function ensureInitialized(): Promise<void> {
 
   // Load payer seed data
   initPayerRegistry();
+
+  // Seed payer rules (Phase 43)
+  seedDefaultRules();
 
   // Register connectors
   const sandbox = new SandboxConnector();
@@ -1163,5 +1185,392 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       log.error('rcm-vista-coverage error', { err: err.message });
       return { ok: false, error: 'VistA service unavailable' };
     }
+  });
+
+  // ═══════════════════════════════════════════════════════════════
+  // Phase 43 — Ack/Status/Remit Pipeline + Workqueues + Rules
+  // ═══════════════════════════════════════════════════════════════
+
+  // ───── Ack Ingestion (999 / 277CA) ─────────────────────────────
+  server.post('/rcm/acks/ingest', async (request: FastifyRequest, reply: FastifyReply) => {
+    const body = (request.body as any) || {};
+    const { type, disposition, originalControlNumber, ackControlNumber, idempotencyKey } = body;
+
+    if (!type || !disposition || !originalControlNumber || !ackControlNumber || !idempotencyKey) {
+      return reply.code(400).send({
+        ok: false,
+        error: 'type, disposition, originalControlNumber, ackControlNumber, and idempotencyKey are required',
+      });
+    }
+
+    const result = ingestAck({
+      type,
+      disposition,
+      originalControlNumber,
+      ackControlNumber,
+      claimId: body.claimId,
+      payerId: body.payerId,
+      payerName: body.payerName,
+      errors: body.errors ?? [],
+      rawPayload: body.rawPayload,
+      idempotencyKey,
+    });
+
+    appendRcmAudit('ack.ingested', {
+      claimId: body.claimId,
+      payerId: body.payerId,
+      detail: { ackId: result.ack.id, disposition, idempotent: result.idempotent },
+    });
+
+    return reply.code(result.idempotent ? 200 : 201).send(result);
+  });
+
+  server.get('/rcm/acks', async (request: FastifyRequest) => {
+    const q = request.query as Record<string, string>;
+    return {
+      ok: true,
+      ...listAcks({
+        type: q.type as any,
+        disposition: q.disposition as any,
+        claimId: q.claimId,
+        limit: Number(q.limit ?? 50),
+        offset: Number(q.offset ?? 0),
+      }),
+    };
+  });
+
+  server.get('/rcm/acks/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const ack = getAck(id);
+    if (!ack) return reply.code(404).send({ ok: false, error: 'Ack not found' });
+    return { ok: true, ack };
+  });
+
+  server.get('/rcm/acks/stats', async () => {
+    return { ok: true, stats: getAckStats() };
+  });
+
+  // ───── Status Ingestion (276/277) ──────────────────────────────
+  server.post('/rcm/status/ingest', async (request: FastifyRequest, reply: FastifyReply) => {
+    const body = (request.body as any) || {};
+    const { categoryCode, statusCode, statusDescription, idempotencyKey } = body;
+
+    if (!categoryCode || !statusCode || !idempotencyKey) {
+      return reply.code(400).send({
+        ok: false,
+        error: 'categoryCode, statusCode, and idempotencyKey are required',
+      });
+    }
+
+    const result = ingestStatusUpdate({
+      claimId: body.claimId,
+      payerClaimId: body.payerClaimId,
+      categoryCode,
+      statusCode,
+      statusDescription: statusDescription ?? '',
+      effectiveDate: body.effectiveDate,
+      checkDate: body.checkDate,
+      totalCharged: body.totalCharged,
+      totalPaid: body.totalPaid,
+      payerId: body.payerId,
+      payerName: body.payerName,
+      rawPayload: body.rawPayload,
+      idempotencyKey,
+    });
+
+    appendRcmAudit('status.ingested', {
+      claimId: body.claimId,
+      payerId: body.payerId,
+      detail: {
+        statusId: result.statusUpdate.id,
+        categoryCode,
+        idempotent: result.idempotent,
+      },
+    });
+
+    return reply.code(result.idempotent ? 200 : 201).send(result);
+  });
+
+  server.get('/rcm/status', async (request: FastifyRequest) => {
+    const q = request.query as Record<string, string>;
+    return {
+      ok: true,
+      ...listStatusUpdates({
+        categoryCode: q.categoryCode,
+        claimId: q.claimId,
+        limit: Number(q.limit ?? 50),
+        offset: Number(q.offset ?? 0),
+      }),
+    };
+  });
+
+  server.get('/rcm/status/stats', async () => {
+    return { ok: true, stats: getStatusStats() };
+  });
+
+  // ───── Claim History (combined acks + status + remits) ─────────
+  server.get('/rcm/claims/:id/history', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const claim = getClaim(id);
+    if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
+
+    const claimAcks = getAcksForClaim(id);
+    const claimStatuses = getStatusUpdatesForClaim(id);
+    const claimWorkqueue = getWorkqueueItemsForClaim(id);
+    const auditEntries = getRcmAuditEntries({ claimId: id, limit: 1000 });
+
+    return {
+      ok: true,
+      claimId: id,
+      claimStatus: claim.status,
+      acks: claimAcks,
+      statusUpdates: claimStatuses,
+      workqueueItems: claimWorkqueue,
+      auditTimeline: auditEntries.items,
+    };
+  });
+
+  // ───── Enhanced Remittance Ingestion (Phase 43) ────────────────
+  server.post('/rcm/remittances/process', async (request: FastifyRequest, reply: FastifyReply) => {
+    const body = (request.body as any) || {};
+    const { payerId, totalCharged, totalPaid, idempotencyKey } = body;
+
+    if (!payerId || totalCharged === undefined || totalPaid === undefined || !idempotencyKey) {
+      return reply.code(400).send({
+        ok: false,
+        error: 'payerId, totalCharged, totalPaid, and idempotencyKey are required',
+      });
+    }
+
+    const result = processRemittance({
+      payerId,
+      payerName: body.payerName,
+      checkNumber: body.checkNumber,
+      checkDate: body.checkDate,
+      eftTraceNumber: body.eftTraceNumber,
+      totalCharged,
+      totalPaid,
+      totalAdjusted: body.totalAdjusted,
+      totalPatientResponsibility: body.totalPatientResponsibility,
+      claimId: body.claimId,
+      payerClaimId: body.payerClaimId,
+      patientDfn: body.patientDfn,
+      ediControlNumber: body.ediControlNumber,
+      serviceLines: body.serviceLines ?? [],
+      idempotencyKey,
+      rawPayload: body.rawPayload,
+      tenantId: body.tenantId,
+    });
+
+    return reply.code(result.idempotent ? 200 : 201).send(result);
+  });
+
+  server.get('/rcm/remittances/processor-stats', async () => {
+    return { ok: true, stats: getRemitProcessorStats() };
+  });
+
+  // ───── Workqueues ──────────────────────────────────────────────
+  server.get('/rcm/workqueues', async (request: FastifyRequest) => {
+    const q = request.query as Record<string, string>;
+    const result = listWorkqueueItems({
+      type: q.type as any,
+      status: q.status as any,
+      claimId: q.claimId,
+      payerId: q.payerId,
+      priority: q.priority as any,
+      tenantId: q.tenantId ?? 'default',
+      limit: Number(q.limit ?? 50),
+      offset: Number(q.offset ?? 0),
+    });
+    return { ok: true, ...result };
+  });
+
+  server.get('/rcm/workqueues/stats', async () => {
+    return { ok: true, stats: getWorkqueueStats() };
+  });
+
+  server.get('/rcm/workqueues/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const item = getWorkqueueItem(id);
+    if (!item) return reply.code(404).send({ ok: false, error: 'Workqueue item not found' });
+    return { ok: true, item };
+  });
+
+  server.patch('/rcm/workqueues/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const body = (request.body as any) || {};
+    const existing = getWorkqueueItem(id);
+    if (!existing) return reply.code(404).send({ ok: false, error: 'Workqueue item not found' });
+
+    const session = (request as any).session;
+    const updates: Record<string, unknown> = {};
+    if (body.status) updates.status = body.status;
+    if (body.assignedTo) updates.assignedTo = body.assignedTo;
+    if (body.priority) updates.priority = body.priority;
+    if (body.resolutionNote) updates.resolutionNote = body.resolutionNote;
+
+    if (body.status === 'resolved') {
+      updates.resolvedAt = new Date().toISOString();
+      updates.resolvedBy = session?.duz ?? 'unknown';
+    }
+
+    const updated = updateWorkqueueItem(id, updates as any);
+
+    appendRcmAudit('workqueue.updated', {
+      claimId: existing.claimId,
+      detail: { workqueueItemId: id, changes: Object.keys(updates) },
+    });
+
+    return { ok: true, item: updated };
+  });
+
+  server.get('/rcm/claims/:id/workqueue', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const claim = getClaim(id);
+    if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
+    const items = getWorkqueueItemsForClaim(id);
+    return { ok: true, claimId: id, items, total: items.length };
+  });
+
+  // ───── Payer Rules ────────────────────────────────────────────
+  server.get('/rcm/rules', async (request: FastifyRequest) => {
+    const q = request.query as Record<string, string>;
+    const result = listRules({
+      payerId: q.payerId,
+      category: q.category as any,
+      enabled: q.enabled === undefined ? undefined : q.enabled === 'true',
+      limit: Number(q.limit ?? 100),
+      offset: Number(q.offset ?? 0),
+    });
+    return { ok: true, ...result };
+  });
+
+  server.get('/rcm/rules/stats', async () => {
+    return { ok: true, stats: getRuleStats() };
+  });
+
+  server.get('/rcm/rules/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const rule = getRule(id);
+    if (!rule) return reply.code(404).send({ ok: false, error: 'Rule not found' });
+    return { ok: true, rule };
+  });
+
+  server.post('/rcm/rules', async (request: FastifyRequest, reply: FastifyReply) => {
+    const body = (request.body as any) || {};
+    const { payerId, name, description, category, condition, actionOnFail } = body;
+
+    if (!payerId || !name || !condition || !actionOnFail) {
+      return reply.code(400).send({
+        ok: false, error: 'payerId, name, condition, and actionOnFail are required',
+      });
+    }
+
+    const now = new Date().toISOString();
+    const rule = {
+      id: `rule-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      payerId,
+      name,
+      description: description ?? '',
+      category: category ?? 'custom',
+      severity: body.severity ?? 'error',
+      enabled: body.enabled !== false,
+      condition,
+      actionOnFail,
+      fieldHint: body.fieldHint,
+      effectiveDate: body.effectiveDate,
+      expirationDate: body.expirationDate,
+      source: 'admin' as const,
+      version: 1,
+      createdAt: now,
+      updatedAt: now,
+    };
+
+    addRule(rule);
+    appendRcmAudit('rule.created', {
+      payerId,
+      detail: { ruleId: rule.id, name, category },
+    });
+
+    return reply.code(201).send({ ok: true, rule });
+  });
+
+  server.patch('/rcm/rules/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const body = (request.body as any) || {};
+    const existing = getRule(id);
+    if (!existing) return reply.code(404).send({ ok: false, error: 'Rule not found' });
+
+    const updated = updatePayerRule(id, body);
+    appendRcmAudit('rule.updated', {
+      payerId: existing.payerId,
+      detail: { ruleId: id, changes: Object.keys(body) },
+    });
+
+    return { ok: true, rule: updated };
+  });
+
+  server.delete('/rcm/rules/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const existing = getRule(id);
+    if (!existing) return reply.code(404).send({ ok: false, error: 'Rule not found' });
+
+    deleteRule(id);
+    appendRcmAudit('rule.deleted', {
+      payerId: existing.payerId,
+      detail: { ruleId: id, name: existing.name },
+    });
+
+    return { ok: true, message: 'Rule deleted' };
+  });
+
+  server.post('/rcm/rules/evaluate', async (request: FastifyRequest, reply: FastifyReply) => {
+    const body = (request.body as any) || {};
+    const { payerId, claimId } = body;
+
+    if (!payerId && !claimId) {
+      return reply.code(400).send({ ok: false, error: 'Either payerId or claimId is required' });
+    }
+
+    let claim: Record<string, unknown>;
+    let resolvedPayerId = payerId;
+
+    if (claimId) {
+      const existingClaim = getClaim(claimId);
+      if (!existingClaim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
+      claim = existingClaim as unknown as Record<string, unknown>;
+      resolvedPayerId = resolvedPayerId ?? existingClaim.payerId;
+    } else {
+      claim = body.claim ?? {};
+    }
+
+    const result = evaluateRules(resolvedPayerId, claim);
+
+    appendRcmAudit('rule.evaluated', {
+      claimId,
+      payerId: resolvedPayerId,
+      detail: { score: result.score, passCount: result.passCount, failCount: result.failCount },
+    });
+
+    return { ok: true, ...result };
+  });
+
+  // ───── CARC/RARC Reference ────────────────────────────────────
+  server.get('/rcm/reference/carc', async (request: FastifyRequest) => {
+    const q = request.query as Record<string, string>;
+    if (q.code) {
+      const entry = lookupCarc(q.code);
+      return entry ? { ok: true, entry } : { ok: false, error: `CARC code ${q.code} not found` };
+    }
+    return { ok: true, codes: CARC_CODES, total: Object.keys(CARC_CODES).length };
+  });
+
+  server.get('/rcm/reference/rarc', async (request: FastifyRequest) => {
+    const q = request.query as Record<string, string>;
+    if (q.code) {
+      const entry = lookupRarc(q.code);
+      return entry ? { ok: true, entry } : { ok: false, error: `RARC code ${q.code} not found` };
+    }
+    return { ok: true, codes: RARC_CODES, total: Object.keys(RARC_CODES).length };
   });
 }

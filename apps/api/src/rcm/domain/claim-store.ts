@@ -135,3 +135,10 @@ export function getStoreStats(): {
     tenants: tenantClaimIndex.size,
   };
 }
+
+/** Reset all stores — used in tests */
+export function resetClaimStore(): void {
+  claims.clear();
+  remittances.clear();
+  tenantClaimIndex.clear();
+}
