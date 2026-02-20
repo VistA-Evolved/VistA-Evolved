@@ -73,7 +73,17 @@ export type RcmAuditAction =
   | 'enrollment.created'
   | 'enrollment.updated'
   | 'route.resolved'
-  | 'route.not_found';
+  | 'route.not_found'
+  | 'transaction.created'
+  | 'transaction.transmitted'
+  | 'transaction.ack_received'
+  | 'transaction.failed'
+  | 'transaction.dlq'
+  | 'transaction.retried'
+  | 'transaction.reconciled'
+  | 'connectivity.gate_failed'
+  | 'translator.build'
+  | 'translator.parse';
 
 export interface RcmAuditEntry {
   id: string;

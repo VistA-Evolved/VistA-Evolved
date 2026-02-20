@@ -148,6 +148,19 @@ import { resolveRoute, isRouteNotFound } from './payerDirectory/routing.js';
 import { runAllImporters, runImportersByCountry, listImporters, getImporter } from './payerDirectory/importers/index.js';
 import type { EnrollmentPacket, EnrollmentStatus } from './payerDirectory/types.js';
 
+// Phase 45 -- Transaction Correctness Engine
+import {
+  buildEnvelope, storeTransaction, getTransaction as getTxn, getTransactionsBySource,
+  transitionTransaction, listTransactions as listTxns, getTransactionStats,
+  getActiveTranslator, listTranslators,
+  getConnectivityProfile, getConnectivityHealth,
+  checkPreTransmitGates, checkAckGates,
+  processRetry, getDLQTransactions, retryFromDLQ,
+  buildReconciliationSummary, buildReconciliationStats,
+} from './transactions/index.js';
+import type { TransactionState } from './transactions/index.js';
+import type { X12TransactionSet } from './edi/types.js';
+
 /* ─── Submission safety (Phase 40) ───────────────────────────────── */
 
 function isSubmissionEnabled(): boolean {
@@ -1765,5 +1778,205 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       return reply.code(422).send({ ok: false, ...route });
     }
     return { ok: true, route };
+  });
+
+  // ───── Transaction Engine (Phase 45) ──────────────────────────
+
+  /** GET /rcm/transactions -- list transactions with optional filters */
+  server.get('/rcm/transactions', async (request: FastifyRequest) => {
+    const q = request.query as Record<string, string>;
+    const items = listTxns({
+      state: q.state as TransactionState | undefined,
+      transactionSet: q.transactionSet as X12TransactionSet | undefined,
+      sourceId: q.sourceId,
+      limit: q.limit ? Number(q.limit) : undefined,
+    });
+    return { ok: true, items, total: items.length };
+  });
+
+  /** GET /rcm/transactions/stats -- transaction statistics */
+  server.get('/rcm/transactions/stats', async () => {
+    return { ok: true, stats: getTransactionStats() };
+  });
+
+  /** GET /rcm/transactions/:id -- get single transaction */
+  server.get('/rcm/transactions/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const txn = getTxn(id);
+    if (!txn) return reply.code(404).send({ ok: false, error: 'Transaction not found' });
+    return { ok: true, transaction: txn };
+  });
+
+  /** POST /rcm/transactions/build -- build envelope + translate to X12 */
+  server.post('/rcm/transactions/build', async (request: FastifyRequest, reply: FastifyReply) => {
+    const body = (request.body as any) || {};
+    if (!body.transactionSet || !body.senderId || !body.receiverId) {
+      return reply.code(400).send({ ok: false, error: 'transactionSet, senderId, receiverId required' });
+    }
+
+    const envelope = buildEnvelope({
+      transactionSet: body.transactionSet,
+      senderId: body.senderId,
+      receiverId: body.receiverId,
+      senderQualifier: body.senderQualifier,
+      receiverQualifier: body.receiverQualifier,
+      usageIndicator: body.usageIndicator ?? 'T',
+      sourceId: body.sourceId,
+      sourceType: body.sourceType,
+      correlationId: body.correlationId,
+    });
+
+    let x12Payload: string | undefined;
+    const translator = getActiveTranslator();
+
+    if (translator && body.canonical) {
+      // Validate first
+      const validation = translator.validate(body.transactionSet, body.canonical);
+      if (validation.length > 0) {
+        appendRcmAudit('connectivity.gate_failed', {
+          detail: { errors: validation, transactionSet: body.transactionSet },
+        });
+        return reply.code(422).send({ ok: false, error: 'Validation failed', validation });
+      }
+
+      const result = translator.buildX12(body.transactionSet, body.canonical, envelope);
+      x12Payload = result.x12Payload;
+
+      appendRcmAudit('translator.build', {
+        detail: {
+          transactionSet: body.transactionSet,
+          translatorId: translator.id,
+          segmentCount: result.segmentCount,
+          byteSize: result.byteSize,
+        },
+      });
+    }
+
+    const record = storeTransaction(envelope, x12Payload);
+
+    appendRcmAudit('transaction.created', {
+      claimId: body.sourceId,
+      detail: {
+        transactionId: record.id,
+        transactionSet: body.transactionSet,
+        controlNumber: envelope.controlNumber,
+      },
+    });
+
+    return { ok: true, transaction: record };
+  });
+
+  /** POST /rcm/transactions/:id/transition -- manually transition state */
+  server.post('/rcm/transactions/:id/transition', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const body = (request.body as any) || {};
+    if (!body.state) return reply.code(400).send({ ok: false, error: 'state is required' });
+
+    const result = transitionTransaction(id, body.state, {
+      responsePayload: body.responsePayload,
+      error: body.error,
+    });
+
+    if (!result) return reply.code(422).send({ ok: false, error: 'Invalid state transition' });
+
+    appendRcmAudit(`transaction.${body.state === 'failed' ? 'failed' : body.state === 'dlq' ? 'dlq' : body.state === 'reconciled' ? 'reconciled' : 'transmitted'}` as any, {
+      detail: { transactionId: id, newState: body.state },
+    });
+
+    return { ok: true, transaction: result };
+  });
+
+  /** POST /rcm/transactions/:id/check-gates -- run pre-transmit or ack gates */
+  server.post('/rcm/transactions/:id/check-gates', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const body = (request.body as any) || {};
+    const gateType = body.gateType ?? 'pre-transmit';
+
+    const txn = getTxn(id);
+    if (!txn) return reply.code(404).send({ ok: false, error: 'Transaction not found' });
+
+    if (gateType === 'ack') {
+      const ackResult = checkAckGates(id);
+      return { ok: true, gateType: 'ack', gates: ackResult };
+    }
+
+    // Pre-transmit gates
+    if (!txn.x12Payload) {
+      return reply.code(422).send({ ok: false, error: 'Transaction has no X12 payload' });
+    }
+    const gateResults = checkPreTransmitGates(txn.envelope.transactionSet, txn.x12Payload);
+    const allPassed = gateResults.every(g => g.passed || g.severity !== 'error');
+    if (!allPassed) {
+      appendRcmAudit('connectivity.gate_failed', {
+        detail: { transactionId: id, failures: gateResults.filter(g => !g.passed) },
+      });
+    }
+    return { ok: true, gateType: 'pre-transmit', gates: gateResults, allPassed };
+  });
+
+  /** POST /rcm/transactions/:id/retry -- retry a failed transaction */
+  server.post('/rcm/transactions/:id/retry', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const result = processRetry(id);
+    if (!result.retried && !result.movedToDLQ) {
+      return reply.code(422).send({ ok: false, error: 'Cannot retry this transaction' });
+    }
+
+    appendRcmAudit('transaction.retried', {
+      detail: { transactionId: id, retried: result.retried, movedToDLQ: result.movedToDLQ },
+    });
+
+    return { ok: true, transaction: result };
+  });
+
+  /** GET /rcm/transactions/dlq -- list dead-letter queue transactions */
+  server.get('/rcm/transactions/dlq', async () => {
+    return { ok: true, items: getDLQTransactions() };
+  });
+
+  /** POST /rcm/transactions/dlq/:id/retry -- retry from dead-letter queue */
+  server.post('/rcm/transactions/dlq/:id/retry', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const success = retryFromDLQ(id);
+    if (!success) return reply.code(422).send({ ok: false, error: 'Cannot retry: not in DLQ or not found' });
+
+    appendRcmAudit('transaction.retried', {
+      detail: { transactionId: id, fromDLQ: true },
+    });
+
+    return { ok: true, retried: true };
+  });
+
+  /** GET /rcm/translators -- list registered translators */
+  server.get('/rcm/translators', async () => {
+    return { ok: true, translators: listTranslators() };
+  });
+
+  /** GET /rcm/connectivity/profile -- get active connectivity profile */
+  server.get('/rcm/connectivity/profile', async () => {
+    return { ok: true, profile: getConnectivityProfile() };
+  });
+
+  /** GET /rcm/connectivity/health -- connectivity health check */
+  server.get('/rcm/connectivity/health', async () => {
+    return { ok: true, ...getConnectivityHealth() };
+  });
+
+  /** GET /rcm/claims/:id/reconciliation -- full claim reconciliation */
+  server.get('/rcm/claims/:id/reconciliation', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const claim = getClaim(id);
+    if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
+
+    const summary = buildReconciliationSummary(id);
+    return { ok: true, reconciliation: summary };
+  });
+
+  /** POST /rcm/claims/batch-reconciliation -- batch reconciliation stats */
+  server.post('/rcm/claims/batch-reconciliation', async (request: FastifyRequest) => {
+    const body = (request.body as any) || {};
+    const claimIds = body.claimIds ?? [];
+    const stats = buildReconciliationStats(claimIds);
+    return { ok: true, stats };
   });
 }

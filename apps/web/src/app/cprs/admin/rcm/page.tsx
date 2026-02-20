@@ -18,7 +18,7 @@ import styles from '@/components/cprs/cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
-type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory';
+type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions';
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
@@ -43,6 +43,7 @@ export default function RcmPage() {
     { id: 'directory', label: 'Payer Directory' },
     { id: 'rules', label: 'Payer Rules' },
     { id: 'connectors', label: 'Connectors & EDI' },
+    { id: 'transactions', label: 'Transactions' },
     { id: 'vista-billing', label: 'VistA Billing' },
     { id: 'audit', label: 'Audit Trail' },
   ];
@@ -95,6 +96,7 @@ export default function RcmPage() {
         {tab === 'directory' && <DirectoryTab />}
         {tab === 'rules' && <RulesTab />}
         {tab === 'connectors' && <ConnectorsTab />}
+        {tab === 'transactions' && <TransactionsTab />}
         {tab === 'vista-billing' && <VistaBillingTab />}
         {tab === 'audit' && <AuditTab />}
       </div>
@@ -1467,6 +1469,234 @@ function DirectoryTab() {
                 ))}
                 {history.length === 0 && (
                   <tr><td colSpan={5} style={{ padding: 16, textAlign: 'center', color: '#6c757d' }}>No refresh history yet.</td></tr>
+                )}
+              </tbody>
+            </table>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
+/* ─── Transactions Tab (Phase 45) ────────────────────────────────── */
+
+function TransactionsTab() {
+  const [txns, setTxns] = useState<any[]>([]);
+  const [stats, setStats] = useState<any>(null);
+  const [translators, setTranslators] = useState<any[]>([]);
+  const [connectivity, setConnectivity] = useState<any>(null);
+  const [dlq, setDlq] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [subTab, setSubTab] = useState<'list' | 'stats' | 'translators' | 'connectivity' | 'dlq'>('list');
+
+  const refresh = useCallback(() => {
+    setLoading(true);
+    Promise.all([
+      apiFetch('/rcm/transactions?limit=100'),
+      apiFetch('/rcm/transactions/stats'),
+      apiFetch('/rcm/translators'),
+      apiFetch('/rcm/connectivity/health'),
+      apiFetch('/rcm/transactions/dlq'),
+    ]).then(([txnData, statsData, trData, connData, dlqData]) => {
+      setTxns(txnData.items ?? []);
+      setStats(statsData.stats ?? null);
+      setTranslators(trData.translators ?? []);
+      setConnectivity(connData);
+      setDlq(dlqData.items ?? []);
+      setLoading(false);
+    }).catch(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  const stateColors: Record<string, string> = {
+    created: '#6c757d', serialized: '#0d6efd', validated: '#17a2b8', queued: '#ffc107',
+    transmitted: '#0d6efd', ack_pending: '#ffc107', ack_accepted: '#198754', ack_rejected: '#dc3545',
+    response_pending: '#ffc107', response_received: '#198754', reconciled: '#198754',
+    failed: '#dc3545', cancelled: '#6c757d', dlq: '#dc3545',
+  };
+
+  const subTabs: { id: typeof subTab; label: string }[] = [
+    { id: 'list', label: 'Transaction List' },
+    { id: 'stats', label: 'Statistics' },
+    { id: 'translators', label: 'Translators' },
+    { id: 'connectivity', label: 'Connectivity' },
+    { id: 'dlq', label: `DLQ (${dlq.length})` },
+  ];
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+        <h3 style={{ margin: 0, fontSize: 15 }}>Transaction Engine</h3>
+        <span style={{ fontSize: 11, color: '#6c757d' }}>Phase 45</span>
+        <button onClick={refresh} style={{ marginLeft: 'auto', padding: '4px 12px', fontSize: 12, cursor: 'pointer' }}>
+          Refresh
+        </button>
+      </div>
+
+      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+        {subTabs.map(st => (
+          <button key={st.id} onClick={() => setSubTab(st.id)}
+            style={{
+              padding: '6px 14px', fontSize: 12, border: '1px solid #dee2e6',
+              borderRadius: 4, cursor: 'pointer',
+              background: subTab === st.id ? '#0d6efd' : '#fff',
+              color: subTab === st.id ? '#fff' : '#495057',
+            }}>
+            {st.label}
+          </button>
+        ))}
+      </div>
+
+      {loading ? <p style={{ color: '#6c757d', fontSize: 13 }}>Loading...</p> : (
+        <>
+          {subTab === 'list' && (
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: '#f8f9fa' }}>
+                  <th style={{ padding: '8px 10px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>ID</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Type</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>State</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Control #</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Sender</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Receiver</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Retries</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Created</th>
+                </tr>
+              </thead>
+              <tbody>
+                {txns.map((t: any) => (
+                  <tr key={t.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                    <td style={{ padding: '6px 10px', fontFamily: 'monospace', fontSize: 10 }}>{t.id?.slice(0, 20)}</td>
+                    <td style={{ padding: '6px 10px', fontWeight: 600 }}>{t.envelope?.transactionSet}</td>
+                    <td style={{ padding: '6px 10px', textAlign: 'center' }}>
+                      <span style={{ padding: '2px 8px', borderRadius: 10, fontSize: 10, fontWeight: 600,
+                        background: stateColors[t.state] ?? '#6c757d', color: '#fff' }}>
+                        {t.state}
+                      </span>
+                    </td>
+                    <td style={{ padding: '6px 10px', fontFamily: 'monospace', fontSize: 10 }}>{t.envelope?.controlNumber}</td>
+                    <td style={{ padding: '6px 10px', fontSize: 11 }}>{t.envelope?.senderId?.trim()}</td>
+                    <td style={{ padding: '6px 10px', fontSize: 11 }}>{t.envelope?.receiverId?.trim()}</td>
+                    <td style={{ padding: '6px 10px', textAlign: 'center' }}>{t.retryCount ?? 0}</td>
+                    <td style={{ padding: '6px 10px', fontFamily: 'monospace', fontSize: 10 }}>
+                      {t.createdAt ? new Date(t.createdAt).toLocaleString() : '-'}
+                    </td>
+                  </tr>
+                ))}
+                {txns.length === 0 && (
+                  <tr><td colSpan={8} style={{ padding: 16, textAlign: 'center', color: '#6c757d' }}>No transactions yet.</td></tr>
+                )}
+              </tbody>
+            </table>
+          )}
+
+          {subTab === 'stats' && stats && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
+              <div style={{ padding: 16, background: '#f8f9fa', borderRadius: 8 }}>
+                <div style={{ fontSize: 24, fontWeight: 700 }}>{stats.total ?? 0}</div>
+                <div style={{ fontSize: 12, color: '#6c757d' }}>Total Transactions</div>
+              </div>
+              <div style={{ padding: 16, background: '#f8f9fa', borderRadius: 8 }}>
+                <div style={{ fontSize: 24, fontWeight: 700, color: '#dc3545' }}>{stats.dlqCount ?? 0}</div>
+                <div style={{ fontSize: 12, color: '#6c757d' }}>Dead Letter Queue</div>
+              </div>
+              <div style={{ padding: 16, background: '#f8f9fa', borderRadius: 8 }}>
+                <div style={{ fontSize: 24, fontWeight: 700, color: '#dc3545' }}>{stats.failedCount ?? 0}</div>
+                <div style={{ fontSize: 12, color: '#6c757d' }}>Failed</div>
+              </div>
+              {stats.byState && Object.keys(stats.byState).length > 0 && (
+                <div style={{ padding: 16, background: '#f8f9fa', borderRadius: 8, gridColumn: '1 / -1' }}>
+                  <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8 }}>By State</div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                    {Object.entries(stats.byState).map(([state, count]) => (
+                      <span key={state} style={{ padding: '4px 10px', background: stateColors[state] ?? '#6c757d', color: '#fff', borderRadius: 10, fontSize: 11 }}>
+                        {state}: {count as number}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {subTab === 'translators' && (
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: '#f8f9fa' }}>
+                  <th style={{ padding: '8px 10px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>ID</th>
+                  <th style={{ padding: '8px 10px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Name</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Available</th>
+                </tr>
+              </thead>
+              <tbody>
+                {translators.map((tr: any) => (
+                  <tr key={tr.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                    <td style={{ padding: '6px 10px', fontFamily: 'monospace' }}>{tr.id}</td>
+                    <td style={{ padding: '6px 10px' }}>{tr.name}</td>
+                    <td style={{ padding: '6px 10px', textAlign: 'center' }}>
+                      <span style={{ padding: '2px 8px', borderRadius: 10, fontSize: 10, fontWeight: 600,
+                        background: tr.available ? '#198754' : '#dc3545', color: '#fff' }}>
+                        {tr.available ? 'YES' : 'NO'}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+                {translators.length === 0 && (
+                  <tr><td colSpan={3} style={{ padding: 16, textAlign: 'center', color: '#6c757d' }}>No translators registered.</td></tr>
+                )}
+              </tbody>
+            </table>
+          )}
+
+          {subTab === 'connectivity' && connectivity && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
+              <div style={{ padding: 16, background: '#f8f9fa', borderRadius: 8 }}>
+                <div style={{ fontSize: 18, fontWeight: 700,
+                  color: connectivity.status === 'healthy' ? '#198754' : connectivity.status === 'degraded' ? '#ffc107' : '#dc3545' }}>
+                  {(connectivity.status ?? 'unknown').toUpperCase()}
+                </div>
+                <div style={{ fontSize: 12, color: '#6c757d' }}>Connectivity Status</div>
+              </div>
+              <div style={{ padding: 16, background: '#f8f9fa', borderRadius: 8 }}>
+                <div style={{ fontSize: 24, fontWeight: 700 }}>{connectivity.dlqDepth ?? 0}</div>
+                <div style={{ fontSize: 12, color: '#6c757d' }}>DLQ Depth</div>
+              </div>
+              <div style={{ padding: 16, background: '#f8f9fa', borderRadius: 8 }}>
+                <div style={{ fontSize: 24, fontWeight: 700 }}>{connectivity.overdueAcks ?? 0}</div>
+                <div style={{ fontSize: 12, color: '#6c757d' }}>Overdue Acks</div>
+              </div>
+            </div>
+          )}
+
+          {subTab === 'dlq' && (
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: '#f8f9fa' }}>
+                  <th style={{ padding: '8px 10px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>ID</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Type</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Retries</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Last Error</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Updated</th>
+                </tr>
+              </thead>
+              <tbody>
+                {dlq.map((t: any) => (
+                  <tr key={t.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                    <td style={{ padding: '6px 10px', fontFamily: 'monospace', fontSize: 10 }}>{t.id?.slice(0, 20)}</td>
+                    <td style={{ padding: '6px 10px', fontWeight: 600 }}>{t.envelope?.transactionSet}</td>
+                    <td style={{ padding: '6px 10px', textAlign: 'center' }}>{t.retryCount ?? 0}</td>
+                    <td style={{ padding: '6px 10px', fontSize: 11, color: '#dc3545' }}>
+                      {(t.errors ?? []).length > 0 ? t.errors[t.errors.length - 1]?.description : '-'}
+                    </td>
+                    <td style={{ padding: '6px 10px', fontFamily: 'monospace', fontSize: 10 }}>
+                      {t.updatedAt ? new Date(t.updatedAt).toLocaleString() : '-'}
+                    </td>
+                  </tr>
+                ))}
+                {dlq.length === 0 && (
+                  <tr><td colSpan={5} style={{ padding: 16, textAlign: 'center', color: '#198754' }}>Dead letter queue is empty.</td></tr>
                 )}
               </tbody>
             </table>
