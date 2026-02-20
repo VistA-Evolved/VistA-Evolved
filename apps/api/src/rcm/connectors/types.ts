@@ -9,6 +9,20 @@
 
 import type { X12TransactionSet, EdiTransaction, EdiResponseError } from '../edi/types.js';
 
+/* ─── Connector constants ────────────────────────────────────────── */
+
+/** Default timeout for outbound connector calls (ms). Connectors should
+ *  abort any HTTP/TCP request that exceeds this. Override per-connector
+ *  via env var or constructor option.  */
+export const CONNECTOR_DEFAULT_TIMEOUT_MS = Number(
+  process.env.RCM_CONNECTOR_TIMEOUT_MS ?? 30_000,
+);
+
+/** Default timeout for health-check probes (ms). */
+export const CONNECTOR_HEALTH_TIMEOUT_MS = Number(
+  process.env.RCM_HEALTH_TIMEOUT_MS ?? 10_000,
+);
+
 /* ─── Connector interface ────────────────────────────────────────── */
 
 export interface ConnectorResult {

@@ -1,12 +1,18 @@
 # PhilHealth eClaims Integration Guide
 
-> Phase 38 — RCM + Payer Connectivity (Philippines Market)
+> Phase 38 / Phase 40 — RCM + Payer Connectivity (Philippines Market)
 
 ## Overview
 
 PhilHealth (Philippine Health Insurance Corporation) is the national
 universal health insurer. All accredited healthcare facilities submit
 claims through the PhilHealth eClaims system.
+
+> **MANDATORY DEADLINE:** PhilHealth eClaims 3.0 is mandatory for all
+> accredited facilities effective **April 1, 2026**. Facilities must
+> migrate from legacy eClaims to the eClaims 3.0 REST API before this
+> date. The VistA-Evolved PhilHealth connector targets eClaims 3.0
+> natively — no legacy compatibility layer is planned.
 
 ## PhilHealth Claim Forms
 
@@ -44,25 +50,39 @@ PHILHEALTH_TEST_MODE=true
 
 ## Payer Seed Data
 
-The Philippines payer seed (`data/payers/ph_hmos.json`) includes:
+The Philippines payer seed (`data/payers/ph_hmos.json`) includes 28 payers:
+PhilHealth (1 government) + all 27 Insurance Commission-licensed HMOs.
 
 | Payer ID | Name | Mode |
 |----------|------|------|
 | PH-PHIC | PhilHealth | `government_portal` |
-| PH-MAXICARE | Maxicare Healthcare | `portal_batch` |
-| PH-INTELLICARE | Intellicare | `portal_batch` |
-| PH-MEDICARD | Medicard Philippines | `portal_batch` |
-| PH-PHILAM-CARE | PhilamCare (AIA) | `portal_batch` |
-| PH-VALUCARE | ValuCare | `portal_batch` |
-| PH-ASIANLIFE | Asian Life | `portal_batch` |
+| PH-ASIANLIFE | AsianLife General | `portal_batch` |
+| PH-AVEGA | Avega Managed Care | `portal_batch` |
+| PH-CAREHEALTH | CareHealth Plus | `portal_batch` |
+| PH-CAREWELL | Carewell Health | `portal_batch` |
 | PH-CARITAS | Caritas Health Shield | `portal_batch` |
+| PH-COCOLIFE | Cocolife Health Care | `portal_batch` |
+| PH-EASTWEST | EastWest Healthcare | `portal_batch` |
+| PH-FORTICARE | Forticare Health | `portal_batch` |
+| PH-HEALTHMAINT | Health Maintenance | `portal_batch` |
+| PH-HEALTHPLAN | Health Plan Philippines | `portal_batch` |
+| PH-HEALTHFIRST | HealthFirst Healthcare | `portal_batch` |
+| PH-ICARE | i-Care Health | `portal_batch` |
 | PH-INSULAR | Insular Health Care | `portal_batch` |
-| PH-LACSON-LACSON | Lacson & Lacson | `portal_batch` |
-| PH-PACIFIC-CROSS | Pacific Cross | `portal_batch` |
-| PH-COCOLIFE | Cocolife Healthcare | `portal_batch` |
-| PH-ETIQA | Etiqa Philippines | `portal_batch` |
+| PH-INTELLICARE | Intellicare Asia | `portal_batch` |
 | PH-KAISER-INTL | Kaiser International | `portal_batch` |
-| PH-FORTUNE-MEDICARE | Fortune Medicare | `portal_batch` |
+| PH-LIFEHEALTH | Life and Health HMP | `portal_batch` |
+| PH-MAXICARE | MaxiCare Healthcare | `portal_batch` |
+| PH-MEDICARD | MediCard Philippines | `portal_batch` |
+| PH-MEDILINK | MediLink Network | `portal_batch` |
+| PH-METROCARE | Metrocare Health | `portal_batch` |
+| PH-PACIFIC-CROSS | Pacific Cross | `portal_batch` |
+| PH-PHILCARE | PhilCare | `portal_batch` |
+| PH-PHILBRITISH | Philippine British | `portal_batch` |
+| PH-PHCP | PH Health Care Providers | `portal_batch` |
+| PH-PHP | Philippine Health Plan | `portal_batch` |
+| PH-STARCARE | Starcare Health | `portal_batch` |
+| PH-VALUCARE | ValuCare | `portal_batch` |
 
 ## PhilHealth-Specific Workflow
 
@@ -83,9 +103,17 @@ Philippine HMOs use `portal_batch` Integration mode. Claims are:
 The portal-batch connector tracks upload status and can be marked
 as confirmed after portal acknowledgment.
 
+## eClaims 3.0 Migration Checklist
+
+- [ ] Register for PhilHealth eClaims 3.0 API credentials
+- [ ] Configure `PHILHEALTH_API_ENDPOINT` to the eClaims 3.0 URL
+- [ ] Validate CF1-CF4 format compliance with eClaims 3.0 schema
+- [ ] Test claim submission in PhilHealth staging environment
+- [ ] Complete production cut-over before **April 1, 2026** deadline
+
 ## Future Enhancements
 
-- [ ] Direct PhilHealth eClaims API integration (REST)
+- [ ] Direct PhilHealth eClaims 3.0 API integration (REST) -- in progress
 - [ ] CF1-CF4 auto-generation from VistA encounter data
 - [ ] HMO portal RPA automation (Maxicare, Intellicare)
 - [ ] PhilHealth ICD-10/RVS code mapping

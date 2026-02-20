@@ -83,6 +83,9 @@ const INLINE_REDACT_PATTERNS = [
   /[0-9a-f]{64}/gi,
   // SSN patterns (XXX-XX-XXXX)
   /\b\d{3}-\d{2}-\d{4}\b/g,
+  // DOB patterns (YYYY-MM-DD, MM/DD/YYYY, M/D/YYYY)
+  /\b(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\b/g,
+  /\b(0?[1-9]|1[0-2])\/(0?[1-9]|[12]\d|3[01])\/(19|20)\d{2}\b/g,
 ];
 
 /**

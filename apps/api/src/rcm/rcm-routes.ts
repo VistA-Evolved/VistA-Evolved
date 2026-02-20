@@ -405,8 +405,15 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
 
   server.post('/rcm/claims/:id/submit', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
+    const idempotencyKey = (request.headers as Record<string, string>)['x-idempotency-key'] ?? '';
     const claim = getClaim(id);
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
+
+    // Idempotency guard: if already submitted with same key, return cached result
+    if (idempotencyKey && claim.status === 'submitted' &&
+        claim.auditTrail?.some((e: any) => e.idempotencyKey === idempotencyKey)) {
+      return { ok: true, submitted: true, idempotent: true, claim };
+    }
 
     // Demo claims can never be submitted
     if (claim.isDemo) {
@@ -516,6 +523,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
           connector: connector.id,
           transactionId: result.transactionId,
           pipelineEntryId: entry.id,
+          idempotencyKey: idempotencyKey || undefined,
         },
       });
 
