@@ -1,0 +1,184 @@
+[
+  {
+    "actionId": "patient.search",
+    "label": "Search Patients",
+    "category": "patient-selection",
+    "requiredRpcs": ["ORWPT LIST ALL"],
+    "gateLevel": "must"
+  },
+  {
+    "actionId": "patient.select",
+    "label": "Select Patient",
+    "category": "patient-selection",
+    "requiredRpcs": ["ORWPT SELECT"],
+    "gateLevel": "must"
+  },
+  {
+    "actionId": "patient.default-list",
+    "label": "Load Default Patient List",
+    "category": "patient-selection",
+    "requiredRpcs": ["ORQPT DEFAULT PATIENT LIST"],
+    "gateLevel": "must"
+  },
+  {
+    "actionId": "cover.load-allergies",
+    "label": "Load Allergies (Cover Sheet)",
+    "category": "cover-sheet",
+    "requiredRpcs": ["ORQQAL LIST"],
+    "gateLevel": "must"
+  },
+  {
+    "actionId": "cover.load-problems",
+    "label": "Load Problems (Cover Sheet)",
+    "category": "cover-sheet",
+    "requiredRpcs": ["ORWCH PROBLEM LIST"],
+    "gateLevel": "must"
+  },
+  {
+    "actionId": "cover.load-vitals",
+    "label": "Load Vitals (Cover Sheet)",
+    "category": "cover-sheet",
+    "requiredRpcs": ["ORQQVI VITALS"],
+    "gateLevel": "must"
+  },
+  {
+    "actionId": "cover.load-meds",
+    "label": "Load Medications (Cover Sheet)",
+    "category": "cover-sheet",
+    "requiredRpcs": ["ORWPS ACTIVE"],
+    "gateLevel": "must"
+  },
+  {
+    "actionId": "problems.list",
+    "label": "Load Problem List",
+    "category": "problems",
+    "requiredRpcs": ["ORQQPL PROBLEM LIST"],
+    "gateLevel": "must"
+  },
+  {
+    "actionId": "problems.add",
+    "label": "Add Problem",
+    "category": "problems",
+    "requiredRpcs": ["ORQQPL ADD SAVE"],
+    "gateLevel": "must"
+  },
+  {
+    "actionId": "meds.list-active",
+    "label": "Load Active Medications",
+    "category": "medications",
+    "requiredRpcs": ["ORWPS ACTIVE"],
+    "gateLevel": "must"
+  },
+  {
+    "actionId": "allergies.list",
+    "label": "Load Allergies",
+    "category": "allergies",
+    "requiredRpcs": ["ORQQAL LIST"],
+    "gateLevel": "must"
+  },
+  {
+    "actionId": "allergies.add",
+    "label": "Add Allergy",
+    "category": "allergies",
+    "requiredRpcs": ["ORWDAL32 SAVE ALLERGY"],
+    "gateLevel": "must"
+  },
+  {
+    "actionId": "notes.list",
+    "label": "Load Notes",
+    "category": "notes",
+    "requiredRpcs": ["TIU DOCUMENTS BY CONTEXT"],
+    "gateLevel": "must"
+  },
+  {
+    "actionId": "notes.create",
+    "label": "Create Note",
+    "category": "notes",
+    "requiredRpcs": ["TIU CREATE RECORD", "TIU SET DOCUMENT TEXT"],
+    "gateLevel": "must"
+  },
+  {
+    "actionId": "orders.save",
+    "label": "Save Order",
+    "category": "orders",
+    "requiredRpcs": ["ORWDX LOCK", "ORWDX SAVE", "ORWDX UNLOCK"],
+    "gateLevel": "must"
+  },
+  {
+    "actionId": "vitals.list",
+    "label": "Load Vitals",
+    "category": "vitals",
+    "requiredRpcs": ["ORQQVI VITALS"],
+    "gateLevel": "must"
+  },
+  {
+    "actionId": "vitals.add",
+    "label": "Add Vital Measurement",
+    "category": "vitals",
+    "requiredRpcs": ["GMV ADD VM"],
+    "gateLevel": "must"
+  },
+  {
+    "actionId": "labs.interim",
+    "label": "Load Interim Lab Results",
+    "category": "labs",
+    "requiredRpcs": ["ORWLRR INTERIM"],
+    "gateLevel": "must"
+  },
+  {
+    "actionId": "consults.list",
+    "label": "Load Consults",
+    "category": "consults",
+    "requiredRpcs": ["ORQQCN LIST"],
+    "gateLevel": "should"
+  },
+  {
+    "actionId": "consults.detail",
+    "label": "View Consult Detail",
+    "category": "consults",
+    "requiredRpcs": ["ORQQCN DETAIL"],
+    "gateLevel": "should"
+  },
+  {
+    "actionId": "reports.list",
+    "label": "Load Report Lists",
+    "category": "reports",
+    "requiredRpcs": ["ORWRP REPORT LISTS"],
+    "gateLevel": "should"
+  },
+  {
+    "actionId": "reports.text",
+    "label": "View Report Text",
+    "category": "reports",
+    "requiredRpcs": ["ORWRP REPORT TEXT"],
+    "gateLevel": "should"
+  },
+  {
+    "actionId": "surgery.list",
+    "label": "Load Surgery Cases",
+    "category": "surgery",
+    "requiredRpcs": ["ORWSR LIST"],
+    "gateLevel": "should"
+  },
+  {
+    "actionId": "imaging.radiology-report",
+    "label": "View Radiology Report",
+    "category": "imaging",
+    "requiredRpcs": ["RA DETAILED REPORT"],
+    "gateLevel": "should"
+  },
+  {
+    "actionId": "orders.dc",
+    "label": "Discontinue Order",
+    "category": "orders",
+    "requiredRpcs": ["ORWDXA DC"],
+    "gateLevel": "may"
+  },
+  {
+    "actionId": "orders.flag",
+    "label": "Flag Order",
+    "category": "orders",
+    "requiredRpcs": ["ORWDXA FLAG"],
+    "gateLevel": "may"
+  }
+]

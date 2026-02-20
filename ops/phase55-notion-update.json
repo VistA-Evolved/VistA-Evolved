@@ -1,0 +1,21 @@
+{
+  "feature": "Phase 55: CPRS Parity Harness v2 (RPC + Action + Form Extraction) + Coverage Gates",
+  "stage": "Verified",
+  "status": "Complete",
+  "promptRef": "prompts/60-PHASE-55-CPRS-PARITY-HARNESS/60-01-IMPLEMENT.md",
+  "verifyRef": "prompts/60-PHASE-55-CPRS-PARITY-HARNESS/60-99-VERIFY.md",
+  "runbook": "ops/phase55-summary.md",
+  "verifyScript": "scripts/verify-phase55-cprs-parity.ps1",
+  "commitMessage": "Phase55: CPRS parity harness v2 + coverage gates",
+  "gatesPass": 20,
+  "gatesFail": 0,
+  "keyMetrics": {
+    "delphiRpcsExtracted": 662,
+    "delphiActionsExtracted": 1287,
+    "delphiFormsExtracted": 323,
+    "totalRpcsInMatrix": 3783,
+    "wiredRpcs": 47,
+    "coreActionGates": 26,
+    "coreActionGatesPass": 26
+  }
+}
