@@ -27,19 +27,26 @@ export type RcmAuditAction =
   | 'claim.appealed'
   | 'claim.closed'
   | 'claim.transition'
+  | 'claim.exported'
+  | 'claim.ready_to_submit'
+  | 'claim.submission_blocked'
   | 'edi.outbound'
   | 'edi.inbound'
   | 'edi.ack'
   | 'edi.error'
+  | 'edi.x12_serialized'
   | 'remit.received'
   | 'remit.matched'
   | 'remit.posted'
   | 'eligibility.checked'
   | 'payer.created'
   | 'payer.updated'
+  | 'payer.csv_imported'
   | 'validation.run'
   | 'connector.submit'
-  | 'connector.response';
+  | 'connector.response'
+  | 'safety.export_only'
+  | 'safety.live_enabled';
 
 export interface RcmAuditEntry {
   id: string;

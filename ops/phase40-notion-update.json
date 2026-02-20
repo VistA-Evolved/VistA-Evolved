@@ -1,0 +1,14 @@
+{
+  "feature": "Phase 40 -- Payer Connectivity Platform",
+  "stage": "Implemented",
+  "status": "Verified",
+  "promptRef": "prompts/44-PHASE-40-PAYER-CONNECTIVITY/prompt.md",
+  "runbookPath": "docs/runbooks/rcm-payer-connectivity-phase40.md",
+  "verifyScript": "scripts/verify-phase40-payer-connectivity.ps1",
+  "gateResults": {
+    "phase40": "53/53 PASS",
+    "phase38Regression": "158/158 PASS",
+    "phase39Regression": "74/74 PASS"
+  },
+  "commitSHA": "pending"
+}

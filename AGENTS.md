@@ -748,6 +748,24 @@ scripts/
   verify-phase39-billing-grounding.ps1 — Phase 39 verifier (Phase 39)
 ```
 
+## 7i. Architecture Quick Map (Phase 40 additions)
+
+```
+apps/api/src/rcm/
+  edi/
+    x12-serializer.ts          — X12 5010 wire format serializer (837P/I, 270) (Phase 40)
+    ph-eclaims-serializer.ts   — PhilHealth eClaims CF1-CF4 bundle generator (Phase 40)
+
+apps/web/src/app/cprs/admin/rcm/
+  page.tsx                     — +submission safety banner, +DEMO badge, +export column (Phase 40)
+
+docs/runbooks/
+  rcm-payer-connectivity-phase40.md — Phase 40 runbook (Phase 40)
+
+scripts/
+  verify-phase40-payer-connectivity.ps1 — Phase 40 verifier (53 gates) (Phase 40)
+```
+
 89. **VistA billing data is split across IB/PRCA/PCE subsystems (Phase 39).**
     PCE encounters (^AUPNVSIT, ^AUPNVCPT, ^AUPNVPOV) have data in the sandbox.
     IB charges (^IB(350)) and claims (^DGCR(399)) are empty in WorldVistA Docker.
@@ -767,6 +785,34 @@ scripts/
     PowerShell -> Docker -> su -> mumps has 4 layers of quoting that break.
     Write .m files in `services/vista/`, `docker cp` into container, then
     `mumps -r ROUTINENAME`. See ZVEBILP.m and ZVEBILR.m for examples.
+94. **`CLAIM_SUBMISSION_ENABLED=false` by default (Phase 40).** No claim
+    is ever submitted to a real payer unless this env var is explicitly set
+    to `true`. The default behavior is export-only: claims are serialized to
+    X12 wire format and written to `data/rcm-exports/` as review artifacts.
+    The submit endpoint returns `submitted: false, safetyMode: 'export_only'`
+    and transitions the claim to `ready_to_submit` instead of `submitted`.
+95. **Demo claims are permanently blocked from real submission (Phase 40).**
+    Claims created with `isDemo: true` return 403 on `/rcm/claims/:id/submit`
+    regardless of `CLAIM_SUBMISSION_ENABLED`. They can only be exported.
+96. **X12 serializer defaults to `usageIndicator: 'T'` (test) (Phase 40).**
+    The scaffold serializer in `x12-serializer.ts` generates structurally
+    correct 5010 X12 but NEVER defaults to production mode. Override with
+    `{ usageIndicator: 'P' }` only for real clearinghouse submission.
+97. **No proprietary code set tables bundled (Phase 40).** CPT/HCPCS
+    descriptions and ICD-10-CM descriptions are NOT embedded in the
+    serializer. Code values pass through as-is. The clearinghouse or
+    payer validates code set membership. This avoids AMA/CMS licensing issues.
+98. **PhilHealth eClaims uses CF1-CF4 JSON bundles, NOT X12 (Phase 40).**
+    The `ph-eclaims-serializer.ts` transforms EdiClaim837 to PhilHealth
+    format. CF1=facility, CF2=claim, CF3=professional fees (inpatient),
+    CF4=medicines/supplies. Actual API submission through PhilHealth connector.
+99. **CSV payer import at `/rcm/payers/import` requires payerId,name columns.**
+    Additional columns map to payer fields. Defaults: country=US, status=active,
+    integrationMode=not_classified. Use this for bulk onboarding from
+    clearinghouse payer rosters.
+100. **Export artifacts go to `data/rcm-exports/` at repo root.**
+     Files named `{txSet}_{claimId}_{timestamp}.x12`. Directory is created
+     automatically. Add to `.gitignore` for production deployments.
 
 ---
 

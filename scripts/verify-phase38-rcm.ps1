@@ -700,7 +700,11 @@ Gate "POST /rcm/claims/:id/submit moves state forward" {
     Warn "Submit test" "claim not in validated state (has blocking edits) -- manual transition test used instead"
     $true
   } else {
-    $null -ne $submitJson -and $submitJson.ok -eq $true -and $submitJson.submitted -eq $true
+    # Phase 40: CLAIM_SUBMISSION_ENABLED=false (default) returns submitted:false, safetyMode:export_only
+    # Accept either submitted:true OR safetyMode:export_only as valid behavior
+    $null -ne $submitJson -and $submitJson.ok -eq $true -and (
+      $submitJson.submitted -eq $true -or $submitJson.safetyMode -eq "export_only"
+    )
   }
 }
 
@@ -1022,7 +1026,13 @@ Gate "claim.ts references VistA AR file (^PRCA)" {
 
 # E6: No raw file I/O that could be a DB write
 Gate "No fs.writeFile/appendFile in RCM (no hidden persistence)" {
-  -not ($rcmAllContent -match "fs\.writeFile|fs\.appendFile|writeFileSync|appendFileSync")
+  # Phase 40 x12-serializer.ts uses writeFileSync for export artifacts (data/rcm-exports/)
+  # This is legitimate file-system staging, not hidden DB persistence
+  $rcmNonExport = Get-ChildItem "$root\apps\api\src\rcm" -Recurse -Include *.ts |
+    Where-Object { $_.Name -ne 'x12-serializer.ts' } |
+    ForEach-Object { Get-Content $_.FullName -Raw } |
+    Out-String
+  -not ($rcmNonExport -match "fs\.writeFile|fs\.appendFile|writeFileSync|appendFileSync")
 }
 
 # ================================================================

@@ -19,6 +19,7 @@ import { randomUUID } from "node:crypto";
 export type ClaimStatus =
   | "draft"
   | "validated"
+  | "ready_to_submit"
   | "submitted"
   | "accepted"
   | "rejected"
@@ -28,21 +29,22 @@ export type ClaimStatus =
   | "closed";
 
 export const CLAIM_STATUS_ORDER: ClaimStatus[] = [
-  "draft", "validated", "submitted", "accepted", "rejected",
-  "paid", "denied", "appealed", "closed",
+  "draft", "validated", "ready_to_submit", "submitted", "accepted",
+  "rejected", "paid", "denied", "appealed", "closed",
 ];
 
 /** Valid transitions — key = from, values = allowed to states */
 export const CLAIM_TRANSITIONS: Record<ClaimStatus, ClaimStatus[]> = {
-  draft:     ["validated", "closed"],
-  validated: ["submitted", "draft", "closed"],
-  submitted: ["accepted", "rejected", "closed"],
-  accepted:  ["paid", "denied", "closed"],
-  rejected:  ["draft", "appealed", "closed"],
-  paid:      ["closed"],
-  denied:    ["appealed", "closed"],
-  appealed:  ["accepted", "rejected", "paid", "denied", "closed"],
-  closed:    [],
+  draft:           ["validated", "closed"],
+  validated:       ["ready_to_submit", "submitted", "draft", "closed"],
+  ready_to_submit: ["submitted", "validated", "draft", "closed"],
+  submitted:       ["accepted", "rejected", "closed"],
+  accepted:        ["paid", "denied", "closed"],
+  rejected:        ["draft", "appealed", "closed"],
+  paid:            ["closed"],
+  denied:          ["appealed", "closed"],
+  appealed:        ["accepted", "rejected", "paid", "denied", "closed"],
+  closed:          [],
 };
 
 export function isValidTransition(from: ClaimStatus, to: ClaimStatus): boolean {
@@ -140,6 +142,11 @@ export interface Claim {
   validationResult?: unknown;   // ValidationResult from validation engine
   pipelineEntryId?: string;     // links to EDI pipeline entry
 
+  // Export / submission safety (Phase 40)
+  exportArtifactPath?: string;  // path to exported EDI bundle (when CLAIM_SUBMISSION_ENABLED=false)
+  isDemo: boolean;              // true if created in demo/sandbox mode — blocked from real submission
+  submissionSafetyMode: 'live' | 'export_only'; // resolved at submit time from CLAIM_SUBMISSION_ENABLED
+
   // Metadata
   isMock: boolean;           // true if generated in sandbox
   auditTrail: ClaimAuditEntry[];
@@ -173,6 +180,7 @@ export function createDraftClaim(params: {
   vistaChargeIen?: string;
   vistaArIen?: string;
   isMock?: boolean;
+  isDemo?: boolean;
   actor: string;
 }): Claim {
   const now = new Date().toISOString();
@@ -205,6 +213,8 @@ export function createDraftClaim(params: {
     lines: linesList,
     totalCharge,
     isMock: params.isMock ?? false,
+    isDemo: params.isDemo ?? false,
+    submissionSafetyMode: (process.env.CLAIM_SUBMISSION_ENABLED === 'true') ? 'live' : 'export_only',
     auditTrail: [{
       timestamp: now,
       action: "claim.created",

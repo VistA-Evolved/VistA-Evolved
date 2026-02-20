@@ -11,6 +11,7 @@
 import type { X12TransactionSet } from '../edi/types.js';
 import type { RcmConnector, ConnectorResult } from './types.js';
 import { randomBytes } from 'node:crypto';
+import { serialize837, exportX12Bundle, type ExportBundleResult } from '../edi/x12-serializer.js';
 
 interface SandboxSubmission {
   id: string;
@@ -38,8 +39,7 @@ export class SandboxConnector implements RcmConnector {
     transactionSet: X12TransactionSet;
     payload: string;
     receivedAt: string;
-  }> = [];
-
+  }> = [];  private exportedBundles: ExportBundleResult[] = [];
   /** Configurable rejection rate for testing error handling (0.0 – 1.0) */
   private rejectionRate: number;
 
@@ -229,6 +229,26 @@ export class SandboxConnector implements RcmConnector {
       payload: JSON.stringify(response),
       receivedAt: new Date().toISOString(),
     });
+  }
+
+  /* ─── Export-only mode (Phase 40) ────────────────────────────────── */
+
+  /**
+   * When CLAIM_SUBMISSION_ENABLED=false, serialize and export to filesystem
+   * instead of submitting. Returns the export artifact path.
+   */
+  async exportClaim(
+    transactionSet: X12TransactionSet,
+    payload: string,
+    claimId: string,
+  ): Promise<ExportBundleResult> {
+    const result = await exportX12Bundle(payload, claimId, transactionSet);
+    this.exportedBundles.push(result);
+    return result;
+  }
+
+  getExportedBundles(): ExportBundleResult[] {
+    return [...this.exportedBundles];
   }
 
   /* ─── Test helpers ─────────────────────────────────────────────── */

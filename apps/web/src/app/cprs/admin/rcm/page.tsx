@@ -1,14 +1,14 @@
 'use client';
 
 /**
- * RCM (Revenue Cycle Management) — Phase 38 + Phase 39 Billing Grounding
+ * RCM (Revenue Cycle Management) -- Phase 38 + Phase 39 Billing Grounding + Phase 40 Payer Connectivity
  *
  * Tabbed interface for the RCM Gateway:
- *   - Claim Workqueue — list claims by status, create/validate/submit
- *   - Payer Registry — browse/search payers, view integration mode
- *   - Connectors — view connector health and EDI pipeline
- *   - VistA Billing — live VistA encounter/insurance data + integration-pending surfaces
- *   - Audit — hash-chained claim lifecycle audit trail
+ *   - Claim Workqueue -- list claims by status, create/validate/submit/export
+ *   - Payer Registry -- browse/search payers, CSV import, view integration mode
+ *   - Connectors -- view connector health and EDI pipeline
+ *   - VistA Billing -- live VistA encounter/insurance data + integration-pending surfaces
+ *   - Audit -- hash-chained claim lifecycle audit trail
  *
  * Accessible at /cprs/admin/rcm. Requires session.
  */
@@ -28,9 +28,11 @@ async function apiFetch(path: string, opts?: RequestInit) {
 export default function RcmPage() {
   const [tab, setTab] = useState<Tab>('claims');
   const [health, setHealth] = useState<any>(null);
+  const [safetyStatus, setSafetyStatus] = useState<any>(null);
 
   useEffect(() => {
     apiFetch('/rcm/health').then(setHealth).catch(() => {});
+    apiFetch('/rcm/submission-safety').then(setSafetyStatus).catch(() => {});
   }, []);
 
   const tabs: { id: Tab; label: string }[] = [
@@ -50,8 +52,19 @@ export default function RcmPage() {
             {health.ok ? 'ONLINE' : 'OFFLINE'}
           </span>
         )}
-        <span style={{ marginLeft: 'auto', fontSize: 11, color: '#6c757d' }}>Phase 38</span>
+        <span style={{ marginLeft: 'auto', fontSize: 11, color: '#6c757d' }}>Phase 40</span>
       </div>
+
+      {/* Submission Safety Banner (Phase 40) */}
+      {safetyStatus && !safetyStatus.enabled && (
+        <div style={{
+          padding: '8px 24px', background: '#fff3cd', borderBottom: '1px solid #ffecb5',
+          fontSize: 12, color: '#664d03', display: 'flex', alignItems: 'center', gap: 8,
+        }}>
+          <strong>EXPORT-ONLY MODE</strong> -- Claims will be exported as X12 artifacts, not submitted to payers.
+          Set CLAIM_SUBMISSION_ENABLED=true to enable live submission.
+        </div>
+      )}
 
       {/* Tabs */}
       <div style={{ display: 'flex', borderBottom: '1px solid #dee2e6', background: '#f8f9fa' }}>
@@ -103,9 +116,9 @@ function ClaimsTab() {
   useEffect(() => { refresh(); }, [refresh]);
 
   const statusColors: Record<string, string> = {
-    draft: '#6c757d', validated: '#0d6efd', submitted: '#ffc107',
-    accepted: '#198754', rejected: '#dc3545', paid: '#198754',
-    denied: '#dc3545', appealed: '#fd7e14', closed: '#495057',
+    draft: '#6c757d', validated: '#0d6efd', ready_to_submit: '#17a2b8',
+    submitted: '#ffc107', accepted: '#198754', rejected: '#dc3545',
+    paid: '#198754', denied: '#dc3545', appealed: '#fd7e14', closed: '#495057',
   };
 
   return (
@@ -148,6 +161,7 @@ function ClaimsTab() {
               <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Amount</th>
               <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Status</th>
               <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Score</th>
+              <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Export</th>
               <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Date</th>
             </tr>
           </thead>
@@ -163,8 +177,14 @@ function ClaimsTab() {
                   <span style={{ padding: '2px 8px', borderRadius: 10, fontSize: 11, fontWeight: 600, color: '#fff', background: statusColors[c.status] ?? '#6c757d' }}>
                     {c.status}
                   </span>
+                  {c.isDemo && <span style={{ marginLeft: 4, fontSize: 10, color: '#dc3545', fontWeight: 600 }}>DEMO</span>}
                 </td>
                 <td style={{ padding: '6px 10px' }}>{c.validationResult?.readinessScore ?? '-'}</td>
+                <td style={{ padding: '6px 10px' }}>
+                  {c.exportArtifactPath
+                    ? <span style={{ fontSize: 10, color: '#198754', fontWeight: 600 }} title={c.exportArtifactPath}>EXPORTED</span>
+                    : '-'}
+                </td>
                 <td style={{ padding: '6px 10px', color: '#6c757d' }}>{c.serviceDate ?? '-'}</td>
               </tr>
             ))}

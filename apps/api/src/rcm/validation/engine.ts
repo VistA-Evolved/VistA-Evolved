@@ -389,6 +389,59 @@ const payerSpecificRules: ValidationRule[] = [
   },
 ];
 
+/* ─── Authorization rules (Phase 40) ─────────────────────────────── */
+
+const authorizationRules: ValidationRule[] = [
+  {
+    id: 'AUTH-001',
+    category: 'authorization',
+    severity: 'warning',
+    blocksSubmission: false,
+    description: 'Prior authorization may be required for high-cost procedures',
+    check: (c) => {
+      // Revenue codes and CPT ranges that typically require prior auth
+      const highCostCpts = ['27447', '27130', '63030', '22551', '22612', '33533'];
+      const needsAuth = (c.lines ?? []).some(
+        sl => highCostCpts.includes(sl.procedure.code) ||
+              (parseInt(sl.procedure.code, 10) >= 20000 && parseInt(sl.procedure.code, 10) <= 29999),
+      );
+      return needsAuth
+        ? makeEdit(authorizationRules[0], 'lines',
+            'One or more procedures may require prior authorization',
+            'Verify payer authorization requirements before submission')
+        : null;
+    },
+  },
+  {
+    id: 'AUTH-002',
+    category: 'authorization',
+    severity: 'info',
+    blocksSubmission: false,
+    description: 'Demo claims are blocked from real submission',
+    check: (c) => {
+      return (c as any).isDemo
+        ? makeEdit(authorizationRules[1], 'isDemo',
+            'This is a demo claim -- real submission is blocked',
+            'Create a non-demo claim for live submission')
+        : null;
+    },
+  },
+  {
+    id: 'AUTH-003',
+    category: 'authorization',
+    severity: 'info',
+    blocksSubmission: false,
+    description: 'Submission safety mode check',
+    check: (c) => {
+      return (c as any).submissionSafetyMode === 'export_only'
+        ? makeEdit(authorizationRules[2], 'submissionSafetyMode',
+            'CLAIM_SUBMISSION_ENABLED is false -- claims will be exported, not submitted',
+            'Set CLAIM_SUBMISSION_ENABLED=true in .env.local to enable live submission')
+        : null;
+    },
+  },
+];
+
 /* ─── Master rule list ───────────────────────────────────────────── */
 
 const ALL_RULES: ValidationRule[] = [
@@ -397,6 +450,7 @@ const ALL_RULES: ValidationRule[] = [
   ...businessRules,
   ...timelyFilingRules,
   ...payerSpecificRules,
+  ...authorizationRules,
 ];
 
 /* ─── Main validation function ───────────────────────────────────── */

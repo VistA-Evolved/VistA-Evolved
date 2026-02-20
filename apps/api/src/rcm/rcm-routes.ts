@@ -1,33 +1,38 @@
 /**
- * RCM API Routes — Revenue Cycle Management + Payer Connectivity
+ * RCM API Routes -- Revenue Cycle Management + Payer Connectivity
  *
  * Endpoints:
- *   GET  /rcm/health              — RCM subsystem health
- *   GET  /rcm/payers              — List payers (with filter/pagination)
- *   GET  /rcm/payers/:id          — Get single payer
- *   POST /rcm/payers              — Create/update payer (admin)
- *   GET  /rcm/payers/stats        — Payer registry statistics
- *   GET  /rcm/claims              — List claims (with filter/pagination)
- *   GET  /rcm/claims/:id          — Get single claim
- *   POST /rcm/claims/draft        — Create draft claim
- *   POST /rcm/claims/:id/validate — Validate claim (returns edits + score)
- *   POST /rcm/claims/:id/submit   — Submit claim to payer
- *   POST /rcm/claims/:id/transition — Manual claim transition
- *   GET  /rcm/claims/:id/timeline — Claim audit timeline
- *   GET  /rcm/claims/stats        — Claim statistics
- *   POST /rcm/eligibility/check   — Eligibility inquiry (270/271)
- *   GET  /rcm/edi/pipeline        — EDI pipeline entries
- *   GET  /rcm/edi/pipeline/stats  — EDI pipeline statistics
- *   GET  /rcm/connectors          — List registered connectors
- *   GET  /rcm/connectors/health   — Connector health check
- *   GET  /rcm/validation/rules    — List validation rules
- *   GET  /rcm/remittances         — List remittances
- *   POST /rcm/remittances/import  — Import remittance (835)
- *   GET  /rcm/audit               — RCM audit trail
- *   GET  /rcm/audit/verify        — Verify audit chain integrity
- *   GET  /rcm/audit/stats         — Audit statistics
+ *   GET  /rcm/health              -- RCM subsystem health
+ *   GET  /rcm/payers              -- List payers (with filter/pagination)
+ *   GET  /rcm/payers/:id          -- Get single payer
+ *   POST /rcm/payers              -- Create/update payer (admin)
+ *   PATCH /rcm/payers/:id         -- Partial update payer (Phase 40)
+ *   POST /rcm/payers/import       -- CSV payer import (Phase 40)
+ *   GET  /rcm/payers/stats        -- Payer registry statistics
+ *   GET  /rcm/claims              -- List claims (with filter/pagination)
+ *   GET  /rcm/claims/:id          -- Get single claim
+ *   POST /rcm/claims/draft        -- Create draft claim
+ *   POST /rcm/claims/:id/validate -- Validate claim (returns edits + score)
+ *   POST /rcm/claims/:id/submit   -- Submit claim to payer (safety-gated)
+ *   POST /rcm/claims/:id/export   -- Export claim as X12 artifact (Phase 40)
+ *   POST /rcm/claims/:id/transition -- Manual claim transition
+ *   GET  /rcm/claims/:id/timeline -- Claim audit timeline
+ *   GET  /rcm/claims/stats        -- Claim statistics
+ *   GET  /rcm/submission-safety   -- Submission safety status (Phase 40)
+ *   POST /rcm/eligibility/check   -- Eligibility inquiry (270/271)
+ *   GET  /rcm/edi/pipeline        -- EDI pipeline entries
+ *   GET  /rcm/edi/pipeline/stats  -- EDI pipeline statistics
+ *   GET  /rcm/connectors          -- List registered connectors
+ *   GET  /rcm/connectors/health   -- Connector health check
+ *   GET  /rcm/validation/rules    -- List validation rules
+ *   GET  /rcm/remittances         -- List remittances
+ *   POST /rcm/remittances/import  -- Import remittance (835)
+ *   GET  /rcm/audit               -- RCM audit trail
+ *   GET  /rcm/audit/verify        -- Verify audit chain integrity
+ *   GET  /rcm/audit/stats         -- Audit statistics
  *
- * Phase 38 — RCM + Payer Connectivity
+ * Phase 38 -- RCM + Payer Connectivity
+ * Phase 40 -- Submission safety, X12 serializer, CSV import, export artifacts
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -67,6 +72,30 @@ import { PortalBatchConnector } from './connectors/portal-batch-connector.js';
 import {
   appendRcmAudit, getRcmAuditEntries, verifyRcmAuditChain, getRcmAuditStats,
 } from './audit/rcm-audit.js';
+
+// X12 serializer (Phase 40)
+import { serialize837, exportX12Bundle } from './edi/x12-serializer.js';
+
+/* ─── Submission safety (Phase 40) ───────────────────────────────── */
+
+function isSubmissionEnabled(): boolean {
+  return process.env.CLAIM_SUBMISSION_ENABLED === 'true';
+}
+
+function getSubmissionSafetyStatus(): {
+  enabled: boolean;
+  mode: 'live' | 'export_only';
+  reason: string;
+} {
+  const enabled = isSubmissionEnabled();
+  return {
+    enabled,
+    mode: enabled ? 'live' : 'export_only',
+    reason: enabled
+      ? 'CLAIM_SUBMISSION_ENABLED=true -- live submission active'
+      : 'CLAIM_SUBMISSION_ENABLED is not true -- claims will be exported as artifacts, not submitted to payers',
+  };
+}
 
 /* ─── Initialize subsystems ──────────────────────────────────────── */
 
@@ -159,6 +188,71 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     const payer = getPayer(body.payerId);
     appendRcmAudit('payer.created', { payerId: body.payerId, detail: { name: body.name } });
     return { ok: true, payer };
+  });
+
+  // ───── PATCH Payer (Phase 40) ───────────────────────────────────
+  server.patch('/rcm/payers/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const existing = getPayer(id);
+    if (!existing) return reply.code(404).send({ ok: false, error: 'Payer not found' });
+
+    const body = (request.body as any) || {};
+    const merged = { ...existing, ...body, payerId: id };
+    upsertPayer(merged);
+    appendRcmAudit('payer.updated', { payerId: id, detail: { fields: Object.keys(body) } });
+    return { ok: true, payer: getPayer(id) };
+  });
+
+  // ───── CSV Payer Import (Phase 40) ──────────────────────────────
+  server.post('/rcm/payers/import', async (request: FastifyRequest, reply: FastifyReply) => {
+    const body = (request.body as any) || {};
+    const csvText = body.csv;
+    if (!csvText || typeof csvText !== 'string') {
+      return reply.code(400).send({ ok: false, error: 'csv field (string) is required' });
+    }
+
+    const lines = csvText.split('\n').map((l: string) => l.trim()).filter(Boolean);
+    if (lines.length < 2) {
+      return reply.code(400).send({ ok: false, error: 'CSV must have header + at least one data row' });
+    }
+
+    const headers = lines[0].split(',').map((h: string) => h.trim().toLowerCase());
+    const payerIdIdx = headers.indexOf('payerid');
+    const nameIdx = headers.indexOf('name');
+    if (payerIdIdx === -1 || nameIdx === -1) {
+      return reply.code(400).send({ ok: false, error: 'CSV must have payerId and name columns' });
+    }
+
+    const imported: string[] = [];
+    const errors: string[] = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      const cols = lines[i].split(',').map((c: string) => c.trim());
+      const payerId = cols[payerIdIdx];
+      const name = cols[nameIdx];
+      if (!payerId || !name) {
+        errors.push(`Row ${i + 1}: missing payerId or name`);
+        continue;
+      }
+
+      const payer: Record<string, unknown> = { payerId, name };
+      // Map remaining columns
+      for (let j = 0; j < headers.length; j++) {
+        if (j !== payerIdIdx && j !== nameIdx && cols[j]) {
+          payer[headers[j]] = cols[j];
+        }
+      }
+      // Set defaults
+      if (!payer.country) payer.country = 'US';
+      if (!payer.status) payer.status = 'active';
+      if (!payer.integrationMode) payer.integrationMode = 'not_classified';
+
+      upsertPayer(payer as any);
+      imported.push(payerId);
+    }
+
+    appendRcmAudit('payer.created', { detail: { csvImport: true, count: imported.length } });
+    return { ok: true, imported: imported.length, errors, payerIds: imported };
   });
 
   // ───── Claims ────────────────────────────────────────────────────
@@ -267,12 +361,64 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     const claim = getClaim(id);
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
-    // Must be validated first
-    if (claim.status !== 'validated') {
+    // Demo claims can never be submitted
+    if (claim.isDemo) {
+      return reply.code(403).send({
+        ok: false,
+        error: 'Demo claims cannot be submitted to payers. Use /rcm/claims/:id/export instead.',
+        isDemo: true,
+      });
+    }
+
+    // Must be validated or ready_to_submit
+    if (claim.status !== 'validated' && claim.status !== 'ready_to_submit') {
       return reply.code(400).send({
         ok: false,
-        error: `Claim status is '${claim.status}' — must be 'validated' before submission`,
+        error: `Claim status is '${claim.status}' -- must be 'validated' or 'ready_to_submit' before submission`,
       });
+    }
+
+    // ─── Submission safety gate (Phase 40) ───────────────────────
+    const safety = getSubmissionSafetyStatus();
+    if (!safety.enabled) {
+      // Export-only mode: generate X12 artifact and transition to ready_to_submit
+      const payer = getPayer(claim.payerId);
+      if (!payer) {
+        return reply.code(400).send({ ok: false, error: `Payer '${claim.payerId}' not found` });
+      }
+
+      const edi837 = buildClaim837FromDomain(claim);
+      const x12Wire = serialize837(edi837, { usageIndicator: 'T' });
+      const exportResult = await exportX12Bundle(x12Wire, claim.id, 
+        claim.claimType === 'institutional' ? '837I' : '837P');
+
+      const session = (request as any).session;
+      let updated = claim;
+      if (claim.status === 'validated') {
+        updated = transitionClaim(claim, 'ready_to_submit', session?.duz ?? 'system',
+          'CLAIM_SUBMISSION_ENABLED=false -- exported as artifact');
+      }
+      updated = { ...updated, exportArtifactPath: exportResult.path };
+      updateClaim(updated);
+
+      appendRcmAudit('claim.transition', {
+        claimId: id,
+        detail: {
+          safetyMode: 'export_only',
+          exportPath: exportResult.path,
+          segmentCount: exportResult.segmentCount,
+          byteSize: exportResult.byteSize,
+        },
+      });
+
+      return {
+        ok: true,
+        submitted: false,
+        safetyMode: 'export_only',
+        message: 'Claim exported as X12 artifact (CLAIM_SUBMISSION_ENABLED=false). Review artifact before enabling live submission.',
+        claim: getClaim(id),
+        exportArtifact: exportResult,
+      };
     }
 
     // Find connector for payer
@@ -390,6 +536,44 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
 
     const auditEntries = getRcmAuditEntries({ claimId: id, limit: 1000 });
     return { ok: true, claimId: id, timeline: auditEntries.items };
+  });
+
+  // ───── Export Claim as X12 Artifact (Phase 40) ──────────────────
+  server.post('/rcm/claims/:id/export', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const claim = getClaim(id);
+    if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
+
+    if (claim.status === 'draft') {
+      return reply.code(400).send({
+        ok: false,
+        error: 'Validate the claim before exporting',
+      });
+    }
+
+    const payer = getPayer(claim.payerId);
+    if (!payer) return reply.code(400).send({ ok: false, error: `Payer '${claim.payerId}' not found` });
+
+    const edi837 = buildClaim837FromDomain(claim);
+    const x12Wire = serialize837(edi837, { usageIndicator: 'T' });
+    const exportResult = await exportX12Bundle(x12Wire, claim.id,
+      claim.claimType === 'institutional' ? '837I' : '837P');
+
+    const updated = { ...claim, exportArtifactPath: exportResult.path };
+    updateClaim(updated);
+
+    appendRcmAudit('claim.transition', {
+      claimId: id,
+      detail: { action: 'export', exportPath: exportResult.path },
+    });
+
+    return { ok: true, claim: getClaim(id), exportArtifact: exportResult };
+  });
+
+  // ───── Submission Safety Status (Phase 40) ──────────────────────
+  server.get('/rcm/submission-safety', async () => {
+    const safety = getSubmissionSafetyStatus();
+    return { ok: true, ...safety };
   });
 
   // ───── Eligibility ──────────────────────────────────────────────
