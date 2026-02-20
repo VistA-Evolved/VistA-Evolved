@@ -1,12 +1,14 @@
 /**
- * Auth routes — Phase 13 (hardened in Phase 15).
+ * Auth routes -- Phase 13 (hardened in Phase 15, Phase 49: RBAC + lockout).
  *
- * POST /auth/login   — authenticate with VistA, create session, audit
- * POST /auth/logout  — destroy session, audit
- * GET  /auth/session — return current session info
+ * POST /auth/login       -- authenticate with VistA, create session, audit
+ * POST /auth/logout      -- destroy session, audit
+ * GET  /auth/session     -- return current session info
+ * GET  /auth/permissions -- return RBAC permissions for current role (Phase 49)
  */
 
 import type { FastifyInstance } from "fastify";
+import { randomBytes } from "crypto";
 import { authenticateUser } from "../vista/rpcBrokerClient.js";
 import {
   createSession,
@@ -16,12 +18,13 @@ import {
   mapUserRole,
   type SessionData,
 } from "./session-store.js";
-import { SESSION_CONFIG } from "../config/server-config.js";
+import { SESSION_CONFIG, CSRF_CONFIG, LOCKOUT_CONFIG } from "../config/server-config.js";
 import { resolveTenantId } from "../config/tenant-config.js";
 import { log } from "../lib/logger.js";
 import { audit } from "../lib/audit.js";
 import { immutableAudit } from "../lib/immutable-audit.js";
 import { LoginBodySchema, validate } from "../lib/validation.js";
+import { getPermissionsForRole, getRbacMatrix } from "./rbac.js";
 
 const COOKIE_NAME = SESSION_CONFIG.cookieName;
 const COOKIE_OPTS = {
@@ -43,6 +46,87 @@ function extractToken(request: { cookies?: Record<string, string | undefined>; h
     return auth.slice(7);
   }
   return null;
+}
+
+/* ------------------------------------------------------------------ */
+/* Account lockout (Phase 49)                                          */
+/* ------------------------------------------------------------------ */
+
+interface LockoutEntry {
+  failures: number;
+  firstFailureAt: number;
+  lockedUntil: number; // 0 = not locked
+}
+
+const lockoutStore = new Map<string, LockoutEntry>();
+
+// Clean up expired lockout entries every 5 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, entry] of lockoutStore) {
+    if (entry.lockedUntil > 0 && entry.lockedUntil <= now) {
+      lockoutStore.delete(key);
+    } else if (now - entry.firstFailureAt > LOCKOUT_CONFIG.windowMs) {
+      lockoutStore.delete(key);
+    }
+  }
+}, 5 * 60 * 1000);
+
+/**
+ * Check if an account is locked out. Returns lockout info or null if not locked.
+ */
+function checkLockout(accountKey: string): { locked: boolean; remainingMs: number; attempts: number } {
+  const entry = lockoutStore.get(accountKey);
+  if (!entry) return { locked: false, remainingMs: 0, attempts: 0 };
+
+  const now = Date.now();
+
+  // Check if lockout period has expired
+  if (entry.lockedUntil > 0 && entry.lockedUntil <= now) {
+    lockoutStore.delete(accountKey);
+    return { locked: false, remainingMs: 0, attempts: 0 };
+  }
+
+  // Check if failure window has expired
+  if (now - entry.firstFailureAt > LOCKOUT_CONFIG.windowMs) {
+    lockoutStore.delete(accountKey);
+    return { locked: false, remainingMs: 0, attempts: 0 };
+  }
+
+  if (entry.lockedUntil > 0) {
+    return { locked: true, remainingMs: entry.lockedUntil - now, attempts: entry.failures };
+  }
+
+  return { locked: false, remainingMs: 0, attempts: entry.failures };
+}
+
+/**
+ * Record a failed login attempt. Returns true if the account is now locked.
+ */
+function recordFailedLogin(accountKey: string): boolean {
+  const now = Date.now();
+  let entry = lockoutStore.get(accountKey);
+
+  if (!entry || now - entry.firstFailureAt > LOCKOUT_CONFIG.windowMs) {
+    entry = { failures: 0, firstFailureAt: now, lockedUntil: 0 };
+    lockoutStore.set(accountKey, entry);
+  }
+
+  entry.failures++;
+
+  if (entry.failures >= LOCKOUT_CONFIG.maxAttempts) {
+    entry.lockedUntil = now + LOCKOUT_CONFIG.lockoutDurationMs;
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Clear lockout on successful login.
+ */
+function clearLockout(accountKey: string): void {
+  lockoutStore.delete(accountKey);
 }
 
 /** Helper to require a valid session on a request.  Returns session or throws 401. */
@@ -89,9 +173,31 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
 
     const { accessCode, verifyCode } = parsed.data;
 
+    // Phase 49: Account lockout check (keyed on accessCode, lowercased)
+    const accountKey = accessCode.toLowerCase();
+    const lockoutStatus = checkLockout(accountKey);
+    if (lockoutStatus.locked) {
+      audit("auth.locked", "denied", { duz: "anonymous" }, {
+        requestId, sourceIp,
+        detail: { remainingMs: lockoutStatus.remainingMs, attempts: lockoutStatus.attempts },
+      });
+      immutableAudit("auth.lockout" as any, "denied", {
+        sub: "anonymous", name: "anonymous", roles: [],
+      }, { requestId, sourceIp, detail: { reason: "account-locked" } });
+      log.warn("Login blocked: account locked", { sourceIp });
+      return reply.code(429).send({
+        ok: false,
+        error: "Account temporarily locked due to repeated failed attempts",
+        retryAfterMs: lockoutStatus.remainingMs,
+      });
+    }
+
     try {
       // Authenticate against VistA
       const userInfo = await authenticateUser(accessCode, verifyCode);
+
+      // Phase 49: Clear lockout on successful login
+      clearLockout(accountKey);
 
       // Create session
       const role = mapUserRole(userInfo.userName);
@@ -113,6 +219,16 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
 
       // Set cookie (httpOnly — no JS access)
       reply.setCookie(COOKIE_NAME, finalToken, COOKIE_OPTS);
+
+      // Phase 49: Issue CSRF token on login
+      const csrfToken = randomBytes(CSRF_CONFIG.tokenBytes).toString("hex");
+      reply.setCookie(CSRF_CONFIG.cookieName, csrfToken, {
+        path: "/",
+        httpOnly: false, // JS must read this to send as header
+        sameSite: "lax" as const,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: Math.floor(SESSION_CONFIG.absoluteTtlMs / 1000),
+      });
 
       // Phase 15C: Audit successful login
       audit("auth.login", "success", {
@@ -137,9 +253,19 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
           facilityName: userInfo.facilityName,
           divisionIen: userInfo.divisionIen,
           tenantId,
+          permissions: getPermissionsForRole(role),
         },
       };
     } catch (err: any) {
+      // Phase 49: Record failed attempt for lockout
+      const nowLocked = recordFailedLogin(accountKey);
+      if (nowLocked) {
+        log.warn("Account locked after repeated failures", { sourceIp });
+        immutableAudit("auth.lockout" as any, "denied", {
+          sub: "anonymous", name: "anonymous", roles: [],
+        }, { requestId, sourceIp, detail: { reason: "max-attempts-reached" } });
+      }
+
       // Phase 15C: Audit failed login (never log credentials)
       audit("auth.failed", "failure", { duz: "anonymous" }, {
         requestId, sourceIp, detail: { error: err.message },
@@ -208,7 +334,45 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
         facilityName: session.facilityName,
         divisionIen: session.divisionIen,
         tenantId: session.tenantId,
+        permissions: getPermissionsForRole(session.role),
       },
+    };
+  });
+
+  // GET /auth/permissions (Phase 49: RBAC introspection)
+  server.get("/auth/permissions", async (request, reply) => {
+    const token = extractToken(request);
+    if (!token) {
+      return reply.code(401).send({ ok: false, error: "Not authenticated" });
+    }
+    const session = getSession(token);
+    if (!session) {
+      return reply.code(401).send({ ok: false, error: "Session expired or invalid" });
+    }
+    return {
+      ok: true,
+      role: session.role,
+      permissions: getPermissionsForRole(session.role),
+    };
+  });
+
+  // GET /auth/rbac-matrix (Phase 49: full RBAC matrix for admin/docs)
+  server.get("/auth/rbac-matrix", async (request, reply) => {
+    const token = extractToken(request);
+    if (!token) {
+      return reply.code(401).send({ ok: false, error: "Not authenticated" });
+    }
+    const session = getSession(token);
+    if (!session) {
+      return reply.code(401).send({ ok: false, error: "Session expired or invalid" });
+    }
+    // Only admin can see the full matrix
+    if (session.role !== "admin") {
+      return reply.code(403).send({ ok: false, error: "Admin only" });
+    }
+    return {
+      ok: true,
+      matrix: getRbacMatrix(),
     };
   });
 }

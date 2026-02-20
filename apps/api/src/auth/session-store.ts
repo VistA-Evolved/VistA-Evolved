@@ -15,7 +15,7 @@ import { SESSION_CONFIG } from "../config/server-config.js";
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
-export type UserRole = "provider" | "nurse" | "pharmacist" | "clerk" | "admin";
+export type UserRole = "provider" | "nurse" | "pharmacist" | "clerk" | "admin" | "billing" | "support";
 
 export interface SessionData {
   /** Unique session token */
@@ -126,13 +126,40 @@ export function rotateSession(oldToken: string): string | null {
   return newToken;
 }
 
-/** Map the known Docker default users to roles. */
-export function mapUserRole(userName: string): UserRole {
+/**
+ * Map VistA user to a role.
+ *
+ * Phase 49: Extended with billing + support roles and VistA security key hints.
+ * In production, this should be driven by VistA security keys (e.g., PROVIDER,
+ * ORES, ORELSE, IB BILLING, etc.) rather than name-matching. The sandbox
+ * Docker image only has 3 users, so name matching is the practical fallback.
+ *
+ * Priority order: admin > billing > pharmacist > nurse > provider > clerk
+ */
+export function mapUserRole(userName: string, securityKeys?: string[]): UserRole {
+  // Phase 49: If VistA security keys are available, use them first
+  if (securityKeys && securityKeys.length > 0) {
+    const keys = new Set(securityKeys.map((k) => k.toUpperCase()));
+    // Admin: XUPROGMODE or system-level keys
+    if (keys.has("XUPROGMODE") || keys.has("XUMGR")) return "admin";
+    // Billing: IB-prefixed keys
+    if (keys.has("IB BILLING") || keys.has("IB EDIT BILLING INFO") || keys.has("IBCNE HCSR EDIT")) return "billing";
+    // Pharmacist: PSJ/PSO keys
+    if (keys.has("PSJ RPHARM") || keys.has("PSO PHARMACIST")) return "pharmacist";
+    // Nurse: nurse-related keys
+    if (keys.has("ORES") || keys.has("ORELSE")) return "nurse";
+    // Provider: PROVIDER key
+    if (keys.has("PROVIDER")) return "provider";
+  }
+
+  // Fallback: name-substring matching for Docker sandbox users
   const upper = userName.toUpperCase();
   // PROV123 (PROVIDER,CLYDE WV DUZ 87) is the primary admin in Docker sandbox
   if (upper.includes("PROVIDER") || upper.includes("CLYDE")) return "admin";
   if (upper.includes("NURSE") || upper.includes("HELEN")) return "nurse";
   if (upper.includes("PHARM") || upper.includes("LINDA")) return "pharmacist";
+  if (upper.includes("BILLING") || upper.includes("BILLER")) return "billing";
   if (upper.includes("CLERK")) return "clerk";
+  if (upper.includes("SUPPORT") || upper.includes("HELPDESK")) return "support";
   return "provider"; // default
 }

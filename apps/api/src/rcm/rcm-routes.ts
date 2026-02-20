@@ -125,6 +125,7 @@ import {
 import { validateCredentials } from '../vista/config.js';
 import { connect, disconnect, callRpc } from '../vista/rpcBrokerClient.js';
 import { log } from '../lib/logger.js';
+import { requirePermission, requireRcmWrite, requireRcmAdmin } from '../auth/rbac.js';
 
 // Phase 43 -- Ack/Status/Remit processors, workqueues, payer rules
 import {
@@ -263,6 +264,64 @@ async function ensureInitialized(): Promise<void> {
 
 export default async function rcmRoutes(server: FastifyInstance): Promise<void> {
   await ensureInitialized();
+
+  /* ── Phase 49: RBAC guard for all RCM routes ──────────────────── */
+  /*                                                                   */
+  /* - GET (reads): require rcm:read (all authenticated clinical roles)*/
+  /* - POST/PATCH/PUT/DELETE: require rcm:write (billing, admin)       */
+  /* - Payer management + audit admin: require rcm:admin (admin only)  */
+  /*                                                                   */
+  /* Admin-only routes (rcm:admin):                                    */
+  /*   POST /rcm/payers, PATCH /rcm/payers/:id, POST /rcm/payers/import*/
+  /*   POST /rcm/rules, PATCH /rcm/rules/:id, DELETE /rcm/rules/:id   */
+  /*   POST /rcm/directory/refresh, POST /rcm/directory/import/:id     */
+  /*   POST /rcm/payers/import/json                                    */
+  /* ─────────────────────────────────────────────────────────────────── */
+  server.addHook('onRequest', async (request: FastifyRequest, reply: FastifyReply) => {
+    const url = request.url.split('?')[0];
+    if (!url.startsWith('/rcm/')) return;
+
+    // Health is open to any authenticated user (session check in security.ts)
+    if (url === '/rcm/health') return;
+
+    const session = (request as any).session;
+    if (!session) return; // security.ts already rejected unauthenticated
+
+    const method = request.method;
+
+    // Admin-only routes
+    const adminRoutes = [
+      '/rcm/payers/import',
+      '/rcm/payers/import/json',
+      '/rcm/directory/refresh',
+    ];
+    const adminRoutePatterns = [
+      /^\/rcm\/payers\/[^/]+$/, // PATCH/PUT on specific payer
+      /^\/rcm\/rules\/[^/]+$/,  // PATCH/DELETE on specific rule
+      /^\/rcm\/directory\/import\//, // Import specific directory
+    ];
+    if (method === 'POST' && (url === '/rcm/payers' || adminRoutes.includes(url))) {
+      requireRcmAdmin(session, reply, { requestId: (request as any).requestId, sourceIp: request.ip });
+      return;
+    }
+    if ((method === 'PATCH' || method === 'DELETE') && adminRoutePatterns.some((p) => p.test(url))) {
+      requireRcmAdmin(session, reply, { requestId: (request as any).requestId, sourceIp: request.ip });
+      return;
+    }
+    if (method === 'POST' && url === '/rcm/rules') {
+      requireRcmAdmin(session, reply, { requestId: (request as any).requestId, sourceIp: request.ip });
+      return;
+    }
+
+    // Write routes (billing + admin)
+    if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
+      requireRcmWrite(session, reply, { requestId: (request as any).requestId, sourceIp: request.ip });
+      return;
+    }
+
+    // Read routes — rcm:read (all authenticated clinical roles)
+    requirePermission(session, 'rcm:read', reply, { requestId: (request as any).requestId, sourceIp: request.ip });
+  });
 
   // ───── Health ────────────────────────────────────────────────────
   server.get('/rcm/health', async () => {

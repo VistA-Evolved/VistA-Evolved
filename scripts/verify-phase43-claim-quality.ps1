@@ -88,6 +88,17 @@ if ($authed) {
 
 $bodyFile = Join-Path $root "verify-body-tmp.json"
 
+# Extract CSRF token from cookie jar (Phase 49 -- double-submit cookie)
+function GetCsrfToken() {
+  if (Test-Path -LiteralPath $cookieFile) {
+    $line = Get-Content $cookieFile | Where-Object { $_ -match "ehr_csrf" } | Select-Object -Last 1
+    if ($line) {
+      return ($line -split "`t")[-1]
+    }
+  }
+  return ""
+}
+
 function ApiGet([string]$path) {
   $raw = & curl.exe -s -b $cookieFile "$API$path" 2>&1 | Out-String
   return ($raw | ConvertFrom-Json)
@@ -95,15 +106,17 @@ function ApiGet([string]$path) {
 
 function ApiPost([string]$path, [string]$body) {
   [System.IO.File]::WriteAllText($bodyFile, $body)
-  $raw = & curl.exe -s -b $cookieFile -X POST "$API$path" `
-    -H "Content-Type: application/json" -d "@$bodyFile" 2>&1 | Out-String
+  $csrf = GetCsrfToken
+  $raw = & curl.exe -s -b $cookieFile -c $cookieFile -X POST "$API$path" `
+    -H "Content-Type: application/json" -H "x-csrf-token: $csrf" -d "@$bodyFile" 2>&1 | Out-String
   return ($raw | ConvertFrom-Json)
 }
 
 function ApiPatch([string]$path, [string]$body) {
   [System.IO.File]::WriteAllText($bodyFile, $body)
-  $raw = & curl.exe -s -b $cookieFile -X PATCH "$API$path" `
-    -H "Content-Type: application/json" -d "@$bodyFile" 2>&1 | Out-String
+  $csrf = GetCsrfToken
+  $raw = & curl.exe -s -b $cookieFile -c $cookieFile -X PATCH "$API$path" `
+    -H "Content-Type: application/json" -H "x-csrf-token: $csrf" -d "@$bodyFile" 2>&1 | Out-String
   return ($raw | ConvertFrom-Json)
 }
 

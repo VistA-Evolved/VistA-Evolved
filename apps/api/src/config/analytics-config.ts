@@ -27,6 +27,8 @@ export const ANALYTICS_ROLE_PERMISSIONS: Record<UserRole, AnalyticsPermission[]>
   pharmacist: ["analytics_viewer"],
   clerk:      [],
   admin:      ["analytics_viewer", "analytics_admin"],
+  billing:    ["analytics_viewer"],
+  support:    ["analytics_viewer"],
 };
 
 /* ================================================================== */

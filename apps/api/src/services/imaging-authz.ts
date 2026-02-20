@@ -45,6 +45,8 @@ const ROLE_PERMISSIONS: Record<UserRole, ImagingPermission[]> = {
   pharmacist: ["imaging_view"],
   clerk:      [],                  // No imaging access by default
   admin:      ["imaging_view", "imaging_diagnostic", "imaging_admin"],
+  billing:    [],                  // No imaging access for billing
+  support:    [],                  // No imaging access for support
 };
 
 /**

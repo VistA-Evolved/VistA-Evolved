@@ -63,6 +63,8 @@ export type AuditAction =
   | "security.invalid-input"
   | "security.session-hijack-attempt"
   | "security.origin-rejected"
+  | "security.csrf-failed"
+  | "auth.locked"
   | "system.startup"
   | "system.shutdown"
   | "system.circuit-breaker-open"

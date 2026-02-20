@@ -6,7 +6,7 @@ import { createContext, useContext, useState, useCallback, useEffect, type React
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
-export type UserRole = 'provider' | 'nurse' | 'pharmacist' | 'clerk' | 'admin' | 'support';
+export type UserRole = 'provider' | 'nurse' | 'pharmacist' | 'clerk' | 'admin' | 'billing' | 'support';
 
 export interface SessionUser {
   duz: string;

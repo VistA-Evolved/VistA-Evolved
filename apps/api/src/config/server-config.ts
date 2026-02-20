@@ -145,3 +145,31 @@ export const RATE_LIMIT_CONFIG = {
   /** Max login attempts per window per IP */
   loginMax: Number(process.env.RATE_LIMIT_LOGIN || 10),
 } as const;
+
+/* ------------------------------------------------------------------ */
+/* CSRF (Phase 49)                                                     */
+/* ------------------------------------------------------------------ */
+
+export const CSRF_CONFIG = {
+  /** CSRF double-submit cookie name */
+  cookieName: "ehr_csrf",
+  /** CSRF header name that must match the cookie value */
+  headerName: "x-csrf-token",
+  /** Token length in bytes (hex-encoded = 2x this) */
+  tokenBytes: 32,
+  /** Exempt methods (safe methods per HTTP spec) */
+  safeMethods: ["GET", "HEAD", "OPTIONS"] as readonly string[],
+} as const;
+
+/* ------------------------------------------------------------------ */
+/* Account lockout (Phase 49)                                          */
+/* ------------------------------------------------------------------ */
+
+export const LOCKOUT_CONFIG = {
+  /** Max failed login attempts per account before lockout */
+  maxAttempts: Number(process.env.LOGIN_LOCKOUT_MAX || 5),
+  /** Lockout duration (ms). Default: 15 minutes */
+  lockoutDurationMs: Number(process.env.LOGIN_LOCKOUT_DURATION_MS || 15 * 60 * 1000),
+  /** Window for counting failures (ms). Default: 15 minutes */
+  windowMs: Number(process.env.LOGIN_LOCKOUT_WINDOW_MS || 15 * 60 * 1000),
+} as const;

@@ -11,10 +11,10 @@
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { randomUUID } from "crypto";
+import { randomUUID, randomBytes } from "crypto";
 import { log, setRequestId, clearRequestId, runWithRequestId } from "../lib/logger.js";
 import { audit } from "../lib/audit.js";
-import { RATE_LIMIT_CONFIG } from "../config/server-config.js";
+import { RATE_LIMIT_CONFIG, CSRF_CONFIG } from "../config/server-config.js";
 import { getSession } from "../auth/session-store.js";
 import type { SessionData } from "../auth/session-store.js";
 import { disconnect as disconnectRpcBroker } from "../vista/rpcBrokerClient.js";
@@ -308,6 +308,52 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
     reply.code(403).send({ ok: false, error: "Origin not allowed" });
   });
 
+  /* ---- CSRF double-submit cookie (Phase 49) ---- */
+  server.addHook("onRequest", async (request: FastifyRequest, reply: FastifyReply) => {
+    const CSRF_COOKIE = CSRF_CONFIG.cookieName;
+    const CSRF_HEADER = CSRF_CONFIG.headerName;
+
+    // Always ensure CSRF token cookie exists (set on every response)
+    let csrfToken = (request as any).cookies?.[CSRF_COOKIE];
+    if (!csrfToken) {
+      csrfToken = randomBytes(CSRF_CONFIG.tokenBytes).toString("hex");
+      reply.setCookie(CSRF_COOKIE, csrfToken, {
+        path: "/",
+        httpOnly: false, // JS must be able to read this to send as header
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 28800, // 8 hours
+      });
+    }
+
+    // Safe methods don't need CSRF validation
+    if ((CSRF_CONFIG.safeMethods as readonly string[]).includes(request.method)) return;
+
+    // Auth endpoints are exempt (login doesn't have a CSRF token yet)
+    const url = request.url.split("?")[0];
+    if (url.startsWith("/auth/")) return;
+    // Service-to-service callbacks are exempt
+    if (url === "/imaging/ingest/callback") return;
+    // Health/metrics/version are exempt
+    if (/^\/(health|ready|vista\/ping|metrics|version)/.test(url)) return;
+
+    // Validate: header must match cookie
+    const headerToken = request.headers[CSRF_HEADER] as string | undefined;
+    if (!headerToken || headerToken !== csrfToken) {
+      log.warn("CSRF validation failed", {
+        url,
+        ip: request.ip,
+        hasCookie: !!csrfToken,
+        hasHeader: !!headerToken,
+      });
+      audit("security.csrf-failed", "denied", {
+        duz: (request as any).session?.duz || "anonymous",
+      }, { sourceIp: request.ip, detail: { url } });
+      reply.code(403).send({ ok: false, error: "CSRF token mismatch" });
+      return;
+    }
+  });
+
   /* ---- Response scrubber: sanitize error messages before they reach the client ---- */
   server.addHook("onSend", async (_request: FastifyRequest, _reply: FastifyReply, payload: unknown) => {
     if (typeof payload !== "string") return payload;
@@ -419,6 +465,6 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
   }
 
   log.info("Security middleware registered", {
-    features: ["request-ids", "security-headers", "rate-limiting", "auth-gateway", "origin-check", "error-handler", "graceful-shutdown"],
+    features: ["request-ids", "security-headers", "rate-limiting", "auth-gateway", "origin-check", "csrf-double-submit", "error-handler", "graceful-shutdown"],
   });
 }
