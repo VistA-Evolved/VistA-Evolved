@@ -25,6 +25,7 @@ const BYPASS_PATTERNS = [
   /^\/api\/modules/,
   /^\/api\/capabilities/,
   /^\/api\/adapters/,
+  /^\/api\/marketplace/,
 ];
 
 /* ------------------------------------------------------------------ */

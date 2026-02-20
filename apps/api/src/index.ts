@@ -61,6 +61,8 @@ import { initCapabilityService } from "./modules/capability-service.js";
 import { initAdapters } from "./adapters/adapter-loader.js";
 import { moduleGuardHook } from "./middleware/module-guard.js";
 import moduleCapabilityRoutes from "./routes/module-capability-routes.js";
+// Phase 51: Marketplace tenant config loader
+import { initMarketplaceTenantConfig } from "./config/marketplace-tenant.js";
 // Phase 38: RCM + Payer Connectivity
 import rcmRoutes from "./rcm/rcm-routes.js";
 // Phase 39: VistA Billing Grounding -- read-only VistA RCM surfaces
@@ -116,6 +118,8 @@ await registerSecurityMiddleware(server);
 initModuleRegistry();
 initCapabilityService();
 await initAdapters();
+// Phase 51: Initialize marketplace tenant config (after module registry)
+initMarketplaceTenantConfig();
 server.addHook("onRequest", moduleGuardHook);
 
 // Accept empty-body POSTs with any Content-Type (e.g., logout)
