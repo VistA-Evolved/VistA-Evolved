@@ -83,7 +83,12 @@ export type RcmAuditAction =
   | 'transaction.reconciled'
   | 'connectivity.gate_failed'
   | 'translator.build'
-  | 'translator.parse';
+  | 'translator.parse'
+  | 'gateway.probe'
+  | 'gateway.readiness_checked'
+  | 'gateway.conformance_validated'
+  | 'gateway.soa_generated'
+  | 'gateway.soa_rejected_pdf';
 
 export interface RcmAuditEntry {
   id: string;

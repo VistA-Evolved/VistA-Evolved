@@ -42,9 +42,16 @@
  *   POST /rcm/enrollment/:id      -- Create/update enrollment packet (Phase 44)
  *   POST /rcm/claims/:id/route    -- Resolve claim route (Phase 44)
  *   GET  /rcm/routing/resolve     -- Resolve route by payerId (Phase 44)
+ *   GET  /rcm/gateways/readiness       -- Unified gateway readiness (Phase 46)
+ *   GET  /rcm/gateways/readiness/:id   -- Single gateway readiness (Phase 46)
+ *   GET  /rcm/gateways/ids             -- List gateway IDs (Phase 46)
+ *   GET  /rcm/conformance/gateways     -- All gateway conformance (Phase 46)
+ *   GET  /rcm/conformance/gateways/:id -- Single gateway conformance (Phase 46)
+ *   POST /rcm/conformance/gateways/:id/validate -- Validate payload (Phase 46)
  *
  * Phase 38 -- RCM + Payer Connectivity
  * Phase 40 -- Submission safety, X12 serializer, CSV import, export artifacts
+ * Phase 46 -- National gateway packs (PH eClaims 3.0, AU ECLIPSE, SG NPHC, NZ ACC)
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -160,6 +167,11 @@ import {
 } from './transactions/index.js';
 import type { TransactionState } from './transactions/index.js';
 import type { X12TransactionSet } from './edi/types.js';
+
+// Phase 46 -- National Gateway Packs
+import { probeAllGateways, probeGateway, getGatewayIds } from './gateways/readiness.js';
+import type { GatewayId } from './gateways/readiness.js';
+import { getAllGatewayConformance, getGatewayConformance, validatePayloadConformance } from './conformance/gateway-conformance.js';
 
 /* ─── Submission safety (Phase 40) ───────────────────────────────── */
 
@@ -1978,5 +1990,57 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     const claimIds = body.claimIds ?? [];
     const stats = buildReconciliationStats(claimIds);
     return { ok: true, stats };
+  });
+
+  /* ═══════════════════════════════════════════════════════════════════
+   * Phase 46 — National Gateway Packs
+   * ═══════════════════════════════════════════════════════════════════ */
+
+  /** GET /rcm/gateways/readiness -- Unified readiness for all gateways */
+  server.get('/rcm/gateways/readiness', async (_request: FastifyRequest) => {
+    const gateways = probeAllGateways();
+    appendRcmAudit('gateway.readiness_checked', { detail: { gatewayCount: gateways.length } });
+    return { ok: true, gateways };
+  });
+
+  /** GET /rcm/gateways/readiness/:id -- Readiness for single gateway */
+  server.get('/rcm/gateways/readiness/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const validIds = getGatewayIds();
+    if (!validIds.includes(id as GatewayId)) {
+      return reply.code(404).send({ ok: false, error: `Unknown gateway: ${id}. Valid: ${validIds.join(', ')}` });
+    }
+    const gateway = probeGateway(id as GatewayId);
+    appendRcmAudit('gateway.probe', { detail: { gatewayId: id, overallStatus: gateway.overallStatus } });
+    return { ok: true, gateway };
+  });
+
+  /** GET /rcm/gateways/ids -- List available gateway IDs */
+  server.get('/rcm/gateways/ids', async (_request: FastifyRequest) => {
+    return { ok: true, gatewayIds: getGatewayIds() };
+  });
+
+  /** GET /rcm/conformance/gateways -- All gateway conformance data */
+  server.get('/rcm/conformance/gateways', async (_request: FastifyRequest) => {
+    return { ok: true, conformance: getAllGatewayConformance() };
+  });
+
+  /** GET /rcm/conformance/gateways/:id -- Single gateway conformance */
+  server.get('/rcm/conformance/gateways/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const conformance = getGatewayConformance(id);
+    if (!conformance) {
+      return reply.code(404).send({ ok: false, error: `No conformance data for gateway: ${id}` });
+    }
+    return { ok: true, conformance };
+  });
+
+  /** POST /rcm/conformance/gateways/:id/validate -- Validate payload against conformance */
+  server.post('/rcm/conformance/gateways/:id/validate', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const body = (request.body as Record<string, unknown>) || {};
+    const result = validatePayloadConformance(id, body);
+    appendRcmAudit('gateway.conformance_validated', { detail: { gatewayId: id, valid: result.valid, missingFields: result.missingFields.length } });
+    return { ok: true, ...result };
   });
 }

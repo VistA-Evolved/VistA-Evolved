@@ -1,28 +1,32 @@
 /**
- * PhilHealth eClaims Connector
+ * PhilHealth eClaims 3.0 Connector
  *
  * Handles claims submission and eligibility for PhilHealth (PHIC),
  * the Philippines' universal health insurer. Uses the PhilHealth
- * eClaims REST API.
+ * eClaims 3.0 REST API (mandatory from April 1, 2026).
  *
- * PhilHealth eClaims flow:
- *   1. Facility accreditation (one-time portal registration)
- *   2. Member eligibility check → PIN validation
- *   3. CF1/CF2/CF3/CF4 form generation (claim forms)
- *   4. eClaims XML/JSON submission
- *   5. Status tracking via claim reference number
- *   6. Payment reconciliation via SSS/GSIS/PHIC remittance
+ * PhilHealth eClaims 3.0 flow:
+ *   1. Facility accreditation + eClaims 3.0 API credential request
+ *   2. TLS client certificate enrollment (facility PKI)
+ *   3. Member eligibility check → PIN validation
+ *   4. CF1/CF2/CF3/CF4 form generation (claim forms)
+ *   5. Electronic SOA generation (scanned PDFs REJECTED)
+ *   6. eClaims 3.0 JSON submission with electronic SOA
+ *   7. Status tracking via claim reference number
+ *   8. Payment reconciliation via SSS/GSIS/PHIC remittance
  *
  * Phase 38 — RCM + Payer Connectivity
+ * Phase 46 — eClaims 3.0 upgrade + SOA + cert probes
  */
 
 import type { X12TransactionSet } from '../edi/types.js';
 import type { RcmConnector, ConnectorResult } from './types.js';
 import { randomBytes } from 'node:crypto';
+import { isScannedPdf } from '../gateways/soa-generator.js';
 
 export class PhilHealthConnector implements RcmConnector {
   readonly id = 'philhealth-eclaims';
-  readonly name = 'PhilHealth eClaims (PHIC)';
+  readonly name = 'PhilHealth eClaims 3.0 (PHIC)';
   readonly supportedModes = ['government_portal'];
   readonly supportedTransactions: X12TransactionSet[] = [
     '837P', '837I', '270', '271', '276', '277',
@@ -32,6 +36,9 @@ export class PhilHealthConnector implements RcmConnector {
     apiEndpoint?: string;
     facilityCode?: string;
     apiToken?: string;
+    certPath?: string;
+    certKeyPath?: string;
+    soaSigningKey?: string;
     testMode: boolean;
   } = { testMode: true };
 
@@ -45,9 +52,12 @@ export class PhilHealthConnector implements RcmConnector {
 
   async initialize(): Promise<void> {
     this.config = {
-      apiEndpoint: process.env.PHILHEALTH_API_ENDPOINT ?? 'https://eclaims.philhealth.gov.ph/api/v1',
+      apiEndpoint: process.env.PHILHEALTH_API_ENDPOINT ?? 'https://eclaims3.philhealth.gov.ph/api/v3',
       facilityCode: process.env.PHILHEALTH_FACILITY_CODE,
       apiToken: process.env.PHILHEALTH_API_TOKEN,
+      certPath: process.env.PHILHEALTH_CERT_PATH,
+      certKeyPath: process.env.PHILHEALTH_CERT_KEY_PATH,
+      soaSigningKey: process.env.PHILHEALTH_SOA_SIGNING_KEY,
       testMode: process.env.PHILHEALTH_TEST_MODE !== 'false',
     };
   }
@@ -60,13 +70,31 @@ export class PhilHealthConnector implements RcmConnector {
     const txId = `ph-${Date.now()}-${randomBytes(4).toString('hex')}`;
 
     // In production: transform internal claim → PhilHealth CF1-CF4 format
-    // and POST to eClaims API.
+    // and POST to eClaims 3.0 API with electronic SOA.
+    //
+    // eClaims 3.0 changes:
+    //   - Scanned PDF SOAs are REJECTED (must use electronic SOA)
+    //   - TLS client certificates required
+    //   - API endpoint changed to /api/v3
     //
     // PhilHealth-specific mapping:
-    //   - 837P → CF2 (professional claim) + CF1 (member data)
-    //   - 837I → CF2 + CF3 (hospital charges) + optional CF4 (professional fees)
+    //   - 837P → CF2 (professional claim) + CF1 (member data) + electronic SOA
+    //   - 837I → CF2 + CF3 (hospital charges) + optional CF4 (professional fees) + electronic SOA
     //   - 270  → Member eligibility/PIN check
     //   - 276  → Claim status inquiry
+
+    // Reject scanned PDF payloads (eClaims 3.0 mandate)
+    if (isScannedPdf(payload)) {
+      return {
+        success: false,
+        transactionId: txId,
+        errors: [{
+          code: 'PH-SOA-FORMAT-INVALID',
+          description: 'Scanned PDF SOA rejected. eClaims 3.0 requires electronic SOA. Use soa-generator.ts.',
+          severity: 'error',
+        }],
+      };
+    }
 
     this.submissions.set(txId, {
       id: txId,
@@ -135,13 +163,26 @@ export class PhilHealthConnector implements RcmConnector {
 
   async healthCheck(): Promise<{ healthy: boolean; details?: string }> {
     const hasConfig = !!(this.config.facilityCode && this.config.apiToken);
+    const hasCert = !!(this.config.certPath && this.config.certKeyPath);
+
+    const issues: string[] = [];
+    if (!this.config.facilityCode) issues.push('facility code missing');
+    if (!this.config.apiToken) issues.push('API token missing');
+    if (!this.config.certPath) issues.push('TLS cert missing (PHILHEALTH_CERT_PATH)');
+    if (!this.config.certKeyPath) issues.push('TLS key missing (PHILHEALTH_CERT_KEY_PATH)');
+
+    if (this.config.testMode) {
+      return {
+        healthy: true,
+        details: `PhilHealth eClaims 3.0 TEST mode${issues.length ? ` (warnings: ${issues.join(', ')})` : ''}`,
+      };
+    }
+
     return {
-      healthy: hasConfig || this.config.testMode,
-      details: this.config.testMode
-        ? 'PhilHealth connector in TEST mode'
-        : hasConfig
-          ? `PhilHealth configured (facility: ${this.config.facilityCode})`
-          : 'PhilHealth credentials not configured',
+      healthy: hasConfig && hasCert,
+      details: hasConfig && hasCert
+        ? `PhilHealth eClaims 3.0 configured (facility: ${this.config.facilityCode}, cert: present)`
+        : `PhilHealth eClaims 3.0: ${issues.join(', ')}`,
     };
   }
 

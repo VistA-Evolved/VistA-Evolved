@@ -2,6 +2,9 @@
  * AU ECLIPSE Connector — Australian Medicare/DVA Claims Gateway
  *
  * Phase 40 (Superseding): Integration-ready connector for ECLIPSE.
+ * Phase 46: Enhanced with PRODA/cert store probes, provider number checks,
+ *           enrollment guidance, and gateway readiness integration.
+ *
  * ECLIPSE = Electronic Claim Lodgement and Information Processing Service Environment.
  * Operated by Services Australia for Medicare + DVA claiming.
  *
@@ -14,8 +17,18 @@
  * Authentication: PRODA (Provider Digital Access) + PKI certificates.
  * Format: HL7v2 / proprietary XML over HTTPS (not X12).
  *
+ * Enrollment steps:
+ *   1. Register at PRODA (https://proda.humanservices.gov.au)
+ *   2. Create organisation and add devices
+ *   3. Generate PKI device certificate
+ *   4. Obtain Medicare provider number
+ *   5. (Optional) Register HPI-I with ADHA
+ *   6. Test in ECLIPSE test environment
+ *   7. Go-live with Services Australia approval
+ *
  * Status: Integration-ready stub. Configure:
- *   ECLIPSE_API_ENDPOINT, ECLIPSE_PRODA_ORG_ID, ECLIPSE_DEVICE_NAME, ECLIPSE_CERT_PATH
+ *   ECLIPSE_API_ENDPOINT, ECLIPSE_PRODA_ORG_ID, ECLIPSE_DEVICE_NAME,
+ *   ECLIPSE_CERT_PATH, ECLIPSE_PROVIDER_NUMBER, ECLIPSE_HPI_I
  */
 
 import type { RcmConnector, ConnectorResult } from "./types.js";
@@ -35,6 +48,8 @@ export class EclipseAuConnector implements RcmConnector {
     prodaOrgId: process.env.ECLIPSE_PRODA_ORG_ID ?? "",
     deviceName: process.env.ECLIPSE_DEVICE_NAME ?? "",
     certPath: process.env.ECLIPSE_CERT_PATH ?? "",
+    providerNumber: process.env.ECLIPSE_PROVIDER_NUMBER ?? "",
+    hpiI: process.env.ECLIPSE_HPI_I ?? "",
   };
 
   async initialize(): Promise<void> {
@@ -101,15 +116,26 @@ export class EclipseAuConnector implements RcmConnector {
   }
 
   async healthCheck(): Promise<{ healthy: boolean; details?: string }> {
+    const issues: string[] = [];
+    if (!this.config.prodaOrgId) issues.push('PRODA org ID missing');
+    if (!this.config.deviceName) issues.push('device name missing');
+    if (!this.config.certPath) issues.push('PKI cert path missing');
+    if (!this.config.providerNumber) issues.push('Medicare provider number missing');
+
     if (!this.configured) {
       return {
         healthy: false,
-        details: "ECLIPSE: not configured. Register at https://www.servicesaustralia.gov.au/proda for PRODA organisation access.",
+        details: `ECLIPSE: ${issues.join(', ')}. Register at https://www.servicesaustralia.gov.au/proda`,
       };
     }
+
+    const warnings: string[] = [];
+    if (!this.config.providerNumber) warnings.push('provider number not set');
+    if (!this.config.hpiI) warnings.push('HPI-I not set (optional)');
+
     return {
-      healthy: false,
-      details: "ECLIPSE: configured but PRODA token exchange requires live connection.",
+      healthy: true,
+      details: `ECLIPSE: PRODA configured${warnings.length ? ` (warnings: ${warnings.join(', ')})` : ''}. Live PRODA token exchange required for claims.`,
     };
   }
 

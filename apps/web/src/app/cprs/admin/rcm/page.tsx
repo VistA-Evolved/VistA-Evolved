@@ -18,7 +18,7 @@ import styles from '@/components/cprs/cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
-type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions';
+type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions' | 'gateways';
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
@@ -45,6 +45,7 @@ export default function RcmPage() {
     { id: 'connectors', label: 'Connectors & EDI' },
     { id: 'transactions', label: 'Transactions' },
     { id: 'vista-billing', label: 'VistA Billing' },
+    { id: 'gateways', label: 'Gateway Readiness' },
     { id: 'audit', label: 'Audit Trail' },
   ];
 
@@ -98,6 +99,7 @@ export default function RcmPage() {
         {tab === 'connectors' && <ConnectorsTab />}
         {tab === 'transactions' && <TransactionsTab />}
         {tab === 'vista-billing' && <VistaBillingTab />}
+        {tab === 'gateways' && <GatewaysTab />}
         {tab === 'audit' && <AuditTab />}
       </div>
     </div>
@@ -1702,6 +1704,168 @@ function TransactionsTab() {
             </table>
           )}
         </>
+      )}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ * Gateway Readiness Tab (Phase 46)
+ * ═══════════════════════════════════════════════════════════════════ */
+
+function GatewaysTab() {
+  const [gateways, setGateways] = useState<any[]>([]);
+  const [selectedGateway, setSelectedGateway] = useState<string | null>(null);
+  const [conformance, setConformance] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    apiFetch('/rcm/gateways/readiness')
+      .then((d: any) => setGateways(d.gateways ?? []))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const loadConformance = useCallback((id: string) => {
+    setSelectedGateway(id);
+    apiFetch(`/rcm/conformance/gateways/${id}`)
+      .then((d: any) => setConformance(d.conformance ?? null))
+      .catch(() => setConformance(null));
+  }, []);
+
+  const statusColor = (s: string) => s === 'green' ? '#198754' : s === 'amber' ? '#fd7e14' : '#dc3545';
+  const statusIcon = (s: string) => s === 'green' ? '\u2705' : s === 'amber' ? '\u26A0\uFE0F' : '\u274C';
+
+  if (loading) return <div style={{ padding: 20, color: '#6c757d' }}>Loading gateway readiness...</div>;
+
+  return (
+    <div>
+      <h3 style={{ margin: '0 0 8px 0', fontSize: 16 }}>National Gateway Readiness</h3>
+      <p style={{ margin: '0 0 16px 0', fontSize: 12, color: '#6c757d' }}>
+        Unified readiness checklist for all national gateways. Click a gateway for conformance details.
+      </p>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 12 }}>
+        {gateways.map((gw: any) => (
+          <div
+            key={gw.gatewayId}
+            onClick={() => loadConformance(gw.gatewayId)}
+            style={{
+              border: `2px solid ${statusColor(gw.overallStatus)}`,
+              borderRadius: 8, padding: 16, cursor: 'pointer',
+              background: selectedGateway === gw.gatewayId ? '#f0f0f0' : '#fff',
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+              <strong style={{ fontSize: 14 }}>{gw.name}</strong>
+              <span style={{ fontSize: 12, color: statusColor(gw.overallStatus), fontWeight: 600 }}>
+                {statusIcon(gw.overallStatus)} {gw.overallStatus.toUpperCase()}
+              </span>
+            </div>
+            <div style={{ fontSize: 11, color: '#6c757d', marginBottom: 4 }}>
+              {gw.country} -- {gw.wireFormat}
+            </div>
+            <div style={{ fontSize: 11, marginTop: 8 }}>
+              {gw.checks?.map((c: any, i: number) => (
+                <div key={i} style={{ display: 'flex', gap: 6, marginBottom: 2 }}>
+                  <span style={{ color: statusColor(c.status), minWidth: 14 }}>{statusIcon(c.status)}</span>
+                  <span>{c.message}</span>
+                </div>
+              ))}
+            </div>
+            {gw.deadlines && gw.deadlines.length > 0 && (
+              <div style={{ marginTop: 8, padding: '4px 8px', background: '#fff3cd', borderRadius: 4, fontSize: 11 }}>
+                {gw.deadlines.map((d: any, i: number) => (
+                  <div key={i}><strong>{d.date}</strong>: {d.description}</div>
+                ))}
+              </div>
+            )}
+            {gw.enrollmentUrl && (
+              <div style={{ marginTop: 6, fontSize: 11 }}>
+                <a href={gw.enrollmentUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#0d6efd' }}>
+                  Enrollment Portal
+                </a>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {selectedGateway && conformance && (
+        <div style={{ marginTop: 20, border: '1px solid #dee2e6', borderRadius: 8, padding: 16 }}>
+          <h4 style={{ margin: '0 0 12px 0', fontSize: 15 }}>
+            Conformance: {conformance.name} (v{conformance.version})
+          </h4>
+
+          <div style={{ marginBottom: 16 }}>
+            <strong style={{ fontSize: 12 }}>Required Fields</strong>
+            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 6, fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+                  <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Field</th>
+                  <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Required</th>
+                  <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Format</th>
+                  <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {conformance.requiredFields?.map((f: any, i: number) => (
+                  <tr key={i}>
+                    <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>{f.field}</td>
+                    <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>{f.required ? 'Yes' : 'No'}</td>
+                    <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>{f.format ?? '-'}</td>
+                    <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>{f.notes ?? ''}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div style={{ marginBottom: 16 }}>
+            <strong style={{ fontSize: 12 }}>Failure Modes</strong>
+            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 6, fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+                  <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Code</th>
+                  <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Description</th>
+                  <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Retryable</th>
+                </tr>
+              </thead>
+              <tbody>
+                {conformance.failureModes?.map((f: any, i: number) => (
+                  <tr key={i}>
+                    <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>{f.code}</td>
+                    <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>{f.description}</td>
+                    <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>{f.retryable ? 'Yes' : 'No'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div>
+            <strong style={{ fontSize: 12 }}>Probe Behaviors</strong>
+            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 6, fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+                  <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Probe</th>
+                  <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Description</th>
+                  <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Expected</th>
+                </tr>
+              </thead>
+              <tbody>
+                {conformance.probeBehaviors?.map((p: any, i: number) => (
+                  <tr key={i}>
+                    <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>{p.probe}</td>
+                    <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>{p.description}</td>
+                    <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>{p.expectedResult}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       )}
     </div>
   );
