@@ -1,0 +1,14 @@
+{
+  "feature": "Phase 41: Vivian Snapshot Integration + RPC Catalog + Coverage Gates",
+  "stage": "verify-pass",
+  "status": "complete",
+  "promptRef": "prompts/45-PHASE-41-VIVIAN-RPC-CATALOG/prompt.md",
+  "runbookPaths": [
+    "docs/runbooks/vista-rpc-rpc-list-probe.md",
+    "docs/vista/vivian-snapshot-format.md",
+    "docs/vista/rpc-coverage-report.md"
+  ],
+  "verifyScript": "scripts/verify-phase41-rpc-catalog.ps1",
+  "verifyResult": "57/57 PASS",
+  "commitSHA": "pending"
+}

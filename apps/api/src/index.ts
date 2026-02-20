@@ -65,6 +65,8 @@ import moduleCapabilityRoutes from "./routes/module-capability-routes.js";
 import rcmRoutes from "./rcm/rcm-routes.js";
 // Phase 39: VistA Billing Grounding -- read-only VistA RCM surfaces
 import vistaRcmRoutes from "./routes/vista-rcm.js";
+// Phase 41: RPC Registry + Action Registry (Vivian snapshot integration)
+import { RPC_REGISTRY, RPC_EXCEPTIONS, getFullRpcInventory } from "./vista/rpcRegistry.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -398,6 +400,43 @@ server.get("/vista/rpc-catalog", async (request, reply) => {
       };
     }
     return { ok: false, rpc: "VE LIST RPCS", error: safeErr(err) };
+  }
+});
+
+// Phase 41: RPC Debug endpoints (admin/dev) — action registry + rpc registry
+server.get("/vista/rpc-debug/actions", async (request, reply) => {
+  const session = requireSession(request, reply);
+  if (!session) return;
+  // Inline action registry data (avoids cross-app import)
+  const { ACTION_REGISTRY_DATA } = await import("./vista/rpcDebugData.js");
+  return { ok: true, actions: ACTION_REGISTRY_DATA, count: ACTION_REGISTRY_DATA.length };
+});
+
+server.get("/vista/rpc-debug/registry", async (request, reply) => {
+  const session = requireSession(request, reply);
+  if (!session) return;
+  const { registry, exceptions } = getFullRpcInventory();
+  return { ok: true, registry, exceptions, count: registry.length };
+});
+
+server.get("/vista/rpc-debug/coverage", async (request, reply) => {
+  const session = requireSession(request, reply);
+  if (!session) return;
+  try {
+    const { readFileSync, existsSync } = await import("node:fs");
+    const { resolve } = await import("node:path");
+    const root = resolve(process.cwd(), "../..");
+    const presentFile = resolve(root, "data/vista/vista_instance/rpc_present.json");
+    const missingFile = resolve(root, "data/vista/vista_instance/rpc_missing_vs_vivian.json");
+    const extraFile = resolve(root, "data/vista/vista_instance/rpc_extra_vs_vivian.json");
+    const result: any = { ok: true };
+    if (existsSync(presentFile)) result.present = JSON.parse(readFileSync(presentFile, "utf-8"));
+    if (existsSync(missingFile)) result.missing = JSON.parse(readFileSync(missingFile, "utf-8"));
+    if (existsSync(extraFile)) result.extra = JSON.parse(readFileSync(extraFile, "utf-8"));
+    if (!result.present) result.hint = "Run buildRpcCoverageMatrix.ts to generate coverage data";
+    return result;
+  } catch (err: any) {
+    return { ok: false, error: err.message };
   }
 });
 
