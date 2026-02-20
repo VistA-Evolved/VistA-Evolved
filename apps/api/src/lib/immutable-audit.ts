@@ -72,7 +72,18 @@ export type ImmutableAuditAction =
   // Audit access (meta-audit)
   | "audit.view"
   | "audit.export"
-  | "audit.verify";
+  | "audit.verify"
+  // Migration toolkit events (Phase 50)
+  | "migration.import.start"
+  | "migration.import.complete"
+  | "migration.export.start"
+  | "migration.export.complete"
+  | "migration.validate"
+  | "migration.dry-run"
+  | "migration.rollback"
+  | "migration.template.create"
+  | "migration.template.delete"
+  | "migration.job.delete";
 
 export type ImmutableAuditOutcome = "success" | "failure" | "denied" | "error";
 

@@ -56,7 +56,11 @@ export type RbacPermission =
   | "telehealth:create"
   | "telehealth:join"
   // Portal (patient self-service -- separate domain)
-  | "portal:own-data";
+  | "portal:own-data"
+  // Migration toolkit (Phase 50)
+  | "migration:read"
+  | "migration:write"
+  | "migration:admin";
 
 /**
  * Role → permission mapping. Principle of least privilege.
@@ -79,6 +83,7 @@ const ROLE_PERMISSIONS: Record<UserRole, RbacPermission[]> = {
     "analytics:read", "analytics:admin",
     "admin:system", "audit:read",
     "telehealth:create", "telehealth:join",
+    "migration:read", "migration:write", "migration:admin",
   ],
   provider: [
     "clinical:read", "clinical:write",

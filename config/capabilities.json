@@ -474,6 +474,70 @@
       "targetRpc": null,
       "targetPackage": "SD",
       "description": "Get available appointment slots"
+    },
+    "migration.import.csv": {
+      "status": "live",
+      "module": "migration",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Import patient/clinical data from CSV files"
+    },
+    "migration.import.validate": {
+      "status": "live",
+      "module": "migration",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Validate import data before processing"
+    },
+    "migration.import.dryRun": {
+      "status": "live",
+      "module": "migration",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Simulate import without writing data"
+    },
+    "migration.export.patientSummary": {
+      "status": "live",
+      "module": "migration",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Export patient summary bundle (FHIR-style)"
+    },
+    "migration.export.audit": {
+      "status": "live",
+      "module": "migration",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Export audit trail data"
+    },
+    "migration.export.encrypted": {
+      "status": "live",
+      "module": "migration",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "AES-256-GCM encrypted export with key derivation"
+    },
+    "migration.mapping.templates": {
+      "status": "live",
+      "module": "migration",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Pluggable field mapping templates (generic-csv, openemr-csv, fhir-bundle)"
+    },
+    "migration.rollback": {
+      "status": "live",
+      "module": "migration",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Rollback completed imports"
     }
   }
 }

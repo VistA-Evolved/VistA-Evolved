@@ -1,0 +1,9 @@
+{
+  "featureTitle": "Phase 50: Data Portability + Migration Toolkit",
+  "stage": "complete",
+  "status": "verified",
+  "promptRef": "prompts/55-PHASE-50-MIGRATION-TOOLKIT/prompt.md",
+  "runbookPath": "docs/migration/migration-toolkit.md",
+  "verifyScript": "tsc --noEmit + vitest run",
+  "commitSHA": "pending"
+}

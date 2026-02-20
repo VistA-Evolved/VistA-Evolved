@@ -167,6 +167,17 @@
       "dependencies": ["kernel"],
       "adapters": ["scheduling"],
       "services": []
+    },
+    "migration": {
+      "name": "Data Portability / Migration",
+      "description": "Import/export pipelines, mapping DSL, CSV/FHIR connectors, PHI-safe encrypted exports (Phase 50)",
+      "alwaysEnabled": false,
+      "routePatterns": [
+        "^/migration/"
+      ],
+      "dependencies": ["kernel", "clinical"],
+      "adapters": [],
+      "services": ["migration-store", "mapping-engine", "import-pipeline", "export-pipeline"]
     }
   }
 }
