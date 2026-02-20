@@ -67,6 +67,9 @@ import rcmRoutes from "./rcm/rcm-routes.js";
 import vistaRcmRoutes from "./routes/vista-rcm.js";
 // Phase 41: RPC Registry + Action Registry (Vivian snapshot integration)
 import { RPC_REGISTRY, RPC_EXCEPTIONS, getFullRpcInventory } from "./vista/rpcRegistry.js";
+// Phase 48: Unified audit + connector resilience stats
+import { queryUnifiedAudit, getUnifiedAuditStats } from "./lib/unified-audit.js";
+import { getConnectorCbStats, resetConnectorCb, resetAllConnectorCbs } from "./rcm/connectors/connector-resilience.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -325,6 +328,40 @@ server.get("/audit/events", async (request) => {
 // Phase 15C: Audit stats endpoint
 server.get("/audit/stats", async () => {
   return { ok: true, ...getAuditStats() };
+});
+
+// Phase 48: Unified audit query (all 3 stores in one response)
+server.get("/audit/unified", async (request) => {
+  const { sources, actionPrefix, actor, since, limit } = request.query as any;
+  const entries = queryUnifiedAudit({
+    sources: sources ? String(sources).split(",") as any : undefined,
+    actionPrefix,
+    actor,
+    since,
+    limit: limit ? Number(limit) : undefined,
+  });
+  return { ok: true, count: entries.length, entries };
+});
+
+// Phase 48: Unified audit stats
+server.get("/audit/unified/stats", async () => {
+  return { ok: true, ...getUnifiedAuditStats() };
+});
+
+// Phase 48: Connector circuit breaker stats
+server.get("/admin/connector-cbs", async () => {
+  return { ok: true, connectors: getConnectorCbStats() };
+});
+
+// Phase 48: Reset a specific connector circuit breaker
+server.post("/admin/connector-cb/reset", async (request) => {
+  const { connectorId } = (request.body as any) || {};
+  if (connectorId) {
+    resetConnectorCb(connectorId);
+    return { ok: true, reset: connectorId };
+  }
+  resetAllConnectorCbs();
+  return { ok: true, reset: "all" };
 });
 
 // Phase 15B: Circuit breaker admin endpoints

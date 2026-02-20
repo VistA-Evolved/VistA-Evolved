@@ -15,6 +15,7 @@
 
 import { LOG_CONFIG, PHI_CONFIG } from "../config/server-config.js";
 import { AsyncLocalStorage } from "async_hooks";
+import { ALL_BLOCKED_FIELDS, INLINE_REDACT_PATTERNS as PHI_PATTERNS } from "./phi-redaction.js";
 
 // Phase 36: lazy-load tracer to avoid circular imports
 let _getTraceId: (() => string) | null = null;
@@ -64,29 +65,11 @@ function shouldLog(level: LogLevel): boolean {
 /* Redaction engine                                                     */
 /* ------------------------------------------------------------------ */
 
-/** Fields that must never appear in any log output. */
-const REDACT_FIELDS = new Set([
-  ...LOG_CONFIG.redactBodyFields,
-  ...PHI_CONFIG.neverLogFields,
-  "password",
-  "access_code",
-  "verify_code",
-]);
+/** Fields that must never appear in any log output — centralized in phi-redaction.ts (Phase 48). */
+const REDACT_FIELDS = ALL_BLOCKED_FIELDS;
 
-/** Regex patterns for inline credential scrubbing. */
-const INLINE_REDACT_PATTERNS = [
-  // Access;Verify code format used in XWB protocol
-  /[A-Z0-9]+;[A-Z0-9!@#$%^&*]+/gi,
-  // Bearer tokens
-  /Bearer\s+[A-Za-z0-9+/=_-]{20,}/g,
-  // Session tokens (64-char hex)
-  /[0-9a-f]{64}/gi,
-  // SSN patterns (XXX-XX-XXXX)
-  /\b\d{3}-\d{2}-\d{4}\b/g,
-  // DOB patterns (YYYY-MM-DD, MM/DD/YYYY, M/D/YYYY)
-  /\b(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\b/g,
-  /\b(0?[1-9]|1[0-2])\/(0?[1-9]|[12]\d|3[01])\/(19|20)\d{2}\b/g,
-];
+/** Regex patterns for inline credential scrubbing — centralized in phi-redaction.ts (Phase 48). */
+const INLINE_REDACT_PATTERNS = PHI_PATTERNS;
 
 /**
  * Deep-redact an object: replaces sensitive field values with "[REDACTED]".
@@ -98,7 +81,7 @@ function redactObject(obj: unknown, depth = 0): unknown {
 
   if (typeof obj === "string") {
     let s = obj;
-    for (const pat of INLINE_REDACT_PATTERNS) {
+    for (const { pattern: pat } of INLINE_REDACT_PATTERNS) {
       s = s.replace(new RegExp(pat.source, pat.flags), "[REDACTED]");
     }
     return s;

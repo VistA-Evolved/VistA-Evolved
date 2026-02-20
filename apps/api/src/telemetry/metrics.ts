@@ -118,6 +118,59 @@ export const auditChainLength = new client.Gauge({
 });
 
 /* ------------------------------------------------------------------ */
+/* RCM / Connector metrics — Phase 48                                  */
+/* ------------------------------------------------------------------ */
+
+/** Total RCM claims by current lifecycle status */
+export const rcmClaimsTotal = new client.Gauge({
+  name: "rcm_claims_total",
+  help: "Total RCM claims by lifecycle status",
+  labelNames: ["status"] as const,
+  registers: [registry],
+});
+
+/** EDI pipeline depth by stage */
+export const rcmPipelineDepth = new client.Gauge({
+  name: "rcm_pipeline_depth",
+  help: "Number of claims in each EDI pipeline stage",
+  labelNames: ["stage"] as const,
+  registers: [registry],
+});
+
+/** Connector call duration (seconds) */
+export const connectorCallDuration = new client.Histogram({
+  name: "rcm_connector_call_duration_seconds",
+  help: "Duration of RCM connector calls in seconds",
+  labelNames: ["connector_id", "operation"] as const,
+  buckets: [0.1, 0.5, 1, 2.5, 5, 10, 30, 60],
+  registers: [registry],
+});
+
+/** Connector calls total */
+export const connectorCallsTotal = new client.Counter({
+  name: "rcm_connector_calls_total",
+  help: "Total RCM connector calls",
+  labelNames: ["connector_id", "operation", "outcome"] as const,
+  registers: [registry],
+});
+
+/** Connector health (1=up, 0=down) */
+export const connectorHealthGauge = new client.Gauge({
+  name: "rcm_connector_health",
+  help: "RCM connector health status: 1=up, 0=down",
+  labelNames: ["connector_id"] as const,
+  registers: [registry],
+});
+
+/** Unified audit entry count across all stores */
+export const unifiedAuditEntries = new client.Gauge({
+  name: "unified_audit_entries_total",
+  help: "Total audit entries across all audit stores",
+  labelNames: ["source"] as const,
+  registers: [registry],
+});
+
+/* ------------------------------------------------------------------ */
 /* Helpers                                                             */
 /* ------------------------------------------------------------------ */
 
