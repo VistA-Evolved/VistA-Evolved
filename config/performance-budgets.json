@@ -1,0 +1,150 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "description": "VistA-Evolved Performance Budgets -- Phase 52",
+    "updatedAt": "2026-02-21"
+  },
+
+  "webVitals": {
+    "_doc": "Core Web Vitals targets for initial page loads. Measured in Lighthouse CI or synthetic monitoring.",
+    "LCP": {
+      "target": 2500,
+      "unit": "ms",
+      "description": "Largest Contentful Paint -- must be under 2.5s for good UX"
+    },
+    "FID": {
+      "target": 100,
+      "unit": "ms",
+      "description": "First Input Delay -- must be under 100ms"
+    },
+    "CLS": {
+      "target": 0.1,
+      "unit": "score",
+      "description": "Cumulative Layout Shift -- must be under 0.1"
+    },
+    "INP": {
+      "target": 200,
+      "unit": "ms",
+      "description": "Interaction to Next Paint -- must be under 200ms"
+    },
+    "TTFB": {
+      "target": 800,
+      "unit": "ms",
+      "description": "Time to First Byte -- must be under 800ms"
+    }
+  },
+
+  "pageLoadBudgets": {
+    "_doc": "Maximum JavaScript bundle sizes and page load times per route group.",
+    "login": {
+      "maxJsBundleKB": 300,
+      "maxTotalTransferKB": 500,
+      "maxDOMContentLoadedMs": 2000,
+      "maxLoadMs": 4000
+    },
+    "patientSearch": {
+      "maxJsBundleKB": 400,
+      "maxTotalTransferKB": 600,
+      "maxDOMContentLoadedMs": 2500,
+      "maxLoadMs": 5000
+    },
+    "cprsChart": {
+      "maxJsBundleKB": 500,
+      "maxTotalTransferKB": 800,
+      "maxDOMContentLoadedMs": 3000,
+      "maxLoadMs": 6000
+    },
+    "adminPages": {
+      "maxJsBundleKB": 500,
+      "maxTotalTransferKB": 800,
+      "maxDOMContentLoadedMs": 3000,
+      "maxLoadMs": 6000
+    },
+    "portalDashboard": {
+      "maxJsBundleKB": 350,
+      "maxTotalTransferKB": 500,
+      "maxDOMContentLoadedMs": 2000,
+      "maxLoadMs": 4000
+    }
+  },
+
+  "apiLatencyBudgets": {
+    "_doc": "API endpoint p95 latency targets in milliseconds. Grouped by operation type.",
+    "auth": {
+      "login": { "p95": 3000, "p99": 5000 },
+      "session": { "p95": 100, "p99": 200 }
+    },
+    "clinicalReads": {
+      "_doc": "VistA RPC-backed read operations. Depends on VistA responsiveness.",
+      "patientSearch": { "p95": 3000, "p99": 5000 },
+      "patientList": { "p95": 2000, "p99": 4000 },
+      "demographics": { "p95": 2000, "p99": 3000 },
+      "allergies": { "p95": 2000, "p99": 3000 },
+      "vitals": { "p95": 2000, "p99": 3000 },
+      "medications": { "p95": 3000, "p99": 5000 },
+      "problems": { "p95": 2000, "p99": 3000 },
+      "notes": { "p95": 3000, "p99": 5000 },
+      "labs": { "p95": 3000, "p99": 5000 },
+      "orders": { "p95": 3000, "p99": 5000 },
+      "reports": { "p95": 5000, "p99": 8000 }
+    },
+    "clinicalWrites": {
+      "addAllergy": { "p95": 5000, "p99": 8000 },
+      "addProblem": { "p95": 5000, "p99": 8000 },
+      "signOrder": { "p95": 5000, "p99": 10000 }
+    },
+    "adminReads": {
+      "moduleStatus": { "p95": 200, "p99": 500 },
+      "capabilities": { "p95": 200, "p99": 500 },
+      "adapterHealth": { "p95": 500, "p99": 1000 },
+      "marketplaceConfig": { "p95": 200, "p99": 500 },
+      "rcmClaims": { "p95": 500, "p99": 1000 },
+      "rcmPayers": { "p95": 500, "p99": 1000 }
+    },
+    "infrastructure": {
+      "health": { "p95": 50, "p99": 100 },
+      "ready": { "p95": 100, "p99": 200 },
+      "metrics": { "p95": 200, "p99": 500 }
+    }
+  },
+
+  "vistaRpcBudgets": {
+    "_doc": "VistA RPC broker timeout and budget thresholds.",
+    "connectionTimeoutMs": 10000,
+    "rpcCallTimeoutMs": 15000,
+    "rpcCallP95Ms": 5000,
+    "rpcCallP99Ms": 10000,
+    "loginTimeoutMs": 15000,
+    "circuitBreakerThreshold": 5,
+    "circuitBreakerResetMs": 30000,
+    "maxConcurrentRpcs": 10,
+    "healthCheckIntervalMs": 30000
+  },
+
+  "loadTestThresholds": {
+    "_doc": "k6 load test thresholds for pass/fail.",
+    "httpReqDuration": {
+      "p95": 10000,
+      "p99": 15000,
+      "unit": "ms"
+    },
+    "httpReqFailed": {
+      "maxRate": 0.10,
+      "description": "Max 10% request failure rate"
+    },
+    "iterations": {
+      "minPerSecond": 2,
+      "description": "Minimum throughput under load"
+    },
+    "vus": {
+      "smoke": 2,
+      "load": 10,
+      "stress": 25
+    },
+    "duration": {
+      "smoke": "30s",
+      "load": "2m",
+      "stress": "5m"
+    }
+  }
+}
