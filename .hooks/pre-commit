@@ -1,0 +1,66 @@
+#!/bin/sh
+# Phase 53 - Pre-commit hook: blocks committing banned paths
+#
+# Installation:
+#   git config core.hooksPath .hooks
+#   chmod +x .hooks/pre-commit  (Unix/Mac)
+#
+# What it blocks:
+#   - Files under /reports/
+#   - Files under /docs/reports/
+#   - Files under /artifacts/
+#   - Verification output patterns (*phase*-verify-report*.md, *verify-output*)
+
+BANNED_PATTERNS="
+^reports/
+^docs/reports/
+^artifacts/
+^docs/verify/
+"
+
+BANNED_FILE_PATTERNS="
+phase[0-9]+-verify-report
+verify-output
+"
+
+# Get list of staged files
+STAGED=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null)
+
+if [ -z "$STAGED" ]; then
+  exit 0
+fi
+
+VIOLATIONS=""
+
+for file in $STAGED; do
+  # Check directory patterns
+  for pattern in $BANNED_PATTERNS; do
+    if echo "$file" | grep -qE "$pattern"; then
+      VIOLATIONS="$VIOLATIONS\n  BLOCKED: $file (matches banned path: $pattern)"
+    fi
+  done
+
+  # Check file name patterns
+  for pattern in $BANNED_FILE_PATTERNS; do
+    if echo "$file" | grep -qiE "$pattern"; then
+      VIOLATIONS="$VIOLATIONS\n  BLOCKED: $file (matches banned pattern: $pattern)"
+    fi
+  done
+done
+
+if [ -n "$VIOLATIONS" ]; then
+  echo ""
+  echo "=== VistA-Evolved Pre-Commit Policy Gate ==="
+  echo ""
+  echo "Commit BLOCKED -- the following staged files violate repo policy:"
+  echo "$VIOLATIONS"
+  echo ""
+  echo "Policy: Verification outputs belong in /artifacts/ (gitignored)."
+  echo "        See docs/POLICY.md for allowed documentation roots."
+  echo ""
+  echo "To bypass (emergency only): git commit --no-verify"
+  echo ""
+  exit 1
+fi
+
+exit 0

@@ -5,6 +5,36 @@
 
 ---
 
+## 0. MANDATORY GOVERNANCE PREAMBLE (Phase 53)
+
+**Every agent and developer MUST follow these rules:**
+
+1. **Canonical inputs live ONLY in:** `/prompts` (IMPLEMENT + VERIFY prompts),
+   `/scripts` (verifiers + audit tooling), `/docs/runbooks` and `/docs/decisions`
+   (curated docs only).
+2. **Verification outcomes are ARTIFACTS, not documentation.** Write all
+   verify outputs to `/artifacts/**` (gitignored). Do NOT create or commit
+   `/reports`, `/docs/reports`, or scattered "summary" markdown.
+3. **VistA-first rule:** All VistA interactions must go through rpcRegistry.
+   Every RPC name must be present in the Vivian index OR be explicitly
+   allowlisted with justification.
+4. **No dead clicks:** Every clickable element must either work OR show
+   "integration pending" with target RPC(s). No silent no-ops, no fake success.
+5. **Prompts folder integrity:** Each phase folder must contain
+   `XX-01-IMPLEMENT.md` and `XX-99-VERIFY.md`. Filenames and internal
+   headers must match (phase number + title).
+6. **Minimal edits, inventory first, deterministic changes, commit discipline.**
+
+### Anti-Sprawl Rules
+- **Do NOT create `/reports` or `/docs/reports` folders.** They are forbidden.
+- **Do NOT commit verification outputs.** They belong in `/artifacts/` (gitignored).
+- **Prompts are canonical.** Do not duplicate prompt content in docs.
+- **Pre-commit hook enforces these rules.** Set up with:
+  `git config core.hooksPath .hooks`
+- **See `docs/POLICY.md`** for the full documentation policy.
+
+---
+
 ## 1. Credentials — Where They Live
 
 | What | Path | Notes |

@@ -46,6 +46,20 @@ jobs:
       - name: Module toggle integrity
         run: pnpm exec tsx scripts/check-module-gates.ts
 
+      # ---- Phase 53: Governance gates ----
+
+      - name: PromptOS audit gate
+        run: pnpm exec tsx scripts/promptos/auditPrompts.ts
+
+      - name: Documentation policy gate
+        run: pnpm exec tsx scripts/governance/checkDocsPolicy.ts
+
+      - name: Secret scan
+        run: node scripts/secret-scan.mjs
+
+      - name: PHI leak scan
+        run: node scripts/phi-leak-scan.mjs
+
   evidence-pack:
     name: Evidence Pack
     needs: quality-gates
