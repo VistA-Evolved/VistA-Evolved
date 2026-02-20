@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 42: VistA Billing/RCM Binding Pack + Claim Draft Sources
-& "$PSScriptRoot\verify-phase42-billing-binding.ps1" @args
+# Phase 43: Claim Quality Loop (ack/status, remits, workqueues, rules)
+& "$PSScriptRoot\verify-phase43-claim-quality.ps1" @args
