@@ -203,7 +203,7 @@ export default async function portalAuthRoutes(
       sourceIp: ip,
     });
 
-    log.info("Portal login", { patientName: patient.name });
+    log.info("Portal login", { dfn: patient.dfn });
 
     reply.setCookie(PORTAL_COOKIE, token, COOKIE_OPTS);
     return reply.send({
