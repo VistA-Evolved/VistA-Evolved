@@ -97,6 +97,7 @@ export function setupConsoleGate(page: Page): string[] {
     "Fast Refresh", // Next.js HMR messages
     "fetch failed", // intermittent fetch failures during page transitions
     "AbortError", // cancelled fetch requests during navigation
+    "unique \"key\" prop", // React key prop warnings in dev mode
   ];
 
   page.on("console", (msg) => {

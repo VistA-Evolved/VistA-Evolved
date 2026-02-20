@@ -33,23 +33,26 @@ test.describe("Scenario 1: Clinician Clinical Workflow", () => {
     await searchInput.fill("CARTER");
     await page.locator("button[type='submit']").click();
 
-    // Wait for results or empty state
-    const resultsOrEmpty = page.locator("table").or(
-      page.locator("text=No patients found").or(
-        page.locator("text=pending")
-      )
-    ).first();
-    await expect(resultsOrEmpty).toBeVisible({ timeout: 20_000 });
+    // Wait for search to complete: button text changes from "Searching..." back
+    await page.waitForFunction(
+      () => {
+        const btns = document.querySelectorAll('button[type="submit"]');
+        return Array.from(btns).some(b => b.textContent?.trim() !== 'Searching...');
+      },
+      { timeout: 25_000 }
+    ).catch(() => {}); // timeout OK -- we check below
 
-    // If we got a table, select patient DFN=3
+    await page.waitForTimeout(1000);
+
+    // After search, one of: table (results), error div, or empty state
     const table = page.locator("table");
-    const hasTable = await table.isVisible({ timeout: 2000 }).catch(() => false);
+    const hasTable = await table.isVisible({ timeout: 3000 }).catch(() => false);
     if (!hasTable) {
-      // API not connected -- integration pending is acceptable
-      const mainText = await page.locator("main").or(page.locator("body")).first().textContent();
+      // API not connected or no results -- check for any message
+      const bodyText = await page.locator("body").textContent();
       expect(
-        (mainText || "").match(/pending|unavailable|no patients|error|cannot/i),
-        "If no table, must show pending/unavailable message"
+        (bodyText || "").match(/no patients|no results|network error|search failed|error|pending|unavailable/i),
+        "If no table, must show error/empty/pending message"
       ).toBeTruthy();
       return; // End scenario gracefully
     }

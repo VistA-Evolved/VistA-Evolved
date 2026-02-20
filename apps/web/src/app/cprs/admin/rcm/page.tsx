@@ -1368,7 +1368,7 @@ function DirectoryTab() {
                     <td style={{ padding: '6px 10px', textAlign: 'center', fontSize: 11 }}>
                       {(p.channels ?? []).map((ch: any) => ch.channelType).join(', ')}
                     </td>
-                    <td style={{ padding: '6px 10px', fontSize: 10, color: '#6c757d' }}>{p.regulatorySource ?? '-'}</td>
+                    <td style={{ padding: '6px 10px', fontSize: 10, color: '#6c757d' }}>{typeof p.regulatorySource === 'object' && p.regulatorySource ? (p.regulatorySource.authority ?? JSON.stringify(p.regulatorySource)) : (p.regulatorySource ?? '-')}</td>
                   </tr>
                 ))}
                 {payers.length === 0 && (

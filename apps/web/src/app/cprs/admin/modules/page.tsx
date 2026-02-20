@@ -12,7 +12,7 @@
  * Accessible at /cprs/admin/modules. Requires admin session.
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styles from '@/components/cprs/cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
@@ -280,9 +280,8 @@ function ModulesTab({
         </thead>
         <tbody>
           {manifests.map(m => (
-            <>
+            <React.Fragment key={m.moduleId}>
               <tr
-                key={m.moduleId}
                 style={{
                   borderBottom: '1px solid #dee2e6',
                   background: m.manifest.alwaysEnabled ? '#e8f5e9' : m.enabled ? '#fff' : '#f8f9fa',
@@ -363,7 +362,7 @@ function ModulesTab({
                   </td>
                 </tr>
               )}
-            </>
+            </React.Fragment>
           ))}
         </tbody>
       </table>
