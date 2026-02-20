@@ -1,0 +1,72 @@
+{
+  "_meta": {
+    "description": "New Zealand payer seed data: ACC + major health insurers (Phase 40 Superseding)",
+    "source": "ACC (Accident Compensation Corporation) + Financial Markets Authority NZ Insurer Registry",
+    "lastUpdated": "2026-02-20",
+    "notes": "ACC is the universal no-fault accident compensation scheme. Public hospital care is free. Private insurers cover elective surgery, specialist visits, and dental."
+  },
+  "payers": [
+    {
+      "payerId": "NZ-ACC",
+      "name": "Accident Compensation Corporation (ACC)",
+      "country": "INTL",
+      "integrationMode": "direct_api",
+      "status": "active",
+      "category": "government",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "All treatment providers must register with ACC. Claims via ACC API (OAuth2 + REST). Bulk claims via ACC Claim API or HealthLink secure messaging.",
+      "enrollmentUrl": "https://www.acc.co.nz/for-providers/",
+      "endpoints": [
+        { "purpose": "claims", "protocol": "rest", "url": "https://api.acc.co.nz/claims/v2", "notes": "ACC Claim API v2 (REST/JSON, OAuth2). Test environment available." },
+        { "purpose": "eligibility", "protocol": "rest", "url": "https://api.acc.co.nz/coverage/v1", "notes": "ACC coverage check API" }
+      ],
+      "aliases": ["ACC", "Accident Compensation"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "NZ-SOUTHERN-CROSS",
+      "name": "Southern Cross Health Insurance",
+      "country": "INTL",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "commercial",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "Largest NZ private insurer (~60% market share). Provider registration + claims via Southern Cross provider portal.",
+      "endpoints": [
+        { "purpose": "claims", "protocol": "portal", "url": "https://provider.southerncross.co.nz/", "notes": "Southern Cross provider portal" }
+      ],
+      "aliases": ["Southern Cross"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "NZ-NIB",
+      "name": "nib New Zealand Limited",
+      "country": "INTL",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "commercial",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "Australian-owned NZ insurer. Provider claims via nib provider portal.",
+      "endpoints": [],
+      "aliases": ["nib NZ"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "NZ-PARTNERS-LIFE",
+      "name": "Partners Life Limited",
+      "country": "INTL",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "commercial",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "NZ life and health insurer. Claims via adviser/provider portal.",
+      "endpoints": [],
+      "aliases": ["Partners Life"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    }
+  ]
+}

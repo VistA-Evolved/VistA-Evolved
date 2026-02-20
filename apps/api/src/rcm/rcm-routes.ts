@@ -67,6 +67,12 @@ import { ClearinghouseConnector } from './connectors/clearinghouse-connector.js'
 import { PhilHealthConnector } from './connectors/philhealth-connector.js';
 import { SandboxConnector } from './connectors/sandbox-connector.js';
 import { PortalBatchConnector } from './connectors/portal-batch-connector.js';
+import { OfficeAllyConnector } from './connectors/officeally-connector.js';
+import { AvailityConnector } from './connectors/availity-connector.js';
+import { StediConnector } from './connectors/stedi-connector.js';
+import { EclipseAuConnector } from './connectors/eclipse-au-connector.js';
+import { AccNzConnector } from './connectors/acc-nz-connector.js';
+import { NphcSgConnector } from './connectors/nphc-sg-connector.js';
 
 // Audit
 import {
@@ -75,6 +81,21 @@ import {
 
 // X12 serializer (Phase 40)
 import { serialize837, exportX12Bundle } from './edi/x12-serializer.js';
+
+// Job queue (Phase 40 Superseding)
+import { getJobQueue } from './jobs/queue.js';
+import type { RcmJobType } from './jobs/queue.js';
+
+// Payer catalog importers (Phase 40 Superseding)
+import { CsvPayerImporter, JsonPayerImporter } from './importers/payer-catalog-importer.js';
+
+// VistA binding points (Phase 40 Superseding)
+import {
+  buildClaimFromVistaEncounter,
+  buildClaimFromEncounterData,
+  getChargeCaptureCandidates,
+  postEraToVista,
+} from './vistaBindings/index.js';
 
 /* ─── Submission safety (Phase 40) ───────────────────────────────── */
 
@@ -124,6 +145,31 @@ async function ensureInitialized(): Promise<void> {
   const portalBatch = new PortalBatchConnector();
   await portalBatch.initialize();
   registerConnector(portalBatch);
+
+  // Phase 40 (Superseding) -- Global connectors
+  const officeAlly = new OfficeAllyConnector();
+  await officeAlly.initialize();
+  registerConnector(officeAlly);
+
+  const availity = new AvailityConnector();
+  await availity.initialize();
+  registerConnector(availity);
+
+  const stedi = new StediConnector();
+  await stedi.initialize();
+  registerConnector(stedi);
+
+  const eclipseAu = new EclipseAuConnector();
+  await eclipseAu.initialize();
+  registerConnector(eclipseAu);
+
+  const accNz = new AccNzConnector();
+  await accNz.initialize();
+  registerConnector(accNz);
+
+  const nphcSg = new NphcSgConnector();
+  await nphcSg.initialize();
+  registerConnector(nphcSg);
 }
 
 /* ─── Route plugin ───────────────────────────────────────────────── */
@@ -735,5 +781,156 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
 
   server.get('/rcm/audit/stats', async () => {
     return { ok: true, stats: getRcmAuditStats() };
+  });
+
+  // ───── Job Queue (Phase 40 Superseding) ─────────────────────────
+  server.get('/rcm/jobs', async (request: FastifyRequest) => {
+    const q = request.query as Record<string, string>;
+    const queue = getJobQueue();
+    const jobs = await queue.listJobs({
+      status: q.status as any,
+      type: q.type as any,
+      limit: Number(q.limit ?? 50),
+      offset: Number(q.offset ?? 0),
+    });
+    return { ok: true, ...jobs };
+  });
+
+  server.get('/rcm/jobs/stats', async () => {
+    const queue = getJobQueue();
+    return { ok: true, stats: await queue.getStats() };
+  });
+
+  server.get('/rcm/jobs/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const queue = getJobQueue();
+    const job = await queue.getJob(id);
+    if (!job) return reply.code(404).send({ ok: false, error: 'Job not found' });
+    return { ok: true, job };
+  });
+
+  server.post('/rcm/jobs/:id/cancel', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const queue = getJobQueue();
+    try {
+      await queue.cancel(id);
+      appendRcmAudit('job.cancelled', { detail: { jobId: id } });
+      return { ok: true, message: 'Job cancelled' };
+    } catch {
+      return reply.code(404).send({ ok: false, error: 'Job not found or not cancellable' });
+    }
+  });
+
+  server.post('/rcm/jobs/enqueue', async (request: FastifyRequest, reply: FastifyReply) => {
+    const body = (request.body as any) || {};
+    const { type, payload, priority, idempotencyKey } = body;
+    if (!type || !payload) {
+      return reply.code(400).send({ ok: false, error: 'type and payload are required' });
+    }
+    const validTypes: RcmJobType[] = [
+      'CLAIM_SUBMIT', 'ELIGIBILITY_CHECK', 'STATUS_POLL', 'ERA_INGEST', 'ACK_PROCESS',
+    ];
+    if (!validTypes.includes(type)) {
+      return reply.code(400).send({ ok: false, error: `Invalid type. Must be one of: ${validTypes.join(', ')}` });
+    }
+    const queue = getJobQueue();
+    const jobId = await queue.enqueue({ type, payload, priority, idempotencyKey });
+    appendRcmAudit('job.enqueued', { detail: { jobId, type, priority } });
+    return reply.code(201).send({ ok: true, jobId });
+  });
+
+  // ───── Payer Catalog Import via Importer Framework (Phase 40 Superceding) ──
+  server.post('/rcm/payers/import/json', async (request: FastifyRequest, reply: FastifyReply) => {
+    const body = (request.body as any) || {};
+    const jsonData = body.data;
+    if (!jsonData) {
+      return reply.code(400).send({ ok: false, error: 'data field (JSON) is required' });
+    }
+    const raw = typeof jsonData === 'string' ? jsonData : JSON.stringify(jsonData);
+    const importer = new JsonPayerImporter();
+    const validation = importer.validate(raw);
+    if (!validation.valid) {
+      return reply.code(400).send({ ok: true, validation });
+    }
+    const result = importer.parse(raw);
+    // Upsert each payer
+    for (const p of result.payers) {
+      upsertPayer(p as any);
+    }
+    appendRcmAudit('payer.created', { detail: { jsonImport: true, count: result.payers.length } });
+    return { ok: true, imported: result.payers.length, errors: result.errors };
+  });
+
+  // ───── Connector capability matrix (Phase 40 Superseding) ──────
+  server.get('/rcm/connectors/capabilities', async () => {
+    const all = Array.from(getAllConnectors().values());
+    const matrix = all.map(c => ({
+      id: c.id,
+      name: c.name,
+      supportedModes: c.supportedModes,
+      supportedTransactions: c.supportedTransactions,
+    }));
+    return { ok: true, connectors: matrix, total: matrix.length };
+  });
+
+  // ───── VistA Binding Routes (Phase 40 Superseding) ─────────────
+  server.post('/rcm/vista/encounter-to-claim', async (request: FastifyRequest, reply: FastifyReply) => {
+    const body = (request.body as any) || {};
+    const { visitIen, patientDfn, payerId } = body;
+    if (!patientDfn || !payerId) {
+      return reply.code(400).send({ ok: false, error: 'patientDfn and payerId are required' });
+    }
+    const session = (request as any).session;
+    const actor = session?.duz ?? 'unknown';
+
+    if (visitIen) {
+      // Try VistA-native binding
+      const result = await buildClaimFromVistaEncounter(visitIen, patientDfn, payerId, actor);
+      if (!result.ok) {
+        return { ok: false, integrationPending: result.integrationPending, vistaGrounding: result.vistaGrounding, errors: result.errors };
+      }
+      if (result.data) {
+        storeClaim(result.data);
+        appendRcmAudit('claim.created', { claimId: result.data.id, detail: { source: 'vista-encounter', visitIen } });
+        return reply.code(201).send({ ok: true, claim: result.data });
+      }
+    }
+
+    // Fallback: use manual encounter data if provided
+    if (body.encounterData) {
+      const claim = buildClaimFromEncounterData(body.encounterData, payerId, actor, body.options);
+      storeClaim(claim);
+      appendRcmAudit('claim.created', { claimId: claim.id, detail: { source: 'manual-encounter-data' } });
+      return reply.code(201).send({ ok: true, claim });
+    }
+
+    return reply.code(400).send({ ok: false, error: 'Either visitIen or encounterData is required' });
+  });
+
+  server.get('/rcm/vista/charge-candidates', async (request: FastifyRequest) => {
+    const q = request.query as Record<string, string>;
+    const { patientDfn, dateFrom, dateTo } = q;
+    if (!patientDfn) {
+      return { ok: false, error: 'patientDfn query param is required' };
+    }
+    const result = await getChargeCaptureCandidates(patientDfn, { dateFrom, dateTo });
+    return result;
+  });
+
+  server.post('/rcm/vista/era-post', async (request: FastifyRequest, reply: FastifyReply) => {
+    const body = (request.body as any) || {};
+    const { remittanceId } = body;
+    if (!remittanceId) {
+      return reply.code(400).send({ ok: false, error: 'remittanceId is required' });
+    }
+    const remittance = getRemittance(remittanceId);
+    if (!remittance) {
+      return reply.code(404).send({ ok: false, error: 'Remittance not found' });
+    }
+    const result = await postEraToVista(remittance);
+    appendRcmAudit('era.post_attempted', {
+      detail: { remittanceId, posted: result.posted, integrationPending: result.integrationPending },
+    });
+    return result;
   });
 }

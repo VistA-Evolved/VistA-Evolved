@@ -1,0 +1,17 @@
+{
+  "feature": "Phase 40 (Superseding) -- Global RCM Connectivity Foundation",
+  "stage": "Implemented",
+  "status": "Verified",
+  "promptRef": "prompts/44-PHASE-40-PAYER-CONNECTIVITY/prompt-global-rcm.md",
+  "runbookPath": "docs/runbooks/rcm-global-connectivity.md",
+  "verifyScript": "scripts/verify-phase40-global-rcm.ps1",
+  "commitSha": "pending",
+  "highlights": [
+    "10 registered connectors (6 new)",
+    "45+ payers across US, PH, AU, SG, NZ",
+    "VistA binding points (encounter-to-claim, ERA, charge capture)",
+    "In-memory job queue with dead-letter + retry",
+    "23+ validation rules with country-specific edits",
+    "Payer catalog importer (CSV + JSON)"
+  ]
+}

@@ -442,6 +442,102 @@ const authorizationRules: ValidationRule[] = [
   },
 ];
 
+/* ─── Country/market-specific rules (Phase 40 Superseding) ───────── */
+
+const countrySpecificRules: ValidationRule[] = [
+  {
+    id: 'CTY-001',
+    category: 'payer_specific',
+    severity: 'warning',
+    blocksSubmission: false,
+    description: 'PhilHealth claims require PhilHealth PIN in subscriberId',
+    check: (c) => {
+      if (!c.payerId) return null;
+      const payer = getPayer(c.payerId);
+      if (!payer || payer.country !== 'PH') return null;
+      if (payer.payerId === 'PH-PHILHEALTH' && !c.subscriberId) {
+        return makeEdit(countrySpecificRules[0], 'subscriberId',
+          'PhilHealth claims require the member PhilHealth PIN as subscriberId',
+          'Enter the 12-digit PhilHealth Identification Number');
+      }
+      return null;
+    },
+  },
+  {
+    id: 'CTY-002',
+    category: 'payer_specific',
+    severity: 'warning',
+    blocksSubmission: false,
+    description: 'Australian Medicare claims require Medicare card number',
+    check: (c) => {
+      if (!c.payerId) return null;
+      const payer = getPayer(c.payerId);
+      if (!payer || payer.country !== 'AU') return null;
+      if (payer.payerId === 'AU-MEDICARE' && !c.subscriberId) {
+        return makeEdit(countrySpecificRules[1], 'subscriberId',
+          'Medicare Australia claims require the Medicare card number + IRN',
+          'Enter Medicare card number (10 digits) followed by IRN (1 digit)');
+      }
+      return null;
+    },
+  },
+  {
+    id: 'CTY-003',
+    category: 'payer_specific',
+    severity: 'warning',
+    blocksSubmission: false,
+    description: 'NZ ACC claims require ACC45/ACC2152 injury details',
+    check: (c) => {
+      if (!c.payerId) return null;
+      const payer = getPayer(c.payerId);
+      if (!payer || payer.country !== 'NZ') return null;
+      if (payer.payerId === 'NZ-ACC') {
+        return makeEdit(countrySpecificRules[2], 'payerSpecific',
+          'ACC NZ claims require injury mechanism and date of injury in claim metadata',
+          'Include ACC45 or ACC2152 form data in claim notes');
+      }
+      return null;
+    },
+  },
+  {
+    id: 'CTY-004',
+    category: 'payer_specific',
+    severity: 'info',
+    blocksSubmission: false,
+    description: 'Connector readiness check for payer integration mode',
+    check: (c) => {
+      if (!c.payerId) return null;
+      const payer = getPayer(c.payerId);
+      if (!payer) return null;
+      const mode = payer.integrationMode;
+      if (mode === 'not_classified') {
+        return makeEdit(countrySpecificRules[3], 'payerId',
+          `Payer '${payer.name}' integration mode is unclassified -- no connector will match`,
+          'Set payer integrationMode to clearinghouse_edi, direct_api, or government_portal');
+      }
+      return null;
+    },
+  },
+  {
+    id: 'CTY-005',
+    category: 'payer_specific',
+    severity: 'warning',
+    blocksSubmission: false,
+    description: 'NPI validation (US payers only)',
+    check: (c) => {
+      if (!c.payerId) return null;
+      const payer = getPayer(c.payerId);
+      if (!payer || payer.country !== 'US') return null;
+      if (c.billingProviderNpi && !/^\d{10}$/.test(c.billingProviderNpi)) {
+        return makeEdit(countrySpecificRules[4], 'billingProviderNpi',
+          'NPI must be exactly 10 digits for US payer claims',
+          'Enter a valid 10-digit National Provider Identifier');
+      }
+      return null;
+    },
+  },
+];
+
 /* ─── Master rule list ───────────────────────────────────────────── */
 
 const ALL_RULES: ValidationRule[] = [
@@ -451,6 +547,7 @@ const ALL_RULES: ValidationRule[] = [
   ...timelyFilingRules,
   ...payerSpecificRules,
   ...authorizationRules,
+  ...countrySpecificRules,
 ];
 
 /* ─── Main validation function ───────────────────────────────────── */

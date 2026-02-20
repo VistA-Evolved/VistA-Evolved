@@ -46,7 +46,13 @@ export type RcmAuditAction =
   | 'connector.submit'
   | 'connector.response'
   | 'safety.export_only'
-  | 'safety.live_enabled';
+  | 'safety.live_enabled'
+  | 'job.enqueued'
+  | 'job.cancelled'
+  | 'job.completed'
+  | 'job.failed'
+  | 'era.post_attempted'
+  | 'vista.binding_called';
 
 export interface RcmAuditEntry {
   id: string;

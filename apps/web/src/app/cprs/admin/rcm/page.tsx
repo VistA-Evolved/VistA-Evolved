@@ -52,7 +52,7 @@ export default function RcmPage() {
             {health.ok ? 'ONLINE' : 'OFFLINE'}
           </span>
         )}
-        <span style={{ marginLeft: 'auto', fontSize: 11, color: '#6c757d' }}>Phase 40</span>
+        <span style={{ marginLeft: 'auto', fontSize: 11, color: '#6c757d' }}>Phase 40 -- Global RCM</span>
       </div>
 
       {/* Submission Safety Banner (Phase 40) */}
@@ -252,6 +252,9 @@ function PayersTab() {
             <option value="">All Countries</option>
             <option value="US">US</option>
             <option value="PH">Philippines</option>
+            <option value="AU">Australia</option>
+            <option value="SG">Singapore</option>
+            <option value="NZ">New Zealand</option>
           </select>
         </div>
       </div>
@@ -313,6 +316,7 @@ function ConnectorsTab() {
   const [connectors, setConnectors] = useState<any[]>([]);
   const [health, setHealth] = useState<Record<string, any>>({});
   const [pipelineStats, setPipelineStats] = useState<any>(null);
+  const [jobStats, setJobStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -320,10 +324,12 @@ function ConnectorsTab() {
       apiFetch('/rcm/connectors'),
       apiFetch('/rcm/connectors/health'),
       apiFetch('/rcm/edi/pipeline/stats'),
-    ]).then(([cData, hData, pData]) => {
+      apiFetch('/rcm/jobs/stats'),
+    ]).then(([cData, hData, pData, jData]) => {
       setConnectors(cData.connectors ?? []);
       setHealth(hData.health ?? {});
       setPipelineStats(pData.stats ?? null);
+      setJobStats(jData.stats ?? null);
       setLoading(false);
     }).catch(() => setLoading(false));
   }, []);
@@ -377,6 +383,25 @@ function ConnectorsTab() {
                 <div style={{ marginTop: 4, fontSize: 12 }}>
                   <strong>By Transaction:</strong>{' '}
                   {Object.entries(pipelineStats.byTransaction).map(([t, n]) => `${t}: ${n}`).join(' | ')}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Job Queue Stats */}
+          {jobStats && (
+            <div style={{ marginTop: 24 }}>
+              <h4 style={{ fontSize: 14, marginBottom: 8 }}>Job Queue</h4>
+              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', fontSize: 12 }}>
+                <span><strong>Total:</strong> {jobStats.total ?? 0}</span>
+                {Object.entries(jobStats.byStatus ?? {}).map(([s, n]) => (
+                  <span key={s}><strong>{s}:</strong> {n as number}</span>
+                ))}
+              </div>
+              {jobStats.byType && Object.keys(jobStats.byType).length > 0 && (
+                <div style={{ marginTop: 4, fontSize: 12 }}>
+                  <strong>By Type:</strong>{' '}
+                  {Object.entries(jobStats.byType).map(([t, n]) => `${t}: ${n}`).join(' | ')}
                 </div>
               )}
             </div>

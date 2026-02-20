@@ -22,7 +22,7 @@ export type IntegrationMode =
 
 export type PayerStatus = "active" | "inactive" | "onboarding" | "suspended";
 
-export type PayerCountry = "US" | "PH" | "INTL";
+export type PayerCountry = "US" | "PH" | "AU" | "SG" | "NZ" | "INTL";
 
 export interface PayerEndpoint {
   purpose: "claims" | "eligibility" | "claimStatus" | "remittance" | "priorAuth";

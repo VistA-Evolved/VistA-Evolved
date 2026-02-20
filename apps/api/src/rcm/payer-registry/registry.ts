@@ -49,6 +49,9 @@ export function initPayerRegistry(): void {
   const seedFiles = [
     "data/payers/us_core.json",
     "data/payers/ph_hmos.json",
+    "data/payers/au_core.json",
+    "data/payers/sg_core.json",
+    "data/payers/nz_core.json",
   ];
 
   for (const file of seedFiles) {

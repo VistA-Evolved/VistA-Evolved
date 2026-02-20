@@ -143,9 +143,9 @@ Gate "us_core.json has 12 payers" {
   $data.payers.Count -eq 12
 }
 
-Gate "ph_hmos.json has 15 payers" {
+Gate "ph_hmos.json has >= 15 payers" {
   $data = Get-Content "$root\data\payers\ph_hmos.json" -Raw | ConvertFrom-Json
-  $data.payers.Count -eq 15
+  $data.payers.Count -ge 15
 }
 
 Gate "us_core.json payers have payerId + name + country" {

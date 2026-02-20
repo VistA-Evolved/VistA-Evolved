@@ -48,7 +48,7 @@ export function PatientProvider({ children }: { children: ReactNode }) {
   const [dfn, setDfn] = useState('');
   const [demographics, setDemographics] = useState<PatientDemographics | null>(null);
   const [loading, setLoading] = useState(false);
-  const [providerDuz, setProviderDuz] = useState('87'); // Default PROV123
+  const [providerDuz, setProviderDuz] = useState('87'); // Default provider (DUZ 87)
   const [locationIen, setLocationIen] = useState('2');
   const [locationName, setLocationName] = useState('DR OFFICE');
 

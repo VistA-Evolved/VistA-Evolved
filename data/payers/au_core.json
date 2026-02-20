@@ -1,0 +1,118 @@
+{
+  "_meta": {
+    "description": "Australia payer seed data: Medicare (ECLIPSE) + major private health insurers (Phase 40 Superseding)",
+    "source": "Australian Prudential Regulation Authority (APRA) Private Health Insurer list + Services Australia Medicare",
+    "lastUpdated": "2026-02-20",
+    "notes": "Medicare is the universal public insurer. Private health insurers are regulated by APRA. Claims routed via ECLIPSE gateway for Medicare. Private insurers use individual portals/APIs."
+  },
+  "payers": [
+    {
+      "payerId": "AU-MEDICARE",
+      "name": "Medicare Australia (Services Australia)",
+      "country": "INTL",
+      "integrationMode": "government_portal",
+      "status": "active",
+      "category": "government",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "All providers must register with Services Australia. Claims via ECLIPSE (Electronic Claim Lodgement and Information Processing Service Environment). HPOS (Health Professional Online Services) for provider registration.",
+      "enrollmentUrl": "https://www.servicesaustralia.gov.au/health-professionals",
+      "endpoints": [
+        { "purpose": "claims", "protocol": "rest", "notes": "ECLIPSE gateway for Medicare claiming. Requires PRODA (Provider Digital Access) authentication." },
+        { "purpose": "eligibility", "protocol": "rest", "notes": "Medicare Patient Verification (via ECLIPSE DVA/Medicare Online)" }
+      ],
+      "aliases": ["Medicare AU", "ECLIPSE", "Services Australia"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "AU-DVA",
+      "name": "Department of Veterans' Affairs (DVA) Australia",
+      "country": "INTL",
+      "integrationMode": "government_portal",
+      "status": "active",
+      "category": "government",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "DVA Gold/White card holders. Claims via ECLIPSE gateway (same as Medicare).",
+      "endpoints": [
+        { "purpose": "claims", "protocol": "rest", "notes": "ECLIPSE gateway for DVA claiming" }
+      ],
+      "aliases": ["DVA", "Veterans Affairs AU"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "AU-MEDIBANK",
+      "name": "Medibank Private Limited",
+      "country": "INTL",
+      "integrationMode": "direct_api",
+      "status": "active",
+      "category": "commercial",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "Largest AU private insurer. Provider enrollment via Medibank provider portal. ECLIPSE/HICAPS for in-practice claiming.",
+      "endpoints": [
+        { "purpose": "claims", "protocol": "portal", "url": "https://www.medibank.com.au/providers/" }
+      ],
+      "aliases": ["Medibank"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "AU-BUPA",
+      "name": "Bupa Health Insurance Australia",
+      "country": "INTL",
+      "integrationMode": "direct_api",
+      "status": "active",
+      "category": "commercial",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "Second largest AU private insurer. Provider enrollment via Bupa provider portal. HICAPS terminal for in-practice.",
+      "endpoints": [
+        { "purpose": "claims", "protocol": "portal", "url": "https://www.bupa.com.au/health-professionals" }
+      ],
+      "aliases": ["Bupa AU"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "AU-HCF",
+      "name": "HCF (Hospitals Contribution Fund of Australia)",
+      "country": "INTL",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "commercial",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "Not-for-profit fund. Provider enrollment via HICAPS/ECLIPSE.",
+      "endpoints": [],
+      "aliases": ["HCF"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "AU-NIB",
+      "name": "nib Health Funds Limited",
+      "country": "INTL",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "commercial",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "Major AU insurer. Provider enrollment via nib provider portal.",
+      "endpoints": [],
+      "aliases": ["nib"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "AU-APRA-IMPORTER",
+      "name": "APRA Private Health Insurer Roster (Importer Placeholder)",
+      "country": "INTL",
+      "integrationMode": "not_classified",
+      "status": "onboarding",
+      "category": "importer_placeholder",
+      "enrollmentRequired": false,
+      "enrollmentNotes": "Placeholder for bulk import of all APRA-regulated private health insurers. Source: APRA PHI statistics quarterly publication. Use CSV importer with APRA data extract.",
+      "endpoints": [],
+      "aliases": [],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    }
+  ]
+}

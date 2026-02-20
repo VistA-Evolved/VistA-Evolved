@@ -1,0 +1,100 @@
+{
+  "_meta": {
+    "description": "Singapore payer seed data: NPHC + MediShield Life + major private insurers (Phase 40 Superseding)",
+    "source": "Ministry of Health Singapore + Monetary Authority of Singapore Insurer Directory",
+    "lastUpdated": "2026-02-20",
+    "notes": "MediShield Life is the universal public base insurance. NPHC (National Programme for Healthcare Claims) is the national claims gateway. Integrated Shield Plans (IP) are private top-ups."
+  },
+  "payers": [
+    {
+      "payerId": "SG-NPHC",
+      "name": "National Programme for Healthcare Claims (NPHC)",
+      "country": "INTL",
+      "integrationMode": "government_portal",
+      "status": "active",
+      "category": "government",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "All licensed healthcare institutions must connect to NPHC for MediShield Life / MediSave claims. API-based submission with SingPass CorpPass authentication.",
+      "enrollmentUrl": "https://www.moh.gov.sg/",
+      "endpoints": [
+        { "purpose": "claims", "protocol": "rest", "notes": "NPHC REST API. Requires CorpPass authentication + MOH facility license." },
+        { "purpose": "eligibility", "protocol": "rest", "notes": "MediShield Life eligibility check via NPHC" }
+      ],
+      "aliases": ["NPHC", "MediShield Life"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "SG-MEDISAVE",
+      "name": "MediSave (Central Provident Fund Board)",
+      "country": "INTL",
+      "integrationMode": "government_portal",
+      "status": "active",
+      "category": "government",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "MediSave claims routed through NPHC for approved procedures. MediSave withdrawal limits apply.",
+      "endpoints": [
+        { "purpose": "claims", "protocol": "rest", "notes": "Via NPHC gateway" }
+      ],
+      "aliases": ["MediSave", "CPF MediSave"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "SG-PRUDENTIAL",
+      "name": "Prudential Assurance Company Singapore",
+      "country": "INTL",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "commercial",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "Integrated Shield Plan provider. Claims via insurer portal + NPHC for MediSave component.",
+      "endpoints": [],
+      "aliases": ["Prudential SG", "PRUShield"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "SG-NTUC",
+      "name": "NTUC Income Insurance Co-operative Limited",
+      "country": "INTL",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "commercial",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "Integrated Shield Plan: IncomeShield. Claims via insurer portal.",
+      "endpoints": [],
+      "aliases": ["NTUC Income", "IncomeShield"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "SG-GREATEASTERN",
+      "name": "Great Eastern Life Assurance Co. Ltd",
+      "country": "INTL",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "commercial",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "Integrated Shield Plan: GREAT SupremeHealth. Claims via insurer portal.",
+      "endpoints": [],
+      "aliases": ["Great Eastern", "SupremeHealth"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    },
+    {
+      "payerId": "SG-AIA",
+      "name": "AIA Singapore Private Limited",
+      "country": "INTL",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "commercial",
+      "enrollmentRequired": true,
+      "enrollmentNotes": "Integrated Shield Plan: AIA HealthShield Gold Max. Claims via AIA provider portal.",
+      "endpoints": [],
+      "aliases": ["AIA SG", "HealthShield Gold Max"],
+      "createdAt": "2026-02-20T00:00:00Z",
+      "updatedAt": "2026-02-20T00:00:00Z"
+    }
+  ]
+}
