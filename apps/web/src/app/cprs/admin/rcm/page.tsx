@@ -508,6 +508,14 @@ function DraftFromVistaTab() {
   const [selectedEncounter, setSelectedEncounter] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState<'select' | 'review' | 'done'>('select');
+  const [rpcCheck, setRpcCheck] = useState<any>(null);
+
+  const checkRpcAvailability = () => {
+    setLoading(true);
+    apiFetch('/rcm/vista/rpc-check')
+      .then(data => { setRpcCheck(data); setLoading(false); })
+      .catch(() => setLoading(false));
+  };
 
   const fetchEncounters = () => {
     if (!patientIen) return;
@@ -547,9 +555,15 @@ function DraftFromVistaTab() {
   };
 
   const prerequisitesCheck = () => {
+    // Determine wrapper RPC status from rpcCheck if available
+    const wrapperRpc = rpcCheck?.rpcs?.find((r: any) => r.name === 'VE RCM PROVIDER INFO');
+    const wrapperStatus: 'ok' | 'missing' | 'pending' = wrapperRpc
+      ? (wrapperRpc.available ? 'ok' : 'pending')
+      : 'pending';
     const issues: Array<{ field: string; source: string; status: 'ok' | 'missing' | 'pending' }> = [
       { field: 'Encounters (PCE)', source: 'ORWPCE VISIT', status: encounters?.ok && encounters.count > 0 ? 'ok' : 'missing' },
       { field: 'Insurance Coverage', source: 'IBCN INSURANCE QUERY', status: coverage?.ok && coverage.count > 0 ? 'ok' : 'missing' },
+      { field: 'Provider NPI/Facility', source: 'VE RCM PROVIDER INFO', status: wrapperStatus },
       { field: 'IB Charges', source: '^IB(350)', status: 'pending' },
       { field: 'Claims Tracking', source: '^DGCR(399)', status: 'pending' },
     ];
@@ -564,6 +578,38 @@ function DraftFromVistaTab() {
           Select a patient, review encounters, and generate claim drafts from real VistA PCE data.
           Missing data is annotated with the exact VistA source needed.
         </p>
+      </div>
+
+      {/* RPC Availability Check */}
+      <div style={{ marginBottom: 16 }}>
+        <button onClick={checkRpcAvailability} disabled={loading} style={{
+          padding: '5px 14px', background: '#6c757d', color: 'white', border: 'none', borderRadius: 4, fontSize: 12, cursor: 'pointer',
+        }}>
+          {loading && !encounters ? 'Checking...' : '0. Check RPC Availability'}
+        </button>
+        {rpcCheck && (
+          <div style={{ border: '1px solid #dee2e6', borderRadius: 6, padding: 10, marginTop: 8 }}>
+            <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 6 }}>
+              RPC Availability: {rpcCheck.summary || 'unknown'}
+              {rpcCheck.allRequired === true && <span style={{ color: '#198754', marginLeft: 8 }}>All required RPCs available</span>}
+              {rpcCheck.allRequired === false && <span style={{ color: '#dc3545', marginLeft: 8 }}>Some required RPCs missing</span>}
+            </div>
+            {rpcCheck.rpcs?.map((r: any, i: number) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, marginBottom: 2 }}>
+                <span style={{
+                  width: 8, height: 8, borderRadius: '50%', display: 'inline-block',
+                  background: r.available === true ? '#198754' : r.available === false ? '#dc3545' : '#fd7e14',
+                }} />
+                <span style={{ fontFamily: 'monospace' }}>{r.name}</span>
+                <span style={{ color: '#6c757d' }}>({r.source})</span>
+                {r.required && <span style={{ fontSize: 9, fontWeight: 700, color: '#dc3545' }}>REQUIRED</span>}
+                {r.available === false && r.error && (
+                  <span style={{ color: '#dc3545', fontSize: 10 }}>-- {r.description}</span>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Step 1: Patient + Date Selection */}

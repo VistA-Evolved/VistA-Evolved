@@ -965,6 +965,56 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     };
   }
 
+  /** RPCs used by the claim draft builder */
+  const DRAFT_RPCS = [
+    { name: 'ORWPCE VISIT',          source: 'Vivian',    required: true,  description: 'PCE encounters' },
+    { name: 'ORWPCE DIAG',           source: 'Vivian',    required: true,  description: 'PCE diagnoses' },
+    { name: 'ORWPCE PROC',           source: 'Vivian',    required: true,  description: 'PCE procedures' },
+    { name: 'IBCN INSURANCE QUERY',  source: 'Vivian',    required: false, description: 'Patient insurance' },
+    { name: 'VE RCM PROVIDER INFO',  source: 'Custom',    required: false, description: 'Provider NPI/facility (install ZVERCMP.m)' },
+  ];
+
+  /**
+   * GET /rcm/vista/rpc-check
+   * Checks which claim-draft RPCs are available in the live VistA instance.
+   * Returns per-RPC availability with source (Vivian/Custom) and install hints.
+   */
+  server.get('/rcm/vista/rpc-check', async () => {
+    try {
+      validateCredentials();
+    } catch {
+      return { ok: false, error: 'VistA credentials not configured', rpcs: DRAFT_RPCS.map(r => ({ ...r, available: 'unknown' as const })) };
+    }
+
+    const results: Array<typeof DRAFT_RPCS[0] & { available: boolean; error?: string }> = [];
+
+    try {
+      await connect();
+      for (const rpc of DRAFT_RPCS) {
+        try {
+          // Probe each RPC with a benign call (DFN=0 will return empty but not crash)
+          await callRpc(rpc.name, ['0']);
+          results.push({ ...rpc, available: true });
+        } catch (err: any) {
+          const msg = err?.message || '';
+          // "not found" or context errors mean the RPC isn't registered
+          results.push({ ...rpc, available: false, error: msg.substring(0, 120) });
+        }
+      }
+      disconnect();
+    } catch (err: any) {
+      disconnect();
+      return { ok: false, error: 'VistA connection failed', rpcs: DRAFT_RPCS.map(r => ({ ...r, available: 'unknown' as const })) };
+    }
+
+    return {
+      ok: true,
+      rpcs: results,
+      allRequired: results.filter(r => r.required).every(r => r.available),
+      summary: `${results.filter(r => r.available).length}/${results.length} available`,
+    };
+  });
+
   /**
    * GET /rcm/vista/encounters?patientIen=N&from=YYYY-MM-DD&to=YYYY-MM-DD
    * Returns PCE encounters from VistA for claim draft selection.

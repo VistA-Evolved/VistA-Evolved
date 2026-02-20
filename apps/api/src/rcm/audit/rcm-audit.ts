@@ -55,7 +55,8 @@ export type RcmAuditAction =
   | 'vista.binding_called'
   | 'vista.encounters.read'
   | 'vista.claim-drafts.created'
-  | 'vista.coverage.read';
+  | 'vista.coverage.read'
+  | 'vista.rpc-check';
 
 export interface RcmAuditEntry {
   id: string;
