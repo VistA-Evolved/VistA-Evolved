@@ -49,6 +49,12 @@ export type AuditAction =
   | "clinical.consult-create"
   | "clinical.surgery-create"
   | "clinical.problem-save"
+  // Phase 57: Write-back safety model audit events
+  | "clinical.problem-edit"
+  | "clinical.order-draft"
+  | "clinical.order-verify"
+  | "clinical.order-dc"
+  | "clinical.consult-complete"
   | "config.capability-refresh"
   | "config.tenant-update"
   | "config.feature-flag-update"

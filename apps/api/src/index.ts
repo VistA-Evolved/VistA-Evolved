@@ -76,6 +76,8 @@ import { getConnectorCbStats, resetConnectorCb, resetAllConnectorCbs } from "./r
 import migrationRoutes from "./migration/migration-routes.js";
 // Phase 56: CPRS Wave 1 READ routes (cover sheet + tabs)
 import cprsWave1Routes from "./routes/cprs/wave1-routes.js";
+// Phase 57: CPRS Wave 2 WRITE routes (safety + capability detection)
+import cprsWave2Routes from "./routes/cprs/wave2-routes.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -250,6 +252,9 @@ server.register(migrationRoutes);
 
 // Register CPRS Wave 1 READ routes -- orders summary, appointments, reminders, etc. (Phase 56)
 server.register(cprsWave1Routes);
+
+// Register CPRS Wave 2 WRITE routes -- problems/notes/orders/meds/labs/vitals/allergies (Phase 57)
+server.register(cprsWave2Routes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

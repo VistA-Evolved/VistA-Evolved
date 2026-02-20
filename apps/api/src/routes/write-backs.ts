@@ -59,7 +59,7 @@ export interface ServerDraft {
 const drafts: Map<string, ServerDraft> = new Map();
 let draftSeq = 0;
 
-function createDraft(type: ServerDraft['type'], dfn: string, requiredRpc: string, payload: Record<string, unknown>): ServerDraft {
+export function createDraft(type: ServerDraft['type'], dfn: string, requiredRpc: string, payload: Record<string, unknown>): ServerDraft {
   const id = `draft-${++draftSeq}-${Date.now()}`;
   const now = new Date().toISOString();
   const draft: ServerDraft = {

@@ -5,7 +5,7 @@ import { useCPRSUI } from '@/stores/cprs-ui-state';
 import { usePatient } from '@/stores/patient-context';
 import { useSession } from '@/stores/session-context';
 import { useDataCache, type Vital } from '@/stores/data-cache';
-import { AddProblemDialog, EditProblemDialog, AddMedicationDialog } from './dialogs';
+import { AddProblemDialog, EditProblemDialog, AddMedicationDialog, CreateNoteDialog, AddVitalDialog, AddAllergyDialog, AcknowledgeLabDialog } from './dialogs';
 import styles from './cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
@@ -482,6 +482,10 @@ export default function CPRSModals() {
     case 'addProblem': return <AddProblemDialog />;
     case 'editProblem': return <EditProblemDialog />;
     case 'addMedication': return <AddMedicationDialog />;
+    case 'createNote': return <CreateNoteDialog />;
+    case 'addVital': return <AddVitalDialog />;
+    case 'addAllergy': return <AddAllergyDialog />;
+    case 'ackLab': return <AcknowledgeLabDialog />;
     default: return null;
   }
 }
