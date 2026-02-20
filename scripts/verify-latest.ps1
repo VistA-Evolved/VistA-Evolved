@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 53: PromptOS v2.1 Governance + Anti-Sprawl Enforcement
-& "$PSScriptRoot\verify-phase53-governance.ps1" @args
+# Phase 54: Alignment Audit v2 + Triage Generator
+& "$PSScriptRoot\verify-phase54-audit.ps1" @args
