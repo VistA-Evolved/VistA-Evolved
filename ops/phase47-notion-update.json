@@ -1,0 +1,9 @@
+{
+  "feature": "Phase 47: CI + Evidence Pack + Hard Quality Gates",
+  "stage": "implemented",
+  "status": "verified",
+  "promptRef": "prompts/52-PHASE-47-CI-EVIDENCE-QUALITY-GATES/01-implement.md",
+  "runbookPath": "docs/runbooks/ci-and-evidence-pack.md",
+  "verifyScriptUsed": "manual: tsc + vitest + 3 check scripts",
+  "commitSha": "pending"
+}

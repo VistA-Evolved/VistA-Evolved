@@ -1,0 +1,81 @@
+name: CI Verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality-gates:
+    name: Quality Gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.13.0"
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "10.29.2"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # ---- Hard gates (fail the build) ----
+
+      - name: TypeScript typecheck (API)
+        run: pnpm exec tsc -p apps/api/tsconfig.json --noEmit
+
+      - name: Unit tests
+        run: cd apps/api && pnpm exec vitest run
+
+      - name: Prompts ordering gate
+        run: pnpm exec tsx scripts/check-prompts-ordering.ts
+
+      - name: RPC registry gate
+        run: pnpm exec tsx scripts/check-rpc-registry.ts
+
+      - name: Module toggle integrity
+        run: pnpm exec tsx scripts/check-module-gates.ts
+
+  evidence-pack:
+    name: Evidence Pack
+    needs: quality-gates
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.13.0"
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "10.29.2"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate evidence pack
+        run: pnpm exec tsx scripts/generate-evidence-pack.ts
+        env:
+          BUILD_ID: ${{ github.sha }}
+        continue-on-error: true
+
+      - name: Upload evidence pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-pack-${{ github.sha }}
+          path: docs/evidence/${{ github.sha }}/
+          retention-days: 90
+          if-no-files-found: warn
