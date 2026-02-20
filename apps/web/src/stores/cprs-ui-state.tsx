@@ -34,6 +34,8 @@ export interface CPRSUIStateValue {
   modalData: Record<string, unknown> | null;
   /** Update preferences (partial merge, persists to localStorage) */
   updatePreferences: (partial: Partial<CPRSPreferences>) => void;
+  /** Reset cover sheet layout to defaults (Phase 56) */
+  resetCoverSheetLayout: () => void;
   /** Open a modal/drawer by ID with optional data */
   openModal: (id: string, data?: Record<string, unknown>) => void;
   /** Close the active modal */
@@ -45,8 +47,8 @@ export interface CPRSUIStateValue {
 /* ------------------------------------------------------------------ */
 
 const DEFAULT_COVER_LAYOUT: CoverSheetLayout = {
-  panelOrder: ['problems', 'allergies', 'meds', 'vitals', 'notes', 'reminders'],
-  panelHeights: { problems: 33, allergies: 33, meds: 33, vitals: 33, notes: 33, reminders: 33 },
+  panelOrder: ['problems', 'allergies', 'meds', 'vitals', 'notes', 'labs', 'orders', 'appointments', 'reminders'],
+  panelHeights: { problems: 33, allergies: 33, meds: 33, vitals: 33, notes: 33, labs: 33, orders: 33, appointments: 33, reminders: 33 },
 };
 
 const DEFAULT_PREFS: CPRSPreferences = {
@@ -100,6 +102,14 @@ export function CPRSUIProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const resetCoverSheetLayout = useCallback(() => {
+    setPreferences((prev) => {
+      const next = { ...prev, coverSheetLayout: DEFAULT_COVER_LAYOUT };
+      savePrefs(next);
+      return next;
+    });
+  }, []);
+
   const openModal = useCallback((id: string, data?: Record<string, unknown>) => {
     setActiveModal(id);
     setModalData(data ?? null);
@@ -112,7 +122,7 @@ export function CPRSUIProvider({ children }: { children: ReactNode }) {
 
   return (
     <CPRSUIContext.Provider
-      value={{ preferences, activeModal, modalData, updatePreferences, openModal, closeModal }}
+      value={{ preferences, activeModal, modalData, updatePreferences, resetCoverSheetLayout, openModal, closeModal }}
     >
       {children}
     </CPRSUIContext.Provider>

@@ -1,0 +1,11 @@
+{
+  "feature_title": "Phase 56: CPRS Parity Wave 1 (READ) + Cover Sheet Layout Manager",
+  "stage": "Verified",
+  "status": "Complete",
+  "prompt_ref": "prompts/61-PHASE-56-CPRS-WAVE1-LAYOUT/61-01-IMPLEMENT.md",
+  "runbook_path": "docs/runbooks/phase56-wave1-layout.md",
+  "verify_script": "scripts/verify-phase56-wave1-layout.ps1",
+  "gates_passed": 10,
+  "gates_total": 10,
+  "commit_sha": "pending"
+}

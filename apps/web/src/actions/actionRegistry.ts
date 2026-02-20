@@ -25,6 +25,8 @@ export interface CprsAction {
   status: ActionStatus;
   /** For integration-pending: what needs to happen next */
   pendingNote?: string;
+  /** API endpoint this action fetches from (Phase 56) */
+  endpoint?: string;
 }
 
 /**
@@ -41,6 +43,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.allergies.read",
     rpcs: ["ORQQAL LIST"],
     status: "wired",
+    endpoint: "/vista/allergies",
   },
   {
     actionId: "cover.load-problems",
@@ -49,6 +52,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.problems.read",
     rpcs: ["ORWCH PROBLEM LIST"],
     status: "wired",
+    endpoint: "/vista/problems",
   },
   {
     actionId: "cover.load-vitals",
@@ -57,6 +61,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.vitals.read",
     rpcs: ["ORQQVI VITALS"],
     status: "wired",
+    endpoint: "/vista/vitals",
   },
   {
     actionId: "cover.load-meds",
@@ -65,6 +70,45 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.medications.read",
     rpcs: ["ORWPS ACTIVE"],
     status: "wired",
+    endpoint: "/vista/medications",
+  },
+  {
+    actionId: "cover.load-labs",
+    label: "Load Recent Labs",
+    location: "CoverSheet",
+    capability: "clinical.labs.read",
+    rpcs: ["ORWLRR INTERIM"],
+    status: "wired",
+    endpoint: "/vista/labs",
+  },
+  {
+    actionId: "cover.load-orders",
+    label: "Load Orders Summary",
+    location: "CoverSheet",
+    capability: "clinical.orders.read",
+    rpcs: ["ORWORB UNSIG ORDERS"],
+    status: "wired",
+    endpoint: "/vista/cprs/orders-summary",
+  },
+  {
+    actionId: "cover.load-appointments",
+    label: "Load Appointments",
+    location: "CoverSheet",
+    capability: "clinical.scheduling.read",
+    rpcs: [],
+    status: "integration-pending",
+    pendingNote: "SD API APPOINTMENTS BY DFN / SDOE GET APPOINTMENTS -- scheduling RPCs not available in WorldVistA sandbox",
+    endpoint: "/vista/cprs/appointments",
+  },
+  {
+    actionId: "cover.load-reminders",
+    label: "Load Clinical Reminders",
+    location: "CoverSheet",
+    capability: "clinical.reminders.read",
+    rpcs: [],
+    status: "integration-pending",
+    pendingNote: "ORQQPX REMINDERS LIST / ORQQPX REMINDER DETAIL -- PXRM package config needed in sandbox",
+    endpoint: "/vista/cprs/reminders",
   },
 
   // --- Patient Search ---
@@ -75,6 +119,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.patients.read",
     rpcs: ["ORWPT LIST ALL"],
     status: "wired",
+    endpoint: "/vista/patient-search",
   },
   {
     actionId: "patient.select",
@@ -83,6 +128,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.patients.read",
     rpcs: ["ORWPT SELECT"],
     status: "wired",
+    endpoint: "/vista/patient-search",
   },
   {
     actionId: "patient.default-list",
@@ -91,6 +137,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.patients.read",
     rpcs: ["ORQPT DEFAULT PATIENT LIST"],
     status: "wired",
+    endpoint: "/vista/default-patient-list",
   },
 
   // --- Problems ---
@@ -101,6 +148,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.problems.read",
     rpcs: ["ORQQPL PROBLEM LIST"],
     status: "wired",
+    endpoint: "/vista/problems",
   },
   {
     actionId: "problems.search-icd",
@@ -109,6 +157,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.problems.read",
     rpcs: ["ORQQPL4 LEX"],
     status: "wired",
+    endpoint: "/vista/cprs/problems/icd-search",
   },
   {
     actionId: "problems.add",
@@ -135,6 +184,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.medications.read",
     rpcs: ["ORWPS ACTIVE"],
     status: "wired",
+    endpoint: "/vista/medications",
   },
   {
     actionId: "meds.order-detail",
@@ -143,6 +193,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.medications.read",
     rpcs: ["ORWORR GETTXT"],
     status: "wired",
+    endpoint: "/vista/cprs/meds/detail",
   },
   {
     actionId: "meds.quick-order",
@@ -187,6 +238,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.notes.read",
     rpcs: ["TIU DOCUMENTS BY CONTEXT"],
     status: "wired",
+    endpoint: "/vista/notes",
   },
   {
     actionId: "notes.read-text",
@@ -195,6 +247,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.notes.read",
     rpcs: ["TIU GET RECORD TEXT"],
     status: "wired",
+    endpoint: "/vista/tiu-text",
   },
   {
     actionId: "notes.create",
@@ -249,6 +302,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.consults.read",
     rpcs: ["ORQQCN LIST"],
     status: "wired",
+    endpoint: "/vista/consults",
   },
   {
     actionId: "consults.detail",
@@ -275,6 +329,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.labs.read",
     rpcs: ["ORWLRR INTERIM"],
     status: "wired",
+    endpoint: "/vista/labs",
   },
   {
     actionId: "labs.ack",
@@ -293,6 +348,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.surgery.read",
     rpcs: ["ORWSR LIST"],
     status: "wired",
+    endpoint: "/vista/surgery",
   },
 
   // --- DC Summaries ---
@@ -303,6 +359,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.dcSumm.read",
     rpcs: ["TIU DOCUMENTS BY CONTEXT"],
     status: "wired",
+    endpoint: "/vista/dc-summaries",
   },
 
   // --- Reports ---
@@ -313,6 +370,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.reports.read",
     rpcs: ["ORWRP REPORT LISTS"],
     status: "wired",
+    endpoint: "/vista/reports",
   },
   {
     actionId: "reports.text",
@@ -321,6 +379,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.reports.read",
     rpcs: ["ORWRP REPORT TEXT"],
     status: "wired",
+    endpoint: "/vista/reports/text",
   },
 
   // --- Imaging ---
@@ -357,6 +416,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.vitals.read",
     rpcs: ["ORQQVI VITALS"],
     status: "wired",
+    endpoint: "/vista/vitals",
   },
   {
     actionId: "vitals.add",

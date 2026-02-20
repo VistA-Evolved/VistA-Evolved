@@ -297,6 +297,13 @@
   margin: 8px 0;
   text-align: center;
 }
+.pendingBadge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  vertical-align: middle;
+}
 
 /* --- Buttons ------------------------------------------------------ */
 .btn {

@@ -28,16 +28,38 @@ import {
   MessagingTasksPanel,
   AIAssistPanel,
 } from '@/components/cprs/panels';
+import CoverSheetLayoutManager from '@/components/cprs/CoverSheetLayoutManager';
+import ActionInspector from '@/components/cprs/ActionInspector';
 import styles from '@/components/cprs/cprs.module.css';
 
 interface ChartPageProps {
   params: Promise<{ dfn: string; tab: string }>;
 }
 
-/* Map tab slugs → components */
+/* Map tab slugs -> components */
+const TAB_LOCATION_MAP: Record<string, string> = {
+  cover: 'CoverSheet',
+  problems: 'Problems',
+  meds: 'Meds',
+  orders: 'Orders',
+  notes: 'Notes',
+  consults: 'Consults',
+  surgery: 'Surgery',
+  dcsumm: 'DCSumm',
+  labs: 'Labs',
+  reports: 'Reports',
+  imaging: 'Imaging',
+};
+
 function TabContent({ dfn, tab }: { dfn: string; tab: string }) {
   switch (tab) {
-    case 'cover':      return <CoverSheetPanel dfn={dfn} />;
+    case 'cover':
+      return (
+        <>
+          <CoverSheetLayoutManager />
+          <CoverSheetPanel dfn={dfn} />
+        </>
+      );
     case 'problems':   return <ProblemsPanel   dfn={dfn} />;
     case 'meds':       return <MedsPanel       dfn={dfn} />;
     case 'orders':     return <OrdersPanel     dfn={dfn} />;
@@ -151,6 +173,7 @@ export default function CPRSChartPage({ params }: ChartPageProps) {
           </ErrorBoundary>
         </main>
       </div>
+      <ActionInspector location={TAB_LOCATION_MAP[tab]} />
     </div>
   );
 }

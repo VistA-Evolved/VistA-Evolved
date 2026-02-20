@@ -74,6 +74,8 @@ import { queryUnifiedAudit, getUnifiedAuditStats } from "./lib/unified-audit.js"
 import { getConnectorCbStats, resetConnectorCb, resetAllConnectorCbs } from "./rcm/connectors/connector-resilience.js";
 // Phase 50: Data Portability + Migration Toolkit
 import migrationRoutes from "./migration/migration-routes.js";
+// Phase 56: CPRS Wave 1 READ routes (cover sheet + tabs)
+import cprsWave1Routes from "./routes/cprs/wave1-routes.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -245,6 +247,9 @@ server.register(vistaRcmRoutes);
 
 // Register Migration Toolkit routes -- data portability import/export (Phase 50)
 server.register(migrationRoutes);
+
+// Register CPRS Wave 1 READ routes -- orders summary, appointments, reminders, etc. (Phase 56)
+server.register(cprsWave1Routes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);
