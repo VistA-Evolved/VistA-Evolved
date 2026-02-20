@@ -63,6 +63,8 @@ import { moduleGuardHook } from "./middleware/module-guard.js";
 import moduleCapabilityRoutes from "./routes/module-capability-routes.js";
 // Phase 38: RCM + Payer Connectivity
 import rcmRoutes from "./rcm/rcm-routes.js";
+// Phase 39: VistA Billing Grounding -- read-only VistA RCM surfaces
+import vistaRcmRoutes from "./routes/vista-rcm.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -226,6 +228,9 @@ server.register(moduleCapabilityRoutes);
 
 // Register RCM routes -- claim lifecycle, payer registry, EDI pipeline (Phase 38)
 server.register(rcmRoutes);
+
+// Register VistA RCM routes -- read-only billing grounding (Phase 39)
+server.register(vistaRcmRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

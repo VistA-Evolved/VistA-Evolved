@@ -96,7 +96,14 @@ export type AuditAction =
   | "report.generate"
   | "export.request"
   | "export.download"
-  | "export.policy-check";
+  | "export.policy-check"
+  // Phase 39: VistA billing grounding audit events
+  | "phi.rcm-encounters-view"
+  | "phi.rcm-insurance-view"
+  | "phi.rcm-charges-view"
+  | "phi.rcm-claims-status-view"
+  | "phi.rcm-ar-status-view"
+  | "data.icd-search";
 
 export type AuditOutcome = "success" | "failure" | "denied" | "error";
 

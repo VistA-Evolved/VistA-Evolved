@@ -158,6 +158,27 @@ export const KNOWN_RPCS: { rpc: string; domain: string; fallback?: string; descr
 
   // Encounter
   { rpc: "ORWPCE SAVE", domain: "encounter", description: "Write-back: save encounter" },
+
+  // Phase 39: Billing Grounding — encounter/PCE reads
+  { rpc: "ORWPCE VISIT", domain: "billing", description: "Visit details for patient" },
+  { rpc: "ORWPCE GET VISIT", domain: "billing", description: "Get encounter data for visit" },
+  { rpc: "ORWPCE DIAG", domain: "billing", description: "Diagnoses for encounter" },
+  { rpc: "ORWPCE PROC", domain: "billing", description: "Procedures for encounter" },
+  { rpc: "ORWPCE PCE4NOTE", domain: "billing", description: "PCE data linked to note" },
+  { rpc: "ORWPCE HASVISIT", domain: "billing", description: "Check if note has visit" },
+  { rpc: "ORWPCE GETSVC", domain: "billing", description: "Service-connected conditions" },
+  { rpc: "ORWPCE4 LEX", domain: "billing", description: "ICD-10 lexicon search" },
+  { rpc: "ORWPCE LEXCODE", domain: "billing", description: "Get code for lexicon entry" },
+  { rpc: "ORWPCE ACTIVE CODE", domain: "billing", description: "Check ICD code active" },
+
+  // Phase 39: Billing Grounding — insurance
+  { rpc: "IBCN INSURANCE QUERY", domain: "billing", description: "Query patient insurance coverage" },
+
+  // Phase 39: Billing Grounding — IB forms + pharmacy billing
+  { rpc: "IBD GET ALL PCE DATA", domain: "billing", description: "All PCE data for billing" },
+  { rpc: "IBD GET FORMSPEC", domain: "billing", description: "Billing form specification" },
+  { rpc: "IBARXM QUERY ONLY", domain: "billing", description: "Pharmacy billing query" },
+  { rpc: "IBO MT LTC COPAY QUERY", domain: "billing", description: "Means test / LTC copay" },
 ];
 
 /* ------------------------------------------------------------------ */

@@ -722,6 +722,52 @@ scripts/
   verify-phase38-rcm.ps1      — Phase 38 verifier (Phase 38)
 ```
 
+## 7h. Architecture Quick Map (Phase 39 additions)
+
+```
+data/vista/
+  capability-map-billing.json — Machine-readable VistA billing capability map (Phase 39)
+
+apps/api/src/routes/
+  vista-rcm.ts                — VistA RCM read-only routes (7 endpoints) (Phase 39)
+
+apps/web/src/app/cprs/admin/rcm/
+  page.tsx                    — +VistA Billing tab (encounter/insurance/ICD/pending) (Phase 39)
+
+docs/vista/
+  capability-map-billing.md   — Human-readable billing capability map (Phase 39)
+
+docs/runbooks/
+  rcm-billing-grounding.md    — Phase 39 billing grounding runbook (Phase 39)
+
+services/vista/
+  ZVEBILP.m                   — VistA billing probe routine (IB/PRCA/PCE globals) (Phase 39)
+  ZVEBILR.m                   — VistA billing RPC probe routine (85 RPCs found) (Phase 39)
+
+scripts/
+  verify-phase39-billing-grounding.ps1 — Phase 39 verifier (Phase 39)
+```
+
+89. **VistA billing data is split across IB/PRCA/PCE subsystems (Phase 39).**
+    PCE encounters (^AUPNVSIT, ^AUPNVCPT, ^AUPNVPOV) have data in the sandbox.
+    IB charges (^IB(350)) and claims (^DGCR(399)) are empty in WorldVistA Docker.
+    AR transactions (^PRCA(430)) are also empty. The read-only endpoints return
+    `status: "integration-pending"` with exact VistA file/routine/RPC targets.
+90. **85 billing-related RPCs exist in the sandbox.** ORWPCE (55), IBD (12),
+    IBCN (2), IBARXM (3), SD W/L (14), IBO/DGBT (2). All are callable but
+    IB/PRCA data-producing RPCs return empty results due to missing upstream data.
+91. **`/vista/rcm/*` routes auto-require session via AUTH_RULES catch-all.**
+    No additional auth configuration needed. The `/vista/` prefix matches the
+    existing catch-all rule in `security.ts`.
+92. **Integration-pending responses include `vistaGrounding` metadata.**
+    Each pending endpoint returns `{ vistaFiles, targetRoutines, migrationPath,
+    sandboxNote }` so developers know exactly what VistA subsystem to integrate
+    when moving to production.
+93. **MUMPS probing through Docker uses .m routines, not inline commands.**
+    PowerShell -> Docker -> su -> mumps has 4 layers of quoting that break.
+    Write .m files in `services/vista/`, `docker cp` into container, then
+    `mumps -r ROUTINENAME`. See ZVEBILP.m and ZVEBILR.m for examples.
+
 ---
 
 ## 8. Bug Tracker & Lessons Learned

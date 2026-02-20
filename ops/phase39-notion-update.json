@@ -1,0 +1,17 @@
+{
+  "feature": "Phase 39 -- VistA Billing Grounding + Capability Map + Read-Only RCM Surfaces",
+  "stage": "Implemented",
+  "status": "Complete",
+  "promptRef": "prompts/43-PHASE-39-BILLING-GROUNDING/prompt.md",
+  "runbookPath": "docs/runbooks/rcm-billing-grounding.md",
+  "verifyScript": "scripts/verify-phase39-billing-grounding.ps1",
+  "commitSHA": "pending",
+  "summary": "Grounded Phase 38 RCM Gateway in real VistA billing data. 85 RPCs probed, machine-readable capability map created, 7 read-only API endpoints (3 live + 3 integration-pending + 1 capability map), VistA Billing tab in admin UI, 15 billing RPCs added to capability discovery.",
+  "keyDeliverables": [
+    "data/vista/capability-map-billing.json",
+    "apps/api/src/routes/vista-rcm.ts (7 endpoints)",
+    "VistA Billing tab in RCM admin UI",
+    "docs/runbooks/rcm-billing-grounding.md",
+    "ZVEBILP.m + ZVEBILR.m VistA probe routines"
+  ]
+}

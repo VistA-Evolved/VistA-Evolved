@@ -1,12 +1,13 @@
 'use client';
 
 /**
- * RCM (Revenue Cycle Management) — Phase 38 Full Implementation
+ * RCM (Revenue Cycle Management) — Phase 38 + Phase 39 Billing Grounding
  *
  * Tabbed interface for the RCM Gateway:
- *   - Payer Registry — browse/search payers, view integration mode
  *   - Claim Workqueue — list claims by status, create/validate/submit
+ *   - Payer Registry — browse/search payers, view integration mode
  *   - Connectors — view connector health and EDI pipeline
+ *   - VistA Billing — live VistA encounter/insurance data + integration-pending surfaces
  *   - Audit — hash-chained claim lifecycle audit trail
  *
  * Accessible at /cprs/admin/rcm. Requires session.
@@ -17,7 +18,7 @@ import styles from '@/components/cprs/cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
-type Tab = 'payers' | 'claims' | 'connectors' | 'audit';
+type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing';
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
@@ -36,6 +37,7 @@ export default function RcmPage() {
     { id: 'claims', label: 'Claim Workqueue' },
     { id: 'payers', label: 'Payer Registry' },
     { id: 'connectors', label: 'Connectors & EDI' },
+    { id: 'vista-billing', label: 'VistA Billing' },
     { id: 'audit', label: 'Audit Trail' },
   ];
 
@@ -72,6 +74,7 @@ export default function RcmPage() {
         {tab === 'claims' && <ClaimsTab />}
         {tab === 'payers' && <PayersTab />}
         {tab === 'connectors' && <ConnectorsTab />}
+        {tab === 'vista-billing' && <VistaBillingTab />}
         {tab === 'audit' && <AuditTab />}
       </div>
     </div>
@@ -442,6 +445,213 @@ function AuditTab() {
           </tbody>
         </table>
       )}
+    </div>
+  );
+}
+
+/* ─── VistA Billing Tab (Phase 39) ────────────────────────────────── */
+
+function VistaBillingTab() {
+  const [dfn, setDfn] = useState('3');
+  const [encounters, setEncounters] = useState<any>(null);
+  const [insurance, setInsurance] = useState<any>(null);
+  const [charges, setCharges] = useState<any>(null);
+  const [claimsStatus, setClaimsStatus] = useState<any>(null);
+  const [arStatus, setArStatus] = useState<any>(null);
+  const [icdText, setIcdText] = useState('');
+  const [icdResults, setIcdResults] = useState<any>(null);
+  const [capMap, setCapMap] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+
+  const fetchAll = useCallback(() => {
+    if (!dfn) return;
+    setLoading(true);
+    Promise.all([
+      apiFetch(`/vista/rcm/encounters?dfn=${dfn}`),
+      apiFetch(`/vista/rcm/insurance?dfn=${dfn}`),
+      apiFetch(`/vista/rcm/charges?dfn=${dfn}`),
+      apiFetch(`/vista/rcm/claims-status?dfn=${dfn}`),
+      apiFetch(`/vista/rcm/ar-status?dfn=${dfn}`),
+      apiFetch('/vista/rcm/capability-map'),
+    ]).then(([enc, ins, chg, cls, ar, cm]) => {
+      setEncounters(enc);
+      setInsurance(ins);
+      setCharges(chg);
+      setClaimsStatus(cls);
+      setArStatus(ar);
+      setCapMap(cm);
+      setLoading(false);
+    }).catch(() => setLoading(false));
+  }, [dfn]);
+
+  useEffect(() => { fetchAll(); }, [fetchAll]);
+
+  const searchIcd = () => {
+    if (!icdText || icdText.length < 2) return;
+    apiFetch(`/vista/rcm/icd-search?text=${encodeURIComponent(icdText)}`).then(setIcdResults);
+  };
+
+  const statusBadge = (status: string) => {
+    const color = status === 'live' ? '#198754' : status === 'integration-pending' ? '#fd7e14' : '#6c757d';
+    return (
+      <span style={{ fontSize: 10, fontWeight: 700, color, textTransform: 'uppercase', padding: '2px 6px', border: `1px solid ${color}`, borderRadius: 3 }}>
+        {status}
+      </span>
+    );
+  };
+
+  const pendingPanel = (data: any, title: string) => {
+    if (!data || !data.vistaGrounding) return null;
+    const g = data.vistaGrounding;
+    return (
+      <div style={{ background: '#fff8f0', border: '1px solid #ffc107', borderRadius: 6, padding: 14, marginBottom: 14 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+          <strong style={{ fontSize: 13 }}>{title}</strong>
+          {statusBadge('integration-pending')}
+        </div>
+        <div style={{ fontSize: 12, color: '#856404' }}>
+          <p style={{ margin: '4px 0' }}><strong>VistA Files:</strong> {g.vistaFiles.join(', ')}</p>
+          <p style={{ margin: '4px 0' }}><strong>Target Routines:</strong> {g.targetRoutines.join(', ')}</p>
+          <p style={{ margin: '4px 0' }}><strong>Migration Path:</strong> {g.migrationPath}</p>
+          <p style={{ margin: '4px 0', fontStyle: 'italic' }}>{g.sandboxNote}</p>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+        <label style={{ fontSize: 13, fontWeight: 600 }}>Patient DFN:</label>
+        <input
+          value={dfn} onChange={(e) => setDfn(e.target.value)}
+          style={{ padding: '4px 8px', border: '1px solid #ced4da', borderRadius: 4, width: 80, fontSize: 13 }}
+        />
+        <button onClick={fetchAll} disabled={loading} style={{ padding: '4px 12px', background: '#0d6efd', color: 'white', border: 'none', borderRadius: 4, fontSize: 12, cursor: 'pointer' }}>
+          {loading ? 'Loading...' : 'Fetch Billing Data'}
+        </button>
+        <span style={{ marginLeft: 'auto', fontSize: 11, color: '#6c757d' }}>Phase 39 -- VistA-First Billing Grounding</span>
+      </div>
+
+      {/* Capability Summary */}
+      {capMap && capMap.summary && (
+        <div style={{ background: '#f0f7ff', border: '1px solid #b6d4fe', borderRadius: 6, padding: 12, marginBottom: 16, fontSize: 12 }}>
+          <strong>Capability Summary:</strong>{' '}
+          {capMap.summary.liveEndpoints} live endpoints, {capMap.summary.pendingEndpoints} integration-pending |{' '}
+          {capMap.summary.totalRpcsProbed} billing RPCs probed
+        </div>
+      )}
+
+      {/* LIVE: Encounters */}
+      {encounters && encounters.ok && (
+        <div style={{ border: '1px solid #dee2e6', borderRadius: 6, padding: 14, marginBottom: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+            <strong style={{ fontSize: 13 }}>Encounters (PCE Visits)</strong>
+            {statusBadge(encounters.status || 'live')}
+            <span style={{ fontSize: 11, color: '#6c757d' }}>RPC: {encounters.rpcUsed}</span>
+          </div>
+          {encounters.count === 0 ? (
+            <p style={{ fontSize: 12, color: '#6c757d' }}>No encounters found for this patient.</p>
+          ) : (
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+                  <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Visit IEN</th>
+                  <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Date/Time</th>
+                  <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Location</th>
+                  <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                {encounters.results.slice(0, 20).map((e: any, i: number) => (
+                  <tr key={i} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                    <td style={{ padding: '4px 8px', fontFamily: 'monospace' }}>{e.visitIen}</td>
+                    <td style={{ padding: '4px 8px' }}>{e.dateTime}</td>
+                    <td style={{ padding: '4px 8px' }}>{e.location}</td>
+                    <td style={{ padding: '4px 8px' }}>{e.visitType || '-'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+          <div style={{ fontSize: 10, color: '#adb5bd', marginTop: 6 }}>
+            VistA Files: {(encounters.vistaFiles || []).join(', ')}
+          </div>
+        </div>
+      )}
+
+      {/* LIVE: Insurance */}
+      {insurance && insurance.ok && (
+        <div style={{ border: '1px solid #dee2e6', borderRadius: 6, padding: 14, marginBottom: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+            <strong style={{ fontSize: 13 }}>Insurance Coverage</strong>
+            {statusBadge(insurance.status || 'live')}
+            <span style={{ fontSize: 11, color: '#6c757d' }}>RPC: {insurance.rpcUsed}</span>
+          </div>
+          {insurance.count === 0 ? (
+            <p style={{ fontSize: 12, color: '#6c757d' }}>No insurance records found for this patient.</p>
+          ) : (
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+                  <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Policy ID</th>
+                  <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Insurance</th>
+                  <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Group #</th>
+                  <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {insurance.results.map((p: any, i: number) => (
+                  <tr key={i} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                    <td style={{ padding: '4px 8px', fontFamily: 'monospace' }}>{p.policyId}</td>
+                    <td style={{ padding: '4px 8px' }}>{p.insuranceName}</td>
+                    <td style={{ padding: '4px 8px' }}>{p.groupNumber || '-'}</td>
+                    <td style={{ padding: '4px 8px' }}>{p.status || '-'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+          <div style={{ fontSize: 10, color: '#adb5bd', marginTop: 6 }}>
+            VistA Files: {(insurance.vistaFiles || []).join(', ')}
+          </div>
+        </div>
+      )}
+
+      {/* ICD Search */}
+      <div style={{ border: '1px solid #dee2e6', borderRadius: 6, padding: 14, marginBottom: 14 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+          <strong style={{ fontSize: 13 }}>ICD-10 Code Search</strong>
+          {statusBadge('live')}
+        </div>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+          <input
+            value={icdText} onChange={(e) => setIcdText(e.target.value)}
+            placeholder="e.g. diabetes, hypertension..."
+            onKeyDown={(e) => e.key === 'Enter' && searchIcd()}
+            style={{ padding: '4px 8px', border: '1px solid #ced4da', borderRadius: 4, flex: 1, fontSize: 12 }}
+          />
+          <button onClick={searchIcd} style={{ padding: '4px 12px', background: '#0d6efd', color: 'white', border: 'none', borderRadius: 4, fontSize: 12, cursor: 'pointer' }}>
+            Search
+          </button>
+        </div>
+        {icdResults && icdResults.ok && (
+          <div>
+            <p style={{ fontSize: 11, color: '#6c757d', marginBottom: 6 }}>{icdResults.count} results for &quot;{icdResults.searchText}&quot; (RPC: {icdResults.rpcUsed})</p>
+            {icdResults.results.slice(0, 15).map((r: any, i: number) => (
+              <div key={i} style={{ fontSize: 12, padding: '3px 0', borderBottom: '1px solid #f0f0f0' }}>
+                <code style={{ background: '#e9ecef', padding: '1px 4px', borderRadius: 2, fontSize: 11 }}>{r.code || r.ien}</code>{' '}
+                {r.displayText}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* INTEGRATION-PENDING panels */}
+      {pendingPanel(charges, 'IB Charges')}
+      {pendingPanel(claimsStatus, 'Claims Tracking')}
+      {pendingPanel(arStatus, 'Accounts Receivable')}
     </div>
   );
 }
