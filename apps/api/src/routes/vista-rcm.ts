@@ -62,10 +62,10 @@ function loadCapabilityMap(): any {
   if (capabilityMapCache) return capabilityMapCache;
   try {
     // Resolve from project root: data/vista/capability-map-billing.json
-    // The API runs from apps/api/src, so go up 3 levels to project root
+    // From apps/api/src/routes/ → up 4 levels to project root
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
-    const projectRoot = join(__dirname, '..', '..', '..');
+    const projectRoot = join(__dirname, '..', '..', '..', '..');
     const mapPath = join(projectRoot, 'data', 'vista', 'capability-map-billing.json');
     if (existsSync(mapPath)) {
       capabilityMapCache = JSON.parse(readFileSync(mapPath, 'utf-8'));

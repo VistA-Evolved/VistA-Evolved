@@ -1,2 +1,2 @@
 # Always points to the newest full verification script
-& "$PSScriptRoot\verify-phase38-rcm.ps1" @args
+& "$PSScriptRoot\verify-phase39-billing-grounding.ps1" @args
