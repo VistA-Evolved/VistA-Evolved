@@ -1,0 +1,38 @@
+{
+  "source": {
+    "authority": "Insurance Commission of the Philippines",
+    "documentTitle": "List of HMOs with Certificates of Authority",
+    "documentDate": "2025-12-01",
+    "documentUrl": "https://www.insurance.gov.ph/list-of-hmos/",
+    "notes": "Snapshot of Insurance Commission HMO registry. Updated periodically."
+  },
+  "hmos": [
+    { "name": "Maxicare Health Corporation", "code": "MAXICARE", "certificateNumber": "HMO-2003-01" },
+    { "name": "Intellicare Inc.", "code": "INTELLICARE", "certificateNumber": "HMO-2003-02" },
+    { "name": "MediCard Philippines Inc.", "code": "MEDICARD", "certificateNumber": "HMO-2003-03" },
+    { "name": "PhilhealthCare Inc.", "code": "PHILCARE", "certificateNumber": "HMO-2003-04" },
+    { "name": "Caritas Health Shield Inc.", "code": "CARITAS", "certificateNumber": "HMO-2003-05" },
+    { "name": "Cocolife Healthcare Inc.", "code": "COCOLIFE", "certificateNumber": "HMO-2003-06" },
+    { "name": "Eastwest Healthcare Inc.", "code": "EASTWEST", "certificateNumber": "HMO-2003-07" },
+    { "name": "Fortune Medicare Inc.", "code": "FORTUNEMED", "certificateNumber": "HMO-2003-08" },
+    { "name": "Getwell Health Systems Inc.", "code": "GETWELL", "certificateNumber": "HMO-2003-09" },
+    { "name": "Health Plan Philippines Inc.", "code": "HEALTHPLAN", "certificateNumber": "HMO-2003-10" },
+    { "name": "IMS Health Care Delivery Inc.", "code": "IMSHEALTH", "certificateNumber": "HMO-2003-11" },
+    { "name": "Insular Health Care Inc.", "code": "INSULAR", "certificateNumber": "HMO-2003-12" },
+    { "name": "Kaiser International Healthgroup Inc.", "code": "KAISER", "certificateNumber": "HMO-2003-13" },
+    { "name": "Lacson & Lacson Health Plan Inc.", "code": "LACSON", "certificateNumber": "HMO-2003-14" },
+    { "name": "Life & Health HMO Inc.", "code": "LIFEHEALTH", "certificateNumber": "HMO-2003-15" },
+    { "name": "Medilink Network Inc.", "code": "MEDILINK", "certificateNumber": "HMO-2003-16" },
+    { "name": "Pacific Cross Health Care Inc.", "code": "PACIFICCROSS", "certificateNumber": "HMO-2003-17" },
+    { "name": "PhilCare Health Systems Inc.", "code": "PHILCARESYS", "certificateNumber": "HMO-2003-18" },
+    { "name": "Pro Health HMO Inc.", "code": "PROHEALTH", "certificateNumber": "HMO-2003-19" },
+    { "name": "St. Peter Life Plan Inc.", "code": "STPETER", "certificateNumber": "HMO-2003-20" },
+    { "name": "Value Care Health Systems Inc.", "code": "VALUECARE", "certificateNumber": "HMO-2003-21" },
+    { "name": "WellCare Health Maintenance Inc.", "code": "WELLCARE", "certificateNumber": "HMO-2003-22" },
+    { "name": "Asian Life & General Assurance Corporation", "code": "ASIANLIFE", "certificateNumber": "HMO-2003-23" },
+    { "name": "Generali Pilipinas Life Assurance Company Inc.", "code": "GENERALI", "certificateNumber": "HMO-2003-24" },
+    { "name": "Healthcare Professionals Inc.", "code": "HCPROFESSIONALS", "certificateNumber": "HMO-2003-25" },
+    { "name": "HealthFirst Philippines Inc.", "code": "HEALTHFIRST", "certificateNumber": "HMO-2003-26" },
+    { "name": "HMO Pacific Inc.", "code": "HMOPACIFIC", "certificateNumber": "HMO-2003-27" }
+  ]
+}

@@ -67,7 +67,13 @@ export type RcmAuditAction =
   | 'rule.deleted'
   | 'rule.evaluated'
   | 'remit.processed'
-  | 'remit.denied';
+  | 'remit.denied'
+  | 'directory.refreshed'
+  | 'directory.import_failed'
+  | 'enrollment.created'
+  | 'enrollment.updated'
+  | 'route.resolved'
+  | 'route.not_found';
 
 export interface RcmAuditEntry {
   id: string;

@@ -18,7 +18,7 @@ import styles from '@/components/cprs/cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
-type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules';
+type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory';
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
@@ -40,6 +40,7 @@ export default function RcmPage() {
     { id: 'workqueues', label: 'Denial Workqueues' },
     { id: 'draft-from-vista', label: 'Draft from VistA' },
     { id: 'payers', label: 'Payer Registry' },
+    { id: 'directory', label: 'Payer Directory' },
     { id: 'rules', label: 'Payer Rules' },
     { id: 'connectors', label: 'Connectors & EDI' },
     { id: 'vista-billing', label: 'VistA Billing' },
@@ -91,6 +92,7 @@ export default function RcmPage() {
         {tab === 'workqueues' && <WorkqueuesTab />}
         {tab === 'draft-from-vista' && <DraftFromVistaTab />}
         {tab === 'payers' && <PayersTab />}
+        {tab === 'directory' && <DirectoryTab />}
         {tab === 'rules' && <RulesTab />}
         {tab === 'connectors' && <ConnectorsTab />}
         {tab === 'vista-billing' && <VistaBillingTab />}
@@ -1225,6 +1227,251 @@ function RulesTab() {
             ))}
           </tbody>
         </table>
+      )}
+    </div>
+  );
+}
+
+/* ─── Payer Directory Tab (Phase 44) ──────────────────────────────── */
+
+function DirectoryTab() {
+  const [stats, setStats] = useState<any>(null);
+  const [payers, setPayers] = useState<any[]>([]);
+  const [importers, setImporters] = useState<any[]>([]);
+  const [history, setHistory] = useState<any[]>([]);
+  const [enrollment, setEnrollment] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [subTab, setSubTab] = useState<'payers' | 'importers' | 'enrollment' | 'history'>('payers');
+  const [countryFilter, setCountryFilter] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
+
+  const refresh = useCallback(() => {
+    setLoading(true);
+    Promise.all([
+      apiFetch('/rcm/directory/stats'),
+      apiFetch('/rcm/directory/payers' + (countryFilter ? `?country=${countryFilter}` : '')),
+      apiFetch('/rcm/directory/importers'),
+      apiFetch('/rcm/directory/history'),
+      apiFetch('/rcm/enrollment'),
+    ]).then(([statsData, payersData, importersData, historyData, enrollmentData]) => {
+      setStats(statsData);
+      setPayers(payersData.payers ?? []);
+      setImporters(importersData.importers ?? []);
+      setHistory(historyData.history ?? []);
+      setEnrollment(enrollmentData.packets ?? []);
+      setLoading(false);
+    }).catch(() => setLoading(false));
+  }, [countryFilter]);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await apiFetch('/rcm/directory/refresh', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) });
+      refresh();
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  const subTabs: { id: typeof subTab; label: string }[] = [
+    { id: 'payers', label: 'Directory Payers' },
+    { id: 'importers', label: 'Importers' },
+    { id: 'enrollment', label: 'Enrollment Packets' },
+    { id: 'history', label: 'Refresh History' },
+  ];
+
+  const typeColors: Record<string, string> = {
+    NATIONAL: '#198754', PRIVATE: '#0d6efd', NETWORK: '#17a2b8',
+    CLEARINGHOUSE: '#ffc107', GOVERNMENT: '#6f42c1',
+  };
+
+  const statusColors: Record<string, string> = {
+    NOT_STARTED: '#6c757d', IN_PROGRESS: '#ffc107', TESTING: '#17a2b8',
+    LIVE: '#198754', SUSPENDED: '#dc3545',
+  };
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+        <h3 style={{ margin: 0, fontSize: 15 }}>Payer Directory Engine</h3>
+        {stats && (
+          <span style={{ fontSize: 11, color: '#6c757d' }}>
+            {stats.total ?? 0} payers across {Object.keys(stats.byCountry ?? {}).length} jurisdictions
+          </span>
+        )}
+        <button onClick={handleRefresh} disabled={refreshing}
+          style={{ marginLeft: 'auto', padding: '4px 12px', fontSize: 11, background: '#0d6efd', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
+          {refreshing ? 'Refreshing...' : 'Refresh Directory'}
+        </button>
+      </div>
+
+      {/* Country filter */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+        {['', 'US', 'PH', 'AU', 'SG', 'NZ'].map(c => (
+          <button key={c} onClick={() => setCountryFilter(c)}
+            style={{
+              padding: '4px 10px', fontSize: 11, border: '1px solid #dee2e6', borderRadius: 4,
+              background: countryFilter === c ? '#0d6efd' : '#fff', color: countryFilter === c ? '#fff' : '#333',
+              cursor: 'pointer',
+            }}>
+            {c || 'All'}
+          </button>
+        ))}
+      </div>
+
+      {/* Sub-tabs */}
+      <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid #dee2e6', marginBottom: 16 }}>
+        {subTabs.map(st => (
+          <button key={st.id} onClick={() => setSubTab(st.id)}
+            style={{
+              padding: '8px 16px', border: 'none', borderBottom: subTab === st.id ? '2px solid #0d6efd' : '2px solid transparent',
+              background: 'transparent', cursor: 'pointer', fontSize: 12, fontWeight: subTab === st.id ? 600 : 400,
+              color: subTab === st.id ? '#0d6efd' : '#495057',
+            }}>
+            {st.label}
+          </button>
+        ))}
+      </div>
+
+      {loading ? <div style={{ color: '#6c757d', fontSize: 13 }}>Loading...</div> : (
+        <>
+          {subTab === 'payers' && (
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: '#f8f9fa' }}>
+                  <th style={{ padding: '8px 10px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Payer ID</th>
+                  <th style={{ padding: '8px 10px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Name</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Country</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Type</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Channels</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                {payers.map((p: any) => (
+                  <tr key={p.payerId} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                    <td style={{ padding: '6px 10px', fontFamily: 'monospace', fontSize: 11 }}>{p.payerId}</td>
+                    <td style={{ padding: '6px 10px', fontWeight: 500 }}>{p.displayName}</td>
+                    <td style={{ padding: '6px 10px', textAlign: 'center' }}>{p.country}</td>
+                    <td style={{ padding: '6px 10px', textAlign: 'center' }}>
+                      <span style={{ padding: '2px 8px', borderRadius: 10, fontSize: 10, fontWeight: 600,
+                        background: typeColors[p.payerType] ?? '#6c757d', color: p.payerType === 'CLEARINGHOUSE' ? '#000' : '#fff' }}>
+                        {p.payerType}
+                      </span>
+                    </td>
+                    <td style={{ padding: '6px 10px', textAlign: 'center', fontSize: 11 }}>
+                      {(p.channels ?? []).map((ch: any) => ch.channelType).join(', ')}
+                    </td>
+                    <td style={{ padding: '6px 10px', fontSize: 10, color: '#6c757d' }}>{p.regulatorySource ?? '-'}</td>
+                  </tr>
+                ))}
+                {payers.length === 0 && (
+                  <tr><td colSpan={6} style={{ padding: 16, textAlign: 'center', color: '#6c757d' }}>No directory payers found. Click Refresh Directory.</td></tr>
+                )}
+              </tbody>
+            </table>
+          )}
+
+          {subTab === 'importers' && (
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: '#f8f9fa' }}>
+                  <th style={{ padding: '8px 10px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Importer ID</th>
+                  <th style={{ padding: '8px 10px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Name</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Country</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>File Import</th>
+                </tr>
+              </thead>
+              <tbody>
+                {importers.map((imp: any) => (
+                  <tr key={imp.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                    <td style={{ padding: '6px 10px', fontFamily: 'monospace', fontSize: 11 }}>{imp.id}</td>
+                    <td style={{ padding: '6px 10px' }}>{imp.name}</td>
+                    <td style={{ padding: '6px 10px', textAlign: 'center' }}>{imp.country}</td>
+                    <td style={{ padding: '6px 10px', textAlign: 'center' }}>
+                      {imp.supportsFileImport
+                        ? <span style={{ color: '#198754', fontWeight: 600 }}>YES</span>
+                        : <span style={{ color: '#6c757d' }}>No</span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+
+          {subTab === 'enrollment' && (
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: '#f8f9fa' }}>
+                  <th style={{ padding: '8px 10px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Payer ID</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Status</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Cert Requirements</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Go-Live Steps</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {enrollment.map((pkt: any) => (
+                  <tr key={pkt.payerId} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                    <td style={{ padding: '6px 10px', fontFamily: 'monospace', fontSize: 11 }}>{pkt.payerId}</td>
+                    <td style={{ padding: '6px 10px', textAlign: 'center' }}>
+                      <span style={{ padding: '2px 8px', borderRadius: 10, fontSize: 10, fontWeight: 600,
+                        background: statusColors[pkt.enrollmentStatus] ?? '#6c757d', color: pkt.enrollmentStatus === 'IN_PROGRESS' ? '#000' : '#fff' }}>
+                        {pkt.enrollmentStatus}
+                      </span>
+                    </td>
+                    <td style={{ padding: '6px 10px', fontSize: 11 }}>{(pkt.certRequirements ?? []).length}</td>
+                    <td style={{ padding: '6px 10px', fontSize: 11 }}>{(pkt.goLiveChecklist ?? []).length}</td>
+                    <td style={{ padding: '6px 10px', fontSize: 11, color: '#6c757d', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {pkt.notes ?? '-'}
+                    </td>
+                  </tr>
+                ))}
+                {enrollment.length === 0 && (
+                  <tr><td colSpan={5} style={{ padding: 16, textAlign: 'center', color: '#6c757d' }}>No enrollment packets yet.</td></tr>
+                )}
+              </tbody>
+            </table>
+          )}
+
+          {subTab === 'history' && (
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: '#f8f9fa' }}>
+                  <th style={{ padding: '8px 10px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Timestamp</th>
+                  <th style={{ padding: '8px 10px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Importer</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Added</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Removed</th>
+                  <th style={{ padding: '8px 10px', borderBottom: '1px solid #dee2e6' }}>Modified</th>
+                </tr>
+              </thead>
+              <tbody>
+                {history.map((h: any, i: number) => (
+                  <tr key={i} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                    <td style={{ padding: '6px 10px', fontFamily: 'monospace', fontSize: 10 }}>
+                      {new Date(h.timestamp).toLocaleString()}
+                    </td>
+                    <td style={{ padding: '6px 10px' }}>{h.importerId}</td>
+                    <td style={{ padding: '6px 10px', textAlign: 'center', color: '#198754', fontWeight: 600 }}>
+                      {h.diff?.added?.length ?? 0}
+                    </td>
+                    <td style={{ padding: '6px 10px', textAlign: 'center', color: '#dc3545', fontWeight: 600 }}>
+                      {h.diff?.removed?.length ?? 0}
+                    </td>
+                    <td style={{ padding: '6px 10px', textAlign: 'center', color: '#ffc107', fontWeight: 600 }}>
+                      {h.diff?.modified?.length ?? 0}
+                    </td>
+                  </tr>
+                ))}
+                {history.length === 0 && (
+                  <tr><td colSpan={5} style={{ padding: 16, textAlign: 'center', color: '#6c757d' }}>No refresh history yet.</td></tr>
+                )}
+              </tbody>
+            </table>
+          )}
+        </>
       )}
     </div>
   );

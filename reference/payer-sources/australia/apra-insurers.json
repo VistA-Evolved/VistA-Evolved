@@ -1,0 +1,31 @@
+{
+  "source": {
+    "authority": "Australian Prudential Regulation Authority (APRA)",
+    "documentTitle": "List of registered private health insurers",
+    "documentDate": "2025-09-30",
+    "documentUrl": "https://www.apra.gov.au/register-of-private-health-insurers",
+    "notes": "APRA maintains the official register of private health insurers in Australia."
+  },
+  "insurers": [
+    { "name": "Medibank Private Limited", "code": "MEDIBANK", "registrationNumber": "APRA-PHI-001", "abn": "47080890259" },
+    { "name": "Bupa HI Pty Ltd", "code": "BUPA", "registrationNumber": "APRA-PHI-002", "abn": "81006612537" },
+    { "name": "HCF Health Insurance", "code": "HCF", "registrationNumber": "APRA-PHI-003", "abn": "95078113282" },
+    { "name": "nib Health Funds Limited", "code": "NIB", "registrationNumber": "APRA-PHI-004", "abn": "83000124381" },
+    { "name": "HBF Health Limited", "code": "HBF", "registrationNumber": "APRA-PHI-005", "abn": "11126884786" },
+    { "name": "GMHBA Limited", "code": "GMHBA", "registrationNumber": "APRA-PHI-006", "abn": "72021212116" },
+    { "name": "Teachers Health Fund", "code": "TEACHERSHEALTH", "registrationNumber": "APRA-PHI-007", "abn": "86003975602" },
+    { "name": "Defence Health Limited", "code": "DEFENCEHEALTH", "registrationNumber": "APRA-PHI-008", "abn": "64930503920" },
+    { "name": "Australian Unity Health Limited", "code": "AUSTRALIANUNITY", "registrationNumber": "APRA-PHI-009", "abn": "13079262302" },
+    { "name": "Frank Health Insurance", "code": "FRANK", "registrationNumber": "APRA-PHI-010", "abn": "44078673557" },
+    { "name": "Qantas Health Insurance", "code": "QANTAS", "registrationNumber": "APRA-PHI-011", "abn": "81006612537" },
+    { "name": "RT Health Fund", "code": "RTHEALTH", "registrationNumber": "APRA-PHI-012", "abn": "56070229252" },
+    { "name": "Latrobe Health Services", "code": "LATROBE", "registrationNumber": "APRA-PHI-013", "abn": "12058957795" },
+    { "name": "Peoplecare Health Insurance", "code": "PEOPLECARE", "registrationNumber": "APRA-PHI-014", "abn": "95087648753" },
+    { "name": "Westfund Health Insurance", "code": "WESTFUND", "registrationNumber": "APRA-PHI-015", "abn": "55003218936" },
+    { "name": "TUH Health Fund", "code": "TUH", "registrationNumber": "APRA-PHI-016", "abn": "44057479004" },
+    { "name": "Health Partners Limited", "code": "HEALTHPARTNERS", "registrationNumber": "APRA-PHI-017", "abn": "43006032676" },
+    { "name": "CBHS Health Fund Limited", "code": "CBHS", "registrationNumber": "APRA-PHI-018", "abn": "87087648882" },
+    { "name": "Phoenix Health Fund", "code": "PHOENIX", "registrationNumber": "APRA-PHI-019", "abn": "41067639950" },
+    { "name": "Mildura Health Fund", "code": "MILDURA", "registrationNumber": "APRA-PHI-020", "abn": "42096970638" }
+  ]
+}

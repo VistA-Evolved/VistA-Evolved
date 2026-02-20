@@ -1,0 +1,16 @@
+{
+  "feature": "Phase 44: Global Payer Directory Engine + Jurisdiction Packs",
+  "stage": "implemented",
+  "status": "complete",
+  "promptRef": "prompts/49-PHASE-44-PAYER-DIRECTORY/01-implement.md",
+  "runbooks": [
+    "docs/runbooks/payer-directory-refresh.md",
+    "docs/runbooks/enrollment-packets.md"
+  ],
+  "docs": [
+    "docs/rcm/payer-directory.md",
+    "docs/rcm/jurisdiction-packs.md"
+  ],
+  "verifyScript": "pnpm exec vitest run tests/payer-directory.test.ts",
+  "commitSha": "pending"
+}

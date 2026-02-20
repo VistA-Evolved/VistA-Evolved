@@ -30,6 +30,18 @@
  *   GET  /rcm/audit               -- RCM audit trail
  *   GET  /rcm/audit/verify        -- Verify audit chain integrity
  *   GET  /rcm/audit/stats         -- Audit statistics
+ *   GET  /rcm/directory/stats     -- Payer directory statistics (Phase 44)
+ *   GET  /rcm/directory/importers -- List directory importers (Phase 44)
+ *   GET  /rcm/directory/history   -- Directory refresh history (Phase 44)
+ *   GET  /rcm/directory/payers    -- List directory payers (Phase 44)
+ *   GET  /rcm/directory/payers/:id-- Single directory payer (Phase 44)
+ *   POST /rcm/directory/refresh   -- Refresh directory from importers (Phase 44)
+ *   POST /rcm/directory/import/:id-- Run single importer (Phase 44)
+ *   GET  /rcm/enrollment          -- List enrollment packets (Phase 44)
+ *   GET  /rcm/enrollment/:id      -- Get enrollment packet (Phase 44)
+ *   POST /rcm/enrollment/:id      -- Create/update enrollment packet (Phase 44)
+ *   POST /rcm/claims/:id/route    -- Resolve claim route (Phase 44)
+ *   GET  /rcm/routing/resolve     -- Resolve route by payerId (Phase 44)
  *
  * Phase 38 -- RCM + Payer Connectivity
  * Phase 40 -- Submission safety, X12 serializer, CSV import, export artifacts
@@ -126,6 +138,16 @@ import {
 } from './rules/payer-rules.js';
 import { lookupCarc, lookupRarc, CARC_CODES, RARC_CODES } from './reference/carc-rarc.js';
 
+// Phase 44 -- Payer Directory Engine + Jurisdiction Packs
+import {
+  runDirectoryRefresh, getDirectoryPayer, listDirectoryPayers,
+  getDirectoryStats, getRefreshHistory,
+  getEnrollmentPacket, upsertEnrollmentPacket, listEnrollmentPackets,
+} from './payerDirectory/normalization.js';
+import { resolveRoute, isRouteNotFound } from './payerDirectory/routing.js';
+import { runAllImporters, runImportersByCountry, listImporters, getImporter } from './payerDirectory/importers/index.js';
+import type { EnrollmentPacket, EnrollmentStatus } from './payerDirectory/types.js';
+
 /* ─── Submission safety (Phase 40) ───────────────────────────────── */
 
 function isSubmissionEnabled(): boolean {
@@ -160,6 +182,14 @@ async function ensureInitialized(): Promise<void> {
 
   // Seed payer rules (Phase 43)
   seedDefaultRules();
+
+  // Phase 44 -- Initialize payer directory from authoritative importers
+  try {
+    const importResults = runAllImporters();
+    runDirectoryRefresh(importResults, 'system');
+  } catch (e: unknown) {
+    log.warn('Payer directory initialization failed (non-fatal)', { err: String(e) });
+  }
 
   // Register connectors
   const sandbox = new SandboxConnector();
@@ -1572,5 +1602,168 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       return entry ? { ok: true, entry } : { ok: false, error: `RARC code ${q.code} not found` };
     }
     return { ok: true, codes: RARC_CODES, total: Object.keys(RARC_CODES).length };
+  });
+
+  // ───── Payer Directory (Phase 44) ─────────────────────────────
+
+  /** GET /rcm/directory/stats -- directory statistics */
+  server.get('/rcm/directory/stats', async () => {
+    return { ok: true, ...getDirectoryStats() };
+  });
+
+  /** GET /rcm/directory/importers -- list registered importers */
+  server.get('/rcm/directory/importers', async () => {
+    return { ok: true, importers: listImporters() };
+  });
+
+  /** GET /rcm/directory/history -- refresh history */
+  server.get('/rcm/directory/history', async () => {
+    return { ok: true, history: getRefreshHistory() };
+  });
+
+  /** GET /rcm/directory/payers -- list directory payers with filters */
+  server.get('/rcm/directory/payers', async (request: FastifyRequest) => {
+    const q = request.query as Record<string, string>;
+    const result = listDirectoryPayers({
+      country: q.country as any,
+      payerType: q.payerType as any,
+      search: q.search,
+    });
+    return { ok: true, ...result };
+  });
+
+  /** GET /rcm/directory/payers/:id -- single directory payer detail */
+  server.get('/rcm/directory/payers/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const payer = getDirectoryPayer(id);
+    if (!payer) return reply.code(404).send({ ok: false, error: 'Directory payer not found' });
+    return { ok: true, payer };
+  });
+
+  /** POST /rcm/directory/refresh -- run all importers and refresh directory (admin) */
+  server.post('/rcm/directory/refresh', async (request: FastifyRequest) => {
+    const body = (request.body as any) || {};
+    const country = body.country as string | undefined;
+    const userId = body.userId ?? 'admin';
+
+    const importResults = country
+      ? runImportersByCountry(country as any)
+      : runAllImporters();
+
+    const result = runDirectoryRefresh(importResults, userId);
+    return { ok: true, ...result };
+  });
+
+  /** POST /rcm/directory/import/:importerId -- run a single importer */
+  server.post('/rcm/directory/import/:importerId', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { importerId } = request.params as { importerId: string };
+    const importer = getImporter(importerId);
+    if (!importer) return reply.code(404).send({ ok: false, error: `Importer '${importerId}' not found` });
+
+    const body = (request.body as any) || {};
+    const userId = body.userId ?? 'admin';
+
+    let importResults;
+    if (body.fileData && importer.importFromFile) {
+      importResults = [importer.importFromFile(body.fileData, body.format ?? 'json')];
+    } else {
+      importResults = [importer.importFromSnapshot()];
+    }
+
+    const result = runDirectoryRefresh(importResults, userId);
+    return { ok: true, importerId, ...result };
+  });
+
+  // ───── Enrollment Packets (Phase 44) ──────────────────────────
+
+  /** GET /rcm/enrollment -- list all enrollment packets */
+  server.get('/rcm/enrollment', async (request: FastifyRequest) => {
+    const q = request.query as Record<string, string>;
+    const packets = listEnrollmentPackets({
+      status: q.status as EnrollmentStatus | undefined,
+    });
+    return { ok: true, ...packets };
+  });
+
+  /** GET /rcm/enrollment/:payerId -- get enrollment packet for a payer */
+  server.get('/rcm/enrollment/:payerId', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { payerId } = request.params as { payerId: string };
+    const packet = getEnrollmentPacket(payerId);
+    if (!packet) return reply.code(404).send({ ok: false, error: 'No enrollment packet for this payer' });
+    return { ok: true, packet };
+  });
+
+  /** POST /rcm/enrollment/:payerId -- create or update enrollment packet */
+  server.post('/rcm/enrollment/:payerId', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { payerId } = request.params as { payerId: string };
+    const body = (request.body as any) || {};
+    if (!body.orgIdentifiers) {
+      return reply.code(400).send({ ok: false, error: 'orgIdentifiers is required' });
+    }
+    const now = new Date().toISOString();
+    const existing = getEnrollmentPacket(payerId);
+    const packet: EnrollmentPacket = {
+      payerId,
+      orgIdentifiers: body.orgIdentifiers,
+      certRequirements: body.certRequirements ?? [],
+      goLiveChecklist: body.goLiveChecklist ?? [],
+      contacts: body.contacts ?? [],
+      testingSteps: body.testingSteps ?? [],
+      enrollmentStatus: body.enrollmentStatus ?? 'NOT_STARTED',
+      notes: body.notes,
+      createdAt: existing?.createdAt ?? now,
+      updatedAt: now,
+    };
+    const isNew = !existing;
+    upsertEnrollmentPacket(packet);
+    appendRcmAudit(isNew ? 'enrollment.created' : 'enrollment.updated', {
+      payerId,
+      detail: { status: packet.enrollmentStatus },
+    });
+    return { ok: true, packet };
+  });
+
+  // ───── Claim Routing (Phase 44) ──────────────────────────────
+
+  /** POST /rcm/claims/:id/route -- resolve route for a claim */
+  server.post('/rcm/claims/:id/route', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+    const claim = getClaim(id);
+    if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
+
+    const body = (request.body as any) || {};
+    const jurisdiction = body.jurisdiction ?? (claim as any).patientCountry ?? 'US';
+
+    const route = resolveRoute(claim.payerId, jurisdiction);
+
+    if (isRouteNotFound(route)) {
+      appendRcmAudit('route.not_found', {
+        claimId: id,
+        payerId: claim.payerId,
+        detail: { jurisdiction, remediation: route.remediation },
+      });
+      return reply.code(422).send({ ok: false, ...route });
+    }
+
+    appendRcmAudit('route.resolved', {
+      claimId: id,
+      payerId: claim.payerId,
+      detail: { connectorId: route.connectorId, channelType: route.channel?.type, jurisdiction },
+    });
+
+    return { ok: true, route };
+  });
+
+  /** GET /rcm/routing/resolve -- resolve route by payerId + jurisdiction */
+  server.get('/rcm/routing/resolve', async (request: FastifyRequest, reply: FastifyReply) => {
+    const q = request.query as Record<string, string>;
+    if (!q.payerId) return reply.code(400).send({ ok: false, error: 'payerId query param required' });
+    const jurisdiction = (q.jurisdiction ?? 'US') as any;
+    const route = resolveRoute(q.payerId, jurisdiction);
+
+    if (isRouteNotFound(route)) {
+      return reply.code(422).send({ ok: false, ...route });
+    }
+    return { ok: true, route };
   });
 }
