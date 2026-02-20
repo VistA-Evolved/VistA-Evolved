@@ -307,6 +307,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       payerName: body.payerName,
       vistaChargeIen: body.vistaChargeIen,
       vistaArIen: body.vistaArIen,
+      isDemo: body.isDemo,
       actor: session?.duz ?? 'unknown',
     });
 

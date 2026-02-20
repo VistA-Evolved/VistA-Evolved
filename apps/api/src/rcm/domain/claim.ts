@@ -185,7 +185,7 @@ export function createDraftClaim(params: {
 }): Claim {
   const now = new Date().toISOString();
   const linesList = params.lines ?? [];
-  const totalCharge = params.totalCharge ?? linesList.reduce((sum, l) => sum + l.procedure.charge, 0);
+  const totalCharge = params.totalCharge ?? linesList.reduce((sum, l) => sum + (l.procedure?.charge ?? (l as any).chargeAmount ?? 0), 0);
 
   return {
     id: randomUUID(),

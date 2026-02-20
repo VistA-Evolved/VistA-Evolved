@@ -173,17 +173,21 @@ export function buildClaim837FromDomain(claim: Claim): EdiClaim837 {
       qualifier: 'ABK' as const, // ICD-10-CM
       isPrincipal: i === 0,
     })),
-    serviceLines: (claim.lines ?? []).map((sl, i: number) => ({
-      lineNumber: i + 1,
-      procedureCode: sl.procedure.code,
-      modifiers: sl.procedure.modifiers,
-      chargeAmount: sl.procedure.charge,
-      units: sl.procedure.units,
-      unitType: 'UN',
-      serviceDate: sl.procedure.dateOfService,
-      placeOfService: claim.claimType === 'institutional' ? '21' : '11',
-      diagnosisPointers: sl.diagnoses?.map((_d, idx) => idx + 1) ?? [1],
-    })),
+    serviceLines: (claim.lines ?? []).map((sl, i: number) => {
+      // Defensive: handle both nested (ClaimLine.procedure) and flat formats
+      const proc: any = sl.procedure ?? sl;
+      return {
+        lineNumber: i + 1,
+        procedureCode: proc.code ?? proc.procedureCode ?? '',
+        modifiers: proc.modifiers ?? [],
+        chargeAmount: proc.charge ?? proc.chargeAmount ?? 0,
+        units: proc.units ?? 1,
+        unitType: 'UN',
+        serviceDate: proc.dateOfService ?? proc.serviceDate ?? claim.dateOfService,
+        placeOfService: claim.claimType === 'institutional' ? '21' : '11',
+        diagnosisPointers: sl.diagnoses?.map((_d: unknown, idx: number) => idx + 1) ?? [1],
+      };
+    }),
   };
 
   return edi;
