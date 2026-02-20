@@ -96,7 +96,7 @@ requests within the TTL window return the cached result.
 
 ## Safety
 
-- **Read-only**: The `LIST^ZVERPC` tag only reads `^XTV(8994,*)`. It never
+- **Read-only**: The `LIST^ZVERPC` tag only reads `^XWB(8994,*)`. It never
   writes, never locks, and never modifies globals.
 - **No arguments**: The RPC takes a dummy argument (required by the broker
   protocol) but ignores it.

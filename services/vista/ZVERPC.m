@@ -16,11 +16,11 @@ LIST(RESULT,DUMMY) ; List all RPCs in File 8994
  N IEN,NAME,TAG,RTN,CNT
  S CNT=0
  S IEN=0
- F  S IEN=$O(^XTV(8994,IEN)) Q:IEN'>0  D
- . S NAME=$P($G(^XTV(8994,IEN,0)),"^",1)
+ F  S IEN=$O(^XWB(8994,IEN)) Q:IEN'>0  D
+ . S NAME=$P($G(^XWB(8994,IEN,0)),"^",1)
  . Q:NAME=""
- . S TAG=$P($G(^XTV(8994,IEN,0)),"^",2)
- . S RTN=$P($G(^XTV(8994,IEN,0)),"^",3)
+ . S TAG=$P($G(^XWB(8994,IEN,0)),"^",2)
+ . S RTN=$P($G(^XWB(8994,IEN,0)),"^",3)
  . S CNT=CNT+1
  . S RESULT(CNT)=IEN_"|"_NAME_"|"_TAG_"|"_RTN
  ;

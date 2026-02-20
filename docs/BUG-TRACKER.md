@@ -990,3 +990,23 @@ UTF-8 without BOM by default. Applied to all curl `@file` references in
 `verify-phase38-rcm.ps1`.
 
 **Files**: `scripts/verify-phase38-rcm.ps1`
+
+---
+
+### BUG-063: ZVERPC.m reads wrong global for File 8994 (Phase 41)
+
+**Symptom**: `/vista/rpc-catalog` returned `count: 0` and empty `catalog: []`
+despite VE LIST RPCS being correctly installed (IEN=3112).
+
+**Root cause**: `LIST^ZVERPC` traversed `^XTV(8994,IEN)` which only has 4
+metadata entries. File 8994 (REMOTE PROCEDURE) actually stores data in
+`^XWB(8994,*)` -- confirmed by `$G(^DIC(8994,0,"GL"))` returning `^XWB(8994,`.
+
+**Fix**: Changed all `^XTV(8994,` references to `^XWB(8994,` in the LIST entry
+point of ZVERPC.m. After fix, 2,800 RPCs returned from live VistA sandbox.
+
+**Prevention**: Always check `$$ROOT^DILFD(filenum)` or `^DIC(filenum,0,"GL")`
+to confirm global location before writing M routines that traverse VistA files.
+
+**Files**: `services/vista/ZVERPC.m`, `scripts/verify-phase41-rpc-catalog.ps1`,
+`docs/runbooks/vista-rpc-rpc-list-probe.md`

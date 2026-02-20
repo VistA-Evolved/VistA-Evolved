@@ -199,7 +199,7 @@ if (Test-Path -LiteralPath $zverpc) {
   $mContent = Get-Content -LiteralPath $zverpc -Raw
   Write-Gate "ZVERPC has LIST entry" ($mContent -match "^LIST\(" -or $mContent -match "LIST\(RESULT")
   Write-Gate "ZVERPC has INSTALL entry" ($mContent -match "(?m)^INSTALL")
-  Write-Gate "ZVERPC reads ^XTV(8994" ($mContent -match "\^XTV\(8994")
+  Write-Gate "ZVERPC reads ^XWB(8994" ($mContent -match "\^XWB\(8994")
   Write-Gate "ZVERPC is read-only (no SET except install)" ($mContent -match "RESULT\(")
 }
 
