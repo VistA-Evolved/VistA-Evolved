@@ -52,7 +52,10 @@ export type RcmAuditAction =
   | 'job.completed'
   | 'job.failed'
   | 'era.post_attempted'
-  | 'vista.binding_called';
+  | 'vista.binding_called'
+  | 'vista.encounters.read'
+  | 'vista.claim-drafts.created'
+  | 'vista.coverage.read';
 
 export interface RcmAuditEntry {
   id: string;

@@ -152,6 +152,7 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
   { name: "ORWLRR ACK", reason: "Lab result acknowledgment; absent from Vivian (ORWLRR has 20 other RPCs)" },
   { name: "TIU SET RECORD TEXT", reason: "TIU note text writer; absent from Vivian snapshot despite being core CPRS functionality" },
   { name: "ORWCIRN FACILITIES", reason: "Remote facility list; Vivian has ORWCIRN FACLIST but not this exact name variant" },
+  { name: "VE RCM PROVIDER INFO", reason: "Custom RPC installed by VistA-Evolved (ZVERCMP.m) for provider NPI + facility identifiers (Phase 42)" },
 ];
 
 /* ------------------------------------------------------------------ */

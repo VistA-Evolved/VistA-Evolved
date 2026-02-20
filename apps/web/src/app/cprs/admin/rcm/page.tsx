@@ -18,7 +18,7 @@ import styles from '@/components/cprs/cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
-type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing';
+type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista';
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
@@ -37,6 +37,7 @@ export default function RcmPage() {
 
   const tabs: { id: Tab; label: string }[] = [
     { id: 'claims', label: 'Claim Workqueue' },
+    { id: 'draft-from-vista', label: 'Draft from VistA' },
     { id: 'payers', label: 'Payer Registry' },
     { id: 'connectors', label: 'Connectors & EDI' },
     { id: 'vista-billing', label: 'VistA Billing' },
@@ -85,6 +86,7 @@ export default function RcmPage() {
 
       <div style={{ padding: 20 }}>
         {tab === 'claims' && <ClaimsTab />}
+        {tab === 'draft-from-vista' && <DraftFromVistaTab />}
         {tab === 'payers' && <PayersTab />}
         {tab === 'connectors' && <ConnectorsTab />}
         {tab === 'vista-billing' && <VistaBillingTab />}
@@ -489,6 +491,244 @@ function AuditTab() {
             ))}
           </tbody>
         </table>
+      )}
+    </div>
+  );
+}
+
+/* ─── Draft from VistA Tab (Phase 42) ─────────────────────────────── */
+
+function DraftFromVistaTab() {
+  const [patientIen, setPatientIen] = useState('3');
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
+  const [encounters, setEncounters] = useState<any>(null);
+  const [coverage, setCoverage] = useState<any>(null);
+  const [draftResult, setDraftResult] = useState<any>(null);
+  const [selectedEncounter, setSelectedEncounter] = useState<string>('');
+  const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState<'select' | 'review' | 'done'>('select');
+
+  const fetchEncounters = () => {
+    if (!patientIen) return;
+    setLoading(true);
+    setDraftResult(null);
+    setStep('select');
+    const params = new URLSearchParams({ patientIen });
+    if (dateFrom) params.set('from', dateFrom);
+    if (dateTo) params.set('to', dateTo);
+
+    Promise.all([
+      apiFetch(`/rcm/vista/encounters?${params}`),
+      apiFetch(`/rcm/vista/coverage?patientIen=${patientIen}`),
+    ]).then(([enc, cov]) => {
+      setEncounters(enc);
+      setCoverage(cov);
+      setLoading(false);
+    }).catch(() => setLoading(false));
+  };
+
+  const generateDraft = () => {
+    setLoading(true);
+    const body: any = { patientIen };
+    if (selectedEncounter) body.encounterId = selectedEncounter;
+    if (dateFrom) body.dateFrom = dateFrom;
+    if (dateTo) body.dateTo = dateTo;
+
+    apiFetch('/rcm/vista/claim-drafts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    }).then(result => {
+      setDraftResult(result);
+      setStep('review');
+      setLoading(false);
+    }).catch(() => setLoading(false));
+  };
+
+  const prerequisitesCheck = () => {
+    const issues: Array<{ field: string; source: string; status: 'ok' | 'missing' | 'pending' }> = [
+      { field: 'Encounters (PCE)', source: 'ORWPCE VISIT', status: encounters?.ok && encounters.count > 0 ? 'ok' : 'missing' },
+      { field: 'Insurance Coverage', source: 'IBCN INSURANCE QUERY', status: coverage?.ok && coverage.count > 0 ? 'ok' : 'missing' },
+      { field: 'IB Charges', source: '^IB(350)', status: 'pending' },
+      { field: 'Claims Tracking', source: '^DGCR(399)', status: 'pending' },
+    ];
+    return issues;
+  };
+
+  return (
+    <div>
+      <div style={{ background: '#e8f4fd', border: '1px solid #bee5eb', borderRadius: 6, padding: 14, marginBottom: 16 }}>
+        <strong style={{ fontSize: 14 }}>Draft Claims from VistA Encounters</strong>
+        <p style={{ fontSize: 12, color: '#0c5460', margin: '6px 0 0' }}>
+          Select a patient, review encounters, and generate claim drafts from real VistA PCE data.
+          Missing data is annotated with the exact VistA source needed.
+        </p>
+      </div>
+
+      {/* Step 1: Patient + Date Selection */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
+        <label style={{ fontSize: 12, fontWeight: 600 }}>Patient IEN:</label>
+        <input
+          value={patientIen} onChange={e => setPatientIen(e.target.value)}
+          style={{ padding: '4px 8px', border: '1px solid #ced4da', borderRadius: 4, width: 80, fontSize: 13 }}
+        />
+        <label style={{ fontSize: 12, fontWeight: 600 }}>From:</label>
+        <input
+          type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)}
+          style={{ padding: '4px 8px', border: '1px solid #ced4da', borderRadius: 4, fontSize: 12 }}
+        />
+        <label style={{ fontSize: 12, fontWeight: 600 }}>To:</label>
+        <input
+          type="date" value={dateTo} onChange={e => setDateTo(e.target.value)}
+          style={{ padding: '4px 8px', border: '1px solid #ced4da', borderRadius: 4, fontSize: 12 }}
+        />
+        <button onClick={fetchEncounters} disabled={loading} style={{
+          padding: '5px 14px', background: '#0d6efd', color: 'white', border: 'none', borderRadius: 4, fontSize: 12, cursor: 'pointer',
+        }}>
+          {loading ? 'Loading...' : '1. Fetch Encounters'}
+        </button>
+      </div>
+
+      {/* Prerequisites Checklist */}
+      {encounters && (
+        <div style={{ border: '1px solid #dee2e6', borderRadius: 6, padding: 12, marginBottom: 16 }}>
+          <strong style={{ fontSize: 13, marginBottom: 8, display: 'block' }}>Prerequisites Checklist</strong>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+            {prerequisitesCheck().map((item, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12 }}>
+                <span style={{
+                  width: 8, height: 8, borderRadius: '50%', display: 'inline-block',
+                  background: item.status === 'ok' ? '#198754' : item.status === 'pending' ? '#fd7e14' : '#dc3545',
+                }} />
+                <span>{item.field}</span>
+                <span style={{ color: '#6c757d', fontSize: 10 }}>({item.source})</span>
+                <span style={{
+                  fontSize: 9, fontWeight: 700, textTransform: 'uppercase',
+                  color: item.status === 'ok' ? '#198754' : item.status === 'pending' ? '#fd7e14' : '#dc3545',
+                }}>{item.status}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Coverage Summary */}
+      {coverage?.ok && coverage.count > 0 && (
+        <div style={{ background: '#d1e7dd', border: '1px solid #badbcc', borderRadius: 6, padding: 10, marginBottom: 14, fontSize: 12 }}>
+          <strong>Insurance:</strong> {coverage.results.map((p: any) => p.insuranceName || p.policyId).join(', ')}
+        </div>
+      )}
+
+      {/* Encounter Selection */}
+      {encounters?.ok && encounters.count > 0 && step === 'select' && (
+        <div style={{ border: '1px solid #dee2e6', borderRadius: 6, padding: 14, marginBottom: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+            <strong style={{ fontSize: 13 }}>Select Encounter(s)</strong>
+            <span style={{ fontSize: 11, color: '#6c757d' }}>{encounters.count} encounters found</span>
+          </div>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+            <thead>
+              <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+                <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6', width: 40 }}></th>
+                <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Visit IEN</th>
+                <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Date/Time</th>
+                <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Location</th>
+                <th style={{ padding: '6px 8px', borderBottom: '1px solid #dee2e6' }}>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              {encounters.results.slice(0, 25).map((e: any, i: number) => (
+                <tr key={i} style={{
+                  borderBottom: '1px solid #f0f0f0',
+                  background: selectedEncounter === e.visitIen ? '#e7f1ff' : 'transparent',
+                  cursor: 'pointer',
+                }} onClick={() => setSelectedEncounter(selectedEncounter === e.visitIen ? '' : e.visitIen)}>
+                  <td style={{ padding: '4px 8px', textAlign: 'center' }}>
+                    <input type="radio" checked={selectedEncounter === e.visitIen} readOnly />
+                  </td>
+                  <td style={{ padding: '4px 8px', fontFamily: 'monospace' }}>{e.visitIen}</td>
+                  <td style={{ padding: '4px 8px' }}>{e.dateTime}</td>
+                  <td style={{ padding: '4px 8px' }}>{e.location}</td>
+                  <td style={{ padding: '4px 8px' }}>{e.visitType || '-'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <button onClick={generateDraft} disabled={loading} style={{
+            marginTop: 12, padding: '6px 18px', background: '#198754', color: 'white',
+            border: 'none', borderRadius: 4, fontSize: 13, cursor: 'pointer', fontWeight: 600,
+          }}>
+            {loading ? 'Generating...' : `2. Generate Draft${selectedEncounter ? ` (Visit ${selectedEncounter})` : ' (All Encounters)'}`}
+          </button>
+        </div>
+      )}
+
+      {/* Draft Results */}
+      {step === 'review' && draftResult && (
+        <div style={{ border: '1px solid #dee2e6', borderRadius: 6, padding: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+            <strong style={{ fontSize: 14 }}>3. Review Draft Candidates</strong>
+            <span style={{
+              fontSize: 10, fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+              color: draftResult.ok ? '#198754' : '#dc3545',
+              border: `1px solid ${draftResult.ok ? '#198754' : '#dc3545'}`,
+            }}>{draftResult.ok ? `${draftResult.candidates?.length || 0} DRAFTS` : 'ERROR'}</span>
+          </div>
+
+          {draftResult.errors?.length > 0 && (
+            <div style={{ background: '#fff3cd', border: '1px solid #ffecb5', borderRadius: 4, padding: 8, marginBottom: 12, fontSize: 12, color: '#664d03' }}>
+              {draftResult.errors.map((e: string, i: number) => <div key={i}>{e}</div>)}
+            </div>
+          )}
+
+          {draftResult.candidates?.map((c: any, i: number) => (
+            <div key={i} style={{ border: '1px solid #e9ecef', borderRadius: 6, padding: 12, marginBottom: 12, background: '#fafafa' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <strong style={{ fontSize: 13 }}>Visit {c.encounter?.visitIen}</strong>
+                <span style={{ fontSize: 11, color: '#6c757d' }}>{c.encounter?.dateTime} - {c.encounter?.location}</span>
+                <code style={{ fontSize: 10, background: '#e9ecef', padding: '1px 4px', borderRadius: 2 }}>{c.claim?.id?.slice(0, 8)}</code>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, fontSize: 12, marginBottom: 8 }}>
+                <div><strong>Diagnoses:</strong> {c.claim?.diagnoses?.length || 0}</div>
+                <div><strong>Procedures:</strong> {c.claim?.lines?.length || 0}</div>
+                <div><strong>Payer:</strong> {c.claim?.payerName || c.claim?.payerId || 'None'}</div>
+                <div><strong>Total Charge:</strong> ${((c.claim?.totalCharge || 0) / 100).toFixed(2)}</div>
+              </div>
+
+              {/* Missing fields */}
+              {c.missingFields?.length > 0 && (
+                <div style={{ background: '#fff8f0', border: '1px solid #ffc107', borderRadius: 4, padding: 8, fontSize: 11 }}>
+                  <strong style={{ color: '#856404' }}>Missing Fields:</strong>
+                  <ul style={{ margin: '4px 0 0 16px', padding: 0 }}>
+                    {c.sourceMissing?.map((m: any, j: number) => (
+                      <li key={j} style={{ color: '#856404', marginBottom: 2 }}>
+                        <strong>{m.field}:</strong> {m.reason} <span style={{ color: '#adb5bd' }}>({m.vistaSource})</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* RPCs called */}
+              <div style={{ fontSize: 10, color: '#adb5bd', marginTop: 6 }}>
+                RPCs: {c.rpcsCalled?.join(', ')}
+              </div>
+            </div>
+          ))}
+
+          <div style={{ fontSize: 11, color: '#6c757d', marginTop: 8 }}>
+            RPCs called: {draftResult.rpcsCalled?.join(', ')}
+          </div>
+        </div>
+      )}
+
+      {/* Empty state */}
+      {encounters?.ok && encounters.count === 0 && (
+        <div style={{ textAlign: 'center', padding: 40, color: '#6c757d', fontSize: 13 }}>
+          No encounters found for patient {patientIen}. Try a different patient or date range.
+        </div>
       )}
     </div>
   );

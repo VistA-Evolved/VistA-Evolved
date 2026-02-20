@@ -131,7 +131,58 @@ EDI transaction, and remittance posting is recorded. PHI is sanitized
 When VistA IB/AR RPCs become available:
 
 1. Replace in-memory claim store with VistA IB file reads/writes
-2. Map claim → IB Charge (file #350) and AR Account (file #430)
+2. Map claim -> IB Charge (file #350) and AR Account (file #430)
 3. Use VistA claim scrubber RPCs if available
-4. Keep connector layer unchanged — it's transport-only
-5. Keep audit layer unchanged — it's append-only
+4. Keep connector layer unchanged -- it's transport-only
+5. Keep audit layer unchanged -- it's append-only
+
+## Phase 42: VistA Claim Draft Pipeline
+
+Phase 42 adds a real VistA-to-claim-draft pipeline that reads live
+PCE encounter data and produces claim draft candidates.
+
+```
+┌───────────────── VistA Instance ─────────────────┐
+│  ORWPCE VISIT ──> Encounter List                 │
+│  ORWPCE DIAG  ──> Diagnoses (ICD-10)             │
+│  ORWPCE PROC  ──> Procedures (CPT)               │
+│  IBCN INSURANCE QUERY ──> Coverage/Policy         │
+│  VE RCM PROVIDER INFO ──> Provider NPI/Facility  │
+└──────────────────────┬───────────────────────────┘
+                       │
+                       v
+            buildClaimDraftFromVista()
+                       │
+                       v
+            ClaimDraftCandidate[]
+              - claim (draft)
+              - missingFields[]
+              - sourceMissing[]
+                       │
+                       v
+           ┌───────────┴───────────┐
+           │   Validation Engine   │
+           └───────────┬───────────┘
+                       │
+              ┌────────┴────────┐
+              v                 v
+         Export (X12)     Submit (Connector)
+```
+
+### Endpoints Added
+
+| Method | Path | Purpose |
+|--------|------|---------|
+| GET | `/rcm/vista/encounters` | PCE encounters for patient |
+| POST | `/rcm/vista/claim-drafts` | Generate claim draft candidates |
+| GET | `/rcm/vista/coverage` | Patient insurance coverage |
+
+### Data Flow
+
+1. UI selects patient + optional date range
+2. API calls ORWPCE VISIT for encounter list
+3. For each encounter: ORWPCE DIAG + ORWPCE PROC
+4. IBCN INSURANCE QUERY for payer info
+5. `buildClaimDraftFromVista()` assembles Claim objects
+6. Missing fields annotated with exact VistA source
+7. Drafts stored in claim store for validation/export

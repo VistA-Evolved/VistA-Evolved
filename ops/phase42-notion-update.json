@@ -1,0 +1,14 @@
+{
+  "feature": "Phase 42 -- VistA Billing/RCM Binding Pack + Claim Draft Sources",
+  "stage": "verify-pass",
+  "status": "complete",
+  "promptRef": "prompts/46-PHASE-42-VISTA-BILLING-RCM/prompt.md",
+  "runbookPaths": [
+    "docs/runbooks/rcm-draft-from-vista.md",
+    "docs/runbooks/vista-billing-wrappers.md"
+  ],
+  "verifyScript": "scripts/verify-phase42-billing-binding.ps1",
+  "verifyResult": "42/42 PASS",
+  "testResult": "25/25 vitest PASS",
+  "commitSHA": "pending"
+}

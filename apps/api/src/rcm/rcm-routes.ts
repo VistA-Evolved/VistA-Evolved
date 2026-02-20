@@ -97,6 +97,16 @@ import {
   postEraToVista,
 } from './vistaBindings/index.js';
 
+// Phase 42 -- Claim Draft Builder from VistA
+import {
+  buildClaimDraftFromVista,
+  getVistaCoverage,
+  type RpcCaller,
+} from './vistaBindings/buildClaimDraftFromVista.js';
+import { validateCredentials } from '../vista/config.js';
+import { connect, disconnect, callRpc } from '../vista/rpcBrokerClient.js';
+import { log } from '../lib/logger.js';
+
 /* ─── Submission safety (Phase 40) ───────────────────────────────── */
 
 function isSubmissionEnabled(): boolean {
@@ -940,5 +950,168 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       detail: { remittanceId, posted: result.posted, integrationPending: result.integrationPending },
     });
     return result;
+  });
+
+  // ───── Phase 42: Claim Draft from VistA Endpoints ──────────────
+
+  /** Create an RPC caller that uses the broker client */
+  function makeRpcCaller(): RpcCaller {
+    return {
+      async call(rpcName: string, params: string[]): Promise<string[]> {
+        await connect();
+        const result = await callRpc(rpcName, params);
+        return result;
+      },
+    };
+  }
+
+  /**
+   * GET /rcm/vista/encounters?patientIen=N&from=YYYY-MM-DD&to=YYYY-MM-DD
+   * Returns PCE encounters from VistA for claim draft selection.
+   */
+  server.get('/rcm/vista/encounters', async (request: FastifyRequest) => {
+    const q = request.query as Record<string, string>;
+    const patientIen = q.patientIen || q.dfn;
+    if (!patientIen || !/^\d+$/.test(patientIen)) {
+      return { ok: false, error: 'Missing or non-numeric patientIen', hint: 'Use ?patientIen=3' };
+    }
+
+    try {
+      validateCredentials();
+    } catch {
+      return { ok: false, error: 'VistA credentials not configured' };
+    }
+
+    try {
+      const rpc = makeRpcCaller();
+      const { buildClaimDraftFromVista: builder } = await import('./vistaBindings/buildClaimDraftFromVista.js');
+      const visitLines = await rpc.call('ORWPCE VISIT', [patientIen]);
+      const { parseEncounters } = await import('./vistaBindings/buildClaimDraftFromVista.js');
+      let encounters = parseEncounters(visitLines);
+
+      // Date filtering
+      if (q.from) {
+        encounters = encounters.filter(e => e.dateTime >= q.from.replace(/-/g, ''));
+      }
+      if (q.to) {
+        encounters = encounters.filter(e => e.dateTime <= q.to.replace(/-/g, ''));
+      }
+
+      disconnect();
+
+      appendRcmAudit('vista.encounters.read', {
+        detail: { patientIen, count: encounters.length },
+      });
+
+      return {
+        ok: true,
+        status: 'live',
+        count: encounters.length,
+        results: encounters,
+        rpcUsed: 'ORWPCE VISIT',
+        vistaFiles: ['9000010 (VISIT)', '9000010.18 (V CPT)', '9000010.07 (V POV)'],
+      };
+    } catch (err: any) {
+      disconnect();
+      log.error('rcm-vista-encounters error', { err: err.message });
+      return { ok: false, error: 'VistA service unavailable' };
+    }
+  });
+
+  /**
+   * POST /rcm/vista/claim-drafts
+   * Builds claim draft candidates from VistA encounter data.
+   * Body: { patientIen, dateFrom?, dateTo?, encounterId?, payerId?, tenantId? }
+   */
+  server.post('/rcm/vista/claim-drafts', async (request: FastifyRequest, reply: FastifyReply) => {
+    const body = (request.body as any) || {};
+    const { patientIen, dateFrom, dateTo, encounterId, payerId, tenantId } = body;
+    if (!patientIen || !/^\d+$/.test(String(patientIen))) {
+      return reply.code(400).send({ ok: false, error: 'patientIen is required (numeric)' });
+    }
+
+    try {
+      validateCredentials();
+    } catch {
+      return reply.code(503).send({ ok: false, error: 'VistA credentials not configured' });
+    }
+
+    const session = (request as any).session;
+    const actor = session?.duz ?? 'unknown';
+
+    try {
+      const rpc = makeRpcCaller();
+      const result = await buildClaimDraftFromVista(rpc, String(patientIen), actor, {
+        dateFrom,
+        dateTo,
+        encounterId,
+        payerId,
+        tenantId,
+      });
+
+      // Store generated drafts
+      for (const candidate of result.candidates) {
+        storeClaim(candidate.claim);
+      }
+
+      disconnect();
+
+      appendRcmAudit('vista.claim-drafts.created', {
+        detail: {
+          patientIen,
+          candidateCount: result.candidates.length,
+          encountersFound: result.encountersFound,
+          rpcsCalled: result.rpcsCalled,
+        },
+      });
+
+      return reply.code(201).send(result);
+    } catch (err: any) {
+      disconnect();
+      log.error('rcm-vista-claim-drafts error', { err: err.message });
+      return reply.code(503).send({ ok: false, error: 'VistA service unavailable' });
+    }
+  });
+
+  /**
+   * GET /rcm/vista/coverage?patientIen=N
+   * Returns patient insurance/coverage from VistA.
+   */
+  server.get('/rcm/vista/coverage', async (request: FastifyRequest) => {
+    const q = request.query as Record<string, string>;
+    const patientIen = q.patientIen || q.dfn;
+    if (!patientIen || !/^\d+$/.test(patientIen)) {
+      return { ok: false, error: 'Missing or non-numeric patientIen', hint: 'Use ?patientIen=3' };
+    }
+
+    try {
+      validateCredentials();
+    } catch {
+      return { ok: false, error: 'VistA credentials not configured' };
+    }
+
+    try {
+      const rpc = makeRpcCaller();
+      const result = await getVistaCoverage(rpc, patientIen);
+      disconnect();
+
+      appendRcmAudit('vista.coverage.read', {
+        detail: { patientIen, policyCount: result.policies.length },
+      });
+
+      return {
+        ok: result.ok,
+        status: result.ok ? 'live' : 'error',
+        count: result.policies.length,
+        results: result.policies,
+        rpcUsed: result.rpcUsed,
+        vistaFiles: ['36 (INSURANCE COMPANY)', '2.312 (PATIENT INSURANCE)'],
+        errors: result.errors.length > 0 ? result.errors : undefined,
+      };
+    } catch (err: any) {
+      disconnect();
+      log.error('rcm-vista-coverage error', { err: err.message });
+      return { ok: false, error: 'VistA service unavailable' };
+    }
   });
 }

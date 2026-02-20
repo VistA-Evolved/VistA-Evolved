@@ -4,6 +4,7 @@
  * Centralizes all VistA-first binding point imports.
  *
  * Phase 40 (Superseding) — VistA-first binding points
+ * Phase 42 — Claim draft builder from VistA RPCs
  */
 
 export {
@@ -25,3 +26,19 @@ export {
   type ChargeCapturCandidate,
   type ChargeCaptureResult,
 } from './charge-capture.js';
+
+export {
+  buildClaimDraftFromVista,
+  getVistaCoverage,
+  parseEncounters,
+  parseDiagnoses,
+  parseProcedures,
+  parseInsurance,
+  type RpcCaller,
+  type VistaEncounter,
+  type VistaDiagnosis,
+  type VistaProcedure,
+  type VistaInsurance,
+  type ClaimDraftCandidate,
+  type ClaimDraftResult,
+} from './buildClaimDraftFromVista.js';
