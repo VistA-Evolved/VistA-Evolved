@@ -176,9 +176,12 @@ export default function AIHelpPage() {
         Get help understanding your health information
       </p>
 
-      {/* Governance banner */}
-      <div style={{ padding: 10, background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 6, marginBottom: 16, fontSize: 13, color: "#92400e" }}>
-        AI-generated content is for education only — not medical advice | All interactions are logged
+      {/* Governance banner (Phase 61: enhanced governance labeling) */}
+      <div style={{ padding: 12, background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 6, marginBottom: 16, fontSize: 13, color: "#92400e" }}>
+        <strong>AI Governance Notice:</strong> AI-generated content is for education only -- not medical advice.
+        No diagnoses, treatment plans, or clinical recommendations are provided.
+        No patient-identifiable information is sent to AI models.
+        All interactions are logged for audit.
       </div>
 
       {/* Tabs */}

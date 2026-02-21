@@ -371,69 +371,240 @@ export default async function portalAuthRoutes(
     });
   });
 
-  // --- Labs (integration pending — ORWLRR INTERIM requires complex params) ---
+  // --- Labs (Phase 61: wired to ORWLRR INTERIM) ---
   server.get("/portal/health/labs", async (request, reply) => {
     const session = requirePortalSession(request, reply);
     portalAudit("portal.data.access", "success", session.patientDfn, {
       sourceIp: request.ip, detail: { resource: "labs" },
     });
-    return reply.send({
-      ok: true, source: "vista", resource: "labs", count: 0, results: [],
-      _integration: "pending", _rpc: "ORWLRR INTERIM",
-      _note: "Lab results require complex date/test-type parameters. Integration planned for Phase 28.",
-    });
+
+    try {
+      validateCredentials();
+      await connect();
+      // Params: DFN, startDate(FM), endDate(FM) -- empty strings fetch all
+      const lines = await callRpc("ORWLRR INTERIM", [session.patientDfn, "", ""]);
+      disconnect();
+      // Parse structured lab results from caret-delimited or free-text lines
+      const results: { testName: string; result: string; units: string; refRange: string; flag: string; specimen: string; collectionDate: string }[] = [];
+      let currentSpecimen = "";
+      let currentDate = "";
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+        if (/^Specimen:/i.test(trimmed)) {
+          currentSpecimen = trimmed.replace(/^Specimen:\s*/i, "").trim();
+          continue;
+        }
+        if (/^(Collection\s+Date|Collected):/i.test(trimmed)) {
+          currentDate = trimmed.replace(/^(Collection\s+Date|Collected):\s*/i, "").trim();
+          continue;
+        }
+        if (trimmed.includes("^")) {
+          const p = trimmed.split("^");
+          if (p.length >= 2) {
+            results.push({
+              testName: (p[0] || "").trim(),
+              result: (p[1] || "").trim(),
+              units: (p[2] || "").trim(),
+              refRange: (p[3] || "").trim(),
+              flag: (p[4] || "").trim(),
+              specimen: currentSpecimen,
+              collectionDate: currentDate,
+            });
+          }
+        }
+      }
+      const rawText = lines.join("\n");
+      return reply.send({
+        ok: true, source: "vista", resource: "labs",
+        count: results.length, results, rawText,
+        rpcUsed: "ORWLRR INTERIM",
+        ...(results.length === 0 ? { note: "Lab results returned as free text; structured parsing found no caret-delimited entries" } : {}),
+      });
+    } catch (err: any) {
+      try { disconnect(); } catch {}
+      return reply.send({
+        ok: true, source: "vista", resource: "labs",
+        count: 0, results: [],
+        _integration: "pending", _rpc: "ORWLRR INTERIM",
+        _error: err.message?.includes("ECONNREFUSED") ? "VistA unavailable" : undefined,
+      });
+    }
   });
 
-  // --- Consults ---
+  // --- Consults (Phase 61: wired to ORQQCN LIST) ---
   server.get("/portal/health/consults", async (request, reply) => {
     const session = requirePortalSession(request, reply);
-    portalAudit("portal.data.access", "success", session.patientDfn, {
-      sourceIp: request.ip, detail: { resource: "consults" },
-    });
-    return reply.send({
-      ok: true, source: "vista", resource: "consults", count: 0, results: [],
-      _integration: "pending", _rpc: "ORQQCN LIST",
-      _note: "Consult list RPC mapping not confirmed in sandbox. Integration planned.",
+    return portalRpc(session, "ORQQCN LIST", [session.patientDfn, "", "", "", ""], "consults", request, reply, (lines) => {
+      if (lines.length === 0 || (lines.length === 1 && lines[0].startsWith("<"))) return [];
+      return lines.map((line) => {
+        const p = line.split("^");
+        if (p.length < 5) return null;
+        const id = p[0]?.trim();
+        if (!id || !/^\d+$/.test(id)) return null;
+        let date = p[1] || "";
+        if (date && date.length >= 7) {
+          const [dp, tp] = date.split(".");
+          const y = parseInt(dp.substring(0, 3), 10) + 1700;
+          date = `${y}-${dp.substring(3, 5)}-${dp.substring(5, 7)}`;
+          if (tp && tp.length >= 4) date += ` ${tp.substring(0, 2)}:${tp.substring(2, 4)}`;
+        }
+        return { id, date, status: (p[2] || "").trim(), service: (p[3] || "").trim(), type: (p[4] || "").trim() || "Consult" };
+      }).filter(Boolean);
     });
   });
 
-  // --- Surgery ---
+  // --- Surgery (Phase 61: wired to ORWSR LIST) ---
   server.get("/portal/health/surgery", async (request, reply) => {
     const session = requirePortalSession(request, reply);
-    portalAudit("portal.data.access", "success", session.patientDfn, {
-      sourceIp: request.ip, detail: { resource: "surgery" },
-    });
-    return reply.send({
-      ok: true, source: "vista", resource: "surgery", count: 0, results: [],
-      _integration: "pending", _rpc: "ORWSR LIST",
-      _note: "Surgery list RPC not available in sandbox. Integration planned.",
+    return portalRpc(session, "ORWSR LIST", [session.patientDfn, "", "", "-1", "999"], "surgery", request, reply, (lines) => {
+      if (lines.length === 0 || (lines.length === 1 && !lines[0].trim())) return [];
+      return lines.map((line) => {
+        const p = line.split("^");
+        if (p.length < 3) return null;
+        const id = p[0]?.trim();
+        if (!id) return null;
+        const procedure = (p[1] || "").trim();
+        let date = (p[2] || "").trim();
+        if (date && date.length >= 7 && !date.includes("-")) {
+          const [dp, tp] = date.split(".");
+          const y = parseInt(dp.substring(0, 3), 10) + 1700;
+          date = `${y}-${dp.substring(3, 5)}-${dp.substring(5, 7)}`;
+          if (tp && tp.length >= 4) date += ` ${tp.substring(0, 2)}:${tp.substring(2, 4)}`;
+        }
+        const surgeonField = (p[3] || "").trim();
+        const surgeon = surgeonField.includes(";") ? surgeonField.split(";")[1] || surgeonField : surgeonField;
+        return { id, procedure, date, surgeon, status: "Complete" };
+      }).filter(Boolean);
     });
   });
 
-  // --- Discharge summaries ---
+  // --- Discharge summaries (Phase 61: wired to TIU DOCUMENTS BY CONTEXT, class=244) ---
   server.get("/portal/health/dc-summaries", async (request, reply) => {
     const session = requirePortalSession(request, reply);
     portalAudit("portal.data.access", "success", session.patientDfn, {
       sourceIp: request.ip, detail: { resource: "dc-summaries" },
     });
-    return reply.send({
-      ok: true, source: "vista", resource: "dc-summaries", count: 0, results: [],
-      _integration: "pending", _rpc: "TIU DOCUMENTS BY CONTEXT (class 244)",
-      _note: "DC summaries require TIU document class filtering. Integration planned.",
-    });
+
+    try {
+      validateCredentials();
+      await connect();
+      // CLASS=244 for Discharge Summaries; merge signed (1) and unsigned (2)
+      const signedLines = await callRpc("TIU DOCUMENTS BY CONTEXT", [
+        "244", "1", session.patientDfn, "", "", "0", "0", "D",
+      ]);
+      const unsignedLines = await callRpc("TIU DOCUMENTS BY CONTEXT", [
+        "244", "2", session.patientDfn, "", "", "0", "0", "D",
+      ]);
+      disconnect();
+      const seenIens = new Set<string>();
+      const allLines: string[] = [];
+      for (const line of [...unsignedLines, ...signedLines]) {
+        const ien = line.split("^")[0]?.trim();
+        if (ien && /^\d+$/.test(ien) && !seenIens.has(ien)) {
+          seenIens.add(ien);
+          allLines.push(line);
+        }
+      }
+      const results = allLines.map((line) => {
+        const parts = line.split("^");
+        if (parts.length < 7) return null;
+        const id = parts[0].trim();
+        if (!id || !/^\d+$/.test(id)) return null;
+        const title = (parts[1] || "").replace(/^\+\s*/, "").trim();
+        const fmDate = parts[2] || "";
+        let date = fmDate;
+        if (fmDate && fmDate.length >= 7) {
+          const [datePart, timePart] = fmDate.split(".");
+          const y = parseInt(datePart.substring(0, 3), 10) + 1700;
+          date = `${y}-${datePart.substring(3, 5)}-${datePart.substring(5, 7)}`;
+          if (timePart && timePart.length >= 4) date += ` ${timePart.substring(0, 2)}:${timePart.substring(2, 4)}`;
+        }
+        const authorField = parts[4] || "";
+        const authorParts = authorField.split(";");
+        const author = authorParts.length >= 3 ? authorParts[2] : authorParts[1] || authorField;
+        return { id, title, date, author, location: parts[5] || "", status: parts[6] || "" };
+      }).filter(Boolean);
+      return reply.send({
+        ok: true, source: "vista", resource: "dc-summaries",
+        count: results.length, results,
+        rpcUsed: "TIU DOCUMENTS BY CONTEXT",
+      });
+    } catch (err: any) {
+      try { disconnect(); } catch {}
+      return reply.send({
+        ok: true, source: "vista", resource: "dc-summaries",
+        count: 0, results: [],
+        _integration: "pending", _rpc: "TIU DOCUMENTS BY CONTEXT (class 244)",
+        _error: err.message?.includes("ECONNREFUSED") ? "VistA unavailable" : undefined,
+      });
+    }
   });
 
-  // --- Clinical reports ---
+  // --- Clinical reports (Phase 61: wired to ORWRP REPORT TEXT) ---
   server.get("/portal/health/reports", async (request, reply) => {
     const session = requirePortalSession(request, reply);
+    const { reportId, hsType } = request.query as any;
     portalAudit("portal.data.access", "success", session.patientDfn, {
-      sourceIp: request.ip, detail: { resource: "reports" },
+      sourceIp: request.ip, detail: { resource: "reports", reportId },
     });
-    return reply.send({
-      ok: true, source: "vista", resource: "reports", count: 0, results: [],
-      _integration: "pending", _rpc: "ORWRP REPORT TEXT",
-      _note: "Clinical report generation requires HS component selection. Integration planned.",
-    });
+
+    // If no reportId, return available report list via ORWRP REPORT LISTS
+    if (!reportId) {
+      try {
+        validateCredentials();
+        await connect();
+        const lines = await callRpc("ORWRP REPORT LISTS", []);
+        disconnect();
+        let currentSection = "";
+        const reports: { id: string; heading: string; qualifier: string; category: string }[] = [];
+        for (const line of lines) {
+          if (line.includes("[REPORT LIST]")) { currentSection = "reportList"; continue; }
+          if (line.includes("[")) { currentSection = "other"; continue; }
+          if (currentSection === "reportList" && line.trim()) {
+            const p = line.split("^");
+            reports.push({
+              id: (p[0] || "").trim(),
+              heading: (p[1] || "").trim(),
+              qualifier: (p[2] || "").trim(),
+              category: (p[8] || "").trim(),
+            });
+          }
+        }
+        return reply.send({ ok: true, source: "vista", resource: "reports", count: reports.length, results: reports, rpcUsed: "ORWRP REPORT LISTS" });
+      } catch (err: any) {
+        try { disconnect(); } catch {}
+        return reply.send({
+          ok: true, source: "vista", resource: "reports",
+          count: 0, results: [],
+          _integration: "pending", _rpc: "ORWRP REPORT LISTS",
+          _error: err.message?.includes("ECONNREFUSED") ? "VistA unavailable" : undefined,
+        });
+      }
+    }
+
+    // With reportId, fetch the report text
+    try {
+      validateCredentials();
+      await connect();
+      const lines = await callRpc("ORWRP REPORT TEXT", [
+        session.patientDfn, String(reportId), String(hsType || ""), "", "0", "", "",
+      ]);
+      disconnect();
+      return reply.send({
+        ok: true, source: "vista", resource: "reports",
+        text: lines.join("\n"),
+        rpcUsed: "ORWRP REPORT TEXT",
+      });
+    } catch (err: any) {
+      try { disconnect(); } catch {}
+      return reply.send({
+        ok: true, source: "vista", resource: "reports",
+        count: 0, results: [],
+        _integration: "pending", _rpc: "ORWRP REPORT TEXT",
+        _error: err.message?.includes("ECONNREFUSED") ? "VistA unavailable" : undefined,
+      });
+    }
   });
 
   // ─── Portal Audit Routes (admin-only) ───

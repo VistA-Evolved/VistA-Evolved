@@ -219,57 +219,154 @@ export default function HealthRecordsPage() {
           }}
         />
 
-        {/* Labs, Consults, Surgery, DC Summaries — pending integration */}
+        {/* Labs (Phase 61: wired to ORWLRR INTERIM) */}
         <HealthSection
           title="Lab Results"
           loading={labs.loading}
           data={labs.data}
-          source="pending"
-          renderData={(d) => (
-            <div className="empty-state" style={{ padding: "0.75rem" }}>
-              <p>Lab result integration is in progress.</p>
-              <p style={{ fontSize: "0.75rem", color: "#94a3b8" }}>Target RPC: {d._rpc || "ORWLRR INTERIM"}</p>
-            </div>
-          )}
+          source={labs.data?._integration === "pending" ? "pending" : "ehr"}
+          downloadUrl={exportSectionUrl("labs")}
+          renderData={(d) => {
+            const results = d.results || [];
+            if (!results.length) {
+              return d.rawText ? (
+                <pre style={{ whiteSpace: "pre-wrap", fontSize: "0.8rem", color: "#475569", maxHeight: 200, overflow: "auto" }}>{d.rawText}</pre>
+              ) : (
+                <p>No lab results on file</p>
+              );
+            }
+            return (
+              <table style={{ width: "100%", fontSize: "0.875rem", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr style={{ borderBottom: "1px solid #e2e8f0", textAlign: "left" }}>
+                    <th style={{ padding: "0.25rem 0.5rem" }}>Test</th>
+                    <th style={{ padding: "0.25rem 0.5rem" }}>Result</th>
+                    <th style={{ padding: "0.25rem 0.5rem" }}>Units</th>
+                    <th style={{ padding: "0.25rem 0.5rem" }}>Ref Range</th>
+                    <th style={{ padding: "0.25rem 0.5rem" }}>Flag</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {results.map((r: any, i: number) => (
+                    <tr key={i} style={{ borderBottom: "1px solid #f1f5f9" }}>
+                      <td style={{ padding: "0.25rem 0.5rem" }}>{r.testName}</td>
+                      <td style={{ padding: "0.25rem 0.5rem", fontWeight: r.flag ? 600 : 400, color: r.flag ? "#dc2626" : "inherit" }}>{r.result}</td>
+                      <td style={{ padding: "0.25rem 0.5rem" }}>{r.units || "--"}</td>
+                      <td style={{ padding: "0.25rem 0.5rem" }}>{r.refRange || "--"}</td>
+                      <td style={{ padding: "0.25rem 0.5rem" }}>
+                        {r.flag ? <span style={{ color: "#dc2626", fontWeight: 600 }}>{r.flag}</span> : "--"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            );
+          }}
         />
 
+        {/* Consults (Phase 61: wired to ORQQCN LIST) */}
         <HealthSection
           title="Consult History"
           loading={consults.loading}
           data={consults.data}
-          source="pending"
-          renderData={(d) => (
-            <div className="empty-state" style={{ padding: "0.75rem" }}>
-              <p>Consult history integration is in progress.</p>
-              <p style={{ fontSize: "0.75rem", color: "#94a3b8" }}>Target RPC: {d._rpc || "ORQQCN LIST"}</p>
-            </div>
-          )}
+          source={consults.data?._integration === "pending" ? "pending" : "ehr"}
+          downloadUrl={exportSectionUrl("consults")}
+          renderData={(d) => {
+            const results = d.results || [];
+            if (!results.length) return <p>No consults on file</p>;
+            return (
+              <table style={{ width: "100%", fontSize: "0.875rem", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr style={{ borderBottom: "1px solid #e2e8f0", textAlign: "left" }}>
+                    <th style={{ padding: "0.25rem 0.5rem" }}>Service</th>
+                    <th style={{ padding: "0.25rem 0.5rem" }}>Status</th>
+                    <th style={{ padding: "0.25rem 0.5rem" }}>Date</th>
+                    <th style={{ padding: "0.25rem 0.5rem" }}>Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {results.map((c: any, i: number) => (
+                    <tr key={i} style={{ borderBottom: "1px solid #f1f5f9" }}>
+                      <td style={{ padding: "0.25rem 0.5rem" }}>{c.service}</td>
+                      <td style={{ padding: "0.25rem 0.5rem" }}>{c.status}</td>
+                      <td style={{ padding: "0.25rem 0.5rem" }}>{c.date}</td>
+                      <td style={{ padding: "0.25rem 0.5rem" }}>{c.type}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            );
+          }}
         />
 
+        {/* Surgery (Phase 61: wired to ORWSR LIST) */}
         <HealthSection
           title="Surgery History"
           loading={surgery.loading}
           data={surgery.data}
-          source="pending"
-          renderData={(d) => (
-            <div className="empty-state" style={{ padding: "0.75rem" }}>
-              <p>Surgery records integration is in progress.</p>
-              <p style={{ fontSize: "0.75rem", color: "#94a3b8" }}>Target RPC: {d._rpc || "ORWSR LIST"}</p>
-            </div>
-          )}
+          source={surgery.data?._integration === "pending" ? "pending" : "ehr"}
+          downloadUrl={exportSectionUrl("surgery")}
+          renderData={(d) => {
+            const results = d.results || [];
+            if (!results.length) return <p>No surgical history on file</p>;
+            return (
+              <table style={{ width: "100%", fontSize: "0.875rem", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr style={{ borderBottom: "1px solid #e2e8f0", textAlign: "left" }}>
+                    <th style={{ padding: "0.25rem 0.5rem" }}>Procedure</th>
+                    <th style={{ padding: "0.25rem 0.5rem" }}>Date</th>
+                    <th style={{ padding: "0.25rem 0.5rem" }}>Surgeon</th>
+                    <th style={{ padding: "0.25rem 0.5rem" }}>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {results.map((s: any, i: number) => (
+                    <tr key={i} style={{ borderBottom: "1px solid #f1f5f9" }}>
+                      <td style={{ padding: "0.25rem 0.5rem" }}>{s.procedure}</td>
+                      <td style={{ padding: "0.25rem 0.5rem" }}>{s.date}</td>
+                      <td style={{ padding: "0.25rem 0.5rem" }}>{s.surgeon || "--"}</td>
+                      <td style={{ padding: "0.25rem 0.5rem" }}>{s.status}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            );
+          }}
         />
 
+        {/* Discharge Summaries (Phase 61: wired to TIU DOCUMENTS BY CONTEXT) */}
         <HealthSection
           title="Discharge Summaries"
           loading={dcSummaries.loading}
           data={dcSummaries.data}
-          source="pending"
-          renderData={(d) => (
-            <div className="empty-state" style={{ padding: "0.75rem" }}>
-              <p>Discharge summary integration is in progress.</p>
-              <p style={{ fontSize: "0.75rem", color: "#94a3b8" }}>Target RPC: {d._rpc || "TIU DOCUMENTS BY CONTEXT"}</p>
-            </div>
-          )}
+          source={dcSummaries.data?._integration === "pending" ? "pending" : "ehr"}
+          downloadUrl={exportSectionUrl("dc-summaries")}
+          renderData={(d) => {
+            const results = d.results || [];
+            if (!results.length) return <p>No discharge summaries on file</p>;
+            return (
+              <table style={{ width: "100%", fontSize: "0.875rem", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr style={{ borderBottom: "1px solid #e2e8f0", textAlign: "left" }}>
+                    <th style={{ padding: "0.25rem 0.5rem" }}>Title</th>
+                    <th style={{ padding: "0.25rem 0.5rem" }}>Date</th>
+                    <th style={{ padding: "0.25rem 0.5rem" }}>Author</th>
+                    <th style={{ padding: "0.25rem 0.5rem" }}>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {results.map((dc: any, i: number) => (
+                    <tr key={i} style={{ borderBottom: "1px solid #f1f5f9" }}>
+                      <td style={{ padding: "0.25rem 0.5rem" }}>{dc.title}</td>
+                      <td style={{ padding: "0.25rem 0.5rem" }}>{dc.date}</td>
+                      <td style={{ padding: "0.25rem 0.5rem" }}>{dc.author || "--"}</td>
+                      <td style={{ padding: "0.25rem 0.5rem" }}>{dc.status || "--"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            );
+          }}
         />
       </div>
     </div>

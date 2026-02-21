@@ -32,7 +32,7 @@ const SUMMARY_CARDS = [
     title: "Lab Results",
     href: "/dashboard/health",
     icon: "🔬",
-    source: "pending" as const,
+    source: "ehr" as const,
     description: "View your laboratory results",
   },
   {

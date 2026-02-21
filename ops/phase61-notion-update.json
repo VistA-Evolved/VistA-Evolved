@@ -1,0 +1,10 @@
+{
+  "feature": "Phase 61: Patient Portal Digital Front Door v1",
+  "stage": "implemented",
+  "status": "verified",
+  "promptRef": "prompts/66-PHASE-61-PORTAL-DIGITAL-FRONT-DOOR/61-01-IMPLEMENT.md",
+  "verifyRef": "prompts/66-PHASE-61-PORTAL-DIGITAL-FRONT-DOOR/61-99-VERIFY.md",
+  "runbookPath": "docs/runbooks/phase61-portal-digital-front-door.md",
+  "verifyScript": "scripts/verify-phase61-portal.ps1",
+  "commitSHA": "pending"
+}
