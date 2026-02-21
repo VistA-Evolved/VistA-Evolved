@@ -1,0 +1,19 @@
+{
+  "feature": "Phase 58 VERIFY -- Interop Monitor v2",
+  "stage": "verified",
+  "status": "complete",
+  "promptRef": "prompts/63-PHASE-58-INTEROP-MONITOR-V2/58-99-VERIFY.md",
+  "runbookPath": "docs/runbooks/phase58-interop-monitor-v2.md",
+  "verifyScript": "scripts/verify-phase58-interop-monitor.ps1",
+  "gates": {
+    "user_defined": 6,
+    "user_passed": 6,
+    "automated": 10,
+    "automated_passed": 10
+  },
+  "scans": {
+    "phi": "clean",
+    "secrets": "clean",
+    "console_log": 0
+  }
+}
