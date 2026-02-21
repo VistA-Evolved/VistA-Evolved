@@ -45,6 +45,7 @@ export class SandboxPayerAdapter implements PayerAdapter {
     return {
       eligible: true,
       status: "active",
+      isTestData: true,
       payerId: params.payerId,
       payerName: `Sandbox Payer (${params.payerId})`,
       memberId: params.memberId ?? `SBX-${params.patientDfn}`,
@@ -66,6 +67,7 @@ export class SandboxPayerAdapter implements PayerAdapter {
       claimId: params.claimId,
       payerClaimId: params.payerClaimId ?? `SBX-${params.claimId}`,
       status: "pending",
+      isTestData: true,
       statusCode: "P1",
       statusDescription: "Claim received, processing (sandbox simulation)",
       checkedAt: new Date().toISOString(),
@@ -81,6 +83,7 @@ export class SandboxPayerAdapter implements PayerAdapter {
   }): Promise<SubmissionResponse> {
     return {
       accepted: true,
+      isTestData: true,
       trackingId: `SBX-TRK-${Date.now()}`,
       errors: [],
       submittedAt: new Date().toISOString(),

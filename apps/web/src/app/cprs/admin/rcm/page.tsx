@@ -1919,7 +1919,7 @@ function AdaptersTab() {
             return (
               <tr key={a.id}>
                 <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>{a.id}</td>
-                <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0' }}>{a.displayName}</td>
+                <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0' }}>{a.name}</td>
                 <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>{a.supportedModes?.join(', ') ?? '-'}</td>
                 <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0' }}>
                   <span style={{

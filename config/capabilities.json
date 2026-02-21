@@ -507,6 +507,38 @@
       "targetPackage": null,
       "description": "View RCM audit trail"
     },
+    "rcm.adapters.view": {
+      "status": "configured",
+      "module": "rcm",
+      "adapter": "billing",
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "View payer adapter registry and health (Phase 69)"
+    },
+    "rcm.jobs.scheduler": {
+      "status": "configured",
+      "module": "rcm",
+      "adapter": "billing",
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "View polling job scheduler status (Phase 69)"
+    },
+    "rcm.eligibility.results": {
+      "status": "configured",
+      "module": "rcm",
+      "adapter": "billing",
+      "targetRpc": null,
+      "targetPackage": "IVM",
+      "description": "View eligibility poll results (Phase 69)"
+    },
+    "rcm.claims.status.results": {
+      "status": "configured",
+      "module": "rcm",
+      "adapter": "billing",
+      "targetRpc": null,
+      "targetPackage": "IB",
+      "description": "View claim status poll results (Phase 69)"
+    },
     "scheduling.appointments.create": {
       "status": "pending",
       "module": "scheduling",

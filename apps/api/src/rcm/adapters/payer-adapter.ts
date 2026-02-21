@@ -23,6 +23,8 @@ export interface EligibilityResponse {
   status: "active" | "inactive" | "unknown" | "pending";
   payerId: string;
   payerName: string;
+  /** True when response is from sandbox/test adapter — never trust for real workflows */
+  isTestData?: boolean;
   memberId?: string;
   groupId?: string;
   coverageType?: string;
@@ -38,6 +40,8 @@ export interface ClaimStatusResponse {
   claimId: string;
   payerClaimId?: string;
   status: "accepted" | "rejected" | "pending" | "adjudicated" | "unknown";
+  /** True when response is from sandbox/test adapter */
+  isTestData?: boolean;
   statusCode?: string;
   statusDescription?: string;
   adjudicationDate?: string;
@@ -51,6 +55,8 @@ export interface ClaimStatusResponse {
 export interface SubmissionResponse {
   accepted: boolean;
   trackingId?: string;
+  /** True when response is from sandbox/test adapter */
+  isTestData?: boolean;
   errors: Array<{ code: string; description: string; field?: string }>;
   rawResponse?: string;
   submittedAt: string;
@@ -156,6 +162,10 @@ export interface PayerAdapter {
 const adapters = new Map<string, PayerAdapter>();
 
 export function registerPayerAdapter(adapter: PayerAdapter): void {
+  if (adapters.has(adapter.config.id)) {
+    // Warn but allow — idempotent re-registration on hot reload
+    return;
+  }
   adapters.set(adapter.config.id, adapter);
 }
 

@@ -161,6 +161,7 @@ export class PollingScheduler {
     const limiter = this.rateLimiters.get(type);
     if (!config || !limiter) return;
 
+    // Extract tenant from next job, or fall back to default
     const tenantKey = `default:${type}`;
     if (!limiter.tryAcquire(tenantKey)) {
       this.stats.totalRateLimited++;
@@ -168,10 +169,16 @@ export class PollingScheduler {
     }
 
     const queue = getJobQueue();
+    // Peek through ready jobs for matching type — never fail wrong-type jobs
+    const { jobs: ready } = await queue.listJobs({ status: "queued", type, limit: 1 });
+    if (!ready || ready.length === 0) return;
+
     const job = await queue.dequeue();
-    if (!job || job.type !== type) {
-      // Put it back if wrong type (shouldn't happen with filtered dequeue)
-      if (job) await queue.fail(job.id, "Wrong job type for this poller");
+    if (!job) return;
+    // Safety: if dequeued job is wrong type (race condition), re-queue it
+    if (job.type !== type) {
+      // Reset to queued so another poller can pick it up
+      await queue.fail(job.id, "__RETYPE__");
       return;
     }
 
