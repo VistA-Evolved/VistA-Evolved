@@ -18,7 +18,7 @@ import styles from '@/components/cprs/cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
-type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions' | 'gateways';
+type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions' | 'gateways' | 'adapters' | 'jobs' | 'eligibility';
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
@@ -46,6 +46,9 @@ export default function RcmPage() {
     { id: 'transactions', label: 'Transactions' },
     { id: 'vista-billing', label: 'VistA Billing' },
     { id: 'gateways', label: 'Gateway Readiness' },
+    { id: 'adapters', label: 'Payer Adapters' },
+    { id: 'jobs', label: 'Jobs & Polling' },
+    { id: 'eligibility', label: 'Eligibility Status' },
     { id: 'audit', label: 'Audit Trail' },
   ];
 
@@ -100,6 +103,9 @@ export default function RcmPage() {
         {tab === 'transactions' && <TransactionsTab />}
         {tab === 'vista-billing' && <VistaBillingTab />}
         {tab === 'gateways' && <GatewaysTab />}
+        {tab === 'adapters' && <AdaptersTab />}
+        {tab === 'jobs' && <JobsTab />}
+        {tab === 'eligibility' && <EligibilityTab />}
         {tab === 'audit' && <AuditTab />}
       </div>
     </div>
@@ -1866,6 +1872,262 @@ function GatewaysTab() {
             </table>
           </div>
         </div>
+      )}
+    </div>
+  );
+}
+
+/* ─── Phase 69: Payer Adapters Tab ──────────────────────────────── */
+
+function AdaptersTab() {
+  const [adapters, setAdapters] = useState<any[]>([]);
+  const [health, setHealth] = useState<Record<string, any>>({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    Promise.all([
+      apiFetch('/rcm/adapters'),
+      apiFetch('/rcm/adapters/health'),
+    ]).then(([a, h]) => {
+      setAdapters(a?.adapters ?? []);
+      setHealth(h?.health ?? {});
+    }).catch(() => {}).finally(() => setLoading(false));
+  }, []);
+
+  if (loading) return <div style={{ color: '#6c757d', fontSize: 13 }}>Loading adapters...</div>;
+
+  return (
+    <div>
+      <h3 style={{ fontSize: 15, marginBottom: 12 }}>Payer Adapters (Phase 69)</h3>
+      <p style={{ fontSize: 12, color: '#6c757d', marginBottom: 12 }}>
+        Higher-level workflow adapters for eligibility, claim status, submission, and denial handling.
+        Connectors handle transport; adapters handle business workflow.
+      </p>
+      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+        <thead>
+          <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Adapter ID</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Display Name</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Integration Modes</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Health</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          {adapters.map((a: any) => {
+            const h = health[a.id];
+            return (
+              <tr key={a.id}>
+                <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>{a.id}</td>
+                <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0' }}>{a.displayName}</td>
+                <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>{a.supportedModes?.join(', ') ?? '-'}</td>
+                <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0' }}>
+                  <span style={{
+                    display: 'inline-block', padding: '2px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600,
+                    background: h?.healthy ? '#d1e7dd' : '#f8d7da',
+                    color: h?.healthy ? '#0f5132' : '#842029',
+                  }}>
+                    {h?.healthy ? 'HEALTHY' : 'NOT CONFIGURED'}
+                  </span>
+                </td>
+                <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0', fontSize: 11, color: '#6c757d' }}>
+                  {h?.details ?? '-'}
+                </td>
+              </tr>
+            );
+          })}
+          {adapters.length === 0 && (
+            <tr><td colSpan={5} style={{ padding: 16, textAlign: 'center', color: '#6c757d' }}>No adapters registered</td></tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+/* ─── Phase 69: Jobs & Polling Tab ──────────────────────────────── */
+
+function JobsTab() {
+  const [scheduler, setScheduler] = useState<any>(null);
+  const [queueStats, setQueueStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  const refresh = useCallback(() => {
+    setLoading(true);
+    Promise.all([
+      apiFetch('/rcm/jobs/scheduler'),
+      apiFetch('/rcm/jobs/queue/stats'),
+    ]).then(([s, q]) => {
+      setScheduler(s?.scheduler ?? null);
+      setQueueStats(q?.stats ?? null);
+    }).catch(() => {}).finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  if (loading) return <div style={{ color: '#6c757d', fontSize: 13 }}>Loading jobs...</div>;
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+        <h3 style={{ fontSize: 15, margin: 0 }}>Jobs & Polling Scheduler (Phase 69)</h3>
+        <button onClick={refresh} style={{ fontSize: 11, padding: '4px 12px', cursor: 'pointer' }}>Refresh</button>
+      </div>
+
+      {/* Scheduler Status */}
+      <div style={{ marginBottom: 16, padding: 12, background: '#f8f9fa', borderRadius: 6, fontSize: 12 }}>
+        <strong>Scheduler:</strong>{' '}
+        <span style={{ color: scheduler?.running ? '#198754' : '#dc3545', fontWeight: 600 }}>
+          {scheduler?.running ? 'RUNNING' : 'STOPPED'}
+        </span>
+        {scheduler?.stats && (
+          <span style={{ marginLeft: 16, color: '#6c757d' }}>
+            Processed: {scheduler.stats.totalProcessed} | Failed: {scheduler.stats.totalFailed} | Rate-Limited: {scheduler.stats.totalRateLimited}
+            {scheduler.stats.uptimeMs > 0 && ` | Uptime: ${Math.floor(scheduler.stats.uptimeMs / 1000)}s`}
+          </span>
+        )}
+      </div>
+
+      {/* Job Configs */}
+      <h4 style={{ fontSize: 13, marginBottom: 8 }}>Registered Jobs</h4>
+      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12, marginBottom: 16 }}>
+        <thead>
+          <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Job Type</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Label</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Interval</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Rate Limit/hr</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Remaining</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Enabled</th>
+          </tr>
+        </thead>
+        <tbody>
+          {scheduler?.jobConfigs?.map((j: any) => (
+            <tr key={j.type}>
+              <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>{j.type}</td>
+              <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0' }}>{j.label}</td>
+              <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0' }}>{(j.intervalMs / 1000).toFixed(0)}s</td>
+              <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0' }}>{j.rateLimitPerHour}</td>
+              <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0' }}>{j.rateLimitRemaining}</td>
+              <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0' }}>
+                <span style={{
+                  display: 'inline-block', padding: '2px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600,
+                  background: j.enabled ? '#d1e7dd' : '#e2e3e5',
+                  color: j.enabled ? '#0f5132' : '#41464b',
+                }}>
+                  {j.enabled ? 'YES' : 'DISABLED'}
+                </span>
+              </td>
+            </tr>
+          ))}
+          {(!scheduler?.jobConfigs || scheduler.jobConfigs.length === 0) && (
+            <tr><td colSpan={6} style={{ padding: 16, textAlign: 'center', color: '#6c757d' }}>No jobs registered</td></tr>
+          )}
+        </tbody>
+      </table>
+
+      {/* Queue Stats */}
+      {queueStats && (
+        <div>
+          <h4 style={{ fontSize: 13, marginBottom: 8 }}>Queue Statistics</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 8 }}>
+            {Object.entries(queueStats).map(([k, v]) => (
+              <div key={k} style={{ padding: 8, background: '#f8f9fa', borderRadius: 4, fontSize: 11 }}>
+                <div style={{ color: '#6c757d', marginBottom: 2 }}>{k}</div>
+                <div style={{ fontWeight: 600, fontSize: 14 }}>{String(v)}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div style={{ marginTop: 16, padding: 12, background: '#fff3cd', borderRadius: 6, fontSize: 11, color: '#664d03' }}>
+        <strong>Note:</strong> Polling jobs are disabled by default. Set <code>RCM_ELIGIBILITY_POLLING=true</code> and{' '}
+        <code>RCM_CLAIM_STATUS_POLLING=true</code> in env to enable. Rate limits prevent payer throttling.
+      </div>
+    </div>
+  );
+}
+
+/* ─── Phase 69: Eligibility Status Tab ──────────────────────────── */
+
+function EligibilityTab() {
+  const [results, setResults] = useState<any[]>([]);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  const refresh = useCallback(() => {
+    setLoading(true);
+    apiFetch('/rcm/eligibility/results?limit=50')
+      .then((data) => {
+        setResults(data?.items ?? []);
+        setTotal(data?.total ?? 0);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  if (loading) return <div style={{ color: '#6c757d', fontSize: 13 }}>Loading eligibility results...</div>;
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+        <h3 style={{ fontSize: 15, margin: 0 }}>Eligibility Poll Results (Phase 69)</h3>
+        <span style={{ fontSize: 11, color: '#6c757d' }}>{total} total results</span>
+        <button onClick={refresh} style={{ fontSize: 11, padding: '4px 12px', cursor: 'pointer' }}>Refresh</button>
+      </div>
+
+      {results.length === 0 ? (
+        <div style={{ padding: 24, textAlign: 'center', color: '#6c757d', fontSize: 13 }}>
+          No eligibility poll results yet. Enable polling or submit eligibility check requests.
+        </div>
+      ) : (
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+          <thead>
+            <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Timestamp</th>
+              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Claim ID</th>
+              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Payer</th>
+              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Mode</th>
+              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Eligible</th>
+              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Status</th>
+              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Response ms</th>
+            </tr>
+          </thead>
+          <tbody>
+            {results.map((r: any) => (
+              <tr key={r.id}>
+                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0', fontSize: 11, fontFamily: 'monospace' }}>
+                  {r.pollTimestamp ? new Date(r.pollTimestamp).toLocaleString() : '-'}
+                </td>
+                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>{r.claimId}</td>
+                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>{r.payerCode}</td>
+                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0', fontSize: 11 }}>{r.integrationMode}</td>
+                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>
+                  <span style={{
+                    display: 'inline-block', padding: '2px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600,
+                    background: r.eligible === true ? '#d1e7dd' : r.eligible === false ? '#f8d7da' : '#e2e3e5',
+                    color: r.eligible === true ? '#0f5132' : r.eligible === false ? '#842029' : '#41464b',
+                  }}>
+                    {r.eligible === null ? 'UNKNOWN' : r.eligible ? 'YES' : 'NO'}
+                  </span>
+                </td>
+                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>
+                  <span style={{
+                    display: 'inline-block', padding: '2px 6px', borderRadius: 4, fontSize: 10, fontWeight: 600,
+                    background: r.status === 'completed' ? '#d1e7dd' : r.status === 'failed' ? '#f8d7da' : '#fff3cd',
+                    color: r.status === 'completed' ? '#0f5132' : r.status === 'failed' ? '#842029' : '#664d03',
+                  }}>
+                    {r.status?.toUpperCase()}
+                  </span>
+                </td>
+                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>{r.responseMs ?? '-'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   );

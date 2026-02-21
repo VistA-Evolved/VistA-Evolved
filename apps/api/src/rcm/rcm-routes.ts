@@ -105,6 +105,19 @@ import { serialize837, exportX12Bundle } from './edi/x12-serializer.js';
 import { getJobQueue } from './jobs/queue.js';
 import type { RcmJobType } from './jobs/queue.js';
 
+// Payer adapters (Phase 69)
+import {
+  registerPayerAdapter, listPayerAdapters, getAllPayerAdapters,
+} from './adapters/payer-adapter.js';
+import { SandboxPayerAdapter } from './adapters/sandbox-adapter.js';
+import { X12ClearinghouseAdapter } from './adapters/x12-adapter.js';
+import { PhilHealthAdapter } from './adapters/philhealth-adapter.js';
+
+// Polling scheduler + pollers (Phase 69)
+import { getPollingScheduler } from './jobs/polling-scheduler.js';
+import { getEligibilityPollerConfig, getEligibilityResultsSlice } from './jobs/eligibility-poller.js';
+import { getClaimStatusPollerConfig, getClaimStatusResultsSlice } from './jobs/claim-status-poller.js';
+
 // Payer catalog importers (Phase 40 Superseding)
 import { CsvPayerImporter, JsonPayerImporter } from './importers/payer-catalog-importer.js';
 
@@ -258,6 +271,18 @@ async function ensureInitialized(): Promise<void> {
   const nphcSg = new NphcSgConnector();
   await nphcSg.initialize();
   registerConnector(nphcSg);
+
+  // Phase 69 -- Payer adapters
+  registerPayerAdapter(new SandboxPayerAdapter());
+  registerPayerAdapter(new X12ClearinghouseAdapter());
+  registerPayerAdapter(new PhilHealthAdapter());
+
+  // Phase 69 -- Polling scheduler
+  const scheduler = getPollingScheduler();
+  scheduler.registerJob(getEligibilityPollerConfig());
+  scheduler.registerJob(getClaimStatusPollerConfig());
+  // Scheduler starts only if env vars enable it
+  scheduler.start();
 }
 
 /* ─── Route plugin ───────────────────────────────────────────────── */
@@ -2100,6 +2125,55 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     const body = (request.body as Record<string, unknown>) || {};
     const result = validatePayloadConformance(id, body);
     appendRcmAudit('gateway.conformance_validated', { detail: { gatewayId: id, valid: result.valid, missingFields: result.missingFields.length } });
+    return { ok: true, ...result };
+  });
+
+  /* ═══════════════════════════════════════════════════════════════════
+   * Phase 69 — RCM Ops Excellence: Adapters, Polling, Jobs
+   * ═══════════════════════════════════════════════════════════════════ */
+
+  /** GET /rcm/adapters -- List registered payer adapters */
+  server.get('/rcm/adapters', async () => {
+    const adapters = listPayerAdapters();
+    return { ok: true, adapters };
+  });
+
+  /** GET /rcm/adapters/health -- Adapter health status */
+  server.get('/rcm/adapters/health', async () => {
+    const healthResults: Record<string, unknown> = {};
+    for (const [id, adapter] of getAllPayerAdapters()) {
+      healthResults[id] = await adapter.healthCheck();
+    }
+    return { ok: true, health: healthResults };
+  });
+
+  /** GET /rcm/jobs/scheduler -- Polling scheduler status */
+  server.get('/rcm/jobs/scheduler', async () => {
+    const scheduler = getPollingScheduler();
+    return { ok: true, scheduler: scheduler.getStatus() };
+  });
+
+  /** GET /rcm/jobs/queue/stats -- Job queue statistics */
+  server.get('/rcm/jobs/queue/stats', async () => {
+    const queue = getJobQueue();
+    return { ok: true, stats: queue.getStats() };
+  });
+
+  /** GET /rcm/eligibility/results -- Eligibility poll results */
+  server.get('/rcm/eligibility/results', async (request: FastifyRequest) => {
+    const q = request.query as Record<string, string>;
+    const offset = parseInt(q.offset ?? '0', 10) || 0;
+    const limit = Math.min(parseInt(q.limit ?? '50', 10) || 50, 200);
+    const result = getEligibilityResultsSlice(offset, limit);
+    return { ok: true, ...result };
+  });
+
+  /** GET /rcm/claims/status/results -- Claim status poll results */
+  server.get('/rcm/claims/status/results', async (request: FastifyRequest) => {
+    const q = request.query as Record<string, string>;
+    const offset = parseInt(q.offset ?? '0', 10) || 0;
+    const limit = Math.min(parseInt(q.limit ?? '50', 10) || 50, 200);
+    const result = getClaimStatusResultsSlice(offset, limit);
     return { ok: true, ...result };
   });
 }
