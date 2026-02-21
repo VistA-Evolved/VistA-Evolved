@@ -127,7 +127,6 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
     const rpcUsed = ["ORQQPX REMINDERS LIST"];
     const vivianPresence = {
       "ORQQPX REMINDERS LIST": "present" as const,
-      "ORQQPX REMINDER DETAIL": "present" as const,
     };
 
     try {

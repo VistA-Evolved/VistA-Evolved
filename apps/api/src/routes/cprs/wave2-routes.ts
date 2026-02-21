@@ -493,7 +493,11 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     const body = (request.body as any) || {};
     const { dfn, orderId, reason, dcType } = body;
     const rpcUsed = ["ORWDX LOCK", "ORWDXA DC", "ORWDX UNLOCK"];
-    const vivianPresence = { "ORWDXA DC": "present" as const };
+    const vivianPresence = {
+      "ORWDX LOCK": "present" as const,
+      "ORWDXA DC": "present" as const,
+      "ORWDX UNLOCK": "present" as const,
+    };
 
     const errors = validateRequired(body, ["dfn", "orderId"]);
     const validDfn = validateDfn(dfn);
@@ -514,21 +518,21 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
         await connect();
         const duz = getDuz();
 
-        // LOCK
+        // LOCK — positive match pattern ("1" = acquired, anything else = fail)
         const lockResp = await safeCallRpc("ORWDX LOCK", [validDfn!], { idempotent: false });
-        const lockLine = lockResp[0] || "";
-        if (lockLine.includes("locked by")) {
+        locked = lockResp[0]?.trim() === "1";
+        if (!locked) {
           disconnect();
           return reply.code(409).send({
             ok: false, error: "Patient locked by another provider", rpcUsed, vivianPresence,
           });
         }
-        locked = true;
 
         // ORWDXA DC: ORIFN^PROVIEN^DCTYPE^DESSION^DCDATE^RSIEN
         const dcTypeVal = String(dcType || 1); // 1=discontinue, 2=cancel
+        const reasonIen = reason ? String(reason) : ""; // IEN from File 100.02 if provided
         const resp = await safeCallRpc("ORWDXA DC", [
-          String(orderId), duz, dcTypeVal, "", "", "",
+          String(orderId), duz, dcTypeVal, "", "", reasonIen,
         ], { idempotent: false });
 
         // UNLOCK
@@ -591,7 +595,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     const rpcUsed = ["ORWDXA FLAG"];
     const vivianPresence = { "ORWDXA FLAG": "present" as const };
 
-    const errors = validateRequired(body, ["dfn", "orderId"]);
+    const errors = validateRequired(body, ["dfn", "orderId", "flagReason"]);
     const validDfn = validateDfn(dfn);
     if (!validDfn) errors.push({ field: "dfn", message: "dfn must be numeric" });
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
@@ -608,9 +612,9 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
         validateCredentials();
         await connect();
 
-        // ORWDXA FLAG: ORIFN^FLAG REASON
+        // ORWDXA FLAG: ORIFN^FLAG REASON (flagReason is required — validated above)
         const resp = await safeCallRpc("ORWDXA FLAG", [
-          String(orderId), flagReason || "Flagged for review",
+          String(orderId), String(flagReason),
         ], { idempotent: false });
         disconnect();
 

@@ -335,7 +335,7 @@ export default function CoverSheetPanel({ dfn }: Props) {
         {/* Row 6: Clinical Reminders (Phase 78: wired to ORQQPX REMINDERS LIST) */}
         <Section
           title="Clinical Reminders"
-          contractId="ORQQPX REMINDERS"
+          contractId="ORQQPX REMINDERS LIST"
           loading={remindersLoading}
           onResize={handleResize('reminders')}
           height={heights.reminders}
