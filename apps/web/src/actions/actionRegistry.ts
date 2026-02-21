@@ -662,6 +662,39 @@ export const ACTION_REGISTRY: CprsAction[] = [
     endpoint: "/messaging/portal/send",
     rpcKind: "write",
   },
+
+  // --- Immunizations (Phase 65: VistA-first) ---
+  {
+    actionId: "immunizations.list",
+    label: "Load Immunization History",
+    location: "Immunizations",
+    capability: "clinical.immunizations.read",
+    rpcs: ["ORQQPX IMMUN LIST"],
+    status: "wired",
+    endpoint: "/vista/immunizations",
+    rpcKind: "read",
+  },
+  {
+    actionId: "immunizations.catalog",
+    label: "Load Immunization Types",
+    location: "Immunizations",
+    capability: "clinical.immunizations.read",
+    rpcs: ["PXVIMM IMM SHORT LIST"],
+    status: "wired",
+    endpoint: "/vista/immunizations/catalog",
+    rpcKind: "read",
+  },
+  {
+    actionId: "immunizations.add",
+    label: "Add Immunization",
+    location: "Immunizations",
+    capability: "clinical.immunizations.write",
+    rpcs: ["PX SAVE DATA"],
+    status: "integration-pending",
+    endpoint: "/vista/immunizations",
+    rpcKind: "write",
+    pendingNote: "PCE PX SAVE DATA requires encounter context — deferred to Phase 65B",
+  },
 ];
 
 /* ------------------------------------------------------------------ */

@@ -165,6 +165,17 @@
       "tabPosition": "tpBottom",
       "align": "alBottom",
       "isBottomTab": true
+    },
+    {
+      "constant": "CT_IMMUNIZATIONS",
+      "label": "Immunizations",
+      "creationOrder": 14,
+      "conditional": false,
+      "id": 16,
+      "description": "chart tab - patient immunization history (Phase 65)",
+      "tabPosition": "tpBottom",
+      "align": "alBottom",
+      "isBottomTab": true
     }
   ],
   "subTabs": [

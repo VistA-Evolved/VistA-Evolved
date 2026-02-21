@@ -98,6 +98,10 @@ export async function fetchReports() {
   return portalFetch("/portal/health/reports");
 }
 
+export async function fetchImmunizations() {
+  return portalFetch("/portal/health/immunizations");
+}
+
 // ─── PDF Export (Phase 27) ───
 
 export function exportSectionUrl(section: string): string {

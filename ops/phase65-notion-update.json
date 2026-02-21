@@ -1,0 +1,10 @@
+{
+  "feature": "Phase 65: Immunizations v1 (VistA-First) + Portal View",
+  "stage": "Implemented",
+  "status": "Complete",
+  "promptRef": "prompts/71-PHASE-65-IMMUNIZATIONS/71-01-IMPLEMENT.md",
+  "runbookPath": "ops/phase65-summary.md",
+  "verifyScript": "scripts/verify-phase65-immunizations.ps1",
+  "verifyResult": "50/50 PASS",
+  "commitMessage": "Phase65: immunizations v1 (VistA-first) + portal view"
+}

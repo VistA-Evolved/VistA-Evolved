@@ -355,6 +355,18 @@ export default async function portalAuthRoutes(
     });
   });
 
+  // --- Immunizations (Phase 65: VistA-first, ORQQPX IMMUN LIST) ---
+  server.get("/portal/health/immunizations", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    return portalRpc(session, "ORQQPX IMMUN LIST", [session.patientDfn], "immunizations", request, reply, (lines) =>
+      lines.map(l => {
+        const p = l.split("^");
+        if (!p[0]?.trim()) return null;
+        return { ien: p[0]?.trim(), name: p[1]?.trim() || "", dateTime: p[2]?.trim() || "", reaction: p[3]?.trim() || "" };
+      }).filter(Boolean)
+    );
+  });
+
   // --- Demographics ---
   server.get("/portal/health/demographics", async (request, reply) => {
     const session = requirePortalSession(request, reply);

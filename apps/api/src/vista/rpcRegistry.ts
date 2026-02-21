@@ -148,6 +148,10 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "GMV ADD VM",               domain: "vitals",     tag: "write", description: "Add vital measurement" },
   { name: "ORQQVI VITALS",            domain: "vitals",     tag: "read",  description: "Get patient vitals" },
 
+  // --- Immunizations (Phase 65: VistA-first immunization history) ---
+  { name: "ORQQPX IMMUN LIST",          domain: "immunizations", tag: "read",  description: "Patient immunization history list" },
+  { name: "PXVIMM IMM SHORT LIST",       domain: "immunizations", tag: "read",  description: "Immunization type picker (short list)" },
+
   // --- Messaging (Phase 70: ZVEMSGR.m MailMan RPC bridge) ---
   { name: "ORQQXMB MAIL GROUPS",      domain: "messaging",  tag: "read",  description: "List MailMan mail groups for recipient selection" },
   { name: "ZVE MAIL FOLDERS",         domain: "messaging",  tag: "read",  description: "List MailMan baskets/folders with counts (ZVEMSGR.m)" },

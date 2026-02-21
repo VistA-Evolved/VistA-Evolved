@@ -86,6 +86,8 @@ import tiuNotesRoutes from "./routes/cprs/tiu-notes.js";
 import schedulingRoutes from "./routes/scheduling/index.js";
 // Phase 64: Secure messaging v1 (MailMan-backed)
 import messagingRoutes from "./routes/messaging/index.js";
+// Phase 65: Immunizations v1 (VistA-first)
+import immunizationsRoutes from "./routes/immunizations/index.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -275,6 +277,9 @@ server.register(schedulingRoutes);
 
 // Register secure messaging routes -- VistA MailMan bridge (Phase 64)
 server.register(messagingRoutes);
+
+// Register immunization routes -- VistA-first ORQQPX IMMUN LIST (Phase 65)
+server.register(immunizationsRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

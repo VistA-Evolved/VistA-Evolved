@@ -92,6 +92,8 @@ export default function CoverSheetPanel({ dfn }: Props) {
   // Extra data states (labs, orders summary loaded via new Wave 1 endpoints)
   const [ordersSummary, setOrdersSummary] = useState<{ unsigned: number; recent: any[] } | null>(null);
   const [ordersLoading, setOrdersLoading] = useState(false);
+  const [immunizations, setImmunizations] = useState<any[]>([]);
+  const [immuLoading, setImmuLoading] = useState(false);
 
   useEffect(() => { cache.fetchAll(dfn); }, [dfn]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -102,6 +104,15 @@ export default function CoverSheetPanel({ dfn }: Props) {
       .then((d) => { if (d.ok) setOrdersSummary({ unsigned: d.unsigned, recent: d.recent }); })
       .catch(() => {})
       .finally(() => setOrdersLoading(false));
+  }, [dfn]);
+
+  // Fetch immunizations from Phase 65 endpoint
+  useEffect(() => {
+    setImmuLoading(true);
+    fetchJson(`${API_BASE}/vista/immunizations?dfn=${dfn}`)
+      .then((d) => { if (d.ok && d.results) setImmunizations(d.results); })
+      .catch(() => {})
+      .finally(() => setImmuLoading(false));
   }, [dfn]);
 
   const problems = cache.getDomain(dfn, 'problems');
@@ -279,6 +290,28 @@ export default function CoverSheetPanel({ dfn }: Props) {
         </Section>
 
         {/* Row 5: Clinical Reminders (integration-pending, full width) */}
+        <Section
+          title="Immunizations"
+          contractId="ORQQPX IMMUN LIST"
+          loading={immuLoading}
+          onResize={handleResize('immunizations')}
+          height={heights.immunizations}
+        >
+          {immunizations.length === 0 ? (
+            <p className={styles.emptyText}>No immunizations on record</p>
+          ) : (
+            <table className={styles.dataTable}>
+              <thead><tr><th>Immunization</th><th>Date</th><th>Reaction</th></tr></thead>
+              <tbody>
+                {immunizations.slice(0, 8).map((im: any, i: number) => (
+                  <tr key={i}><td>{im.name || im.ien}</td><td>{im.dateTime || '\u2014'}</td><td>{im.reaction || 'None'}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </Section>
+
+        {/* Row 6: Clinical Reminders (integration-pending, full width) */}
         <Section
           title="Clinical Reminders"
           contractId="ORQQPX REMINDERS"

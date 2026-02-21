@@ -9,6 +9,7 @@ export { default as DCSummPanel } from './DCSummPanel';
 export { default as LabsPanel } from './LabsPanel';
 export { default as ReportsPanel } from './ReportsPanel';
 export { default as ImagingPanel } from './ImagingPanel';
+export { default as ImmunizationsPanel } from './ImmunizationsPanel';
 export { default as IntakePanel } from './IntakePanel';
 export { default as TelehealthPanel } from './TelehealthPanel';
 export { default as MessagingTasksPanel } from './MessagingTasksPanel';

@@ -23,6 +23,7 @@ import {
   LabsPanel,
   ReportsPanel,
   ImagingPanel,
+  ImmunizationsPanel,
   IntakePanel,
   TelehealthPanel,
   MessagingTasksPanel,
@@ -49,6 +50,7 @@ const TAB_LOCATION_MAP: Record<string, string> = {
   labs: 'Labs',
   reports: 'Reports',
   imaging: 'Imaging',
+  immunizations: 'Immunizations',
 };
 
 function TabContent({ dfn, tab }: { dfn: string; tab: string }) {
@@ -70,6 +72,7 @@ function TabContent({ dfn, tab }: { dfn: string; tab: string }) {
     case 'labs':       return <LabsPanel       dfn={dfn} />;
     case 'reports':    return <ReportsPanel    dfn={dfn} />;
     case 'imaging':    return <ImagingPanel    dfn={dfn} />;
+    case 'immunizations': return <ImmunizationsPanel dfn={dfn} />;
     case 'intake':     return <IntakePanel     dfn={dfn} />;
     case 'telehealth': return <TelehealthPanel dfn={dfn} />;
     case 'tasks':      return <MessagingTasksPanel dfn={dfn} />;
@@ -84,7 +87,7 @@ function TabContent({ dfn, tab }: { dfn: string; tab: string }) {
   }
 }
 
-const VALID_TABS = new Set(['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports', 'imaging', 'intake', 'telehealth', 'tasks', 'aiassist']);
+const VALID_TABS = new Set(['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports', 'imaging', 'immunizations', 'intake', 'telehealth', 'tasks', 'aiassist']);
 
 export default function CPRSChartPage({ params }: ChartPageProps) {
   const { dfn, tab } = use(params);

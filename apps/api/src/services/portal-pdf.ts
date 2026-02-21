@@ -180,7 +180,7 @@ export function formatImmunizationsForPdf(data: any[]): { heading: string; lines
   return {
     heading: "Immunizations",
     lines: data.length > 0
-      ? data.map(i => `${i.vaccine || "Unknown"} — Date: ${i.date || "N/A"}${i.series ? ` | Series: ${i.series}` : ""}${i.facility ? ` | Facility: ${i.facility}` : ""}`)
+      ? data.map(i => `${i.name || i.vaccine || "Unknown"} — Date: ${i.dateTime || i.date || "N/A"}${i.reaction ? ` | Reaction: ${i.reaction}` : ""}${i.series ? ` | Series: ${i.series}` : ""}${i.facility ? ` | Facility: ${i.facility}` : ""}`)
       : ["No immunization data available — VistA integration pending"],
   };
 }

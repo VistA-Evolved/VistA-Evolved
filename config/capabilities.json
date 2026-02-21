@@ -67,6 +67,22 @@
       "targetPackage": "GMRV",
       "description": "Add vital measurement"
     },
+    "clinical.immunizations.list": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQQPX IMMUN LIST",
+      "targetPackage": "OR",
+      "description": "List patient immunization history"
+    },
+    "clinical.immunizations.add": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "PX SAVE DATA",
+      "targetPackage": "PX",
+      "description": "Add immunization (requires PCE encounter context)"
+    },
     "clinical.notes.list": {
       "status": "live",
       "module": "clinical",
