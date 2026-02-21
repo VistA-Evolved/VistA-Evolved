@@ -170,14 +170,9 @@ function parseRpcRegistry(): Set<string> {
   const content = readFileSync(filePath, "utf-8");
   const names = new Set<string>();
 
+  // Captures both RPC_REGISTRY and RPC_EXCEPTIONS entries (both use name: "...")
   const matches = content.matchAll(/name:\s*"([^"]+)"/g);
   for (const m of matches) {
-    names.add(m[1].toUpperCase());
-  }
-
-  // Also parse RPC_EXCEPTIONS
-  const exMatches = content.matchAll(/name:\s*"([^"]+)"/g);
-  for (const m of exMatches) {
     names.add(m[1].toUpperCase());
   }
 

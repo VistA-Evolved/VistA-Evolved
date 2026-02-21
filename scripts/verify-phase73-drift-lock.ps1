@@ -174,22 +174,28 @@ if ($gitignoreContent -match "artifacts/") {
 }
 
 # ----------------------------------------------------------------
-# Section 7: Governance scripts have no console.log (TS hygiene)
+# Section 7: Governance scripts contain expected patterns
 # ----------------------------------------------------------------
 Write-Host "`n-- Code Hygiene --"
 
-$govFiles = @(
-  "scripts/governance/verifyRepoHygiene.ts",
-  "scripts/governance/buildPendingTargetsIndex.ts",
-  "scripts/governance/buildTraceabilityIndex.ts"
-)
+$govChecks = @{
+  "scripts/governance/verifyRepoHygiene.ts" = "no-forbidden-dirs"
+  "scripts/governance/buildPendingTargetsIndex.ts" = "pendingTargets"
+  "scripts/governance/buildTraceabilityIndex.ts" = "parseActionRegistry"
+}
 
-foreach ($gf in $govFiles) {
+foreach ($gf in $govChecks.Keys) {
   $gfPath = Join-Path $root $gf
   if (Test-Path -LiteralPath $gfPath) {
     $content = Get-Content $gfPath -Raw
-    # These scripts use console.log for output which is fine (not API code)
-    Gate-Pass "$gf exists and is valid"
+    $expected = $govChecks[$gf]
+    if ($content -match $expected) {
+      Gate-Pass "$gf contains expected gate logic ($expected)"
+    } else {
+      Gate-Fail "$gf missing expected pattern: $expected"
+    }
+  } else {
+    Gate-Fail "$gf not found"
   }
 }
 

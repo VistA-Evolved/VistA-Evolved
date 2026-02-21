@@ -187,9 +187,6 @@ for (const entry of entries) {
 }
 
 const nonEmptyRpcEntries = entries.filter((e) => e.rpcs.length > 0);
-const pendingRpcEntries = apiResponses.filter(
-  (e) => e.rpcs.length > 0 && !entries.some((o) => o.file === e.file && o.line === e.line && e.rpcs.length === 0),
-);
 
 const summary = {
   totalOccurrences: entries.length,
