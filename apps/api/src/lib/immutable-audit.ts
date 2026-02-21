@@ -83,7 +83,12 @@ export type ImmutableAuditAction =
   | "migration.rollback"
   | "migration.template.create"
   | "migration.template.delete"
-  | "migration.job.delete";
+  | "migration.job.delete"
+  // Scheduling events (Phase 63)
+  | "scheduling.list"
+  | "scheduling.request"
+  | "scheduling.cancel"
+  | "scheduling.reschedule";
 
 export type ImmutableAuditOutcome = "success" | "failure" | "denied" | "error";
 

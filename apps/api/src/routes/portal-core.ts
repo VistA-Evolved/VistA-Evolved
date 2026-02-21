@@ -464,13 +464,70 @@ export default async function portalCoreRoutes(
   });
 
   /* ================================================================ */
-  /* Appointments                                                       */
+  /* Appointments — Phase 63: wired to scheduling adapter               */
   /* ================================================================ */
 
   server.get("/portal/appointments", async (request, reply) => {
     const session = requirePortalSession(request, reply);
+
+    // Try VistA scheduling adapter first for real encounter data
+    let vistaAppointments: any[] = [];
+    let vistaNote = "";
+    try {
+      const { getAdapter } = await import("../adapters/adapter-loader.js");
+      const adapter = getAdapter("scheduling") as any;
+      if (adapter && typeof adapter.listAppointments === "function") {
+        const result = await adapter.listAppointments(session.patientDfn);
+        if (result.ok && result.data) {
+          vistaAppointments = result.data;
+        }
+        if (result.pending) {
+          vistaNote = `VistA scheduling: ${result.target || "pending"}`;
+        }
+      }
+    } catch { /* VistA unavailable — fall back to local store */ }
+
+    // Also include local portal appointments (legacy Phase 27 store)
     const upcoming = getUpcomingAppointments(session.patientDfn);
     const past = getPastAppointments(session.patientDfn);
+
+    // Normalize VistA encounters → portal shape (scheduledAt, clinicName, etc.)
+    const normalizeVista = (a: any) => ({
+      ...a,
+      scheduledAt: a.scheduledAt || a.dateTime,
+      clinicName:  a.clinicName  || a.clinic,
+      providerName: a.providerName || a.provider,
+      duration: a.duration || 30,
+      appointmentType: a.appointmentType || 'in_person',
+      reason: a.reason || '',
+    });
+
+    // Merge: VistA encounters + local requests (deduplicated by ID)
+    const seenIds = new Set<string>();
+    const allUpcoming: any[] = [];
+    const allPast: any[] = [];
+    const now = new Date().toISOString();
+
+    for (const raw of vistaAppointments) {
+      const a = normalizeVista(raw);
+      if (!seenIds.has(a.id)) {
+        seenIds.add(a.id);
+        if (a.scheduledAt >= now) allUpcoming.push(a);
+        else allPast.push(a);
+      }
+    }
+    for (const a of upcoming) {
+      if (!seenIds.has(a.id)) {
+        seenIds.add(a.id);
+        allUpcoming.push(a);
+      }
+    }
+    for (const a of past) {
+      if (!seenIds.has(a.id)) {
+        seenIds.add(a.id);
+        allPast.push(a);
+      }
+    }
 
     portalAudit("portal.appointment.view", "success", session.patientDfn, {
       sourceIp: request.ip,
@@ -478,9 +535,9 @@ export default async function portalCoreRoutes(
 
     return reply.send({
       ok: true,
-      upcoming,
-      past,
-      _note: "Scheduling RPCs (SD APPOINTMENT LIST) not available in sandbox. Demo data shown.",
+      upcoming: allUpcoming,
+      past: allPast,
+      _note: vistaNote || undefined,
     });
   });
 

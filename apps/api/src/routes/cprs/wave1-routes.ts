@@ -75,27 +75,42 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
   });
 
   /* ----------------------------------------------------------------
-   * GET /vista/cprs/appointments  (integration-pending)
-   * Target RPCs: SD API APPOINTMENTS BY DFN, SDOE GET APPOINTMENTS
+   * GET /vista/cprs/appointments — Phase 63: delegates to scheduling adapter
+   * Uses SDOE LIST ENCOUNTERS FOR PAT (real VistA data when available)
+   * Falls back to integration-pending with explicit target RPCs
    * ---------------------------------------------------------------- */
   server.get("/vista/cprs/appointments", async (request) => {
     const dfn = (request.query as any)?.dfn;
     if (!dfn || !/^\d+$/.test(String(dfn)))
       return { ok: false, error: "Missing or non-numeric dfn" };
 
+    try {
+      const { getAdapter } = await import("../../adapters/adapter-loader.js");
+      const adapter = getAdapter("scheduling") as any;
+      if (adapter && typeof adapter.listAppointments === "function") {
+        const result = await adapter.listAppointments(String(dfn));
+        return {
+          ok: true,
+          status: result.ok ? "ok" : "integration-pending",
+          results: result.data || [],
+          rpcUsed: result.ok ? ["SDOE LIST ENCOUNTERS FOR PAT"] : [],
+          pendingTargets: result.ok ? [] : ["SDEC APPADD", "SDEC APPSLOTS"],
+          pendingNote: result.ok
+            ? undefined
+            : "SDOE encounter reads available; booking RPCs (SDEC) absent in sandbox.",
+        };
+      }
+    } catch { /* adapter unavailable */ }
+
     return {
       ok: true,
       status: "integration-pending",
       results: [],
       rpcUsed: [],
-      pendingTargets: ["SD API APPOINTMENTS BY DFN", "SDOE GET APPOINTMENTS"],
-      vivianPresence: {
-        "SD API APPOINTMENTS BY DFN": "absent",
-        "SDOE GET APPOINTMENTS": "absent",
-      },
+      pendingTargets: ["SDOE LIST ENCOUNTERS FOR PAT", "SDEC APPADD"],
       pendingNote:
-        "Scheduling RPCs not available in WorldVistA sandbox. " +
-        "Wire when SD APPOINTMENT files populated.",
+        "Scheduling adapter unavailable. SDOE encounter RPCs present in sandbox; " +
+        "SDEC booking RPCs absent. See Phase 63.",
     };
   });
 

@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 62: Go-Live Hardening Pack v1
-& "$PSScriptRoot\verify-phase62-hardening.ps1" @args
+# Phase 63: Scheduling v1 (VistA SD* First) + Portal Appointments
+& "$PSScriptRoot\verify-phase63-scheduling.ps1" @args

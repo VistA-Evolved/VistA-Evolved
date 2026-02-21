@@ -94,6 +94,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/api\/marketplace/, auth: "session" }, // Phase 51: marketplace config (admin checked in handler)
   { pattern: /^\/migration\//, auth: "session" }, // Phase 50: Migration toolkit (permission checked in handler)
   { pattern: /^\/rcm\//, auth: "session" }, // Phase 38: RCM routes (permission checked in handler)
+  { pattern: /^\/scheduling\//, auth: "session" }, // Phase 63: Scheduling routes (session required)
   { pattern: /^\/admin\/my-tenant$/, auth: "session" }, // Phase 17: client tenant config (any user)
   { pattern: /^\/(admin|audit|reports)\//, auth: "admin" },
   { pattern: /^\/ws\//, auth: "session" }, // WebSocket console (has own role check too)

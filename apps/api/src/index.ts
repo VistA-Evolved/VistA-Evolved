@@ -82,6 +82,8 @@ import cprsWave2Routes from "./routes/cprs/wave2-routes.js";
 import ordersCpoeRoutes from "./routes/cprs/orders-cpoe.js";
 // Phase 60: TIU notes parity (list + text + sign + addendum + titles)
 import tiuNotesRoutes from "./routes/cprs/tiu-notes.js";
+// Phase 63: Scheduling v1 (VistA-first SD*)
+import schedulingRoutes from "./routes/scheduling/index.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -265,6 +267,9 @@ server.register(ordersCpoeRoutes);
 
 // Register TIU notes parity routes -- list, text, sign, addendum, titles (Phase 60)
 server.register(tiuNotesRoutes);
+
+// Register scheduling routes -- VistA SD* encounter + wait list RPCs (Phase 63)
+server.register(schedulingRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

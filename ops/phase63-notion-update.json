@@ -1,0 +1,40 @@
+{
+  "featureTitle": "Phase 63: Scheduling v1 (VistA SD* First) + Portal Appointments",
+  "stage": "Implemented",
+  "status": "Complete",
+  "promptRef": "prompts/68-PHASE-63-SCHEDULING-V1/63-01-IMPLEMENT.md",
+  "runbookPath": "docs/runbooks/scheduling-vista-sd.md",
+  "verifyScript": "scripts/verify-phase63-scheduling.ps1",
+  "commitSHA": "pending",
+  "summary": "Real VistA scheduling using SDOE + SD W/L RPCs. 10 API endpoints, clinician dashboard, portal wiring, double-booking prevention, audit trail. SDEC booking RPCs targeted but absent in sandbox.",
+  "rpcsUsed": [
+    "SDOE LIST ENCOUNTERS FOR PAT",
+    "SDOE LIST ENCOUNTERS FOR DATES",
+    "SDOE GET GENERAL DATA",
+    "SDOE GET PROVIDERS",
+    "SD W/L RETRIVE HOSP LOC(#44)",
+    "SD W/L RETRIVE PERSON(200)"
+  ],
+  "rpcsTargeted": [
+    "SDEC APPADD",
+    "SDEC APPDEL",
+    "SDEC APPSLOTS",
+    "SDEC EDITAPPT"
+  ],
+  "filesChanged": [
+    "apps/api/src/adapters/scheduling/interface.ts",
+    "apps/api/src/adapters/scheduling/vista-adapter.ts",
+    "apps/api/src/adapters/scheduling/stub-adapter.ts",
+    "apps/api/src/routes/scheduling/index.ts",
+    "apps/api/src/routes/portal-core.ts",
+    "apps/api/src/routes/cprs/wave1-routes.ts",
+    "apps/api/src/lib/immutable-audit.ts",
+    "apps/api/src/middleware/security.ts",
+    "apps/api/src/index.ts",
+    "apps/web/src/app/cprs/scheduling/page.tsx",
+    "scripts/scheduling/buildSdPlan.ts",
+    "scripts/verify-phase63-scheduling.ps1",
+    "scripts/verify-latest.ps1",
+    "docs/runbooks/scheduling-vista-sd.md"
+  ]
+}
