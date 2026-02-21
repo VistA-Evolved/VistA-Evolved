@@ -11,7 +11,8 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$root = (git rev-parse --show-toplevel 2>$null) ?? $PSScriptRoot
+$root = git rev-parse --show-toplevel 2>$null
+if (-not $root) { $root = $PSScriptRoot }
 
 if (-not [System.IO.Path]::IsPathRooted($OutputDir)) {
   $OutputDir = Join-Path $root $OutputDir
@@ -48,6 +49,8 @@ try {
 if (-not $cycloneDxOk) {
   try {
     $pkg = Get-Content (Join-Path $root "package.json") -Raw | ConvertFrom-Json
+    $pkgVer = $pkg.version
+    if (-not $pkgVer) { $pkgVer = "0.0.0" }
     $fallback = @{
       bomFormat = "CycloneDX"
       specVersion = "1.5"
@@ -57,7 +60,7 @@ if (-not $cycloneDxOk) {
         component = @{
           type = "application"
           name = "vista-evolved"
-          version = $pkg.version ?? "0.0.0"
+          version = $pkgVer
         }
         tools = @(@{ name = "pnpm-licenses-fallback"; version = "1.0.0" })
       }

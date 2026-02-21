@@ -23,7 +23,8 @@ param(
 
 $ErrorActionPreference = "Stop"
 $ts = Get-Date -Format "yyyyMMdd-HHmmss"
-$root = (git rev-parse --show-toplevel 2>$null) ?? $PSScriptRoot
+$root = git rev-parse --show-toplevel 2>$null
+if (-not $root) { $root = $PSScriptRoot }
 
 # Resolve output directory relative to repo root
 if (-not [System.IO.Path]::IsPathRooted($OutputDir)) {
@@ -188,7 +189,7 @@ if (-not $SkipDocker) {
 # -------------------------------------------------------------------
 Write-Host "[4/4] Generating manifest..." -ForegroundColor Yellow
 
-$manifest.status = if ($manifest.errors.Count -eq 0) { "success" } else { "partial" }
+if ($manifest.errors.Count -eq 0) { $manifest.status = "success" } else { $manifest.status = "partial" }
 $manifest.validArtifacts = ($manifest.artifacts | Where-Object { $_.valid }).Count
 $manifest.totalArtifacts = $manifest.artifacts.Count
 
