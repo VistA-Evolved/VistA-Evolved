@@ -722,7 +722,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
 
       audit("interop.message-list", "success", {
         duz: session.duz,
-        name: session.displayName,
+        name: session.userName,
         role: session.role,
       }, {
         detail: { direction, status, limit, count },
@@ -822,7 +822,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
 
       audit("interop.message-detail", "success", {
         duz: session.duz,
-        name: session.displayName,
+        name: session.userName,
         role: session.role,
       }, {
         detail: { msgIen, segmentCount: detail.totalSegments },
@@ -877,7 +877,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
     // Audit the unmask action BEFORE returning data
     audit("interop.message-unmask", "success", {
       duz: session.duz,
-      name: session.displayName,
+      name: session.userName,
       role: session.role,
     }, {
       detail: {
@@ -959,7 +959,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
         source: "vista",
         available: true,
         masked: false,
-        unmaskedBy: session.displayName,
+        unmaskedBy: session.userName,
         unmaskedAt: new Date().toISOString(),
         reason,
         detail,

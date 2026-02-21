@@ -15,13 +15,13 @@
  */
 
 import type { FastifyInstance } from "fastify";
-import { safeCallRpc } from "../lib/rpc-resilience.js";
-import { connect, disconnect } from "../vista/rpcBrokerClient.js";
-import { validateCredentials } from "../vista/config.js";
-import { audit } from "../lib/audit.js";
+import { safeCallRpc } from "../../lib/rpc-resilience.js";
+import { connect, disconnect } from "../../vista/rpcBrokerClient.js";
+import { validateCredentials } from "../../vista/config.js";
+import { audit } from "../../lib/audit.js";
 
-function auditActor(request: any): string {
-  return (request as any).session?.userName ?? "unknown";
+function auditActor(request: any): { name: string } {
+  return { name: (request as any).session?.userName ?? "unknown" };
 }
 
 export default async function cprsWave1Routes(server: FastifyInstance): Promise<void> {
@@ -45,8 +45,8 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
       disconnect();
 
       const orders = lines
-        .filter((l) => l.trim())
-        .map((line, i) => {
+        .filter((l: string) => l.trim())
+        .map((line: string, i: number) => {
           const parts = line.split("^");
           return {
             id: parts[0]?.trim() || `ord-${i}`,
@@ -169,7 +169,7 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
       ]);
       disconnect();
 
-      const data = lines.filter((l) => l.trim()).map((line, i) => {
+      const data = lines.filter((l: string) => l.trim()).map((line: string, i: number) => {
         const parts = line.split("^");
         return {
           date: parts[0]?.trim() || "",
@@ -204,7 +204,7 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
       const lines = await safeCallRpc("ORQQPL4 LEX", [String(term)]);
       disconnect();
 
-      const results = lines.filter((l) => l.trim()).map((line) => {
+      const results = lines.filter((l: string) => l.trim()).map((line: string) => {
         const parts = line.split("^");
         return {
           ien: parts[0]?.trim() || "",
