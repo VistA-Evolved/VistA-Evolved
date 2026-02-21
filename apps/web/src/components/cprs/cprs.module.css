@@ -452,6 +452,24 @@
   background: transparent;
 }
 .resizeHandle:hover { background: var(--cprs-accent); opacity: 0.3; }
+.resizeHandle:focus { background: var(--cprs-accent); opacity: 0.5; outline: none; }
+.resizeHandle:focus-visible { outline: 2px solid var(--cprs-accent); outline-offset: -2px; }
+
+/* --- Cover sheet toolbar ------------------------------------------ */
+.coverToolbar {
+  display: flex;
+  gap: 8px;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--cprs-border);
+  align-items: center;
+  font-size: 12px;
+}
+
+/* --- Drag-over highlight ------------------------------------------ */
+.coverSection[data-drag-over="true"] {
+  outline: 2px dashed var(--cprs-accent);
+  outline-offset: -2px;
+}
 
 /* --- Tab sub-sections --------------------------------------------- */
 .splitPane {

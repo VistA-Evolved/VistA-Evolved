@@ -16,7 +16,7 @@ export default function CoverSheetLayoutManager() {
   const { preferences, resetCoverSheetLayout } = useCPRSUI();
   const layout = preferences.coverSheetLayout;
   const customCount = Object.values(layout.panelHeights).filter(
-    (h) => h !== 33
+    (h) => h !== 200
   ).length;
 
   return (

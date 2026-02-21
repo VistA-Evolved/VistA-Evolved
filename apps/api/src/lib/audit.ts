@@ -65,6 +65,7 @@ export type AuditAction =
   | "config.tenant-update"
   | "config.feature-flag-update"
   | "config.ui-defaults-update"
+  | "config.ui-prefs-save"
   | "config.modules-update"
   | "config.template-upsert"
   | "config.template-delete"

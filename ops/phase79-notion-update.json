@@ -1,0 +1,25 @@
+{
+  "feature": "CPRS Cover Sheet Layout Parity v1 (Resize + Rearrange + Persist)",
+  "phase": 79,
+  "stage": "implement-complete",
+  "status": "ready-for-verify",
+  "promptRef": "prompts/84-PHASE-79-COVERSHEET-LAYOUT/79-01-IMPLEMENT.md",
+  "verifyRef": "prompts/84-PHASE-79-COVERSHEET-LAYOUT/79-99-VERIFY.md",
+  "runbook": "ops/phase79-summary.md",
+  "verifyScript": "scripts/verify-latest.ps1",
+  "commitMessage": "Phase79: coversheet layout parity (resize + rearrange + persistence)",
+  "filesChanged": [
+    "apps/api/src/services/ui-prefs-store.ts",
+    "apps/api/src/routes/ui-prefs.ts",
+    "apps/api/src/index.ts",
+    "apps/api/src/lib/audit.ts",
+    "apps/web/src/stores/cprs-ui-state.tsx",
+    "apps/web/src/components/cprs/panels/CoverSheetPanel.tsx",
+    "apps/web/src/components/cprs/CoverSheetLayoutManager.tsx",
+    "apps/web/src/components/cprs/cprs.module.css",
+    "apps/web/e2e/coversheet-layout.spec.ts",
+    "prompts/84-PHASE-79-COVERSHEET-LAYOUT/79-01-IMPLEMENT.md",
+    "prompts/84-PHASE-79-COVERSHEET-LAYOUT/79-99-VERIFY.md",
+    "ops/phase79-summary.md"
+  ]
+}

@@ -97,6 +97,8 @@ import adtRoutes from "./routes/adt/index.js";
 import nursingRoutes from "./routes/nursing/index.js";
 // Phase 72: Reality Verifier Pack -- no-fake-success tripwire
 import { registerNoFakeSuccessHook, getFakeSuccessViolations, getFakeSuccessViolationCount, getNoFakeSuccessAuditReport } from "./middleware/no-fake-success.js";
+// Phase 79: UI Preferences (coversheet layout persistence)
+import uiPrefsRoutes from "./routes/ui-prefs.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -302,6 +304,9 @@ server.register(adtRoutes);
 
 // Register nursing workflow routes -- VistA-first vitals/notes/tasks/MAR (Phase 68)
 server.register(nursingRoutes);
+
+// Register UI preferences routes -- coversheet layout persistence (Phase 79)
+server.register(uiPrefsRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);
