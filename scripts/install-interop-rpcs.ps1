@@ -23,7 +23,7 @@ $VistaDir  = Join-Path $RepoRoot "services\vista"
 Write-Host "=== VistA-Evolved Interop RPC Installer ===" -ForegroundColor Cyan
 
 # 1. Verify container is running
-Write-Host "`n[1/4] Checking Docker container '$ContainerName'..."
+Write-Host "`n[1/5] Checking Docker container '$ContainerName'..."
 $status = docker inspect --format '{{.State.Status}}' $ContainerName 2>&1
 if ($LASTEXITCODE -ne 0 -or $status -ne "running") {
     Write-Host "  ERROR: Container '$ContainerName' is not running." -ForegroundColor Red
@@ -33,8 +33,8 @@ if ($LASTEXITCODE -ne 0 -or $status -ne "running") {
 Write-Host "  Container is running." -ForegroundColor Green
 
 # 2. Copy M routines into the container
-Write-Host "`n[2/4] Copying M routines into container..."
-$routines = @("ZVEMIOP.m", "ZVEMINS.m")
+Write-Host "`n[2/5] Copying M routines into container..."
+$routines = @("ZVEMIOP.m", "ZVEMINS.m", "VEMCTX3.m")
 foreach ($r in $routines) {
     $src = Join-Path $VistaDir $r
     if (-not (Test-Path $src)) {
@@ -50,12 +50,17 @@ foreach ($r in $routines) {
 }
 
 # 3. Run the installer routine
-Write-Host "`n[3/4] Running RPC registration (ZVEMINS)..."
+Write-Host "`n[3/5] Running RPC registration (ZVEMINS)..."
 $output = docker exec $ContainerName su - wv -c "mumps -run RUN^ZVEMINS" 2>&1
 Write-Host $output
 
-# 4. Quick verification â€” call each RPC tag directly
-Write-Host "`n[4/4] Quick smoke test â€” calling LINKS^ZVEMIOP..."
+# 4. Add RPCs to OR CPRS GUI CHART context
+Write-Host "`n[4/5] Adding RPCs to context (VEMCTX3)..."
+$ctxOutput = docker exec $ContainerName su - wv -c "mumps -run VEMCTX3" 2>&1
+Write-Host $ctxOutput
+
+# 5. Quick verification -- call each RPC tag directly
+Write-Host "`n[5/5] Quick smoke test -- calling LINKS^ZVEMIOP..."
 $smoke = docker exec $ContainerName su - wv -c "mumps -run %XCMD 'N R D LINKS^ZVEMIOP(.R,5) W R(0)'" 2>&1
 Write-Host "  LINKS result(0): $smoke"
 

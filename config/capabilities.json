@@ -359,9 +359,49 @@
       "status": "live",
       "module": "interop",
       "adapter": "messaging",
-      "targetRpc": "VEMHL LINKS",
+      "targetRpc": "VE INTEROP HL7 LINKS",
       "targetPackage": "HL",
       "description": "Monitor HL7 interface links"
+    },
+    "interop.hl7.read": {
+      "status": "live",
+      "module": "interop",
+      "adapter": "messaging",
+      "targetRpc": "VE INTEROP HL7 MSGS",
+      "targetPackage": "HL",
+      "description": "Read HL7 messages from VistA message queues"
+    },
+    "interop.hlo.read": {
+      "status": "live",
+      "module": "interop",
+      "adapter": "messaging",
+      "targetRpc": "VE INTEROP HLO STATUS",
+      "targetPackage": "HL",
+      "description": "Read HLO engine status and configuration"
+    },
+    "interop.queue.read": {
+      "status": "live",
+      "module": "interop",
+      "adapter": "messaging",
+      "targetRpc": "VE INTEROP QUEUE DEPTH",
+      "targetPackage": "HL",
+      "description": "Read HL7/HLO queue pending and error counts"
+    },
+    "interop.msg.list": {
+      "status": "live",
+      "module": "interop",
+      "adapter": "messaging",
+      "targetRpc": "VE INTEROP MSG LIST",
+      "targetPackage": "HL",
+      "description": "List and filter HL7 messages with PHI masking"
+    },
+    "interop.msg.detail": {
+      "status": "live",
+      "module": "interop",
+      "adapter": "messaging",
+      "targetRpc": "VE INTEROP MSG DETAIL",
+      "targetPackage": "HL",
+      "description": "View single HL7 message detail with segment counts"
     },
     "interop.registry.manage": {
       "status": "live",

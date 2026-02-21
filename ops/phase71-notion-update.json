@@ -1,0 +1,10 @@
+{
+  "feature": "Phase 71 -- Interop Monitor v2 (VistA HL7/HLO Grounded)",
+  "stage": "Verified",
+  "status": "Complete",
+  "promptRef": "prompts/76-PHASE-71-INTEROP-MONITOR-V2/76-01-IMPLEMENT.md",
+  "runbook": "docs/runbooks/phase71-interop-monitor-v2.md",
+  "verifyScript": "scripts/verify-phase71-interop.ps1",
+  "verifyResult": "37/37 passed",
+  "commitSHA": "pending"
+}

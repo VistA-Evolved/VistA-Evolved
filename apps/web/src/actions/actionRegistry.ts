@@ -540,6 +540,24 @@ export const ACTION_REGISTRY: CprsAction[] = [
     status: "wired",
     rpcKind: "read",
   },
+  {
+    actionId: "interop.msg-list",
+    label: "List HL7 Messages (Filtered)",
+    location: "Admin/Integrations",
+    capability: "interop.msg.list",
+    rpcs: ["VE INTEROP MSG LIST"],
+    status: "wired",
+    rpcKind: "read",
+  },
+  {
+    actionId: "interop.msg-detail",
+    label: "View HL7 Message Detail",
+    location: "Admin/Integrations",
+    capability: "interop.msg.detail",
+    rpcs: ["VE INTEROP MSG DETAIL"],
+    status: "wired",
+    rpcKind: "read",
+  },
 
   // --- RCM / Billing ---
   {
