@@ -1,7 +1,9 @@
 <# Phase 80 -- Patient Record Portability v1 Verifier
    Gates: source structure, store functions, route registration,
           encryption, portal UI, nav item, E2E test file, audit actions,
-          prompt files, no-PHI-in-logs, VistA-first RPC usage
+          prompt files, no-PHI-in-logs, VistA-first RPC usage,
+          VERIFY-phase fixes (export revoke, preview label, stats fields,
+          as-any removal, graceful shutdown cleanup)
 #>
 param([switch]$SkipDocker)
 
@@ -342,6 +344,43 @@ Write-Host "`n--- Plan Artifact ---" -ForegroundColor Yellow
 
 Gate "P80-066" "portability plan builder script exists" {
   Test-Path -LiteralPath "scripts/portability/buildPortabilityPlan.ts"
+}
+
+# ---- VERIFY Fixes (Phase 80 audit) ----
+Write-Host "`n--- VERIFY Fixes ---" -ForegroundColor Yellow
+
+$secFile = Get-Content "apps/api/src/middleware/security.ts" -Raw
+
+Gate "P80-067" "route has POST /portal/record/export/:token/revoke" {
+  $routeFile -match '/portal/record/export/:token/revoke'
+}
+
+Gate "P80-068" "share preview returns label field" {
+  $storeFile -match 'label:\s*share\.label'
+}
+
+Gate "P80-069" "stats returns totalExports and totalShares" {
+  ($storeFile -match 'totalExports') -and ($storeFile -match 'totalShares')
+}
+
+Gate "P80-070" "no as-any casts on portalAudit calls in store" {
+  -not ($storeFile -match 'portalAudit\([^)]*as any')
+}
+
+Gate "P80-071" "security.ts imports stopPortabilityCleanup" {
+  $secFile -match 'stopPortabilityCleanup|stopCleanupJob.*record-portability'
+}
+
+Gate "P80-072" "security.ts calls stopPortabilityCleanup in shutdown" {
+  $secFile -match 'stopPortabilityCleanup\(\)'
+}
+
+Gate "P80-073" "E2E test covers export revoke flow" {
+  $e2eFile -match 'export.*revoke|revoke.*export'
+}
+
+Gate "P80-074" "UI has export revoke handler" {
+  $uiFile -match 'handleRevokeExport|export.*revoke'
 }
 
 # ---- Summary ----

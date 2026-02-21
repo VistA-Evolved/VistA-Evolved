@@ -201,7 +201,7 @@ export function createExport(opts: {
 
   exportStore.set(token, artifact);
 
-  portalAudit("portal.record.export" as any, "success", opts.patientDfn, {
+  portalAudit("portal.record.export", "success", opts.patientDfn, {
     detail: {
       token: token.slice(0, 8) + "...",
       format: opts.format,
@@ -248,7 +248,7 @@ export function downloadExport(token: string): {
   );
   artifact.downloadCount++;
 
-  portalAudit("portal.record.download" as any, "success", artifact.patientDfn, {
+  portalAudit("portal.record.download", "success", artifact.patientDfn, {
     detail: { token: token.slice(0, 8) + "...", downloadCount: artifact.downloadCount },
   });
 
@@ -289,7 +289,7 @@ export function revokeExport(token: string, patientDfn: string): boolean {
   artifact.revokedAt = new Date().toISOString();
   // Zero out encryption key for forward secrecy
   artifact.key.fill(0);
-  portalAudit("portal.record.export.revoke" as any, "success", patientDfn, {
+  portalAudit("portal.record.export.revoke", "success", patientDfn, {
     detail: { token: token.slice(0, 8) + "..." },
   });
   return true;
@@ -352,7 +352,7 @@ export function createRecordShare(opts: {
   shareStore.set(id, share);
   shareTokenIndex.set(token, id);
 
-  portalAudit("portal.record.share.create" as any, "success", opts.patientDfn, {
+  portalAudit("portal.record.share.create", "success", opts.patientDfn, {
     detail: { shareId: id, sections: opts.sections, expiresAt: share.expiresAt },
   });
 
@@ -370,7 +370,7 @@ export function revokeRecordShare(shareId: string, patientDfn: string): boolean 
   if (!share || share.patientDfn !== patientDfn) return false;
   if (share.revokedAt) return false;
   share.revokedAt = new Date().toISOString();
-  portalAudit("portal.record.share.revoke" as any, "success", patientDfn, {
+  portalAudit("portal.record.share.revoke", "success", patientDfn, {
     detail: { shareId },
   });
   return true;
@@ -405,7 +405,7 @@ export function verifyShareAccess(
     if (share.failedAttempts >= MAX_ACCESS_ATTEMPTS) share.locked = true;
 
     logAccess(share.id, ip, false, "verify_failed");
-    portalAudit("portal.record.share.access" as any, "failure", share.patientDfn, {
+    portalAudit("portal.record.share.access", "failure", share.patientDfn, {
       sourceIp: maskIp(ip),
       detail: { shareId: share.id, failedAttempts: share.failedAttempts, locked: share.locked },
     });
@@ -431,7 +431,7 @@ export function verifyShareAccess(
   share.lastAccessedAt = new Date().toISOString();
 
   logAccess(share.id, ip, true, "verify_success");
-  portalAudit("portal.record.share.access" as any, "success", share.patientDfn, {
+  portalAudit("portal.record.share.access", "success", share.patientDfn, {
     sourceIp: maskIp(ip),
     detail: { shareId: share.id, accessCount: share.accessCount },
   });
@@ -442,6 +442,7 @@ export function verifyShareAccess(
 /** Get share preview by token (for public page — minimal info). */
 export function getSharePreview(token: string): {
   patientName: string;
+  label: string;
   sections: string[];
   expiresAt: string;
 } | null {
@@ -451,6 +452,7 @@ export function getSharePreview(token: string): {
   if (share.revokedAt || new Date(share.expiresAt) < new Date() || share.locked) return null;
   return {
     patientName: share.patientName.split(",")[0] + ",***",
+    label: share.label,
     sections: share.sections,
     expiresAt: share.expiresAt,
   };
@@ -540,15 +542,19 @@ export function stopCleanupJob(): void {
 /* ================================================================== */
 
 export function getPortabilityStats(): {
+  totalExports: number;
   activeExports: number;
+  totalShares: number;
   activeShares: number;
   totalAccessEvents: number;
 } {
   const now = new Date();
   return {
+    totalExports: exportStore.size,
     activeExports: [...exportStore.values()].filter(
       (e) => !e.revokedAt && new Date(e.expiresAt) > now
     ).length,
+    totalShares: shareStore.size,
     activeShares: [...shareStore.values()].filter(
       (s) => !s.revokedAt && new Date(s.expiresAt) > now
     ).length,

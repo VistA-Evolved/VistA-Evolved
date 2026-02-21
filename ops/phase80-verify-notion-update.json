@@ -1,0 +1,13 @@
+{
+  "feature": "Phase 80 VERIFY -- Patient Record Portability v1 Audit",
+  "stage": "verified",
+  "status": "complete",
+  "promptRef": "prompts/85-PHASE-80-PATIENT-RECORD-PORTABILITY/85-99-VERIFY.md",
+  "runbookPath": "docs/runbooks/phase80-record-portability.md",
+  "verifyScript": "scripts/verify-phase80-record-portability.ps1",
+  "verifyResult": "74 PASS / 0 FAIL / 74 total",
+  "bugsFound": 6,
+  "bugsFixed": 6,
+  "gatesAdded": 8,
+  "commitSHA": "pending"
+}

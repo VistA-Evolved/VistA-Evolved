@@ -247,6 +247,8 @@ test.describe("Record portability — share lifecycle", () => {
     const previewBody = await previewRes.json();
     expect(previewBody.ok).toBe(true);
     expect(previewBody.label).toBe("E2E portability share");
+    expect(Array.isArray(previewBody.sections)).toBe(true);
+    expect(previewBody.expiresAt).toBeTruthy();
 
     // 3. Verify with correct code + DOB
     const verifyRes = await request.post(
@@ -355,6 +357,45 @@ test.describe("Record portability — shares list + audit", () => {
   });
 });
 
+test.describe("Record portability — export revoke", () => {
+  let cookie: string;
+
+  test.beforeAll(async ({ request }) => {
+    ({ cookie } = await portalLogin(request));
+  });
+
+  test("POST /portal/record/export/:token/revoke works", async ({
+    request,
+  }) => {
+    // Create export
+    const createRes = await authedPost(
+      request,
+      "/portal/record/export",
+      cookie,
+      { format: "html" }
+    );
+    const { token } = await createRes.json();
+
+    // Revoke it
+    const revokeRes = await authedPost(
+      request,
+      `/portal/record/export/${token}/revoke`,
+      cookie
+    );
+    expect(revokeRes.status()).toBe(200);
+    const revokeBody = await revokeRes.json();
+    expect(revokeBody.ok).toBe(true);
+
+    // Download after revoke fails
+    const dlRes = await authedGet(
+      request,
+      `/portal/record/export/${token}`,
+      cookie
+    );
+    expect(dlRes.status()).toBe(410);
+  });
+});
+
 /* ================================================================== */
 /* 5. STATS ENDPOINT                                                   */
 /* ================================================================== */
@@ -373,5 +414,8 @@ test.describe("Record portability — stats", () => {
     expect(body.ok).toBe(true);
     expect(typeof body.totalExports).toBe("number");
     expect(typeof body.totalShares).toBe("number");
+    expect(typeof body.activeExports).toBe("number");
+    expect(typeof body.activeShares).toBe("number");
+    expect(typeof body.totalAccessEvents).toBe("number");
   });
 });

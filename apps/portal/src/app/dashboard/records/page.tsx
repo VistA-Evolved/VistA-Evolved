@@ -253,6 +253,17 @@ export default function RecordsPage() {
     }
   };
 
+  const handleRevokeExport = async (token: string) => {
+    setError("");
+    try {
+      await apiFetch(`/portal/record/export/${token}/revoke`, { method: "POST" });
+      setSuccess("Export revoked.");
+      await loadExports();
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
   const handleRevoke = async (shareId: string) => {
     setError("");
     try {
@@ -357,9 +368,14 @@ export default function RecordsPage() {
                         <td style={S.td}><span style={S.badge(badgeColor)}>{status}</span></td>
                         <td style={S.td}>
                           {!revoked && !expired && (
-                            <button onClick={() => handleDownload(exp.token, exp.format)} style={S.btnOutline}>
-                              Download
-                            </button>
+                            <span style={{ display: "flex", gap: 6 }}>
+                              <button onClick={() => handleDownload(exp.token, exp.format)} style={S.btnOutline}>
+                                Download
+                              </button>
+                              <button onClick={() => handleRevokeExport(exp.token)} style={S.btnDanger}>
+                                Revoke
+                              </button>
+                            </span>
                           )}
                         </td>
                       </tr>

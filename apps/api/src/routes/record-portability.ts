@@ -9,6 +9,7 @@
  *   POST /portal/record/export          — Generate summary, return token
  *   GET  /portal/record/export/:token   — Download by token
  *   GET  /portal/record/exports         — List patient's exports
+ *   POST /portal/record/export/:token/revoke — Revoke an export
  *   POST /portal/record/share           — Create share link with TTL
  *   POST /portal/record/share/:id/revoke — Revoke share link
  *   GET  /portal/record/shares          — List patient's share links
@@ -390,6 +391,19 @@ export default async function recordPortabilityRoutes(
     const session = requirePortalSession(request, reply);
     const exports = getPatientExports(session.patientDfn);
     return reply.send({ ok: true, exports });
+  });
+
+  /* ---------------------------------------------------------------- */
+  /* POST /portal/record/export/:token/revoke — revoke an export      */
+  /* ---------------------------------------------------------------- */
+  server.post("/portal/record/export/:token/revoke", async (request, reply) => {
+    const session = requirePortalSession(request, reply);
+    const { token } = request.params as { token: string };
+    const ok = revokeExport(token, session.patientDfn);
+    if (!ok) {
+      return reply.code(404).send({ ok: false, error: "Export not found or already revoked." });
+    }
+    return reply.send({ ok: true, revokedAt: new Date().toISOString() });
   });
 
   /* ---------------------------------------------------------------- */
