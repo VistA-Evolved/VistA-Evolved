@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 72: Reality Verifier Pack (anti-false-green)
-& "$PSScriptRoot\verify-phase72-reality-verifier.ps1" @args
+# Phase 73: Drift Lock + PendingTargets Index + Repo Hygiene
+& "$PSScriptRoot\verify-phase73-drift-lock.ps1" @args
