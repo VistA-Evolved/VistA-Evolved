@@ -95,6 +95,8 @@ import { initIdentityProviders } from "./auth/idp/index.js";
 import adtRoutes from "./routes/adt/index.js";
 // Phase 68: Nursing Workflow v1 (VistA-first posture)
 import nursingRoutes from "./routes/nursing/index.js";
+// Phase 72: Reality Verifier Pack -- no-fake-success tripwire
+import { registerNoFakeSuccessHook, getFakeSuccessViolations, getFakeSuccessViolationCount } from "./middleware/no-fake-success.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -134,6 +136,9 @@ server.register(websocket);
 
 // Phase 15: Register security middleware (request IDs, headers, rate limiting, error handler)
 await registerSecurityMiddleware(server);
+
+// Phase 72: Register no-fake-success tripwire (before routes, after security)
+registerNoFakeSuccessHook(server);
 
 // Phase 37C: Initialize module registry + capability service + adapters + guard
 initModuleRegistry();
@@ -436,6 +441,11 @@ server.post("/admin/cache/invalidate", async (request) => {
   const { pattern } = request.body as any || {};
   const count = invalidateCache(pattern);
   return { ok: true, invalidated: count };
+});
+
+// Phase 72: No-fake-success violations endpoint (admin)
+server.get("/admin/fake-success-violations", async () => {
+  return { ok: true, count: getFakeSuccessViolationCount(), violations: getFakeSuccessViolations() };
 });
 
 // Phase 3 connectivity endpoint remains available (retain behavior)
