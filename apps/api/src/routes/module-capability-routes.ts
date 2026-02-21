@@ -25,6 +25,7 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { requireSession } from "../auth/auth-routes.js";
 import { log } from "../lib/logger.js";
+import { immutableAudit } from "../lib/immutable-audit.js";
 import {
   getModuleStatus,
   getSkuProfiles,
@@ -169,6 +170,17 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     if (modules === null || modules === undefined) {
       setTenantModules(tenantId, null);
       log.info("Cleared module overrides for tenant", { tenantId });
+
+      // Immutable audit event
+      immutableAudit("module.override-clear", "success", {
+        sub: (session as any).duz,
+        name: (session as any).displayName,
+        roles: [(session as any).role],
+      }, {
+        tenantId,
+        detail: { action: "clear-overrides" },
+      });
+
       return { ok: true, message: `Overrides cleared for tenant '${tenantId}'` };
     }
 
@@ -190,6 +202,16 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
 
     setTenantModules(tenantId, modules);
     log.info("Applied module overrides for tenant", { tenantId, modules });
+
+    // Immutable audit event
+    immutableAudit("module.toggle", "success", {
+      sub: (session as any).duz,
+      name: (session as any).displayName,
+      roles: [(session as any).role],
+    }, {
+      tenantId,
+      detail: { action: "set-overrides", modules },
+    });
 
     return {
       ok: true,

@@ -97,7 +97,10 @@ export type ImmutableAuditAction =
   // Phase 66: Production IAM v1 immutable audit events
   | "auth.idp.login"
   | "auth.idp.failed"
-  | "auth.vista-bind";
+  | "auth.vista-bind"
+  // Phase 76: Module toggle events
+  | "module.toggle"
+  | "module.override-clear";
 
 export type ImmutableAuditOutcome = "success" | "failure" | "denied" | "error";
 

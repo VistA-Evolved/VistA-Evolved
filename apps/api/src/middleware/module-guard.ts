@@ -63,6 +63,7 @@ export async function moduleGuardHook(
 
     reply.code(403).send({
       ok: false,
+      code: "MODULE_DISABLED",
       error: "Module not enabled",
       module: result.moduleId || "unknown",
       message: result.reason || `Module is not enabled for this deployment.`,

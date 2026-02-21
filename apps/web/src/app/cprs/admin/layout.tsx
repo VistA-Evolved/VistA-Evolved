@@ -1,0 +1,89 @@
+'use client';
+
+/**
+ * Admin Layout — Phase 76.
+ *
+ * Shared layout for all /cprs/admin/* pages. Provides a sidebar
+ * navigation linking to admin consoles. Module-gated: links to
+ * disabled module admin pages are hidden.
+ */
+
+import React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useTenant } from '@/stores/tenant-context';
+import styles from '@/components/cprs/cprs.module.css';
+
+interface AdminNavItem {
+  label: string;
+  href: string;
+  /** System-level module ID for gating (undefined = always visible) */
+  moduleId?: string;
+}
+
+const ADMIN_NAV: AdminNavItem[] = [
+  { label: 'Modules',       href: '/cprs/admin/modules' },
+  { label: 'Integrations',  href: '/cprs/admin/integrations',  moduleId: 'interop' },
+  { label: 'Analytics',     href: '/cprs/admin/analytics',     moduleId: 'analytics' },
+  { label: 'RCM / Billing', href: '/cprs/admin/rcm',           moduleId: 'rcm' },
+  { label: 'Audit Viewer',  href: '/cprs/admin/audit-viewer',  moduleId: 'iam' },
+  { label: 'Reports',       href: '/cprs/admin/reports' },
+  { label: 'Migration',     href: '/cprs/admin/migration' },
+];
+
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const { isModuleEnabled } = useTenant();
+
+  const visibleItems = ADMIN_NAV.filter((item) => {
+    if (!item.moduleId) return true;
+    return isModuleEnabled(item.moduleId);
+  });
+
+  return (
+    <div className={styles.cprsPage} style={{ display: 'flex', height: '100%' }}>
+      <nav
+        style={{
+          width: 200,
+          minWidth: 200,
+          borderRight: '1px solid var(--cprs-border, #d1d5db)',
+          background: 'var(--cprs-surface, #f8f9fa)',
+          padding: '12px 0',
+          overflowY: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+        }}
+        aria-label="Admin navigation"
+      >
+        <div style={{ padding: '4px 16px 12px', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: 'var(--cprs-text-muted, #6b7280)', letterSpacing: '0.05em' }}>
+          Admin Console
+        </div>
+        {visibleItems.map((item) => {
+          const active = pathname === item.href || pathname?.startsWith(item.href + '/');
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              style={{
+                display: 'block',
+                padding: '8px 16px',
+                fontSize: 13,
+                textDecoration: 'none',
+                color: active ? 'var(--cprs-text, #1f2937)' : 'var(--cprs-text-muted, #6b7280)',
+                background: active ? 'var(--cprs-selected, #e5e7eb)' : 'transparent',
+                fontWeight: active ? 600 : 400,
+                borderLeft: active ? '3px solid var(--cprs-accent, #2563eb)' : '3px solid transparent',
+              }}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
+      </nav>
+      <main style={{ flex: 1, overflow: 'auto' }}>
+        {children}
+      </main>
+    </div>
+  );
+}
