@@ -27,6 +27,9 @@ import analyticsRoutes from "./routes/analytics-routes.js";
 import portalAuthRoutes from "./routes/portal-auth.js";
 import { getPortalSession } from "./routes/portal-auth.js";
 import portalCoreRoutes, { initPortalCore } from "./routes/portal-core.js";
+// Phase 80: Patient Record Portability
+import recordPortabilityRoutes, { initRecordPortability } from "./routes/record-portability.js";
+import { startCleanupJob as startPortabilityCleanup } from "./services/record-portability-store.js";
 // Phase 28: Enterprise Intake OS
 import intakeRoutes, { initIntakeRoutes } from "./intake/intake-routes.js";
 import "./intake/packs/index.js"; // registers 23 built-in packs
@@ -228,6 +231,11 @@ server.register(portalAuthRoutes);
 // Register portal core routes — messaging, appointments, sharing, settings, export (Phase 27)
 initPortalCore(getPortalSession);
 server.register(portalCoreRoutes);
+
+// Register record portability routes — export, download, share, audit (Phase 80)
+initRecordPortability(getPortalSession);
+server.register(recordPortabilityRoutes);
+startPortabilityCleanup();
 
 // Register intake OS routes — adaptive questionnaire, packs, clinician review, kiosk (Phase 28)
 initIntakeRoutes(

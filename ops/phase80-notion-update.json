@@ -1,0 +1,19 @@
+{
+  "feature": "Phase 80 -- Patient Record Portability v1",
+  "stage": "Verified",
+  "status": "Complete",
+  "promptRef": "prompts/85-PHASE-80-PATIENT-RECORD-PORTABILITY/85-01-IMPLEMENT.md",
+  "runbookPath": "ops/phase80-summary.md",
+  "verifyScript": "scripts/verify-phase80-record-portability.ps1",
+  "gates": "66 PASS / 0 FAIL",
+  "commitMessage": "Phase80: patient record portability v1 (Health Summary first + share/download)",
+  "highlights": [
+    "VistA-first: ORWRP REPORT TEXT primary, section RPCs fallback",
+    "AES-256-GCM encryption at rest with forward secrecy",
+    "10 API endpoints for export, download, share, revoke, audit",
+    "Portal UI: 3-tab page (Generate/Download, Share, Audit)",
+    "6 new audit actions for full traceability",
+    "E2E tests covering lifecycle, auth, validation",
+    "66 verification gates all passing"
+  ]
+}

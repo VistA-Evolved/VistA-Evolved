@@ -21,6 +21,7 @@ const NAV_ITEMS = [
   { href: "/dashboard/messages", label: "Messages", icon: "✉️" },
   { href: "/dashboard/appointments", label: "Appointments", icon: "📅" },
   { href: "/dashboard/telehealth", label: "Telehealth", icon: "📹" },
+  { href: "/dashboard/records", label: "My Records", icon: "📄" },
   { href: "/dashboard/sharing", label: "Share Records", icon: "🔗" },
   { href: "/dashboard/exports", label: "Export", icon: "📥" },
   { href: "/dashboard/proxy", label: "Family Access", icon: "👥" },

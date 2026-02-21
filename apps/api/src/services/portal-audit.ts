@@ -54,7 +54,14 @@ export type PortalAuditAction =
   /* Phase 32: Messaging enhancements */
   | "portal.message.proxy"
   | "portal.message.clinician.reply"
-  | "portal.message.blocked";
+  | "portal.message.blocked"
+  /* Phase 80: Record Portability */
+  | "portal.record.export"
+  | "portal.record.download"
+  | "portal.record.export.revoke"
+  | "portal.record.share.create"
+  | "portal.record.share.revoke"
+  | "portal.record.share.access";
 
 export interface PortalAuditEvent {
   id: string;

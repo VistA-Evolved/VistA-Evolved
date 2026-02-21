@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 79: Cover Sheet Layout Parity v1
-& "$PSScriptRoot\verify-phase79-coversheet-layout.ps1" @args
+# Phase 80: Patient Record Portability v1
+& "$PSScriptRoot\verify-phase80-record-portability.ps1" @args
