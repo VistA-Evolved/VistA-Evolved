@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
@@ -10,7 +10,6 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 interface VitalItem { date: string; type: string; value: string; units: string }
 interface NoteItem { ien: string; title: string; date: string; author: string; status: string }
-interface PatientItem { dfn: string; name: string }
 interface PendingTarget { rpc: string; package: string; reason: string }
 interface NursingResponse<T> {
   ok: boolean;

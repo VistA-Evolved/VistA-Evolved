@@ -53,6 +53,10 @@ const TAB_LOCATION_MAP: Record<string, string> = {
   reports: 'Reports',
   imaging: 'Imaging',
   immunizations: 'Immunizations',
+  intake: 'Intake',
+  telehealth: 'Telehealth',
+  tasks: 'Tasks',
+  aiassist: 'AIAssist',
   adt: 'ADT',
   nursing: 'Nursing',
 };
