@@ -79,13 +79,13 @@ export interface DataCacheValue {
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 /* ------------------------------------------------------------------ */
-/* Fetch helpers                                                       */
+/* Fetch helpers (Phase 77: correlation ID propagation)                */
 /* ------------------------------------------------------------------ */
 
+import { correlatedGet } from '../lib/fetch-with-correlation';
+
 async function fetchJSON<T>(path: string): Promise<T> {
-  const res = await fetch(`${API_BASE}${path}`, { credentials: 'include' });
-  if (!res.ok) throw new Error(`API ${res.status}`);
-  return res.json();
+  return correlatedGet<T>(path);
 }
 
 async function fetchAllergies(dfn: string): Promise<Allergy[]> {

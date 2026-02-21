@@ -1,8 +1,11 @@
 /**
  * API client for chart data. All calls go to the Fastify API server.
+ *
+ * Phase 77: Uses correlatedGet for automatic X-Request-Id propagation.
  */
 
 import { API_BASE } from './chart-types';
+import { correlatedGet } from './fetch-with-correlation';
 import type {
   PatientDemographics,
   Allergy,
@@ -14,13 +17,11 @@ import type {
 } from './chart-types';
 
 /* ------------------------------------------------------------------ */
-/* Generic fetcher                                                     */
+/* Generic fetcher (Phase 77: correlation ID propagation)              */
 /* ------------------------------------------------------------------ */
 
 async function get<T>(path: string): Promise<T> {
-  const res = await fetch(`${API_BASE}${path}`, { credentials: 'include' });
-  if (!res.ok) throw new Error(`API ${res.status}: ${res.statusText}`);
-  return res.json();
+  return correlatedGet<T>(path);
 }
 
 /* ------------------------------------------------------------------ */

@@ -191,6 +191,68 @@ export function sanitizeRoute(url: string): string {
     .replace(/\/+/g, "/");
 }
 
+/* ------------------------------------------------------------------ */
+/* SLO tracking — Phase 77                                             */
+/* ------------------------------------------------------------------ */
+
+/**
+ * SLO latency gauge — tracks percentage of requests within p95 budget per category.
+ * Value 1.0 = 100% within budget, 0.0 = 0% within budget.
+ */
+export const sloLatencyWithinBudget = new client.Gauge({
+  name: "slo_latency_within_budget",
+  help: "Percentage of requests within p95 latency budget (0.0-1.0)",
+  labelNames: ["category"] as const,
+  registers: [registry],
+});
+
+/**
+ * SLO error budget remaining gauge — tracks remaining error budget.
+ * Value 1.0 = full budget remaining, 0.0 = budget exhausted.
+ */
+export const sloErrorBudgetRemaining = new client.Gauge({
+  name: "slo_error_budget_remaining",
+  help: "Remaining error budget (0.0-1.0, based on SLO_ERROR_BUDGET)",
+  labelNames: ["category"] as const,
+  registers: [registry],
+});
+
+/** Rolling window for SLO computation */
+interface SloSample { durationMs: number; isError: boolean; timestamp: number }
+const sloWindows: Map<string, SloSample[]> = new Map();
+const SLO_WINDOW_MS = parseInt(process.env.SLO_WINDOW_MS ?? "3600000", 10);
+const SLO_ERROR_BUDGET = parseFloat(process.env.SLO_ERROR_BUDGET ?? "0.001");
+
+/**
+ * Record an SLO sample for a route category.
+ * Call this from the onResponse hook for every API request.
+ */
+export function recordSloSample(category: string, durationMs: number, isError: boolean, p95Budget?: number): void {
+  const now = Date.now();
+  if (!sloWindows.has(category)) sloWindows.set(category, []);
+  const window = sloWindows.get(category)!;
+  window.push({ durationMs, isError, timestamp: now });
+
+  // Prune old samples outside the window
+  const cutoff = now - SLO_WINDOW_MS;
+  while (window.length > 0 && window[0].timestamp < cutoff) window.shift();
+
+  // Compute and update gauges
+  if (window.length > 0) {
+    // Latency SLO: % within p95 budget
+    if (p95Budget && p95Budget > 0) {
+      const withinBudget = window.filter((s) => s.durationMs <= p95Budget).length;
+      sloLatencyWithinBudget.labels(category).set(withinBudget / window.length);
+    }
+
+    // Error SLO: remaining error budget
+    const errorCount = window.filter((s) => s.isError).length;
+    const errorRate = errorCount / window.length;
+    const remaining = Math.max(0, 1 - errorRate / SLO_ERROR_BUDGET);
+    sloErrorBudgetRemaining.labels(category).set(remaining);
+  }
+}
+
 /**
  * Get Prometheus metrics as text/plain string.
  */

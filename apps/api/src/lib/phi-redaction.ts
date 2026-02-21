@@ -144,3 +144,50 @@ export function classifyField(fieldName: string): PhiClassification {
   if (PHI_FIELDS.has(lc)) return "phi";
   return "safe";
 }
+
+/* ------------------------------------------------------------------ */
+/* Telemetry PHI guard — Phase 77                                      */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Assert that no attribute key in a span/metric label set matches PHI fields.
+ * Throws if any key is blocked — used as a runtime guard in span helpers.
+ *
+ * This is a HARD guard: it prevents PHI from ever entering the telemetry
+ * pipeline, even if the caller accidentally passes a PHI field.
+ */
+export function assertNoPhiInAttributes(attrs: Record<string, unknown>): void {
+  for (const key of Object.keys(attrs)) {
+    const lc = key.toLowerCase();
+    if (ALL_BLOCKED_FIELDS.has(lc)) {
+      throw new Error(
+        `PHI field "${key}" detected in telemetry attributes. ` +
+        `Telemetry must never contain PHI. Remove this field or use a safe alias.`
+      );
+    }
+    // Also check for common PHI patterns in the key name
+    if (/patient.?name|social.?security|date.?of.?birth|member.?id/i.test(key)) {
+      throw new Error(
+        `Potential PHI field pattern "${key}" detected in telemetry attributes. ` +
+        `Telemetry must never contain PHI.`
+      );
+    }
+  }
+}
+
+/**
+ * Validate that a set of metric label names contains no PHI fields.
+ * Used during metric registration to prevent PHI labels at definition time.
+ */
+export function assertNoPhiInMetricLabels(labels: readonly string[]): void {
+  for (const label of labels) {
+    const lc = label.toLowerCase();
+    if (ALL_BLOCKED_FIELDS.has(lc)) {
+      throw new Error(
+        `PHI field "${label}" detected in metric label names. ` +
+        `Metric labels must never contain PHI.`
+      );
+    }
+  }
+}
+
