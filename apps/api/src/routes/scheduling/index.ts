@@ -29,7 +29,11 @@ import { log } from "../../lib/logger.js";
 /* ------------------------------------------------------------------ */
 
 function getSchedulingAdapter(): SchedulingAdapter {
-  return getAdapter("scheduling") as unknown as SchedulingAdapter;
+  const adapter = getAdapter("scheduling");
+  if (!adapter) {
+    throw new Error("Scheduling adapter not loaded — check ADAPTER_SCHEDULING env var and initAdapters() order");
+  }
+  return adapter as unknown as SchedulingAdapter;
 }
 
 function auditActor(request: FastifyRequest): { sub: string; name: string; roles: string[] } {
@@ -72,11 +76,11 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
 
     const result = await adapter.listAppointments(dfn, startDate, endDate);
 
-    immutableAudit("rpc.read", result.ok ? "success" : "failure", auditActor(request), {
+    immutableAudit("scheduling.list", result.ok ? "success" : "failure", auditActor(request), {
       requestId: (request as any).id,
       sourceIp: request.ip,
       tenantId: request.session?.tenantId,
-      detail: { action: "scheduling.list", dfn: "[REDACTED]", count: result.data?.length ?? 0 },
+      detail: { dfn: "[REDACTED]", count: result.data?.length ?? 0 },
     });
 
     return {
@@ -170,12 +174,11 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       providerDuz,
     });
 
-    immutableAudit("rpc.write", result.ok ? "success" : "failure", auditActor(request), {
+    immutableAudit("scheduling.request", result.ok ? "success" : "failure", auditActor(request), {
       requestId: (request as any).id,
       sourceIp: request.ip,
       tenantId: request.session?.tenantId,
       detail: {
-        action: "scheduling.request",
         clinicName,
         appointmentType: appointmentType || "in_person",
         pending: result.pending,
@@ -207,12 +210,11 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
 
     const result = await adapter.cancelAppointment(id, reason, patientDfn);
 
-    immutableAudit("rpc.write", result.ok ? "success" : "failure", auditActor(request), {
+    immutableAudit("scheduling.cancel", result.ok ? "success" : "failure", auditActor(request), {
       requestId: (request as any).id,
       sourceIp: request.ip,
       tenantId: request.session?.tenantId,
       detail: {
-        action: "scheduling.cancel",
         appointmentId: id,
         pending: result.pending,
       },
@@ -247,12 +249,11 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
         appointmentType: body.appointmentType || "in_person",
       });
 
-      immutableAudit("rpc.write", "success", auditActor(request), {
+      immutableAudit("scheduling.reschedule", "success", auditActor(request), {
         requestId: (request as any).id,
         sourceIp: request.ip,
         tenantId: request.session?.tenantId,
         detail: {
-          action: "scheduling.reschedule",
           originalId: id,
           pending: newResult.pending,
         },

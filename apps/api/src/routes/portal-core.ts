@@ -557,6 +557,40 @@ export default async function portalCoreRoutes(
       return reply.code(400).send({ ok: false, error: "clinicName, preferredDate, and reason are required" });
     }
 
+    // Try scheduling adapter first (Phase 63) so request appears in queue
+    try {
+      const { getAdapter } = await import("../adapters/adapter-loader.js");
+      const adapter = getAdapter("scheduling") as any;
+      if (adapter && typeof adapter.createAppointment === "function") {
+        const result = await adapter.createAppointment({
+          patientDfn: session.patientDfn,
+          clinicName: body.clinicName,
+          preferredDate: body.preferredDate,
+          reason: body.reason,
+          appointmentType: body.appointmentType || "in_person",
+        });
+
+        // Also store in legacy store for portal compatibility
+        requestAppointment({
+          patientDfn: session.patientDfn,
+          patientName: session.patientName,
+          clinicName: body.clinicName,
+          appointmentType: body.appointmentType || "in_person",
+          preferredDate: body.preferredDate,
+          reason: body.reason,
+        });
+
+        return reply.code(201).send({
+          ok: true,
+          appointment: result.data,
+          pending: result.pending,
+          target: result.target,
+          notice: "Your request has been submitted. The clinic will contact you to confirm.",
+        });
+      }
+    } catch { /* scheduling adapter unavailable -- fall through to legacy */ }
+
+    // Legacy fallback
     const appt = requestAppointment({
       patientDfn: session.patientDfn,
       patientName: session.patientName,
@@ -577,8 +611,29 @@ export default async function portalCoreRoutes(
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
+    const reason = body.reason || "Patient requested cancellation";
 
-    const result = requestCancellation(id, session.patientDfn, body.reason || "Patient requested cancellation");
+    // Try scheduling adapter first (Phase 63) for VistA encounter cancellation
+    try {
+      const { getAdapter } = await import("../adapters/adapter-loader.js");
+      const adapter = getAdapter("scheduling") as any;
+      if (adapter && typeof adapter.cancelAppointment === "function") {
+        const adapterResult = await adapter.cancelAppointment(id, reason, session.patientDfn);
+        if (adapterResult.ok || adapterResult.pending) {
+          return reply.send({
+            ok: true,
+            pending: adapterResult.pending,
+            target: adapterResult.target,
+            notice: adapterResult.pending
+              ? "Cancellation request submitted. The clinic will confirm."
+              : "Appointment cancelled.",
+          });
+        }
+      }
+    } catch { /* scheduling adapter unavailable -- fall through */ }
+
+    // Legacy fallback
+    const result = requestCancellation(id, session.patientDfn, reason);
     if (!result) return reply.code(404).send({ ok: false, error: "Appointment not found or cannot be cancelled" });
 
     return reply.send({
@@ -593,6 +648,41 @@ export default async function portalCoreRoutes(
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
 
+    // Try scheduling adapter first (Phase 63)
+    try {
+      const { getAdapter } = await import("../adapters/adapter-loader.js");
+      const adapter = getAdapter("scheduling") as any;
+      if (adapter && typeof adapter.cancelAppointment === "function") {
+        // Cancel original via adapter
+        await adapter.cancelAppointment(id, body.reason || "Reschedule requested", session.patientDfn);
+
+        // Create new request if preferred date given
+        if (body.preference || body.preferredDate) {
+          const newResult = await adapter.createAppointment({
+            patientDfn: session.patientDfn,
+            clinicName: body.clinicName || "Rescheduled",
+            preferredDate: body.preferredDate || body.preference || "",
+            reason: body.reason || "Rescheduled appointment",
+          });
+          return reply.send({
+            ok: true,
+            data: newResult.data,
+            pending: newResult.pending,
+            target: newResult.target,
+            notice: "Reschedule request submitted. The clinic will contact you with available times.",
+          });
+        }
+
+        return reply.send({
+          ok: true,
+          pending: true,
+          target: "SDEC APPADD + SDEC APPDEL",
+          notice: "Reschedule request submitted. The clinic will contact you with available times.",
+        });
+      }
+    } catch { /* scheduling adapter unavailable -- fall through */ }
+
+    // Legacy fallback
     const result = requestReschedule(id, session.patientDfn, body.preference || "");
     if (!result) return reply.code(404).send({ ok: false, error: "Appointment not found or cannot be rescheduled" });
 

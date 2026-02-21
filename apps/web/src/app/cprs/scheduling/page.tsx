@@ -39,6 +39,14 @@ export default function SchedulingPage() {
   const [patientDfn, setPatientDfn] = useState('');
   const [patientAppts, setPatientAppts] = useState<any[]>([]);
 
+  // New request form state
+  const [showReqForm, setShowReqForm] = useState(false);
+  const [reqClinic, setReqClinic] = useState('');
+  const [reqDate, setReqDate] = useState('');
+  const [reqReason, setReqReason] = useState('');
+  const [reqType, setReqType] = useState('in_person');
+  const [submitting, setSubmitting] = useState(false);
+
   // Requests tab state
   const [requests, setRequests] = useState<any[]>([]);
 
@@ -100,6 +108,35 @@ export default function SchedulingPage() {
     }
     setLoading(false);
   }, []);
+
+  const submitRequest = useCallback(async () => {
+    if (!patientDfn || !reqClinic || !reqDate || !reqReason) {
+      setError('Patient DFN, clinic, date, and reason are required.');
+      return;
+    }
+    setSubmitting(true);
+    setError('');
+    try {
+      await apiFetch('/scheduling/appointments/request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          patientDfn,
+          clinicName: reqClinic,
+          preferredDate: reqDate,
+          reason: reqReason,
+          appointmentType: reqType,
+        }),
+      });
+      setReqClinic(''); setReqDate(''); setReqReason('');
+      setShowReqForm(false);
+      // Reload patient appointments to show the new request
+      await loadPatientAppts();
+    } catch (err: any) {
+      setError(err.message);
+    }
+    setSubmitting(false);
+  }, [patientDfn, reqClinic, reqDate, reqReason, reqType, loadPatientAppts]);
 
   useEffect(() => {
     if (tab === 'schedule') loadSchedule();
@@ -219,7 +256,50 @@ export default function SchedulingPage() {
             >
               Search
             </button>
+            <button
+              onClick={() => setShowReqForm(!showReqForm)}
+              disabled={!patientDfn}
+              style={{ padding: '0.375rem 0.75rem', background: patientDfn ? '#198754' : '#6c757d', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', fontSize: '0.875rem', marginLeft: 'auto' }}
+            >
+              {showReqForm ? 'Hide Form' : 'New Request'}
+            </button>
           </div>
+
+          {showReqForm && patientDfn && (
+            <div style={{ padding: '0.75rem', border: '1px solid #c3e6cb', background: '#f0faf3', borderRadius: 6, marginBottom: '1rem' }}>
+              <h4 style={{ margin: '0 0 0.5rem', fontSize: '0.875rem' }}>New Appointment Request for DFN {patientDfn}</h4>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                <div>
+                  <label style={{ fontSize: '0.75rem', fontWeight: 500 }}>Clinic</label>
+                  <input type="text" value={reqClinic} onChange={(e) => setReqClinic(e.target.value)}
+                    placeholder="e.g. Primary Care" style={{ display: 'block', width: '100%', padding: '0.25rem 0.375rem', border: '1px solid #ced4da', borderRadius: 4, fontSize: '0.8rem', marginTop: 2 }} />
+                </div>
+                <div>
+                  <label style={{ fontSize: '0.75rem', fontWeight: 500 }}>Preferred Date</label>
+                  <input type="datetime-local" value={reqDate} onChange={(e) => setReqDate(e.target.value)}
+                    style={{ display: 'block', width: '100%', padding: '0.25rem 0.375rem', border: '1px solid #ced4da', borderRadius: 4, fontSize: '0.8rem', marginTop: 2 }} />
+                </div>
+                <div>
+                  <label style={{ fontSize: '0.75rem', fontWeight: 500 }}>Visit Type</label>
+                  <select value={reqType} onChange={(e) => setReqType(e.target.value)}
+                    style={{ display: 'block', width: '100%', padding: '0.25rem 0.375rem', border: '1px solid #ced4da', borderRadius: 4, fontSize: '0.8rem', marginTop: 2 }}>
+                    <option value="in_person">In Person</option>
+                    <option value="telehealth">Telehealth</option>
+                    <option value="phone">Phone</option>
+                  </select>
+                </div>
+                <div>
+                  <label style={{ fontSize: '0.75rem', fontWeight: 500 }}>Reason</label>
+                  <input type="text" value={reqReason} onChange={(e) => setReqReason(e.target.value)}
+                    placeholder="Brief reason" style={{ display: 'block', width: '100%', padding: '0.25rem 0.375rem', border: '1px solid #ced4da', borderRadius: 4, fontSize: '0.8rem', marginTop: 2 }} />
+                </div>
+              </div>
+              <button onClick={submitRequest} disabled={submitting || !reqClinic || !reqDate || !reqReason}
+                style={{ padding: '0.375rem 0.75rem', background: (submitting || !reqClinic || !reqDate || !reqReason) ? '#6c757d' : '#198754', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', fontSize: '0.8rem' }}>
+                {submitting ? 'Submitting...' : 'Submit Request'}
+              </button>
+            </div>
+          )}
 
           {patientAppts.length === 0 ? (
             <p style={{ color: '#6c757d', fontStyle: 'italic' }}>No appointments found. Enter a patient DFN and search.</p>
