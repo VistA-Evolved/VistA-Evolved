@@ -94,6 +94,7 @@ export default function CoverSheetPanel({ dfn }: Props) {
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [immunizations, setImmunizations] = useState<any[]>([]);
   const [immuLoading, setImmuLoading] = useState(false);
+  const [immuPending, setImmuPending] = useState(false);
 
   useEffect(() => { cache.fetchAll(dfn); }, [dfn]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -110,8 +111,11 @@ export default function CoverSheetPanel({ dfn }: Props) {
   useEffect(() => {
     setImmuLoading(true);
     fetchJson(`${API_BASE}/vista/immunizations?dfn=${dfn}`)
-      .then((d) => { if (d.ok && d.results) setImmunizations(d.results); })
-      .catch(() => {})
+      .then((d) => {
+        if (d.ok && d.results) setImmunizations(d.results);
+        if (d._integration === 'pending') setImmuPending(true);
+      })
+      .catch(() => { setImmuPending(true); })
       .finally(() => setImmuLoading(false));
   }, [dfn]);
 
@@ -245,7 +249,7 @@ export default function CoverSheetPanel({ dfn }: Props) {
               <thead><tr><th>Test</th><th>Result</th><th>Date</th></tr></thead>
               <tbody>
                 {labs.slice(0, 10).map((l, i) => (
-                  <tr key={i}><td>{l.test || l.text || '\u2014'}</td><td>{l.result || l.value || '\u2014'}</td><td>{l.date || l.collected || '\u2014'}</td></tr>
+                  <tr key={i}><td>{l.name || '\u2014'}</td><td>{l.value || '\u2014'}</td><td>{l.date || '\u2014'}</td></tr>
                 ))}
               </tbody>
             </table>
@@ -289,15 +293,21 @@ export default function CoverSheetPanel({ dfn }: Props) {
           </p>
         </Section>
 
-        {/* Row 5: Clinical Reminders (integration-pending, full width) */}
+        {/* Row 5: Immunizations (Phase 65 -- VistA ORQQPX IMMUN LIST) */}
         <Section
           title="Immunizations"
           contractId="ORQQPX IMMUN LIST"
           loading={immuLoading}
+          pending={immuPending && immunizations.length === 0}
           onResize={handleResize('immunizations')}
           height={heights.immunizations}
         >
-          {immunizations.length === 0 ? (
+          {immuPending && immunizations.length === 0 ? (
+            <p className={styles.pendingText}>
+              Immunization data integration pending.<br />
+              <span style={{ fontSize: 11, color: '#888' }}>Target: ORQQPX IMMUN LIST</span>
+            </p>
+          ) : immunizations.length === 0 ? (
             <p className={styles.emptyText}>No immunizations on record</p>
           ) : (
             <table className={styles.dataTable}>

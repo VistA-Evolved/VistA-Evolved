@@ -21,10 +21,10 @@ export default function ImmunizationsPage() {
   const [data, setData] = useState<any>(null);
 
   useEffect(() => {
-    fetchImmunizations().then((r) => {
-      setData(r.data);
-      setLoading(false);
-    });
+    fetchImmunizations()
+      .then((r) => { setData(r.data); })
+      .catch(() => { setData({ _integration: 'pending', results: [], pendingTargets: ['ORQQPX IMMUN LIST'] }); })
+      .finally(() => { setLoading(false); });
   }, []);
 
   const results: Immunization[] = data?.results || [];
