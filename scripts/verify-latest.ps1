@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 74: Reality Verification Pack v2
-& "$PSScriptRoot\verify-phase74-reality-v2.ps1" @args
+# Phase 75: Go-Live Evidence Pack v1
+& "$PSScriptRoot\verify-phase75-evidence-pack.ps1" @args
