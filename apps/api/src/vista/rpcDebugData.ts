@@ -25,6 +25,7 @@ export const ACTION_REGISTRY_DATA: CprsAction[] = [
   { actionId: "cover.load-problems", label: "Load Problems", location: "CoverSheet", capability: "clinical.problems.read", rpcs: ["ORWCH PROBLEM LIST"], status: "wired" },
   { actionId: "cover.load-vitals", label: "Load Vitals", location: "CoverSheet", capability: "clinical.vitals.read", rpcs: ["ORQQVI VITALS"], status: "wired" },
   { actionId: "cover.load-meds", label: "Load Medications", location: "CoverSheet", capability: "clinical.medications.read", rpcs: ["ORWPS ACTIVE"], status: "wired" },
+  { actionId: "cover.load-reminders", label: "Load Clinical Reminders", location: "CoverSheet", capability: "clinical.reminders.read", rpcs: ["ORQQPX REMINDERS LIST"], status: "wired" },
 
   // --- Patient Search ---
   { actionId: "patient.search", label: "Search Patients", location: "PatientSearch", capability: "clinical.patients.read", rpcs: ["ORWPT LIST ALL"], status: "wired" },
@@ -55,8 +56,8 @@ export const ACTION_REGISTRY_DATA: CprsAction[] = [
   // --- Orders ---
   { actionId: "orders.save", label: "Save Order", location: "Orders", capability: "clinical.orders.write", rpcs: ["ORWDX LOCK", "ORWDX SAVE", "ORWDX UNLOCK"], status: "wired" },
   { actionId: "orders.verify", label: "Verify Order", location: "Orders", capability: "clinical.orders.write", rpcs: ["ORWDXA VERIFY"], status: "wired" },
-  { actionId: "orders.dc", label: "Discontinue Order", location: "Orders", capability: "clinical.orders.write", rpcs: ["ORWDXA DC"], status: "stub", pendingNote: "DC endpoint exists in write-backs but needs full UI wiring" },
-  { actionId: "orders.flag", label: "Flag Order", location: "Orders", capability: "clinical.orders.write", rpcs: ["ORWDXA FLAG"], status: "stub", pendingNote: "Flag endpoint exists in write-backs but needs full UI wiring" },
+  { actionId: "orders.dc", label: "Discontinue Order", location: "Orders", capability: "clinical.orders.write", rpcs: ["ORWDX LOCK", "ORWDXA DC", "ORWDX UNLOCK"], status: "wired" },
+  { actionId: "orders.flag", label: "Flag Order", location: "Orders", capability: "clinical.orders.write", rpcs: ["ORWDXA FLAG"], status: "wired" },
 
   // --- Consults ---
   { actionId: "consults.list", label: "Load Consults", location: "Consults", capability: "clinical.consults.read", rpcs: ["ORQQCN LIST"], status: "wired" },

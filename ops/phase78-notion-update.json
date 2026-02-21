@@ -1,0 +1,22 @@
+{
+  "feature": "Phase 78: PendingTargets Burn-Down v1 (Top 20+ VistA-First Closures)",
+  "stage": "Phase 78",
+  "status": "complete",
+  "promptRef": "prompts/83-PHASE-78-PENDING-BURNDOWN/78-01-IMPLEMENT.md",
+  "runbook": "ops/phase78-summary.md",
+  "verifyScript": "scripts/governance/buildTraceabilityIndex.ts + buildPendingTargetsIndex.ts",
+  "closureCount": 26,
+  "deltas": {
+    "traceability": {
+      "wired": "78 → 81 (+3)",
+      "stub": "2 → 0 (-2)",
+      "pending": "9 → 8 (-1)",
+      "noEndpoint": "23 → 0 (-23)"
+    },
+    "pendingTargets": {
+      "occurrences": "67 → 64 (-3)",
+      "uniqueRpcs": "44 → 40 (-4)"
+    }
+  },
+  "commitSHA": "dea10ef"
+}

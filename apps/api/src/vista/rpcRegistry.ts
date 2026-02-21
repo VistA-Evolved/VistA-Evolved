@@ -160,6 +160,10 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "ORWU1 NEWLOC",               domain: "adt",            tag: "read",  description: "Location search/lookup" },
   { name: "ORWPT16 ADMITLST",            domain: "adt",            tag: "read",  description: "Patient admission history list" },
 
+  // --- Clinical Reminders (Phase 78: VistA-first reminder evaluation) ---
+  { name: "ORQQPX REMINDERS LIST",       domain: "reminders",      tag: "read",  description: "Evaluate clinical reminders for patient (due/applicable list)" },
+  { name: "ORQQPX REMINDER DETAIL",      domain: "reminders",      tag: "read",  description: "Detailed info for a single clinical reminder" },
+
   // --- Immunizations (Phase 65: VistA-first immunization history) ---
   { name: "ORQQPX IMMUN LIST",          domain: "immunizations", tag: "read",  description: "Patient immunization history list" },
   { name: "PXVIMM IMM SHORT LIST",       domain: "immunizations", tag: "read",  description: "Immunization type picker (short list)" },

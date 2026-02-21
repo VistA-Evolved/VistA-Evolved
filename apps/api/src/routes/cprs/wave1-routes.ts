@@ -5,8 +5,8 @@
  * Existing /vista/* endpoints (allergies, problems, vitals, meds, notes, labs)
  * already satisfy most Wave 1 needs. This file adds:
  *   - /vista/cprs/orders-summary
- *   - /vista/cprs/appointments (integration-pending)
- *   - /vista/cprs/reminders (integration-pending)
+ *   - /vista/cprs/appointments (integration-pending -- scheduling adapter)
+ *   - /vista/cprs/reminders (Phase 78: wired to ORQQPX REMINDERS LIST)
  *   - /vista/cprs/meds/detail
  *   - /vista/cprs/labs/chart
  *   - /vista/cprs/problems/icd-search
@@ -115,28 +115,59 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
   });
 
   /* ----------------------------------------------------------------
-   * GET /vista/cprs/reminders  (integration-pending)
-   * Target RPCs: ORQQPX REMINDERS LIST, ORQQPX REMINDER DETAIL
+   * GET /vista/cprs/reminders  (Phase 78: wired to ORQQPX REMINDERS LIST)
+   * RPC: ORQQPX REMINDERS LIST — evaluates clinical reminders for patient
+   * May return empty in sandbox if PXRM reminder definitions not loaded.
    * ---------------------------------------------------------------- */
   server.get("/vista/cprs/reminders", async (request) => {
     const dfn = (request.query as any)?.dfn;
     if (!dfn || !/^\d+$/.test(String(dfn)))
       return { ok: false, error: "Missing or non-numeric dfn" };
 
-    return {
-      ok: true,
-      status: "integration-pending",
-      results: [],
-      rpcUsed: [],
-      pendingTargets: ["ORQQPX REMINDERS LIST", "ORQQPX REMINDER DETAIL"],
-      vivianPresence: {
-        "ORQQPX REMINDERS LIST": "present",
-        "ORQQPX REMINDER DETAIL": "present",
-      },
-      pendingNote:
-        "Clinical Reminders RPCs exist in Vivian but require PXRM package " +
-        "configuration in the sandbox. Wire when reminder definitions are loaded.",
+    const rpcUsed = ["ORQQPX REMINDERS LIST"];
+    const vivianPresence = {
+      "ORQQPX REMINDERS LIST": "present" as const,
+      "ORQQPX REMINDER DETAIL": "present" as const,
     };
+
+    try {
+      validateCredentials();
+      await connect();
+      const lines = await safeCallRpc("ORQQPX REMINDERS LIST", [String(dfn)]);
+      disconnect();
+
+      const results = lines
+        .filter((l: string) => l.trim())
+        .map((line: string, i: number) => {
+          const parts = line.split("^");
+          return {
+            ien: parts[0]?.trim() || `rem-${i}`,
+            name: parts[1]?.trim() || line.trim(),
+            due: parts[2]?.trim() || "",
+            status: parts[3]?.trim() || "",
+            priority: parts[4]?.trim() || "",
+          };
+        });
+
+      audit("phi.reminders-view", "success", auditActor(request), {
+        patientDfn: String(dfn),
+        detail: { count: results.length },
+      });
+
+      return {
+        ok: true,
+        status: results.length > 0 ? "ok" : "ok-empty",
+        results,
+        rpcUsed,
+        vivianPresence,
+        note: results.length === 0
+          ? "ORQQPX REMINDERS LIST returned no reminders. PXRM definitions may not be configured in sandbox."
+          : undefined,
+      };
+    } catch (err: any) {
+      disconnect();
+      return { ok: false, error: err.message, rpcUsed, vivianPresence };
+    }
   });
 
   /* ----------------------------------------------------------------

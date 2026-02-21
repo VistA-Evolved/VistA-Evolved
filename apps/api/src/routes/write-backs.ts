@@ -34,7 +34,7 @@ import type { AuditAction } from "../lib/audit.js";
 
 export interface ServerDraft {
   id: string;
-  type: 'order-sign' | 'order-release' | 'lab-ack' | 'consult-create' | 'surgery-create' | 'problem-save';
+  type: 'order-sign' | 'order-release' | 'order-dc' | 'order-flag' | 'lab-ack' | 'consult-create' | 'surgery-create' | 'problem-save';
   status: 'pending' | 'synced' | 'failed' | 'expired';
   /** Patient DFN */
   dfn: string;

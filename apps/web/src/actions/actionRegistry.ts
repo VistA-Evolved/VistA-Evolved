@@ -114,9 +114,8 @@ export const ACTION_REGISTRY: CprsAction[] = [
     label: "Load Clinical Reminders",
     location: "CoverSheet",
     capability: "clinical.reminders.read",
-    rpcs: [],
-    status: "integration-pending",
-    pendingNote: "ORQQPX REMINDERS LIST / ORQQPX REMINDER DETAIL -- PXRM package config needed in sandbox",
+    rpcs: ["ORQQPX REMINDERS LIST"],
+    status: "wired",
     endpoint: "/vista/cprs/reminders",
     rpcKind: "read",
   },
@@ -235,6 +234,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.allergies.read",
     rpcs: ["ORQQAL LIST"],
     status: "wired",
+    endpoint: "/vista/allergies",
     rpcKind: "read",
   },
   {
@@ -244,6 +244,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.allergies.read",
     rpcs: ["ORWDAL32 ALLERGY MATCH"],
     status: "wired",
+    endpoint: "/vista/allergies",
     rpcKind: "read",
   },
   {
@@ -315,9 +316,8 @@ export const ACTION_REGISTRY: CprsAction[] = [
     label: "Discontinue Order",
     location: "Orders",
     capability: "clinical.orders.write",
-    rpcs: ["ORWDXA DC"],
-    status: "stub",
-    pendingNote: "DC endpoint exists in write-backs but needs full UI wiring",
+    rpcs: ["ORWDX LOCK", "ORWDXA DC", "ORWDX UNLOCK"],
+    status: "wired",
     endpoint: "/vista/cprs/orders/dc",
     rpcKind: "write",
   },
@@ -327,8 +327,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     location: "Orders",
     capability: "clinical.orders.write",
     rpcs: ["ORWDXA FLAG"],
-    status: "stub",
-    pendingNote: "Flag endpoint exists in write-backs but needs full UI wiring",
+    status: "wired",
     endpoint: "/vista/cprs/orders/flag",
     rpcKind: "write",
   },
@@ -351,6 +350,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.consults.read",
     rpcs: ["ORQQCN DETAIL"],
     status: "wired",
+    endpoint: "/vista/consults/detail",
     rpcKind: "read",
   },
   {
@@ -440,6 +440,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "imaging.view",
     rpcs: ["RA DETAILED REPORT"],
     status: "wired",
+    endpoint: "/vista/imaging/report",
     rpcKind: "read",
   },
   {
@@ -449,6 +450,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "imaging.view",
     rpcs: ["MAG4 PAT GET IMAGES"],
     status: "wired",
+    endpoint: "/vista/imaging/patient-images",
     rpcKind: "read",
   },
   {
@@ -458,6 +460,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "imaging.view",
     rpcs: ["MAGG PAT PHOTOS"],
     status: "wired",
+    endpoint: "/vista/imaging/patient-photos",
     rpcKind: "read",
   },
 
@@ -491,6 +494,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.inbox.read",
     rpcs: ["ORWORB UNSIG ORDERS"],
     status: "wired",
+    endpoint: "/vista/inbox",
     rpcKind: "read",
   },
   {
@@ -500,6 +504,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "clinical.inbox.read",
     rpcs: ["ORWORB FASTUSER"],
     status: "wired",
+    endpoint: "/vista/inbox",
     rpcKind: "read",
   },
 
@@ -511,6 +516,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "interop.hl7.monitor",
     rpcs: ["VE INTEROP HL7 LINKS"],
     status: "wired",
+    endpoint: "/vista/interop/hl7-links",
     rpcKind: "read",
   },
   {
@@ -520,6 +526,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "interop.hl7.read",
     rpcs: ["VE INTEROP HL7 MSGS"],
     status: "wired",
+    endpoint: "/vista/interop/hl7-messages",
     rpcKind: "read",
   },
   {
@@ -529,6 +536,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "interop.hlo.read",
     rpcs: ["VE INTEROP HLO STATUS"],
     status: "wired",
+    endpoint: "/vista/interop/hlo-status",
     rpcKind: "read",
   },
   {
@@ -538,6 +546,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "interop.queue.read",
     rpcs: ["VE INTEROP QUEUE DEPTH"],
     status: "wired",
+    endpoint: "/vista/interop/queue-depth",
     rpcKind: "read",
   },
   {
@@ -547,6 +556,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "interop.msg.list",
     rpcs: ["VE INTEROP MSG LIST"],
     status: "wired",
+    endpoint: "/vista/interop/v2/hl7/messages",
     rpcKind: "read",
   },
   {
@@ -556,6 +566,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "interop.msg.detail",
     rpcs: ["VE INTEROP MSG DETAIL"],
     status: "wired",
+    endpoint: "/vista/interop/v2/hl7/messages/:id",
     rpcKind: "read",
   },
 
@@ -567,6 +578,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "rcm.billing.read",
     rpcs: ["ORWPCE VISIT"],
     status: "wired",
+    endpoint: "/vista/rcm/encounters",
     rpcKind: "read",
   },
   {
@@ -576,6 +588,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "rcm.billing.read",
     rpcs: ["IBCN INSURANCE QUERY"],
     status: "wired",
+    endpoint: "/vista/rcm/insurance",
     rpcKind: "read",
   },
   {
@@ -585,6 +598,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "rcm.billing.read",
     rpcs: ["ORWPCE4 LEX"],
     status: "wired",
+    endpoint: "/vista/rcm/icd-search",
     rpcKind: "read",
   },
   {
@@ -594,6 +608,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "rcm.adapters.view",
     rpcs: [],
     status: "wired",
+    endpoint: "/rcm/adapters",
     rpcKind: "read",
   },
   {
@@ -603,6 +618,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "rcm.adapters.view",
     rpcs: [],
     status: "wired",
+    endpoint: "/rcm/adapters/health",
     rpcKind: "read",
   },
   {
@@ -612,6 +628,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "rcm.jobs.scheduler",
     rpcs: [],
     status: "wired",
+    endpoint: "/rcm/jobs/scheduler",
     rpcKind: "read",
   },
   {
@@ -621,6 +638,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "rcm.eligibility.results",
     rpcs: [],
     status: "wired",
+    endpoint: "/rcm/eligibility/results",
     rpcKind: "read",
   },
   {
@@ -630,6 +648,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "rcm.claims.status.results",
     rpcs: [],
     status: "wired",
+    endpoint: "/rcm/claims/status/results",
     rpcKind: "read",
   },
 
@@ -641,6 +660,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     capability: "admin.rpc-catalog",
     rpcs: ["VE LIST RPCS"],
     status: "wired",
+    endpoint: "/vista/rpc-catalog",
     rpcKind: "read",
   },
 

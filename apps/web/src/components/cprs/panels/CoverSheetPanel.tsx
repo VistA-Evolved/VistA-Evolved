@@ -95,6 +95,8 @@ export default function CoverSheetPanel({ dfn }: Props) {
   const [immunizations, setImmunizations] = useState<any[]>([]);
   const [immuLoading, setImmuLoading] = useState(false);
   const [immuPending, setImmuPending] = useState(false);
+  const [reminders, setReminders] = useState<any[]>([]);
+  const [remindersLoading, setRemindersLoading] = useState(false);
 
   useEffect(() => { cache.fetchAll(dfn); }, [dfn]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -117,6 +119,15 @@ export default function CoverSheetPanel({ dfn }: Props) {
       })
       .catch(() => { setImmuPending(true); })
       .finally(() => setImmuLoading(false));
+  }, [dfn]);
+
+  // Fetch clinical reminders from Phase 78 wired endpoint
+  useEffect(() => {
+    setRemindersLoading(true);
+    fetchJson(`${API_BASE}/vista/cprs/reminders?dfn=${dfn}`)
+      .then((d) => { if (d.ok && d.results) setReminders(d.results); })
+      .catch(() => {})
+      .finally(() => setRemindersLoading(false));
   }, [dfn]);
 
   const problems = cache.getDomain(dfn, 'problems');
@@ -321,20 +332,26 @@ export default function CoverSheetPanel({ dfn }: Props) {
           )}
         </Section>
 
-        {/* Row 6: Clinical Reminders (integration-pending, full width) */}
+        {/* Row 6: Clinical Reminders (Phase 78: wired to ORQQPX REMINDERS LIST) */}
         <Section
           title="Clinical Reminders"
           contractId="ORQQPX REMINDERS"
-          loading={false}
-          pending
-          onPendingClick={() => showPending('cover.load-reminders')}
+          loading={remindersLoading}
           onResize={handleResize('reminders')}
           height={heights.reminders}
         >
-          <p className={styles.pendingText}>
-            Clinical Reminders integration pending.<br />
-            <span style={{ fontSize: 11, color: '#888' }}>Target: ORQQPX REMINDERS LIST / ORQQPX REMINDER DETAIL</span>
-          </p>
+          {reminders.length === 0 ? (
+            <p className={styles.emptyText}>No clinical reminders due</p>
+          ) : (
+            <table className={styles.dataTable}>
+              <thead><tr><th>Reminder</th><th>Due</th><th>Status</th></tr></thead>
+              <tbody>
+                {reminders.slice(0, 8).map((r: any, i: number) => (
+                  <tr key={i}><td>{r.name || r.ien}</td><td>{r.due || '\u2014'}</td><td>{r.status || '\u2014'}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </Section>
       </div>
 

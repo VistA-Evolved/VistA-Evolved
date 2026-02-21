@@ -19,7 +19,7 @@
  *   POST /vista/cprs/notes/create       -- TIU CREATE RECORD + TIU SET DOCUMENT TEXT
  *   POST /vista/cprs/orders/draft       -- ORWDX LOCK + ORWDX SAVE + ORWDX UNLOCK
  *   POST /vista/cprs/orders/verify      -- ORWDXA VERIFY
- *   POST /vista/cprs/orders/dc          -- ORWDXA DC (integration-pending)
+ *   POST /vista/cprs/orders/dc          -- ORWDXA DC (Phase 78: wired with LOCK/UNLOCK)
  *   POST /vista/cprs/meds/quick-order   -- ORWDX LOCK + ORWDXM AUTOACK + ORWDX UNLOCK
  *   POST /vista/cprs/labs/ack           -- ORWLRR ACK
  *   POST /vista/cprs/vitals/add         -- GMV ADD VM
@@ -479,13 +479,20 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
   });
 
   /* ================================================================
-   * POST /vista/cprs/orders/dc  (integration-pending -- needs dialog UI)
-   * RPC: ORWDXA DC
+   * POST /vista/cprs/orders/dc  (Phase 78: wired to ORWDXA DC)
+   * RPC: ORWDX LOCK + ORWDXA DC + ORWDX UNLOCK
+   * Params: ORWDXA DC(ORIFN,PROVIEN,DCTYPE,DESSION,DCDATE,RSIEN)
+   *   ORIFN   = order IEN
+   *   PROVIEN = provider DUZ
+   *   DCTYPE  = 1 (Discontinue) or 2 (Cancel)
+   *   DESSION = e-sig hash (empty if not required)
+   *   DCDATE  = FM date (empty = NOW)
+   *   RSIEN   = reason-for-DC IEN from 100.02 (empty for default)
    * ================================================================ */
   server.post("/vista/cprs/orders/dc", async (request, reply) => {
     const body = (request.body as any) || {};
-    const { dfn, orderId, reason } = body;
-    const rpcUsed = ["ORWDXA DC"];
+    const { dfn, orderId, reason, dcType } = body;
+    const rpcUsed = ["ORWDX LOCK", "ORWDXA DC", "ORWDX UNLOCK"];
     const vivianPresence = { "ORWDXA DC": "present" as const };
 
     const errors = validateRequired(body, ["dfn", "orderId"]);
@@ -493,20 +500,90 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     if (!validDfn) errors.push({ field: "dfn", message: "dfn must be numeric" });
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
 
-    // DC workflow requires full order dialog context -- integration pending
-    return {
-      ok: true,
-      status: "integration-pending",
-      rpcUsed, vivianPresence,
-      pendingTargets: ["ORWDXA DC"],
-      pendingNote: "Discontinue order RPC present in Vivian but full DC dialog workflow not yet implemented. " +
-        "Requires order context, cancellation reason, and co-signer logic.",
+    const iKey = getIdempotencyKey(request);
+    const cached = checkIdempotency(iKey);
+    if (cached) return cached;
+
+    const check = optionalRpc("ORWDXA DC");
+    const actor = getActor(request);
+
+    if (check.available) {
+      let locked = false;
+      try {
+        validateCredentials();
+        await connect();
+        const duz = getDuz();
+
+        // LOCK
+        const lockResp = await safeCallRpc("ORWDX LOCK", [validDfn!], { idempotent: false });
+        const lockLine = lockResp[0] || "";
+        if (lockLine.includes("locked by")) {
+          disconnect();
+          return reply.code(409).send({
+            ok: false, error: "Patient locked by another provider", rpcUsed, vivianPresence,
+          });
+        }
+        locked = true;
+
+        // ORWDXA DC: ORIFN^PROVIEN^DCTYPE^DESSION^DCDATE^RSIEN
+        const dcTypeVal = String(dcType || 1); // 1=discontinue, 2=cancel
+        const resp = await safeCallRpc("ORWDXA DC", [
+          String(orderId), duz, dcTypeVal, "", "", "",
+        ], { idempotent: false });
+
+        // UNLOCK
+        await safeCallRpc("ORWDX UNLOCK", [validDfn!], { idempotent: true }).catch(() => {});
+        locked = false;
+        disconnect();
+
+        const respText = resp.join("\n").trim();
+        const hasError = respText.includes("cannot be") || respText.startsWith("-1") || respText.includes("ERROR");
+
+        if (hasError) {
+          const result = {
+            ok: false, mode: "error", error: respText || "ORWDXA DC returned error",
+            rpcUsed, vivianPresence,
+          };
+          auditWrite("clinical.order-dc", "failure", actor, validDfn!, { mode: "error", rpc: "ORWDXA DC" });
+          storeIdempotency(iKey, result);
+          return result;
+        }
+
+        const result = {
+          ok: true, mode: "real", status: "discontinued",
+          rpcUsed, vivianPresence,
+          response: respText,
+          message: `Order ${orderId} discontinued via ORWDXA DC.`,
+        };
+        auditWrite("clinical.order-dc", "success", actor, validDfn!, { mode: "real", rpc: "ORWDXA DC" });
+        storeIdempotency(iKey, result);
+        return result;
+      } catch (err: any) {
+        if (locked) {
+          await safeCallRpc("ORWDX UNLOCK", [validDfn!], { idempotent: true }).catch(() => {});
+        }
+        disconnect();
+        log.warn("ORWDXA DC failed, falling back to draft", { error: err.message });
+      }
+    }
+
+    const draft = createDraft("order-dc", validDfn!, "ORWDXA DC", {
+      action: "order-dc", orderId, reason: reason || "", attemptedAt: new Date().toISOString(),
+    });
+    auditWrite("clinical.order-dc", "success", actor, validDfn!, { mode: "draft", draftId: draft.id });
+    const result = {
+      ok: true, mode: "draft", draftId: draft.id, status: "sync-pending",
+      syncPending: true, rpcUsed, vivianPresence,
+      message: "Order discontinue stored as draft. ORWDXA DC sync pending.",
     };
+    storeIdempotency(iKey, result);
+    return result;
   });
 
   /* ================================================================
-   * POST /vista/cprs/orders/flag  (integration-pending)
+   * POST /vista/cprs/orders/flag  (Phase 78: wired to ORWDXA FLAG)
    * RPC: ORWDXA FLAG
+   * Params: ORIFN^FLAG REASON (text)
    * ================================================================ */
   server.post("/vista/cprs/orders/flag", async (request, reply) => {
     const body = (request.body as any) || {};
@@ -519,13 +596,63 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     if (!validDfn) errors.push({ field: "dfn", message: "dfn must be numeric" });
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
 
-    return {
-      ok: true,
-      status: "integration-pending",
-      rpcUsed, vivianPresence,
-      pendingTargets: ["ORWDXA FLAG"],
-      pendingNote: "Flag order RPC present in Vivian but full flagging workflow not yet implemented.",
+    const iKey = getIdempotencyKey(request);
+    const cached = checkIdempotency(iKey);
+    if (cached) return cached;
+
+    const check = optionalRpc("ORWDXA FLAG");
+    const actor = getActor(request);
+
+    if (check.available) {
+      try {
+        validateCredentials();
+        await connect();
+
+        // ORWDXA FLAG: ORIFN^FLAG REASON
+        const resp = await safeCallRpc("ORWDXA FLAG", [
+          String(orderId), flagReason || "Flagged for review",
+        ], { idempotent: false });
+        disconnect();
+
+        const respText = resp.join("\n").trim();
+        const hasError = respText.startsWith("-1") || respText.includes("ERROR");
+
+        if (hasError) {
+          const result = {
+            ok: false, mode: "error", error: respText || "ORWDXA FLAG returned error",
+            rpcUsed, vivianPresence,
+          };
+          auditWrite("clinical.order-flag", "failure", actor, validDfn!, { mode: "error", rpc: "ORWDXA FLAG" });
+          storeIdempotency(iKey, result);
+          return result;
+        }
+
+        const result = {
+          ok: true, mode: "real", status: "flagged",
+          rpcUsed, vivianPresence,
+          response: respText,
+          message: `Order ${orderId} flagged via ORWDXA FLAG.`,
+        };
+        auditWrite("clinical.order-flag", "success", actor, validDfn!, { mode: "real", rpc: "ORWDXA FLAG" });
+        storeIdempotency(iKey, result);
+        return result;
+      } catch (err: any) {
+        disconnect();
+        log.warn("ORWDXA FLAG failed, falling back to draft", { error: err.message });
+      }
+    }
+
+    const draft = createDraft("order-flag", validDfn!, "ORWDXA FLAG", {
+      action: "order-flag", orderId, flagReason: flagReason || "", attemptedAt: new Date().toISOString(),
+    });
+    auditWrite("clinical.order-flag", "success", actor, validDfn!, { mode: "draft", draftId: draft.id });
+    const result = {
+      ok: true, mode: "draft", draftId: draft.id, status: "sync-pending",
+      syncPending: true, rpcUsed, vivianPresence,
+      message: "Order flag stored as draft. ORWDXA FLAG sync pending.",
     };
+    storeIdempotency(iKey, result);
+    return result;
   });
 
   /* ================================================================
