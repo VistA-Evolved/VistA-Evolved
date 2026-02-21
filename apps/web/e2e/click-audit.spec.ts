@@ -128,9 +128,22 @@ async function auditClick(
   const beforeDialogs = await page.locator(DIALOG_SELECTOR).count();
   const beforePopovers = await page.locator(POPOVER_SELECTOR).count();
 
-  // Set up network interception — track if any XHR/fetch fires
+  // Set up network interception -- track if any XHR/fetch API call fires
+  // Filter out static assets, HMR, prefetch, and non-API requests
   let networkFired = false;
-  const networkHandler = () => { networkFired = true; };
+  const isApiRequest = (url: string) => {
+    // Only count requests to the API backend or same-origin fetch calls
+    if (url.includes('localhost:3001') || url.includes('/api/') || url.includes('/vista/') ||
+        url.includes('/auth/') || url.includes('/rcm/') || url.includes('/messaging/') ||
+        url.includes('/admin/') || url.includes('/telehealth/') || url.includes('/imaging/') ||
+        url.includes('/scheduling/') || url.includes('/analytics/') || url.includes('/iam/')) {
+      return true;
+    }
+    return false;
+  };
+  const networkHandler = (req: { url: () => string }) => {
+    if (isApiRequest(req.url())) networkFired = true;
+  };
   page.on("request", networkHandler);
 
   try {
@@ -406,7 +419,7 @@ test.describe("Phase 72 — Dead-Click Audit", () => {
         const el = pendingEls.nth(i);
         const text = await el.textContent().catch(() => "");
         // Must mention a target: RPC name, VistA file, or next-step
-        const hasTarget = (text || "").match(/RPC|VistA|file|^|queue|routine|ORWDX|GMRA|HL7|HLO|OR\s/i);
+        const hasTarget = (text || "").match(/RPC|VistA|file\b|queue|routine|ORWDX|GMRA|HL7|HLO|OR\s/i);
         if (!hasTarget && text && text.length < 100) {
           barePending.push(`${url}: "${(text || "").trim().substring(0, 80)}"`);
         }

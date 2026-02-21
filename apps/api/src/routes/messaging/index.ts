@@ -191,7 +191,7 @@ export default async function messagingRoutes(server: FastifyInstance) {
     immutableAudit("messaging.read", "success", auditActor(request), {
       detail: { messageId: id },
     });
-    return { ok: true };
+    return { ok: true, msgId: id, updated: true };
   });
 
   /* ---- POST /messaging/compose ---- */

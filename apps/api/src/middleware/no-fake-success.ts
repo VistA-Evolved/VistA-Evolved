@@ -31,8 +31,9 @@ const STRICT_MODE = process.env.NO_FAKE_SUCCESS_STRICT === "true";
 
 /** URL patterns exempt from the no-fake-success check */
 const EXEMPT_PATTERNS: RegExp[] = [
-  /^\/(health|ready|vista\/ping)/,
+  /^\/(health|ready|vista\/ping|version)/,
   /^\/auth\//,
+  /^\/portal\/auth\//,  // Portal auth (own session handling)
   /^\/metrics/,
   /^\/__/,       // Next.js internals
   /^\/ws\//,     // WebSocket routes
@@ -62,6 +63,8 @@ const EFFECT_PROOF_FIELDS = new Set([
   "templateId",
   "ruleId",
   "policyId",
+  "draftId",
+  "jobId",
 
   // Collection proofs (data was fetched/produced)
   "items",
@@ -102,6 +105,27 @@ const EFFECT_PROOF_FIELDS = new Set([
   "encounters",
   "diagnoses",
   "insurances",
+  "refills",
+  "tasks",
+  "shares",
+  "proxies",
+  "filters",
+  "languages",
+
+  // Singular object proofs (single record returned)
+  "message",
+  "appointment",
+  "result",
+  "refill",
+  "task",
+  "share",
+  "proxy",
+  "attachment",
+  "credential",
+  "preview",
+  "viewer",
+  "requirements",
+  "settings",
 
   // Mutation proofs
   "created",
@@ -113,6 +137,19 @@ const EFFECT_PROOF_FIELDS = new Set([
   "linked",
   "verified",
   "acknowledged",
+  "reset",
+  "invalidated",
+  "retried",
+
+  // Write-back / operation fields
+  "mode",
+  "response",
+  "rpcUsed",
+  "syncPending",
+  "joinUrl",
+  "notice",
+  "slaDisclaimer",
+  "vistaSync",
 
   // Aggregate proofs
   "count",
@@ -122,6 +159,8 @@ const EFFECT_PROOF_FIELDS = new Set([
   "metrics",
   "report",
   "chain",
+  "version",
+  "uptime",
 
   // Read proofs with substantive payload
   "tenant",

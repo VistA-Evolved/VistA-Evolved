@@ -435,7 +435,7 @@ export default async function portalCoreRoutes(
     if (!deleteDraft(id, session.patientDfn)) {
       return reply.code(404).send({ ok: false, error: "Draft not found" });
     }
-    return reply.send({ ok: true });
+    return reply.send({ ok: true, deleted: id });
   });
 
   server.post("/portal/messages/:id/send", async (request, reply) => {
@@ -752,7 +752,7 @@ export default async function portalCoreRoutes(
     if (!revokeShare(id, session.patientDfn)) {
       return reply.code(404).send({ ok: false, error: "Share not found or already revoked" });
     }
-    return reply.send({ ok: true });
+    return reply.send({ ok: true, deleted: id });
   });
 
   // ─── Public share routes (no session required) ───
@@ -853,7 +853,7 @@ export default async function portalCoreRoutes(
     if (!revokeProxyAccess(body.proxyId, session.patientDfn)) {
       return reply.code(404).send({ ok: false, error: "Proxy relationship not found" });
     }
-    return reply.send({ ok: true });
+    return reply.send({ ok: true, deleted: body.proxyId });
   });
 
   server.post("/portal/proxy/evaluate", async (request, reply) => {
