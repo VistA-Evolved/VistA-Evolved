@@ -93,7 +93,11 @@ export type ImmutableAuditAction =
   | "messaging.send"
   | "messaging.read"
   | "messaging.manage"
-  | "messaging.portal-send";
+  | "messaging.portal-send"
+  // Phase 66: Production IAM v1 immutable audit events
+  | "auth.idp.login"
+  | "auth.idp.failed"
+  | "auth.vista-bind";
 
 export type ImmutableAuditOutcome = "success" | "failure" | "denied" | "error";
 

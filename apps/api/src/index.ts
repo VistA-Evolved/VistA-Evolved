@@ -88,6 +88,9 @@ import schedulingRoutes from "./routes/scheduling/index.js";
 import messagingRoutes from "./routes/messaging/index.js";
 // Phase 65: Immunizations v1 (VistA-first)
 import immunizationsRoutes from "./routes/immunizations/index.js";
+// Phase 66: Production IAM v1 (OIDC + SAML posture)
+import idpRoutes from "./auth/idp/idp-routes.js";
+import { initIdentityProviders } from "./auth/idp/index.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -158,6 +161,10 @@ server.addContentTypeParser(
 
 // Register auth routes (Phase 13)
 server.register(authRoutes);
+
+// Phase 66: Identity provider routes (OIDC/SAML/VistA binding)
+initIdentityProviders();
+server.register(idpRoutes);
 
 // Register WebSocket console (Phase 13F)
 server.register(wsConsoleRoutes);

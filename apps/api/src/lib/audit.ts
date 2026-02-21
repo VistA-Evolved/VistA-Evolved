@@ -124,7 +124,12 @@ export type AuditAction =
   | "clinical.order-lab"
   | "clinical.order-imaging"
   | "clinical.order-consult"
-  | "clinical.order-check";
+  | "clinical.order-check"
+  // Phase 66: Production IAM v1 audit events
+  | "auth.idp.authorize"
+  | "auth.idp.callback"
+  | "auth.idp.login"
+  | "auth.vista-bind";
 
 export type AuditOutcome = "success" | "failure" | "denied" | "error";
 

@@ -411,6 +411,38 @@
       "targetPackage": null,
       "description": "Evaluate policy decision"
     },
+    "iam.oidc.login": {
+      "status": "configured",
+      "module": "iam",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "OIDC authorization code login flow (Phase 66)"
+    },
+    "iam.saml-broker.login": {
+      "status": "configured",
+      "module": "iam",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "SAML-via-broker login flow through Keycloak (Phase 66)"
+    },
+    "iam.vista-binding": {
+      "status": "configured",
+      "module": "iam",
+      "adapter": "clinical_engine",
+      "targetRpc": "XUS AV CODE",
+      "targetPackage": "XU",
+      "description": "Bind OIDC/SAML session to VistA RPC broker (Phase 66)"
+    },
+    "iam.idp.health": {
+      "status": "configured",
+      "module": "iam",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Identity provider health check endpoint (Phase 66)"
+    },
     "rcm.claims.view": {
       "status": "configured",
       "module": "rcm",

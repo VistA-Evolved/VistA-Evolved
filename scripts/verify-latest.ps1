@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 65: Immunizations v1 (VistA-First)
-& "$PSScriptRoot\verify-phase65-immunizations.ps1" @args
+# Phase 66: Production IAM v1 (OIDC + SAML Posture)
+& "$PSScriptRoot\verify-phase66-iam.ps1" @args
