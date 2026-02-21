@@ -15,3 +15,4 @@ export { default as TelehealthPanel } from './TelehealthPanel';
 export { default as MessagingTasksPanel } from './MessagingTasksPanel';
 export { default as AIAssistPanel } from './AIAssistPanel';
 export { default as ADTPanel } from './ADTPanel';
+export { default as NursingPanel } from './NursingPanel';

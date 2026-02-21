@@ -714,6 +714,62 @@
       "targetRpc": "DGPM NEW DISCHARGE",
       "targetPackage": "DG",
       "description": "Discharge patient (integration-pending, Phase 67B)"
+    },
+    "clinical.nursing.vitals": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQQVI VITALS",
+      "targetPackage": "OR",
+      "description": "Nursing vitals view (re-uses existing vitals RPC)"
+    },
+    "clinical.nursing.vitalsRange": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQQVI VITALS FOR DATE RANGE",
+      "targetPackage": "OR",
+      "description": "Nursing vitals for shift date range"
+    },
+    "clinical.nursing.notes": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "TIU DOCUMENTS BY CONTEXT",
+      "targetPackage": "TIU",
+      "description": "Nursing notes via TIU document class filter"
+    },
+    "clinical.nursing.wardPatients": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQPT WARD PATIENTS",
+      "targetPackage": "OR",
+      "description": "Nursing ward assignment view"
+    },
+    "clinical.nursing.tasks": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "PSB MED LOG",
+      "targetPackage": "PSB",
+      "description": "Nursing task list (requires BCMA, Phase 68B)"
+    },
+    "clinical.nursing.mar": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "PSB ALLERGY",
+      "targetPackage": "PSB",
+      "description": "Medication Administration Record (requires BCMA, Phase 68B)"
+    },
+    "clinical.nursing.administer": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "PSB MED LOG",
+      "targetPackage": "PSB",
+      "description": "Med administration recording (requires BCMA, Phase 68B)"
     }
   }
 }

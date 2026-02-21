@@ -58,7 +58,8 @@
         "^/vista/meds/",
         "^/vista/orders/",
         "^/vista/inbox",
-        "^/vista/adt"
+        "^/vista/adt",
+        "^/vista/nursing"
       ],
       "dependencies": ["kernel"],
       "adapters": ["clinical-engine"],

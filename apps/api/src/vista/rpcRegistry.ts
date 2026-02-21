@@ -147,6 +147,7 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   // --- Vitals ---
   { name: "GMV ADD VM",               domain: "vitals",     tag: "write", description: "Add vital measurement" },
   { name: "ORQQVI VITALS",            domain: "vitals",     tag: "read",  description: "Get patient vitals" },
+  { name: "ORQQVI VITALS FOR DATE RANGE", domain: "vitals", tag: "read",  description: "Vitals for date range (shift-based nursing view)" },
 
   // --- ADT / Inpatient (Phase 67: VistA-first ADT + inpatient lists) ---
   { name: "ORQPT WARDS",                domain: "adt",            tag: "read",  description: "List all wards" },

@@ -93,6 +93,8 @@ import idpRoutes from "./auth/idp/idp-routes.js";
 import { initIdentityProviders } from "./auth/idp/index.js";
 // Phase 67: ADT + Inpatient Lists v1 (VistA-first read posture)
 import adtRoutes from "./routes/adt/index.js";
+// Phase 68: Nursing Workflow v1 (VistA-first posture)
+import nursingRoutes from "./routes/nursing/index.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -292,6 +294,9 @@ server.register(immunizationsRoutes);
 
 // Register ADT / inpatient routes -- VistA-first ward/team/provider/specialty lists (Phase 67)
 server.register(adtRoutes);
+
+// Register nursing workflow routes -- VistA-first vitals/notes/tasks/MAR (Phase 68)
+server.register(nursingRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

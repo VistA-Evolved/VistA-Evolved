@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 67: ADT + Inpatient Lists v1 (VistA-first read posture)
-& "$PSScriptRoot\verify-phase67-adt.ps1" @args
+# Phase 68: Nursing Workflow v1 (VistA-first posture)
+& "$PSScriptRoot\verify-phase68-nursing.ps1" @args

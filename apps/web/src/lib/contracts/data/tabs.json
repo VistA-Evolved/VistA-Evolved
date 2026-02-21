@@ -187,6 +187,17 @@
       "tabPosition": "tpBottom",
       "align": "alBottom",
       "isBottomTab": true
+    },
+    {
+      "constant": "CT_NURSING",
+      "label": "Nursing",
+      "creationOrder": 16,
+      "conditional": false,
+      "id": 18,
+      "description": "chart tab - nursing workflow: tasks, vitals, notes, MAR (Phase 68)",
+      "tabPosition": "tpBottom",
+      "align": "alBottom",
+      "isBottomTab": true
     }
   ],
   "subTabs": [

@@ -29,6 +29,7 @@ import {
   MessagingTasksPanel,
   AIAssistPanel,
   ADTPanel,
+  NursingPanel,
 } from '@/components/cprs/panels';
 import CoverSheetLayoutManager from '@/components/cprs/CoverSheetLayoutManager';
 import ActionInspector from '@/components/cprs/ActionInspector';
@@ -53,6 +54,7 @@ const TAB_LOCATION_MAP: Record<string, string> = {
   imaging: 'Imaging',
   immunizations: 'Immunizations',
   adt: 'ADT',
+  nursing: 'Nursing',
 };
 
 function TabContent({ dfn, tab }: { dfn: string; tab: string }) {
@@ -80,6 +82,7 @@ function TabContent({ dfn, tab }: { dfn: string; tab: string }) {
     case 'tasks':      return <MessagingTasksPanel dfn={dfn} />;
     case 'aiassist':  return <AIAssistPanel dfn={dfn} />;
     case 'adt':       return <ADTPanel dfn={dfn} />;
+    case 'nursing':   return <NursingPanel dfn={dfn} />;
     default:
       return (
         <div style={{ padding: 24 }}>
@@ -90,7 +93,7 @@ function TabContent({ dfn, tab }: { dfn: string; tab: string }) {
   }
 }
 
-const VALID_TABS = new Set(['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports', 'imaging', 'immunizations', 'intake', 'telehealth', 'tasks', 'aiassist', 'adt']);
+const VALID_TABS = new Set(['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports', 'imaging', 'immunizations', 'intake', 'telehealth', 'tasks', 'aiassist', 'adt', 'nursing']);
 
 export default function CPRSChartPage({ params }: ChartPageProps) {
   const { dfn, tab } = use(params);
@@ -142,7 +145,7 @@ export default function CPRSChartPage({ params }: ChartPageProps) {
             flexDirection: 'column',
             gap: 2,
           }}>
-            {['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports', 'imaging', 'immunizations', 'adt', 'intake', 'telehealth', 'tasks', 'aiassist']
+            {['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports', 'imaging', 'immunizations', 'adt', 'nursing', 'intake', 'telehealth', 'tasks', 'aiassist']
               .filter((t) => isModuleEnabled(t))
               .map((t) => {
               const label = ({ cover: 'Cover Sheet', dcsumm: 'DC Summaries', adt: 'ADT', aiassist: 'AI Assist' } as Record<string, string>)[t] ?? t.charAt(0).toUpperCase() + t.slice(1);
