@@ -80,6 +80,8 @@ import cprsWave1Routes from "./routes/cprs/wave1-routes.js";
 import cprsWave2Routes from "./routes/cprs/wave2-routes.js";
 // Phase 59: CPOE parity (orders + order checks + signing)
 import ordersCpoeRoutes from "./routes/cprs/orders-cpoe.js";
+// Phase 60: TIU notes parity (list + text + sign + addendum + titles)
+import tiuNotesRoutes from "./routes/cprs/tiu-notes.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -260,6 +262,9 @@ server.register(cprsWave2Routes);
 
 // Register CPOE parity routes -- orders list, lab/imaging/consult/sign/checks (Phase 59)
 server.register(ordersCpoeRoutes);
+
+// Register TIU notes parity routes -- list, text, sign, addendum, titles (Phase 60)
+server.register(tiuNotesRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

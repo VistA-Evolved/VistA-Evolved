@@ -1,0 +1,19 @@
+{
+  "feature": "Phase 60: TIU Notes Parity (Create/Edit/Templates/Sign/Cosign/Addenda)",
+  "stage": "IMPLEMENT",
+  "status": "complete",
+  "promptRef": "prompts/65-PHASE-60-TIU-NOTES-PARITY/60-01-IMPLEMENT.md",
+  "runbookPath": "ops/phase60-summary.md",
+  "verifyScript": "scripts/verify-phase60-tiu-notes.ps1",
+  "verifyResult": "12/12 gates pass",
+  "filesChanged": [
+    "apps/api/src/routes/cprs/tiu-notes.ts (NEW)",
+    "apps/api/src/vista/rpcRegistry.ts (+6 RPCs)",
+    "apps/api/src/lib/audit.ts (+3 actions)",
+    "apps/api/src/index.ts (import + register)",
+    "apps/web/src/components/cprs/panels/NotesPanel.tsx (major upgrade)",
+    "scripts/verify-phase60-tiu-notes.ps1 (NEW)",
+    "scripts/verify-latest.ps1 (updated)",
+    "artifacts/phase60/tiu-plan.json (NEW)"
+  ]
+}

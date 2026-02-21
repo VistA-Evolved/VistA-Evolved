@@ -99,6 +99,13 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "TIU SET DOCUMENT TEXT",     domain: "notes",      tag: "write", description: "Set document text body" },
   { name: "TIU SET RECORD TEXT",       domain: "notes",      tag: "write", description: "Set record text body" },
   { name: "TIU GET RECORD TEXT",       domain: "notes",      tag: "read",  description: "Get record text" },
+  // Phase 60: TIU notes parity additions
+  { name: "TIU SIGN RECORD",          domain: "notes",      tag: "write", description: "Electronically sign TIU document" },
+  { name: "TIU LOCK RECORD",          domain: "notes",      tag: "write", description: "Lock TIU document for editing/signing" },
+  { name: "TIU UNLOCK RECORD",        domain: "notes",      tag: "write", description: "Unlock TIU document" },
+  { name: "TIU CREATE ADDENDUM RECORD", domain: "notes",    tag: "write", description: "Create addendum to TIU document" },
+  { name: "TIU REQUIRES COSIGNATURE", domain: "notes",      tag: "read",  description: "Check if document requires cosignature" },
+  { name: "TIU PERSONAL TITLE LIST",  domain: "notes",      tag: "read",  description: "Get user personal note title list" },
 
   // --- Orders ---
   { name: "ORWDX LOCK",               domain: "orders",     tag: "write", description: "Lock patient for ordering" },
