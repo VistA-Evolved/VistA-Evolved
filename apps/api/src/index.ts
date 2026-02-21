@@ -78,6 +78,8 @@ import migrationRoutes from "./migration/migration-routes.js";
 import cprsWave1Routes from "./routes/cprs/wave1-routes.js";
 // Phase 57: CPRS Wave 2 WRITE routes (safety + capability detection)
 import cprsWave2Routes from "./routes/cprs/wave2-routes.js";
+// Phase 59: CPOE parity (orders + order checks + signing)
+import ordersCpoeRoutes from "./routes/cprs/orders-cpoe.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -255,6 +257,9 @@ server.register(cprsWave1Routes);
 
 // Register CPRS Wave 2 WRITE routes -- problems/notes/orders/meds/labs/vitals/allergies (Phase 57)
 server.register(cprsWave2Routes);
+
+// Register CPOE parity routes -- orders list, lab/imaging/consult/sign/checks (Phase 59)
+server.register(ordersCpoeRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

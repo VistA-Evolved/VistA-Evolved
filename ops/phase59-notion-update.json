@@ -1,0 +1,9 @@
+{
+  "feature": "Phase 59: CPOE Parity (Orders + Order Checks + Signing)",
+  "stage": "implemented",
+  "status": "verified-12/12",
+  "promptRef": "prompts/64-PHASE-59-CPOE-PARITY/59-01-IMPLEMENT.md",
+  "runbookPath": "ops/phase59-summary.md",
+  "verifyScript": "scripts/verify-phase59-cpoe-parity.ps1",
+  "commitMessage": "Phase59: CPOE parity (orders + order checks + signing posture)"
+}

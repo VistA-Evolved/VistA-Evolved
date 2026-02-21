@@ -107,6 +107,12 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "ORWDXA DC",                domain: "orders",     tag: "write", description: "Discontinue order" },
   { name: "ORWDXA FLAG",              domain: "orders",     tag: "write", description: "Flag order" },
   { name: "ORWDXA VERIFY",            domain: "orders",     tag: "write", description: "Verify order" },
+  // Phase 59: CPOE parity additions
+  { name: "ORWORR AGET",              domain: "orders",     tag: "read",  description: "Get active orders by display group" },
+  { name: "ORWOR1 SIG",               domain: "orders",     tag: "write", description: "Electronically sign order(s)" },
+  { name: "ORWDXC ACCEPT",            domain: "orders",     tag: "read",  description: "Accept/get order check results" },
+  { name: "ORWDXC DISPLAY",           domain: "orders",     tag: "read",  description: "Display order check text" },
+  { name: "ORWDXC SAVECHK",           domain: "orders",     tag: "write", description: "Save/acknowledge order checks" },
 
   // --- Patients ---
   { name: "ORQPT DEFAULT PATIENT LIST", domain: "patients", tag: "read", description: "Default patient list" },

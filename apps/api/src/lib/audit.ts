@@ -38,6 +38,7 @@ export type AuditAction =
   | "phi.labs-view"
   | "phi.reports-view"
   | "phi.imaging-view"
+  | "phi.orders-view"
   | "clinical.allergy-add"
   | "clinical.vitals-add"
   | "clinical.note-create"
@@ -115,7 +116,12 @@ export type AuditAction =
   // Phase 58: Interop monitor v2 audit events
   | "interop.message-unmask"
   | "interop.message-list"
-  | "interop.message-detail";
+  | "interop.message-detail"
+  // Phase 59: CPOE parity audit events
+  | "clinical.order-lab"
+  | "clinical.order-imaging"
+  | "clinical.order-consult"
+  | "clinical.order-check";
 
 export type AuditOutcome = "success" | "failure" | "denied" | "error";
 
