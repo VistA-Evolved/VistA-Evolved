@@ -67,20 +67,25 @@ export default function AddProblemDialog() {
     setError('');
 
     try {
-      const res = await fetch(`${API_BASE}/vista/problems?dfn=${dfn}`, {
+      const res = await fetch(`${API_BASE}/vista/cprs/problems/add`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-Idempotency-Key': `problem-add-${dfn}-${Date.now()}` },
         credentials: 'include',
-        body: JSON.stringify({ dfn, text: description, onset, status, icdCode }),
+        body: JSON.stringify({ dfn, problemText: description, icdCode, onset, status }),
       });
       const data = await res.json();
-      if (data.ok) {
+      if (data.ok && data.mode === 'real') {
         setSyncStatus('synced');
         setSuccess(true);
         setTimeout(() => closeModal(), 800);
         return;
       }
-      // API not available or returned blocker — save locally
+      if (data.ok && data.mode === 'draft') {
+        setSyncStatus('local');
+        setSuccess(true);
+        setTimeout(() => closeModal(), 800);
+        return;
+      }
       saveLocal();
     } catch {
       saveLocal();
@@ -121,8 +126,8 @@ export default function AddProblemDialog() {
               color: syncStatus === 'synced' ? '#155724' : '#856404',
             }}>
               {syncStatus === 'synced'
-                ? 'Problem saved to server.'
-                : 'Problem saved as local draft. (Full save requires ORQQPL ADD SAVE — not yet wired.)'}
+                ? 'Problem saved to VistA (ORQQPL ADD SAVE).'
+                : 'Problem saved as local draft (VistA sync pending).'}
             </div>
           )}
 

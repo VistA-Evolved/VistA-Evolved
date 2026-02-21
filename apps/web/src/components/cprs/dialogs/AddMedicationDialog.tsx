@@ -39,15 +39,18 @@ export default function AddMedicationDialog() {
     setSubmitting(true);
     setResult(null);
     try {
-      const res = await fetch(`${API_BASE}/vista/medications?dfn=${dfn}`, {
+      const res = await fetch(`${API_BASE}/vista/cprs/meds/quick-order`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-Idempotency-Key': `med-qo-${dfn}-${Date.now()}` },
         credentials: 'include',
-        body: JSON.stringify({ quickOrderIEN: selectedQO }),
+        body: JSON.stringify({ dfn, quickOrderIen: selectedQO }),
       });
       const data = await res.json();
-      if (data.ok) {
-        setResult({ ok: true, msg: data.order || 'Order placed successfully.' });
+      if (data.ok && data.mode === 'real') {
+        setResult({ ok: true, msg: data.response || 'Order placed in VistA (ORWDXM AUTOACK).' });
+        setTimeout(() => closeModal(), 1200);
+      } else if (data.ok && data.mode === 'draft') {
+        setResult({ ok: true, msg: `Order saved as draft (VistA sync pending). Draft ID: ${data.draftId}` });
         setTimeout(() => closeModal(), 1200);
       } else {
         setResult({ ok: false, msg: data.error || 'Order failed.' });

@@ -30,17 +30,19 @@ export default function EditProblemDialog() {
 
     try {
       // Try API first
-      const res = await fetch(`${API_BASE}/vista/problems?dfn=${dfn}`, {
+      const res = await fetch(`${API_BASE}/vista/cprs/problems/edit`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-Idempotency-Key': `problem-edit-${dfn}-${Date.now()}` },
         credentials: 'include',
-        body: JSON.stringify({ dfn, text: problem.description, status, note, icdCode: problem.icdCode }),
+        body: JSON.stringify({ dfn, problemIen: problem.id, problemText: problem.description, status, comment: note, icdCode: problem.icdCode }),
       });
       const data = await res.json();
-      if (data.ok) {
+      if (data.ok && data.mode === 'real') {
         setServerSync('synced');
+      } else if (data.ok && data.mode === 'draft') {
+        persistLocal();
+        setServerSync('local');
       } else {
-        // API returned blocker — save locally
         persistLocal();
         setServerSync('local');
       }
@@ -77,8 +79,8 @@ export default function EditProblemDialog() {
           {success && (
             <div style={{ color: serverSync === 'synced' ? 'green' : '#856404', fontSize: 12, marginBottom: 8, padding: '4px 8px', background: serverSync === 'synced' ? '#d4edda' : '#fff3cd', borderRadius: 4 }}>
               {serverSync === 'synced'
-                ? 'Changes saved to server.'
-                : 'Changes saved locally. (Server sync requires ORQQPL EDIT SAVE — not yet wired.)'}
+                ? 'Changes saved to VistA (ORQQPL EDIT SAVE).'
+                : 'Changes saved locally (VistA sync pending).'}
             </div>
           )}
 
