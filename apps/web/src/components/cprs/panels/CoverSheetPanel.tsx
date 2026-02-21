@@ -353,6 +353,8 @@ export default function CoverSheetPanel({ dfn }: Props) {
 
   // Local heights for immediate UI update (synced to store on change)
   const [heights, setHeights] = useState<Record<string, number>>(panelHeights);
+  const isInitialSyncRef = useRef(true);
+  const prevHeightsJsonRef = useRef<string>(JSON.stringify(panelHeights));
 
   // Drag state
   const [dragKey, setDragKey] = useState<string | null>(null);
@@ -360,7 +362,11 @@ export default function CoverSheetPanel({ dfn }: Props) {
 
   // Sync heights from preferences when they change externally (e.g., server load)
   useEffect(() => {
-    setHeights(preferences.coverSheetLayout.panelHeights ?? DEFAULT_PANEL_HEIGHTS);
+    const incoming = preferences.coverSheetLayout.panelHeights ?? DEFAULT_PANEL_HEIGHTS;
+    setHeights(incoming);
+    // Mark this as an external sync so the persist effect skips echo-back
+    isInitialSyncRef.current = true;
+    prevHeightsJsonRef.current = JSON.stringify(incoming);
   }, [preferences.coverSheetLayout.panelHeights]);
 
   // Data fetching
@@ -422,12 +428,22 @@ export default function CoverSheetPanel({ dfn }: Props) {
   // Persist heights on change (debounced)
   const heightsTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
+    // Skip echo-back after external sync (server load / reset)
+    if (isInitialSyncRef.current) {
+      isInitialSyncRef.current = false;
+      return;
+    }
+    // Skip if heights haven't actually changed (prevents infinite loops)
+    const json = JSON.stringify(heights);
+    if (json === prevHeightsJsonRef.current) return;
+    prevHeightsJsonRef.current = json;
+
     if (heightsTimerRef.current) clearTimeout(heightsTimerRef.current);
     heightsTimerRef.current = setTimeout(() => {
       saveCoverSheetLayout({ panelHeights: heights });
     }, 300);
     return () => { if (heightsTimerRef.current) clearTimeout(heightsTimerRef.current); };
-  }, [heights]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [heights, saveCoverSheetLayout]);
 
   const handleResize = useCallback((panel: string) => (delta: number) => {
     setHeights((prev) => ({
@@ -495,7 +511,7 @@ export default function CoverSheetPanel({ dfn }: Props) {
   return (
     <>
       {/* Toolbar: Customize + Reset */}
-      <div className={styles.coverToolbar} style={{ display: 'flex', gap: 8, padding: '4px 8px', borderBottom: '1px solid var(--cprs-border, #3a3a3a)', alignItems: 'center', fontSize: 12 }}>
+      <div className={styles.coverToolbar}>
         <button
           onClick={() => setCustomizeMode((v) => !v)}
           style={{
@@ -542,7 +558,7 @@ export default function CoverSheetPanel({ dfn }: Props) {
                 }}
                 aria-label={`${visible ? 'Hide' : 'Show'} ${def.title}`}
               >
-                {visible ? '\u{1F441}' : '\u{1F441}\u{FE0F}\u{200D}\u{1F5E8}\u{FE0F}'} {def.title}
+                {visible ? '\u2713' : '\u2717'} {def.title}
               </button>
             );
           })}

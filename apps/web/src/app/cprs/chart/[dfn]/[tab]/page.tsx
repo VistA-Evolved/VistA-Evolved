@@ -31,7 +31,6 @@ import {
   ADTPanel,
   NursingPanel,
 } from '@/components/cprs/panels';
-import CoverSheetLayoutManager from '@/components/cprs/CoverSheetLayoutManager';
 import ActionInspector from '@/components/cprs/ActionInspector';
 import styles from '@/components/cprs/cprs.module.css';
 
@@ -64,12 +63,7 @@ const TAB_LOCATION_MAP: Record<string, string> = {
 function TabContent({ dfn, tab }: { dfn: string; tab: string }) {
   switch (tab) {
     case 'cover':
-      return (
-        <>
-          <CoverSheetLayoutManager />
-          <CoverSheetPanel dfn={dfn} />
-        </>
-      );
+      return <CoverSheetPanel dfn={dfn} />;
     case 'problems':   return <ProblemsPanel   dfn={dfn} />;
     case 'meds':       return <MedsPanel       dfn={dfn} />;
     case 'orders':     return <OrdersPanel     dfn={dfn} />;

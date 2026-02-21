@@ -1,0 +1,18 @@
+{
+  "feature": "Phase 79 VERIFY -- Cover Sheet Layout Parity",
+  "stage": "verified",
+  "status": "complete",
+  "promptRef": "prompts/84-PHASE-79-COVERSHEET-LAYOUT/79-99-VERIFY.md",
+  "runbook": "docs/runbooks/phase79-coversheet-layout.md",
+  "verifyScript": "scripts/verify-phase79-coversheet-layout.ps1",
+  "gatesPassed": "40/40",
+  "baselineGates": "69/69 (Phase 77 verify-latest)",
+  "bugsFixed": 6,
+  "bugsSkipped": 2,
+  "filesChanged": [
+    "apps/web/src/app/cprs/chart/[dfn]/[tab]/page.tsx",
+    "apps/web/src/components/cprs/panels/CoverSheetPanel.tsx",
+    "apps/web/src/components/cprs/CoverSheetLayoutManager.tsx (DELETED)",
+    "scripts/verify-phase79-coversheet-layout.ps1 (NEW)"
+  ]
+}
