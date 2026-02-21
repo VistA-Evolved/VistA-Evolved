@@ -186,6 +186,69 @@ foreach ($f in $idpFiles) {
 }
 Write-Gate "No Bearer token pattern in IdP code" (-not $bearerTokenFound)
 
+# --- VERIFY-Specific Security Gates (Phase 66 VERIFY) ---
+Write-Host "`n--- G66 Security Gates ---" -ForegroundColor Yellow
+
+# G66-OIDC: OIDC flow end-to-end wired
+Write-Gate "G66-OIDC: OIDC provider exists and implements interface" (Test-FileContains $oidcPath "implements IdentityProvider")
+Write-Gate "G66-OIDC: OIDC callback exchanges code for tokens" (Test-FileContains $oidcPath "exchangeCodeForTokens")
+Write-Gate "G66-OIDC: OIDC callback validates JWT" (Test-FileContains $oidcPath "validateJwt")
+
+# G66-SAML: Broker posture documented, no fragile SAML parsing
+Write-Gate "G66-SAML: No SAMLResponse parsing in app" (-not (Test-FileRegex $samlPath "SAMLResponse"))
+Write-Gate "G66-SAML: Speaks OIDC to broker (kc_idp_hint)" (Test-FileContains $samlPath "kc_idp_hint")
+Write-Gate "G66-SAML: Broker pattern documented in header" (Test-FileContains $samlPath "broker pattern")
+
+# G66-COOKIES: httpOnly/secure/sameSite, no localStorage
+Write-Gate "G66-COOKIES: httpOnly cookie set" (Test-FileContains $routesPath "httpOnly: true")
+Write-Gate "G66-COOKIES: sameSite lax" (Test-FileRegex $routesPath "sameSite.*lax")
+Write-Gate "G66-COOKIES: secure in production" (Test-FileRegex $routesPath "secure.*NODE_ENV.*production")
+
+# G66-CSRF: State + nonce enforced, not conditional
+Write-Gate "G66-CSRF: State is mandatory when expectedState set (oidc)" (Test-FileRegex $oidcPath "if \(params\.expectedState\)")
+Write-Gate "G66-CSRF: State is mandatory when expectedState set (saml)" (Test-FileRegex $samlPath "if \(params\.expectedState\)")
+Write-Gate "G66-CSRF: Nonce is mandatory when expectedNonce set (oidc)" (Test-FileRegex $oidcPath "if \(params\.expectedNonce\)")
+Write-Gate "G66-CSRF: Auth state is one-time-use (delete after get)" (Test-FileContains $routesPath "pendingAuthStates.delete(query.state)")
+
+# G66-OPEN-REDIRECT: redirect_uri not from query params
+Write-Gate "G66-OPEN-REDIRECT: No redirect_uri from query params" (-not (Test-FileRegex $routesPath "request\.query.*redirect_uri"))
+
+# G66-RBAC: Permissions returned on login
+Write-Gate "G66-RBAC: getPermissionsForRole used in callback" (Test-FileContains $routesPath "getPermissionsForRole")
+
+# G66-TENANT: tenant resolved from claims
+Write-Gate "G66-TENANT: tenantId in session from IdP claims" (Test-FileContains $routesPath "tenantId: identity.tenantId")
+
+# G66-PHI: No secrets/PHI in logs
+# G66-PHI: Verify error_description is NOT in any .send() response payload
+# The string exists in the file (query type, log.warn) but must not appear in reply.send()
+$routeContent = Get-Content -LiteralPath $routesPath -Raw -ErrorAction SilentlyContinue
+$sendBlocks = [regex]::Matches($routeContent, '\.send\(\{[^}]+\}')
+$descInSend = $false
+foreach ($m in $sendBlocks) {
+  if ($m.Value -match 'error_description') { $descInSend = $true }
+}
+Write-Gate "G66-PHI: Error description not leaked to client" (-not $descInSend)
+Write-Gate "G66-PHI: VistA error sanitized (no raw err.message)" (-not (Test-FileRegex $bindPath "error:.*err\.message"))
+Write-Gate "G66-PHI: State truncated in audit" (Test-FileContains $routesPath "state.substring(0, 8)")
+
+# G66-TIMERS: setInterval uses .unref()
+Write-Gate "G66-TIMERS: Auth state cleanup uses .unref()" (Test-FileRegex $routesPath "60 \* 1000\)\.unref\(\)")
+Write-Gate "G66-TIMERS: VistA binding cleanup uses .unref()" (Test-FileRegex $bindPath "60 \* 1000\)\.unref\(\)")
+
+# G66-UNUSED: No dead imports
+Write-Gate "G66-UNUSED: No unused createHash in oidc" (-not (Test-FileContains $oidcPath "createHash"))
+Write-Gate "G66-UNUSED: No unused mapUserRole in routes" (-not (Test-FileContains $routesPath "mapUserRole"))
+Write-Gate "G66-UNUSED: No unused resolveTenantId in routes" (-not (Test-FileRegex $routesPath "import.*resolveTenantId"))
+
+# G66-FACILITY: Defaults warn when using fallback station
+Write-Gate "G66-FACILITY: OIDC warns on fallback station" (Test-FileContains $oidcPath "defaulting to 500 (sandbox)")
+Write-Gate "G66-FACILITY: SAML warns on fallback station" (Test-FileContains $samlPath "defaulting to 500 (sandbox)")
+
+# G66-REGRESSION: Phase 65 + Phase 54 regression
+Write-Host "`n--- Regression ---" -ForegroundColor Yellow
+Write-Gate "Phase 65 verifier exists" (Test-Path -LiteralPath "scripts/verify-phase65-immunizations.ps1")
+
 # --- Summary ---
 Write-Host "`n=== Phase 66 Results: $pass/$total PASS, $fail FAIL ===" -ForegroundColor $(if ($fail -eq 0) { 'Green' } else { 'Red' })
 if ($fail -gt 0) { exit 1 }

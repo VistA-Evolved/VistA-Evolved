@@ -51,7 +51,7 @@ setInterval(() => {
       vistaBindings.delete(sessionToken);
     }
   }
-}, 60 * 1000);
+}, 60 * 1000).unref();
 
 /* ------------------------------------------------------------------ */
 /* Public API                                                          */
@@ -90,8 +90,10 @@ export async function bindVistaSession(
       divisionIen: userInfo.divisionIen,
     };
   } catch (err: any) {
-    log.warn("VistA binding failed", { error: err.message });
-    return { ok: false, error: `VistA authentication failed: ${err.message}` };
+    // W8 FIX: Sanitize error -- don't leak MUMPS routine names or VistA internals
+    const safeErr = (err.message || "unknown error").replace(/[\^%][A-Z0-9]+/g, "[redacted]");
+    log.warn("VistA binding failed", { error: safeErr });
+    return { ok: false, error: "VistA authentication failed" };
   }
 }
 

@@ -38,10 +38,8 @@ import {
   createSession,
   getSession,
   rotateSession,
-  mapUserRole,
 } from "../session-store.js";
 import { SESSION_CONFIG, CSRF_CONFIG } from "../../config/server-config.js";
-import { resolveTenantId } from "../../config/tenant-config.js";
 import { log } from "../../lib/logger.js";
 import { audit } from "../../lib/audit.js";
 import { immutableAudit } from "../../lib/immutable-audit.js";
@@ -72,7 +70,7 @@ setInterval(() => {
       pendingAuthStates.delete(key);
     }
   }
-}, 60 * 1000);
+}, 60 * 1000).unref();
 
 /* ------------------------------------------------------------------ */
 /* Cookie helpers                                                      */
@@ -145,9 +143,10 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
     // Generate state + nonce
     const state = randomBytes(32).toString("hex");
     const nonce = randomBytes(16).toString("hex");
-    const redirectUri =
-      (request.query as any)?.redirect_uri ||
-      `${request.protocol}://${request.hostname}/auth/idp/callback/${type}`;
+
+    // C1 FIX: Never accept redirect_uri from query params (open redirect attack vector).
+    // Always derive callback URL from the server's own origin.
+    const redirectUri = `${request.protocol}://${request.hostname}/auth/idp/callback/${type}`;
 
     // Store state for validation on callback
     pendingAuthStates.set(state, {
@@ -184,7 +183,8 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
 
     // Handle IdP-reported errors
     if (query.error) {
-      log.warn("IdP callback error", { type, error: query.error });
+      // W6 FIX: Log full error_description server-side, return only generic message to client
+      log.warn("IdP callback error", { type, error: query.error, description: query.error_description });
       audit("auth.idp.callback", "failure", { duz: "anonymous" }, {
         requestId: (request as any).requestId,
         sourceIp: request.ip,
@@ -192,8 +192,7 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
       });
       return reply.code(400).send({
         ok: false,
-        error: `IdP error: ${query.error}`,
-        description: query.error_description,
+        error: "Authentication failed at identity provider",
       });
     }
 

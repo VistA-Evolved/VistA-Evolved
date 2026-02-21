@@ -18,10 +18,9 @@
  *   IDP_OIDC_SCOPES        -- Space-separated scopes (default: "openid profile email")
  */
 
-import { createHash } from "crypto";
 import { log } from "../../lib/logger.js";
 import { validateJwt, type JwtValidationResult } from "../jwt-validator.js";
-import { getOidcConfig, mapClaimsToUserMeta, type OidcTokenClaims } from "../oidc-provider.js";
+import { mapClaimsToUserMeta, type OidcTokenClaims } from "../oidc-provider.js";
 import { mapUserRole, type UserRole } from "../session-store.js";
 import { resolveTenantId } from "../../config/tenant-config.js";
 import type {
@@ -130,6 +129,9 @@ function mapClaimsToIdentity(
   }
 
   const facilityStation = userMeta.facilityStation || "500";
+  if (!userMeta.facilityStation) {
+    log.warn("OIDC claims missing facility_station, defaulting to 500 (sandbox)");
+  }
   const tenantId = userMeta.tenantId || resolveTenantId(facilityStation);
 
   return {
@@ -184,13 +186,15 @@ export class OidcIdentityProvider implements IdentityProvider {
   }
 
   async handleCallback(params: CallbackParams): Promise<IdentityResult> {
-    // Validate state (CSRF protection)
+    // Validate state (CSRF protection) -- C2 FIX: mandatory when expectedState is set
     if (!params.code) {
       return { ok: false, error: "Missing authorization code" };
     }
-    if (params.state && params.expectedState && params.state !== params.expectedState) {
-      log.warn("OIDC callback state mismatch", { sourceIp: params.sourceIp });
-      return { ok: false, error: "State mismatch -- possible CSRF attack" };
+    if (params.expectedState) {
+      if (!params.state || params.state !== params.expectedState) {
+        log.warn("OIDC callback state mismatch", { sourceIp: params.sourceIp });
+        return { ok: false, error: "State mismatch -- possible CSRF attack" };
+      }
     }
 
     // Exchange code for tokens
@@ -210,10 +214,12 @@ export class OidcIdentityProvider implements IdentityProvider {
       return { ok: false, error: `ID token validation failed: ${jwtResult.error}` };
     }
 
-    // Validate nonce
-    if (params.expectedNonce && jwtResult.claims.nonce !== params.expectedNonce) {
-      log.warn("OIDC nonce mismatch");
-      return { ok: false, error: "Nonce mismatch -- possible replay attack" };
+    // Validate nonce -- C3 FIX: mandatory when expectedNonce is set
+    if (params.expectedNonce) {
+      if (!jwtResult.claims.nonce || jwtResult.claims.nonce !== params.expectedNonce) {
+        log.warn("OIDC nonce mismatch");
+        return { ok: false, error: "Nonce mismatch -- possible replay attack" };
+      }
     }
 
     // Map claims to identity

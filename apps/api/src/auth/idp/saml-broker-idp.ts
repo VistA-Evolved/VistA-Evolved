@@ -135,9 +135,12 @@ export class SamlBrokerIdentityProvider implements IdentityProvider {
     if (!params.code) {
       return { ok: false, error: "Missing authorization code from broker" };
     }
-    if (params.state && params.expectedState && params.state !== params.expectedState) {
-      log.warn("SAML broker state mismatch", { sourceIp: params.sourceIp });
-      return { ok: false, error: "State mismatch -- possible CSRF attack" };
+    // C2 FIX: mandatory state check when expectedState is set
+    if (params.expectedState) {
+      if (!params.state || params.state !== params.expectedState) {
+        log.warn("SAML broker state mismatch", { sourceIp: params.sourceIp });
+        return { ok: false, error: "State mismatch -- possible CSRF attack" };
+      }
     }
 
     // Exchange code via the broker's OIDC endpoint
@@ -157,10 +160,12 @@ export class SamlBrokerIdentityProvider implements IdentityProvider {
       return { ok: false, error: `Broker ID token invalid: ${jwtResult.error}` };
     }
 
-    // Validate nonce
-    if (params.expectedNonce && jwtResult.claims.nonce !== params.expectedNonce) {
-      log.warn("SAML broker nonce mismatch");
-      return { ok: false, error: "Nonce mismatch -- possible replay attack" };
+    // Validate nonce -- C3 FIX: mandatory when expectedNonce is set
+    if (params.expectedNonce) {
+      if (!jwtResult.claims.nonce || jwtResult.claims.nonce !== params.expectedNonce) {
+        log.warn("SAML broker nonce mismatch");
+        return { ok: false, error: "Nonce mismatch -- possible replay attack" };
+      }
     }
 
     // Map claims to identity
@@ -178,6 +183,9 @@ export class SamlBrokerIdentityProvider implements IdentityProvider {
     }
 
     const facilityStation = userMeta.facilityStation || "500";
+    if (!userMeta.facilityStation) {
+      log.warn("SAML broker claims missing facility_station, defaulting to 500 (sandbox)");
+    }
     const tenantId = userMeta.tenantId || resolveTenantId(facilityStation);
 
     return {
