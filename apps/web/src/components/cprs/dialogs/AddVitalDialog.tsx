@@ -74,8 +74,7 @@ export default function AddVitalDialog() {
     const draft: Vital = {
       type: label,
       value: value.trim(),
-      date: new Date().toISOString().slice(0, 10),
-      units: units || '',
+      takenAt: new Date().toISOString().slice(0, 10),
     };
     addLocalItem(dfn, 'vitals', draft);
     setSyncStatus('local');

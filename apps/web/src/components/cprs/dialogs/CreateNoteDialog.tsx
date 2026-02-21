@@ -63,7 +63,8 @@ export default function CreateNoteDialog() {
       title: 'Draft Note',
       date: new Date().toISOString().slice(0, 10),
       author: 'Current User',
-      text: noteText.trim(),
+      location: '',
+      status: 'Draft',
     };
     addLocalItem(dfn, 'notes', draft);
     setSyncStatus('local');

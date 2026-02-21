@@ -65,7 +65,7 @@ export default function AddAllergyDialog() {
   function saveLocal() {
     addLocalItem(dfn, 'allergies', {
       id: `draft-${Date.now()}`,
-      name: reactant.trim(),
+      allergen: reactant.trim(),
       reactions: reactions || 'Unknown',
       severity: severity || 'Unknown',
     });

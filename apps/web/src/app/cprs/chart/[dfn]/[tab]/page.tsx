@@ -142,9 +142,11 @@ export default function CPRSChartPage({ params }: ChartPageProps) {
             flexDirection: 'column',
             gap: 2,
           }}>
-            {['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports', 'imaging']
+            {['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports', 'imaging', 'immunizations', 'adt', 'intake', 'telehealth', 'tasks', 'aiassist']
               .filter((t) => isModuleEnabled(t))
-              .map((t) => (
+              .map((t) => {
+              const label = ({ cover: 'Cover Sheet', dcsumm: 'DC Summaries', adt: 'ADT', aiassist: 'AI Assist' } as Record<string, string>)[t] ?? t.charAt(0).toUpperCase() + t.slice(1);
+              return (
               <a
                 key={t}
                 href={`/cprs/chart/${dfn}/${t}`}
@@ -159,9 +161,10 @@ export default function CPRSChartPage({ params }: ChartPageProps) {
                   borderLeft: t === tab ? '3px solid var(--cprs-accent, #2563eb)' : '3px solid transparent',
                 }}
               >
-                {t === 'cover' ? 'Cover Sheet' : t === 'dcsumm' ? 'DC Summaries' : t.charAt(0).toUpperCase() + t.slice(1)}
+                {label}
               </a>
-            ))}
+              );
+            })}
           </nav>
         )}
         <main className={styles.content} style={{ flex: 1, overflow: 'auto', padding: isModern ? 16 : 8 }}>

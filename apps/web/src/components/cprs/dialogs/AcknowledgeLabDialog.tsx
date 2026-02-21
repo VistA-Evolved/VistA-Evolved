@@ -14,7 +14,8 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 export default function AcknowledgeLabDialog() {
   const { closeModal, modalData } = useCPRSUI();
   const dfn = String(modalData?.dfn ?? '');
-  const labIds: string[] = modalData?.labIds ?? [];
+  const rawLabIds = modalData?.labIds;
+  const labIds: string[] = Array.isArray(rawLabIds) ? rawLabIds : [];
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
