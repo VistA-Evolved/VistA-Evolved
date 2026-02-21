@@ -148,9 +148,13 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "GMV ADD VM",               domain: "vitals",     tag: "write", description: "Add vital measurement" },
   { name: "ORQQVI VITALS",            domain: "vitals",     tag: "read",  description: "Get patient vitals" },
 
-  // --- Messaging (Phase 64: MailMan-backed secure messaging) ---
+  // --- Messaging (Phase 70: ZVEMSGR.m MailMan RPC bridge) ---
   { name: "ORQQXMB MAIL GROUPS",      domain: "messaging",  tag: "read",  description: "List MailMan mail groups for recipient selection" },
-  { name: "DSIC SEND MAIL MSG",       domain: "messaging",  tag: "write", description: "Send message via VistA MailMan (XMXAPI wrapper)" },
+  { name: "ZVE MAIL FOLDERS",         domain: "messaging",  tag: "read",  description: "List MailMan baskets/folders with counts (ZVEMSGR.m)" },
+  { name: "ZVE MAIL LIST",            domain: "messaging",  tag: "read",  description: "List messages in a MailMan basket (ZVEMSGR.m)" },
+  { name: "ZVE MAIL GET",             domain: "messaging",  tag: "read",  description: "Read MailMan message header+body+recipients (ZVEMSGR.m)" },
+  { name: "ZVE MAIL SEND",            domain: "messaging",  tag: "write", description: "Send MailMan message via XMXSEND with inline delivery (ZVEMSGR.m)" },
+  { name: "ZVE MAIL MANAGE",          domain: "messaging",  tag: "write", description: "Mark read/delete/move MailMan message (ZVEMSGR.m)" },
 ];
 
 /**
@@ -174,7 +178,11 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
   { name: "TIU SET RECORD TEXT", reason: "TIU note text writer; absent from Vivian snapshot despite being core CPRS functionality" },
   { name: "ORWCIRN FACILITIES", reason: "Remote facility list; Vivian has ORWCIRN FACLIST but not this exact name variant" },
   { name: "VE RCM PROVIDER INFO", reason: "Custom RPC installed by VistA-Evolved (ZVERCMP.m) for provider NPI + facility identifiers (Phase 42)" },
-  { name: "DSIC SEND MAIL MSG", reason: "DSIC (Decision Support Infrastructure Coalition) MailMan wrapper via XMXAPI; DSIC package not in standard Vivian snapshot (Phase 64)" },
+  { name: "ZVE MAIL FOLDERS", reason: "Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan basket listing (Phase 70)" },
+  { name: "ZVE MAIL LIST", reason: "Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan message listing (Phase 70)" },
+  { name: "ZVE MAIL GET", reason: "Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan message detail (Phase 70)" },
+  { name: "ZVE MAIL SEND", reason: "Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan message send (Phase 70)" },
+  { name: "ZVE MAIL MANAGE", reason: "Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan message management (Phase 70)" },
 ];
 
 /* ------------------------------------------------------------------ */

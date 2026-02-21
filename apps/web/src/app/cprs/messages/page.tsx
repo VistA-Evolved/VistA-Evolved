@@ -44,6 +44,37 @@ interface MailGroup {
   ien: string;
 }
 
+/** VistA MailMan folder from ZVE MAIL FOLDERS */
+interface MailFolder {
+  id: string;
+  name: string;
+  totalMessages: number;
+  newMessages: number;
+}
+
+/** VistA MailMan message summary from ZVE MAIL LIST */
+interface MailMessageSummary {
+  ien: string;
+  subject: string;
+  fromDuz: string;
+  fromName: string;
+  date: string;
+  direction: 'outbound' | 'inbound';
+  isNew: boolean;
+}
+
+/** VistA MailMan message detail from ZVE MAIL GET */
+interface MailMessageDetail {
+  ien: string;
+  subject: string;
+  fromDuz: string;
+  fromName: string;
+  date: string;
+  direction: 'outbound' | 'inbound';
+  bodyLines: string[];
+  recipients: Array<{ duz: string; name: string; readDate: string }>;
+}
+
 /* ------------------------------------------------------------------ */
 /* Component                                                           */
 /* ------------------------------------------------------------------ */
@@ -55,13 +86,20 @@ export default function MessagesPage() {
   // Tab state
   const [tab, setTab] = useState<'inbox' | 'sent' | 'compose'>('inbox');
 
-  // Inbox state
+  // VistA MailMan state (primary)
+  const [folders, setFolders] = useState<MailFolder[]>([]);
+  const [selectedFolderId, setSelectedFolderId] = useState('1'); // 1=IN basket
+  const [vistaMessages, setVistaMessages] = useState<MailMessageSummary[]>([]);
+  const [vistaDetail, setVistaDetail] = useState<MailMessageDetail | null>(null);
+  const [vistaSource, setVistaSource] = useState<'vista' | 'local' | 'loading'>('loading');
+
+  // Fallback legacy state
   const [inboxMessages, setInboxMessages] = useState<SecureMessage[]>([]);
   const [sentMessages, setSentMessages] = useState<SecureMessage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Selected message
+  // Selected message (legacy)
   const [selectedMsg, setSelectedMsg] = useState<SecureMessage | null>(null);
 
   // Compose state
@@ -76,7 +114,54 @@ export default function MessagesPage() {
   const [composeError, setComposeError] = useState('');
   const [composeSuccess, setComposeSuccess] = useState('');
 
-  /* ---- Data Loading ---- */
+  /* ---- VistA Data Loading (Primary) ---- */
+
+  const fetchFolders = useCallback(async () => {
+    try {
+      const res = await fetch(`${API_BASE}/messaging/folders`, { credentials: 'include' });
+      const data = await res.json();
+      if (data.ok && data.folders) {
+        setFolders(data.folders);
+        setVistaSource(data.source || 'vista');
+      }
+    } catch { /* silent */ }
+  }, []);
+
+  const fetchVistaMessages = useCallback(async (folderId: string) => {
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch(`${API_BASE}/messaging/mail-list?folderId=${folderId}&limit=100`, { credentials: 'include' });
+      const data = await res.json();
+      if (data.ok && data.source === 'vista') {
+        setVistaMessages(data.messages || []);
+        setVistaSource('vista');
+      } else {
+        setVistaSource('local');
+        // Fall back to legacy inbox
+        const fallbackRes = await fetch(`${API_BASE}/messaging/inbox`, { credentials: 'include' });
+        const fbData = await fallbackRes.json();
+        if (fbData.ok) setInboxMessages(fbData.messages || []);
+      }
+    } catch {
+      setVistaSource('local');
+      setError('Cannot reach API server');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const fetchVistaDetail = useCallback(async (ien: string) => {
+    try {
+      const res = await fetch(`${API_BASE}/messaging/mail-get?ien=${ien}`, { credentials: 'include' });
+      const data = await res.json();
+      if (data.ok && data.message) {
+        setVistaDetail(data.message);
+      }
+    } catch { /* silent */ }
+  }, []);
+
+  /* ---- Legacy Data Loading (Fallback) ---- */
 
   const fetchInbox = useCallback(async () => {
     setLoading(true);
@@ -116,15 +201,17 @@ export default function MessagesPage() {
   }, []);
 
   useEffect(() => {
-    fetchInbox();
+    fetchFolders();
+    fetchVistaMessages(selectedFolderId);
     fetchSent();
     fetchMailGroups();
-  }, [fetchInbox, fetchSent, fetchMailGroups]);
+  }, [fetchFolders, fetchVistaMessages, selectedFolderId, fetchSent, fetchMailGroups]);
 
   /* ---- Message Detail ---- */
 
   const openMessage = useCallback(async (msg: SecureMessage) => {
     setSelectedMsg(msg);
+    setVistaDetail(null);
     // Mark as read on the server
     if (!msg.readAt) {
       try {
@@ -135,6 +222,26 @@ export default function MessagesPage() {
       } catch { /* silent */ }
     }
   }, []);
+
+  const openVistaMessage = useCallback(async (msg: MailMessageSummary) => {
+    setSelectedMsg(null);
+    setVistaDetail(null);
+    await fetchVistaDetail(msg.ien);
+    // Mark as read via VistA
+    if (msg.isNew) {
+      try {
+        await fetch(`${API_BASE}/messaging/mail-manage`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'markread', ien: msg.ien, basket: selectedFolderId }),
+        });
+        // Refresh folder counts
+        fetchFolders();
+        fetchVistaMessages(selectedFolderId);
+      } catch { /* silent */ }
+    }
+  }, [fetchVistaDetail, selectedFolderId, fetchFolders, fetchVistaMessages]);
 
   /* ---- Compose + Send ---- */
 
@@ -183,7 +290,8 @@ export default function MessagesPage() {
         setComposeSubject('');
         setComposeBody('');
         setComposePriority('routine');
-        fetchInbox();
+        fetchFolders();
+        fetchVistaMessages(selectedFolderId);
         fetchSent();
       } else {
         setComposeError(data.error || 'Failed to send');
@@ -193,7 +301,7 @@ export default function MessagesPage() {
     } finally {
       setSending(false);
     }
-  }, [composeSubject, composeBody, composePriority, composeRecipientType, composeRecipientId, composeRecipientName, fetchInbox, fetchSent]);
+  }, [composeSubject, composeBody, composePriority, composeRecipientType, composeRecipientId, composeRecipientName, fetchFolders, fetchVistaMessages, selectedFolderId, fetchSent]);
 
   /* ---- Reply ---- */
 
@@ -230,7 +338,34 @@ export default function MessagesPage() {
       <CPRSMenuBar />
 
       <div style={{ padding: '8px 16px' }}>
-        <h2 style={{ margin: '0 0 8px' }}>Secure Messages</h2>
+        <h2 style={{ margin: '0 0 8px' }}>
+          Secure Messages
+          {vistaSource === 'vista' && <span style={{ fontSize: '0.6em', color: '#28a745', marginLeft: '8px' }}>VistA MailMan</span>}
+          {vistaSource === 'local' && <span style={{ fontSize: '0.6em', color: '#fd7e14', marginLeft: '8px' }}>Local fallback</span>}
+        </h2>
+
+        {/* Folder selector (VistA baskets) */}
+        {vistaSource === 'vista' && folders.length > 0 && (
+          <div style={{ display: 'flex', gap: '4px', marginBottom: '6px' }}>
+            {folders.map(f => (
+              <button
+                key={f.id}
+                onClick={() => { setSelectedFolderId(f.id); setVistaDetail(null); }}
+                style={{
+                  padding: '3px 10px',
+                  fontSize: '0.8em',
+                  background: selectedFolderId === f.id ? 'var(--cprs-accent, #0078d4)' : 'var(--cprs-bg-secondary, #f0f0f0)',
+                  color: selectedFolderId === f.id ? 'white' : 'inherit',
+                  border: 'none',
+                  borderRadius: '3px',
+                  cursor: 'pointer',
+                }}
+              >
+                {f.name} ({f.totalMessages}{f.newMessages > 0 ? `, ${f.newMessages} new` : ''})
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Tabs */}
         <div style={{ display: 'flex', gap: '4px', marginBottom: '8px', borderBottom: '1px solid var(--cprs-border)' }}>
@@ -262,9 +397,39 @@ export default function MessagesPage() {
             <div style={{ flex: '0 0 45%', maxHeight: '60vh', overflowY: 'auto', borderRight: '1px solid var(--cprs-border)' }}>
               {loading ? (
                 <div style={{ padding: '16px', color: 'var(--cprs-text-muted)' }}>Loading...</div>
+              ) : vistaSource === 'vista' && vistaMessages.length > 0 ? (
+                /* VistA MailMan messages (primary) */
+                vistaMessages.map(msg => (
+                  <div
+                    key={msg.ien}
+                    onClick={() => openVistaMessage(msg)}
+                    style={{
+                      padding: '8px 12px',
+                      borderBottom: '1px solid var(--cprs-border)',
+                      cursor: 'pointer',
+                      background: vistaDetail?.ien === msg.ien ? 'var(--cprs-bg-active, #e8e8e8)' : 'transparent',
+                      fontWeight: msg.isNew ? 700 : 400,
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span style={{ fontSize: '0.85em' }}>{msg.fromName || `DUZ ${msg.fromDuz}`}</span>
+                      <span style={{ fontSize: '0.75em', color: 'var(--cprs-text-muted)' }}>{formatDate(msg.date)}</span>
+                    </div>
+                    <div style={{ fontSize: '0.9em', marginTop: '2px' }}>
+                      {msg.isNew && <span style={{ color: '#0078d4', marginRight: '4px' }}>[NEW]</span>}
+                      {msg.subject}
+                    </div>
+                    <div style={{ fontSize: '0.75em', color: '#28a745', marginTop: '2px' }}>
+                      VistA IEN: {msg.ien}
+                    </div>
+                  </div>
+                ))
+              ) : vistaSource === 'vista' && vistaMessages.length === 0 ? (
+                <div style={{ padding: '16px', color: 'var(--cprs-text-muted)' }}>No messages in this basket</div>
               ) : inboxMessages.length === 0 ? (
-                <div style={{ padding: '16px', color: 'var(--cprs-text-muted)' }}>No messages. Inbox shows locally-stored messages. Full VistA MailMan basket sync requires ZVEMSGR.m (integration pending).</div>
+                <div style={{ padding: '16px', color: 'var(--cprs-text-muted)' }}>No messages in local cache.</div>
               ) : (
+                /* Fallback: local cache messages */
                 inboxMessages.map(msg => (
                   <div
                     key={msg.id}
@@ -297,7 +462,56 @@ export default function MessagesPage() {
 
             {/* Message Detail */}
             <div style={{ flex: 1, padding: '0 12px' }}>
-              {selectedMsg ? (
+              {vistaDetail ? (
+                /* VistA message detail */
+                <div>
+                  <h3 style={{ margin: '0 0 4px' }}>{vistaDetail.subject}</h3>
+                  <div style={{ fontSize: '0.85em', color: 'var(--cprs-text-muted)', marginBottom: '8px' }}>
+                    From: {vistaDetail.fromName || `DUZ ${vistaDetail.fromDuz}`} | {formatDate(vistaDetail.date)}
+                  </div>
+                  {vistaDetail.recipients.length > 0 && (
+                    <div style={{ fontSize: '0.85em', color: 'var(--cprs-text-muted)', marginBottom: '12px' }}>
+                      To: {vistaDetail.recipients.map(r => r.name || `DUZ ${r.duz}`).join(', ')}
+                    </div>
+                  )}
+                  <div style={{
+                    whiteSpace: 'pre-wrap',
+                    background: 'var(--cprs-bg-secondary, #f5f5f5)',
+                    padding: '12px',
+                    borderRadius: '4px',
+                    fontSize: '0.9em',
+                    minHeight: '120px',
+                    marginBottom: '12px',
+                  }}>
+                    {vistaDetail.bodyLines.join('\n')}
+                  </div>
+                  <div style={{ fontSize: '0.7em', color: '#28a745', marginBottom: '6px' }}>
+                    Source: VistA MailMan (IEN {vistaDetail.ien})
+                  </div>
+                  <button
+                    onClick={() => {
+                      setTab('compose');
+                      setComposeSubject(`RE: ${vistaDetail.subject}`);
+                      setComposeBody('');
+                      if (vistaDetail.fromDuz) {
+                        setComposeRecipientType('user');
+                        setComposeRecipientId(vistaDetail.fromDuz);
+                        setComposeRecipientName(vistaDetail.fromName || `User ${vistaDetail.fromDuz}`);
+                      }
+                    }}
+                    style={{
+                      padding: '6px 16px',
+                      background: 'var(--cprs-accent, #0078d4)',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '3px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Reply
+                  </button>
+                </div>
+              ) : selectedMsg ? (
                 <div>
                   <h3 style={{ margin: '0 0 4px' }}>{selectedMsg.subject}</h3>
                   <div style={{ fontSize: '0.85em', color: 'var(--cprs-text-muted)', marginBottom: '8px' }}>

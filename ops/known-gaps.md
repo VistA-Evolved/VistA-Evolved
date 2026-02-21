@@ -1,6 +1,6 @@
 # Phase 14 — CPRS Parity Closure — Known Gaps
 
-> Updated: 2026-02-17 (Phase 14 verify)
+> Updated: Phase 70 (MailMan RPC Bridge)
 > Verification: 130 PASS / 0 FAIL / 0 WARN / 1 INFO
 > Verifier: verify-phase1-to-phase14-parity-closure.ps1
 > RPC Capability Discovery: 38 of 39 RPCs available on WorldVistA Docker
@@ -104,3 +104,20 @@ The WorldVistA Docker sandbox has limited clinical data for test patients:
 
 Server-side drafts use in-memory Map (lost on restart).
 **Next step:** Add Redis or SQLite persistence for production use.
+## Phase 70 — MailMan RPC Bridge
+
+### Resolved
+| Gap | Resolution |
+|-----|-----------|
+| Inbox reads local store only | VistA MailMan inbox via ZVE MAIL LIST + ZVE MAIL GET |
+| DSIC SEND MAIL MSG missing | Replaced with ZVE MAIL SEND (XMXSEND wrapper) |
+| Read state local only | ZVE MAIL MANAGE marks read in VistA ^XMB(3.7) |
+| No folder/basket support | ZVE MAIL FOLDERS returns basket list with counts |
+
+### Remaining
+| Gap | Impact | Mitigation |
+|-----|--------|-----------|
+| TaskMan not running in Docker | Messages delivered inline by ZVEMSGR DELIVER, not by TaskMan | Inline delivery handles sender+recipient baskets |
+| Portal messaging uses patient-DFN as DUZ | Portal patients don't have real VistA DUZ | Portal send creates MailMan message from session DUZ |
+| No thread/conversation model in MailMan | MailMan messages are flat, no thread IEN | Subject-based RE: threading in UI only |
+| Fallback cache not persisted | Local cache Map resets on API restart | VistA is source of truth; cache is ephemeral |

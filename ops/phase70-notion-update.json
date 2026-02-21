@@ -1,0 +1,10 @@
+{
+  "feature_title": "Phase 70 -- MailMan RPC Bridge (ZVEMSGR.m)",
+  "stage": "Implemented",
+  "status": "Complete",
+  "prompt_ref": "prompts/70-PHASE-70-MAILMAN-RPC-BRIDGE/70-01-IMPLEMENT.md",
+  "runbook_path": "docs/runbooks/phase70-mailman-bridge.md",
+  "verify_script": "scripts/verify-phase70-mailman-bridge.ps1",
+  "commit_sha": "pending",
+  "summary": "Replaced Phase 64 local-store messaging with VistA MailMan-backed ZVEMSGR.m routine. 5 RPCs (FOLDERS/LIST/GET/SEND/MANAGE) registered in VistA. API rewritten with VistA primary path + local fallback. UI shows VistA folder selector and real MailMan messages."
+}

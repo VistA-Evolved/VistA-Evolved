@@ -1,17 +1,23 @@
 /**
- * Secure Messaging Routes -- Phase 64: MailMan-backed clinician + portal messaging.
+ * Secure Messaging Routes -- Phase 70: ZVEMSGR.m MailMan RPC bridge.
  *
- * Endpoints:
- *   GET  /messaging/inbox              -- clinician inbox (sent + received)
- *   GET  /messaging/sent               -- clinician sent messages
- *   GET  /messaging/message/:id        -- single message detail
- *   GET  /messaging/thread/:threadId   -- message thread
- *   POST /messaging/message/:id/read   -- mark message as read
- *   POST /messaging/compose            -- compose + send message
- *   GET  /messaging/mail-groups        -- available mail groups (recipients)
- *   POST /messaging/portal/send        -- portal patient sends to clinic group
- *   GET  /messaging/portal/inbox       -- portal patient inbox
- *   GET  /messaging/health             -- messaging health check
+ * VistA-backed endpoints (primary path):
+ *   GET  /messaging/folders             -- VistA MailMan baskets with counts
+ *   GET  /messaging/mail-list           -- messages in a VistA basket
+ *   GET  /messaging/mail-get            -- single VistA message (header+body+recipients)
+ *   POST /messaging/mail-manage         -- mark read/delete/move via VistA
+ *
+ * Legacy + fallback endpoints:
+ *   GET  /messaging/inbox               -- clinician inbox (fallback cache)
+ *   GET  /messaging/sent                -- clinician sent (fallback cache)
+ *   GET  /messaging/message/:id         -- single message (fallback cache)
+ *   GET  /messaging/thread/:threadId    -- thread (fallback cache)
+ *   POST /messaging/message/:id/read    -- mark read (fallback cache)
+ *   POST /messaging/compose             -- compose + send (VistA primary, cache fallback)
+ *   GET  /messaging/mail-groups         -- available mail groups (VistA)
+ *   POST /messaging/portal/send         -- portal send (VistA primary)
+ *   GET  /messaging/portal/inbox        -- portal inbox (fallback cache)
+ *   GET  /messaging/health              -- messaging health check
  *
  * Auth: session-based (default AUTH_RULES).
  * Security: message bodies are NEVER logged or audited.
@@ -31,6 +37,10 @@ import {
   getPortalMessages,
   isRateLimited,
   getMessageStats,
+  listFolders,
+  listMessages,
+  getVistaMessage,
+  manageMessage,
 } from "../../services/secure-messaging.js";
 import { immutableAudit } from "../../lib/immutable-audit.js";
 import { log } from "../../lib/logger.js";
@@ -75,6 +85,58 @@ function sanitizeForAudit(msg: { subject?: string; recipients?: unknown[]; body?
 /* ------------------------------------------------------------------ */
 
 export default async function messagingRoutes(server: FastifyInstance) {
+
+  /* ================================================================ */
+  /* VistA-backed endpoints (Phase 70 -- primary path)                 */
+  /* ================================================================ */
+
+  /* ---- GET /messaging/folders ---- */
+  server.get("/messaging/folders", async (request, reply) => {
+    if (!requireSession(request, reply)) return;
+    const result = await listFolders();
+    return { ok: result.ok, source: result.source, folders: result.folders, error: result.error };
+  });
+
+  /* ---- GET /messaging/mail-list ---- */
+  server.get("/messaging/mail-list", async (request, reply) => {
+    if (!requireSession(request, reply)) return;
+    const folderId = (request.query as any)?.folderId || "1";
+    const limit = Number((request.query as any)?.limit) || 50;
+    const result = await listMessages(folderId, limit);
+    return { ok: result.ok, source: result.source, count: result.messages.length, messages: result.messages, error: result.error };
+  });
+
+  /* ---- GET /messaging/mail-get ---- */
+  server.get("/messaging/mail-get", async (request, reply) => {
+    if (!requireSession(request, reply)) return;
+    const ien = (request.query as any)?.ien;
+    if (!ien) return reply.code(400).send({ ok: false, error: "Missing ien query parameter" });
+    const result = await getVistaMessage(ien);
+    if (!result.ok) return reply.code(result.source === "vista" ? 404 : 502).send(result);
+    return { ok: true, source: result.source, message: result.message };
+  });
+
+  /* ---- POST /messaging/mail-manage ---- */
+  server.post("/messaging/mail-manage", async (request, reply) => {
+    if (!requireSession(request, reply)) return;
+    const body = (request.body as any) || {};
+    const action = body.action;
+    if (!action || !body.ien) {
+      return reply.code(400).send({ ok: false, error: "Missing required: action (markread|delete|move), ien" });
+    }
+    if (!["markread", "delete", "move"].includes(action)) {
+      return reply.code(400).send({ ok: false, error: "action must be markread, delete, or move" });
+    }
+    const result = await manageMessage(action, body.ien, body.basket, body.toBasket);
+    immutableAudit("messaging.manage", result.ok ? "success" : "failure", auditActor(request), {
+      detail: { action, ien: body.ien },
+    });
+    return result;
+  });
+
+  /* ================================================================ */
+  /* Legacy / fallback endpoints                                       */
+  /* ================================================================ */
 
   /* ---- GET /messaging/inbox ---- */
   server.get("/messaging/inbox", async (request, reply) => {
@@ -279,16 +341,27 @@ export default async function messagingRoutes(server: FastifyInstance) {
     } catch {
       mailGroupStatus = "unavailable";
     }
+    let folderStatus = "unknown";
+    try {
+      const folders = await listFolders();
+      folderStatus = folders.ok ? `ok (${folders.folders.length} baskets)` : "unavailable";
+    } catch {
+      folderStatus = "unavailable";
+    }
     return {
       ok: true,
       module: "secure-messaging",
-      phase: 64,
+      phase: 70,
       vistaRpcs: {
-        send: "DSIC SEND MAIL MSG",
+        folders: "ZVE MAIL FOLDERS",
+        list: "ZVE MAIL LIST",
+        get: "ZVE MAIL GET",
+        send: "ZVE MAIL SEND",
+        manage: "ZVE MAIL MANAGE",
         mailGroups: "ORQQXMB MAIL GROUPS",
-        readInbox: "pending -- requires ZVEMSGR.m custom routine",
       },
       mailGroupStatus,
+      folderStatus,
       stats,
     };
   });

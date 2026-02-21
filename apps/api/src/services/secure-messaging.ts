@@ -1,16 +1,18 @@
 /**
- * Secure Messaging Service -- Phase 64: MailMan-backed clinician + portal messaging.
+ * Secure Messaging Service -- Phase 70: VistA-backed MailMan via ZVEMSGR.m RPCs.
  *
  * Architecture:
- *   - In-memory message store for local inbox (sent + received copies)
- *   - VistA MailMan integration via DSIC SEND MAIL MSG RPC for outbound
- *   - ORQQXMB MAIL GROUPS for recipient discovery
- *   - Portal messages routed to configured clinic mail group
+ *   - PRIMARY: VistA MailMan via ZVE MAIL * RPCs (ZVEMSGR.m)
+ *   - FALLBACK: In-memory cache (offline mode) when VistA is unreachable
+ *   - ORQQXMB MAIL GROUPS for recipient/mail-group discovery
  *
- * VistA read-inbox gap:
- *   MailMan baskets (^XMB(3.9)) have no standard read RPC.
- *   Phase 64 stores local copies of sent messages.
- *   Full inbox sync requires custom ZVEMSGR.m (migration target).
+ * RPCs used (all registered in rpcRegistry.ts):
+ *   ZVE MAIL FOLDERS  -- list baskets with counts
+ *   ZVE MAIL LIST     -- list messages in basket (metadata)
+ *   ZVE MAIL GET      -- read message (header + body)
+ *   ZVE MAIL SEND     -- send via MailMan + inline delivery
+ *   ZVE MAIL MANAGE   -- mark read / delete / move
+ *   ORQQXMB MAIL GROUPS -- mail group recipient list
  *
  * Security:
  *   - Message bodies are PHI -- NEVER logged or audited
@@ -67,10 +69,10 @@ export interface MailGroup {
 }
 
 /* ------------------------------------------------------------------ */
-/* In-Memory Store (resets on API restart -- like Phase 23/30 pattern)  */
+/* In-Memory Fallback Cache (only used when VistA is unreachable)      */
 /* ------------------------------------------------------------------ */
 
-const messageStore = new Map<string, SecureMessage>();
+const fallbackCache = new Map<string, SecureMessage>();
 const mailGroupCache: { groups: MailGroup[]; fetchedAt: number } = { groups: [], fetchedAt: 0 };
 const MAIL_GROUP_CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
@@ -97,52 +99,194 @@ function checkRateLimit(userId: string, isPortal: boolean): boolean {
 }
 
 /* ------------------------------------------------------------------ */
-/* MailMan RPC Integration                                             */
+/* VistA RPC Helpers                                                   */
 /* ------------------------------------------------------------------ */
 
+/** Convert VistA FileMan date (3YYMMDD.HHMMSS) to ISO string */
+function fmDateToISO(fmDate: string): string {
+  if (!fmDate || fmDate === "0") return "";
+  // FM date: 3YYMMDD.HHMMSS  (3 = century offset from 1700)
+  const intPart = fmDate.split(".")[0];
+  const timePart = fmDate.split(".")[1] || "000000";
+  const yr = 1700 + parseInt(intPart.substring(0, 3), 10);
+  const mo = intPart.substring(3, 5);
+  const dy = intPart.substring(5, 7);
+  const hh = timePart.substring(0, 2).padEnd(2, "0");
+  const mm = timePart.substring(2, 4).padEnd(2, "0");
+  const ss = timePart.substring(4, 6).padEnd(2, "0");
+  return `${yr}-${mo}-${dy}T${hh}:${mm}:${ss}.000Z`;
+}
+
+/* ------------------------------------------------------------------ */
+/* VistA-backed MailMan Integration (ZVEMSGR.m RPCs)                   */
+/* ------------------------------------------------------------------ */
+
+/** Basket/folder as returned by ZVE MAIL FOLDERS */
+export interface MailFolder {
+  id: string;
+  name: string;
+  totalMessages: number;
+  newMessages: number;
+}
+
 /**
- * Fetch mail groups from VistA via ORQQXMB MAIL GROUPS.
- * Results are cached for 5 minutes.
+ * List mail folders/baskets from VistA via ZVE MAIL FOLDERS.
  */
-export async function fetchMailGroups(): Promise<MailGroup[]> {
-  const now = Date.now();
-  if (mailGroupCache.groups.length > 0 && now - mailGroupCache.fetchedAt < MAIL_GROUP_CACHE_TTL_MS) {
-    return mailGroupCache.groups;
-  }
+export async function listFolders(): Promise<{
+  ok: boolean; source: "vista" | "local"; folders: MailFolder[]; error?: string;
+}> {
   try {
     const { safeCallRpc } = await import("../lib/rpc-resilience.js");
-    const lines = await safeCallRpc("ORQQXMB MAIL GROUPS", []);
-    if (!lines || lines.length === 0) return mailGroupCache.groups;
-    const groups: MailGroup[] = lines
-      .filter((l: string) => l.trim())
-      .map((line: string) => {
-        // Format: IEN^GroupName
-        const parts = line.split("^");
-        return {
-          ien: parts[0] || "",
-          name: parts[1] || parts[0] || "",
-          description: parts[2] || undefined,
-        };
-      }).filter((g: MailGroup) => g.ien && g.name);
-    mailGroupCache.groups = groups;
-    mailGroupCache.fetchedAt = now;
-    return groups;
+    const lines = await safeCallRpc("ZVE MAIL FOLDERS", []);
+    if (!lines || lines.length === 0 || !lines[0]?.startsWith("ok")) {
+      const err = lines?.[0] || "Empty response";
+      return { ok: false, source: "vista", folders: [], error: err };
+    }
+    const folders: MailFolder[] = [];
+    for (let i = 1; i < lines.length; i++) {
+      const parts = lines[i].split("^");
+      if (parts.length < 4) continue;
+      folders.push({
+        id: parts[0],
+        name: parts[1] || `Basket ${parts[0]}`,
+        totalMessages: parseInt(parts[2], 10) || 0,
+        newMessages: parseInt(parts[3], 10) || 0,
+      });
+    }
+    return { ok: true, source: "vista", folders };
   } catch (err) {
-    log.warn("Failed to fetch mail groups from VistA", { error: String(err) });
-    return mailGroupCache.groups;
+    log.warn("ZVE MAIL FOLDERS failed, using fallback", { error: String(err) });
+    return { ok: false, source: "local", folders: [], error: String(err) };
+  }
+}
+
+/** Message summary from ZVE MAIL LIST */
+export interface MailMessageSummary {
+  ien: string;
+  subject: string;
+  fromDuz: string;
+  fromName: string;
+  date: string;
+  direction: SecureMessageDirection;
+  isNew: boolean;
+}
+
+/**
+ * List messages in a folder via ZVE MAIL LIST.
+ */
+export async function listMessages(folderId: string, limit = 50): Promise<{
+  ok: boolean; source: "vista" | "local"; messages: MailMessageSummary[]; error?: string;
+}> {
+  try {
+    const { safeCallRpc } = await import("../lib/rpc-resilience.js");
+    const lines = await safeCallRpc("ZVE MAIL LIST", [folderId, String(limit)]);
+    if (!lines || lines.length === 0 || !lines[0]?.startsWith("ok")) {
+      const err = lines?.[0] || "Empty response";
+      return { ok: false, source: "vista", messages: [], error: err };
+    }
+    const messages: MailMessageSummary[] = [];
+    for (let i = 1; i < lines.length; i++) {
+      const parts = lines[i].split("^");
+      if (parts.length < 7) continue;
+      messages.push({
+        ien: parts[0],
+        subject: parts[1],
+        fromDuz: parts[2],
+        fromName: parts[3],
+        date: fmDateToISO(parts[4]),
+        direction: parts[5] as SecureMessageDirection,
+        isNew: parts[6] === "1",
+      });
+    }
+    return { ok: true, source: "vista", messages };
+  } catch (err) {
+    log.warn("ZVE MAIL LIST failed", { error: String(err) });
+    return { ok: false, source: "local", messages: [], error: String(err) };
+  }
+}
+
+/** Full message detail from ZVE MAIL GET */
+export interface MailMessageDetail {
+  ien: string;
+  subject: string;
+  fromDuz: string;
+  fromName: string;
+  date: string;
+  direction: SecureMessageDirection;
+  bodyLines: string[];
+  recipients: Array<{ duz: string; name: string; readDate: string }>;
+}
+
+/**
+ * Get a single message from VistA via ZVE MAIL GET.
+ * This also marks the message as read server-side.
+ */
+export async function getVistaMessage(messageIen: string): Promise<{
+  ok: boolean; source: "vista" | "local"; message?: MailMessageDetail; error?: string;
+}> {
+  try {
+    const { safeCallRpc } = await import("../lib/rpc-resilience.js");
+    const lines = await safeCallRpc("ZVE MAIL GET", [messageIen]);
+    if (!lines || lines.length === 0 || !lines[0]?.startsWith("ok")) {
+      const err = lines?.[0] || "Empty response";
+      return { ok: false, source: "vista", error: err };
+    }
+
+    let subject = "", fromDuz = "", fromName = "", date = "", direction: SecureMessageDirection = "inbound";
+    const bodyLines: string[] = [];
+    const recipients: Array<{ duz: string; name: string; readDate: string }> = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i];
+      const type = line.split("^")[0];
+      const rest = line.substring(type.length + 1);
+      if (type === "HDR") {
+        const hp = rest.split("^");
+        subject = hp[0] || "";
+        fromDuz = hp[1] || "";
+        fromName = hp[2] || "";
+        date = fmDateToISO(hp[3] || "");
+        direction = (hp[4] || "inbound") as SecureMessageDirection;
+      } else if (type === "BODY") {
+        bodyLines.push(rest);
+      } else if (type === "RECIP") {
+        const rp = rest.split("^");
+        recipients.push({
+          duz: rp[0] || "",
+          name: rp[1] || "",
+          readDate: rp[2] ? fmDateToISO(rp[2]) : "",
+        });
+      }
+    }
+
+    return {
+      ok: true,
+      source: "vista",
+      message: {
+        ien: messageIen,
+        subject,
+        fromDuz,
+        fromName,
+        date,
+        direction,
+        bodyLines,
+        recipients,
+      },
+    };
+  } catch (err) {
+    log.warn("ZVE MAIL GET failed", { error: String(err) });
+    return { ok: false, source: "local", error: String(err) };
   }
 }
 
 /**
- * Send a message via VistA MailMan using DSIC SEND MAIL MSG.
+ * Send a message via VistA MailMan using ZVE MAIL SEND.
  *
- * DSIC SEND MAIL MSG takes a LIST parameter with:
- *   ARR("SUBJ") = subject
- *   ARR("TEXT",1) = line1 ... ARR("TEXT",n) = lineN
- *   ARR("REC",1) = recipient1 ...
- *   ARR("FLAGS") = optional flags (P=priority, C=confidential, etc.)
- *
- * Returns the MailMan message IEN on success or null on failure.
+ * ZVE MAIL SEND takes LIST params:
+ *   PARAM("SUBJ") = subject
+ *   PARAM("TEXT",1..n) = body lines
+ *   PARAM("REC",1..n) = recipient specs (DUZ or G.groupname)
+ *   PARAM("PRI") = "P" for priority (optional)
  */
 export async function sendViaMailMan(
   subject: string,
@@ -153,8 +297,6 @@ export async function sendViaMailMan(
   try {
     const { safeCallRpcWithList } = await import("../lib/rpc-resilience.js");
 
-    // Build the LIST parameter map for DSIC SEND MAIL MSG
-    // Keys use MUMPS double-quote convention for string subscripts
     const listParams: Record<string, string> = {};
     listParams['"SUBJ"'] = subject;
 
@@ -177,28 +319,93 @@ export async function sendViaMailMan(
       recIdx++;
     }
 
-    // Priority flags
+    // Priority
     if (priority === "priority" || priority === "urgent") {
-      listParams['"FLAGS"'] = "P";
+      listParams['"PRI"'] = "P";
     }
 
-    // safeCallRpcWithList expects RpcParam[] -- wrap as single LIST param
-    const result = await safeCallRpcWithList("DSIC SEND MAIL MSG", [
+    const result = await safeCallRpcWithList("ZVE MAIL SEND", [
       { type: "list" as const, value: listParams },
     ]);
     const resultStr = Array.isArray(result) ? result.join("\n").trim() : "";
-    if (resultStr && !resultStr.startsWith("-1")) {
-      return { ok: true, vistaRef: resultStr };
+    if (resultStr.startsWith("ok^")) {
+      const vistaRef = resultStr.split("^")[1] || null;
+      return { ok: true, vistaRef };
     }
-    return { ok: false, vistaRef: null, error: resultStr || "Empty response from DSIC SEND MAIL MSG" };
+    return { ok: false, vistaRef: null, error: resultStr || "ZVE MAIL SEND returned no result" };
   } catch (err) {
-    log.warn("MailMan send failed", { error: String(err) });
+    log.warn("ZVE MAIL SEND failed", { error: String(err) });
     return { ok: false, vistaRef: null, error: String(err) };
   }
 }
 
+/**
+ * Manage messages: mark read, delete, move.
+ */
+export async function manageMessage(
+  action: "markread" | "delete" | "move",
+  messageIen: string,
+  basket?: string,
+  toBasket?: string,
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const { safeCallRpcWithList } = await import("../lib/rpc-resilience.js");
+    const listParams: Record<string, string> = {};
+    listParams['"ACTION"'] = action;
+    listParams['"XMZ"'] = messageIen;
+    if (basket) listParams['"BASKET"'] = basket;
+    if (toBasket) listParams['"TOBASKET"'] = toBasket;
+
+    const result = await safeCallRpcWithList("ZVE MAIL MANAGE", [
+      { type: "list" as const, value: listParams },
+    ]);
+    const resultStr = Array.isArray(result) ? result.join("\n").trim() : "";
+    if (resultStr.startsWith("ok^")) return { ok: true };
+    return { ok: false, error: resultStr };
+  } catch (err) {
+    log.warn("ZVE MAIL MANAGE failed", { error: String(err) });
+    return { ok: false, error: String(err) };
+  }
+}
+
 /* ------------------------------------------------------------------ */
-/* Core Service Functions                                              */
+/* Mail Groups (unchanged - uses ORQQXMB MAIL GROUPS)                  */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Fetch mail groups from VistA via ORQQXMB MAIL GROUPS.
+ * Results are cached for 5 minutes.
+ */
+export async function fetchMailGroups(): Promise<MailGroup[]> {
+  const now = Date.now();
+  if (mailGroupCache.groups.length > 0 && now - mailGroupCache.fetchedAt < MAIL_GROUP_CACHE_TTL_MS) {
+    return mailGroupCache.groups;
+  }
+  try {
+    const { safeCallRpc } = await import("../lib/rpc-resilience.js");
+    const lines = await safeCallRpc("ORQQXMB MAIL GROUPS", []);
+    if (!lines || lines.length === 0) return mailGroupCache.groups;
+    const groups: MailGroup[] = lines
+      .filter((l: string) => l.trim())
+      .map((line: string) => {
+        const parts = line.split("^");
+        return {
+          ien: parts[0] || "",
+          name: parts[1] || parts[0] || "",
+          description: parts[2] || undefined,
+        };
+      }).filter((g: MailGroup) => g.ien && g.name);
+    mailGroupCache.groups = groups;
+    mailGroupCache.fetchedAt = now;
+    return groups;
+  } catch (err) {
+    log.warn("Failed to fetch mail groups from VistA", { error: String(err) });
+    return mailGroupCache.groups;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Legacy Compatibility Layer (fallback cache + portal bridge)         */
 /* ------------------------------------------------------------------ */
 
 function generateId(): string {
@@ -206,14 +413,13 @@ function generateId(): string {
 }
 
 /**
- * Get inbox for a user (by DUZ). Returns sent + received messages.
- * In Phase 64, only locally-stored messages are visible.
- * Full VistA basket integration requires ZVEMSGR.m (migration target).
+ * Get inbox for a user (by DUZ).
+ * Phase 70: Primary path calls VistA (ZVE MAIL LIST).
+ * Fallback: returns from local cache if VistA unavailable.
  */
 export function getInbox(duz: string, limit = 50): SecureMessage[] {
   const messages: SecureMessage[] = [];
-  for (const msg of messageStore.values()) {
-    // Include messages FROM this user (sent) or TO this user
+  for (const msg of fallbackCache.values()) {
     const isFrom = msg.fromDuz === duz;
     const isTo = msg.recipients.some(r => r.type === "user" && r.id === duz);
     if (isFrom || isTo) {
@@ -226,11 +432,11 @@ export function getInbox(duz: string, limit = 50): SecureMessage[] {
 }
 
 /**
- * Get sent messages for a user.
+ * Get sent messages for a user (fallback cache).
  */
 export function getSentMessages(duz: string, limit = 50): SecureMessage[] {
   const messages: SecureMessage[] = [];
-  for (const msg of messageStore.values()) {
+  for (const msg of fallbackCache.values()) {
     if (msg.fromDuz === duz && msg.status === "sent") {
       messages.push(msg);
     }
@@ -241,28 +447,28 @@ export function getSentMessages(duz: string, limit = 50): SecureMessage[] {
 }
 
 /**
- * Get a single message by ID.
+ * Get a single message by local ID (fallback cache).
  */
 export function getMessage(id: string): SecureMessage | null {
-  return messageStore.get(id) || null;
+  return fallbackCache.get(id) || null;
 }
 
 /**
- * Get thread (all messages with same threadId).
+ * Get thread (fallback cache).
  */
 export function getThread(threadId: string): SecureMessage[] {
   const messages: SecureMessage[] = [];
-  for (const msg of messageStore.values()) {
+  for (const msg of fallbackCache.values()) {
     if (msg.threadId === threadId) messages.push(msg);
   }
   return messages.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
 }
 
 /**
- * Mark a message as read.
+ * Mark a message as read (fallback cache).
  */
 export function markAsRead(id: string): boolean {
-  const msg = messageStore.get(id);
+  const msg = fallbackCache.get(id);
   if (!msg) return false;
   msg.readAt = new Date().toISOString();
   msg.status = "read";
@@ -270,51 +476,7 @@ export function markAsRead(id: string): boolean {
 }
 
 /**
- * Create a draft message.
- */
-export function createDraft(params: {
-  fromDuz: string;
-  fromName: string;
-  recipients: SecureMessageRecipient[];
-  subject: string;
-  body: string;
-  priority?: SecureMessagePriority;
-  category?: SecureMessage["category"];
-  replyToId?: string;
-  patientDfn?: string;
-}): SecureMessage {
-  const id = generateId();
-  const now = new Date().toISOString();
-  const threadId = params.replyToId
-    ? (messageStore.get(params.replyToId)?.threadId || id)
-    : id;
-
-  const msg: SecureMessage = {
-    id,
-    threadId,
-    direction: "outbound",
-    fromDuz: params.fromDuz,
-    fromName: params.fromName,
-    recipients: params.recipients,
-    subject: params.subject,
-    body: params.body,
-    priority: params.priority || "routine",
-    status: "draft",
-    category: params.category || "clinical",
-    replyToId: params.replyToId || null,
-    createdAt: now,
-    sentAt: null,
-    readAt: null,
-    vistaSync: "not_synced",
-    vistaRef: null,
-    patientDfn: params.patientDfn || null,
-  };
-  messageStore.set(id, msg);
-  return msg;
-}
-
-/**
- * Send a message -- creates it if draft, then dispatches to MailMan.
+ * Send a message -- tries VistA first, caches locally for fallback.
  */
 export async function sendMessage(params: {
   fromDuz: string;
@@ -327,28 +489,42 @@ export async function sendMessage(params: {
   replyToId?: string;
   patientDfn?: string;
 }): Promise<{ ok: boolean; message: SecureMessage; vistaResult?: string }> {
-  const msg = createDraft(params);
+  const id = generateId();
   const now = new Date().toISOString();
+  const threadId = params.replyToId
+    ? (fallbackCache.get(params.replyToId)?.threadId || id)
+    : id;
 
-  // Attempt VistA MailMan send
+  // Attempt VistA MailMan send via ZVE MAIL SEND
   const vistaResult = await sendViaMailMan(
-    msg.subject,
-    msg.body,
-    msg.recipients,
-    msg.priority,
+    params.subject,
+    params.body,
+    params.recipients,
+    params.priority || "routine",
   );
 
-  if (vistaResult.ok) {
-    msg.status = "sent";
-    msg.sentAt = now;
-    msg.vistaSync = "synced";
-    msg.vistaRef = vistaResult.vistaRef;
-  } else {
-    // Still mark as sent locally even if VistA sync fails
-    msg.status = "sent";
-    msg.sentAt = now;
-    msg.vistaSync = "failed";
-  }
+  const msg: SecureMessage = {
+    id,
+    threadId,
+    direction: "outbound",
+    fromDuz: params.fromDuz,
+    fromName: params.fromName,
+    recipients: params.recipients,
+    subject: params.subject,
+    body: params.body,
+    priority: params.priority || "routine",
+    status: "sent",
+    category: params.category || "clinical",
+    replyToId: params.replyToId || null,
+    createdAt: now,
+    sentAt: now,
+    readAt: null,
+    vistaSync: vistaResult.ok ? "synced" : "failed",
+    vistaRef: vistaResult.vistaRef,
+    patientDfn: params.patientDfn || null,
+  };
+  // Cache locally for fallback
+  fallbackCache.set(id, msg);
 
   return {
     ok: true,
@@ -358,14 +534,12 @@ export async function sendMessage(params: {
 }
 
 /**
- * Get messages for portal patient (by DFN).
+ * Get messages for portal patient (by DFN). Fallback cache.
  */
 export function getPortalMessages(dfn: string, limit = 50): SecureMessage[] {
   const messages: SecureMessage[] = [];
-  for (const msg of messageStore.values()) {
-    if (msg.patientDfn === dfn) {
-      messages.push(msg);
-    }
+  for (const msg of fallbackCache.values()) {
+    if (msg.patientDfn === dfn) messages.push(msg);
   }
   return messages
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
@@ -415,13 +589,13 @@ export function getMessageStats(): {
   failedSyncCount: number;
 } {
   let sent = 0, draft = 0, failedSync = 0;
-  for (const msg of messageStore.values()) {
+  for (const msg of fallbackCache.values()) {
     if (msg.status === "sent") sent++;
     if (msg.status === "draft") draft++;
     if (msg.vistaSync === "failed") failedSync++;
   }
   return {
-    totalMessages: messageStore.size,
+    totalMessages: fallbackCache.size,
     sentCount: sent,
     draftCount: draft,
     failedSyncCount: failedSync,
