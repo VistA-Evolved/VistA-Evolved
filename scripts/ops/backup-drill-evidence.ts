@@ -48,6 +48,11 @@ function ensureDir(dir: string): void {
   fs.mkdirSync(dir, { recursive: true });
 }
 
+/** Strip UTF-8 BOM that PowerShell's ConvertTo-Json / Set-Content adds */
+function stripBom(s: string): string {
+  return s.charCodeAt(0) === 0xfeff ? s.slice(1) : s;
+}
+
 function runDrill(scriptName: string, args: string[]): { stdout: string; exitCode: number } {
   const scriptPath = path.join(ROOT, "scripts/ops", scriptName);
   if (!fs.existsSync(scriptPath)) {
@@ -106,7 +111,7 @@ export async function runBackupDrillEvidence(skipDocker = false): Promise<Backup
   // Check for backup manifest
   const backupManifestPath = path.join(BACKUP_DIR, "backup-manifest.json");
   if (fs.existsSync(backupManifestPath)) {
-    const manifest = JSON.parse(fs.readFileSync(backupManifestPath, "utf-8"));
+    const manifest = JSON.parse(stripBom(fs.readFileSync(backupManifestPath, "utf-8")));
     report.drill.backupStatus = manifest.status || "unknown";
 
     // Copy manifest to evidence dir

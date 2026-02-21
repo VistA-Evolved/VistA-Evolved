@@ -843,6 +843,11 @@ scripts/
 100. **Export artifacts go to `data/rcm-exports/` at repo root.**
      Files named `{txSet}_{claimId}_{timestamp}.x12`. Directory is created
      automatically. Add to `.gitignore` for production deployments.
+101. **PowerShell `Set-Content -Encoding UTF8` adds BOM (Phase 75).**
+     Any JSON file emitted by PowerShell (e.g., `ConvertTo-Json | Set-Content`)
+     starts with bytes `EF BB BF`. Node.js `JSON.parse()` chokes on the BOM.
+     Always strip BOM before parsing: `raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw`.
+     See BUG-064.
 
 ---
 

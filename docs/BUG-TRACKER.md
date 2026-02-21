@@ -1010,3 +1010,24 @@ to confirm global location before writing M routines that traverse VistA files.
 
 **Files**: `services/vista/ZVERPC.m`, `scripts/verify-phase41-rpc-catalog.ps1`,
 `docs/runbooks/vista-rpc-rpc-list-probe.md`
+
+### BUG-064: PowerShell ConvertTo-Json emits UTF-8 BOM that breaks Node.js JSON.parse (Phase 75)
+
+**What happened**: `generateEvidencePack.ts` stage 4 (backup/restore drill)
+failed with `SyntaxError: Unexpected token ''`. The backup-drill.ps1 script
+generated `backup-manifest.json` via `ConvertTo-Json | Set-Content`, which
+emits a UTF-8 BOM (bytes `EF BB BF`). Node.js `JSON.parse()` does not
+tolerate the BOM character.
+
+**Root cause**: PowerShell 5.1 `Set-Content -Encoding UTF8` always prepends
+BOM. `JSON.parse()` treats the BOM (U+FEFF) as an unexpected token.
+
+**Fix**: Added `stripBom()` helper in `backup-drill-evidence.ts` and inline
+BOM check in `restore-drill-evidence.ts` before `JSON.parse()` on any
+PowerShell-generated JSON file.
+
+**Prevention**: Any time Node.js reads JSON produced by PowerShell scripts,
+strip BOM first: `raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw`.
+
+**Files**: `scripts/ops/backup-drill-evidence.ts`,
+`scripts/ops/restore-drill-evidence.ts`

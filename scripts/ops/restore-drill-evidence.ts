@@ -65,8 +65,9 @@ export async function runRestoreDrillEvidence(
     return report;
   }
 
-  // Parse and validate manifest
-  const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"));
+  // Parse and validate manifest (strip BOM that PowerShell may add)
+  const raw = fs.readFileSync(manifestPath, "utf-8");
+  const manifest = JSON.parse(raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw);
   report.checks.push({
     name: "manifest-readable",
     pass: true,
