@@ -32,7 +32,7 @@ Gate "G64-02a" "secure-messaging.ts exists" (Test-Path -LiteralPath $svc)
 if (Test-Path -LiteralPath $svc) {
   $svcContent = Get-Content $svc -Raw
   Gate "G64-02b" "service has sendViaMailMan function" ($svcContent -match 'sendViaMailMan')
-  Gate "G64-02c" "service calls DSIC SEND MAIL MSG" ($svcContent -match 'DSIC SEND MAIL MSG')
+  Gate "G64-02c" "service calls ZVE MAIL SEND (Phase 70)" ($svcContent -match 'ZVE MAIL SEND')
   Gate "G64-02d" "service has fetchMailGroups function" ($svcContent -match 'fetchMailGroups')
   Gate "G64-02e" "service has rate limiting" ($svcContent -match 'checkRateLimit')
   Gate "G64-02f" "service has getInbox function" ($svcContent -match 'getInbox')

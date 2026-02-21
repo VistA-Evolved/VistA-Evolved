@@ -289,7 +289,7 @@ export default async function messagingRoutes(server: FastifyInstance) {
       return {
         ok: true,
         pending: true,
-        target: "DSIC SEND MAIL MSG -> G.{clinic_group}",
+        target: "ZVE MAIL SEND -> G.{clinic_group}",
         message: "Portal messaging to clinic requires MESSAGING_DEFAULT_CLINIC_GROUP env var or clinicGroup in request body. Configure a VistA mail group name.",
       };
     }
