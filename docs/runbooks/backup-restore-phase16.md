@@ -144,3 +144,30 @@ curl http://localhost:3001/ready    # VistA reachable
 curl http://localhost:3001/version  # Correct build SHA
 curl http://localhost:3001/metrics  # No circuit breaker in open state
 ```
+
+## Automated Drill (Phase 62)
+
+Run the backup/restore drill scripts to exercise the full cycle:
+
+```powershell
+# Run backup drill (creates timestamped archives)
+.\scripts\ops\backup-drill.ps1 -OutputDir artifacts/backups
+
+# Run restore drill (validates the archives are extractable)
+.\scripts\ops\restore-drill.ps1 -ManifestPath artifacts/backups/backup-manifest.json
+
+# Both scripts can skip Docker with -SkipDocker
+.\scripts\ops\backup-drill.ps1 -SkipDocker
+```
+
+The backup drill produces:
+- `app-config-<ts>.tar.gz` -- config files
+- `audit-logs-<ts>.tar.gz` -- JSONL audit trails
+- `vista-globals-<ts>.tar.gz` -- Docker volume snapshot (dev only)
+- `backup-manifest.json` -- machine-readable manifest
+
+The restore drill validates:
+- Manifest is readable
+- Config archive is extractable with expected files
+- Audit archive contains valid JSONL
+- VistA archive listing contains data directory

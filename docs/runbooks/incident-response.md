@@ -152,6 +152,32 @@ grep '"level":"error"' logs/*.log | grep timeout
 grep 'circuit.*breaker' logs/*.log
 ```
 
+### 6. Audit Chain Integrity Failure (Phase 62)
+
+**Symptom:** `/iam/audit/verify` or `/imaging/audit/verify` or `/rcm/audit/verify` returns `{ valid: false }`
+
+**Diagnosis:**
+```bash
+curl -s http://127.0.0.1:3001/iam/audit/verify | jq .
+curl -s http://127.0.0.1:3001/imaging/audit/verify | jq .
+curl -s http://127.0.0.1:3001/rcm/audit/verify | jq .
+# File-based verification
+npx tsx scripts/security/verify-audit-chain.ts --file logs/immutable-audit.jsonl
+```
+
+**Resolution:**
+- Memory chain reset after API restart is **expected** -- file chain is authoritative
+- If JSONL file chain is broken: preserve file as evidence, investigate, report
+- See `docs/runbooks/audit-integrity.md` for full procedures
+
+**If tampering suspected (SEV-1):**
+1. Preserve the broken JSONL file immediately
+2. Do NOT delete or repair -- it is evidence
+3. Compare with most recent backup
+4. Check filesystem access logs
+5. Report to compliance officer per HIPAA breach procedures
+6. Restart API to begin new chain, document the gap
+
 ## Post-Incident
 
 1. **Document:** Create incident report with timeline, root cause, resolution

@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 61: Patient Portal Digital Front Door v1
-& "$PSScriptRoot\verify-phase61-portal.ps1" @args
+# Phase 62: Go-Live Hardening Pack v1
+& "$PSScriptRoot\verify-phase62-hardening.ps1" @args
