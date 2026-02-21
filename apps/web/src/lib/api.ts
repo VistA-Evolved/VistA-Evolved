@@ -4,7 +4,6 @@
  * Phase 77: Uses correlatedGet for automatic X-Request-Id propagation.
  */
 
-import { API_BASE } from './chart-types';
 import { correlatedGet } from './fetch-with-correlation';
 import type {
   PatientDemographics,

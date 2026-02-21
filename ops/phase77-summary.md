@@ -43,3 +43,15 @@ ALL 69 GATES PASSED
 - Wire `recordSloSample()` into the onResponse hook for live SLO tracking
 - Add business action spans to route handlers (module toggle, RCM submit, etc.)
 - Add alerting rules based on `slo_error_budget_remaining` dropping below threshold
+
+---
+
+## VERIFY Phase Fixes (post-implement audit)
+
+| ID | File | Issue | Fix |
+|----|------|-------|-----|
+| DEFECT-01 | api.ts | Dead `API_BASE` import | Removed unused import |
+| DEFECT-02 | data-cache.tsx | Mid-file import | Moved to top of file |
+| WARN-01 | data-cache.tsx | 4 raw fetch() POST/GET calls without correlation | Migrated to correlatedPost/correlatedGet; removed dead API_BASE |
+| WARN-02 | observability-config.ts | `__dirname` in ESM | Replaced with `import.meta.url` + `fileURLToPath` |
+| WARN-03 | spans.ts | Hardcoded SpanStatusCode values | Value import from `@opentelemetry/api` |

@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useCallback, useRef, type ReactNode } from 'react';
 import { useState } from 'react';
+import { correlatedGet, correlatedPost, correlatedFetch } from '../lib/fetch-with-correlation';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -76,13 +77,9 @@ export interface DataCacheValue {
   addLocalItem: <K extends keyof ClinicalData>(dfn: string, domain: K, item: ClinicalData[K][number]) => void;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
-
 /* ------------------------------------------------------------------ */
 /* Fetch helpers (Phase 77: correlation ID propagation)                */
 /* ------------------------------------------------------------------ */
-
-import { correlatedGet } from '../lib/fetch-with-correlation';
 
 async function fetchJSON<T>(path: string): Promise<T> {
   return correlatedGet<T>(path);
@@ -246,13 +243,10 @@ export function DataCacheProvider({ children }: { children: ReactNode }) {
     });
     // Call server-side write-back
     try {
-      const res = await fetch(`${API_BASE}/vista/orders/sign`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ dfn, orderId, signedBy }),
-      });
-      const data = await res.json();
+      const { data } = await correlatedPost<{ mode?: string; draftId?: string }>(
+        '/vista/orders/sign',
+        { dfn, orderId, signedBy },
+      );
       return { mode: data.mode || 'draft', draftId: data.draftId };
     } catch {
       return { mode: 'local', draftId: undefined };
@@ -270,13 +264,10 @@ export function DataCacheProvider({ children }: { children: ReactNode }) {
       return { ...prev, [dfn]: { ...prev[dfn], orders: updated } };
     });
     try {
-      const res = await fetch(`${API_BASE}/vista/orders/release`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ dfn, orderId }),
-      });
-      const data = await res.json();
+      const { data } = await correlatedPost<{ mode?: string; draftId?: string }>(
+        '/vista/orders/release',
+        { dfn, orderId },
+      );
       return { mode: data.mode || 'draft', draftId: data.draftId };
     } catch {
       return { mode: 'local', draftId: undefined };
@@ -285,13 +276,10 @@ export function DataCacheProvider({ children }: { children: ReactNode }) {
 
   const acknowledgeLabs = useCallback(async (dfn: string, labIds: string[], acknowledgedBy: string) => {
     try {
-      const res = await fetch(`${API_BASE}/vista/labs/ack`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ dfn, labIds, acknowledgedBy }),
-      });
-      const data = await res.json();
+      const { data } = await correlatedPost<{ mode?: string }>(
+        '/vista/labs/ack',
+        { dfn, labIds, acknowledgedBy },
+      );
       return { mode: data.mode || 'draft', count: labIds.length };
     } catch {
       return { mode: 'local', count: labIds.length };
@@ -302,8 +290,9 @@ export function DataCacheProvider({ children }: { children: ReactNode }) {
 
   const fetchCapabilities = useCallback(async () => {
     try {
-      const res = await fetch(`${API_BASE}/vista/rpc-capabilities`, { credentials: 'include' });
-      const data = await res.json();
+      const data = await correlatedGet<{ ok?: boolean; rpcs?: Record<string, { available: boolean }> }>(
+        '/vista/rpc-capabilities',
+      );
       if (data.ok && data.rpcs) {
         const caps: Record<string, { available: boolean }> = {};
         for (const [name, info] of Object.entries(data.rpcs)) {

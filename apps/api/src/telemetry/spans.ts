@@ -25,10 +25,8 @@ import { isTracingEnabled, tracer, context, trace } from './tracing.js';
 import { getRequestId } from '../lib/logger.js';
 import { assertNoPhiInAttributes } from '../lib/phi-redaction.js';
 
-import type { Span, SpanStatusCode } from '@opentelemetry/api';
-
-/* Re-export SpanStatusCode values for callers */
-const SpanStatus = { OK: 1 as SpanStatusCode, ERROR: 2 as SpanStatusCode };
+import { SpanStatusCode } from '@opentelemetry/api';
+import type { Span } from '@opentelemetry/api';
 
 /* ------------------------------------------------------------------ */
 /* Attribute sanitization                                              */
@@ -82,10 +80,10 @@ export async function withSpan<T>(
 
   try {
     const result = await context.with(ctx, fn);
-    span.setStatus({ code: SpanStatus.OK });
+    span.setStatus({ code: SpanStatusCode.OK });
     return result;
   } catch (err) {
-    span.setStatus({ code: SpanStatus.ERROR, message: err instanceof Error ? err.message : 'unknown' });
+    span.setStatus({ code: SpanStatusCode.ERROR, message: err instanceof Error ? err.message : 'unknown' });
     span.recordException(err instanceof Error ? err : new Error(String(err)));
     throw err;
   } finally {
@@ -116,10 +114,10 @@ export function withSpanSync<T>(
 
   try {
     const result = context.with(ctx, fn);
-    span.setStatus({ code: SpanStatus.OK });
+    span.setStatus({ code: SpanStatusCode.OK });
     return result;
   } catch (err) {
-    span.setStatus({ code: SpanStatus.ERROR, message: err instanceof Error ? err.message : 'unknown' });
+    span.setStatus({ code: SpanStatusCode.ERROR, message: err instanceof Error ? err.message : 'unknown' });
     span.recordException(err instanceof Error ? err : new Error(String(err)));
     throw err;
   } finally {
@@ -185,10 +183,10 @@ export function spanSchedulingOperation(operation: string): Span {
  */
 export function endBusinessSpan(span: Span, error?: Error): void {
   if (error) {
-    span.setStatus({ code: SpanStatus.ERROR, message: error.message });
+    span.setStatus({ code: SpanStatusCode.ERROR, message: error.message });
     span.recordException(error);
   } else {
-    span.setStatus({ code: SpanStatus.OK });
+    span.setStatus({ code: SpanStatusCode.OK });
   }
   span.end();
 }
