@@ -618,6 +618,102 @@
       "targetRpc": "DSIC SEND MAIL MSG",
       "targetPackage": "XM",
       "description": "Portal patient send to clinic mail group (Phase 64)"
+    },
+    "clinical.adt.wards": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQPT WARDS",
+      "targetPackage": "OR",
+      "description": "List all hospital wards (Phase 67)"
+    },
+    "clinical.adt.wardPatients": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQPT WARD PATIENTS",
+      "targetPackage": "OR",
+      "description": "Ward census - patients on a ward (Phase 67)"
+    },
+    "clinical.adt.providerPatients": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQPT PROVIDER PATIENTS",
+      "targetPackage": "OR",
+      "description": "Provider inpatient list (Phase 67)"
+    },
+    "clinical.adt.teams": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQPT TEAMS",
+      "targetPackage": "OR",
+      "description": "List available patient care teams (Phase 67)"
+    },
+    "clinical.adt.teamPatients": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQPT TEAM PATIENTS",
+      "targetPackage": "OR",
+      "description": "Team patient list (Phase 67)"
+    },
+    "clinical.adt.specialties": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQPT SPECIALTIES",
+      "targetPackage": "OR",
+      "description": "List treating specialties (Phase 67)"
+    },
+    "clinical.adt.specialtyPatients": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQPT SPECIALTY PATIENTS",
+      "targetPackage": "OR",
+      "description": "Specialty patient list (Phase 67)"
+    },
+    "clinical.adt.locations": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORWU1 NEWLOC",
+      "targetPackage": "OR",
+      "description": "Location search/lookup (Phase 67)"
+    },
+    "clinical.adt.admissions": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORWPT16 ADMITLST",
+      "targetPackage": "OR",
+      "description": "Patient admission history list (Phase 67)"
+    },
+    "clinical.adt.admit": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "DGPM NEW ADMISSION",
+      "targetPackage": "DG",
+      "description": "Admit patient (integration-pending, Phase 67B)"
+    },
+    "clinical.adt.transfer": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "DGPM NEW TRANSFER",
+      "targetPackage": "DG",
+      "description": "Transfer patient (integration-pending, Phase 67B)"
+    },
+    "clinical.adt.discharge": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "DGPM NEW DISCHARGE",
+      "targetPackage": "DG",
+      "description": "Discharge patient (integration-pending, Phase 67B)"
     }
   }
 }

@@ -57,7 +57,8 @@
         "^/vista/default-patient-list",
         "^/vista/meds/",
         "^/vista/orders/",
-        "^/vista/inbox"
+        "^/vista/inbox",
+        "^/vista/adt"
       ],
       "dependencies": ["kernel"],
       "adapters": ["clinical-engine"],

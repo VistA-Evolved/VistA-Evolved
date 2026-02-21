@@ -91,6 +91,8 @@ import immunizationsRoutes from "./routes/immunizations/index.js";
 // Phase 66: Production IAM v1 (OIDC + SAML posture)
 import idpRoutes from "./auth/idp/idp-routes.js";
 import { initIdentityProviders } from "./auth/idp/index.js";
+// Phase 67: ADT + Inpatient Lists v1 (VistA-first read posture)
+import adtRoutes from "./routes/adt/index.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -287,6 +289,9 @@ server.register(messagingRoutes);
 
 // Register immunization routes -- VistA-first ORQQPX IMMUN LIST (Phase 65)
 server.register(immunizationsRoutes);
+
+// Register ADT / inpatient routes -- VistA-first ward/team/provider/specialty lists (Phase 67)
+server.register(adtRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

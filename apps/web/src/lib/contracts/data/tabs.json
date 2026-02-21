@@ -176,6 +176,17 @@
       "tabPosition": "tpBottom",
       "align": "alBottom",
       "isBottomTab": true
+    },
+    {
+      "constant": "CT_ADT",
+      "label": "ADT",
+      "creationOrder": 15,
+      "conditional": false,
+      "id": 17,
+      "description": "chart tab - ADT / inpatient lists: ward census, teams, specialties, admissions (Phase 67)",
+      "tabPosition": "tpBottom",
+      "align": "alBottom",
+      "isBottomTab": true
     }
   ],
   "subTabs": [

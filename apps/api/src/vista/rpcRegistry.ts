@@ -148,6 +148,17 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "GMV ADD VM",               domain: "vitals",     tag: "write", description: "Add vital measurement" },
   { name: "ORQQVI VITALS",            domain: "vitals",     tag: "read",  description: "Get patient vitals" },
 
+  // --- ADT / Inpatient (Phase 67: VistA-first ADT + inpatient lists) ---
+  { name: "ORQPT WARDS",                domain: "adt",            tag: "read",  description: "List all wards" },
+  { name: "ORQPT WARD PATIENTS",         domain: "adt",            tag: "read",  description: "Census: patients on a ward" },
+  { name: "ORQPT PROVIDER PATIENTS",     domain: "adt",            tag: "read",  description: "Provider inpatient list" },
+  { name: "ORQPT TEAMS",                 domain: "adt",            tag: "read",  description: "List available teams" },
+  { name: "ORQPT TEAM PATIENTS",         domain: "adt",            tag: "read",  description: "Team patient list" },
+  { name: "ORQPT SPECIALTIES",           domain: "adt",            tag: "read",  description: "List treating specialties" },
+  { name: "ORQPT SPECIALTY PATIENTS",    domain: "adt",            tag: "read",  description: "Specialty patient list" },
+  { name: "ORWU1 NEWLOC",               domain: "adt",            tag: "read",  description: "Location search/lookup" },
+  { name: "ORWPT16 ADMITLST",            domain: "adt",            tag: "read",  description: "Patient admission history list" },
+
   // --- Immunizations (Phase 65: VistA-first immunization history) ---
   { name: "ORQQPX IMMUN LIST",          domain: "immunizations", tag: "read",  description: "Patient immunization history list" },
   { name: "PXVIMM IMM SHORT LIST",       domain: "immunizations", tag: "read",  description: "Immunization type picker (short list)" },
@@ -187,6 +198,7 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
   { name: "ZVE MAIL GET", reason: "Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan message detail (Phase 70)" },
   { name: "ZVE MAIL SEND", reason: "Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan message send (Phase 70)" },
   { name: "ZVE MAIL MANAGE", reason: "Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan message management (Phase 70)" },
+  { name: "ORWPT16 ADMITLST", reason: "Admission list RPC; present in CPRS Delphi source but absent from some Vivian snapshots" },
 ];
 
 /* ------------------------------------------------------------------ */

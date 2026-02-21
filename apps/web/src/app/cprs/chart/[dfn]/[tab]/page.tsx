@@ -28,6 +28,7 @@ import {
   TelehealthPanel,
   MessagingTasksPanel,
   AIAssistPanel,
+  ADTPanel,
 } from '@/components/cprs/panels';
 import CoverSheetLayoutManager from '@/components/cprs/CoverSheetLayoutManager';
 import ActionInspector from '@/components/cprs/ActionInspector';
@@ -51,6 +52,7 @@ const TAB_LOCATION_MAP: Record<string, string> = {
   reports: 'Reports',
   imaging: 'Imaging',
   immunizations: 'Immunizations',
+  adt: 'ADT',
 };
 
 function TabContent({ dfn, tab }: { dfn: string; tab: string }) {
@@ -77,6 +79,7 @@ function TabContent({ dfn, tab }: { dfn: string; tab: string }) {
     case 'telehealth': return <TelehealthPanel dfn={dfn} />;
     case 'tasks':      return <MessagingTasksPanel dfn={dfn} />;
     case 'aiassist':  return <AIAssistPanel dfn={dfn} />;
+    case 'adt':       return <ADTPanel dfn={dfn} />;
     default:
       return (
         <div style={{ padding: 24 }}>
@@ -87,7 +90,7 @@ function TabContent({ dfn, tab }: { dfn: string; tab: string }) {
   }
 }
 
-const VALID_TABS = new Set(['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports', 'imaging', 'immunizations', 'intake', 'telehealth', 'tasks', 'aiassist']);
+const VALID_TABS = new Set(['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports', 'imaging', 'immunizations', 'intake', 'telehealth', 'tasks', 'aiassist', 'adt']);
 
 export default function CPRSChartPage({ params }: ChartPageProps) {
   const { dfn, tab } = use(params);
