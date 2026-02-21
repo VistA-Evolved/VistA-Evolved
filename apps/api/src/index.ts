@@ -96,7 +96,7 @@ import adtRoutes from "./routes/adt/index.js";
 // Phase 68: Nursing Workflow v1 (VistA-first posture)
 import nursingRoutes from "./routes/nursing/index.js";
 // Phase 72: Reality Verifier Pack -- no-fake-success tripwire
-import { registerNoFakeSuccessHook, getFakeSuccessViolations, getFakeSuccessViolationCount } from "./middleware/no-fake-success.js";
+import { registerNoFakeSuccessHook, getFakeSuccessViolations, getFakeSuccessViolationCount, getNoFakeSuccessAuditReport } from "./middleware/no-fake-success.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -446,6 +446,11 @@ server.post("/admin/cache/invalidate", async (request) => {
 // Phase 72: No-fake-success violations endpoint (admin)
 server.get("/admin/fake-success-violations", async () => {
   return { ok: true, count: getFakeSuccessViolationCount(), violations: getFakeSuccessViolations() };
+});
+
+// Phase 74: Structured no-fake-success audit (for automated verification)
+server.get("/admin/fake-success-audit", async () => {
+  return { ok: true, report: getNoFakeSuccessAuditReport() };
 });
 
 // Phase 3 connectivity endpoint remains available (retain behavior)

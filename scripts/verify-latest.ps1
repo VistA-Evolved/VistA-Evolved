@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 73: Drift Lock + PendingTargets Index + Repo Hygiene
-& "$PSScriptRoot\verify-phase73-drift-lock.ps1" @args
+# Phase 74: Reality Verification Pack v2
+& "$PSScriptRoot\verify-phase74-reality-v2.ps1" @args

@@ -217,6 +217,69 @@ export function getFakeSuccessViolationCount(): number {
 }
 
 /* ------------------------------------------------------------------ */
+/* Phase 74: Structured audit report for verifier + tripwire            */
+/* ------------------------------------------------------------------ */
+
+export interface FakeSuccessAuditReport {
+  _meta: { tool: string; generatedAt: string };
+  strictMode: boolean;
+  totalViolations: number;
+  exemptPatterns: string[];
+  effectProofFieldCount: number;
+  violations: FakeSuccessViolation[];
+}
+
+/** Structured audit report for automated verification gates */
+export function getNoFakeSuccessAuditReport(): FakeSuccessAuditReport {
+  return {
+    _meta: {
+      tool: "no-fake-success-v2",
+      generatedAt: new Date().toISOString(),
+    },
+    strictMode: STRICT_MODE,
+    totalViolations: violations.length,
+    exemptPatterns: EXEMPT_PATTERNS.map((p) => p.source),
+    effectProofFieldCount: EFFECT_PROOF_FIELDS.size,
+    violations: [...violations],
+  };
+}
+
+/**
+ * Phase 74 tripwire: validate a synthetic response object against the
+ * no-fake-success rules WITHOUT going through the HTTP hook.
+ * Returns true if the response would PASS (has proof), false if VIOLATION.
+ */
+export function validateResponseForTripwire(
+  url: string,
+  responseBody: Record<string, unknown>,
+): { pass: boolean; reason: string } {
+  // Check exemptions
+  const cleanUrl = url.split("?")[0];
+  if (EXEMPT_PATTERNS.some((p) => p.test(cleanUrl))) {
+    return { pass: true, reason: "exempt-route" };
+  }
+
+  // Must have ok: true to be checked
+  if (responseBody.ok !== true) {
+    return { pass: true, reason: "not-ok-true" };
+  }
+
+  // Check for effect proof fields
+  const keys = Object.keys(responseBody);
+  const hasProof = keys.some((k) => {
+    if (!EFFECT_PROOF_FIELDS.has(k)) return false;
+    const val = responseBody[k];
+    return val !== null && val !== undefined;
+  });
+
+  if (hasProof) {
+    return { pass: true, reason: "has-effect-proof" };
+  }
+
+  return { pass: false, reason: "missing-effect-proof" };
+}
+
+/* ------------------------------------------------------------------ */
 /* Hook registration                                                   */
 /* ------------------------------------------------------------------ */
 
