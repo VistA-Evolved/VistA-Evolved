@@ -58,7 +58,7 @@ const MODULE_DEFINITIONS: WebModuleDefinition[] = [
     description: "Patient search, allergies, vitals, notes, meds, problems, orders",
     icon: "\u{1FA7A}",  // stethoscope
     tabSlugs: ["cover", "problems", "meds", "orders", "notes", "consults", "surgery", "dcsumm", "labs", "reports", "vitals", "allergies"],
-    apiPrefixes: ["/vista/patient", "/vista/allergies", "/vista/vitals", "/vista/notes", "/vista/medications"],
+    apiPrefixes: ["/vista/patient", "/vista/allergies", "/vista/vitals", "/vista/notes", "/vista/medications", "/vista/problems", "/vista/consults", "/vista/surgery", "/vista/dc-summaries", "/vista/labs", "/vista/reports", "/vista/orders/", "/vista/meds/", "/vista/default-patient-list", "/vista/icd-search", "/vista/inbox", "/vista/adt", "/vista/nursing", "/vista/tiu-text"],
     adminPath: undefined,
     dependencies: ["kernel"],
     alwaysEnabled: false,
@@ -113,7 +113,7 @@ const MODULE_DEFINITIONS: WebModuleDefinition[] = [
     description: "HL7/HLO, VistA interop telemetry, FHIR bridge",
     icon: "\u{1F517}",  // link
     tabSlugs: [],
-    apiPrefixes: ["/interop/"],
+    apiPrefixes: ["/vista/interop/", "/admin/registry/"],
     adminPath: "/cprs/admin/integrations",
     dependencies: ["kernel"],
     alwaysEnabled: false,
@@ -167,6 +167,17 @@ const MODULE_DEFINITIONS: WebModuleDefinition[] = [
     icon: "\u{1F4C5}",  // calendar
     tabSlugs: [],
     apiPrefixes: ["/scheduling/"],
+    dependencies: ["kernel", "clinical"],
+    alwaysEnabled: false,
+  },
+  {
+    id: "migration",
+    label: "Migration",
+    description: "Data migration tools, import/export, system transition",
+    icon: "\u{1F4E6}",  // package
+    tabSlugs: [],
+    apiPrefixes: ["/migration/"],
+    adminPath: "/cprs/admin/migration",
     dependencies: ["kernel", "clinical"],
     alwaysEnabled: false,
   },
