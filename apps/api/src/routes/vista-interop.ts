@@ -281,6 +281,8 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
           available: false,
           message: headerParts[2] || "HL7 data unavailable",
           links: [],
+          rpcsUsed: ["VE INTEROP HL7 LINKS"],
+          vistaFile: "#870 HL LOGICAL LINK",
           timestamp: new Date().toISOString(),
         };
       }
@@ -307,6 +309,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
         count,
         links,
         rpc: "VE INTEROP HL7 LINKS",
+        rpcsUsed: ["VE INTEROP HL7 LINKS"],
         vistaFile: "#870 HL LOGICAL LINK",
         timestamp: new Date().toISOString(),
       };
@@ -337,6 +340,8 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
           available: false,
           message: headerParts[2] || "HL7 message data unavailable",
           stats: null,
+          rpcsUsed: ["VE INTEROP HL7 MSGS"],
+          vistaFile: "#773 HL7 MESSAGE ADMIN",
           timestamp: new Date().toISOString(),
         };
       }
@@ -368,6 +373,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
         available: true,
         stats,
         rpc: "VE INTEROP HL7 MSGS",
+        rpcsUsed: ["VE INTEROP HL7 MSGS"],
         vistaFile: "#773 HL7 MESSAGE ADMIN",
         timestamp: new Date().toISOString(),
       };
@@ -395,6 +401,8 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
           available: false,
           message: headerParts[2] || "HLO data unavailable",
           hloStatus: null,
+          rpcsUsed: ["VE INTEROP HLO STATUS"],
+          vistaFiles: "#779.1, #779.2, #779.4, #779.9, #778",
           timestamp: new Date().toISOString(),
         };
       }
@@ -444,6 +452,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
         available: true,
         hloStatus,
         rpc: "VE INTEROP HLO STATUS",
+        rpcsUsed: ["VE INTEROP HLO STATUS"],
         vistaFiles: "#779.1, #779.2, #779.4, #779.9, #778",
         timestamp: new Date().toISOString(),
       };
@@ -471,6 +480,8 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
           available: false,
           message: "Queue data unavailable",
           queues: null,
+          rpcsUsed: ["VE INTEROP QUEUE DEPTH"],
+          vistaFiles: "#773, #778, #776",
           timestamp: new Date().toISOString(),
         };
       }
@@ -504,6 +515,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
         available: true,
         queues,
         rpc: "VE INTEROP QUEUE DEPTH",
+        rpcsUsed: ["VE INTEROP QUEUE DEPTH"],
         vistaFiles: "#773, #778, #776",
         timestamp: new Date().toISOString(),
       };
@@ -697,6 +709,8 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
           available: false,
           message: header[2] || "HL7 MESSAGE ADMIN (#773) not available",
           messages: [],
+          rpcsUsed: ["VE INTEROP MSG LIST"],
+          vistaFile: "#773 HL7 MESSAGE ADMIN",
           timestamp: new Date().toISOString(),
         };
       }
@@ -736,6 +750,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
         filters: { direction, status, limit: parseInt(limit, 10) },
         messages,
         rpc: "VE INTEROP MSG LIST",
+        rpcsUsed: ["VE INTEROP MSG LIST"],
         vistaFile: "#773 HL7 MESSAGE ADMIN",
         timestamp: new Date().toISOString(),
       };
@@ -773,6 +788,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
         return reply.status(404).send({
           ok: false,
           error: header[2] || "Message not found",
+          rpcsUsed: ["VE INTEROP MSG DETAIL"],
         });
       }
 
@@ -837,6 +853,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
           "No raw segment content is returned — only type counts.",
         detail,
         rpc: "VE INTEROP MSG DETAIL",
+        rpcsUsed: ["VE INTEROP MSG DETAIL"],
         vistaFiles: "#773 HL7 MESSAGE ADMIN, #772 HL7 MESSAGE TEXT",
         timestamp: new Date().toISOString(),
       };
@@ -907,6 +924,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
         return reply.status(404).send({
           ok: false,
           error: header[2] || "Message not found",
+          rpcsUsed: ["VE INTEROP MSG DETAIL"],
         });
       }
 
@@ -964,6 +982,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
         reason,
         detail,
         rpc: "VE INTEROP MSG DETAIL",
+        rpcsUsed: ["VE INTEROP MSG DETAIL"],
         vistaFiles: "#773 HL7 MESSAGE ADMIN, #772 HL7 MESSAGE TEXT",
         timestamp: new Date().toISOString(),
       };

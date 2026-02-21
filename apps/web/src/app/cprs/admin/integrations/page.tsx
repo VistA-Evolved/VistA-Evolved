@@ -148,6 +148,7 @@ interface MessageDetailResponse {
   reason?: string;
   detail: HL7MessageDetail;
   rpc: string;
+  rpcsUsed: string[];
   vistaFiles: string;
   timestamp: string;
 }

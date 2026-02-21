@@ -91,12 +91,12 @@ export const ACTION_REGISTRY_DATA: CprsAction[] = [
   { actionId: "inbox.user-info", label: "Load User Notification Info", location: "Inbox", capability: "clinical.inbox.read", rpcs: ["ORWORB FASTUSER"], status: "wired" },
 
   // --- Interop ---
-  { actionId: "interop.hl7-links", label: "View HL7 Logical Links", location: "Admin/Integrations", capability: "interop.hl7.read", rpcs: ["VE INTEROP HL7 LINKS"], status: "wired" },
+  { actionId: "interop.hl7-links", label: "View HL7 Logical Links", location: "Admin/Integrations", capability: "interop.hl7.monitor", rpcs: ["VE INTEROP HL7 LINKS"], status: "wired" },
   { actionId: "interop.hl7-msgs", label: "View HL7 Messages", location: "Admin/Integrations", capability: "interop.hl7.read", rpcs: ["VE INTEROP HL7 MSGS"], status: "wired" },
   { actionId: "interop.hlo-status", label: "View HLO Status", location: "Admin/Integrations", capability: "interop.hlo.read", rpcs: ["VE INTEROP HLO STATUS"], status: "wired" },
   { actionId: "interop.queue-depth", label: "View Queue Depths", location: "Admin/Integrations", capability: "interop.queue.read", rpcs: ["VE INTEROP QUEUE DEPTH"], status: "wired" },
-  { actionId: "interop.msg-list", label: "List HL7 Messages", location: "Admin/Integrations", capability: "interop.hl7.read", rpcs: ["VE INTEROP MSG LIST"], status: "wired" },
-  { actionId: "interop.msg-detail", label: "View HL7 Message Detail", location: "Admin/Integrations", capability: "interop.hl7.read", rpcs: ["VE INTEROP MSG DETAIL"], status: "wired" },
+  { actionId: "interop.msg-list", label: "List HL7 Messages", location: "Admin/Integrations", capability: "interop.msg.list", rpcs: ["VE INTEROP MSG LIST"], status: "wired" },
+  { actionId: "interop.msg-detail", label: "View HL7 Message Detail", location: "Admin/Integrations", capability: "interop.msg.detail", rpcs: ["VE INTEROP MSG DETAIL"], status: "wired" },
 
   // --- RCM / Billing ---
   { actionId: "rcm.encounters", label: "Load PCE Encounters", location: "RCM/VistA Billing", capability: "rcm.billing.read", rpcs: ["ORWPCE VISIT"], status: "wired" },

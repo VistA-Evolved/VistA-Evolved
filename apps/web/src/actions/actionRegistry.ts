@@ -508,7 +508,7 @@ export const ACTION_REGISTRY: CprsAction[] = [
     actionId: "interop.hl7-links",
     label: "View HL7 Logical Links",
     location: "Admin/Integrations",
-    capability: "interop.hl7.read",
+    capability: "interop.hl7.monitor",
     rpcs: ["VE INTEROP HL7 LINKS"],
     status: "wired",
     rpcKind: "read",

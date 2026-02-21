@@ -4,9 +4,10 @@
     and registers the RPC endpoints.
 
 .DESCRIPTION
-    1. Copies ZVEMIOP.m and ZVEMINS.m into the container's M routine directory
+    1. Copies ZVEMIOP.m, ZVEMINS.m, and VEMCTX3.m into the container's M routine directory
     2. Runs the installer to register RPCs in file 8994
-    3. Verifies registration
+    3. Adds RPCs to OR CPRS GUI CHART context
+    4. Verifies registration
 
 .EXAMPLE
     .\scripts\install-interop-rpcs.ps1
