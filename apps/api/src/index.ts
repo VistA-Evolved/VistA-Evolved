@@ -84,6 +84,8 @@ import ordersCpoeRoutes from "./routes/cprs/orders-cpoe.js";
 import tiuNotesRoutes from "./routes/cprs/tiu-notes.js";
 // Phase 63: Scheduling v1 (VistA-first SD*)
 import schedulingRoutes from "./routes/scheduling/index.js";
+// Phase 64: Secure messaging v1 (MailMan-backed)
+import messagingRoutes from "./routes/messaging/index.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -270,6 +272,9 @@ server.register(tiuNotesRoutes);
 
 // Register scheduling routes -- VistA SD* encounter + wait list RPCs (Phase 63)
 server.register(schedulingRoutes);
+
+// Register secure messaging routes -- VistA MailMan bridge (Phase 64)
+server.register(messagingRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

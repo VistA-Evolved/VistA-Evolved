@@ -88,7 +88,11 @@ export type ImmutableAuditAction =
   | "scheduling.list"
   | "scheduling.request"
   | "scheduling.cancel"
-  | "scheduling.reschedule";
+  | "scheduling.reschedule"
+  // Secure messaging events (Phase 64)
+  | "messaging.send"
+  | "messaging.read"
+  | "messaging.portal-send";
 
 export type ImmutableAuditOutcome = "success" | "failure" | "denied" | "error";
 

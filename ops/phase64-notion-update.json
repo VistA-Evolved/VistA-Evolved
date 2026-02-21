@@ -1,0 +1,30 @@
+{
+  "feature": "Phase 64 -- Secure Messaging v1 (MailMan-Backed) + Portal Messaging Posture",
+  "stage": "implement-complete",
+  "status": "verify-pending",
+  "promptRef": "prompts/69-PHASE-64-SECURE-MESSAGING-V1/64-01-IMPLEMENT.md",
+  "runbook": "docs/runbooks/phase64-secure-messaging.md",
+  "verifyScript": "scripts/verify-phase64-secure-messaging.ps1",
+  "commitSHA": "pending",
+  "artifacts": [
+    "apps/api/src/services/secure-messaging.ts",
+    "apps/api/src/routes/messaging/index.ts",
+    "apps/web/src/app/cprs/messages/page.tsx",
+    "apps/portal/src/app/dashboard/messages/page.tsx",
+    "apps/api/src/lib/immutable-audit.ts",
+    "apps/api/src/middleware/security.ts",
+    "apps/api/src/index.ts",
+    "config/capabilities.json",
+    "artifacts/phase64/mailman-plan.json"
+  ],
+  "rpcsUsed": [
+    "DSIC SEND MAIL MSG",
+    "ORQQXMB MAIL GROUPS"
+  ],
+  "followUps": [
+    "ZVEMSGR.m for inbox read from VistA baskets",
+    "Thread/reply via MailMan XMB threading",
+    "Attachment support via XMXAPI",
+    "Portal bidirectional sync"
+  ]
+}

@@ -287,9 +287,9 @@
       "status": "live",
       "module": "portal",
       "adapter": null,
-      "targetRpc": null,
-      "targetPackage": null,
-      "description": "Send secure message"
+      "targetRpc": "DSIC SEND MAIL MSG",
+      "targetPackage": "XM",
+      "description": "Send secure message (Phase 64: MailMan bridge)"
     },
     "portal.appointments.list": {
       "status": "live",
@@ -538,6 +538,38 @@
       "targetRpc": null,
       "targetPackage": null,
       "description": "Rollback completed imports"
+    },
+    "messaging.clinician.inbox": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": "XM",
+      "description": "Clinician secure messaging inbox (Phase 64: local store + MailMan read target)"
+    },
+    "messaging.clinician.send": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": null,
+      "targetRpc": "DSIC SEND MAIL MSG",
+      "targetPackage": "XM",
+      "description": "Clinician send message via VistA MailMan (Phase 64)"
+    },
+    "messaging.mail-groups": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": null,
+      "targetRpc": "ORQQXMB MAIL GROUPS",
+      "targetPackage": "XM",
+      "description": "List VistA mail groups for recipient selection (Phase 64)"
+    },
+    "messaging.portal.send": {
+      "status": "live",
+      "module": "portal",
+      "adapter": null,
+      "targetRpc": "DSIC SEND MAIL MSG",
+      "targetPackage": "XM",
+      "description": "Portal patient send to clinic mail group (Phase 64)"
     }
   }
 }

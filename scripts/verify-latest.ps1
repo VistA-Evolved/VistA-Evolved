@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 63: Scheduling v1 (VistA SD* First) + Portal Appointments
-& "$PSScriptRoot\verify-phase63-scheduling.ps1" @args
+# Phase 64: Secure Messaging v1 (MailMan-Backed) + Portal Messaging Posture
+& "$PSScriptRoot\verify-phase64-secure-messaging.ps1" @args

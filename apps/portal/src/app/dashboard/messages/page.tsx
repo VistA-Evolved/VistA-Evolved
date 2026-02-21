@@ -2,6 +2,9 @@
  * Messages Page — Secure messaging with care team.
  * Inbox / Drafts / Sent tabs, compose form.
  *
+ * Phase 64: Added VistA MailMan bridge for sending to clinic mail groups.
+ * Messages are sent through both portal store AND VistA MailMan (DSIC SEND MAIL MSG).
+ *
  * IMPORTANT: SLA disclaimer — this is NOT for urgent communication.
  */
 
@@ -18,6 +21,8 @@ import {
   deleteMessageDraft,
 } from "@/lib/api";
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+
 type Tab = "inbox" | "drafts" | "sent" | "compose";
 
 export default function MessagesPage() {
@@ -32,6 +37,7 @@ export default function MessagesPage() {
   const [composeCategory, setCategory] = useState("general");
   const [sending, setSending] = useState(false);
   const [notice, setNotice] = useState("");
+  const [vistaSync, setVistaSync] = useState<string>("");
 
   useEffect(() => {
     loadMessages();
@@ -78,10 +84,40 @@ export default function MessagesPage() {
     const sendRes = await sendMessageDraft(draftId);
     setSending(false);
     if (sendRes.ok) {
+      // Phase 64: Also send via MailMan bridge to clinic mail group
+      let mailmanNote = "";
+      try {
+        const mmRes = await fetch(`${API_BASE}/messaging/portal/send`, {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            patientDfn: "portal-user",
+            patientName: "Portal Patient",
+            subject: composeSubject,
+            body: composeBody,
+            category: composeCategory,
+          }),
+        });
+        const mmData = await mmRes.json();
+        if (mmData.ok && !mmData.pending) {
+          const syncStatus = mmData.vistaSync || "unknown";
+          setVistaSync(syncStatus);
+          mailmanNote = syncStatus === "synced"
+            ? " (also sent to clinic via VistA MailMan)"
+            : " (VistA MailMan: pending)";
+        } else if (mmData.pending) {
+          setVistaSync("integration-pending");
+          mailmanNote = " (VistA MailMan: integration pending -- configure MESSAGING_DEFAULT_CLINIC_GROUP)";
+        }
+      } catch {
+        setVistaSync("unavailable");
+        mailmanNote = " (VistA MailMan bridge unavailable)";
+      }
       setSubject("");
       setBody("");
       setCategory("general");
-      setNotice("Message sent successfully.");
+      setNotice("Message sent successfully." + mailmanNote);
       setTab("sent");
       loadMessages();
     } else {
@@ -216,6 +252,15 @@ export default function MessagesPage() {
                 >
                   {sending ? "Sending..." : "Send Message"}
                 </button>
+                {vistaSync && (
+                  <div style={{
+                    fontSize: "0.75rem",
+                    color: vistaSync === "synced" ? "#166534" : vistaSync === "integration-pending" ? "#92400e" : "#64748b",
+                    marginTop: "0.25rem",
+                  }}>
+                    VistA MailMan: {vistaSync === "synced" ? "Synced to clinic" : vistaSync === "integration-pending" ? "Integration pending (target: DSIC SEND MAIL MSG)" : vistaSync}
+                  </div>
+                )}
               </div>
             </div>
           )}
