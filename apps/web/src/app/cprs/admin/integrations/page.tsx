@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Admin Integration Console — Phase 18B/D + Phase 21.
+ * Admin Integration Console — Phase 18B/D + Phase 21 + Phase 58.
  *
  * Enterprise integration dashboard with:
  *   - Integration registry table (all types: VistA RPC, FHIR, DICOM, HL7v2, devices)
@@ -12,6 +12,7 @@
  *   - Device onboarding form
  *   - Legacy connector view (Phase 17F compatibility)
  *   - VistA HL7/HLO Telemetry (Phase 21) — real-time data from VistA globals
+ *   - HL7 Message Browser (Phase 58) — individual message list + detail viewer + masking
  *
  * Accessible at /cprs/admin/integrations.
  */
@@ -107,6 +108,50 @@ interface InteropSummary {
   timestamp: string;
 }
 
+/* Phase 58: HL7 Message Browser types */
+interface HL7MessageRow {
+  ien: number;
+  direction: string;
+  directionLabel: string;
+  status: string;
+  statusLabel: string;
+  linkIen: number;
+  date: string;
+  textIen: number;
+}
+
+interface HL7MessageSegment {
+  type: string;
+  count: number;
+  masked: boolean;
+}
+
+interface HL7MessageDetail {
+  ien: number;
+  direction: string;
+  directionLabel: string;
+  status: string;
+  statusLabel: string;
+  linkIen: number;
+  date: string;
+  textIen: number;
+  segments: HL7MessageSegment[];
+  totalSegments: number;
+}
+
+interface MessageDetailResponse {
+  ok: boolean;
+  masked: boolean;
+  maskNote?: string;
+  unmaskedBy?: string;
+  unmaskedAt?: string;
+  reason?: string;
+  detail: HL7MessageDetail;
+  rpc: string;
+  vistaFiles: string;
+  timestamp: string;
+}
+
 /* ------------------------------------------------------------------ */
 /* Type labels                                                         */
 /* ------------------------------------------------------------------ */
@@ -131,7 +176,7 @@ const TYPE_LABELS: Record<string, string> = {
 
 export default function IntegrationsPage() {
   const { user, hasRole } = useSession();
-  const [tab, setTab] = useState<'registry' | 'legacy' | 'onboard' | 'hl7hlo'>('registry');
+  const [tab, setTab] = useState<'registry' | 'legacy' | 'onboard' | 'hl7hlo' | 'msgbrowser'>('registry');
   const [integrations, setIntegrations] = useState<Integration[]>([]);
   const [connectors, setConnectors] = useState<Connector[]>([]);
   const [healthSummary, setHealthSummary] = useState<HealthSummary | null>(null);
@@ -146,6 +191,20 @@ export default function IntegrationsPage() {
   const [interopLoading, setInteropLoading] = useState(false);
   const [interopError, setInteropError] = useState<string | null>(null);
   const [interopLastFetch, setInteropLastFetch] = useState<Date | null>(null);
+
+  // Phase 58: HL7 Message Browser state
+  const [msgList, setMsgList] = useState<HL7MessageRow[]>([]);
+  const [msgListLoading, setMsgListLoading] = useState(false);
+  const [msgListError, setMsgListError] = useState<string | null>(null);
+  const [msgDirFilter, setMsgDirFilter] = useState<string>('*');
+  const [msgStatusFilter, setMsgStatusFilter] = useState<string>('*');
+  const [msgLimit, setMsgLimit] = useState<string>('50');
+  const [selectedMsgIen, setSelectedMsgIen] = useState<number | null>(null);
+  const [msgDetail, setMsgDetail] = useState<MessageDetailResponse | null>(null);
+  const [msgDetailLoading, setMsgDetailLoading] = useState(false);
+  const [unmaskReason, setUnmaskReason] = useState('');
+  const [unmaskLoading, setUnmaskLoading] = useState(false);
+  const [unmaskError, setUnmaskError] = useState<string | null>(null);
 
   // Device onboarding form state
   const [deviceForm, setDeviceForm] = useState({
@@ -211,6 +270,92 @@ export default function IntegrationsPage() {
       setInteropLoading(false);
     }
   }, []);
+
+  /** Phase 58: Fetch HL7 message list with filters */
+  const fetchMsgList = useCallback(async () => {
+    setMsgListLoading(true);
+    setMsgListError(null);
+    try {
+      const params = new URLSearchParams();
+      if (msgDirFilter !== '*') params.set('direction', msgDirFilter);
+      if (msgStatusFilter !== '*') params.set('status', msgStatusFilter);
+      params.set('limit', msgLimit);
+      const res = await fetch(
+        `${API_BASE}/vista/interop/v2/hl7/messages?${params.toString()}`,
+        { credentials: 'include', signal: AbortSignal.timeout(30000) },
+      );
+      const data = await res.json();
+      if (data.ok && data.available) {
+        setMsgList(data.messages || []);
+      } else if (data.ok && !data.available) {
+        setMsgListError(data.message || 'HL7 message data not available');
+        setMsgList([]);
+      } else {
+        setMsgListError(data.error || 'Failed to fetch messages');
+      }
+    } catch (e: unknown) {
+      setMsgListError((e as Error).message || 'Network error');
+    } finally {
+      setMsgListLoading(false);
+    }
+  }, [msgDirFilter, msgStatusFilter, msgLimit]);
+
+  /** Phase 58: Fetch single message detail (masked) */
+  const fetchMsgDetail = useCallback(async (ien: number) => {
+    setSelectedMsgIen(ien);
+    setMsgDetailLoading(true);
+    setMsgDetail(null);
+    setUnmaskReason('');
+    setUnmaskError(null);
+    try {
+      const res = await fetch(
+        `${API_BASE}/vista/interop/v2/hl7/messages/${ien}`,
+        { credentials: 'include', signal: AbortSignal.timeout(15000) },
+      );
+      const data = await res.json();
+      if (data.ok) {
+        setMsgDetail(data as MessageDetailResponse);
+      } else {
+        setMsgDetail(null);
+      }
+    } catch {
+      setMsgDetail(null);
+    } finally {
+      setMsgDetailLoading(false);
+    }
+  }, []);
+
+  /** Phase 58: Unmask a message detail (admin only, audited) */
+  const handleUnmask = useCallback(async () => {
+    if (!selectedMsgIen || unmaskReason.length < 10) {
+      setUnmaskError('Reason must be at least 10 characters');
+      return;
+    }
+    setUnmaskLoading(true);
+    setUnmaskError(null);
+    try {
+      const res = await fetch(
+        `${API_BASE}/vista/interop/v2/hl7/messages/${selectedMsgIen}/unmask`,
+        {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reason: unmaskReason }),
+          signal: AbortSignal.timeout(15000),
+        },
+      );
+      const data = await res.json();
+      if (data.ok) {
+        setMsgDetail(data as MessageDetailResponse);
+      } else {
+        setUnmaskError(data.error || 'Unmask failed');
+      }
+    } catch (e: unknown) {
+      setUnmaskError((e as Error).message || 'Network error');
+    } finally {
+      setUnmaskLoading(false);
+    }
+  }, [selectedMsgIen, unmaskReason]);
 
   useEffect(() => {
     if (hasRole('admin')) {
@@ -354,7 +499,7 @@ export default function IntegrationsPage() {
 
         {/* ── Tab Nav ──────────────────────────────────────────────── */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-          {(['registry', 'hl7hlo', 'onboard', 'legacy'] as const).map((t) => (
+          {(['registry', 'hl7hlo', 'msgbrowser', 'onboard', 'legacy'] as const).map((t) => (
             <button key={t} className={styles.btn} onClick={() => setTab(t)}
               style={{
                 fontSize: 12,
@@ -362,7 +507,7 @@ export default function IntegrationsPage() {
                 borderBottom: tab === t ? '2px solid var(--cprs-primary)' : '2px solid transparent',
                 borderRadius: 0,
               }}>
-              {t === 'registry' ? 'Integration Registry' : t === 'hl7hlo' ? 'VistA HL7/HLO' : t === 'onboard' ? 'Device Onboarding' : 'Legacy Connectors'}
+              {t === 'registry' ? 'Integration Registry' : t === 'hl7hlo' ? 'VistA HL7/HLO' : t === 'msgbrowser' ? 'Message Browser' : t === 'onboard' ? 'Device Onboarding' : 'Legacy Connectors'}
             </button>
           ))}
           <div style={{ flex: 1 }} />
@@ -590,7 +735,7 @@ export default function IntegrationsPage() {
               <div>
                 <h3 style={{ fontSize: 14, margin: 0 }}>VistA HL7 / HLO Interop Telemetry</h3>
                 <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', margin: '2px 0 0' }}>
-                  Real-time data from VistA globals via ZVEMIOP M routine (read-only RPCs).
+                  Real-time data from VistA globals via ZVEMIOP M routine v1.1 (read-only RPCs).
                 </p>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -767,9 +912,291 @@ export default function IntegrationsPage() {
           </>
         )}
 
+        {/* ── HL7 Message Browser Tab (Phase 58) ─────────────────── */}
+        {tab === 'msgbrowser' && (
+          <>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+              <div>
+                <h3 style={{ fontSize: 14, margin: 0 }}>HL7 Message Browser</h3>
+                <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', margin: '2px 0 0' }}>
+                  Browse individual HL7 messages from VistA file #773. PHI segments masked by default.
+                </p>
+              </div>
+            </div>
+
+            {/* Filters */}
+            <div style={{
+              display: 'flex', gap: 12, alignItems: 'center', marginBottom: 12, padding: '8px 12px',
+              background: 'var(--cprs-bg)', border: '1px solid var(--cprs-border)', borderRadius: 6, fontSize: 12,
+            }}>
+              <label>
+                Direction:{' '}
+                <select value={msgDirFilter} onChange={(e) => setMsgDirFilter(e.target.value)}
+                  style={{ fontSize: 12, padding: '2px 4px', border: '1px solid var(--cprs-border)', borderRadius: 3 }}>
+                  <option value="*">All</option>
+                  <option value="I">Inbound</option>
+                  <option value="O">Outbound</option>
+                </select>
+              </label>
+              <label>
+                Status:{' '}
+                <select value={msgStatusFilter} onChange={(e) => setMsgStatusFilter(e.target.value)}
+                  style={{ fontSize: 12, padding: '2px 4px', border: '1px solid var(--cprs-border)', borderRadius: 3 }}>
+                  <option value="*">All</option>
+                  <option value="D">Done</option>
+                  <option value="E">Error</option>
+                  <option value="P">Pending</option>
+                </select>
+              </label>
+              <label>
+                Limit:{' '}
+                <select value={msgLimit} onChange={(e) => setMsgLimit(e.target.value)}
+                  style={{ fontSize: 12, padding: '2px 4px', border: '1px solid var(--cprs-border)', borderRadius: 3 }}>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+              </label>
+              <button className={styles.btn} onClick={fetchMsgList} disabled={msgListLoading}
+                style={{ fontSize: 12 }}>
+                {msgListLoading ? 'Loading...' : 'Search'}
+              </button>
+            </div>
+
+            {msgListError && (
+              <p style={{ color: 'var(--cprs-danger)', fontSize: 12, marginBottom: 8 }}>{msgListError}</p>
+            )}
+
+            {/* Message List Table */}
+            {msgList.length > 0 && (
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12, marginBottom: 16 }}>
+                <thead>
+                  <tr style={{ borderBottom: '2px solid var(--cprs-border)' }}>
+                    <th style={{ textAlign: 'left', padding: '4px 8px' }}>IEN</th>
+                    <th style={{ textAlign: 'left', padding: '4px 8px' }}>Direction</th>
+                    <th style={{ textAlign: 'left', padding: '4px 8px' }}>Status</th>
+                    <th style={{ textAlign: 'left', padding: '4px 8px' }}>Link IEN</th>
+                    <th style={{ textAlign: 'left', padding: '4px 8px' }}>Date</th>
+                    <th style={{ textAlign: 'center', padding: '4px 8px' }}>Detail</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {msgList.map((msg) => (
+                    <tr key={msg.ien}
+                      style={{
+                        borderBottom: '1px solid var(--cprs-border)',
+                        background: selectedMsgIen === msg.ien ? 'rgba(59, 131, 246, 0.08)' : undefined,
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => fetchMsgDetail(msg.ien)}
+                    >
+                      <td style={{ padding: '4px 8px', fontFamily: 'monospace' }}>{msg.ien}</td>
+                      <td style={{ padding: '4px 8px' }}>
+                        <span style={{
+                          padding: '1px 6px', borderRadius: 4, fontSize: 10, fontWeight: 600,
+                          background: msg.direction === 'I' ? '#dbeafe' : msg.direction === 'O' ? '#fef3c7' : '#f3f4f6',
+                          color: msg.direction === 'I' ? '#1d4ed8' : msg.direction === 'O' ? '#92400e' : '#6b7280',
+                        }}>
+                          {msg.directionLabel || msg.direction}
+                        </span>
+                      </td>
+                      <td style={{ padding: '4px 8px' }}>
+                        <span style={{
+                          padding: '1px 6px', borderRadius: 10, fontSize: 10, fontWeight: 600, color: '#fff',
+                          background: msg.status === 'D' ? '#16a34a' : msg.status === 'E' ? '#dc2626' : msg.status === 'P' ? '#d97706' : '#6b7280',
+                        }}>
+                          {msg.statusLabel || msg.status}
+                        </span>
+                      </td>
+                      <td style={{ padding: '4px 8px', fontFamily: 'monospace' }}>{msg.linkIen || '-'}</td>
+                      <td style={{ padding: '4px 8px', fontFamily: 'monospace', fontSize: 11 }}>{msg.date || '-'}</td>
+                      <td style={{ padding: '4px 8px', textAlign: 'center' }}>
+                        <button className={styles.btn} onClick={(e) => { e.stopPropagation(); fetchMsgDetail(msg.ien); }}
+                          style={{ fontSize: 10, padding: '1px 6px' }}>
+                          View
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+
+            {!msgListLoading && msgList.length === 0 && !msgListError && (
+              <p style={{ fontSize: 12, color: 'var(--cprs-text-muted)', marginBottom: 16 }}>
+                Click &quot;Search&quot; to load HL7 messages from VistA file #773.
+              </p>
+            )}
+
+            {/* Message Detail Panel */}
+            {selectedMsgIen && (
+              <div style={{
+                padding: 16, border: '1px solid var(--cprs-border)', borderRadius: 6,
+                background: 'var(--cprs-bg)', marginBottom: 16,
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                  <h4 style={{ fontSize: 13, margin: 0 }}>
+                    Message Detail: IEN {selectedMsgIen}
+                    {msgDetail?.masked && (
+                      <span style={{
+                        marginLeft: 8, padding: '2px 8px', borderRadius: 10, fontSize: 10,
+                        fontWeight: 600, background: '#fef3c7', color: '#92400e',
+                      }}>
+                        PHI MASKED
+                      </span>
+                    )}
+                    {msgDetail && !msgDetail.masked && (
+                      <span style={{
+                        marginLeft: 8, padding: '2px 8px', borderRadius: 10, fontSize: 10,
+                        fontWeight: 600, background: '#fee2e2', color: '#991b1b',
+                      }}>
+                        UNMASKED
+                      </span>
+                    )}
+                  </h4>
+                  <button className={styles.btn} onClick={() => { setSelectedMsgIen(null); setMsgDetail(null); }}
+                    style={{ fontSize: 11 }}>
+                    Close
+                  </button>
+                </div>
+
+                {msgDetailLoading && (
+                  <p style={{ fontSize: 12, color: 'var(--cprs-text-muted)' }}>Loading message detail...</p>
+                )}
+
+                {msgDetail && (
+                  <>
+                    {/* Metadata grid */}
+                    <div style={{
+                      display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                      gap: 8, marginBottom: 12, fontSize: 12,
+                    }}>
+                      <div><strong>Direction:</strong> {msgDetail.detail.directionLabel || msgDetail.detail.direction}</div>
+                      <div><strong>Status:</strong> {msgDetail.detail.statusLabel || msgDetail.detail.status}</div>
+                      <div><strong>Link IEN:</strong> {msgDetail.detail.linkIen}</div>
+                      <div><strong>Date:</strong> {msgDetail.detail.date}</div>
+                      <div><strong>Text IEN (#772):</strong> {msgDetail.detail.textIen}</div>
+                      <div><strong>Total Segments:</strong> {msgDetail.detail.totalSegments}</div>
+                    </div>
+
+                    {/* Segment type summary table */}
+                    {msgDetail.detail.segments.length > 0 && (
+                      <>
+                        <h5 style={{ fontSize: 12, margin: '0 0 4px' }}>Segment Type Summary</h5>
+                        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11, marginBottom: 12 }}>
+                          <thead>
+                            <tr style={{ borderBottom: '1px solid var(--cprs-border)' }}>
+                              <th style={{ textAlign: 'left', padding: '3px 6px' }}>Segment Type</th>
+                              <th style={{ textAlign: 'right', padding: '3px 6px' }}>Count</th>
+                              <th style={{ textAlign: 'center', padding: '3px 6px' }}>PHI</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {msgDetail.detail.segments.map((seg) => (
+                              <tr key={seg.type} style={{ borderBottom: '1px solid var(--cprs-border)' }}>
+                                <td style={{
+                                  padding: '3px 6px', fontFamily: 'monospace', fontWeight: 500,
+                                  color: seg.masked ? '#92400e' : undefined,
+                                }}>
+                                  {seg.type}
+                                </td>
+                                <td style={{ padding: '3px 6px', textAlign: 'right' }}>{seg.count}</td>
+                                <td style={{ padding: '3px 6px', textAlign: 'center' }}>
+                                  {seg.masked ? (
+                                    <span style={{
+                                      padding: '1px 4px', borderRadius: 3, fontSize: 9,
+                                      background: '#fef3c7', color: '#92400e', fontWeight: 600,
+                                    }}>
+                                      MASKED
+                                    </span>
+                                  ) : (
+                                    <span style={{ color: 'var(--cprs-text-muted)' }}>-</span>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </>
+                    )}
+
+                    {/* Mask note */}
+                    {msgDetail.masked && msgDetail.maskNote && (
+                      <p style={{
+                        fontSize: 11, color: '#92400e', background: '#fefce8',
+                        padding: '6px 10px', borderRadius: 4, marginBottom: 12,
+                      }}>
+                        {msgDetail.maskNote}
+                      </p>
+                    )}
+
+                    {/* Unmask section (admin only) */}
+                    {msgDetail.masked && hasRole('admin') && (
+                      <div style={{
+                        padding: 12, border: '1px solid #fcd34d', borderRadius: 6,
+                        background: '#fffbeb',
+                      }}>
+                        <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 4, color: '#92400e' }}>
+                          Unmask PHI Segments
+                        </div>
+                        <p style={{ fontSize: 11, color: '#78350f', margin: '0 0 8px' }}>
+                          Unmasking reveals PHI segment type flags. This action is audited and requires a justification reason (min 10 chars).
+                        </p>
+                        <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                          <input
+                            type="text"
+                            placeholder="Enter reason for unmask (min 10 chars)..."
+                            value={unmaskReason}
+                            onChange={(e) => setUnmaskReason(e.target.value)}
+                            style={{
+                              flex: 1, fontSize: 12, padding: '4px 8px',
+                              border: '1px solid #fcd34d', borderRadius: 3,
+                            }}
+                          />
+                          <button
+                            className={styles.btn}
+                            onClick={handleUnmask}
+                            disabled={unmaskLoading || unmaskReason.length < 10}
+                            style={{
+                              fontSize: 11, padding: '4px 12px',
+                              background: '#f59e0b', color: '#fff', borderColor: '#d97706',
+                            }}
+                          >
+                            {unmaskLoading ? 'Unmasking...' : 'Unmask'}
+                          </button>
+                        </div>
+                        {unmaskError && (
+                          <p style={{ fontSize: 11, color: '#dc2626', marginTop: 4 }}>{unmaskError}</p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Unmask confirmation banner */}
+                    {!msgDetail.masked && msgDetail.unmaskedBy && (
+                      <div style={{
+                        padding: 8, border: '1px solid #fca5a5', borderRadius: 6,
+                        background: '#fef2f2', fontSize: 11, color: '#991b1b',
+                      }}>
+                        <strong>Unmasked by:</strong> {msgDetail.unmaskedBy} at {msgDetail.unmaskedAt}
+                        <br />
+                        <strong>Reason:</strong> {msgDetail.reason}
+                      </div>
+                    )}
+
+                    {/* RPC info */}
+                    <div style={{ marginTop: 8, fontSize: 10, color: 'var(--cprs-text-muted)' }}>
+                      RPC: <code>{msgDetail.rpc}</code> | Files: {msgDetail.vistaFiles} | {msgDetail.timestamp}
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+          </>
+        )}
+
         {/* ── Integration Architecture Note ────────────────────────── */}
         <div style={{ marginTop: 24, padding: 12, background: 'var(--cprs-bg)', border: '1px solid var(--cprs-border)', borderRadius: 6, fontSize: 11, color: 'var(--cprs-text-muted)' }}>
-          <strong>Integration Architecture (Phase 18 + Phase 21):</strong>
+          <strong>Integration Architecture (Phase 18 + Phase 21 + Phase 58):</strong>
           <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
             <li><strong>VistA-first:</strong> VistA RPC Broker is always the primary connection</li>
             <li><strong>FHIR:</strong> C0FHIR Suite (MUMPS-native FHIR R4) or external FHIR servers</li>
@@ -777,7 +1204,8 @@ export default function IntegrationsPage() {
             <li><strong>HL7v2:</strong> MLLP feeds for ADT, ORM, ORU messages</li>
             <li><strong>Devices:</strong> Config-not-code onboarding for DICOM modalities, LIS instruments, bedside monitors</li>
             <li><strong>Probes:</strong> TCP socket (DICOM/HL7v2), HTTP (FHIR/DICOMweb), XWB (VistA RPC)</li>
-            <li><strong>HL7/HLO Telemetry (Phase 21):</strong> Real-time read from VistA globals via ZVEMIOP M routine — files #870, #773, #772, #779.x, #778, #776</li>
+            <li><strong>HL7/HLO Telemetry (Phase 21):</strong> Real-time read from VistA globals via ZVEMIOP M routine -- files #870, #773, #772, #779.x, #778, #776</li>
+            <li><strong>Message Browser (Phase 58):</strong> Individual HL7 message list + detail from #773/#772 via VE INTEROP MSG LIST/DETAIL. PHI masking ON by default. Unmask requires admin + reason, audited.</li>
           </ul>
         </div>
       </div>

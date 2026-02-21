@@ -1,15 +1,17 @@
-ZVEMIOP ;VE/KM - VistA-Evolved Interop Monitor;2026-02-17
- ;;1.0;VistA-Evolved;**1**;Feb 17, 2026;Build 1
+ZVEMIOP ;VE/KM - VistA-Evolved Interop Monitor;2026-02-21
+ ;;1.1;VistA-Evolved;**2**;Feb 21, 2026;Build 2
  ;
  ; Read-only monitoring RPCs for HL7/HLO interop telemetry.
  ; Called by VistA-Evolved platform API to display real VistA
  ; HL7 engine state in the Interop Monitor dashboard.
  ;
  ; ENTRY POINTS (RPC tags):
- ;   LINKS^ZVEMIOP  — HL7 logical links from file #870
- ;   MSGS^ZVEMIOP   — Recent HL7 message stats from #773/#772
+ ;   LINKS^ZVEMIOP   — HL7 logical links from file #870
+ ;   MSGS^ZVEMIOP    — Recent HL7 message stats from #773/#772
  ;   HLOSTAT^ZVEMIOP — HLO app registry + queue indicators
  ;   QLENGTH^ZVEMIOP — Queue depth summary
+ ;   MSGLIST^ZVEMIOP — Individual message list from #773 (Phase 58)
+ ;   MSGDETL^ZVEMIOP — Single message detail from #773/#772 (Phase 58)
  ;
  ; ALL READS ARE STRICTLY READ-ONLY. No SET, KILL, or LOCK commands
  ; are used against clinical globals.
@@ -184,3 +186,87 @@ QLENGTH(RESULT) ; RPC: VE INTEROP QUEUE DEPTH
  ;
 NOW() ; Helper — current date/time in FM format
  Q $$NOW^XLFDT()
+ ;
+MSGLIST(RESULT,DIR,STAT,MAXN) ; RPC: VE INTEROP MSG LIST
+ ; Returns individual HL7 message rows from ^HLMA (#773)
+ ; Input:  DIR  = direction filter (I=inbound, O=outbound, *=all)
+ ;         STAT = status filter (D=done, E=error, P=pending, *=all)
+ ;         MAXN = max rows to return (default 50)
+ ; Output: RESULT(0)=count^OK, RESULT(n)=IEN^DIR^STATUS^LINK_IEN^DATE^MSG_IEN_772
+ ;         NO message body is returned — metadata only.
+ ;
+ N IEN,CT,D0,MDIR,MSTAT,MLINK,MDT,MTXT
+ S DIR=$G(DIR,"*"),STAT=$G(STAT,"*")
+ S MAXN=+$G(MAXN) I MAXN<1 S MAXN=50
+ ;
+ I '$D(^HLMA(0)) D  Q
+ . S RESULT(0)="0^NOT_AVAILABLE^HL7 MESSAGE ADMIN (#773) not found"
+ ;
+ S CT=0,IEN=$O(^HLMA(""),-1)
+ F  Q:IEN=""  Q:CT>=MAXN  D  S IEN=$O(^HLMA(IEN),-1)
+ . S D0=$G(^HLMA(IEN,0))
+ . Q:D0=""
+ . S MDIR=$P(D0,"^",3)
+ . S MSTAT=$P(D0,"^",4)
+ . ; Apply filters
+ . I DIR'="*",MDIR'=DIR Q
+ . I STAT'="*",MSTAT'=STAT Q
+ . S MLINK=$P(D0,"^",7)
+ . S MDT=$P(D0,"^",11)
+ . S MTXT=$P(D0,"^",1)  ; message text IEN in #772
+ . S CT=CT+1
+ . S RESULT(CT)=IEN_"^"_MDIR_"^"_MSTAT_"^"_MLINK_"^"_MDT_"^"_MTXT
+ ;
+ S RESULT(0)=CT_"^OK^HL7 message list from #773"
+ Q
+ ;
+MSGDETL(RESULT,MSGIEN) ; RPC: VE INTEROP MSG DETAIL
+ ; Returns single HL7 message metadata + segment type summary from #773/#772
+ ; Input:  MSGIEN = IEN in ^HLMA (#773)
+ ; Output: RESULT(0)=status, RESULT(1..N) = metadata + segment type counts
+ ;         Raw segment CONTENT is NOT returned — only segment type names and counts.
+ ;         The API layer handles masking for any content that IS exposed.
+ ;
+ N D0,MDIR,MSTAT,MLINK,MDT,MTXT,SIEN,SLINE,SEGTYPE
+ N SEGS,SEGCT,I
+ S MSGIEN=+$G(MSGIEN)
+ I MSGIEN<1 D  Q
+ . S RESULT(0)="0^ERROR^Invalid message IEN"
+ ;
+ S D0=$G(^HLMA(MSGIEN,0))
+ I D0="" D  Q
+ . S RESULT(0)="0^NOT_FOUND^Message IEN "_MSGIEN_" not found in #773"
+ ;
+ S MDIR=$P(D0,"^",3)
+ S MSTAT=$P(D0,"^",4)
+ S MLINK=$P(D0,"^",7)
+ S MDT=$P(D0,"^",11)
+ S MTXT=$P(D0,"^",1)
+ ;
+ ; Metadata row
+ S RESULT(1)="meta^ien="_MSGIEN_"^dir="_MDIR_"^status="_MSTAT_"^link="_MLINK_"^date="_MDT_"^textIen="_MTXT
+ ;
+ ; Count segment types from #772 (no content returned)
+ K SEGS S SEGCT=0
+ I MTXT]"",$D(^HL(772,MTXT)) D
+ . S SIEN=0
+ . F  S SIEN=$O(^HL(772,MTXT,"IN",SIEN)) Q:SIEN=""  D
+ . . S SLINE=$G(^HL(772,MTXT,"IN",SIEN,0))
+ . . S SEGTYPE=$P(SLINE,"|",1)
+ . . I SEGTYPE="" S SEGTYPE="UNK"
+ . . S SEGTYPE=$E(SEGTYPE,1,3)  ; normalize to 3-char
+ . . I '$D(SEGS(SEGTYPE)) S SEGS(SEGTYPE)=0
+ . . S SEGS(SEGTYPE)=SEGS(SEGTYPE)+1
+ . . S SEGCT=SEGCT+1
+ ;
+ ; Output segment summary
+ N CT S CT=1
+ S SEGTYPE=""
+ F  S SEGTYPE=$O(SEGS(SEGTYPE)) Q:SEGTYPE=""  D
+ . S CT=CT+1
+ . S RESULT(CT)="seg^type="_SEGTYPE_"^count="_SEGS(SEGTYPE)
+ ;
+ S CT=CT+1
+ S RESULT(CT)="segTotal^count="_SEGCT
+ S RESULT(0)=CT_"^OK^Message detail for IEN "_MSGIEN
+ Q

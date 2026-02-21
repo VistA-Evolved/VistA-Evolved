@@ -70,6 +70,8 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "VE INTEROP HL7 MSGS",      domain: "interop",    tag: "custom", description: "List recent HL7 messages" },
   { name: "VE INTEROP HLO STATUS",    domain: "interop",    tag: "custom", description: "HLO application status" },
   { name: "VE INTEROP QUEUE DEPTH",   domain: "interop",    tag: "custom", description: "HL7 queue depths" },
+  { name: "VE INTEROP MSG LIST",      domain: "interop",    tag: "custom", description: "List HL7 messages with filters" },
+  { name: "VE INTEROP MSG DETAIL",    domain: "interop",    tag: "custom", description: "HL7 message metadata + segment summary" },
 
   // --- Imaging ---
   { name: "MAG4 REMOTE PROCEDURE",    domain: "imaging",    tag: "read",  description: "Imaging remote procedure call" },
@@ -144,6 +146,8 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
   { name: "VE INTEROP HL7 MSGS", reason: "Custom RPC installed by VistA-Evolved (ZVEMIOP.m) for HL7 telemetry" },
   { name: "VE INTEROP HLO STATUS", reason: "Custom RPC installed by VistA-Evolved (ZVEMIOP.m) for HLO status" },
   { name: "VE INTEROP QUEUE DEPTH", reason: "Custom RPC installed by VistA-Evolved (ZVEMIOP.m) for queue monitoring" },
+  { name: "VE INTEROP MSG LIST", reason: "Custom RPC installed by VistA-Evolved (ZVEMIOP.m) for HL7 message listing (Phase 58)" },
+  { name: "VE INTEROP MSG DETAIL", reason: "Custom RPC installed by VistA-Evolved (ZVEMIOP.m) for HL7 message detail (Phase 58)" },
   { name: "ORWCH PROBLEM LIST", reason: "Chart-specific problem list variant; may be absent from some Vivian snapshots" },
   { name: "ORQQCN2 MED RESULTS", reason: "Consult med results RPC; present in CPRS source but absent from Vivian cross-reference" },
   { name: "MAG4 REMOTE PROCEDURE", reason: "VistA Imaging remote procedure; absent from Vivian (MAG4 package has 27 other RPCs)" },

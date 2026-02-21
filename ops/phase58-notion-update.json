@@ -1,0 +1,18 @@
+{
+  "feature": "Phase 58: VistA-First HL7/HLO Interop Monitor v2",
+  "stage": "completed",
+  "status": "verified",
+  "promptRef": "prompts/63-PHASE-58-INTEROP-MONITOR-V2/58-01-IMPLEMENT.md",
+  "verifyRef": "prompts/63-PHASE-58-INTEROP-MONITOR-V2/58-99-VERIFY.md",
+  "runbook": "docs/runbooks/phase58-interop-monitor-v2.md",
+  "verifyScript": "scripts/verify-phase58-interop-monitor.ps1",
+  "gatesPassed": 10,
+  "gatesTotal": 10,
+  "keyDeliverables": [
+    "2 new M routine entry points (MSGLIST, MSGDETL) in ZVEMIOP.m v1.1",
+    "2 new RPCs registered (VE INTEROP MSG LIST, VE INTEROP MSG DETAIL)",
+    "5 new v2 API endpoints with PHI masking and audit",
+    "Message Browser UI tab with filters, detail viewer, unmask flow",
+    "Capability inventory at artifacts/interop/capabilities.json"
+  ]
+}

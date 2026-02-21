@@ -111,7 +111,11 @@ export type AuditAction =
   | "phi.rcm-charges-view"
   | "phi.rcm-claims-status-view"
   | "phi.rcm-ar-status-view"
-  | "data.icd-search";
+  | "data.icd-search"
+  // Phase 58: Interop monitor v2 audit events
+  | "interop.message-unmask"
+  | "interop.message-list"
+  | "interop.message-detail";
 
 export type AuditOutcome = "success" | "failure" | "denied" | "error";
 

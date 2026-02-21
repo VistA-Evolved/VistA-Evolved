@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 57: CPRS Parity Wave 2 (WRITE) Safety + Capability Detection
-& "$PSScriptRoot\verify-phase57-wave2-write.ps1" @args
+# Phase 58: VistA-First HL7/HLO Interop Monitor v2
+& "$PSScriptRoot\verify-phase58-interop-monitor.ps1" @args

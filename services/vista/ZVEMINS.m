@@ -1,5 +1,5 @@
 ZVEMINS ;VE/KM - VistA-Evolved Interop RPC Installer;2026-02-17
- ;;1.0;VistA-Evolved;**1**;Feb 17, 2026;Build 1
+ ;;1.1;VistA-Evolved;**1**;Feb 17, 2026;Build 2
  ;
  ; Registers VE INTEROP * RPCs in file 8994 (REMOTE PROCEDURE)
  ; and adds them to the OR CPRS GUI CHART context or XWB DIRECT RPC.
@@ -7,13 +7,17 @@ ZVEMINS ;VE/KM - VistA-Evolved Interop RPC Installer;2026-02-17
  ; Run once: D RUN^ZVEMINS
  ; This is idempotent — skips if RPCs already exist.
  ;
+ ; v1.1/Build 2: Added VE INTEROP MSG LIST and VE INTEROP MSG DETAIL
+ ;
  Q
  ;
-RUN ; Main entry — register all 4 RPCs
+RUN ; Main entry — register all 6 RPCs
  D REGONE("VE INTEROP HL7 LINKS","LINKS","ZVEMIOP","Returns HL7 logical link status")
  D REGONE("VE INTEROP HL7 MSGS","MSGS","ZVEMIOP","Returns HL7 message activity summary")
  D REGONE("VE INTEROP HLO STATUS","HLOSTAT","ZVEMIOP","Returns HLO app registry and system params")
  D REGONE("VE INTEROP QUEUE DEPTH","QLENGTH","ZVEMIOP","Returns queue depth indicators")
+ D REGONE("VE INTEROP MSG LIST","MSGLIST","ZVEMIOP","Lists HL7 messages from #773 with filters")
+ D REGONE("VE INTEROP MSG DETAIL","MSGDETL","ZVEMIOP","Returns HL7 message metadata and segment summary")
  ;
  W !,"--- Registration complete ---",!
  W "Checking results...",!
@@ -61,11 +65,11 @@ REGONE(NAME,TAG,RTN,DESC) ; Register one RPC in file 8994
  ; Add to B cross-reference (should be automatic via FileMan)
  Q
  ;
-CHECK ; Verify all 4 RPCs are registered
+CHECK ; Verify all 6 RPCs are registered
  N NAMES,I,NM,IEN
- S NAMES="VE INTEROP HL7 LINKS,VE INTEROP HL7 MSGS,VE INTEROP HLO STATUS,VE INTEROP QUEUE DEPTH"
+ S NAMES="VE INTEROP HL7 LINKS,VE INTEROP HL7 MSGS,VE INTEROP HLO STATUS,VE INTEROP QUEUE DEPTH,VE INTEROP MSG LIST,VE INTEROP MSG DETAIL"
  W !,"--- Verification ---"
- F I=1:1:4 D
+ F I=1:1:6 D
  . S NM=$P(NAMES,",",I)
  . S IEN=$$FIND1^DIC(8994,,"BX",NM)
  . W !,"  ",NM," => ",$S(IEN>0:"REGISTERED (IEN="_IEN_")",1:"** NOT FOUND **")
