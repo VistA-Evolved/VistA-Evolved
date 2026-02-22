@@ -18,7 +18,7 @@ import styles from '@/components/cprs/cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
-type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions' | 'gateways' | 'adapters' | 'jobs' | 'eligibility';
+type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions' | 'gateways' | 'adapters' | 'jobs' | 'eligibility' | 'ops-dashboard';
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
@@ -49,6 +49,7 @@ export default function RcmPage() {
     { id: 'adapters', label: 'Payer Adapters' },
     { id: 'jobs', label: 'Jobs & Polling' },
     { id: 'eligibility', label: 'Eligibility Status' },
+    { id: 'ops-dashboard', label: 'Ops Dashboard' },
     { id: 'audit', label: 'Audit Trail' },
   ];
 
@@ -106,6 +107,7 @@ export default function RcmPage() {
         {tab === 'adapters' && <AdaptersTab />}
         {tab === 'jobs' && <JobsTab />}
         {tab === 'eligibility' && <EligibilityTab />}
+        {tab === 'ops-dashboard' && <OpsDashboardTab />}
         {tab === 'audit' && <AuditTab />}
       </div>
     </div>
@@ -2044,6 +2046,261 @@ function JobsTab() {
       <div style={{ marginTop: 16, padding: 12, background: '#fff3cd', borderRadius: 6, fontSize: 11, color: '#664d03' }}>
         <strong>Note:</strong> Polling jobs are disabled by default. Set <code>RCM_ELIGIBILITY_POLLING=true</code> and{' '}
         <code>RCM_CLAIM_STATUS_POLLING=true</code> in env to enable. Rate limits prevent payer throttling.
+      </div>
+    </div>
+  );
+}
+
+/* ─── Phase 82: Ops Dashboard Tab ───────────────────────────────── */
+
+function OpsDashboardTab() {
+  const [dashboard, setDashboard] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [enqueueResult, setEnqueueResult] = useState<any>(null);
+
+  const refresh = useCallback(() => {
+    setLoading(true);
+    setError(null);
+    apiFetch('/rcm/ops/dashboard')
+      .then((data) => {
+        if (data?.ok) {
+          setDashboard(data);
+        } else {
+          setError(data?.error ?? 'Failed to load ops dashboard');
+        }
+      })
+      .catch((e) => setError(String(e)))
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  const handleEnqueueEligibility = () => {
+    apiFetch('/rcm/ops/enqueue-eligibility', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        payerCode: 'SANDBOX',
+        subscriberMemberId: 'TEST-001',
+        serviceType: '30',
+      }),
+    }).then((data) => {
+      setEnqueueResult(data);
+      setTimeout(refresh, 500);
+    }).catch(() => {});
+  };
+
+  const handleEnqueueStatusPoll = () => {
+    apiFetch('/rcm/ops/enqueue-status-poll', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        claimId: 'test-claim-001',
+        payerCode: 'SANDBOX',
+      }),
+    }).then((data) => {
+      setEnqueueResult(data);
+      setTimeout(refresh, 500);
+    }).catch(() => {});
+  };
+
+  if (loading) return <div style={{ color: '#6c757d', fontSize: 13 }}>Loading ops dashboard...</div>;
+  if (error) return <div style={{ color: '#dc3545', fontSize: 13 }}>Error: {error}</div>;
+  if (!dashboard) return <div style={{ color: '#6c757d', fontSize: 13 }}>No dashboard data</div>;
+
+  const { connectivity, jobs, workqueues, systemHealth } = dashboard;
+
+  const stateColor = (state: string) => {
+    switch (state) {
+      case 'connected': return { bg: '#d1e7dd', fg: '#0f5132' };
+      case 'degraded': return { bg: '#fff3cd', fg: '#664d03' };
+      case 'disconnected': return { bg: '#f8d7da', fg: '#842029' };
+      case 'pending': return { bg: '#e2e3e5', fg: '#41464b' };
+      default: return { bg: '#e2e3e5', fg: '#41464b' };
+    }
+  };
+
+  const healthColor = (h: string) =>
+    h === 'operational' || h === 'healthy' ? '#198754' : '#dc3545';
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+        <h3 style={{ fontSize: 15, margin: 0 }}>Ops Dashboard (Phase 82)</h3>
+        <button onClick={refresh} style={{ fontSize: 11, padding: '4px 12px', cursor: 'pointer' }}>Refresh</button>
+        <span style={{ fontSize: 11, color: '#6c757d' }}>Tenant: {dashboard.tenantId}</span>
+      </div>
+
+      {/* System Health Summary */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 20 }}>
+        {systemHealth && Object.entries(systemHealth).map(([key, val]) => (
+          <div key={key} style={{ padding: 12, background: '#f8f9fa', borderRadius: 6, borderLeft: `3px solid ${healthColor(val as string)}` }}>
+            <div style={{ fontSize: 11, color: '#6c757d', marginBottom: 4 }}>{key.replace(/([A-Z])/g, ' $1').toUpperCase()}</div>
+            <div style={{ fontSize: 14, fontWeight: 600, color: healthColor(val as string) }}>{String(val).toUpperCase().replace(/-/g, ' ')}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Connectivity: Connectors */}
+      <h4 style={{ fontSize: 13, marginBottom: 8 }}>Connector States ({connectivity?.summary?.total ?? 0} total)</h4>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+        {connectivity?.summary && ['connected', 'degraded', 'disconnected', 'pending'].map(s => {
+          const count = s === 'connected' ? connectivity.summary.connected :
+                        s === 'degraded' ? connectivity.summary.degraded :
+                        s === 'disconnected' ? connectivity.summary.disconnected :
+                        connectivity.summary.pending;
+          const c = stateColor(s);
+          return (
+            <span key={s} style={{ padding: '4px 10px', borderRadius: 4, fontSize: 11, fontWeight: 600, background: c.bg, color: c.fg }}>
+              {s.toUpperCase()}: {count}
+            </span>
+          );
+        })}
+      </div>
+      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12, marginBottom: 20 }}>
+        <thead>
+          <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Connector</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>State</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Latency</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Last Probed</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Pending Target</th>
+          </tr>
+        </thead>
+        <tbody>
+          {(connectivity?.connectors ?? []).map((c: any) => {
+            const sc = stateColor(c.state);
+            return (
+              <tr key={c.connectorId}>
+                <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>{c.connectorId}</td>
+                <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0' }}>
+                  <span style={{ display: 'inline-block', padding: '2px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600, background: sc.bg, color: sc.fg }}>
+                    {c.state.toUpperCase()}
+                  </span>
+                </td>
+                <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>
+                  {c.latencyMs != null ? `${c.latencyMs}ms` : '-'}
+                </td>
+                <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0', fontSize: 11 }}>
+                  {c.lastProbeAt ? new Date(c.lastProbeAt).toLocaleTimeString() : '-'}
+                </td>
+                <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0', fontSize: 11, color: '#6c757d' }}>
+                  {c.pendingTarget ? (
+                    <span title={c.pendingTarget.migrationPath}>{c.pendingTarget.configRequired?.join(', ') ?? 'Config required'}</span>
+                  ) : '-'}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+
+      {/* Adapter States */}
+      <h4 style={{ fontSize: 13, marginBottom: 8 }}>Adapter States</h4>
+      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12, marginBottom: 20 }}>
+        <thead>
+          <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Adapter</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>State</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Modes</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Pending Target</th>
+          </tr>
+        </thead>
+        <tbody>
+          {(connectivity?.adapters ?? []).map((a: any) => {
+            const sc = stateColor(a.state);
+            return (
+              <tr key={a.adapterId}>
+                <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>{a.adapterId}</td>
+                <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0' }}>
+                  <span style={{ display: 'inline-block', padding: '2px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600, background: sc.bg, color: sc.fg }}>
+                    {a.state.toUpperCase()}
+                  </span>
+                </td>
+                <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>
+                  {a.supportedModes?.join(', ') ?? '-'}
+                </td>
+                <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0', fontSize: 11, color: '#6c757d' }}>
+                  {a.pendingTarget ? (
+                    <span title={a.pendingTarget.migrationPath}>{a.pendingTarget.configRequired?.join(', ') ?? 'Config required'}</span>
+                  ) : '-'}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+
+      {/* Job Queue Depth */}
+      <h4 style={{ fontSize: 13, marginBottom: 8 }}>Job Queue</h4>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: 8, marginBottom: 12 }}>
+        {['queued', 'processing', 'completed', 'failed', 'deadLetter'].map(k => (
+          <div key={k} style={{ padding: 8, background: '#f8f9fa', borderRadius: 4, fontSize: 11 }}>
+            <div style={{ color: '#6c757d', marginBottom: 2 }}>{k}</div>
+            <div style={{ fontWeight: 600, fontSize: 14 }}>{jobs?.[k] ?? 0}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Scheduler status */}
+      <div style={{ marginBottom: 16, padding: 8, background: '#f8f9fa', borderRadius: 4, fontSize: 11 }}>
+        <strong>Scheduler:</strong>{' '}
+        <span style={{ color: jobs?.scheduler?.running ? '#198754' : '#dc3545', fontWeight: 600 }}>
+          {jobs?.scheduler?.running ? 'RUNNING' : 'STOPPED'}
+        </span>
+        <span style={{ marginLeft: 8, color: '#6c757d' }}>
+          {jobs?.scheduler?.registeredJobs ?? 0} registered job type(s)
+        </span>
+      </div>
+
+      {/* Workqueue summary */}
+      <h4 style={{ fontSize: 13, marginBottom: 8 }}>Workqueue Summary</h4>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: 8, marginBottom: 16 }}>
+        <div style={{ padding: 8, background: '#f8f9fa', borderRadius: 4, fontSize: 11 }}>
+          <div style={{ color: '#6c757d', marginBottom: 2 }}>Total</div>
+          <div style={{ fontWeight: 600, fontSize: 14 }}>{workqueues?.total ?? 0}</div>
+        </div>
+        {workqueues?.byType && Object.entries(workqueues.byType).map(([k, v]) => (
+          <div key={k} style={{ padding: 8, background: '#f8f9fa', borderRadius: 4, fontSize: 11 }}>
+            <div style={{ color: '#6c757d', marginBottom: 2 }}>{k}</div>
+            <div style={{ fontWeight: 600, fontSize: 14 }}>{String(v)}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Enqueue Actions */}
+      <h4 style={{ fontSize: 13, marginBottom: 8 }}>Manual Job Enqueue</h4>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+        <button onClick={handleEnqueueEligibility} style={{
+          padding: '6px 14px', fontSize: 12, cursor: 'pointer',
+          background: '#0d6efd', color: '#fff', border: 'none', borderRadius: 4,
+        }}>
+          Enqueue Eligibility Check
+        </button>
+        <button onClick={handleEnqueueStatusPoll} style={{
+          padding: '6px 14px', fontSize: 12, cursor: 'pointer',
+          background: '#6c757d', color: '#fff', border: 'none', borderRadius: 4,
+        }}>
+          Enqueue Status Poll
+        </button>
+      </div>
+      {enqueueResult && (
+        <div style={{
+          padding: 8, background: enqueueResult.ok ? '#d1e7dd' : '#f8d7da',
+          borderRadius: 4, fontSize: 11, marginBottom: 12,
+          color: enqueueResult.ok ? '#0f5132' : '#842029',
+        }}>
+          {enqueueResult.ok
+            ? `Job enqueued: ${enqueueResult.jobId} (${enqueueResult.type})`
+            : `Error: ${enqueueResult.error}`}
+        </div>
+      )}
+
+      <div style={{ marginTop: 16, padding: 12, background: '#e7f1ff', borderRadius: 6, fontSize: 11, color: '#084298' }}>
+        <strong>Phase 82 — Honest State:</strong> Connector and adapter states are probed in real-time.
+        If a connector shows &ldquo;disconnected&rdquo; or &ldquo;pending&rdquo;, it means the external service is not configured or not reachable.
+        No fake eligibility/status results are generated. The pending target shows what configuration is needed.
       </div>
     </div>
   );

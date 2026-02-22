@@ -71,6 +71,8 @@ import { initMarketplaceTenantConfig } from "./config/marketplace-tenant.js";
 import rcmRoutes from "./rcm/rcm-routes.js";
 // Phase 39: VistA Billing Grounding -- read-only VistA RCM surfaces
 import vistaRcmRoutes from "./routes/vista-rcm.js";
+// Phase 82: RCM Ops routes -- connector state, queue depth, denial queue
+import rcmOpsRoutes from "./rcm/rcm-ops-routes.js";
 // Phase 41: RPC Registry + Action Registry (Vivian snapshot integration)
 import { RPC_REGISTRY, RPC_EXCEPTIONS, getFullRpcInventory } from "./vista/rpcRegistry.js";
 // Phase 48: Unified audit + connector resilience stats
@@ -286,6 +288,9 @@ server.register(rcmRoutes);
 
 // Register VistA RCM routes -- read-only billing grounding (Phase 39)
 server.register(vistaRcmRoutes);
+
+// Register RCM Ops routes -- connector state, queue depth, scheduler, dashboard (Phase 82)
+server.register(rcmOpsRoutes);
 
 // Register Migration Toolkit routes -- data portability import/export (Phase 50)
 server.register(migrationRoutes);

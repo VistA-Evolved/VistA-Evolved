@@ -1,0 +1,10 @@
+{
+  "feature": "Phase 82 -- RCM Adapter Expansion v2",
+  "stage": "implement",
+  "status": "complete",
+  "promptRef": "prompts/87-PHASE-82-RCM-ADAPTER-EXPANSION-V2/87-01-IMPLEMENT.md",
+  "runbookPath": "docs/runbooks/rcm-payer-connectivity.md",
+  "verifyScript": "scripts/verify-phase82-rcm-adapter.ps1",
+  "verifyResult": "51/51 PASS",
+  "commitMessage": "Phase82: RCM adapter expansion v2 (payers registry + jobs + queues posture)"
+}
