@@ -231,14 +231,17 @@
       ],
       "dependencies": ["kernel", "clinical"],
       "adapters": ["billing"],
-      "services": ["claim-store", "payer-registry", "edi-pipeline", "validation-engine", "rcm-audit", "clearinghouse-connector", "philhealth-connector", "sandbox-connector", "portal-batch-connector"],
+      "services": ["claim-store", "payer-registry", "edi-pipeline", "validation-engine", "rcm-audit", "clearinghouse-connector", "philhealth-connector", "sandbox-connector", "portal-batch-connector", "payerops-enrollment-store", "payerops-loa-store", "payerops-credential-vault"],
       "permissions": ["rcm:read", "rcm:write", "rcm:admin"],
       "dataStores": [
         { "id": "claim-store", "type": "in-memory", "description": "Claim + remittance lifecycle store" },
         { "id": "payer-registry", "type": "json-seed", "description": "Payer catalog loaded from data/payers/*.json" },
         { "id": "edi-pipeline", "type": "in-memory", "description": "10-stage EDI pipeline tracking" },
         { "id": "rcm-audit", "type": "in-memory", "description": "Hash-chained RCM audit trail (20K max)" },
-        { "id": "rcm-exports", "type": "filesystem", "description": "X12/eClaims export artifacts in data/rcm-exports/" }
+        { "id": "rcm-exports", "type": "filesystem", "description": "X12/eClaims export artifacts in data/rcm-exports/" },
+        { "id": "payerops-enrollment", "type": "in-memory", "description": "Facility-payer enrollment lifecycle (Phase 87)" },
+        { "id": "payerops-loa", "type": "in-memory", "description": "LOA case lifecycle (Phase 87)" },
+        { "id": "payerops-credentials", "type": "in-memory", "description": "Credential vault entries (Phase 87)" }
       ],
       "healthCheckEndpoint": "/rcm/health"
     },
