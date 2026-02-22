@@ -1,0 +1,9 @@
+{
+  "feature": "Phase 91: Claims Lifecycle v1 + Scrubber + Denial Workbench",
+  "stage": "implemented",
+  "status": "verified",
+  "promptRef": "prompts/97-PHASE-91-CLAIMS-LIFECYCLE/91-01-IMPLEMENT.md",
+  "runbook": "docs/runbooks/claims-lifecycle-v1.md",
+  "verifyScript": "tsc --noEmit (API + Web)",
+  "commitMessage": "Phase 91: Claims lifecycle v1 + scrubber + denial workbench"
+}
