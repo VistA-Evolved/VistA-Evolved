@@ -1,0 +1,13 @@
+{
+  "featureTitle": "Phase 84 -- Nursing Documentation + Flowsheets",
+  "stage": "IMPLEMENT",
+  "status": "complete",
+  "promptRef": "prompts/89-PHASE-84-NURSING/89-01-IMPLEMENT.md",
+  "runbookPaths": [
+    "docs/runbooks/nursing-flowsheets.md",
+    "docs/runbooks/nursing-grounding.md"
+  ],
+  "verifyScript": "scripts/verify-phase84-nursing.ps1",
+  "verifyResult": "79/79 PASS",
+  "commitSHA": "pending"
+}

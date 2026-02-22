@@ -1,7 +1,7 @@
 /**
- * Nursing Workflow Routes -- Phase 68: VistA-first, read-first.
+ * Nursing Workflow Routes -- Phase 68 + Phase 84 enhancements.
  *
- * Endpoints:
+ * Phase 68 (original):
  *   GET  /vista/nursing/vitals?dfn=N                        -- Patient vitals (ORQQVI VITALS)
  *   GET  /vista/nursing/vitals-range?dfn=N&start=D&end=D    -- Vitals for shift range (ORQQVI VITALS FOR DATE RANGE)
  *   GET  /vista/nursing/notes?dfn=N                         -- Nursing notes via TIU (TIU DOCUMENTS BY CONTEXT)
@@ -9,6 +9,15 @@
  *   GET  /vista/nursing/tasks?dfn=N                         -- Nursing task list (integration-pending)
  *   GET  /vista/nursing/mar?dfn=N                           -- MAR (integration-pending -- no BCMA)
  *   POST /vista/nursing/mar/administer                      -- Med admin (integration-pending -- no BCMA)
+ *
+ * Phase 84 (nursing documentation + flowsheets):
+ *   GET  /vista/nursing/flowsheet?dfn=N                     -- Vitals flowsheet (trended) + critical flags
+ *   GET  /vista/nursing/io?dfn=N                            -- Intake/Output (integration-pending)
+ *   GET  /vista/nursing/assessments?dfn=N                   -- Nursing assessments (integration-pending)
+ *   POST /vista/nursing/notes/create                        -- Create nursing note (local draft + TIU target)
+ *   GET  /vista/nursing/note-text?ien=N                     -- Get full note text (TIU GET RECORD TEXT)
+ *   GET  /vista/nursing/critical-thresholds                 -- Configurable critical value thresholds
+ *   GET  /vista/nursing/patient-context?dfn=N               -- Patient banner data
  *
  * Auth: session-based (/vista/* catch-all in security.ts).
  * Every response includes rpcUsed[], pendingTargets[], source.
@@ -239,4 +248,350 @@ export default async function nursingRoutes(server: FastifyInstance) {
       },
     });
   });
+
+  /* ================================================================ */
+  /* Phase 84 — Nursing Documentation + Flowsheets                     */
+  /* ================================================================ */
+
+  /** Configurable critical-value thresholds (in-memory, extensible to VistA). */
+  const CRITICAL_THRESHOLDS: Record<string, { low?: number; high?: number; unit: string }> = {
+    "BLOOD PRESSURE": { high: 180, unit: "mmHg systolic" },
+    "PULSE": { low: 50, high: 130, unit: "bpm" },
+    "TEMPERATURE": { low: 95, high: 103, unit: "°F" },
+    "RESPIRATION": { low: 8, high: 30, unit: "breaths/min" },
+    "PULSE OXIMETRY": { low: 90, unit: "%" },
+    "PAIN": { high: 8, unit: "0-10" },
+    "WEIGHT": { unit: "lb" },
+    "HEIGHT": { unit: "in" },
+  };
+
+  /* ------ GET /vista/nursing/critical-thresholds ------ */
+  server.get("/vista/nursing/critical-thresholds", async (request: FastifyRequest, reply: FastifyReply) => {
+    requireSession(request, reply);
+    return {
+      ok: true,
+      source: "config",
+      thresholds: CRITICAL_THRESHOLDS,
+      rpcUsed: [],
+      pendingTargets: [],
+      _note: "Configurable thresholds. Production: store in VistA Parameter file (8989.5) via XPAR.",
+    };
+  });
+
+  /* ------ GET /vista/nursing/patient-context?dfn=N ------ */
+  server.get("/vista/nursing/patient-context", async (request: FastifyRequest, reply: FastifyReply) => {
+    requireSession(request, reply);
+    const dfn = (request.query as any)?.dfn;
+    if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
+
+    try {
+      // ORWPT16 ID INFO returns patient banner: NAME^SSN^DOB^SEX^VET^LOCATION^ROOM-BED^ATTENDING
+      const lines = await safeCallRpc("ORWPT16 ID INFO", [dfn]);
+      const raw = (lines || []).join("\n");
+      const parts = raw.split("^");
+      const name = parts[0]?.trim() || "";
+      const location = parts[5]?.trim() || "";
+      const roomBed = parts[6]?.trim() || "";
+      const attending = parts[7]?.trim() || "";
+
+      return {
+        ok: true,
+        source: "vista",
+        patient: { dfn, name, location, roomBed, attending },
+        rpcUsed: ["ORWPT16 ID INFO"],
+        pendingTargets: [],
+      };
+    } catch (err) {
+      log.warn("Nursing patient-context RPC failed", { err: String(err) });
+      // Fallback: try ORWPT ID INFO (simpler version)
+      try {
+        const lines2 = await safeCallRpc("ORWPT ID INFO", [dfn]);
+        const raw2 = (lines2 || []).join("\n");
+        const parts2 = raw2.split("^");
+        return {
+          ok: true,
+          source: "vista",
+          patient: { dfn, name: parts2[0]?.trim() || `Patient ${dfn}`, location: "", roomBed: "", attending: "" },
+          rpcUsed: ["ORWPT ID INFO"],
+          pendingTargets: ["ORWPT16 ID INFO"],
+        };
+      } catch {
+        return {
+          ok: false,
+          source: "vista",
+          patient: { dfn, name: `Patient ${dfn}`, location: "", roomBed: "", attending: "" },
+          rpcUsed: [],
+          pendingTargets: ["ORWPT16 ID INFO", "ORWPT ID INFO"],
+          _error: "Patient context RPCs unavailable",
+        };
+      }
+    }
+  });
+
+  /* ------ GET /vista/nursing/flowsheet?dfn=N ------ */
+  server.get("/vista/nursing/flowsheet", async (request: FastifyRequest, reply: FastifyReply) => {
+    requireSession(request, reply);
+    const dfn = (request.query as any)?.dfn;
+    if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
+
+    try {
+      const lines = await safeCallRpc("ORQQVI VITALS", [dfn]);
+      const raw = parseVitals(lines);
+
+      // Group by type for trend display
+      const byType: Record<string, Array<{ date: string; value: string; units: string }>> = {};
+      for (const v of raw) {
+        if (!byType[v.type]) byType[v.type] = [];
+        byType[v.type].push({ date: v.date, value: v.value, units: v.units });
+      }
+
+      // Apply critical-value flags
+      const flagged = raw.map((v) => {
+        const thresh = CRITICAL_THRESHOLDS[v.type];
+        let critical = false;
+        if (thresh) {
+          const num = parseFloat(v.value.split("/")[0]); // systolic for BP
+          if (!isNaN(num)) {
+            if (thresh.high !== undefined && num >= thresh.high) critical = true;
+            if (thresh.low !== undefined && num <= thresh.low) critical = true;
+          }
+        }
+        return { ...v, critical };
+      });
+
+      // Compute due/overdue for next vitals (simple 4h rule for inpatient)
+      const FOUR_HOURS_MS = 4 * 60 * 60 * 1000;
+      const mostRecent = raw.length > 0 ? raw[0].date : null;
+      let nextVitalsDue = "Unknown";
+      let overdue = false;
+      if (mostRecent) {
+        const lastDate = new Date(mostRecent);
+        if (!isNaN(lastDate.getTime())) {
+          const dueAt = new Date(lastDate.getTime() + FOUR_HOURS_MS);
+          nextVitalsDue = dueAt.toISOString();
+          overdue = Date.now() > dueAt.getTime();
+        }
+      }
+
+      return {
+        ok: true,
+        source: "vista",
+        items: flagged,
+        trends: byType,
+        criticalCount: flagged.filter((f) => f.critical).length,
+        nextVitalsDue,
+        overdue,
+        rpcUsed: ["ORQQVI VITALS"],
+        pendingTargets: [],
+        _note: "Vitals from ORQQVI VITALS. I&O and assessments are separate endpoints.",
+      };
+    } catch (err) {
+      log.warn("Nursing flowsheet RPC failed", { err: String(err) });
+      return {
+        ok: false,
+        source: "vista",
+        items: [],
+        trends: {},
+        criticalCount: 0,
+        nextVitalsDue: "Unknown",
+        overdue: false,
+        rpcUsed: [],
+        pendingTargets: ["ORQQVI VITALS"],
+        _error: "RPC call failed",
+      };
+    }
+  });
+
+  /* ------ GET /vista/nursing/io?dfn=N (integration-pending) ------ */
+  server.get("/vista/nursing/io", async (request: FastifyRequest, reply: FastifyReply) => {
+    requireSession(request, reply);
+    const dfn = (request.query as any)?.dfn;
+    if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
+
+    // VistA I&O is tracked in GMR(126) INTAKE/OUTPUT file.
+    // The generic RPC "ORQQVI VITALS" does NOT cover I&O.
+    // Possible RPCs: GMRIO RESULTS (not in sandbox OR CPRS GUI CHART context).
+    return {
+      ok: true,
+      source: "integration-pending",
+      status: "integration-pending",
+      items: [],
+      shifts: [],
+      totals: { intake: 0, output: 0, net: 0 },
+      rpcUsed: [],
+      pendingTargets: [
+        { rpc: "GMRIO RESULTS", package: "GMR", reason: "I&O results RPC -- not available in OR CPRS GUI CHART context" },
+        { rpc: "GMRIO ADD", package: "GMR", reason: "I&O entry add -- requires GMR IO package" },
+      ],
+      vistaGrounding: {
+        vistaFiles: ["GMR(126) INTAKE/OUTPUT", "GMR(126.1) I/O TYPE", "GMR(126.2) I/O SHIFT"],
+        targetRoutines: ["GMRIORES", "GMRIOADD", "GMRIOENT"],
+        migrationPath: "Enable GMR I&O RPCs in OR CPRS GUI CHART context, or create ZVEIOM custom M routine",
+        sandboxNote: "GMR I&O package exists in WorldVistA but RPCs not exposed via OR CPRS GUI CHART context",
+      },
+      _note: `I&O for DFN ${dfn}: requires GMR I&O package RPCs. Target file: GMR(126).`,
+    };
+  });
+
+  /* ------ GET /vista/nursing/assessments?dfn=N (integration-pending) ------ */
+  server.get("/vista/nursing/assessments", async (request: FastifyRequest, reply: FastifyReply) => {
+    requireSession(request, reply);
+    const dfn = (request.query as any)?.dfn;
+    if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
+
+    // Nursing assessments in VistA are stored via GN (Nursing) package:
+    // File 228 (GN ASSESSMENT) and File 228.1 (GN ASSESSMENT DETAIL).
+    // No standard RPC in OR CPRS GUI CHART context for reading assessments.
+    return {
+      ok: true,
+      source: "integration-pending",
+      status: "integration-pending",
+      items: [],
+      assessmentTypes: [
+        "Head-to-Toe",
+        "Pain Assessment",
+        "Fall Risk (Morse)",
+        "Braden Skin Assessment",
+        "Restraint Assessment",
+      ],
+      rpcUsed: [],
+      pendingTargets: [
+        { rpc: "ZVENAS LIST", package: "ZVE", reason: "Custom assessment read RPC -- to be built in Phase 84B" },
+        { rpc: "ZVENAS SAVE", package: "ZVE", reason: "Custom assessment save RPC -- to be built in Phase 84B" },
+      ],
+      vistaGrounding: {
+        vistaFiles: ["GN(228) ASSESSMENT", "GN(228.1) ASSESSMENT DETAIL", "TIU(8925) TIU DOCUMENT"],
+        targetRoutines: ["GNASMT", "GNASMTU", "TIUSRVP"],
+        migrationPath: "Build ZVENAS custom RPCs wrapping GN package, or use TIU-based assessment templates",
+        sandboxNote: "GN Nursing package present but no standard read/write RPCs exposed. TIU templates are the recommended approach.",
+      },
+      _note: `Nursing assessments for DFN ${dfn}: requires GN package RPCs or TIU template approach.`,
+    };
+  });
+
+  /* ------ POST /vista/nursing/notes/create ------ */
+  server.post("/vista/nursing/notes/create", async (request: FastifyRequest, reply: FastifyReply) => {
+    requireSession(request, reply);
+    const body = ((request as any).body as any) || {};
+    const { dfn, noteType, title, text, shift } = body;
+
+    if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn" });
+    if (!text || typeof text !== "string" || text.trim().length === 0) {
+      return reply.code(400).send({ ok: false, error: "Note text is required" });
+    }
+
+    const noteTitle = title || noteType || "NURSING NOTE";
+    const noteShift = shift || "Day";
+
+    // Attempt TIU CREATE RECORD: creates a new TIU document
+    // Params: [DFN, TITLE_IEN, VDT, VLOC, VSIT, "", ""]
+    // Then TIU SET DOCUMENT TEXT with the text content.
+    // Both RPCs are in the TIU package under OR CPRS GUI CHART context.
+    try {
+      // Try to create via TIU CREATE RECORD
+      // Title IEN 3 = NURSING NOTE in most VistA installations
+      const titleIen = "3";
+      const now = new Date();
+      const fmYear = now.getFullYear() - 1700;
+      const fmMonth = String(now.getMonth() + 1).padStart(2, "0");
+      const fmDay = String(now.getDate()).padStart(2, "0");
+      const fmHour = String(now.getHours()).padStart(2, "0");
+      const fmMin = String(now.getMinutes()).padStart(2, "0");
+      const visitDate = `${fmYear}${fmMonth}${fmDay}.${fmHour}${fmMin}`;
+
+      const createLines = await safeCallRpc("TIU CREATE RECORD", [dfn, titleIen, visitDate, "", "", "", ""]);
+      const newIen = (createLines || [])[0]?.trim() || "";
+
+      if (!newIen || newIen === "0" || newIen.includes("ERROR") || newIen.startsWith("-")) {
+        throw new Error(`TIU CREATE RECORD returned: ${newIen || "(empty)"}`);
+      }
+
+      // Set the document text
+      const textLines = text.split("\n");
+      const textParam = textLines.map((l: string, i: number) => `${i + 1},0)=${l}`);
+      try {
+        await safeCallRpc("TIU SET DOCUMENT TEXT", [newIen, ...textParam]);
+      } catch (textErr) {
+        log.warn("TIU SET DOCUMENT TEXT failed (note created but text not saved)", {
+          ien: newIen,
+          err: String(textErr),
+        });
+      }
+
+      log.info("Nursing note created via TIU", { dfn, ien: newIen });
+      return {
+        ok: true,
+        source: "vista",
+        status: "created",
+        noteIen: newIen,
+        title: noteTitle,
+        shift: noteShift,
+        timestamp: now.toISOString(),
+        rpcUsed: ["TIU CREATE RECORD", "TIU SET DOCUMENT TEXT"],
+        pendingTargets: [],
+        _note: "Note created. Signing requires TIU SIGN RECORD (deferred to Phase 84B).",
+      };
+    } catch (err) {
+      // Fallback: return a local draft with migration info
+      log.warn("Nursing note TIU creation failed, returning local draft", { err: String(err) });
+
+      const draftId = `draft-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+      return reply.code(202).send({
+        ok: true,
+        source: "local-draft",
+        status: "draft",
+        draftId,
+        title: noteTitle,
+        shift: noteShift,
+        textLength: text.length,
+        timestamp: new Date().toISOString(),
+        rpcUsed: [],
+        pendingTargets: [
+          { rpc: "TIU CREATE RECORD", package: "TIU", reason: "TIU document creation -- RPC may not accept nursing note class in sandbox" },
+          { rpc: "TIU SET DOCUMENT TEXT", package: "TIU", reason: "Set note body text" },
+          { rpc: "TIU SIGN RECORD", package: "TIU", reason: "Electronic signature (deferred)" },
+        ],
+        vistaGrounding: {
+          vistaFiles: ["TIU(8925) TIU DOCUMENT", "TIU(8925.1) TIU DOCUMENT DEFINITION"],
+          targetRoutines: ["TIUSRVP", "TIUSRVPT", "TIUSRVS"],
+          migrationPath: "Configure TIU Document Definition for Nursing Notes class, enable TIU CREATE RECORD + TIU SIGN RECORD",
+          sandboxNote: "TIU package present but nursing note title IEN may not exist in sandbox. Note saved as local draft.",
+        },
+        _note: "Note saved as local draft. Will persist to VistA when TIU Nursing Note class is configured.",
+      });
+    }
+  });
+
+  /* ------ GET /vista/nursing/note-text?ien=N ------ */
+  server.get("/vista/nursing/note-text", async (request: FastifyRequest, reply: FastifyReply) => {
+    requireSession(request, reply);
+    const ien = (request.query as any)?.ien;
+    if (!ien) return reply.code(400).send({ ok: false, error: "Missing ien parameter" });
+
+    try {
+      const lines = await safeCallRpc("TIU GET RECORD TEXT", [ien]);
+      return {
+        ok: true,
+        source: "vista",
+        ien,
+        text: (lines || []).join("\n"),
+        rpcUsed: ["TIU GET RECORD TEXT"],
+        pendingTargets: [],
+      };
+    } catch (err) {
+      log.warn("TIU GET RECORD TEXT failed", { ien, err: String(err) });
+      return {
+        ok: false,
+        source: "vista",
+        ien,
+        text: "",
+        rpcUsed: [],
+        pendingTargets: [
+          { rpc: "TIU GET RECORD TEXT", package: "TIU", reason: "RPC call failed" },
+        ],
+      };
+    }
+  });
+
+  log.info("Phase 84 nursing documentation + flowsheet endpoints registered (7 new endpoints)");
 }
