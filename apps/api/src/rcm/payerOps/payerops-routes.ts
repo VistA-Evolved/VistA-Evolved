@@ -99,12 +99,12 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
   /* ── Health ────────────────────────────────────────────────── */
 
   server.get("/rcm/payerops/health", async (_request, reply) => {
-    const encryptionOk = testEncryptionHealth();
+    const encryptionResult = testEncryptionHealth();
     return reply.send({
       ok: true,
       module: "payerops",
       phase: 87,
-      encryption: encryptionOk ? "healthy" : "degraded",
+      encryption: encryptionResult.ok ? "healthy" : "degraded",
       adapters: ["manual", "portal"],
       portalConfigs: portalAdapter.listPortalConfigs().length,
       timestamp: new Date().toISOString(),
@@ -282,6 +282,14 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, count: results.length, credentials: results });
   });
 
+  /* Static /expiring registered before parametric /:id to avoid ambiguity */
+  server.get("/rcm/payerops/credentials/expiring", async (request, reply) => {
+    const q = query(request);
+    const days = q.days ? Number(q.days) : 30;
+    const expiring = getExpiringCredentials(days);
+    return reply.send({ ok: true, count: expiring.length, credentials: expiring });
+  });
+
   server.get("/rcm/payerops/credentials/:id", async (request, reply) => {
     const { id } = params(request);
     const entry = getCredentialEntry(id);
@@ -326,13 +334,6 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
     const deleted = deleteCredentialEntry(id);
     if (!deleted) return reply.code(404).send({ ok: false, error: "Credential entry not found" });
     return reply.send({ ok: true, message: "Credential deleted" });
-  });
-
-  server.get("/rcm/payerops/credentials/expiring", async (request, reply) => {
-    const q = query(request);
-    const days = q.days ? Number(q.days) : 30;
-    const expiring = getExpiringCredentials(days);
-    return reply.send({ ok: true, count: expiring.length, credentials: expiring });
   });
 
   /* ── Adapters ──────────────────────────────────────────────── */

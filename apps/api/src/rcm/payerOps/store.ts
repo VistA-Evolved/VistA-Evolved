@@ -17,13 +17,14 @@
  */
 
 import { randomBytes } from "node:crypto";
-import type {
-  FacilityPayerEnrollment,
-  EnrollmentStatus,
-  LOACase,
-  LOAStatus,
-  CredentialVaultEntry,
-  CredentialDocType,
+import {
+  LOA_TRANSITIONS,
+  type FacilityPayerEnrollment,
+  type EnrollmentStatus,
+  type LOACase,
+  type LOAStatus,
+  type CredentialVaultEntry,
+  type CredentialDocType,
 } from "./types.js";
 
 /* ── ID generation ──────────────────────────────────────────── */
@@ -190,18 +191,6 @@ export function listLOACases(filter?: {
   return results.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 }
 
-const LOA_VALID_TRANSITIONS: Record<LOAStatus, LOAStatus[]> = {
-  draft: ["pending_submission", "cancelled"],
-  pending_submission: ["submitted", "cancelled"],
-  submitted: ["under_review", "approved", "partially_approved", "denied", "cancelled"],
-  under_review: ["approved", "partially_approved", "denied"],
-  approved: ["expired"],
-  partially_approved: ["expired"],
-  denied: [],
-  expired: [],
-  cancelled: [],
-};
-
 export function transitionLOAStatus(
   id: string,
   newStatus: LOAStatus,
@@ -211,7 +200,7 @@ export function transitionLOAStatus(
   const loa = loaCases.get(id);
   if (!loa) return { ok: false, error: "LOA case not found" };
 
-  const allowed = LOA_VALID_TRANSITIONS[loa.status];
+  const allowed = LOA_TRANSITIONS[loa.status];
   if (!allowed?.includes(newStatus)) {
     return {
       ok: false,

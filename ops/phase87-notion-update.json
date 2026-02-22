@@ -1,0 +1,14 @@
+{
+  "feature": "Phase 87 VERIFY: Philippines RCM Foundation verified + regressions cleared",
+  "stage": "verified",
+  "status": "complete",
+  "promptRef": "prompts/93-PHASE-87-PH-RCM/93-99-VERIFY.md",
+  "runbookPath": "docs/runbooks/philippines-rcm-foundation.md",
+  "verifyScript": "manual (tsc --noEmit + code audit)",
+  "bugsFixed": 3,
+  "bugDetails": [
+    "testEncryptionHealth() truthy-object bug (always showed healthy)",
+    "LOA_TRANSITIONS duplication between types.ts and store.ts",
+    "Route registration order: static /expiring before parametric /:id"
+  ]
+}
