@@ -240,11 +240,11 @@ function CellEditor({ cell, onClose }: { cell: SelectedCell; onClose: () => void
   };
 
   const removeEv = async (evidenceId: string) => {
-    const res = await apiFetch(`/rcm/payerops/capability-matrix/${cell.payerId}/evidence/${evidenceId}`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ capability: cell.capability }),
-    });
+    const cap = encodeURIComponent(cell.capability);
+    const res = await apiFetch(
+      `/rcm/payerops/capability-matrix/${cell.payerId}/evidence/${evidenceId}?capability=${cap}`,
+      { method: 'DELETE' },
+    );
     if (res.ok) setDetail(res.capability);
   };
 

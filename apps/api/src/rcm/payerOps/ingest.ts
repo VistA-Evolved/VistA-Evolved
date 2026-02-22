@@ -19,13 +19,11 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { createHash } from "node:crypto";
 import {
   createSource,
   upsertRegistryPayer,
   listRegistryPayers,
   recordSnapshot,
-  getLatestSourceByType,
   type PayerSourceType,
   type RegistryDiffEntry,
 } from "./registry-store.js";
@@ -145,7 +143,7 @@ export function ingestHMOList(): IngestResult {
   });
 
   // Always add PhilHealth as government payer
-  const { isNew: philhealthNew } = upsertRegistryPayer({
+  const { payer: philhealthPayer, isNew: philhealthNew } = upsertRegistryPayer({
     canonicalName: "Philippine Health Insurance Corporation (PhilHealth)",
     type: "government",
     regulatorRef: "RA 7875",
@@ -154,6 +152,11 @@ export function ingestHMOList(): IngestResult {
     sourceId: source.id,
     aliases: ["PhilHealth", "PHIC"],
   });
+
+  // Initialize capability matrix for PhilHealth when newly created
+  if (philhealthNew) {
+    initPayerCapabilities(philhealthPayer.id, philhealthPayer.canonicalName, "system:ingest");
+  }
 
   let newCount = philhealthNew ? 1 : 0;
   let updatedCount = philhealthNew ? 0 : 1;
@@ -279,6 +282,11 @@ export function ingestHMOBrokerList(): IngestResult {
       country: "PH",
       sourceId: source.id,
     });
+
+    // Initialize capability matrix for new brokers
+    if (isNew) {
+      initPayerCapabilities(payer.id, payer.canonicalName, "system:ingest");
+    }
 
     newNames.add(payer.canonicalName.toLowerCase());
     if (isNew) {

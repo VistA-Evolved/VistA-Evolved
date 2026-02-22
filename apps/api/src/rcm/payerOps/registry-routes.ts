@@ -22,7 +22,6 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import {
   listSources,
-  getSource,
   listRegistryPayers,
   getRegistryPayer,
   patchRegistryPayer,
@@ -47,6 +46,8 @@ import {
   ALL_CAPABILITY_TYPES,
 } from "./capability-matrix.js";
 import { runFullIngest, ingestHMOList, ingestHMOBrokerList } from "./ingest.js";
+import { requireRcmAdmin, requireRcmWrite, requirePermission } from "../../auth/rbac.js";
+import type { SessionData } from "../../auth/session-store.js";
 
 /* ── Helpers ─────────────────────────────────────────────────── */
 
@@ -70,6 +71,39 @@ function sessionActor(request: FastifyRequest): string {
 /* ── Route Plugin ────────────────────────────────────────────── */
 
 export default async function registryRoutes(server: FastifyInstance): Promise<void> {
+
+  /* ── RBAC Guard (mirrors rcm-routes.ts pattern) ────────────── */
+  server.addHook("onRequest", async (request: FastifyRequest, reply: FastifyReply) => {
+    const url = request.url.split("?")[0];
+    if (!url.startsWith("/rcm/payerops/")) return;
+
+    // Health is open to any authenticated user (session checked by security.ts)
+    if (url === "/rcm/payerops/registry/health") return;
+
+    const session = (request as any).session as SessionData | undefined;
+    if (!session) return; // security.ts already rejected
+
+    const method = request.method;
+
+    // Admin-only: ingest, merge, payer patch
+    const adminPosts = ["/rcm/payerops/registry/ingest", "/rcm/payerops/payers/merge"];
+    if (method === "POST" && adminPosts.includes(url)) {
+      requireRcmAdmin(session, reply, { requestId: (request as any).requestId, sourceIp: request.ip });
+      return;
+    }
+    // PATCH on payers or capability-matrix: admin
+    if (method === "PATCH") {
+      requireRcmAdmin(session, reply, { requestId: (request as any).requestId, sourceIp: request.ip });
+      return;
+    }
+    // Evidence add/remove: rcm:write (billing staff + admin)
+    if (method === "POST" || method === "DELETE") {
+      requireRcmWrite(session, reply, { requestId: (request as any).requestId, sourceIp: request.ip });
+      return;
+    }
+    // Read routes — rcm:read
+    requirePermission(session, "rcm:read", reply, { requestId: (request as any).requestId, sourceIp: request.ip });
+  });
 
   /* ── Health ────────────────────────────────────────────────── */
 
@@ -271,18 +305,21 @@ export default async function registryRoutes(server: FastifyInstance): Promise<v
 
   server.delete("/rcm/payerops/capability-matrix/:payerId/evidence/:evidenceId", async (request, reply) => {
     const { payerId, evidenceId } = params(request);
+    const q = query(request);
     const b = body(request);
 
-    if (!b.capability) {
+    // Accept capability from query string or body (DELETE body not always reliable)
+    const capability = q.capability || b.capability;
+    if (!capability) {
       return reply.code(400).send({
         ok: false,
-        error: "capability is required in request body",
+        error: "capability is required (query param or request body)",
       });
     }
 
     const result = removeEvidence({
       payerId,
-      capability: b.capability as CapabilityType,
+      capability: capability as CapabilityType,
       evidenceId,
     });
 
