@@ -131,7 +131,7 @@ export default function ImagingPanel({ dfn }: Props) {
     setLoading(true);
     setError(null);
     try {
-      const resp = await fetch(`${API_BASE}/vista/imaging/studies?dfn=${dfn}`, {
+      const resp = await fetch(`${API_BASE}/imaging/studies/${encodeURIComponent(dfn)}`, {
         credentials: 'include',
       });
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
@@ -259,6 +259,8 @@ export default function ImagingPanel({ dfn }: Props) {
         } else {
           setReportPending({ rpc: 'RA DETAILED REPORT', reason: 'No report data available for this study.' });
         }
+      } else {
+        setReportPending({ rpc: 'RA DETAILED REPORT', reason: `Server returned HTTP ${resp.status}` });
       }
     } catch {
       setReportPending({ rpc: 'RA DETAILED REPORT', reason: 'Failed to fetch report.' });
@@ -282,6 +284,8 @@ export default function ImagingPanel({ dfn }: Props) {
           message: data.message,
           instructions: data.instructions,
         });
+      } else {
+        setViewerLink({ message: `Server returned HTTP ${resp.status}`, instructions: ['Check API server status and authentication.'] });
       }
     } catch {
       setViewerLink({ message: 'Failed to check viewer availability.', instructions: ['Check API server status.'] });
@@ -866,7 +870,7 @@ export default function ImagingPanel({ dfn }: Props) {
                 {filteredStudies.map((study, i) => (
                   <tr
                     key={study.studyId || i}
-                    onClick={() => setSelected(study)}
+                    onClick={() => { setSelected(study); setReportText(null); setReportStatus(null); setReportPending(null); setViewerLink(null); }}
                     style={{
                       cursor: 'pointer',
                       background: selected?.studyId === study.studyId

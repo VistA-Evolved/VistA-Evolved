@@ -98,6 +98,14 @@ Gate "P81-015" "route checks RPC availability before calling" {
   ($routeFile -match 'mag4Check\.available') -and ($routeFile -match 'raCheck\.available')
 }
 
+Gate "P81-015b" "route uses safeCallRpc (not raw callRpc)" {
+  ($routeFile -match 'safeCallRpc') -and -not ($routeFile -match 'callRpc\(' -and -not ($routeFile -match 'safeCallRpc'))
+}
+
+Gate "P81-015c" "route does not use raw connect/disconnect" {
+  -not ($routeFile -match 'await connect\(\)') -and -not ($routeFile -match 'disconnect\(\)')
+}
+
 # ---- Pending Targets ----
 Write-Host "`n--- Pending Targets ---" -ForegroundColor Yellow
 
@@ -122,6 +130,10 @@ Write-Host "`n--- DICOM Server Posture ---" -ForegroundColor Yellow
 
 Gate "P81-020" "route falls back to Orthanc QIDO-RS" {
   $routeFile -match 'IMAGING_CONFIG\.orthancUrl'
+}
+
+Gate "P81-020b" "DFN is URL-encoded in QIDO-RS query" {
+  $routeFile -match 'encodeURIComponent\(dfn\)'
 }
 
 Gate "P81-021" "viewer-link probes OHIF availability" {
@@ -208,6 +220,18 @@ Gate "P81-037" "UI calls /imaging/report/ endpoint" {
 
 Gate "P81-038" "UI calls /imaging/viewer-link/ endpoint" {
   $uiFile -match '/imaging/viewer-link/'
+}
+
+Gate "P81-038b" "UI calls /imaging/studies/ endpoint (Phase 81 route)" {
+  $uiFile -match '/imaging/studies/'
+}
+
+Gate "P81-038c" "UI handles non-ok HTTP in fetchReport" {
+  $uiFile -match 'Server returned HTTP'
+}
+
+Gate "P81-038d" "UI resets report/viewer state on study change" {
+  $uiFile -match 'setReportText\(null\).*setViewerLink\(null\)'
 }
 
 Gate "P81-039" "UI shows report text inline" {
@@ -297,6 +321,10 @@ Gate "P81-056" "routes do not log raw patient data" {
 
 Gate "P81-057" "no console.log in route file" {
   -not ($routeFile -match 'console\.log')
+}
+
+Gate "P81-057b" "no raw connect/disconnect imports" {
+  -not ($routeFile -match 'import.*connect.*disconnect.*rpcBrokerClient')
 }
 
 # ---- Server Registration ----

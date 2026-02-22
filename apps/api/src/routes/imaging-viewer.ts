@@ -17,8 +17,8 @@
 
 import type { FastifyInstance } from "fastify";
 import { validateCredentials } from "../vista/config.js";
-import { connect, disconnect, callRpc } from "../vista/rpcBrokerClient.js";
 import { optionalRpc } from "../vista/rpcCapabilities.js";
+import { safeCallRpc } from "../lib/rpc-resilience.js";
 import { IMAGING_CONFIG } from "../config/server-config.js";
 import { audit } from "../lib/audit.js";
 import { log } from "../lib/logger.js";
@@ -133,12 +133,10 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
     if (mag4Check.available) {
       try {
         validateCredentials();
-        await connect();
-        const resp = await callRpc("MAG4 REMOTE PROCEDURE", ["IMAGELIST", dfn, ""]);
-        disconnect();
+        const resp = await safeCallRpc("MAG4 REMOTE PROCEDURE", ["IMAGELIST", dfn, ""]);
 
         for (const line of resp) {
-          if (!line || line.startsWith("0^")) continue;
+          if (line.startsWith("0^")) continue;
           const parts = line.split("^");
           if (parts.length >= 4) {
             studies.push({
@@ -154,7 +152,6 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
         }
       } catch (err: any) {
         log.warn("MAG4 study list failed", { error: err.message, dfn });
-        disconnect();
       }
     } else {
       pendingTargets.push({
@@ -166,7 +163,7 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
     // 2. Try Orthanc QIDO-RS
     if (studies.length === 0) {
       try {
-        const qidoUrl = `${IMAGING_CONFIG.orthancUrl}${IMAGING_CONFIG.dicomWebRoot}/studies?PatientID=${dfn}&limit=50&includefield=00081030`;
+        const qidoUrl = `${IMAGING_CONFIG.orthancUrl}${IMAGING_CONFIG.dicomWebRoot}/studies?PatientID=${encodeURIComponent(dfn)}&limit=50&includefield=00081030`;
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 10000);
         const resp = await fetch(qidoUrl, {
@@ -255,9 +252,7 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
     if (raCheck.available) {
       try {
         validateCredentials();
-        await connect();
-        const resp = await callRpc("RA DETAILED REPORT", [studyId, ""]);
-        disconnect();
+        const resp = await safeCallRpc("RA DETAILED REPORT", [studyId, ""]);
 
         const text = resp.join("\n").trim();
         if (text && text !== "" && !text.startsWith("0^")) {
@@ -284,7 +279,6 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
           } satisfies ReportResult & { studyId: string };
         }
       } catch (err: any) {
-        disconnect();
         log.warn("RA DETAILED REPORT failed", { error: err.message, studyId });
       }
     }
@@ -294,9 +288,7 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
     if (tiuCheck.available) {
       try {
         validateCredentials();
-        await connect();
-        const resp = await callRpc("TIU GET RECORD TEXT", [studyId]);
-        disconnect();
+        const resp = await safeCallRpc("TIU GET RECORD TEXT", [studyId]);
 
         const text = resp.join("\n").trim();
         if (text && text !== "" && !text.startsWith("0^")) {
@@ -316,7 +308,6 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
           } satisfies ReportResult & { studyId: string };
         }
       } catch (err: any) {
-        disconnect();
         log.debug("TIU GET RECORD TEXT fallback failed", { error: err.message, studyId });
       }
     }
