@@ -429,18 +429,27 @@ function AllergiesTab({ dfn }: { dfn: string }) {
 function AdminTab({ dfn }: { dfn: string }) {
   const [schedule, setSchedule] = useState<ScheduleEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState('');
   const [selectedMed, setSelectedMed] = useState<ScheduleEntry | null>(null);
   const [adminAction, setAdminAction] = useState<'given' | 'held' | 'refused' | 'unavailable'>('given');
   const [adminReason, setAdminReason] = useState('');
-  const [adminResult, setAdminResult] = useState<any>(null);
+  const [adminResult, setAdminResult] = useState<{ ok: boolean; status?: string; message?: string; error?: string } | null>(null);
 
   useEffect(() => {
     if (!dfn) return;
     setLoading(true);
+    setFetchError('');
+    // Reset selection state on DFN change
+    setSelectedMed(null);
+    setAdminAction('given');
+    setAdminReason('');
+    setAdminResult(null);
     apiFetch(`/emar/schedule?dfn=${dfn}`)
       .then(data => {
         if (data.ok) setSchedule(data.schedule || []);
+        else setFetchError(data.error || 'Failed to load medications');
       })
+      .catch(() => setFetchError('Failed to load medication schedule'))
       .finally(() => setLoading(false));
   }, [dfn]);
 
@@ -464,6 +473,7 @@ function AdminTab({ dfn }: { dfn: string }) {
   }, [dfn, selectedMed, adminAction, adminReason]);
 
   if (loading) return <div style={{ padding: 20, color: colors.textMuted }}>Loading medications...</div>;
+  if (fetchError) return <div style={{ padding: 20, color: colors.danger }}>{fetchError}</div>;
 
   return (
     <div>
@@ -478,13 +488,17 @@ function AdminTab({ dfn }: { dfn: string }) {
         {/* Left: Med selection list */}
         <div>
           <h4 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 8px 0' }}>Select Medication</h4>
-          <div style={{ maxHeight: 400, overflowY: 'auto', border: `1px solid ${colors.border}`, borderRadius: 6 }}>
+          <div style={{ maxHeight: 400, overflowY: 'auto', border: `1px solid ${colors.border}`, borderRadius: 6 }} role="listbox" aria-label="Active medications">
             {schedule.length === 0 ? (
               <div style={{ padding: 16, color: colors.textMuted, fontSize: 13 }}>No active medications.</div>
             ) : schedule.map((med, i) => (
               <div
                 key={med.orderIEN || i}
+                role="option"
+                tabIndex={0}
+                aria-selected={selectedMed?.orderIEN === med.orderIEN}
                 onClick={() => { setSelectedMed(med); setAdminResult(null); }}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedMed(med); setAdminResult(null); } }}
                 style={{
                   padding: '10px 12px', cursor: 'pointer',
                   borderBottom: `1px solid ${colors.border}`,
@@ -516,8 +530,9 @@ function AdminTab({ dfn }: { dfn: string }) {
                 {selectedMed.sig || 'No sig available'} | Route: {selectedMed.route}
               </div>
 
-              <label style={{ display: 'block', fontSize: 13, fontWeight: 500, marginBottom: 4 }}>Action:</label>
+              <label htmlFor="admin-action" style={{ display: 'block', fontSize: 13, fontWeight: 500, marginBottom: 4 }}>Action:</label>
               <select
+                id="admin-action"
                 value={adminAction}
                 onChange={e => setAdminAction(e.target.value as typeof adminAction)}
                 style={{ width: '100%', padding: '6px 8px', borderRadius: 4, border: `1px solid ${colors.border}`, marginBottom: 12 }}
@@ -530,8 +545,9 @@ function AdminTab({ dfn }: { dfn: string }) {
 
               {adminAction !== 'given' && (
                 <>
-                  <label style={{ display: 'block', fontSize: 13, fontWeight: 500, marginBottom: 4 }}>Reason:</label>
+                  <label htmlFor="admin-reason" style={{ display: 'block', fontSize: 13, fontWeight: 500, marginBottom: 4 }}>Reason:</label>
                   <textarea
+                    id="admin-reason"
                     value={adminReason}
                     onChange={e => setAdminReason(e.target.value)}
                     rows={3}
@@ -584,8 +600,14 @@ function AdminTab({ dfn }: { dfn: string }) {
 
 function BCMATab({ dfn }: { dfn: string }) {
   const [barcode, setBarcode] = useState('');
-  const [scanResult, setScanResult] = useState<any>(null);
+  const [scanResult, setScanResult] = useState<{ ok: boolean; status?: string; message?: string; error?: string } | null>(null);
   const [scanning, setScanning] = useState(false);
+
+  // Reset state on DFN change
+  useEffect(() => {
+    setBarcode('');
+    setScanResult(null);
+  }, [dfn]);
 
   const handleScan = useCallback(async () => {
     if (!barcode.trim()) return;
@@ -637,11 +659,12 @@ function BCMATab({ dfn }: { dfn: string }) {
           ))}
         </div>
 
-        <label style={{ display: 'block', fontSize: 13, fontWeight: 500, marginBottom: 4 }}>
+        <label htmlFor="bcma-barcode" style={{ display: 'block', fontSize: 13, fontWeight: 500, marginBottom: 4 }}>
           Scan Medication Barcode:
         </label>
         <div style={{ display: 'flex', gap: 8 }}>
           <input
+            id="bcma-barcode"
             type="text"
             value={barcode}
             onChange={e => setBarcode(e.target.value)}
@@ -667,19 +690,28 @@ function BCMATab({ dfn }: { dfn: string }) {
         </div>
 
         {scanResult && (
-          <div style={{
-            marginTop: 12, padding: '10px 12px', borderRadius: 4,
-            background: colors.pendingBg, border: `1px solid ${colors.pendingBorder}`, fontSize: 13,
-          }}>
-            <strong>Integration Pending:</strong> {scanResult.message || 'BCMA verification requires PSB/PSJ packages'}
-            <div style={{ fontSize: 11, color: '#975a16', marginTop: 4 }}>
-              Targets: PSB MED LOG, PSJBCMA
+          scanResult.ok === false ? (
+            <div style={{
+              marginTop: 12, padding: '10px 12px', borderRadius: 4,
+              background: '#fed7d7', border: '1px solid #fc8181', fontSize: 13,
+            }}>
+              <strong>Error:</strong> {scanResult.error || 'Scan request failed'}
             </div>
-            <div style={{ fontSize: 11, color: '#4a5568', marginTop: 4 }}>
-              Full BCMA workflow: Install BCMA package → configure barcode scanner hardware →
-              enable PSB/PSJ RPCs → implement 5-rights verification workflow
+          ) : (
+            <div style={{
+              marginTop: 12, padding: '10px 12px', borderRadius: 4,
+              background: colors.pendingBg, border: `1px solid ${colors.pendingBorder}`, fontSize: 13,
+            }}>
+              <strong>Integration Pending:</strong> {scanResult.message || 'BCMA verification requires PSB/PSJ packages'}
+              <div style={{ fontSize: 11, color: '#975a16', marginTop: 4 }}>
+                Targets: PSB MED LOG, PSJBCMA
+              </div>
+              <div style={{ fontSize: 11, color: '#4a5568', marginTop: 4 }}>
+                Full BCMA workflow: Install BCMA package → configure barcode scanner hardware →
+                enable PSB/PSJ RPCs → implement 5-rights verification workflow
+              </div>
             </div>
-          </div>
+          )
         )}
       </div>
 
@@ -827,10 +859,12 @@ function EmarPageContent() {
       <div style={{
         display: 'flex', borderBottom: `2px solid ${colors.border}`,
         background: colors.surface, padding: '0 20px',
-      }}>
+      }} role="tablist" aria-label="eMAR tabs">
         {tabs.map(t => (
           <button
             key={t.key}
+            role="tab"
+            aria-selected={tab === t.key}
             onClick={() => setTab(t.key)}
             style={{
               padding: '10px 16px', fontSize: 13, fontWeight: tab === t.key ? 600 : 400,
@@ -854,7 +888,7 @@ function EmarPageContent() {
       </div>
 
       {/* Tab content */}
-      <div style={{ padding: 20, maxWidth: 1200 }}>
+      <div style={{ padding: 20, maxWidth: 1200 }} role="tabpanel" aria-label={`${tab} panel`}>
         {tab === 'schedule' && <ScheduleTab dfn={dfn} />}
         {tab === 'allergies' && <AllergiesTab dfn={dfn} />}
         {tab === 'admin' && <AdminTab dfn={dfn} />}

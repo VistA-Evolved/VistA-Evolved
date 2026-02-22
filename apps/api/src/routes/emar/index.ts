@@ -100,8 +100,8 @@ function parseActiveMeds(activeLines: string[]): ScheduleEntry[] {
         current.sig = trimmed.replace(/^\\\s*Sig:\s*/i, "").trim();
       } else if (trimmed.startsWith("Qty:")) {
         // qty info -- skip for schedule
-      } else if (trimmed && !current.sig) {
-        // Some lines are continuation of drug info
+      } else if (trimmed) {
+        // Continuation lines (drug info or additional sig text)
         current.sig += (current.sig ? " " : "") + trimmed;
       }
     }
@@ -228,14 +228,17 @@ function detectDuplicates(meds: ScheduleEntry[]): Array<{
       for (const [keyword, className] of drugToClass) {
         if (nameA.includes(keyword)) {
           for (const [keyword2, className2] of drugToClass) {
-            if (className === className2 && nameB.includes(keyword2) && keyword !== keyword2) {
-              // Same class, different drugs
+            if (className === className2 && nameB.includes(keyword2)) {
+              // Same class — flag even if same drug keyword (different order = potential duplicate)
+              const reason = keyword === keyword2
+                ? `Same ${className} medication ordered in multiple orders`
+                : `Both are ${className} class medications`;
               duplicates.push({
                 drugA: activeMeds[i].drugName,
                 drugB: activeMeds[j].drugName,
                 orderA: activeMeds[i].orderIEN,
                 orderB: activeMeds[j].orderIEN,
-                reason: `Both are ${className} class medications`,
+                reason,
               });
             }
           }
@@ -273,7 +276,7 @@ export default async function emarRoutes(server: FastifyInstance) {
 
   /* ------ GET /emar/schedule?dfn=N ------ */
   server.get("/emar/schedule", async (request: FastifyRequest, reply: FastifyReply) => {
-    requireSession(request, reply);
+    const _session = requireSession(request, reply);
     const dfn = validateDfn((request.query as any)?.dfn, reply);
     if (!dfn) return;
 
@@ -301,7 +304,13 @@ export default async function emarRoutes(server: FastifyInstance) {
       // Check for error
       if (activeLines[0].startsWith("-1")) {
         const errMsg = activeLines[0].split("^").slice(1).join("^") || "Unknown VistA error";
-        return { ok: false, error: errMsg, rpcUsed: ["ORWPS ACTIVE"] };
+        return reply.code(502).send({
+          ok: false,
+          error: errMsg,
+          source: "vista",
+          rpcUsed: ["ORWPS ACTIVE"],
+          pendingTargets: [],
+        });
       }
 
       // Resolve empty drug names via ORWORR GETTXT
@@ -354,13 +363,19 @@ export default async function emarRoutes(server: FastifyInstance) {
       };
     } catch (err: any) {
       log.error("eMAR schedule fetch failed", { error: err.message });
-      return { ok: false, error: err.message, rpcUsed: ["ORWPS ACTIVE"] };
+      return reply.code(502).send({
+        ok: false,
+        error: err.message,
+        source: "error",
+        rpcUsed: ["ORWPS ACTIVE"],
+        pendingTargets: [],
+      });
     }
   });
 
   /* ------ GET /emar/allergies?dfn=N ------ */
   server.get("/emar/allergies", async (request: FastifyRequest, reply: FastifyReply) => {
-    requireSession(request, reply);
+    const _session = requireSession(request, reply);
     const dfn = validateDfn((request.query as any)?.dfn, reply);
     if (!dfn) return;
 
@@ -420,13 +435,19 @@ export default async function emarRoutes(server: FastifyInstance) {
       };
     } catch (err: any) {
       log.error("eMAR allergy fetch failed", { error: err.message });
-      return { ok: false, error: err.message, rpcUsed: ["ORQQAL LIST"] };
+      return reply.code(502).send({
+        ok: false,
+        error: err.message,
+        source: "error",
+        rpcUsed: ["ORQQAL LIST"],
+        pendingTargets: [],
+      });
     }
   });
 
   /* ------ GET /emar/history?dfn=N (integration-pending) ------ */
   server.get("/emar/history", async (request: FastifyRequest, reply: FastifyReply) => {
-    requireSession(request, reply);
+    const _session = requireSession(request, reply);
     const dfn = validateDfn((request.query as any)?.dfn, reply);
     if (!dfn) return;
 
@@ -444,11 +465,13 @@ export default async function emarRoutes(server: FastifyInstance) {
 
   /* ------ POST /emar/administer (integration-pending) ------ */
   server.post("/emar/administer", async (request: FastifyRequest, reply: FastifyReply) => {
-    requireSession(request, reply);
+    const _session = requireSession(request, reply);
 
     const body = (request.body as any) || {};
     const dfn = String(body.dfn || "").trim();
     const orderIEN = String(body.orderIEN || "").trim();
+    const action = String(body.action || "given").trim();
+    const reason = String(body.reason || "").trim();
 
     if (!dfn || !/^\d+$/.test(dfn)) {
       return reply.code(400).send({ ok: false, error: "Missing or non-numeric dfn" });
@@ -457,12 +480,20 @@ export default async function emarRoutes(server: FastifyInstance) {
       return reply.code(400).send({ ok: false, error: "Missing or non-numeric orderIEN" });
     }
 
-    // Log the administration attempt for audit
+    const validActions = ["given", "held", "refused", "unavailable"];
+    if (!validActions.includes(action)) {
+      return reply.code(400).send({ ok: false, error: `Invalid action. Must be one of: ${validActions.join(", ")}` });
+    }
+    if (reason.length > 2000) {
+      return reply.code(400).send({ ok: false, error: "Reason exceeds maximum length (2000 chars)" });
+    }
+
+    // Log the administration attempt for audit (no PHI in reason field)
     log.info("eMAR administration attempt (integration-pending)", {
       dfn,
       orderIEN,
-      action: body.action || "given",
-      reason: body.reason || "",
+      action,
+      hasReason: !!reason,
     });
 
     return reply.code(202).send({
@@ -480,19 +511,33 @@ export default async function emarRoutes(server: FastifyInstance) {
         migrationPath: "Install BCMA package -> enable PSB MED LOG RPC -> implement 5-rights barcode verification -> write to file 53.79",
         sandboxNote: "WorldVistA Docker does not include BCMA/PSB package. Administration recording is deferred.",
       },
+      recordedAction: action,
       auditNote: "Administration attempt logged with timestamp, user, patient, and order for compliance trail.",
     });
   });
 
   /* ------ GET /emar/duplicate-check?dfn=N ------ */
   server.get("/emar/duplicate-check", async (request: FastifyRequest, reply: FastifyReply) => {
-    requireSession(request, reply);
+    const _session = requireSession(request, reply);
     const dfn = validateDfn((request.query as any)?.dfn, reply);
     if (!dfn) return;
 
     try {
       const activeLines = await safeCallRpc("ORWPS ACTIVE", [dfn]);
-      if (!activeLines || activeLines.length === 0 || activeLines[0].startsWith("-1")) {
+
+      // Distinguish VistA error from empty result
+      if (activeLines && activeLines.length > 0 && activeLines[0].startsWith("-1")) {
+        const errMsg = activeLines[0].split("^").slice(1).join("^") || "Unknown VistA error";
+        return reply.code(502).send({
+          ok: false,
+          error: errMsg,
+          source: "vista",
+          rpcUsed: ["ORWPS ACTIVE"],
+          pendingTargets: [],
+        });
+      }
+
+      if (!activeLines || activeLines.length === 0) {
         return {
           ok: true,
           source: "heuristic",
@@ -519,13 +564,19 @@ export default async function emarRoutes(server: FastifyInstance) {
       };
     } catch (err: any) {
       log.error("eMAR duplicate check failed", { error: err.message });
-      return { ok: false, error: err.message, rpcUsed: ["ORWPS ACTIVE"] };
+      return reply.code(502).send({
+        ok: false,
+        error: err.message,
+        source: "error",
+        rpcUsed: ["ORWPS ACTIVE"],
+        pendingTargets: [],
+      });
     }
   });
 
   /* ------ POST /emar/barcode-scan (integration-pending) ------ */
   server.post("/emar/barcode-scan", async (request: FastifyRequest, reply: FastifyReply) => {
-    requireSession(request, reply);
+    const _session = requireSession(request, reply);
 
     const body = (request.body as any) || {};
     const barcode = String(body.barcode || "").trim();
@@ -533,6 +584,9 @@ export default async function emarRoutes(server: FastifyInstance) {
 
     if (!barcode) {
       return reply.code(400).send({ ok: false, error: "Missing barcode value" });
+    }
+    if (barcode.length > 500) {
+      return reply.code(400).send({ ok: false, error: "Barcode exceeds maximum length (500 chars)" });
     }
     if (!dfn || !/^\d+$/.test(dfn)) {
       return reply.code(400).send({ ok: false, error: "Missing or non-numeric dfn" });
