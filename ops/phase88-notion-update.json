@@ -1,0 +1,9 @@
+{
+  "feature": "Phase 88: PH Payer Registry Ingestion + Capability Matrix",
+  "stage": "implement",
+  "status": "complete",
+  "promptRef": "prompts/94-PHASE-88-PH-PAYER-REGISTRY/94-01-IMPLEMENT.md",
+  "runbookPath": "docs/runbooks/ph-payer-registry-ingestion.md",
+  "verifyScript": "prompts/94-PHASE-88-PH-PAYER-REGISTRY/94-99-VERIFY.md",
+  "commitSHA": "pending"
+}

@@ -27,6 +27,8 @@ const ADMIN_NAV: AdminNavItem[] = [
   { label: 'Analytics',     href: '/cprs/admin/analytics',     moduleId: 'analytics' },
   { label: 'RCM / Billing', href: '/cprs/admin/rcm',           moduleId: 'rcm' },
   { label: 'PayerOps',      href: '/cprs/admin/payerops',      moduleId: 'rcm' },
+  { label: 'Payer Directory', href: '/cprs/admin/payer-directory', moduleId: 'rcm' },
+  { label: 'Capability Matrix', href: '/cprs/admin/capability-matrix', moduleId: 'rcm' },
   { label: 'Audit Viewer',  href: '/cprs/admin/audit-viewer',  moduleId: 'iam' },
   { label: 'RPC Debug',     href: '/cprs/admin/rpc-debug' },
   { label: 'Reports',       href: '/cprs/admin/reports' },

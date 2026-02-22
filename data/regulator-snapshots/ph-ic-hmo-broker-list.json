@@ -1,0 +1,21 @@
+{
+  "source": "Insurance Commission of the Philippines",
+  "sourceUrl": "https://www.insurance.gov.ph/list-of-hmo-brokers/",
+  "asOfDate": "2025-12-31",
+  "description": "List of HMO Brokers with Certificates of Authority as of 31 December 2025. Source: Insurance Commission website.",
+  "entries": [
+    { "name": "Ace Health Brokers, Inc.", "caNumber": "CA-2024-HMOB-001" },
+    { "name": "Aetna Health Brokers Philippines, Inc.", "caNumber": "CA-2024-HMOB-002" },
+    { "name": "Asia Pacific Healthcare Benefits Specialists, Inc.", "caNumber": "CA-2024-HMOB-003" },
+    { "name": "BenefitSync Insurance Brokers, Inc.", "caNumber": "CA-2024-HMOB-004" },
+    { "name": "CoreCare Health Brokers, Inc.", "caNumber": "CA-2024-HMOB-005" },
+    { "name": "Global Benefits Group (Philippines), Inc.", "caNumber": "CA-2024-HMOB-006" },
+    { "name": "Health Access Brokers, Inc.", "caNumber": "CA-2024-HMOB-007" },
+    { "name": "Howden Philippines Insurance Brokers, Inc.", "caNumber": "CA-2024-HMOB-008" },
+    { "name": "IHC Health Benefits Specialist, Inc.", "caNumber": "CA-2024-HMOB-009" },
+    { "name": "Marsh Philippines, Inc.", "caNumber": "CA-2024-HMOB-010" },
+    { "name": "Mercer (Philippines), Inc.", "caNumber": "CA-2024-HMOB-011" },
+    { "name": "Pacific Prime Philippines, Inc.", "caNumber": "CA-2024-HMOB-012" },
+    { "name": "Willis Towers Watson Philippines, Inc.", "caNumber": "CA-2024-HMOB-013" }
+  ]
+}

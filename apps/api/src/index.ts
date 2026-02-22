@@ -75,6 +75,8 @@ import vistaRcmRoutes from "./routes/vista-rcm.js";
 import rcmOpsRoutes from "./rcm/rcm-ops-routes.js";
 // Phase 87: PayerOps routes -- enrollment, LOA, credential vault, adapters
 import payerOpsRoutes from "./rcm/payerOps/payerops-routes.js";
+// Phase 88: Payer registry + capability matrix routes
+import registryRoutes from "./rcm/payerOps/registry-routes.js";
 // Phase 41: RPC Registry + Action Registry (Vivian snapshot integration)
 import { RPC_REGISTRY, RPC_EXCEPTIONS, getFullRpcInventory } from "./vista/rpcRegistry.js";
 // Phase 48: Unified audit + connector resilience stats
@@ -302,6 +304,9 @@ server.register(rcmOpsRoutes);
 
 // Register PayerOps routes -- enrollment, LOA, credential vault (Phase 87)
 server.register(payerOpsRoutes);
+
+// Register Registry + Capability Matrix routes (Phase 88)
+server.register(registryRoutes);
 
 // Register Migration Toolkit routes -- data portability import/export (Phase 50)
 server.register(migrationRoutes);
