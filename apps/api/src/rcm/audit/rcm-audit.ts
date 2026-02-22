@@ -51,6 +51,7 @@ export type RcmAuditAction =
   | 'job.cancelled'
   | 'job.completed'
   | 'job.failed'
+  | 'job.dead_letter'
   | 'era.post_attempted'
   | 'vista.binding_called'
   | 'vista.encounters.read'

@@ -2088,7 +2088,7 @@ function OpsDashboardTab() {
     }).then((data) => {
       setEnqueueResult(data);
       setTimeout(refresh, 500);
-    }).catch(() => {});
+    }).catch((e) => setEnqueueResult({ ok: false, error: String(e) }));
   };
 
   const handleEnqueueStatusPoll = () => {
@@ -2102,7 +2102,7 @@ function OpsDashboardTab() {
     }).then((data) => {
       setEnqueueResult(data);
       setTimeout(refresh, 500);
-    }).catch(() => {});
+    }).catch((e) => setEnqueueResult({ ok: false, error: String(e) }));
   };
 
   if (loading) return <div style={{ color: '#6c757d', fontSize: 13 }}>Loading ops dashboard...</div>;
@@ -2143,7 +2143,7 @@ function OpsDashboardTab() {
       </div>
 
       {/* Connectivity: Connectors */}
-      <h4 style={{ fontSize: 13, marginBottom: 8 }}>Connector States ({connectivity?.summary?.total ?? 0} total)</h4>
+      <h4 style={{ fontSize: 13, marginBottom: 8 }}>Connector States ({connectivity?.summary?.totalConnectors ?? 0} total)</h4>
       <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
         {connectivity?.summary && ['connected', 'degraded', 'disconnected', 'pending'].map(s => {
           const count = s === 'connected' ? connectivity.summary.connected :
@@ -2180,7 +2180,7 @@ function OpsDashboardTab() {
                   </span>
                 </td>
                 <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>
-                  {c.latencyMs != null ? `${c.latencyMs}ms` : '-'}
+                  {c.lastProbeLatencyMs != null ? `${c.lastProbeLatencyMs}ms` : '-'}
                 </td>
                 <td style={{ padding: '6px 8px', borderBottom: '1px solid #f0f0f0', fontSize: 11 }}>
                   {c.lastProbeAt ? new Date(c.lastProbeAt).toLocaleTimeString() : '-'}

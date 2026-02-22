@@ -39,7 +39,7 @@ export function validateJobPayload(payload: Record<string, unknown>): {
   }
 
   // Check for forbidden field names
-  const forbiddenFields = ["ssn", "socialSecurity", "dateOfBirth", "dob", "patientName", "fullName"];
+  const forbiddenFields = ["ssn", "socialsecurity", "dateofbirth", "dob", "patientname", "fullname"];
   for (const key of Object.keys(payload)) {
     if (forbiddenFields.includes(key.toLowerCase())) {
       violations.push(`Forbidden field in job payload: ${key}`);
@@ -136,7 +136,7 @@ export function auditJobCompletion(job: RcmJob): void {
  * Record a job failure in the audit trail.
  */
 export function auditJobFailure(job: RcmJob, error: string): void {
-  const action = job.status === "dead_letter" ? "job.failed" : "job.failed";
+  const action = job.status === "dead_letter" ? "job.dead_letter" : "job.failed";
   appendRcmAudit(action, {
     detail: {
       jobId: job.id,

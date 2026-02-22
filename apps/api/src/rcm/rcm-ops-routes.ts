@@ -29,20 +29,36 @@ import {
   getJobStatsByTenant,
   listJobsByTenant,
 } from "./jobs/job-audit-bridge.js";
-import { getJobQueue } from "./jobs/queue.js";
 import { getPollingScheduler } from "./jobs/polling-scheduler.js";
 import {
   listWorkqueueItems,
   getWorkqueueStats,
 } from "./workqueues/workqueue-store.js";
-import { appendRcmAudit } from "./audit/rcm-audit.js";
-import { log } from "../lib/logger.js";
+import { requirePermission, requireRcmWrite } from "../auth/rbac.js";
 
 /* ── Route plugin ───────────────────────────────────────────── */
 
 export default async function rcmOpsRoutes(
   server: FastifyInstance,
 ): Promise<void> {
+  /* ── RBAC: reads require rcm:read, writes require rcm:write ── */
+  server.addHook("onRequest", async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = (request as any).session;
+    if (!session) return; // security.ts already rejected unauthenticated
+
+    const method = request.method;
+    if (["POST", "PUT", "PATCH", "DELETE"].includes(method)) {
+      requireRcmWrite(session, reply, {
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+      });
+    } else {
+      requirePermission(session, "rcm:read", reply, {
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+      });
+    }
+  });
   /* ─────────────────────────────────────────────────────────── */
   /* GET /rcm/ops/connector-state                                */
   /* ─────────────────────────────────────────────────────────── */
@@ -264,29 +280,27 @@ export default async function rcmOpsRoutes(
       const q = request.query as Record<string, string>;
       const tenantId = q.tenantId ?? "default";
 
-      // Gather all state in parallel
+      // Gather all state — single call to getConnectorStateSummary avoids triple-probe
       const [
-        connectorStates,
-        adapterStates,
         stateSummary,
         jobStats,
         schedulerStatus,
         workqueueStats,
       ] = await Promise.all([
-        getAllConnectorStates(),
-        getAllAdapterStates(),
         getConnectorStateSummary(),
         getJobStatsByTenant(tenantId),
         Promise.resolve(getPollingScheduler().getStatus()),
         Promise.resolve(getWorkqueueStats(tenantId)),
       ]);
 
+      const { connectors: connectorStates, adapters: adapterStates, summary } = stateSummary;
+
       return {
         ok: true,
         tenantId,
         timestamp: new Date().toISOString(),
         connectivity: {
-          summary: stateSummary,
+          summary,
           connectors: connectorStates,
           adapters: adapterStates,
         },
@@ -300,7 +314,7 @@ export default async function rcmOpsRoutes(
         workqueues: workqueueStats,
         systemHealth: {
           connectorHealth:
-            stateSummary.summary.connected > 0 ? "operational" : "no-live-connectors",
+            summary.connected > 0 ? "operational" : "no-live-connectors",
           jobQueueHealth:
             jobStats.deadLetter === 0 ? "healthy" : "has-dlq-items",
           workqueueHealth:
