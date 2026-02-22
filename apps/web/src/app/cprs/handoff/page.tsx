@@ -190,8 +190,9 @@ function ActiveTab({ ward }: { ward: string }) {
   const [reports, setReports] = useState<HandoffSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [actionMsg, setActionMsg] = useState<{ ok: boolean; msg: string } | null>(null);
 
-  useEffect(() => {
+  const loadReports = useCallback(() => {
     if (!ward) return;
     setLoading(true); setError('');
     apiFetch(`/handoff/reports?ward=${encodeURIComponent(ward)}`)
@@ -203,6 +204,23 @@ function ActiveTab({ ward }: { ward: string }) {
       .finally(() => setLoading(false));
   }, [ward]);
 
+  useEffect(() => { loadReports(); }, [loadReports]);
+
+  const handleAction = useCallback(async (id: string, action: 'submit' | 'archive') => {
+    setActionMsg(null);
+    try {
+      const result = await apiFetch(`/handoff/reports/${id}/${action}`, { method: 'POST' });
+      if (result.ok) {
+        setActionMsg({ ok: true, msg: `Report ${action === 'submit' ? 'submitted' : 'archived'} successfully` });
+        loadReports();
+      } else {
+        setActionMsg({ ok: false, msg: result.error || `Failed to ${action}` });
+      }
+    } catch {
+      setActionMsg({ ok: false, msg: `Failed to ${action} report` });
+    }
+  }, [loadReports]);
+
   if (loading) return <div style={{ padding: 20, color: colors.textMuted }}>Loading handoff reports...</div>;
   if (error) return <div style={{ padding: 20, color: colors.danger }}>{error}</div>;
 
@@ -212,6 +230,16 @@ function ActiveTab({ ward }: { ward: string }) {
       <h3 style={{ fontSize: 15, fontWeight: 600, margin: '0 0 12px 0' }}>
         Active Handoff Reports — {ward} ({reports.length})
       </h3>
+      {actionMsg && (
+        <div style={{
+          padding: '8px 12px', borderRadius: 4, marginBottom: 12, fontSize: 13,
+          background: actionMsg.ok ? colors.acceptedBg : '#fed7d7',
+          border: `1px solid ${actionMsg.ok ? colors.acceptedBorder : '#fc8181'}`,
+          color: actionMsg.ok ? '#22543d' : '#c53030',
+        }}>
+          {actionMsg.msg}
+        </div>
+      )}
       {reports.length === 0 ? (
         <div style={{ padding: 20, color: colors.textMuted, fontSize: 13 }}>
           No active handoff reports for this ward. Create one in the &quot;Create Handoff&quot; tab.
@@ -237,6 +265,21 @@ function ActiveTab({ ward }: { ward: string }) {
               )}
               <div style={{ fontSize: 11, color: colors.textMuted, marginTop: 4, fontFamily: 'monospace' }}>
                 ID: {r.id}
+              </div>
+              {/* Action buttons */}
+              <div style={{ marginTop: 8, display: 'flex', gap: 8 }}>
+                {r.status === 'draft' && (
+                  <button onClick={() => handleAction(r.id, 'submit')}
+                    style={{ ...btnStyle, padding: '4px 12px', fontSize: 12, background: colors.warning }}>
+                    Submit for Handoff
+                  </button>
+                )}
+                {r.status === 'accepted' && (
+                  <button onClick={() => handleAction(r.id, 'archive')}
+                    style={{ ...btnStyle, padding: '4px 12px', fontSize: 12, background: '#718096' }}>
+                    Archive
+                  </button>
+                )}
               </div>
             </div>
           ))}
@@ -923,7 +966,16 @@ function HandoffPageContent() {
             Shift Handoff — Signout
           </h1>
         </div>
-        <div style={{ fontSize: 13, opacity: 0.9 }}>Phase 86 — VistA-first + CRHD posture</div>
+        <div style={{ fontSize: 13, opacity: 0.9, display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span>Phase 86 — VistA-first + CRHD posture</span>
+          <button onClick={() => window.print()}
+            style={{
+              background: 'rgba(255,255,255,0.15)', color: colors.headerText,
+              border: 'none', borderRadius: 4, padding: '4px 10px', cursor: 'pointer', fontSize: 12,
+            }}>
+            Print / Export
+          </button>
+        </div>
       </div>
 
       {/* Ward selector */}

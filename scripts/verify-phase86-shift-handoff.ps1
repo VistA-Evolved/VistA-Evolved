@@ -173,6 +173,10 @@ Gate "Route has audit logging" {
   $route -match 'audit\('
 }
 
+Gate "Route uses distinct audit actions for CRUD" {
+  ($route -match 'clinical\.handoff-update') -and ($route -match 'clinical\.handoff-submit') -and ($route -match 'clinical\.handoff-archive')
+}
+
 Gate "Route exports default async function" {
   $route -match 'export default async function'
 }
@@ -238,6 +242,18 @@ Gate "Page has Back to Inpatient nav" {
   $page -match 'Back to Inpatient'
 }
 
+Gate "Page has Submit for Handoff action button" {
+  $page -match 'Submit for Handoff'
+}
+
+Gate "Page has Archive action button" {
+  ($page -match 'handleAction.*archive') -or ($page -match "'archive'")
+}
+
+Gate "Page has Print/Export button" {
+  $page -match 'Print.*Export|window\.print'
+}
+
 Gate "Page has ARIA roles" {
   ($page -match 'role=') -or ($page -match 'aria-')
 }
@@ -275,8 +291,20 @@ Gate "Audit has clinical.handoff-create action" {
   $auditTs -match 'clinical\.handoff-create'
 }
 
+Gate "Audit has clinical.handoff-update action" {
+  $auditTs -match 'clinical\.handoff-update'
+}
+
+Gate "Audit has clinical.handoff-submit action" {
+  $auditTs -match 'clinical\.handoff-submit'
+}
+
 Gate "Audit has clinical.handoff-accept action" {
   $auditTs -match 'clinical\.handoff-accept'
+}
+
+Gate "Audit has clinical.handoff-archive action" {
+  $auditTs -match 'clinical\.handoff-archive'
 }
 
 Gate "Audit has clinical.handoff-view action" {

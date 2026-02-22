@@ -214,7 +214,7 @@ export function acceptHandoffReport(
 
 export function archiveHandoffReport(id: string): HandoffReport | undefined {
   const report = handoffStore.get(id);
-  if (!report || report.status === "archived") return undefined;
+  if (!report || report.status !== "accepted") return undefined;
   const updated: HandoffReport = {
     ...report,
     status: "archived",

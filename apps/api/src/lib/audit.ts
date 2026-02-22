@@ -135,7 +135,10 @@ export type AuditAction =
   | "auth.vista-bind"
   // Phase 86: Shift Handoff + Signout audit events
   | "clinical.handoff-create"
+  | "clinical.handoff-update"
+  | "clinical.handoff-submit"
   | "clinical.handoff-accept"
+  | "clinical.handoff-archive"
   | "clinical.handoff-view";
 
 export type AuditOutcome = "success" | "failure" | "denied" | "error";

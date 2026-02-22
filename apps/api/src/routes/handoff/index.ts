@@ -352,8 +352,8 @@ export default async function handoffRoutes(server: FastifyInstance) {
 
     const actor = actorFromSession(session);
     log.info("Handoff report updated", { handoffId: id });
-    audit("clinical.handoff-create", "success", actor, {
-      detail: { handoffId: id, action: "update", ward: updated.ward },
+    audit("clinical.handoff-update", "success", actor, {
+      detail: { handoffId: id, ward: updated.ward },
     });
 
     return {
@@ -377,8 +377,8 @@ export default async function handoffRoutes(server: FastifyInstance) {
 
     const actor = actorFromSession(session);
     log.info("Handoff report submitted", { handoffId: id, ward: submitted.ward });
-    audit("clinical.handoff-create", "success", actor, {
-      detail: { handoffId: id, action: "submit", ward: submitted.ward },
+    audit("clinical.handoff-submit", "success", actor, {
+      detail: { handoffId: id, ward: submitted.ward },
     });
 
     return {
@@ -422,13 +422,13 @@ export default async function handoffRoutes(server: FastifyInstance) {
 
     const archived = archiveHandoffReport(id);
     if (!archived) {
-      return reply.code(409).send({ ok: false, error: "Cannot archive — report is already archived or not found" });
+      return reply.code(409).send({ ok: false, error: "Cannot archive — report must be in accepted status" });
     }
 
     const actor = actorFromSession(session);
     log.info("Handoff report archived", { handoffId: id, ward: archived.ward });
-    audit("clinical.handoff-view", "success", actor, {
-      detail: { handoffId: id, action: "archive", ward: archived.ward },
+    audit("clinical.handoff-archive", "success", actor, {
+      detail: { handoffId: id, ward: archived.ward },
     });
 
     return {
