@@ -1,0 +1,28 @@
+{
+  "feature": "Phase 81 -- Imaging Viewer v1 (VistA Metadata + DICOM Posture)",
+  "stage": "Implemented",
+  "status": "Verified (68/68 gates)",
+  "promptRef": "prompts/86-PHASE-81-IMAGING-VIEWER-V1/86-01-IMPLEMENT.md",
+  "runbook": "docs/runbooks/phase81-imaging-viewer.md",
+  "verifyScript": "scripts/verify-phase81-imaging-viewer.ps1",
+  "commitMessage": "Phase81: imaging viewer v1 (VistA metadata + DICOM posture)",
+  "endpoints": [
+    "GET /imaging/studies/:dfn",
+    "GET /imaging/report/:studyId",
+    "GET /imaging/viewer-link/:studyId"
+  ],
+  "vistaRpcs": [
+    "MAG4 REMOTE PROCEDURE",
+    "MAG4 PAT GET IMAGES",
+    "RA DETAILED REPORT",
+    "TIU GET RECORD TEXT",
+    "TIU DOCUMENTS BY CONTEXT",
+    "MAGG PAT PHOTOS"
+  ],
+  "pendingTargets": 4,
+  "uiEnhancements": [
+    "Inline report viewer with status badge",
+    "Viewer link panel with setup instructions",
+    "Pending target info display"
+  ]
+}

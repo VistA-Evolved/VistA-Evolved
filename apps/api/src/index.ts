@@ -19,6 +19,7 @@ import imagingIngestRoutes from "./services/imaging-ingest.js";
 import { imagingAuthzRoutes } from "./services/imaging-authz.js";
 import { imagingDeviceRoutes } from "./services/imaging-devices.js";
 import { imagingAuditRoutes } from "./routes/imaging-audit-routes.js";
+import imagingViewerRoutes from "./routes/imaging-viewer.js";
 import adminRoutes from "./routes/admin.js";
 import interopRoutes from "./routes/interop.js";
 import vistaInteropRoutes from "./routes/vista-interop.js";
@@ -209,6 +210,9 @@ server.register(imagingDeviceRoutes);
 
 // Register imaging audit trail routes (Phase 24)
 server.register(imagingAuditRoutes);
+
+// Register imaging viewer routes (Phase 81)
+server.register(imagingViewerRoutes);
 
 // Register admin/tenant routes (Phase 17B)
 server.register(adminRoutes);

@@ -117,6 +117,13 @@ export default function ImagingPanel({ dfn }: Props) {
   const [auditEntries, setAuditEntries] = useState<AuditEntry[]>([]);
   const [auditLoading, setAuditLoading] = useState(false);
 
+  // Phase 81: Report viewer state
+  const [reportText, setReportText] = useState<string | null>(null);
+  const [reportStatus, setReportStatus] = useState<string | null>(null);
+  const [reportLoading, setReportLoading] = useState(false);
+  const [reportPending, setReportPending] = useState<{ rpc: string; reason: string } | null>(null);
+  const [viewerLink, setViewerLink] = useState<{ url?: string; viewerType?: string; message: string; instructions?: string[] } | null>(null);
+
   // Phase 24: Session role (for showing admin tabs)
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -229,6 +236,55 @@ export default function ImagingPanel({ dfn }: Props) {
       // Non-critical
     } finally {
       setAuditLoading(false);
+    }
+  }, []);
+
+  // Phase 81: Fetch radiology report for selected study
+  const fetchReport = useCallback(async (studyId: string) => {
+    setReportLoading(true);
+    setReportText(null);
+    setReportStatus(null);
+    setReportPending(null);
+    try {
+      const resp = await fetch(`${API_BASE}/imaging/report/${encodeURIComponent(studyId)}`, {
+        credentials: 'include',
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data.available && data.reportText) {
+          setReportText(data.reportText);
+          setReportStatus(data.reportStatus || null);
+        } else if (data.pendingTarget) {
+          setReportPending({ rpc: data.pendingTarget.rpc, reason: data.pendingTarget.reason });
+        } else {
+          setReportPending({ rpc: 'RA DETAILED REPORT', reason: 'No report data available for this study.' });
+        }
+      }
+    } catch {
+      setReportPending({ rpc: 'RA DETAILED REPORT', reason: 'Failed to fetch report.' });
+    } finally {
+      setReportLoading(false);
+    }
+  }, []);
+
+  // Phase 81: Fetch viewer link for selected study
+  const fetchViewerLink = useCallback(async (studyId: string) => {
+    setViewerLink(null);
+    try {
+      const resp = await fetch(`${API_BASE}/imaging/viewer-link/${encodeURIComponent(studyId)}`, {
+        credentials: 'include',
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        setViewerLink({
+          url: data.url,
+          viewerType: data.viewerType,
+          message: data.message,
+          instructions: data.instructions,
+        });
+      }
+    } catch {
+      setViewerLink({ message: 'Failed to check viewer availability.', instructions: ['Check API server status.'] });
     }
   }, []);
 
@@ -901,22 +957,164 @@ export default function ImagingPanel({ dfn }: Props) {
 
                 {/* Open Viewer button */}
                 {(selected.studyInstanceUid || selected.studyId) && (
-                  <button
-                    onClick={() => openViewer(selected)}
-                    style={{
-                      marginTop: 12,
-                      padding: '6px 16px',
-                      background: 'var(--cprs-accent, #2563eb)',
-                      color: '#fff',
-                      border: 'none',
-                      borderRadius: 4,
-                      fontSize: 12,
-                      cursor: 'pointer',
-                      fontWeight: 600,
-                    }}
-                  >
-                    Open in OHIF Viewer
-                  </button>
+                  <div style={{ display: 'flex', gap: 6, marginTop: 12 }}>
+                    <button
+                      onClick={() => openViewer(selected)}
+                      style={{
+                        padding: '6px 16px',
+                        background: 'var(--cprs-accent, #2563eb)',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: 4,
+                        fontSize: 12,
+                        cursor: 'pointer',
+                        fontWeight: 600,
+                      }}
+                    >
+                      Open in OHIF Viewer
+                    </button>
+                    <button
+                      onClick={() => fetchReport(selected.studyInstanceUid || selected.studyId)}
+                      disabled={reportLoading}
+                      style={{
+                        padding: '6px 16px',
+                        background: '#059669',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: 4,
+                        fontSize: 12,
+                        cursor: 'pointer',
+                        fontWeight: 600,
+                      }}
+                    >
+                      {reportLoading ? 'Loading...' : 'View Report'}
+                    </button>
+                    <button
+                      onClick={() => fetchViewerLink(selected.studyInstanceUid || selected.studyId)}
+                      style={{
+                        padding: '6px 12px',
+                        background: '#6366f1',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: 4,
+                        fontSize: 12,
+                        cursor: 'pointer',
+                        fontWeight: 600,
+                      }}
+                    >
+                      Viewer Link
+                    </button>
+                  </div>
+                )}
+
+                {/* Phase 81: Inline report viewer */}
+                {reportText && (
+                  <div style={{
+                    marginTop: 10,
+                    border: '1px solid var(--cprs-border)',
+                    borderRadius: 4,
+                    padding: 10,
+                    background: 'var(--cprs-surface, #f8f9fa)',
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                      <span style={{ fontSize: 12, fontWeight: 600 }}>Radiology Report</span>
+                      {reportStatus && (
+                        <span style={{
+                          fontSize: 10, padding: '1px 6px', borderRadius: 8,
+                          background: reportStatus === 'final' ? '#d1fae5' : reportStatus === 'preliminary' ? '#fef3c7' : '#e0e7ff',
+                          color: reportStatus === 'final' ? '#065f46' : reportStatus === 'preliminary' ? '#92400e' : '#3730a3',
+                          fontWeight: 600,
+                        }}>{reportStatus.toUpperCase()}</span>
+                      )}
+                    </div>
+                    <pre style={{
+                      fontFamily: 'monospace',
+                      fontSize: 11,
+                      lineHeight: 1.4,
+                      whiteSpace: 'pre-wrap',
+                      wordBreak: 'break-word',
+                      margin: 0,
+                      maxHeight: 200,
+                      overflow: 'auto',
+                    }}>{reportText}</pre>
+                    <button
+                      onClick={() => setReportText(null)}
+                      style={{
+                        marginTop: 6, fontSize: 10, padding: '2px 8px',
+                        background: 'none', border: '1px solid var(--cprs-border)',
+                        borderRadius: 3, cursor: 'pointer', color: 'var(--cprs-text-muted)',
+                      }}
+                    >
+                      Close Report
+                    </button>
+                  </div>
+                )}
+
+                {/* Phase 81: Report pending target */}
+                {reportPending && !reportText && (
+                  <div style={{
+                    marginTop: 10,
+                    border: '1px solid #ffc107',
+                    borderRadius: 4,
+                    padding: 10,
+                    background: '#fef3c7',
+                    fontSize: 11,
+                  }}>
+                    <strong style={{ color: '#92400e' }}>Report not available</strong>
+                    <p style={{ margin: '4px 0 0', color: '#78350f' }}>
+                      Target RPC: <code style={{ fontFamily: 'monospace', fontSize: 10 }}>{reportPending.rpc}</code>
+                    </p>
+                    <p style={{ margin: '2px 0 0', color: '#78350f' }}>{reportPending.reason}</p>
+                  </div>
+                )}
+
+                {/* Phase 81: Viewer link / integration instructions */}
+                {viewerLink && (
+                  <div style={{
+                    marginTop: 10,
+                    border: '1px solid var(--cprs-border)',
+                    borderRadius: 4,
+                    padding: 10,
+                    background: viewerLink.viewerType === 'ohif' ? '#ecfdf5' : viewerLink.viewerType === 'none' ? '#fef2f2' : '#f0f9ff',
+                    fontSize: 11,
+                  }}>
+                    <strong style={{ fontSize: 12 }}>
+                      {viewerLink.viewerType === 'ohif' ? 'OHIF Viewer Ready' :
+                       viewerLink.viewerType === 'basic' ? 'DICOMweb Available' :
+                       'Viewer Not Configured'}
+                    </strong>
+                    <p style={{ margin: '4px 0' }}>{viewerLink.message}</p>
+                    {viewerLink.url && (
+                      <a
+                        href={viewerLink.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: '#2563eb', fontSize: 11, wordBreak: 'break-all' }}
+                      >
+                        {viewerLink.url}
+                      </a>
+                    )}
+                    {viewerLink.instructions && viewerLink.instructions.length > 0 && (
+                      <div style={{ marginTop: 6, padding: '6px 8px', background: 'rgba(0,0,0,0.04)', borderRadius: 3 }}>
+                        <strong style={{ fontSize: 10, color: 'var(--cprs-text-muted)' }}>Setup Instructions:</strong>
+                        <ul style={{ margin: '4px 0 0', paddingLeft: 16, fontSize: 10, lineHeight: 1.5 }}>
+                          {viewerLink.instructions.filter(Boolean).map((inst, idx) => (
+                            <li key={idx}>{inst}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    <button
+                      onClick={() => setViewerLink(null)}
+                      style={{
+                        marginTop: 6, fontSize: 10, padding: '2px 8px',
+                        background: 'none', border: '1px solid var(--cprs-border)',
+                        borderRadius: 3, cursor: 'pointer', color: 'var(--cprs-text-muted)',
+                      }}
+                    >
+                      Dismiss
+                    </button>
+                  </div>
                 )}
               </div>
             ) : (
