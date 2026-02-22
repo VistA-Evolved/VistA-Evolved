@@ -107,6 +107,8 @@ import nursingRoutes from "./routes/nursing/index.js";
 import { registerNoFakeSuccessHook, getFakeSuccessViolations, getFakeSuccessViolationCount, getNoFakeSuccessAuditReport } from "./middleware/no-fake-success.js";
 // Phase 79: UI Preferences (coversheet layout persistence)
 import uiPrefsRoutes from "./routes/ui-prefs.js";
+// Phase 85: eMAR + BCMA Posture (medication administration records)
+import emarRoutes from "./routes/emar/index.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -326,6 +328,9 @@ server.register(inpatientRoutes);
 
 // Register nursing workflow routes -- VistA-first vitals/notes/tasks/MAR (Phase 68)
 server.register(nursingRoutes);
+
+// Register eMAR + BCMA posture routes -- medication admin records (Phase 85)
+server.register(emarRoutes);
 
 // Register UI preferences routes -- coversheet layout persistence (Phase 79)
 server.register(uiPrefsRoutes);

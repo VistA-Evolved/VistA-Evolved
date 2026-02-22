@@ -75,6 +75,7 @@ function buildMenus(): Record<string, MenuAction[]> {
       { separator: true, label: '', action: '' },
       { label: 'Inpatient Operations', action: 'inpatient' },
       { label: 'Nursing Documentation', action: 'nursing' },
+      { label: 'eMAR (Medication Admin)', action: 'emar' },
       { separator: true, label: '', action: '' },
       { label: 'Remote Data Viewer (Page)', action: 'remoteDataPage' },
       { label: 'Remote Data Viewer (Modal)', action: 'remoteData' },
@@ -177,6 +178,8 @@ export default function CPRSMenuBar({ dfn }: { dfn?: string }) {
       router.push('/cprs/inpatient');
     } else if (action === 'nursing') {
       router.push('/cprs/nursing');
+    } else if (action === 'emar') {
+      router.push('/cprs/emar');
     } else if (action === 'keyboardShortcuts') {
       openModal('keyboardShortcuts');
     } else if (action === 'about') {

@@ -98,6 +98,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/scheduling\//, auth: "session" }, // Phase 63: Scheduling routes (session required)
   { pattern: /^\/messaging\/portal\//, auth: "none" }, // Phase 64: Portal messaging (own session check)
   { pattern: /^\/messaging\//, auth: "session" }, // Phase 64: Secure messaging (clinician session)
+  { pattern: /^\/emar\//, auth: "session" }, // Phase 85: eMAR + BCMA posture (session required)
   { pattern: /^\/admin\/my-tenant$/, auth: "session" }, // Phase 17: client tenant config (any user)
   { pattern: /^\/(admin|audit|reports)\//, auth: "admin" },
   { pattern: /^\/ws\//, auth: "session" }, // WebSocket console (has own role check too)
