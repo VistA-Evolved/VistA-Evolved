@@ -71,6 +71,19 @@ export default function LOAQueuePage() {
     if (data?.ok) setSelectedCase(data.loaCase);
   };
 
+  const assignLOA = async (id: string, assignedTo: string) => {
+    await apiFetch(`/rcm/payerops/loa/${id}/assign`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ assignedTo }),
+    });
+    load();
+    if (selectedCase?.id === id) {
+      const data = await apiFetch(`/rcm/payerops/loa/${id}`);
+      if (data?.ok) setSelectedCase(data.loaCase);
+    }
+  };
+
   const transitionStatus = async (id: string, status: string, reason?: string) => {
     await apiFetch(`/rcm/payerops/loa/${id}/status`, {
       method: 'PUT',
@@ -206,6 +219,7 @@ export default function LOAQueuePage() {
           onClose={() => setSelectedCase(null)}
           onTransition={transitionStatus}
           onGeneratePack={(id) => { generatePack(id); }}
+          onAssign={assignLOA}
         />
       )}
 
@@ -219,12 +233,14 @@ export default function LOAQueuePage() {
 
 /* ── LOA Detail Modal ───────────────────────────────────────── */
 
-function LOADetailModal({ loaCase, onClose, onTransition, onGeneratePack }: {
+function LOADetailModal({ loaCase, onClose, onTransition, onGeneratePack, onAssign }: {
   loaCase: any;
   onClose: () => void;
   onTransition: (id: string, status: string, reason?: string) => void;
   onGeneratePack: (id: string) => void;
+  onAssign: (id: string, assignedTo: string) => void;
 }) {
+  const [assignInput, setAssignInput] = useState('');
   const getNextStatuses = (status: string): string[] => {
     const transitions: Record<string, string[]> = {
       draft: ['pending_submission', 'cancelled'],
@@ -305,6 +321,24 @@ function LOADetailModal({ loaCase, onClose, onTransition, onGeneratePack }: {
             </div>
           </div>
         )}
+
+        {/* Assign */}
+        <div style={{ display: 'flex', gap: 8, marginBottom: 12, alignItems: 'center', fontSize: 12 }}>
+          <strong>Assign to:</strong>
+          <input
+            value={assignInput}
+            onChange={e => setAssignInput(e.target.value)}
+            placeholder={loaCase.assignedTo || 'Staff name'}
+            style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #dee2e6', borderRadius: 3, width: 160 }}
+          />
+          <button
+            onClick={() => { if (assignInput.trim()) { onAssign(loaCase.id, assignInput.trim()); setAssignInput(''); } }}
+            disabled={!assignInput.trim()}
+            style={{ ...btnStyle, padding: '4px 12px', opacity: assignInput.trim() ? 1 : 0.5 }}
+          >
+            Assign
+          </button>
+        </div>
 
         {/* Actions */}
         <div style={{ display: 'flex', gap: 8, marginTop: 16, flexWrap: 'wrap' }}>
