@@ -25,7 +25,8 @@
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { requireSession } from "../../auth/auth-routes.js";
-import { safeCallRpc } from "../../lib/rpc-resilience.js";
+import { safeCallRpc, safeCallRpcWithList } from "../../lib/rpc-resilience.js";
+import type { RpcParam } from "../../vista/rpcBrokerClient.js";
 import { log } from "../../lib/logger.js";
 
 /* ------------------------------------------------------------------ */
@@ -106,8 +107,9 @@ export default async function nursingRoutes(server: FastifyInstance) {
   /* ------ GET /vista/nursing/vitals?dfn=N ------ */
   server.get("/vista/nursing/vitals", async (request: FastifyRequest, reply: FastifyReply) => {
     const _session = requireSession(request, reply);
-    const dfn = (request.query as any)?.dfn;
+    const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
+    if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
 
     try {
       const lines = await safeCallRpc("ORQQVI VITALS", [dfn]);
@@ -130,11 +132,13 @@ export default async function nursingRoutes(server: FastifyInstance) {
   server.get("/vista/nursing/vitals-range", async (request: FastifyRequest, reply: FastifyReply) => {
     const _session = requireSession(request, reply);
     const { dfn, start, end } = request.query as any;
-    if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
+    const dfnStr = String(dfn || "").trim();
+    if (!dfnStr) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
+    if (!/^\d+$/.test(dfnStr)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
 
     try {
       // ORQQVI VITALS FOR DATE RANGE expects DFN, start date, end date
-      const params = [dfn, start || "", end || ""];
+      const params = [dfnStr, start || "", end || ""];
       const lines = await safeCallRpc("ORQQVI VITALS FOR DATE RANGE", params);
       return {
         ok: true,
@@ -155,8 +159,9 @@ export default async function nursingRoutes(server: FastifyInstance) {
   /* ------ GET /vista/nursing/notes?dfn=N ------ */
   server.get("/vista/nursing/notes", async (request: FastifyRequest, reply: FastifyReply) => {
     const _session = requireSession(request, reply);
-    const dfn = (request.query as any)?.dfn;
+    const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
+    if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
 
     try {
       // TIU DOCUMENTS BY CONTEXT: params = [class, context, DFN, ...]
@@ -181,8 +186,9 @@ export default async function nursingRoutes(server: FastifyInstance) {
   /* ------ GET /vista/nursing/ward-patients?ward=IEN ------ */
   server.get("/vista/nursing/ward-patients", async (request: FastifyRequest, reply: FastifyReply) => {
     const _session = requireSession(request, reply);
-    const ward = (request.query as any)?.ward;
+    const ward = String((request.query as any)?.ward || "").trim();
     if (!ward) return reply.code(400).send({ ok: false, error: "Missing ward parameter" });
+    if (!/^\d+$/.test(ward)) return reply.code(400).send({ ok: false, error: "Invalid ward -- must be a positive integer" });
 
     try {
       const lines = await safeCallRpc("ORQPT WARD PATIENTS", [ward]);
@@ -204,8 +210,9 @@ export default async function nursingRoutes(server: FastifyInstance) {
   /* ------ GET /vista/nursing/tasks?dfn=N (integration-pending) ------ */
   server.get("/vista/nursing/tasks", async (request: FastifyRequest, reply: FastifyReply) => {
     const _session = requireSession(request, reply);
-    const dfn = (request.query as any)?.dfn;
+    const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
+    if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
 
     // No native VistA "nursing task list" RPC exists -- tasks are derived from orders,
     // MAR schedule, and nursing protocols. Real implementation requires BCMA + order parsing.
@@ -218,8 +225,9 @@ export default async function nursingRoutes(server: FastifyInstance) {
   /* ------ GET /vista/nursing/mar?dfn=N (integration-pending) ------ */
   server.get("/vista/nursing/mar", async (request: FastifyRequest, reply: FastifyReply) => {
     const _session = requireSession(request, reply);
-    const dfn = (request.query as any)?.dfn;
+    const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
+    if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
 
     return pendingFallback("Medication Administration Record", [
       { rpc: "PSB ALLERGY", package: "PSB", reason: "BCMA/PSB package not available in WorldVistA sandbox" },
@@ -281,8 +289,9 @@ export default async function nursingRoutes(server: FastifyInstance) {
   /* ------ GET /vista/nursing/patient-context?dfn=N ------ */
   server.get("/vista/nursing/patient-context", async (request: FastifyRequest, reply: FastifyReply) => {
     requireSession(request, reply);
-    const dfn = (request.query as any)?.dfn;
+    const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
+    if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
 
     try {
       // ORWPT16 ID INFO returns patient banner: NAME^SSN^DOB^SEX^VET^LOCATION^ROOM-BED^ATTENDING
@@ -313,7 +322,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
           source: "vista",
           patient: { dfn, name: parts2[0]?.trim() || `Patient ${dfn}`, location: "", roomBed: "", attending: "" },
           rpcUsed: ["ORWPT ID INFO"],
-          pendingTargets: ["ORWPT16 ID INFO"],
+          pendingTargets: [{ rpc: "ORWPT16 ID INFO", package: "OR", reason: "Primary patient context RPC failed, using fallback" }],
         };
       } catch {
         return {
@@ -321,7 +330,10 @@ export default async function nursingRoutes(server: FastifyInstance) {
           source: "vista",
           patient: { dfn, name: `Patient ${dfn}`, location: "", roomBed: "", attending: "" },
           rpcUsed: [],
-          pendingTargets: ["ORWPT16 ID INFO", "ORWPT ID INFO"],
+          pendingTargets: [
+            { rpc: "ORWPT16 ID INFO", package: "OR", reason: "Primary patient context RPC unavailable" },
+            { rpc: "ORWPT ID INFO", package: "OR", reason: "Fallback patient context RPC also unavailable" },
+          ],
           _error: "Patient context RPCs unavailable",
         };
       }
@@ -331,8 +343,9 @@ export default async function nursingRoutes(server: FastifyInstance) {
   /* ------ GET /vista/nursing/flowsheet?dfn=N ------ */
   server.get("/vista/nursing/flowsheet", async (request: FastifyRequest, reply: FastifyReply) => {
     requireSession(request, reply);
-    const dfn = (request.query as any)?.dfn;
+    const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
+    if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
 
     try {
       const lines = await safeCallRpc("ORQQVI VITALS", [dfn]);
@@ -353,7 +366,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
           const num = parseFloat(v.value.split("/")[0]); // systolic for BP
           if (!isNaN(num)) {
             if (thresh.high !== undefined && num >= thresh.high) critical = true;
-            if (thresh.low !== undefined && num <= thresh.low) critical = true;
+            if (thresh.low !== undefined && num < thresh.low) critical = true;
           }
         }
         return { ...v, critical };
@@ -361,7 +374,17 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
       // Compute due/overdue for next vitals (simple 4h rule for inpatient)
       const FOUR_HOURS_MS = 4 * 60 * 60 * 1000;
-      const mostRecent = raw.length > 0 ? raw[0].date : null;
+      // Sort by date descending to reliably find the most recent vital
+      // (VistA RPCs don't guarantee ordering consistency across sites)
+      const sorted = [...raw].sort((a, b) => {
+        const da = new Date(a.date).getTime();
+        const db = new Date(b.date).getTime();
+        if (isNaN(da) && isNaN(db)) return 0;
+        if (isNaN(da)) return 1;
+        if (isNaN(db)) return -1;
+        return db - da;
+      });
+      const mostRecent = sorted.length > 0 ? sorted[0].date : null;
       let nextVitalsDue = "Unknown";
       let overdue = false;
       if (mostRecent) {
@@ -405,8 +428,9 @@ export default async function nursingRoutes(server: FastifyInstance) {
   /* ------ GET /vista/nursing/io?dfn=N (integration-pending) ------ */
   server.get("/vista/nursing/io", async (request: FastifyRequest, reply: FastifyReply) => {
     requireSession(request, reply);
-    const dfn = (request.query as any)?.dfn;
+    const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
+    if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
 
     // VistA I&O is tracked in GMR(126) INTAKE/OUTPUT file.
     // The generic RPC "ORQQVI VITALS" does NOT cover I&O.
@@ -417,7 +441,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
       status: "integration-pending",
       items: [],
       shifts: [],
-      totals: { intake: 0, output: 0, net: 0 },
+      totals: null,
       rpcUsed: [],
       pendingTargets: [
         { rpc: "GMRIO RESULTS", package: "GMR", reason: "I&O results RPC -- not available in OR CPRS GUI CHART context" },
@@ -436,8 +460,9 @@ export default async function nursingRoutes(server: FastifyInstance) {
   /* ------ GET /vista/nursing/assessments?dfn=N (integration-pending) ------ */
   server.get("/vista/nursing/assessments", async (request: FastifyRequest, reply: FastifyReply) => {
     requireSession(request, reply);
-    const dfn = (request.query as any)?.dfn;
+    const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
+    if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
 
     // Nursing assessments in VistA are stored via GN (Nursing) package:
     // File 228 (GN ASSESSMENT) and File 228.1 (GN ASSESSMENT DETAIL).
@@ -473,14 +498,16 @@ export default async function nursingRoutes(server: FastifyInstance) {
   server.post("/vista/nursing/notes/create", async (request: FastifyRequest, reply: FastifyReply) => {
     requireSession(request, reply);
     const body = ((request as any).body as any) || {};
-    const { dfn, noteType, title, text, shift } = body;
+    const { dfn, title, text, shift } = body;
+    const dfnStr = String(dfn || "").trim();
 
-    if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn" });
+    if (!dfnStr) return reply.code(400).send({ ok: false, error: "Missing dfn" });
+    if (!/^\d+$/.test(dfnStr)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
     if (!text || typeof text !== "string" || text.trim().length === 0) {
       return reply.code(400).send({ ok: false, error: "Note text is required" });
     }
 
-    const noteTitle = title || noteType || "NURSING NOTE";
+    const noteTitle = title || "NURSING NOTE";
     const noteShift = shift || "Day";
 
     // Attempt TIU CREATE RECORD: creates a new TIU document
@@ -499,18 +526,27 @@ export default async function nursingRoutes(server: FastifyInstance) {
       const fmMin = String(now.getMinutes()).padStart(2, "0");
       const visitDate = `${fmYear}${fmMonth}${fmDay}.${fmHour}${fmMin}`;
 
-      const createLines = await safeCallRpc("TIU CREATE RECORD", [dfn, titleIen, visitDate, "", "", "", ""]);
+      const createLines = await safeCallRpc("TIU CREATE RECORD", [dfnStr, titleIen, visitDate, "", "", "", ""]);
       const newIen = (createLines || [])[0]?.trim() || "";
 
       if (!newIen || newIen === "0" || newIen.includes("ERROR") || newIen.startsWith("-")) {
         throw new Error(`TIU CREATE RECORD returned: ${newIen || "(empty)"}`);
       }
 
-      // Set the document text
-      const textLines = text.split("\n");
-      const textParam = textLines.map((l: string, i: number) => `${i + 1},0)=${l}`);
+      // Set the document text via LIST parameter (word-processing field).
+      // Prepend shift identifier to ensure it's captured in the note body.
+      const fullText = `[Shift: ${noteShift}] [Type: ${noteTitle}]\n${text}`;
+      const textLines = fullText.split("\n");
+      const listEntries: Record<string, string> = {};
+      textLines.forEach((l: string, i: number) => {
+        listEntries[`${i + 1},0`] = l;
+      });
+      const textParams: RpcParam[] = [
+        { type: "literal", value: newIen },
+        { type: "list", value: listEntries },
+      ];
       try {
-        await safeCallRpc("TIU SET DOCUMENT TEXT", [newIen, ...textParam]);
+        await safeCallRpcWithList("TIU SET DOCUMENT TEXT", textParams, { idempotent: false });
       } catch (textErr) {
         log.warn("TIU SET DOCUMENT TEXT failed (note created but text not saved)", {
           ien: newIen,
@@ -518,7 +554,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
         });
       }
 
-      log.info("Nursing note created via TIU", { dfn, ien: newIen });
+      log.info("Nursing note created via TIU", { ien: newIen });
       return {
         ok: true,
         source: "vista",
@@ -565,8 +601,9 @@ export default async function nursingRoutes(server: FastifyInstance) {
   /* ------ GET /vista/nursing/note-text?ien=N ------ */
   server.get("/vista/nursing/note-text", async (request: FastifyRequest, reply: FastifyReply) => {
     requireSession(request, reply);
-    const ien = (request.query as any)?.ien;
+    const ien = String((request.query as any)?.ien || "").trim();
     if (!ien) return reply.code(400).send({ ok: false, error: "Missing ien parameter" });
+    if (!/^\d+$/.test(ien)) return reply.code(400).send({ ok: false, error: "Invalid ien -- must be a positive integer" });
 
     try {
       const lines = await safeCallRpc("TIU GET RECORD TEXT", [ien]);

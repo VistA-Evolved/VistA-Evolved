@@ -78,8 +78,8 @@ Three sub-tabs:
 | GET | `/vista/nursing/vitals-range?dfn=N&start=D&end=D` | VistA | ORQQVI VITALS FOR DATE RANGE |
 | GET | `/vista/nursing/notes?dfn=N` | VistA | TIU DOCUMENTS BY CONTEXT |
 | GET | `/vista/nursing/ward-patients?ward=IEN` | VistA | ORQPT WARD PATIENTS |
-| GET | `/vista/nursing/tasks?dfn=N` | integration-pending | PSB MED LOG |
-| GET | `/vista/nursing/mar?dfn=N` | integration-pending | PSB ALLERGY |
+| GET | `/vista/nursing/tasks?dfn=N` | integration-pending | PSB MED LOG, ORWORDG IEN |
+| GET | `/vista/nursing/mar?dfn=N` | integration-pending | PSB ALLERGY, PSB MED LOG |
 | POST | `/vista/nursing/mar/administer` | integration-pending | PSB MED LOG |
 
 ## Troubleshooting
@@ -97,7 +97,7 @@ Three sub-tabs:
 ### Flowsheet shows no data
 - Patient may have no recorded vitals in sandbox
 - Verify: `curl http://localhost:3001/vista/nursing/flowsheet?dfn=3`
-- Try adding a vital first: `POST /vista/vitals` with `{"dfn":"3","type":"BP","value":"120/80"}`
+- Vitals can be recorded via `GMV ADD VM` RPC (called by VistA CPRS client)
 
 ### I&O shows "Integration Pending"
 - Expected — GMR I&O RPCs not exposed in OR CPRS GUI CHART context

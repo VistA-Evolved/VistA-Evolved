@@ -50,7 +50,7 @@ module to its source in VistA FileMan, M routines, and RPCs.
 | TIU GET RECORD TEXT | TIU | Note text | note viewer | [IEN] |
 | TIU CREATE RECORD | TIU | Note create | note creation | [DFN, titleIEN, VDT, ...] |
 | TIU SET DOCUMENT TEXT | TIU | Note text set | note creation | [IEN, text lines] |
-| GMV ADD VM | GMV | Vitals write | vitals add | [formatted string] |
+| GMV ADD VM | GMV | Vitals write | vitals add (Phase 68 scope) | [formatted string] |
 | ORWPT16 ID INFO | OR | Patient banner | patient context | [DFN] |
 | ORWPT ID INFO | OR | Patient info (fallback) | patient context | [DFN] |
 | ORQPT WARD PATIENTS | OR | Ward patients | ward-patients | [wardIEN] |

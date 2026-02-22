@@ -249,6 +249,8 @@ function NotesTab({ dfn }: { dfn: string }) {
       if (data.ok) {
         setNoteText('');
         await loadNotes(); // Refresh list
+        // Auto-close modal after 1.5s on success
+        setTimeout(() => { setShowCreate(false); setCreateResult(null); }, 1500);
       }
     } catch (err: any) {
       setCreateResult({ ok: false, error: err.message });
@@ -483,15 +485,24 @@ function VitalsTrendSection({ dfn }: { dfn: string }) {
   useEffect(() => {
     setLoading(true);
     setError('');
-    Promise.all([
+    Promise.allSettled([
       apiFetch(`/vista/nursing/flowsheet?dfn=${dfn}`),
       apiFetch('/vista/nursing/critical-thresholds'),
     ])
-      .then(([flowData, threshData]) => {
-        setData(flowData);
-        setThresholds(threshData.thresholds || {});
+      .then(([flowResult, threshResult]) => {
+        if (flowResult.status === 'fulfilled') {
+          const flowData = flowResult.value;
+          if (flowData.ok === false) {
+            setError(flowData._error || 'VistA communication failed');
+          }
+          setData(flowData);
+        } else {
+          setError(flowResult.reason?.message || 'Failed to load flowsheet');
+        }
+        if (threshResult.status === 'fulfilled') {
+          setThresholds(threshResult.value.thresholds || {});
+        }
       })
-      .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [dfn]);
 
@@ -645,16 +656,16 @@ function IOSection({ dfn }: { dfn: string }) {
         <div style={{ display: 'flex', gap: '24px', marginBottom: '12px' }}>
           <div style={S.trendCard}>
             <div style={S.label}>Intake</div>
-            <div style={{ ...S.trendValue, color: '#2b6cb0' }}>{data.totals?.intake || 0} mL</div>
+            <div style={{ ...S.trendValue, color: '#2b6cb0' }}>{data.totals ? `${data.totals.intake} mL` : '-- mL'}</div>
           </div>
           <div style={S.trendCard}>
             <div style={S.label}>Output</div>
-            <div style={{ ...S.trendValue, color: '#d69e2e' }}>{data.totals?.output || 0} mL</div>
+            <div style={{ ...S.trendValue, color: '#d69e2e' }}>{data.totals ? `${data.totals.output} mL` : '-- mL'}</div>
           </div>
           <div style={S.trendCard}>
             <div style={S.label}>Net Balance</div>
-            <div style={{ ...S.trendValue, color: (data.totals?.net || 0) >= 0 ? '#276749' : '#c53030' }}>
-              {(data.totals?.net || 0) >= 0 ? '+' : ''}{data.totals?.net || 0} mL
+            <div style={{ ...S.trendValue, color: data.totals && data.totals.net >= 0 ? '#276749' : '#c53030' }}>
+              {data.totals ? `${data.totals.net >= 0 ? '+' : ''}${data.totals.net} mL` : '-- mL'}
             </div>
           </div>
         </div>
@@ -732,15 +743,18 @@ function TasksTab({ dfn }: { dfn: string }) {
   useEffect(() => {
     setLoading(true);
     setError('');
-    Promise.all([
+    Promise.allSettled([
       apiFetch(`/vista/nursing/flowsheet?dfn=${dfn}`),
       apiFetch(`/vista/nursing/tasks?dfn=${dfn}`),
     ])
-      .then(([flow, tasks]) => {
-        setFlowData(flow);
-        setTaskData(tasks);
+      .then(([flowResult, taskResult]) => {
+        if (flowResult.status === 'fulfilled') setFlowData(flowResult.value);
+        if (taskResult.status === 'fulfilled') setTaskData(taskResult.value);
+        // Only show error if both failed
+        if (flowResult.status === 'rejected' && taskResult.status === 'rejected') {
+          setError(flowResult.reason?.message || 'Failed to load task data');
+        }
       })
-      .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [dfn]);
 
