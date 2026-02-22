@@ -198,7 +198,8 @@ function LegacyConsoleModal({ onClose }: { onClose: () => void }) {
     let ws: WebSocket;
     try {
       // Cookie is sent automatically by the browser on WS upgrade request
-      const wsUrl = `ws://localhost:3001/ws/console`;
+      const apiBase = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
+      const wsUrl = apiBase.replace(/^http/, 'ws') + '/ws/console';
       ws = new WebSocket(wsUrl);
     } catch {
       setOutput((prev) => [...prev, '[ERROR] Failed to create WebSocket connection.']);

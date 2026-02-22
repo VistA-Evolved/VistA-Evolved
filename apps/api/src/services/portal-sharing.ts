@@ -22,7 +22,7 @@
  * - Minimal data exposure (no SSN, only curated sections)
  */
 
-import { randomBytes } from "node:crypto";
+import { randomBytes, timingSafeEqual } from "node:crypto";
 import { portalAudit } from "./portal-audit.js";
 
 /* ------------------------------------------------------------------ */
@@ -241,8 +241,11 @@ export function verifyShareAccess(
   }
 
   // Verify access code + DOB
-  const codeMatch = share.accessCode === accessCode.toUpperCase().trim();
-  const dobMatch = share.patientDob === patientDob;
+  const normalizedCode = accessCode.toUpperCase().trim();
+  const codeMatch = share.accessCode.length === normalizedCode.length &&
+    timingSafeEqual(Buffer.from(share.accessCode), Buffer.from(normalizedCode));
+  const dobMatch = share.patientDob.length === patientDob.length &&
+    timingSafeEqual(Buffer.from(share.patientDob), Buffer.from(patientDob));
 
   if (!codeMatch || !dobMatch) {
     share.failedAttempts++;

@@ -21,6 +21,7 @@ import { createHash } from "crypto";
 import { appendFileSync, mkdirSync, existsSync, readFileSync } from "fs";
 import { dirname } from "path";
 import { log } from "./logger.js";
+import { getCurrentTraceId } from "../telemetry/tracing.js";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -125,6 +126,8 @@ export interface ImmutableAuditEntry {
   actorRoles: string[];
   /** Correlation request ID */
   requestId?: string;
+  /** OTel trace ID for cross-system correlation */
+  traceId?: string;
   /** Source IP (hashed in production) */
   sourceIp?: string;
   /** Tenant context */
@@ -170,6 +173,7 @@ function computeEntryHash(entry: Omit<ImmutableAuditEntry, "hash">): string {
     actorName: entry.actorName,
     actorRoles: entry.actorRoles,
     requestId: entry.requestId,
+    traceId: entry.traceId,
     sourceIp: entry.sourceIp,
     tenantId: entry.tenantId,
     detail: entry.detail,
@@ -280,6 +284,7 @@ export function immutableAudit(
     actorName: actor.name || "unknown",
     actorRoles: actor.roles || [],
     requestId: opts?.requestId,
+    traceId: getCurrentTraceId() || undefined,
     sourceIp: opts?.sourceIp ? hashIp(opts.sourceIp) : undefined,
     tenantId: opts?.tenantId,
     detail: sanitizeDetail(opts?.detail),

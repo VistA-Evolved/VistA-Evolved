@@ -27,6 +27,7 @@ const ADMIN_NAV: AdminNavItem[] = [
   { label: 'Analytics',     href: '/cprs/admin/analytics',     moduleId: 'analytics' },
   { label: 'RCM / Billing', href: '/cprs/admin/rcm',           moduleId: 'rcm' },
   { label: 'Audit Viewer',  href: '/cprs/admin/audit-viewer',  moduleId: 'iam' },
+  { label: 'RPC Debug',     href: '/cprs/admin/rpc-debug' },
   { label: 'Reports',       href: '/cprs/admin/reports' },
   { label: 'Migration',     href: '/cprs/admin/migration' },
 ];

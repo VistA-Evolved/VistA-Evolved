@@ -25,6 +25,8 @@ interface Props {
   dfn: string;
 }
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
+
 export default function ImmunizationsPanel({ dfn }: Props) {
   const [data, setData] = useState<ImmunizationResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -35,7 +37,7 @@ export default function ImmunizationsPanel({ dfn }: Props) {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`/api/vista/immunizations?dfn=${dfn}`, {
+      const res = await fetch(`${API_BASE}/vista/immunizations?dfn=${dfn}`, {
         credentials: 'include',
       });
       const json: ImmunizationResponse = await res.json();

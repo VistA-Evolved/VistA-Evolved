@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useDataCache, type LabResult } from '../../../stores/data-cache';
+import { useSession } from '../../../stores/session-context';
 import styles from '../cprs.module.css';
 
 interface Props { dfn: string; }
@@ -25,6 +26,8 @@ type ResultFilter = 'all' | 'abnormal' | 'unacknowledged';
 
 export default function LabsPanel({ dfn }: Props) {
   const { fetchDomain, getDomain, isLoading, acknowledgeLabs } = useDataCache();
+  const { user } = useSession();
+  const acknowledgedBy = user?.duz ?? 'current-user';
   const [selected, setSelected] = useState<LabResult | null>(null);
   const [acknowledged, setAcknowledged] = useState<Set<string>>(new Set());
   const [filterMode, setFilterMode] = useState<ResultFilter>('all');
@@ -50,7 +53,7 @@ export default function LabsPanel({ dfn }: Props) {
   function handleAcknowledge(id: string) {
     setAcknowledged((prev) => new Set(prev).add(id));
     // Server-side write-back
-    acknowledgeLabs(dfn, [id], 'current-user').then((r) => setAckMode(r.mode)).catch(() => {});
+    acknowledgeLabs(dfn, [id], acknowledgedBy).then((r) => setAckMode(r.mode)).catch(() => {});
   }
 
   function handleAcknowledgeAll() {
@@ -60,7 +63,7 @@ export default function LabsPanel({ dfn }: Props) {
       labs.forEach((l) => next.add(l.id));
       return next;
     });
-    acknowledgeLabs(dfn, ids, 'current-user').then((r) => setAckMode(r.mode)).catch(() => {});
+    acknowledgeLabs(dfn, ids, acknowledgedBy).then((r) => setAckMode(r.mode)).catch(() => {});
   }
 
   return (
