@@ -132,7 +132,7 @@ function pendingFallback(
     err: errMsg,
   });
   return reply.send({
-    ok: true,
+    ok: false,
     source: "vista",
     count: 0,
     results: [],

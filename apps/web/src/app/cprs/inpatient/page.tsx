@@ -358,7 +358,6 @@ function CensusTab() {
   const [loadingCensus, setLoadingCensus] = useState(false);
   const [error, setError] = useState('');
   const [selectedPatient, setSelectedPatient] = useState<CensusPatient | null>(null);
-  const [rpcInfo, setRpcInfo] = useState<string[]>([]);
 
   const loadWards = useCallback(async () => {
     setLoading(true);
@@ -366,7 +365,6 @@ function CensusTab() {
     try {
       const data = await apiFetch('/vista/inpatient/wards');
       setWards(data.results || []);
-      setRpcInfo(data.rpcUsed || []);
     } catch (err: any) {
       setError(err.message);
     }
@@ -799,7 +797,7 @@ function MovementTimelineTab() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [pendingNote, setPendingNote] = useState('');
-  const [vistaGrounding, setVistaGrounding] = useState<any>(null);
+  const [vistaGrounding, setVistaGrounding] = useState<PendingInfo['vistaGrounding'] | null>(null);
 
   const loadMovements = useCallback(async () => {
     if (!dfn) return;
@@ -895,9 +893,13 @@ function MovementTimelineTab() {
           <div style={S.pendingText}>{pendingNote}</div>
           {vistaGrounding && (
             <div style={S.codeBlock}>
-              <div><strong>Target RPC:</strong> {vistaGrounding.targetRoutines?.join(', ') || 'ZVEADTM LIST'}</div>
+              <div><strong>Target RPC:</strong> ZVEADTM LIST</div>
               <div><strong>VistA Files:</strong> {vistaGrounding.vistaFiles?.join(', ')}</div>
+              <div><strong>M Routines:</strong> {vistaGrounding.targetRoutines?.join(', ')}</div>
               <div><strong>Migration Path:</strong> {vistaGrounding.migrationPath}</div>
+              {vistaGrounding.sandboxNote && (
+                <div><strong>Sandbox Note:</strong> {vistaGrounding.sandboxNote}</div>
+              )}
             </div>
           )}
         </div>
