@@ -39,7 +39,7 @@ export type ClaimLifecycleStatus =
 
 /** Valid transitions: from → allowed destinations */
 export const LIFECYCLE_TRANSITIONS: Record<ClaimLifecycleStatus, ClaimLifecycleStatus[]> = {
-  draft:                 ['ready_for_scrub', 'cancelled'],
+  draft:                 ['ready_for_scrub', 'scrub_passed', 'scrub_failed', 'cancelled'],
   ready_for_scrub:       ['scrub_passed', 'scrub_failed', 'cancelled'],
   scrub_passed:          ['ready_for_submission', 'ready_for_scrub', 'cancelled'],
   scrub_failed:          ['draft', 'ready_for_scrub', 'cancelled'],
