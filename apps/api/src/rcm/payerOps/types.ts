@@ -1,9 +1,10 @@
 /**
- * PayerOps Domain Types — Phase 87: Philippines RCM Foundation
+ * PayerOps Domain Types — Phase 87+89: Philippines RCM Foundation + LOA Engine v1
  *
  * Core entities for payer operations workflow:
  *   - FacilityPayerEnrollment — payer x facility status tracking
  *   - LOACase — Letter of Authorization request lifecycle
+ *   - LOAPack — generated submission pack history
  *   - CredentialVaultEntry — secure document storage for accreditation artifacts
  *   - PayerOpsAdapterResult — canonical result type for adapter operations
  *
@@ -12,6 +13,7 @@
  *   - Manual-first: all adapters start in MANUAL mode
  *   - No fake green: unsupported operations return status "manual_required"
  *   - Registry-sourced: payer list from Insurance Commission / regulator data
+ *   - SLA-tracked: every LOA case has deadlines and risk levels (Phase 89)
  */
 
 /* ── Facility-Payer Enrollment ──────────────────────────────── */
@@ -75,6 +77,12 @@ export type LOARequestType =
   | "pre_auth"
   | "guarantee_letter";
 
+/* ── LOA SLA / Queue fields (Phase 89) ──────────────────────── */
+
+export type LOASLARiskLevel = "on_track" | "at_risk" | "overdue" | "critical";
+
+export type LOAPriority = "routine" | "urgent" | "stat";
+
 export interface LOACase {
   id: string;
   facilityId: string;
@@ -110,6 +118,53 @@ export interface LOACase {
   createdAt: string;
   updatedAt: string;
   createdBy: string;
+
+  /* ── Phase 89: SLA + Queue fields ──────────────────────────── */
+
+  /** Priority level (routine / urgent / stat) */
+  priority: LOAPriority;
+  /** Staff user assigned to this LOA case */
+  assignedTo?: string;
+  /** ISO date-time: SLA deadline for payer response */
+  slaDeadline?: string;
+  /** Computed SLA risk level (recomputed on read) */
+  slaRiskLevel: LOASLARiskLevel;
+  /** Clinical urgency notes (e.g., scheduled surgery date) */
+  urgencyNotes?: string;
+  /** Associated enrollment ID — links LOA to payer enrollment */
+  enrollmentId?: string;
+  /** History of generated submission packs */
+  packHistory: LOAPack[];
+  /** Last reminder sent ISO timestamp */
+  lastReminderAt?: string;
+  /** Number of follow-up reminders sent */
+  reminderCount: number;
+}
+
+/* ── LOA Pack (Phase 89) ────────────────────────────────────── */
+
+export interface LOAPack {
+  id: string;
+  loaId: string;
+  generatedAt: string;
+  generatedBy: string;
+  /** Pack format: structured JSON manifest with sections */
+  format: "manifest";
+  /** Sections included in the pack */
+  sections: LOAPackSection[];
+  /** Checklist items for manual submission */
+  checklist: string[];
+  /** Email template for fax/email submission */
+  emailTemplate: { subject: string; body: string };
+  /** Payer-specific instructions (from portal adapter if available) */
+  payerInstructions?: string;
+  /** Credential vault entry IDs included in the pack */
+  includedCredentials: string[];
+}
+
+export interface LOAPackSection {
+  heading: string;
+  content: string;
 }
 
 export interface LOARequestedService {

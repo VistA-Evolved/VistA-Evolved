@@ -89,7 +89,19 @@ export type RcmAuditAction =
   | 'gateway.readiness_checked'
   | 'gateway.conformance_validated'
   | 'gateway.soa_generated'
-  | 'gateway.soa_rejected_pdf';
+  | 'gateway.soa_rejected_pdf'
+  | 'loa.created'
+  | 'loa.updated'
+  | 'loa.transition'
+  | 'loa.submitted'
+  | 'loa.pack_generated'
+  | 'loa.attachment_added'
+  | 'loa.assigned'
+  | 'loa.reminder_sent'
+  | 'loa.approved'
+  | 'loa.denied'
+  | 'loa.cancelled'
+  | 'loa.expired';
 
 export interface RcmAuditEntry {
   id: string;

@@ -1,0 +1,32 @@
+{
+  "feature": "Phase 89: LOA Engine v1 (Queue + Pack Generator + Chart Integration)",
+  "stage": "Implemented",
+  "status": "Complete",
+  "promptRef": "prompts/95-PHASE-89-LOA-ENGINE-V1/89-01-IMPLEMENT.md",
+  "runbookPath": "docs/runbooks/phase89-loa-engine.md",
+  "verifyScript": "TypeScript noEmit (API + Web)",
+  "commitSHA": "pending",
+  "deliverables": [
+    "Extended LOA data model with SLA/priority/deadline/assignee fields",
+    "LOA work queue endpoint (GET /rcm/payerops/loa-queue) with SLA breakdown",
+    "PATCH /loa/:id for draft editing",
+    "PUT /loa/:id/assign for staff assignment",
+    "Enhanced pack generator with SLA info + credential refs + payer instructions",
+    "12 LOA-specific audit actions wired to all mutation routes",
+    "LOA Queue admin page at /cprs/admin/loa-queue",
+    "PatientLOAPanel reusable chart component",
+    "LOA Queue nav link in admin layout"
+  ],
+  "filesChanged": [
+    "apps/api/src/rcm/payerOps/types.ts",
+    "apps/api/src/rcm/payerOps/store.ts",
+    "apps/api/src/rcm/payerOps/payerops-routes.ts",
+    "apps/api/src/rcm/payerOps/manual-adapter.ts",
+    "apps/api/src/rcm/audit/rcm-audit.ts",
+    "apps/web/src/app/cprs/admin/loa-queue/page.tsx",
+    "apps/web/src/components/cprs/panels/PatientLOAPanel.tsx",
+    "apps/web/src/app/cprs/admin/layout.tsx",
+    "docs/runbooks/phase89-loa-engine.md",
+    "prompts/95-PHASE-89-LOA-ENGINE-V1/89-01-IMPLEMENT.md"
+  ]
+}
