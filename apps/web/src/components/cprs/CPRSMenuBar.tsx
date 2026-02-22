@@ -73,6 +73,8 @@ function buildMenus(): Record<string, MenuAction[]> {
       { label: 'Graphing...', action: 'graphing' },
       { label: 'Legacy Console', action: 'legacyConsole' },
       { separator: true, label: '', action: '' },
+      { label: 'Inpatient Operations', action: 'inpatient' },
+      { separator: true, label: '', action: '' },
       { label: 'Remote Data Viewer (Page)', action: 'remoteDataPage' },
       { label: 'Remote Data Viewer (Modal)', action: 'remoteData' },
     ],
@@ -170,6 +172,8 @@ export default function CPRSMenuBar({ dfn }: { dfn?: string }) {
       openModal('remoteData');
     } else if (action === 'remoteDataPage') {
       router.push('/cprs/remote-data-viewer');
+    } else if (action === 'inpatient') {
+      router.push('/cprs/inpatient');
     } else if (action === 'keyboardShortcuts') {
       openModal('keyboardShortcuts');
     } else if (action === 'about') {
