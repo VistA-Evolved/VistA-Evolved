@@ -77,6 +77,8 @@ import rcmOpsRoutes from "./rcm/rcm-ops-routes.js";
 import payerOpsRoutes from "./rcm/payerOps/payerops-routes.js";
 // Phase 88: Payer registry + capability matrix routes
 import registryRoutes from "./rcm/payerOps/registry-routes.js";
+// Phase 90: PhilHealth eClaims 3.0 posture routes
+import philhealthRoutes from "./rcm/payerOps/philhealth-routes.js";
 // Phase 41: RPC Registry + Action Registry (Vivian snapshot integration)
 import { RPC_REGISTRY, RPC_EXCEPTIONS, getFullRpcInventory } from "./vista/rpcRegistry.js";
 // Phase 48: Unified audit + connector resilience stats
@@ -307,6 +309,9 @@ server.register(payerOpsRoutes);
 
 // Register Registry + Capability Matrix routes (Phase 88)
 server.register(registryRoutes);
+
+// Register PhilHealth eClaims 3.0 posture routes (Phase 90)
+server.register(philhealthRoutes);
 
 // Register Migration Toolkit routes -- data portability import/export (Phase 50)
 server.register(migrationRoutes);
