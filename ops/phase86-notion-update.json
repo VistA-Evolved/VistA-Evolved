@@ -1,0 +1,10 @@
+{
+  "featureTitle": "Phase 86 -- Shift Handoff + Signout",
+  "stage": "IMPLEMENT",
+  "status": "complete",
+  "promptRef": "prompts/91-PHASE-86-SHIFT-HANDOFF/91-01-IMPLEMENT.md",
+  "runbookPath": "docs/runbooks/phase86-shift-handoff.md",
+  "verifyScript": "scripts/verify-phase86-shift-handoff.ps1",
+  "verifyResult": "65/65 PASS",
+  "commitMessage": "Phase86-IMPLEMENT: Shift handoff + signout -- SBAR workflow + CRHD posture (65/65 PASS)"
+}

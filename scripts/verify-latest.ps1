@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 81: Imaging Viewer v1
-& "$PSScriptRoot\verify-phase81-imaging-viewer.ps1" @args
+# Phase 86: Shift Handoff + Signout
+& "$PSScriptRoot\verify-phase86-shift-handoff.ps1" @args
