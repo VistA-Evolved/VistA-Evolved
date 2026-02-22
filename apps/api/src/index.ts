@@ -81,6 +81,8 @@ import registryRoutes from "./rcm/payerOps/registry-routes.js";
 import philhealthRoutes from "./rcm/payerOps/philhealth-routes.js";
 // Phase 91: Claims Lifecycle v1 + Scrubber + Denial Workbench
 import claimLifecycleRoutes from "./rcm/claims/claim-routes.js";
+// Phase 92: Payment Tracking + Reconciliation + Payer Intelligence
+import paymentRoutes from "./rcm/payments/payment-routes.js";
 // Phase 41: RPC Registry + Action Registry (Vivian snapshot integration)
 import { RPC_REGISTRY, RPC_EXCEPTIONS, getFullRpcInventory } from "./vista/rpcRegistry.js";
 // Phase 48: Unified audit + connector resilience stats
@@ -317,6 +319,9 @@ server.register(philhealthRoutes);
 
 // Register Claims Lifecycle v1 + Scrubber + Denial Workbench (Phase 91)
 server.register(claimLifecycleRoutes);
+
+// Register Payment Tracking + Reconciliation + Payer Intelligence (Phase 92)
+server.register(paymentRoutes);
 
 // Register Migration Toolkit routes -- data portability import/export (Phase 50)
 server.register(migrationRoutes);

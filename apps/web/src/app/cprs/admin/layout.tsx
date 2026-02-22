@@ -34,6 +34,8 @@ const ADMIN_NAV: AdminNavItem[] = [
   { label: 'PH Claims',     href: '/cprs/admin/philhealth-claims', moduleId: 'rcm' },
   { label: 'Claims Queue',  href: '/cprs/admin/claims-queue',     moduleId: 'rcm' },
   { label: 'Denials',       href: '/cprs/admin/denials',          moduleId: 'rcm' },
+  { label: 'Payments',      href: '/cprs/admin/payments',          moduleId: 'rcm' },
+  { label: 'Payer Intel',   href: '/cprs/admin/payer-intelligence', moduleId: 'rcm' },
   { label: 'Audit Viewer',  href: '/cprs/admin/audit-viewer',  moduleId: 'iam' },
   { label: 'RPC Debug',     href: '/cprs/admin/rpc-debug' },
   { label: 'Reports',       href: '/cprs/admin/reports' },
