@@ -25,6 +25,7 @@ import {
   getAllLinesForBatch,
   updateBatch,
   getBatch,
+  getLine,
   recordPosting,
   createUnderpayment,
 } from './payment-store.js';
@@ -215,20 +216,41 @@ function applyMatch(
   // Try to transition claim (requires evidence)
   let postingCreated = false;
   const evidenceRef = batch.fileChecksum || batch.fileUri || `batch:${batch.id}`;
+  const evidenceDetail = {
+    evidenceRef,
+    payerClaimNumber: line.externalClaimRef,
+    batchId: batch.id,
+    lineId: line.id,
+  };
 
-  // Only transition if claim is in a state that can go to paid
-  const payableStates = [
-    'payer_acknowledged', 'submitted_electronic', 'submitted_portal',
-    'submitted_manual', 'exported',
+  // States that can be transitioned toward paid
+  const directPayableStates = ['payer_acknowledged'];
+  const needsAckFirstStates = [
+    'submitted_electronic', 'submitted_portal', 'submitted_manual',
   ];
+  const needsSubmitFirstStates = ['exported'];
 
-  if (payableStates.includes(claim.lifecycleStatus)) {
-    const transResult = transitionClaimCase(claim.id, toStatus, actor, {
-      evidenceRef,
-      payerClaimNumber: line.externalClaimRef,
-      batchId: batch.id,
-      lineId: line.id,
-    });
+  const currentStatus = claim.lifecycleStatus;
+  let canProceed = false;
+
+  if (directPayableStates.includes(currentStatus)) {
+    // Direct transition to paid
+    canProceed = true;
+  } else if (needsAckFirstStates.includes(currentStatus)) {
+    // Two-step: submitted → payer_acknowledged → paid
+    const ackResult = transitionClaimCase(claim.id, 'payer_acknowledged', actor, evidenceDetail);
+    canProceed = ackResult.ok;
+  } else if (needsSubmitFirstStates.includes(currentStatus)) {
+    // Three-step: exported → submitted_electronic → payer_acknowledged → paid
+    const subResult = transitionClaimCase(claim.id, 'submitted_electronic', actor, evidenceDetail);
+    if (subResult.ok) {
+      const ackResult = transitionClaimCase(claim.id, 'payer_acknowledged', actor, evidenceDetail);
+      canProceed = ackResult.ok;
+    }
+  }
+
+  if (canProceed) {
+    const transResult = transitionClaimCase(claim.id, toStatus, actor, evidenceDetail);
 
     if (transResult.ok) {
       // Update claim financial fields
@@ -248,7 +270,7 @@ function applyMatch(
         tenantId: batch.tenantId,
         actorUserId: actor,
         postedAt: new Date().toISOString(),
-        fromStatus: claim.lifecycleStatus,
+        fromStatus: currentStatus,
         toStatus,
         deltaAmounts: {
           paidAmount: line.amountPaid,
@@ -347,11 +369,7 @@ export function manualLinkLine(
   claimCaseId: string,
   actor: string,
 ): MatchResult {
-  const line = (() => {
-    // Import inline to avoid circular — we only need getLine
-    const { getLine: gl } = require('./payment-store.js');
-    return gl(lineId) as RemittanceLine | undefined;
-  })();
+  const line = getLine(lineId);
 
   if (!line) {
     return {

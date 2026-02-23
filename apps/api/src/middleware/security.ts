@@ -95,6 +95,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/api\/marketplace/, auth: "session" }, // Phase 51: marketplace config (admin checked in handler)
   { pattern: /^\/migration\//, auth: "session" }, // Phase 50: Migration toolkit (permission checked in handler)
   { pattern: /^\/rcm\//, auth: "session" }, // Phase 38: RCM routes (permission checked in handler)
+  { pattern: /^\/payerops\//, auth: "session" }, // Phase 92: Payment tracking + reconciliation + payer intelligence
   { pattern: /^\/scheduling\//, auth: "session" }, // Phase 63: Scheduling routes (session required)
   { pattern: /^\/messaging\/portal\//, auth: "none" }, // Phase 64: Portal messaging (own session check)
   { pattern: /^\/messaging\//, auth: "session" }, // Phase 64: Secure messaging (clinician session)

@@ -21,14 +21,17 @@ const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 interface PayerKPI {
   payerId: string;
   payerName: string;
-  claimCount: number;
-  totalBilled: number;
+  totalClaims: number;
   totalPaid: number;
-  avgDaysToPayment: number;
-  medianDaysToPayment: number;
+  totalDenied: number;
+  totalUnderpaid: number;
+  avgDaysToPayment: number | null;
+  medianDaysToPayment: number | null;
   denialRate: number;
   returnRate: number;
   underpaymentRate: number;
+  periodStart: string;
+  periodEnd: string;
 }
 
 interface AgingBucket {
@@ -111,9 +114,12 @@ export default function PayerIntelligencePage() {
   const sortedPayers = (): PayerKPI[] => {
     if (!kpiReport?.payers) return [];
     return [...kpiReport.payers].sort((a, b) => {
-      const av = a[sortField] as number;
-      const bv = b[sortField] as number;
-      return sortDir === 'asc' ? av - bv : bv - av;
+      const av = a[sortField] ?? 0;
+      const bv = b[sortField] ?? 0;
+      if (typeof av === 'string' && typeof bv === 'string') {
+        return sortDir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+      }
+      return sortDir === 'asc' ? (av as number) - (bv as number) : (bv as number) - (av as number);
     });
   };
 
@@ -125,11 +131,11 @@ export default function PayerIntelligencePage() {
   const exportCsv = () => {
     const payers = sortedPayers();
     if (!payers.length) return;
-    const header = 'Payer ID,Payer Name,Claims,Total Billed,Total Paid,Avg Days,Denial Rate,Return Rate,Underpayment Rate';
+    const header = 'Payer ID,Payer Name,Claims,Paid Claims,Denied,Underpaid,Avg Days,Denial Rate,Return Rate,Underpayment Rate';
     const rows = payers.map(p =>
-      [p.payerId, `"${p.payerName}"`, p.claimCount,
-       (p.totalBilled / 100).toFixed(2), (p.totalPaid / 100).toFixed(2),
-       p.avgDaysToPayment.toFixed(1), formatPercent(p.denialRate),
+      [p.payerId, `"${p.payerName}"`, p.totalClaims,
+       p.totalPaid, p.totalDenied, p.totalUnderpaid,
+       (p.avgDaysToPayment ?? 0).toFixed(1), formatPercent(p.denialRate),
        formatPercent(p.returnRate), formatPercent(p.underpaymentRate)].join(',')
     );
     const csv = [header, ...rows].join('\n');
@@ -212,18 +218,18 @@ function KpiSection({
   }
 
   // Summary
-  const totalClaims = payers.reduce((s, p) => s + p.claimCount, 0);
-  const totalBilled = payers.reduce((s, p) => s + p.totalBilled, 0);
-  const totalPaid = payers.reduce((s, p) => s + p.totalPaid, 0);
-  const avgDays = payers.length > 0 ? payers.reduce((s, p) => s + p.avgDaysToPayment, 0) / payers.length : 0;
+  const totalClaims = payers.reduce((s, p) => s + p.totalClaims, 0);
+  const totalPaidClaims = payers.reduce((s, p) => s + p.totalPaid, 0);
+  const totalDenied = payers.reduce((s, p) => s + p.totalDenied, 0);
+  const avgDays = payers.length > 0 ? payers.reduce((s, p) => s + (p.avgDaysToPayment ?? 0), 0) / payers.length : 0;
 
   return (
     <div>
       <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
         <StatCard label="Total Payers" value={payers.length} />
         <StatCard label="Total Claims" value={totalClaims} />
-        <StatCard label="Total Billed" value={formatCurrency(totalBilled)} />
-        <StatCard label="Total Paid" value={formatCurrency(totalPaid)} color="#059669" />
+        <StatCard label="Paid Claims" value={totalPaidClaims} color="#059669" />
+        <StatCard label="Denied" value={totalDenied} color="#dc2626" />
         <StatCard label="Avg Days to Pay" value={avgDays.toFixed(1)} color={avgDays > 30 ? '#dc2626' : '#059669'} />
       </div>
 
@@ -231,9 +237,9 @@ function KpiSection({
         <thead>
           <tr style={{ borderBottom: '2px solid #e5e7eb', textAlign: 'left' }}>
             <SortTh label="Payer" field="payerName" onClick={onSort} arrow={sortArrow('payerName')} />
-            <SortTh label="Claims" field="claimCount" onClick={onSort} arrow={sortArrow('claimCount')} />
-            <SortTh label="Billed" field="totalBilled" onClick={onSort} arrow={sortArrow('totalBilled')} />
+            <SortTh label="Claims" field="totalClaims" onClick={onSort} arrow={sortArrow('totalClaims')} />
             <SortTh label="Paid" field="totalPaid" onClick={onSort} arrow={sortArrow('totalPaid')} />
+            <SortTh label="Denied" field="totalDenied" onClick={onSort} arrow={sortArrow('totalDenied')} />
             <SortTh label="Avg Days" field="avgDaysToPayment" onClick={onSort} arrow={sortArrow('avgDaysToPayment')} />
             <SortTh label="Denial %" field="denialRate" onClick={onSort} arrow={sortArrow('denialRate')} />
             <SortTh label="Underpay %" field="underpaymentRate" onClick={onSort} arrow={sortArrow('underpaymentRate')} />
@@ -243,11 +249,11 @@ function KpiSection({
           {payers.map(p => (
             <tr key={p.payerId} style={{ borderBottom: '1px solid #f3f4f6' }}>
               <td style={{ padding: '6px 8px', fontWeight: 500 }}>{p.payerName || p.payerId}</td>
-              <td style={{ padding: '6px 8px' }}>{p.claimCount}</td>
-              <td style={{ padding: '6px 8px', fontFamily: 'monospace' }}>{formatCurrency(p.totalBilled)}</td>
-              <td style={{ padding: '6px 8px', fontFamily: 'monospace' }}>{formatCurrency(p.totalPaid)}</td>
-              <td style={{ padding: '6px 8px', color: p.avgDaysToPayment > 30 ? '#dc2626' : '#059669', fontWeight: 600 }}>
-                {p.avgDaysToPayment.toFixed(1)}d
+              <td style={{ padding: '6px 8px' }}>{p.totalClaims}</td>
+              <td style={{ padding: '6px 8px', color: '#059669' }}>{p.totalPaid}</td>
+              <td style={{ padding: '6px 8px', color: '#dc2626' }}>{p.totalDenied}</td>
+              <td style={{ padding: '6px 8px', color: (p.avgDaysToPayment ?? 0) > 30 ? '#dc2626' : '#059669', fontWeight: 600 }}>
+                {(p.avgDaysToPayment ?? 0).toFixed(1)}d
               </td>
               <td style={{ padding: '6px 8px' }}>
                 <RateBar value={p.denialRate} color="#dc2626" />
