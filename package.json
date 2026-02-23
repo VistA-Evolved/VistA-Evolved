@@ -16,6 +16,13 @@
     "build": "pnpm -r build",
     "cprs:extract": "node tools/cprs-extract/run-all.mjs",
     "cprs:generate-stubs": "node tools/cprs-extract/generate-api-stubs.mjs",
-    "qa:phase-replay": "pnpm -C apps/web playwright test e2e/phase-replay.spec.ts e2e/dead-click-crawler.spec.ts --reporter=list"
+    "qa:phase-replay": "pnpm -C apps/web playwright test e2e/phase-replay.spec.ts e2e/dead-click-crawler.spec.ts --reporter=list",
+    "qa:smoke": "node scripts/qa-runner.mjs smoke",
+    "qa:all": "node scripts/qa-runner.mjs all",
+    "qa:api": "node scripts/qa-runner.mjs api",
+    "qa:web": "node scripts/qa-runner.mjs web",
+    "qa:security": "node scripts/qa-runner.mjs security",
+    "qa:vista": "node scripts/qa-runner.mjs vista",
+    "qa:prompts": "node scripts/qa-runner.mjs prompts"
   }
 }

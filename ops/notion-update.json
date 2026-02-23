@@ -1,9 +1,9 @@
 {
     "commitSHA": "pending",
-    "stage": "verified",
-    "verifyScript": "scripts/verify-phase104-db-security.ps1",
-    "runbook": "docs/architecture/platform-db-security.md",
-    "promptRef": "prompts/108-PHASE-104-DB-SECURITY/104-99-VERIFY.md",
-    "status": "verified",
-    "feature": "Phase 104 v2 -- Platform DB Security/Compliance Posture (VERIFIED + BUG-067 fixed)"
+    "stage": "implemented",
+    "verifyScript": "pnpm qa:smoke",
+    "runbook": "docs/runbooks/phase105-qa-gauntlet.md",
+    "promptRef": "prompts/109-PHASE-105-QA-GAUNTLET/105-01-IMPLEMENT.md",
+    "status": "implemented",
+    "feature": "Phase 105 -- QA Gauntlet v1 (smoke + api + security + CI + BUG-067 rate-limiter fix)"
 }

@@ -1,0 +1,141 @@
+name: QA Gauntlet
+
+on:
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Nightly at 02:00 UTC
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: qa-gauntlet-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ---- PR gates: fast feedback ----
+  smoke-and-security:
+    name: Smoke + Security
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.13.0"
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "10.29.2"
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: TypeScript check (API)
+        run: cd apps/api && pnpm exec tsc --noEmit
+
+      - name: Security gates
+        run: pnpm qa:security
+
+      - name: Prompts ordering gate
+        run: pnpm qa:prompts
+
+  # ---- API integration tests (no VistA needed) ----
+  api-tests:
+    name: API Integration Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: smoke-and-security
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.13.0"
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "10.29.2"
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Unit tests (vitest)
+        run: cd apps/api && pnpm exec vitest run
+
+  # ---- Nightly: full E2E (requires servers) ----
+  nightly-e2e:
+    name: Full E2E Gauntlet
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.13.0"
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "10.29.2"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: cd apps/web && pnpm exec playwright install --with-deps chromium
+
+      - name: Build web
+        run: cd apps/web && pnpm build
+
+      - name: Start API (background)
+        run: |
+          cd apps/api
+          cp .env.example .env.local 2>/dev/null || true
+          npx tsx --env-file=.env.local src/index.ts &
+          sleep 10
+        env:
+          NODE_ENV: test
+
+      - name: Start web (background)
+        run: |
+          cd apps/web
+          npx next start &
+          sleep 5
+
+      - name: Run smoke E2E
+        run: cd apps/web && pnpm exec playwright test e2e/qa-smoke.spec.ts --reporter=list
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: |
+            apps/web/e2e-results.json
+            apps/web/e2e-report/
+          retention-days: 7

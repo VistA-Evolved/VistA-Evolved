@@ -241,6 +241,7 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
         sourceIp: ip,
         detail: { url },
       });
+      (request as any)._rejected = true;
       reply.code(429).send({
         ok: false,
         error: "Too many requests",
@@ -252,6 +253,7 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
 
   /* ---- Auth gateway (path-based authentication + authorization) ---- */
   server.addHook("onRequest", async (request: FastifyRequest, reply: FastifyReply) => {
+    if ((request as any)._rejected || reply.sent) return;
     const url = request.url.split("?")[0];
 
     // Determine required auth level
@@ -322,6 +324,7 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
       duz: (request.session as any)?.duz || "anonymous",
     }, { sourceIp: request.ip, detail: { origin, url: request.url } });
 
+    (request as any)._rejected = true;
     reply.code(403).send({ ok: false, error: "Origin not allowed" });
   });
 

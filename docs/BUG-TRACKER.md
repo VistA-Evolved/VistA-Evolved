@@ -1110,3 +1110,10 @@ hooks see it immediately regardless of Fastify's internal response state.
 - Keep auth rejection in a single hook that sets the flag before sending
 - All downstream hooks must check the flag at their entry point
 
+**Phase 105 Extension**: The rate limiter hook also needed the `_rejected` flag.
+Under E2E testing bursts, the rate limiter sent 429 responses but didn't set
+`_rejected`. The auth gateway then tried to send 401, causing the same crash.
+Fixed by: (1) rate limiter sets `_rejected = true` before sending 429,
+(2) origin check sets `_rejected = true` before sending 403,
+(3) auth gateway checks `_rejected || reply.sent` at entry.
+

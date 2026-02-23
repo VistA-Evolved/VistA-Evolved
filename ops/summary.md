@@ -1,62 +1,29 @@
-# Phase 104 v2 -- Platform DB Security/Compliance Posture (VERIFIED)
+# Phase 105 -- QA Gauntlet v1
 
 ## What Changed
 
-- **Migration v7**: version + updated_by columns on 5 mutable tables, `create_tenant_rls_policy()` PG function with FORCE RLS, `prevent_audit_mutation()` trigger function, append-only triggers on both audit tables
-- **Audit integrity service**: `audit-integrity.ts` with hash-chain verification, PHI-sanitized export, configurable retention policy (395 day default)
-- **TLS/SSL configuration**: `pg-db.ts` supports PLATFORM_PG_SSL (false/true/require/verify-ca/verify-full) with mutual TLS via CA/cert/key env vars
-- **Optimistic concurrency**: `payer-repo.ts` accepts `expectedVersion` param, throws 409 CONCURRENCY_CONFLICT on mismatch, auto-increments version on update
-- **Admin role enforcement**: All 8 mutation routes in `admin-payer-db-routes.ts` now call `requireSession` + `requireRole(session, ["admin"])` inside handler bodies
-- **3 new audit endpoints**: GET audit/verify (chain integrity), GET audit/export (PHI-sanitized), GET audit/retention (policy config)
-- **Secret scanner**: `.hooks/pre-commit.ps1` now scans staged files for credential patterns (PROV123, PHARM123, NURSE123, password=, api_key=, secret=)
-- **Architecture doc**: `docs/architecture/platform-db-security.md` (9 sections, HIPAA compliance mapping)
-- **BUG-067 fix**: Unauthenticated mutation requests no longer crash the server (ERR_HTTP_HEADERS_SENT). Auth gateway sets `_rejected` flag; downstream hooks check it.
+- **QA Runner**: `scripts/qa-runner.mjs` orchestrator — 7 suites (smoke, api, web, security, vista, prompts, all), per-gate pass/fail, 5min timeout per gate
+- **QA Gates**: `scripts/qa-gates/api-health.mjs` + `scripts/qa-gates/vista-probe.mjs`
+- **Root Commands**: 7 `pnpm qa:*` scripts in package.json
+- **E2E Smoke**: `apps/web/e2e/qa-smoke.spec.ts` — 7 tests (login, bad-creds, patient search, 18 tabs, dead-click, admin)
+- **API Integration Tests**: `apps/api/tests/qa-api-routes.test.ts` — 28 tests (public endpoints, auth flow, clinical auth gates, authenticated reads, admin/RCM/analytics, error safety)
+- **Security Tests**: `apps/api/tests/qa-security.test.ts` — secret scanning, .gitignore guards, PHI redaction, security headers, console.log discipline
+- **CI Workflow**: `.github/workflows/qa-gauntlet.yml` — PR (typecheck + security + prompts), API tests, nightly E2E
+- **BUG-067 extension**: Rate limiter + origin check now set `_rejected` flag; auth gateway checks `_rejected || reply.sent` at entry
 
 ## Verification Results
 
-- **Verifier**: 73/73 gates PASS
-- **TypeScript**: `npx tsc --noEmit` clean (0 errors)
-- **Secret scan**: Clean (PROV123 only in session-store.ts comment, exempt)
-- **Runtime tests**:
-  - Health/ready/version: OK
-  - Auth session: OK
-  - Payer DB CRUD (57 payers): OK
-  - Audit trail written on mutations: CONFIRMED
-  - 3 new audit endpoints (retention/verify/export): OK
-  - Unauthenticated PATCH: 401 (no crash) -- BUG-067 FIXED
-  - Unauthenticated GET/POST/DELETE/PUT: 401 (no crash)
-  - RCM/Analytics/Capabilities/Modules/Telehealth: OK
-  - Prometheus metrics: OK
-
-## Files Changed
-
-### New Files (4)
-- `apps/api/src/platform/pg/audit-integrity.ts` -- audit chain verification + export + retention
-- `docs/architecture/platform-db-security.md` -- security architecture doc
-- `prompts/108-PHASE-104-DB-SECURITY/104-01-IMPLEMENT.md` -- implement prompt
-- `prompts/108-PHASE-104-DB-SECURITY/104-99-VERIFY.md` -- verify prompt
-
-### Modified Files (7)
-- `apps/api/src/platform/pg/pg-migrate.ts` -- migration v7 (version columns, RLS function, audit triggers)
-- `apps/api/src/platform/pg/pg-db.ts` -- TLS/SSL configuration
-- `apps/api/src/platform/pg/pg-schema.ts` -- version + updatedBy columns on 4 tables
-- `apps/api/src/platform/pg/repo/payer-repo.ts` -- optimistic concurrency
-- `apps/api/src/platform/pg/index.ts` -- barrel exports for audit-integrity
-- `apps/api/src/routes/admin-payer-db-routes.ts` -- admin role enforcement + audit endpoints
-- `.hooks/pre-commit.ps1` -- secret scanning
-
-### Verification
-- `scripts/verify-phase104-db-security.ps1` -- 60+ gates across 9 sections
-- `scripts/verify-latest.ps1` -- updated to Phase 104
+- **qa:smoke**: 3/3 PASS (health 0.2s, 28 API tests 22.7s, 7 E2E tests 120.2s)
+- **API**: Survived E2E burst without crash (195s uptime post-smoke)
 
 ## How to Test
 
-```powershell
-.\scripts\verify-phase104-db-security.ps1
+```bash
+pnpm qa:smoke        # 3 gates: health + API tests + E2E smoke
+pnpm qa:all          # All gates combined
 ```
 
 ## Follow-ups
-- Enable RLS in production with `PLATFORM_PG_RLS_ENABLED=true`
-- Configure TLS with `PLATFORM_PG_SSL=verify-full` + CA cert in production
-- Implement audit retention auto-purge when `PLATFORM_AUDIT_AUTO_PURGE=true`
-- Add `expectedVersion` to remaining PATCH/PUT endpoints beyond payer
+
+- Exempt k6 test files from secret scan
+- Replace console.log in normalizeVivianSnapshot.ts with structured logger
