@@ -1,0 +1,44 @@
+{
+  "id": "qa-self-test",
+  "name": "QA System Self-Test",
+  "domain": "qa",
+  "priority": "smoke",
+  "description": "Verify the QA system itself is functional",
+  "tags": ["smoke", "qa", "self-test"],
+  "expectedRpcs": [],
+  "uiRoute": "/cprs/admin/qa-dashboard",
+  "steps": [
+    {
+      "step": 1,
+      "description": "GET /qa/status returns QA system status",
+      "method": "GET",
+      "path": "/qa/status",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 2,
+      "description": "GET /qa/traces/stats returns trace stats",
+      "method": "GET",
+      "path": "/qa/traces/stats",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 3,
+      "description": "GET /qa/flows lists loaded flows",
+      "method": "GET",
+      "path": "/qa/flows",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 4,
+      "description": "GET /qa/dead-clicks returns empty list",
+      "method": "GET",
+      "path": "/qa/dead-clicks",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    }
+  ]
+}

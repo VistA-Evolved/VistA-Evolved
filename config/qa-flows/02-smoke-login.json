@@ -1,0 +1,31 @@
+{
+  "id": "smoke-login",
+  "name": "Login + Session Smoke",
+  "domain": "auth",
+  "priority": "smoke",
+  "description": "Authenticate and verify session is active",
+  "tags": ["smoke", "auth"],
+  "expectedRpcs": ["XUS AV CODE", "XUS GET USER INFO"],
+  "uiRoute": "/",
+  "requiredVariables": ["accessCode", "verifyCode"],
+  "steps": [
+    {
+      "step": 1,
+      "description": "POST /auth/login authenticates user",
+      "method": "POST",
+      "path": "/auth/login",
+      "body": { "accessCode": "{{accessCode}}", "verifyCode": "{{verifyCode}}" },
+      "expectedStatus": 200,
+      "assertions": { "ok": true },
+      "extract": { "duz": "duz", "userName": "greeting" }
+    },
+    {
+      "step": 2,
+      "description": "GET /auth/session returns active session",
+      "method": "GET",
+      "path": "/auth/session",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    }
+  ]
+}

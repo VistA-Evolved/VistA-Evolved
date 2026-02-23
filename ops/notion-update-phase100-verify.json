@@ -1,0 +1,11 @@
+{
+  "feature": "Phase 100 VERIFY: Eligibility + Claim Status Polling Durability",
+  "stage": "VERIFY",
+  "status": "complete",
+  "promptRef": "prompts/100-PHASE-100-ELIGIBILITY-CLAIMSTATUS/100-99-VERIFY.md",
+  "runbookPath": "docs/runbooks/rcm-eligibility-claimstatus-phase100.md",
+  "verifyScript": "scripts/verify-phase100-eligibility-claimstatus.ps1",
+  "gatesPassed": "98/98",
+  "criticalFix": "Removed Phase 69 POST /rcm/eligibility/check route conflict in rcm-routes.ts",
+  "commitSHA": "pending"
+}

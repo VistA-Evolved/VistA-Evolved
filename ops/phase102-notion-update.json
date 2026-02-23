@@ -1,0 +1,22 @@
+{
+  "feature_title": "Phase 102 v2: Migrate Prototype Stores to PlatformStore",
+  "stage": "implement",
+  "status": "complete",
+  "prompt_ref_path": "prompts/106-PHASE-102-REGISTRY-MIGRATION/102-01-IMPLEMENT.md",
+  "verify_ref_path": "prompts/106-PHASE-102-REGISTRY-MIGRATION/102-99-VERIFY.md",
+  "runbook_path": "docs/runbooks/payer-registry-persistence.md",
+  "verify_script": "scripts/verify-phase102-registry-migration.ps1",
+  "verify_result": "67/67 PASS",
+  "commit_message": "Phase 102 v2: migrate registries to Postgres PlatformStore",
+  "files_created": 12,
+  "files_modified": 6,
+  "key_deliverables": [
+    "7 PG repos mirroring SQLite API signatures",
+    "Capability matrix PG repo replacing in-memory Map",
+    "Proxy-based store resolver with auto backend detection",
+    "PG seed loader with BOM stripping",
+    "Migration v5 for capability_matrix tables",
+    "UI persistence badge in RCM admin header",
+    "67-gate verification script"
+  ]
+}

@@ -83,6 +83,36 @@ import philhealthRoutes from "./rcm/payerOps/philhealth-routes.js";
 import claimLifecycleRoutes from "./rcm/claims/claim-routes.js";
 // Phase 92: Payment Tracking + Reconciliation + Payer Intelligence
 import paymentRoutes from "./rcm/payments/payment-routes.js";
+// Phase 93: PH HMO Deepening Pack -- canonical registry + adapter + routes
+import phHmoRoutes from "./rcm/payers/ph-hmo-routes.js";
+// Phase 94: PH HMO Workflow Automation -- LOA + Claims + Remittance workbenches
+import loaRoutes from "./rcm/loa/loa-routes.js";
+import claimsWorkflowRoutes from "./rcm/workflows/claims-workflow-routes.js";
+import remittanceRoutes from "./rcm/workflows/remittance-routes.js";
+// Phase 95: Payer Registry Persistence + Audit + Evidence
+import payerAdminRoutes from "./rcm/payers/payer-admin-routes.js";
+// Phase 95B: Platform Persistence Unification (SQLite + Drizzle ORM)
+import adminPayerDbRoutes from "./routes/admin-payer-db-routes.js";
+import { initPlatformDb } from "./platform/db/init.js";
+// closeDb now called from security.ts shutdown handler
+// Phase 101: Platform Data Architecture Convergence (Postgres)
+import { initPlatformPg, isPgConfigured, pgHealthCheck } from "./platform/pg/index.js";
+// Phase 96: PhilHealth eClaims 3.0 Adapter Skeleton
+import eclaims3Routes from "./rcm/philhealth-eclaims3/eclaims3-routes.js";
+// Phase 96B: QA/Audit OS v1.1
+import qaRoutes from "./routes/qa-routes.js";
+import { loadFlowCatalog } from "./qa/index.js";
+// Phase 97: HMO Portal Adapter — LOA + Claim Packet + Manual-Assisted Portal
+import hmoPortalRoutes from "./rcm/hmo-portal/hmo-portal-routes.js";
+import { initHmoPortalAdapters } from "./rcm/hmo-portal/adapters/index.js";
+// Phase 97B: PH HMO Deepening Pack v2 — manifest, LOA templates, claim config, contracting hub
+import phase97bRoutes from "./rcm/hmo-portal/phase97b-routes.js";
+// Phase 98: RCM Denials & Appeals Loop
+import denialRoutes from "./rcm/denials/denial-routes.js";
+// Phase 99: RCM Payments + Reconciliation
+import reconciliationRoutes from "./rcm/reconciliation/recon-routes.js";
+// Phase 100: Eligibility + Claim Status Polling Framework (Adapter-first)
+import eligibilityClaimStatusRoutes from "./rcm/eligibility/routes.js";
 // Phase 41: RPC Registry + Action Registry (Vivian snapshot integration)
 import { RPC_REGISTRY, RPC_EXCEPTIONS, getFullRpcInventory } from "./vista/rpcRegistry.js";
 // Phase 48: Unified audit + connector resilience stats
@@ -323,6 +353,42 @@ server.register(claimLifecycleRoutes);
 // Register Payment Tracking + Reconciliation + Payer Intelligence (Phase 92)
 server.register(paymentRoutes);
 
+// Register PH HMO Deepening routes -- canonical registry + adapter (Phase 93)
+server.register(phHmoRoutes);
+
+// Register Phase 94 PH HMO Workflow Automation -- LOA + Claims + Remittance
+server.register(loaRoutes);
+server.register(claimsWorkflowRoutes);
+server.register(remittanceRoutes);
+
+// Register Phase 95 Payer Registry Admin -- persistence + audit + evidence
+server.register(payerAdminRoutes);
+
+// Register Phase 95B Platform Persistence (SQLite-backed payer DB routes)
+server.register(adminPayerDbRoutes);
+
+// Register Phase 96 PhilHealth eClaims 3.0 adapter skeleton
+server.register(eclaims3Routes);
+
+// Register Phase 96B QA/Audit OS routes (guarded by QA_ROUTES_ENABLED)
+server.register(qaRoutes);
+
+// Register Phase 97 HMO Portal Adapter — LOA + Claim Packet + Manual-Assisted
+initHmoPortalAdapters();
+server.register(hmoPortalRoutes);
+
+// Register Phase 97B — manifest, LOA templates, claim config, contracting hub, market dashboard
+server.register(phase97bRoutes);
+
+// Register Phase 98 — Denials & Appeals Loop (VistA-first operational overlay)
+server.register(denialRoutes);
+
+// Register Phase 99 — RCM Payments + Reconciliation
+server.register(reconciliationRoutes);
+
+// Register Phase 100 — Eligibility + Claim Status Polling Framework
+server.register(eligibilityClaimStatusRoutes);
+
 // Register Migration Toolkit routes -- data portability import/export (Phase 50)
 server.register(migrationRoutes);
 
@@ -371,13 +437,24 @@ registerDomainRoutes(server);
 // Phase 15D: Enhanced health check (Phase 36: SLO-ready fields)
 server.get("/health", async () => {
   const cbStats = getCircuitBreakerStats();
+  // Phase 101: Include Postgres health if configured
+  let platformPg: { configured: boolean; ok?: boolean; latencyMs?: number } = { configured: false };
+  if (isPgConfigured()) {
+    try {
+      const pgHealth = await pgHealthCheck();
+      platformPg = { configured: true, ok: pgHealth.ok, latencyMs: pgHealth.latencyMs };
+    } catch {
+      platformPg = { configured: true, ok: false };
+    }
+  }
   return {
     ok: true,
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
-    version: "phase-36",
+    version: "phase-101",
     circuitBreaker: cbStats.state,
     tracingEnabled: isTracingEnabled(),
+    platformPg,
   };
 });
 
@@ -2192,6 +2269,36 @@ try {
   audit("system.startup", "success", { duz: "system", name: "system", role: "system" }, {
     detail: { host, port, phase: "25-bi-analytics", commitSha: process.env.BUILD_SHA || "dev" },
   });
+  // Phase 95B: Initialize SQLite platform DB (migrate + seed)
+  const dbResult = initPlatformDb();
+  if (dbResult.ok) {
+    log.info("Platform DB init", { ok: dbResult.ok, migrated: dbResult.migrated, seeded: dbResult.seeded });
+  } else {
+    log.warn("Platform DB init failed", { ok: false, error: dbResult.error });
+  }
+  // Phase 101: Initialize Postgres platform DB (if configured)
+  if (isPgConfigured()) {
+    const pgResult = await initPlatformPg();
+    if (pgResult.ok) {
+      log.info("Platform PG init", {
+        ok: true,
+        migrations: pgResult.migrations,
+        rls: pgResult.rls ? { applied: pgResult.rls.applied.length } : null,
+        latencyMs: pgResult.healthCheck?.latencyMs,
+      });
+    } else {
+      log.warn("Platform PG init failed (SQLite fallback active)", {
+        ok: false,
+        reason: pgResult.reason,
+        error: pgResult.error,
+      });
+    }
+  } else {
+    log.info("Platform PG not configured (SQLite-only mode)", { hint: "Set PLATFORM_PG_URL to enable Postgres" });
+  }
+  // Phase 96B: Load QA flow catalog
+  const flowResult = loadFlowCatalog();
+  log.info("QA flow catalog loaded", { loaded: flowResult.loaded, errors: flowResult.errors.length });
   // Phase 25: Restore persisted analytics events and start aggregation
   initAnalyticsStore();
   startAggregationJob();

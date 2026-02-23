@@ -1,0 +1,27 @@
+{
+  "feature": "Payer Registry Persistence + Audit + Evidence",
+  "phase": 95,
+  "stage": "implemented",
+  "status": "typecheck-pass",
+  "promptRef": "prompts/99-PHASE-95-PAYER-REGISTRY-PERSISTENCE/95-01-IMPLEMENT.md",
+  "runbook": "docs/runbooks/phase95-payer-registry-persistence.md",
+  "verifyScript": "scripts/import-payer-registry.ps1",
+  "commitSha": "pending",
+  "filesCreated": [
+    "apps/api/src/rcm/payers/payer-persistence.ts",
+    "apps/api/src/rcm/payers/payer-audit.ts",
+    "apps/api/src/rcm/payers/evidence-manager.ts",
+    "apps/api/src/rcm/payers/payer-admin-routes.ts",
+    "apps/web/src/app/cprs/admin/payer-registry/page.tsx",
+    "scripts/import-payer-registry.ps1",
+    "scripts/verify-prompt-ordering.ps1"
+  ],
+  "filesModified": [
+    "apps/api/src/index.ts",
+    "apps/web/src/app/cprs/admin/layout.tsx"
+  ],
+  "endpoints": 13,
+  "payerCount": 28,
+  "auditType": "sha256-hash-chained-jsonl",
+  "persistenceType": "json-file-backed-no-db-deps"
+}

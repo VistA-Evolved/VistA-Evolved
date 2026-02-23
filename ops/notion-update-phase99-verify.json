@@ -1,0 +1,13 @@
+{
+  "feature": "Phase 99 VERIFY: RCM Payments + Reconciliation",
+  "stage": "verified",
+  "status": "complete",
+  "promptRef": "prompts/104-PHASE-99-RCM-RECONCILIATION/99-99-VERIFY.md",
+  "runbook": "docs/runbooks/rcm-reconciliation-phase99.md",
+  "verifyScript": "scripts/verify-phase99-reconciliation.ps1",
+  "gatesPassed": "83/83 (P99) + 71/71 (P98 regression)",
+  "commitMessage": "Phase 99 VERIFY: reconciliation durability + regression + security gates",
+  "issuesFixed": 4,
+  "runtimeTestsAdded": 9,
+  "codeQualityGatesAdded": 5
+}

@@ -1,0 +1,188 @@
+{
+  "_meta": {
+    "schema": "payer-rulepacks-v1",
+    "description": "Payer-specific rulepacks for PH HMO LOA, claims, and denial handling. Only evidence-backed data included; unknown fields explicitly marked.",
+    "lastUpdated": "2026-02-23",
+    "notes": "Most PH HMOs do not publish their LOA/claims rules publicly. Only the 5 portal-integrated HMOs have partially documented workflows. All other HMOs have rulepacks with 'unknown' markers requiring contracting engagement."
+  },
+  "rulepacks": [
+    {
+      "payerId": "PH-MAXICARE",
+      "payerName": "MaxiCare Healthcare Corp.",
+      "loa": {
+        "requiredFields": [
+          "Member ID / HMO card number",
+          "Patient full name",
+          "Date of birth",
+          "Primary diagnosis (ICD-10)",
+          "Requested procedure(s) (CPT/HCPCS)",
+          "Attending physician name and PRC license",
+          "Facility name and PhilHealth accreditation number",
+          "Date of service / admission date",
+          "Clinical justification"
+        ],
+        "optionalFields": ["Secondary diagnosis", "Expected length of stay"],
+        "turnaroundSla": "unknown",
+        "notes": "LOA submitted via MaxiLink provider portal. Turnaround SLA not publicly documented -- must confirm during contracting."
+      },
+      "claims": {
+        "requiredFields": [
+          "LOA reference number",
+          "Member ID",
+          "Itemized statement of charges",
+          "Diagnosis codes (ICD-10)",
+          "Procedure codes (CPT/HCPCS)"
+        ],
+        "requiredDocuments": [
+          "LOA approval letter",
+          "Clinical summary / discharge summary",
+          "Laboratory results",
+          "Itemized billing statement"
+        ],
+        "notes": "Claims submitted through MaxiLink provider portal. Filing deadline not publicly documented."
+      },
+      "denials": {
+        "knownPatterns": [],
+        "notes": "Denial patterns not publicly documented. Must collect during operations."
+      },
+      "exclusions": {
+        "known": [],
+        "notes": "Exclusion list available only through member plan documents. Not publicly accessible."
+      }
+    },
+    {
+      "payerId": "PH-MEDICARD",
+      "payerName": "MediCard Philippines, Inc.",
+      "loa": {
+        "requiredFields": [
+          "Member ID / HMO card number",
+          "Patient full name",
+          "Date of birth",
+          "Primary diagnosis (ICD-10)",
+          "Requested procedure(s)",
+          "Attending physician",
+          "Facility name",
+          "Date of service"
+        ],
+        "optionalFields": ["Clinical justification attachments"],
+        "turnaroundSla": "unknown",
+        "notes": "LOA via MediCard provider portal. SLA not publicly documented."
+      },
+      "claims": {
+        "requiredFields": [
+          "LOA reference number",
+          "Member ID",
+          "Itemized charges",
+          "Diagnosis and procedure codes"
+        ],
+        "requiredDocuments": [
+          "LOA approval",
+          "Discharge summary",
+          "Lab/imaging results if applicable",
+          "Itemized billing"
+        ],
+        "notes": "Claims via provider portal. Exact requirements may vary by plan type."
+      },
+      "denials": {
+        "knownPatterns": [],
+        "notes": "No publicly documented denial patterns."
+      },
+      "exclusions": {
+        "known": [],
+        "notes": "Plan-specific. Not publicly available."
+      }
+    },
+    {
+      "payerId": "PH-INTELLICARE",
+      "payerName": "Intellicare Asia Corporation",
+      "loa": {
+        "requiredFields": [
+          "Member ID",
+          "Patient name",
+          "Date of birth",
+          "Diagnosis (ICD-10)",
+          "Procedure(s) requested",
+          "Physician name and PRC license",
+          "Facility name",
+          "Service date"
+        ],
+        "optionalFields": [],
+        "turnaroundSla": "unknown",
+        "notes": "LOA via Intellicare provider portal."
+      },
+      "claims": {
+        "requiredFields": ["LOA number", "Member ID", "Charges", "Codes"],
+        "requiredDocuments": ["LOA approval", "Clinical summary", "Itemized billing"],
+        "notes": "Claims via portal."
+      },
+      "denials": {
+        "knownPatterns": [],
+        "notes": "Not publicly documented."
+      },
+      "exclusions": {
+        "known": [],
+        "notes": "Not publicly documented."
+      }
+    },
+    {
+      "payerId": "PH-PHILCARE",
+      "payerName": "PhilCare, Inc.",
+      "loa": {
+        "requiredFields": [
+          "Member ID / card number",
+          "Patient name and DOB",
+          "Diagnosis (ICD-10)",
+          "Procedure(s) requested",
+          "Physician and facility details",
+          "Service date"
+        ],
+        "optionalFields": [],
+        "turnaroundSla": "unknown",
+        "notes": "LOA via PhilCare provider portal."
+      },
+      "claims": {
+        "requiredFields": ["LOA reference", "Member ID", "Itemized charges", "Codes"],
+        "requiredDocuments": ["LOA approval", "Clinical docs", "Billing statement"],
+        "notes": "Claims via portal."
+      },
+      "denials": {
+        "knownPatterns": [],
+        "notes": "Not publicly documented."
+      },
+      "exclusions": {
+        "known": [],
+        "notes": "Not publicly documented."
+      }
+    },
+    {
+      "payerId": "PH-VALUCARE",
+      "payerName": "Value Care Health Systems, Inc.",
+      "loa": {
+        "requiredFields": [
+          "Member ID",
+          "Patient name and DOB",
+          "Diagnosis (ICD-10)",
+          "Procedure(s)",
+          "Physician and facility",
+          "Service date"
+        ],
+        "optionalFields": [],
+        "turnaroundSla": "unknown",
+        "notes": "LOA via ValuCare provider portal."
+      },
+      "claims": {
+        "requiredFields": ["LOA reference", "Member ID", "Charges", "Codes"],
+        "requiredDocuments": ["LOA approval", "Clinical summary", "Itemized billing"],
+        "notes": "Claims via portal."
+      },
+      "denials": {
+        "knownPatterns": [],
+        "notes": "Not publicly documented."
+      },
+      "exclusions": {
+        "known": [],
+        "notes": "Not publicly documented."
+      }
+    }
+  ]
+}

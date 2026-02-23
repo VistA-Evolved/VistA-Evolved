@@ -1,0 +1,32 @@
+# Platform Database — Phase 101
+#
+# PostgreSQL 16 for all non-clinical SaaS/platform state.
+# VistA/YottaDB remains the clinical source of truth.
+#
+# Start: docker compose -f services/platform-db/docker-compose.yml up -d
+# Connect: psql -h 127.0.0.1 -p 5433 -U ve_api -d ve_platform
+#
+# Port 5433 (non-default) avoids conflicts with any local Postgres.
+
+services:
+  platform-db:
+    image: postgres:16-alpine
+    container_name: ve-platform-db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: ve_platform
+      POSTGRES_USER: ve_api
+      POSTGRES_PASSWORD: "${PLATFORM_DB_PASSWORD:-ve_dev_only_change_in_prod}"
+    volumes:
+      - platform-pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ve_api -d ve_platform"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  platform-pgdata:

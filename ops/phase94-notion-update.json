@@ -1,0 +1,27 @@
+{
+  "feature": "Phase 94 — PH HMO Workflow Automation",
+  "stage": "implemented",
+  "status": "typecheck-clean",
+  "promptRef": "prompts/99-PHASE-94-PH-HMO-WORKFLOW/94-01-IMPLEMENT.md",
+  "verifyRef": "prompts/99-PHASE-94-PH-HMO-WORKFLOW/94-99-VERIFY.md",
+  "runbook": null,
+  "verifyScript": null,
+  "commitSha": "pending",
+  "deliverables": {
+    "loaWorkflow": "apps/api/src/rcm/loa/",
+    "claimsWorkflow": "apps/api/src/rcm/workflows/claims-workflow.ts",
+    "remittanceIntake": "apps/api/src/rcm/workflows/remittance-intake.ts",
+    "vistaSourceMap": "apps/api/src/rcm/workflows/vista-source-map.ts",
+    "payerRulepacks": "apps/api/src/rcm/payers/payer-rulepacks.ts",
+    "rulepackData": "data/payers/ph-hmo-rulepacks.json",
+    "loaWorkbenchUI": "apps/web/src/app/cprs/admin/loa-workbench/page.tsx",
+    "claimsWorkbenchUI": "apps/web/src/app/cprs/admin/claims-workbench/page.tsx",
+    "remittanceIntakeUI": "apps/web/src/app/cprs/admin/remittance-intake/page.tsx"
+  },
+  "apiEndpoints": {
+    "loa": 10,
+    "claims": 10,
+    "remittance": 7
+  },
+  "typecheckExitCode": 0
+}

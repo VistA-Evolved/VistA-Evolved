@@ -1,0 +1,29 @@
+{
+  "id": "smoke-patient-search",
+  "name": "Patient Search Smoke",
+  "domain": "clinical",
+  "priority": "smoke",
+  "description": "Search for patients and retrieve demographics",
+  "tags": ["smoke", "clinical", "patient"],
+  "expectedRpcs": ["ORWPT LIST ALL", "ORWPT BYNAME"],
+  "uiRoute": "/patient-search",
+  "steps": [
+    {
+      "step": 1,
+      "description": "GET /vista/default-patient-list returns patient list",
+      "method": "GET",
+      "path": "/vista/default-patient-list",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 2,
+      "description": "GET /vista/patient-search with name returns results",
+      "method": "GET",
+      "path": "/vista/patient-search?name=PATIENT",
+      "expectedStatus": 200,
+      "assertions": { "ok": true },
+      "optional": true
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "id": "contracting-hub",
+  "name": "Contracting Hub Flow",
+  "domain": "rcm",
+  "priority": "regression",
+  "description": "Validate contracting hub task initialization, status updates, and dashboard for PH HMOs",
+  "tags": ["regression", "rcm", "contracting", "hmo", "phase97b"],
+  "expectedRpcs": [],
+  "uiRoute": "/cprs/admin/contracting-hub",
+  "steps": [
+    {
+      "step": 1,
+      "description": "GET /rcm/hmo/contracting returns contracting dashboard",
+      "method": "GET",
+      "path": "/rcm/hmo/contracting",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 2,
+      "description": "POST /rcm/hmo/contracting/PH-MAXICARE/init creates standard tasks",
+      "method": "POST",
+      "path": "/rcm/hmo/contracting/PH-MAXICARE/init",
+      "body": { "actor": "qa-runner" },
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 3,
+      "description": "GET /rcm/hmo/contracting/PH-MAXICARE shows tasks",
+      "method": "GET",
+      "path": "/rcm/hmo/contracting/PH-MAXICARE",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    }
+  ]
+}

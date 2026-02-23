@@ -1,0 +1,21 @@
+{
+  "id": "read-vitals",
+  "name": "Vitals Read Flow",
+  "domain": "clinical",
+  "priority": "regression",
+  "description": "Read vital signs for a patient",
+  "tags": ["regression", "clinical", "vitals"],
+  "expectedRpcs": ["GMV V/M ALLDATA"],
+  "uiRoute": "/cprs",
+  "requiredVariables": ["patientDfn"],
+  "steps": [
+    {
+      "step": 1,
+      "description": "GET /vista/vitals returns vital signs",
+      "method": "GET",
+      "path": "/vista/vitals?dfn={{patientDfn}}",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "read-orders",
+  "name": "Orders Read Flow",
+  "domain": "clinical",
+  "priority": "regression",
+  "description": "Read orders summary for a patient",
+  "tags": ["regression", "clinical", "orders"],
+  "expectedRpcs": ["ORWORR AGET"],
+  "uiRoute": "/cprs",
+  "requiredVariables": ["patientDfn"],
+  "steps": [
+    {
+      "step": 1,
+      "description": "GET /cprs/orders returns orders summary",
+      "method": "GET",
+      "path": "/cprs/orders?dfn={{patientDfn}}",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    }
+  ]
+}

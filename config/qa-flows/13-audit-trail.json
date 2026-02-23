@@ -1,0 +1,28 @@
+{
+  "id": "audit-trail",
+  "name": "Audit Trail Verification",
+  "domain": "system",
+  "priority": "regression",
+  "description": "Verify audit endpoints respond with valid data",
+  "tags": ["regression", "system", "audit"],
+  "expectedRpcs": [],
+  "uiRoute": "/cprs/admin/audit-viewer",
+  "steps": [
+    {
+      "step": 1,
+      "description": "GET /admin/payer-db/audit returns audit events",
+      "method": "GET",
+      "path": "/admin/payer-db/audit?limit=10",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 2,
+      "description": "GET /admin/payer-db/audit/stats returns stats",
+      "method": "GET",
+      "path": "/admin/payer-db/audit/stats",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    }
+  ]
+}

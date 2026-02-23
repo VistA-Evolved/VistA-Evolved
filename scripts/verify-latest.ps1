@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 86: Shift Handoff + Signout
-& "$PSScriptRoot\verify-phase86-shift-handoff.ps1" @args
+# Phase 104: Platform DB Security/Compliance Posture
+& "$PSScriptRoot\verify-phase104-db-security.ps1" @args

@@ -1,0 +1,864 @@
+{
+  "_meta": {
+    "schema": "ph-hmo-registry-v1",
+    "description": "Canonical Philippines HMO Registry — all 27 Insurance Commission-licensed HMOs as of 31 December 2025",
+    "canonicalSource": {
+      "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+      "title": "List of HMOs with Certificate of Authority as of 31 December 2025",
+      "authority": "Insurance Commission of the Philippines",
+      "asOfDate": "2025-12-31",
+      "retrievedAt": "2026-02-23T00:00:00Z"
+    },
+    "count": 27,
+    "lastUpdated": "2026-02-23",
+    "maintainer": "VistA-Evolved Phase 93",
+    "notes": "Each HMO entry includes evidence-backed capability data. Capabilities marked 'unknown_publicly' require contracting/direct engagement. No APIs or endpoints are fabricated."
+  },
+  "hmos": [
+    {
+      "payerId": "PH-ASIANLIFE",
+      "legalName": "AsianLife and General Assurance Corporation",
+      "brandNames": ["AsianLife"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "unknown_publicly",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "unknown_publicly",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [
+        {
+          "kind": "website",
+          "url": "https://www.asianlife.com.ph/",
+          "title": "AsianLife Official Website",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "Corporate website. No public provider portal or claims API documentation found."
+        }
+      ],
+      "status": "contracting_needed",
+      "contractingTasks": ["Obtain provider accreditation process", "Determine LOA submission method", "Identify claims submission workflow", "Request remittance/EOB format documentation"]
+    },
+    {
+      "payerId": "PH-AVEGA",
+      "legalName": "Avega Managed Care, Inc.",
+      "brandNames": ["Avega"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "manual",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "unknown_publicly",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [
+        {
+          "kind": "website",
+          "url": "https://www.avega.com.ph/",
+          "title": "Avega Managed Care Official Website",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "Corporate website with member info. No public provider portal documentation found."
+        }
+      ],
+      "status": "contracting_needed",
+      "contractingTasks": ["Obtain provider network enrollment forms", "Determine LOA approval workflow", "Identify claims submission method"]
+    },
+    {
+      "payerId": "PH-CAREHEALTH",
+      "legalName": "CareHealth Plus Systems International, Inc.",
+      "brandNames": ["CareHealth Plus"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "unknown_publicly",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "unknown_publicly",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [
+        {
+          "kind": "website",
+          "url": "https://www.carehealthplus.com/",
+          "title": "CareHealth Plus Official Website",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "Minimal public information. Provider integration details not publicly available."
+        }
+      ],
+      "status": "contracting_needed",
+      "contractingTasks": ["Contact for provider accreditation", "Determine LOA and claims workflow", "Request integration documentation"]
+    },
+    {
+      "payerId": "PH-CAREWELL",
+      "legalName": "Carewell Health Systems, Inc.",
+      "brandNames": ["Carewell"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "unknown_publicly",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "unknown_publicly",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [
+        {
+          "kind": "website",
+          "url": "https://www.carewellhealth.com.ph/",
+          "title": "Carewell Health Systems Official Website",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "Basic corporate website. No public provider integration documentation found."
+        }
+      ],
+      "status": "contracting_needed",
+      "contractingTasks": ["Contact for provider accreditation", "Determine LOA submission process", "Identify claims and remittance workflows"]
+    },
+    {
+      "payerId": "PH-CARITAS",
+      "legalName": "Caritas Health Shield, Inc.",
+      "brandNames": ["Caritas Health Shield"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "manual",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "manual",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "available",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [
+        {
+          "kind": "website",
+          "url": "https://www.caritashealthshield.com.ph/",
+          "title": "Caritas Health Shield Official Website",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "Catholic healthcare HMO. Member portal available. Provider-side integration details require contracting."
+        }
+      ],
+      "status": "contracting_needed",
+      "contractingTasks": ["Obtain provider accreditation (Catholic health network)", "Determine LOA approval workflow", "Request claims submission instructions"]
+    },
+    {
+      "payerId": "PH-COCOLIFE",
+      "legalName": "Cocolife Health Care, Inc.",
+      "brandNames": ["Cocolife Healthcare"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "unknown_publicly",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "available",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [
+        {
+          "kind": "website",
+          "url": "https://www.cocolife.com/healthcare",
+          "title": "Cocolife Healthcare Official Website",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "Subsidiary of United Coconut Planters Life Assurance (UCPALI). Member portal exists."
+        }
+      ],
+      "status": "contracting_needed",
+      "contractingTasks": ["Obtain provider accreditation forms", "Determine LOA and claims workflow", "Request integration documentation"]
+    },
+    {
+      "payerId": "PH-EASTWEST",
+      "legalName": "EastWest Healthcare, Inc.",
+      "brandNames": ["EastWest Healthcare"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "unknown_publicly",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "unknown_publicly",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [
+        {
+          "kind": "website",
+          "url": "https://www.eastwestbanker.com/",
+          "title": "EastWest Banking Corporation (parent)",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "HMO subsidiary of EastWest Bank. Dedicated healthcare website not publicly found."
+        }
+      ],
+      "status": "contracting_needed",
+      "contractingTasks": ["Locate dedicated HMO operations contact", "Obtain provider enrollment process", "Determine LOA and claims workflow"]
+    },
+    {
+      "payerId": "PH-FORTICARE",
+      "legalName": "Forticare Health Systems International, Inc.",
+      "brandNames": ["Forticare"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "unknown_publicly",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "unknown_publicly",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [
+        {
+          "kind": "website",
+          "url": "https://www.forticare.com.ph/",
+          "title": "Forticare Health Systems Official Website",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "Basic corporate website. No public provider portal or integration documentation found."
+        }
+      ],
+      "status": "contracting_needed",
+      "contractingTasks": ["Contact for provider accreditation process", "Determine LOA and claims submission workflow", "Request remittance format documentation"]
+    },
+    {
+      "payerId": "PH-HEALTHMAINT",
+      "legalName": "Health Maintenance, Inc.",
+      "brandNames": ["Health Maintenance"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "unknown_publicly",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "unknown_publicly",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [],
+      "status": "contracting_needed",
+      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+    },
+    {
+      "payerId": "PH-HEALTHPLAN",
+      "legalName": "Health Plan Philippines, Inc.",
+      "brandNames": ["Health Plan Philippines"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "unknown_publicly",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "unknown_publicly",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [],
+      "status": "contracting_needed",
+      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+    },
+    {
+      "payerId": "PH-HEALTHFIRST",
+      "legalName": "HealthFirst Healthcare, Inc.",
+      "brandNames": ["HealthFirst"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "unknown_publicly",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "unknown_publicly",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [],
+      "status": "contracting_needed",
+      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+    },
+    {
+      "payerId": "PH-ICARE",
+      "legalName": "i-Care Health Solutions, Inc.",
+      "brandNames": ["i-Care", "iCare"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "unknown_publicly",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "unknown_publicly",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [],
+      "status": "contracting_needed",
+      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+    },
+    {
+      "payerId": "PH-INSULAR",
+      "legalName": "Insular Health Care, Inc.",
+      "brandNames": ["Insular Health Care"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "unknown_publicly",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "available",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [
+        {
+          "kind": "website",
+          "url": "https://www.insularhealth.com.ph/",
+          "title": "Insular Health Care Official Website",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "Subsidiary of Insular Life. Member portal advertised. Provider portal details require contracting."
+        }
+      ],
+      "status": "contracting_needed",
+      "contractingTasks": ["Obtain provider accreditation forms", "Determine LOA approval workflow", "Request claims submission instructions"]
+    },
+    {
+      "payerId": "PH-INTELLICARE",
+      "legalName": "Intellicare Asia Corporation",
+      "brandNames": ["Intellicare"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "portal",
+        "eligibility": "portal",
+        "claimsSubmission": "portal",
+        "claimStatus": "portal",
+        "remittance": "unknown_publicly",
+        "memberPortal": "available",
+        "providerPortal": "available"
+      },
+      "integrationMode": "portal",
+      "evidence": [
+        {
+          "kind": "provider_portal",
+          "url": "https://provider.intellicare.com.ph/",
+          "title": "Intellicare Provider Portal",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "Active provider portal for LOA requests, claims submission, and status tracking. Login required."
+        },
+        {
+          "kind": "website",
+          "url": "https://www.intellicare.com.ph/",
+          "title": "Intellicare Corporate Website",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "Corporate site with member and provider information."
+        }
+      ],
+      "status": "in_progress",
+      "contractingTasks": ["Complete provider portal onboarding", "Document LOA submission workflow from portal", "Map claims status codes"]
+    },
+    {
+      "payerId": "PH-KAISER-INTL",
+      "legalName": "Kaiser International Healthgroup, Inc.",
+      "brandNames": ["Kaiser International"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "unknown_publicly",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "unknown_publicly",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [
+        {
+          "kind": "website",
+          "url": "https://www.kaiserinternational.com/",
+          "title": "Kaiser International Healthgroup Official Website",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "Corporate website. Not affiliated with US Kaiser Permanente. Provider integration details not publicly available."
+        }
+      ],
+      "status": "contracting_needed",
+      "contractingTasks": ["Obtain provider accreditation process", "Determine LOA and claims workflow", "Request integration documentation"]
+    },
+    {
+      "payerId": "PH-LIFEHEALTH",
+      "legalName": "Life and Health HMP, Inc.",
+      "brandNames": ["Life & Health"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "unknown_publicly",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "unknown_publicly",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [],
+      "status": "contracting_needed",
+      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+    },
+    {
+      "payerId": "PH-MAXICARE",
+      "legalName": "MaxiCare Healthcare Corp.",
+      "brandNames": ["Maxicare"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "portal",
+        "eligibility": "portal",
+        "claimsSubmission": "portal",
+        "claimStatus": "portal",
+        "remittance": "portal",
+        "memberPortal": "available",
+        "providerPortal": "available"
+      },
+      "integrationMode": "portal",
+      "evidence": [
+        {
+          "kind": "provider_portal",
+          "url": "https://provider.maxicare.com.ph/",
+          "title": "Maxicare Provider Portal (MaxiLink)",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "Full provider portal: LOA requests, claims submission, status tracking, remittance/SOA downloads. Known as MaxiLink."
+        },
+        {
+          "kind": "website",
+          "url": "https://www.maxicare.com.ph/",
+          "title": "Maxicare Corporate Website",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "Largest PH HMO. Comprehensive provider and member information."
+        },
+        {
+          "kind": "loa_instructions",
+          "url": "https://www.maxicare.com.ph/for-providers/",
+          "title": "Maxicare Provider Information Page",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "Provider onboarding and LOA workflow documentation."
+        }
+      ],
+      "status": "in_progress",
+      "contractingTasks": ["Complete MaxiLink portal onboarding", "Document full LOA→claims→remittance workflow", "Map SOA/remittance format for import"]
+    },
+    {
+      "payerId": "PH-MEDICARD",
+      "legalName": "MediCard Philippines, Inc.",
+      "brandNames": ["MediCard"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "portal",
+        "eligibility": "portal",
+        "claimsSubmission": "portal",
+        "claimStatus": "portal",
+        "remittance": "unknown_publicly",
+        "memberPortal": "available",
+        "providerPortal": "available"
+      },
+      "integrationMode": "portal",
+      "evidence": [
+        {
+          "kind": "provider_portal",
+          "url": "https://provider.medicard.com.ph/",
+          "title": "MediCard Provider Portal",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "Provider portal for LOA requests and claims management. Login required."
+        },
+        {
+          "kind": "website",
+          "url": "https://www.medicard.com.ph/",
+          "title": "MediCard Corporate Website",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "One of the largest PH HMOs. Provider network info available."
+        }
+      ],
+      "status": "in_progress",
+      "contractingTasks": ["Complete provider portal onboarding", "Document LOA submission workflow", "Map claims status codes", "Determine remittance/SOA format"]
+    },
+    {
+      "payerId": "PH-MEDILINK",
+      "legalName": "MediLink Network, Inc.",
+      "brandNames": ["MediLink"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "unknown_publicly",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "unknown_publicly",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [],
+      "status": "contracting_needed",
+      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+    },
+    {
+      "payerId": "PH-METROCARE",
+      "legalName": "Metrocare Health Systems, Inc.",
+      "brandNames": ["Metrocare"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "unknown_publicly",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "unknown_publicly",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [],
+      "status": "contracting_needed",
+      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+    },
+    {
+      "payerId": "PH-PACIFIC-CROSS",
+      "legalName": "Pacific Cross Health Care, Inc.",
+      "brandNames": ["Pacific Cross"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "manual",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "manual",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "available",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [
+        {
+          "kind": "website",
+          "url": "https://www.pacificcross.com.ph/",
+          "title": "Pacific Cross Health Care Official Website",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "International health insurance provider with PH HMO license. Member portal for claims. Provider portal access requires contracting."
+        }
+      ],
+      "status": "contracting_needed",
+      "contractingTasks": ["Obtain provider network enrollment", "Determine LOA process (international vs domestic)", "Request claims submission workflow"]
+    },
+    {
+      "payerId": "PH-PHILCARE",
+      "legalName": "PhilCare, Inc.",
+      "brandNames": ["PhilCare"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "portal",
+        "eligibility": "portal",
+        "claimsSubmission": "portal",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "available",
+        "providerPortal": "available"
+      },
+      "integrationMode": "portal",
+      "evidence": [
+        {
+          "kind": "website",
+          "url": "https://www.philcare.com.ph/",
+          "title": "PhilCare Official Website",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "Metro Pacific Investments group HMO. Provider and member portals advertised."
+        },
+        {
+          "kind": "provider_portal",
+          "url": "https://www.philcare.com.ph/for-providers",
+          "title": "PhilCare Provider Information",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "Provider-facing information including accreditation and portal access."
+        }
+      ],
+      "status": "in_progress",
+      "contractingTasks": ["Complete provider portal onboarding", "Document LOA and claims workflow", "Map claim status tracking capabilities"]
+    },
+    {
+      "payerId": "PH-PHILBRITISH",
+      "legalName": "Philippine British Assurance Company, Inc.",
+      "brandNames": ["PhilBritish", "PBA"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "unknown_publicly",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "unknown_publicly",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [],
+      "status": "contracting_needed",
+      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+    },
+    {
+      "payerId": "PH-PHCP",
+      "legalName": "Philippine Health Care Providers, Inc.",
+      "brandNames": ["PHCP"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "unknown_publicly",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "unknown_publicly",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [],
+      "status": "contracting_needed",
+      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+    },
+    {
+      "payerId": "PH-PHP",
+      "legalName": "Philippine Health Plan, Inc.",
+      "brandNames": ["PHP"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "unknown_publicly",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "unknown_publicly",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [],
+      "status": "contracting_needed",
+      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+    },
+    {
+      "payerId": "PH-STARCARE",
+      "legalName": "Starcare Health Systems, Inc.",
+      "brandNames": ["Starcare"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "unknown_publicly",
+        "eligibility": "unknown_publicly",
+        "claimsSubmission": "unknown_publicly",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "unknown_publicly",
+        "providerPortal": "unknown_publicly"
+      },
+      "integrationMode": "manual",
+      "evidence": [],
+      "status": "contracting_needed",
+      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+    },
+    {
+      "payerId": "PH-VALUCARE",
+      "legalName": "Value Care Health Systems, Inc.",
+      "brandNames": ["ValuCare", "Value Care"],
+      "type": "HMO",
+      "country": "PH",
+      "canonicalSource": {
+        "url": "https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/",
+        "asOfDate": "2025-12-31",
+        "retrievedAt": "2026-02-23T00:00:00Z"
+      },
+      "capabilities": {
+        "loa": "portal",
+        "eligibility": "portal",
+        "claimsSubmission": "portal",
+        "claimStatus": "unknown_publicly",
+        "remittance": "unknown_publicly",
+        "memberPortal": "available",
+        "providerPortal": "available"
+      },
+      "integrationMode": "portal",
+      "evidence": [
+        {
+          "kind": "website",
+          "url": "https://www.valucare.com.ph/",
+          "title": "ValuCare Official Website",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "Provider portal available for accredited facilities. LOA and claims via portal."
+        },
+        {
+          "kind": "provider_portal",
+          "url": "https://provider.valucare.com.ph/",
+          "title": "ValuCare Provider Portal",
+          "retrievedAt": "2026-02-23T00:00:00Z",
+          "notes": "Provider portal for LOA requests and claims submission. Login required."
+        }
+      ],
+      "status": "in_progress",
+      "contractingTasks": ["Complete provider portal onboarding", "Document LOA workflow", "Map claims submission process"]
+    }
+  ]
+}

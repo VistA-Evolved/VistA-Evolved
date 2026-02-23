@@ -75,7 +75,7 @@ import { validateClaim, describeValidationRules } from './validation/engine.js';
 import {
   createPipelineEntry, advancePipelineStage,
   listPipelineEntries, getPipelineStats,
-  buildClaim837FromDomain, buildEligibilityInquiry270,
+  buildClaim837FromDomain,
 } from './edi/pipeline.js';
 
 // Connectors
@@ -802,47 +802,9 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, ...safety };
   });
 
-  // ───── Eligibility ──────────────────────────────────────────────
-  server.post('/rcm/eligibility/check', async (request: FastifyRequest, reply: FastifyReply) => {
-    const body = (request.body as any) || {};
-    const { memberId, payerId, patientFirstName, patientLastName, patientDob } = body;
-
-    if (!memberId || !payerId) {
-      return reply.code(400).send({ ok: false, error: 'memberId and payerId are required' });
-    }
-
-    const payer = getPayer(payerId);
-    if (!payer) return reply.code(404).send({ ok: false, error: 'Payer not found' });
-
-    const connector = getConnectorForMode(payer.integrationMode) ?? getConnectorForMode('clearinghouse_edi');
-    if (!connector) {
-      return reply.code(500).send({ ok: false, error: 'No connector available' });
-    }
-
-    const inquiry = buildEligibilityInquiry270(
-      memberId,
-      payerId,
-      body.providerNpi ?? '0000000000',
-      { firstName: patientFirstName ?? '', lastName: patientLastName ?? '', dob: patientDob },
-    );
-
-    const entry = createPipelineEntry('eligibility-check', '270', connector.id, payerId);
-    const payload = JSON.stringify(inquiry);
-    advancePipelineStage(entry.id, 'validate', { outbound: payload });
-    advancePipelineStage(entry.id, 'enqueue');
-
-    const result = await connector.submit('270', payload, { memberId, payerId });
-
-    if (result.success) {
-      advancePipelineStage(entry.id, 'transmit');
-      appendRcmAudit('eligibility.checked', {
-        payerId,
-        detail: { memberId: '[REDACTED]', transactionId: result.transactionId },
-      });
-    }
-
-    return { ok: result.success, pipelineEntry: entry, connectorResult: result };
-  });
+  // ───── Eligibility (Phase 69 route removed — superseded by Phase 100) ─────
+  // Phase 100 registers POST /rcm/eligibility/check in eligibility/routes.ts
+  // with adapter-first provenance tracking + durable SQLite persistence.
 
   // ───── EDI Pipeline ─────────────────────────────────────────────
   server.get('/rcm/edi/pipeline', async (request: FastifyRequest) => {

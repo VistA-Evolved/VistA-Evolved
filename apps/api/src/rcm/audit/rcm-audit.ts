@@ -101,7 +101,29 @@ export type RcmAuditAction =
   | 'loa.approved'
   | 'loa.denied'
   | 'loa.cancelled'
-  | 'loa.expired';
+  | 'loa.expired'
+  | 'denial.created'
+  | 'denial.updated'
+  | 'denial.triaged'
+  | 'denial.appealing'
+  | 'denial.resubmitted'
+  | 'denial.resolved'
+  | 'denial.writeoff'
+  | 'denial.closed'
+  | 'denial.imported'
+  | 'denial.action_added'
+  | 'denial.attachment_added'
+  | 'denial.packet_generated'
+  | 'recon.imported'
+  | 'recon.payment_created'
+  | 'recon.matched'
+  | 'recon.batch_matched'
+  | 'recon.confirmed'
+  | 'recon.underpayment_created'
+  | 'recon.underpayment_updated'
+  | 'recon.sent_to_denials'
+  | 'claim_status.checked'
+  | 'claim_status.scheduled';
 
 export interface RcmAuditEntry {
   id: string;

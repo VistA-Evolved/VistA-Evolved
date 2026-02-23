@@ -848,6 +848,28 @@ scripts/
      starts with bytes `EF BB BF`. Node.js `JSON.parse()` chokes on the BOM.
      Always strip BOM before parsing: `raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw`.
      See BUG-064.
+102. **Idempotency `reply.then()` clobbers `onSend`-captured body (Phase 103).**
+     Fastify `reply.then()` fires after the response is sent (payload gone).
+     `onSend` fires during serialization (payload available). Never create a
+     new cache entry in `reply.then()` if `onSend` already captured the body.
+     The `onSend` hook is the sole authority for response body caching. See BUG-066.
+103. **`withPgRetry` and `isPgUniqueViolation` are infrastructure (Phase 103).**
+     These are exported from the pg barrel but not yet consumed by PG repos.
+     They're ready for adoption when PG repos need retry/dedup logic. Don't
+     force-wire them into SQLite-backed routes.
+104. **Idempotency middleware is scoped to payer-db routes (Phase 103).**
+     The hooks are registered inside the `adminPayerDbRoutes` Fastify plugin,
+     so they only affect `/admin/payer-db/*` routes. Other mutation routes
+     (RCM, imaging, etc.) are not affected. To extend, register the hooks
+     in additional route plugins.
+105. **Fastify onRequest hooks don't stop after `reply.send()` (BUG-067).**
+     In Fastify v5, calling `reply.send()` in one `onRequest` hook does NOT
+     prevent subsequent `onRequest` hooks from executing. If a later hook also
+     calls `reply.send()`, Node.js crashes with `ERR_HTTP_HEADERS_SENT`.
+     Fix: Set `(request as any)._rejected = true` in the auth gateway hook
+     before sending the rejection response. All downstream hooks
+     (Origin check, CSRF) must check `if ((request as any)._rejected || reply.sent) return;`
+     at entry.
 
 ---
 

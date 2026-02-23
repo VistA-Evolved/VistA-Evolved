@@ -5,10 +5,17 @@
   "engines": {
     "node": ">=24 <25"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "esbuild"
+    ]
+  },
   "scripts": {
     "dev": "pnpm -r dev",
     "build": "pnpm -r build",
     "cprs:extract": "node tools/cprs-extract/run-all.mjs",
-    "cprs:generate-stubs": "node tools/cprs-extract/generate-api-stubs.mjs"
+    "cprs:generate-stubs": "node tools/cprs-extract/generate-api-stubs.mjs",
+    "qa:phase-replay": "pnpm -C apps/web playwright test e2e/phase-replay.spec.ts e2e/dead-click-crawler.spec.ts --reporter=list"
   }
 }

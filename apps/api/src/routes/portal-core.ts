@@ -719,7 +719,9 @@ export default async function portalCoreRoutes(
       try {
         const demoData = await fetchHealthData(session.patientDfn, "demographics");
         if (demoData.length > 0) dob = (demoData[0] as any).dob || "";
-      } catch {}
+      } catch {
+        // DOB fetch failed — proceed with empty DOB (non-critical for share link)
+      }
     }
 
     const result = createShareLink({

@@ -1,0 +1,38 @@
+{
+  "what_changed": "Phase 97B — PH HMO Deepening Pack v2 (ALL IC HMOs) + LOA/Claim Packet Ops",
+  "files_created": [
+    "apps/api/src/rcm/hmo-portal/adapter-manifest.ts",
+    "apps/api/src/rcm/hmo-portal/loa-templates.ts",
+    "apps/api/src/rcm/hmo-portal/claim-packet-config.ts",
+    "apps/api/src/rcm/hmo-portal/contracting-hub.ts",
+    "apps/api/src/rcm/hmo-portal/market-dashboard.ts",
+    "apps/api/src/rcm/hmo-portal/phase97b-routes.ts",
+    "apps/web/src/app/cprs/admin/ph-market/page.tsx",
+    "apps/web/src/app/cprs/admin/contracting-hub/page.tsx",
+    "config/qa-flows/16-hmo-adapter-manifest.json",
+    "config/qa-flows/17-contracting-hub.json",
+    "prompts/102-PHASE-97B-PH-HMO-DEEPENING-V2/97B-01-IMPLEMENT.md",
+    "prompts/102-PHASE-97B-PH-HMO-DEEPENING-V2/97B-99-VERIFY.md"
+  ],
+  "files_modified": [
+    "apps/api/src/platform/db/schema.ts — added payerType column",
+    "apps/api/src/platform/db/repo/capability-repo.ts — expanded STANDARD_CAPABILITY_KEYS 7→17",
+    "apps/api/src/index.ts — added phase97b-routes import + registration",
+    "apps/web/src/app/cprs/admin/layout.tsx — added PH Market + Contracting nav items"
+  ],
+  "how_to_test_manually": [
+    "1. cd apps/api && npx tsx --env-file=.env.local src/index.ts",
+    "2. curl http://127.0.0.1:3001/rcm/hmo/manifest | jq '.manifest.totalHmos' → 27",
+    "3. curl http://127.0.0.1:3001/rcm/hmo/loa-templates | jq '.count' → 27",
+    "4. curl http://127.0.0.1:3001/rcm/hmo/claim-configs | jq '.count' → 27",
+    "5. curl http://127.0.0.1:3001/rcm/hmo/market-summary | jq '.summary.totalHmos' → 27",
+    "6. POST /rcm/hmo/contracting/PH-MAXICARE/init → creates 10 tasks",
+    "7. cd apps/web && pnpm build → clean"
+  ],
+  "verifier_output": "tsc --noEmit clean (both apps), get_errors clean on all 16 files",
+  "follow_ups": [
+    "Phase 98: Live API endpoint smoke tests + verifier script",
+    "Write verify-phase97b.ps1 with 20+ gates",
+    "Run existing verifiers (96B: 64/64, 86: 72/72, 95B: 34/34) for regression check"
+  ]
+}

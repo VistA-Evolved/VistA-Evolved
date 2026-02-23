@@ -1,0 +1,21 @@
+{
+  "id": "read-labs",
+  "name": "Lab Results Read Flow",
+  "domain": "clinical",
+  "priority": "regression",
+  "description": "Read lab results for a patient",
+  "tags": ["regression", "clinical", "labs"],
+  "expectedRpcs": ["ORWLRR GRID"],
+  "uiRoute": "/cprs",
+  "requiredVariables": ["patientDfn"],
+  "steps": [
+    {
+      "step": 1,
+      "description": "GET /vista/labs returns lab results",
+      "method": "GET",
+      "path": "/vista/labs?dfn={{patientDfn}}",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    }
+  ]
+}

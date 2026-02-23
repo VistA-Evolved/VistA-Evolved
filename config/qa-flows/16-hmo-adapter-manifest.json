@@ -1,0 +1,84 @@
+{
+  "id": "hmo-adapter-manifest",
+  "name": "HMO Adapter Manifest Flow",
+  "domain": "rcm",
+  "priority": "regression",
+  "description": "Validate HMO adapter manifest covers all 27 IC-licensed HMOs with type classification, adapter status, and capability coverage",
+  "tags": ["regression", "rcm", "hmo", "manifest", "phase97b"],
+  "expectedRpcs": [],
+  "uiRoute": "/cprs/admin/ph-market",
+  "steps": [
+    {
+      "step": 1,
+      "description": "GET /rcm/hmo/manifest returns all 27 HMOs",
+      "method": "GET",
+      "path": "/rcm/hmo/manifest",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 2,
+      "description": "GET /rcm/hmo/manifest/PH-MAXICARE returns top-5 L1 HMO with portal adapter",
+      "method": "GET",
+      "path": "/rcm/hmo/manifest/PH-MAXICARE",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 3,
+      "description": "GET /rcm/hmo/loa-templates returns all LOA templates",
+      "method": "GET",
+      "path": "/rcm/hmo/loa-templates",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 4,
+      "description": "GET /rcm/hmo/loa-templates/PH-MAXICARE returns Maxicare LOA template",
+      "method": "GET",
+      "path": "/rcm/hmo/loa-templates/PH-MAXICARE",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 5,
+      "description": "GET /rcm/hmo/loa-templates/PH-MAXICARE/specialty/surgery returns specialty config",
+      "method": "GET",
+      "path": "/rcm/hmo/loa-templates/PH-MAXICARE/specialty/surgery",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 6,
+      "description": "GET /rcm/hmo/claim-configs returns all claim configs",
+      "method": "GET",
+      "path": "/rcm/hmo/claim-configs",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 7,
+      "description": "GET /rcm/hmo/claim-configs/PH-MAXICARE returns Maxicare claim config",
+      "method": "GET",
+      "path": "/rcm/hmo/claim-configs/PH-MAXICARE",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 8,
+      "description": "GET /rcm/hmo/claim-configs/PH-MAXICARE/vista-annotations returns VistA annotations",
+      "method": "GET",
+      "path": "/rcm/hmo/claim-configs/PH-MAXICARE/vista-annotations",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 9,
+      "description": "GET /rcm/hmo/market-summary returns market summary",
+      "method": "GET",
+      "path": "/rcm/hmo/market-summary",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    }
+  ]
+}

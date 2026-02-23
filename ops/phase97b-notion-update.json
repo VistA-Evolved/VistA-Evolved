@@ -1,0 +1,18 @@
+{
+  "feature_title": "Phase 97B — PH HMO Deepening Pack v2 (ALL IC HMOs) + LOA/Claim Packet Ops",
+  "stage": "implemented",
+  "status": "tsc-clean-verified",
+  "prompt_ref_path": "prompts/102-PHASE-97B-PH-HMO-DEEPENING-V2/97B-01-IMPLEMENT.md",
+  "runbook_path": "docs/runbooks/phase97b-ph-hmo-deepening-v2.md",
+  "verify_script": "scripts/verify-phase97b.ps1 (pending creation)",
+  "commit_sha": "pending",
+  "key_metrics": {
+    "new_files": 12,
+    "modified_files": 4,
+    "new_api_endpoints": 14,
+    "total_hmos_covered": 27,
+    "capability_keys": 17,
+    "contracting_task_templates": 10,
+    "qa_flows_added": 2
+  }
+}

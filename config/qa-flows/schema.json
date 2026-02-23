@@ -1,0 +1,122 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "qa-flow-v1",
+  "title": "QA Flow Definition",
+  "description": "Schema for Phase 96B QA flow catalog entries. Each JSON file in config/qa-flows/ must conform to this schema.",
+  "type": "object",
+  "required": ["id", "name", "domain", "priority", "steps"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Unique flow identifier (kebab-case)"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 3,
+      "description": "Human-readable flow name"
+    },
+    "domain": {
+      "type": "string",
+      "enum": ["system", "auth", "clinical", "rcm", "imaging", "qa", "admin"],
+      "description": "Functional domain the flow exercises"
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["smoke", "regression", "deep"],
+      "description": "smoke = quick health, regression = feature proof, deep = multi-step integration"
+    },
+    "description": {
+      "type": "string",
+      "description": "What the flow validates"
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Searchable tags"
+    },
+    "requiredVariables": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Variables that must be provided at execution time (e.g. accessCode, verifyCode)"
+    },
+    "expectedRpcs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Set of VistA RPC names expected during flow execution. Validated via rpc-traces endpoint."
+    },
+    "uiRoute": {
+      "type": ["string", "null"],
+      "description": "Primary web UI route the flow exercises (for dead-click / Playwright tests)"
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["step", "method", "path"],
+        "additionalProperties": false,
+        "properties": {
+          "step": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Step ordinal"
+          },
+          "description": {
+            "type": "string",
+            "description": "What this step does"
+          },
+          "method": {
+            "type": "string",
+            "enum": ["GET", "POST", "PUT", "PATCH", "DELETE"],
+            "description": "HTTP method"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^/",
+            "description": "API path (may contain {{variable}} templates)"
+          },
+          "body": {
+            "type": "object",
+            "description": "Request body (JSON). Values may reference {{var}} for template substitution."
+          },
+          "headers": {
+            "type": "object",
+            "additionalProperties": { "type": "string" },
+            "description": "Additional request headers"
+          },
+          "expectedStatus": {
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 599,
+            "description": "Expected HTTP status code"
+          },
+          "assertions": {
+            "type": "object",
+            "description": "Key-value assertions against response body. Key is JSON path; value is expected."
+          },
+          "extract": {
+            "type": "object",
+            "additionalProperties": { "type": "string" },
+            "description": "Extract values from response into variables. Key = variable name, value = JSON path in response."
+          },
+          "expectedRpcs": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "RPCs expected to fire during this specific step (checked via trace buffer)"
+          },
+          "optional": {
+            "type": "boolean",
+            "description": "Whether this step can fail without failing the flow"
+          },
+          "delayMs": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Delay in ms before executing this step"
+          }
+        }
+      }
+    }
+  }
+}

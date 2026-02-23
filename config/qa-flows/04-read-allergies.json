@@ -1,0 +1,21 @@
+{
+  "id": "read-allergies",
+  "name": "Allergy Read Flow",
+  "domain": "clinical",
+  "priority": "regression",
+  "description": "Read allergies for a patient",
+  "tags": ["regression", "clinical", "allergies"],
+  "expectedRpcs": ["ORQQAL LIST"],
+  "uiRoute": "/cprs",
+  "requiredVariables": ["patientDfn"],
+  "steps": [
+    {
+      "step": 1,
+      "description": "GET /vista/allergies returns allergy list",
+      "method": "GET",
+      "path": "/vista/allergies?dfn={{patientDfn}}",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "read-medications",
+  "name": "Medications Read Flow",
+  "domain": "clinical",
+  "priority": "regression",
+  "description": "Read active medications for a patient",
+  "tags": ["regression", "clinical", "meds"],
+  "expectedRpcs": ["ORWPS ACTIVE"],
+  "uiRoute": "/cprs",
+  "requiredVariables": ["patientDfn"],
+  "steps": [
+    {
+      "step": 1,
+      "description": "GET /vista/medications returns medication list",
+      "method": "GET",
+      "path": "/vista/medications?dfn={{patientDfn}}",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "featureTitle": "Phase 93: PH HMO Deepening Pack (ALL Licensed HMOs)",
+  "stage": "implemented",
+  "status": "verified",
+  "promptRef": "prompts/99-PHASE-93-PH-HMO-DEEPENING/93-01-IMPLEMENT.md",
+  "verifyRef": "prompts/99-PHASE-93-PH-HMO-DEEPENING/93-99-VERIFY.md",
+  "runbookPath": "docs/payers/ph/README.md",
+  "verifyScript": "scripts/vista-first-audit.ps1",
+  "verifyResult": "15 PASS, 0 FAIL, 0 WARN",
+  "commitSHA": "pending"
+}

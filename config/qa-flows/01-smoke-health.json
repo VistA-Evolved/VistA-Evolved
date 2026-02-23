@@ -1,0 +1,35 @@
+{
+  "id": "smoke-health",
+  "name": "Health Check Smoke",
+  "domain": "system",
+  "priority": "smoke",
+  "description": "Verify /health, /ready, /vista/ping are reachable",
+  "tags": ["smoke", "system"],
+  "expectedRpcs": [],
+  "uiRoute": null,
+  "steps": [
+    {
+      "step": 1,
+      "description": "GET /health returns 200",
+      "method": "GET",
+      "path": "/health",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 2,
+      "description": "GET /ready returns 200",
+      "method": "GET",
+      "path": "/ready",
+      "expectedStatus": 200
+    },
+    {
+      "step": 3,
+      "description": "GET /vista/ping returns 200",
+      "method": "GET",
+      "path": "/vista/ping",
+      "expectedStatus": 200,
+      "optional": true
+    }
+  ]
+}

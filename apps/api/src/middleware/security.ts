@@ -29,6 +29,8 @@ import {
   errorsTotal, sanitizeRoute,
 } from "../telemetry/metrics.js";
 import { shutdownTracing } from "../telemetry/tracing.js";
+import { closeDb } from "../platform/db/db.js";
+import { closePgDb } from "../platform/pg/pg-db.js";
 
 /* ================================================================== */
 /* CORS origin allowlist                                                */
@@ -101,6 +103,8 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/messaging\//, auth: "session" }, // Phase 64: Secure messaging (clinician session)
   { pattern: /^\/emar\//, auth: "session" }, // Phase 85: eMAR + BCMA posture (session required)
   { pattern: /^\/handoff\//, auth: "session" }, // Phase 86: Shift handoff + signout (session required)
+  { pattern: /^\/qa\//, auth: "none" }, // Phase 96B: QA routes (own NODE_ENV/QA_ROUTES_ENABLED guard)
+  { pattern: /^\/__test__\//, auth: "none" }, // Phase 96B: test-only trace endpoint (own guard)
   { pattern: /^\/admin\/my-tenant$/, auth: "session" }, // Phase 17: client tenant config (any user)
   { pattern: /^\/(admin|audit|reports)\//, auth: "admin" },
   { pattern: /^\/ws\//, auth: "session" }, // WebSocket console (has own role check too)
@@ -270,12 +274,14 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
     // Extract and validate session
     const token = extractToken(request);
     if (!token) {
+      (request as any)._rejected = true;
       reply.code(401).send({ ok: false, error: "Authentication required" });
       return;
     }
 
     const session = getSession(token);
     if (!session) {
+      (request as any)._rejected = true;
       reply.code(401).send({ ok: false, error: "Session expired or invalid" });
       return;
     }
@@ -283,12 +289,13 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
     // Attach session to request for downstream audit attribution
     request.session = session;
 
-    // Admin role check — strict admin-only (AGENTS.md #24 RBAC tightening)
+    // Admin role check -- strict admin-only (AGENTS.md #24 RBAC tightening)
     if (requiredAuth === "admin") {
       if (session.role !== "admin") {
         audit("security.rbac-denied", "denied", {
           duz: session.duz, name: session.userName, role: session.role,
         }, { sourceIp: request.ip, detail: { url, requiredRole: "admin" } });
+        (request as any)._rejected = true;
         reply.code(403).send({ ok: false, error: "Insufficient privileges" });
         return;
       }
@@ -297,6 +304,7 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
 
   /* ---- Origin check for state-changing requests ---- */
   server.addHook("onRequest", async (request: FastifyRequest, reply: FastifyReply) => {
+    if ((request as any)._rejected || reply.sent) return;
     // Only check POST/PUT/DELETE/PATCH
     if (!["POST", "PUT", "DELETE", "PATCH"].includes(request.method)) return;
 
@@ -319,6 +327,7 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
 
   /* ---- CSRF double-submit cookie (Phase 49) ---- */
   server.addHook("onRequest", async (request: FastifyRequest, reply: FastifyReply) => {
+    if ((request as any)._rejected || reply.sent) return;
     const CSRF_COOKIE = CSRF_CONFIG.cookieName;
     const CSRF_HEADER = CSRF_CONFIG.headerName;
 
@@ -464,6 +473,10 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
         try { stopRoomCleanup(); } catch { /* timer may already be cleared */ }
         // Phase 80: stop record portability cleanup timer
         try { stopPortabilityCleanup(); } catch { /* timer may already be cleared */ }
+        // Phase 95B: close platform SQLite DB
+        try { closeDb(); } catch { /* DB may already be closed */ }
+        // Phase 101: close platform Postgres pool
+        try { await closePgDb(); } catch { /* pool may already be closed */ }
         // Phase 36: flush OTel traces/metrics
         try { await shutdownTracing(); } catch { /* best effort */ }
         log.info("Server closed gracefully");

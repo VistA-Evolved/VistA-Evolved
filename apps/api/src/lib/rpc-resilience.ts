@@ -12,11 +12,12 @@
  */
 
 import { RPC_CONFIG, CACHE_CONFIG } from "../config/server-config.js";
-import { log } from "./logger.js";
-import { callRpc, callRpcWithList, withBrokerLock, type RpcParam } from "../vista/rpcBrokerClient.js";
+import { log, getRequestId } from "./logger.js";
+import { callRpc, callRpcWithList, withBrokerLock, getDuz, type RpcParam } from "../vista/rpcBrokerClient.js";
 // Phase 36: OTel tracing + Prometheus metrics
-import { startRpcSpan, endRpcSpan } from "../telemetry/tracing.js";
+import { startRpcSpan, endRpcSpan, getCurrentTraceId } from "../telemetry/tracing.js";
 import { rpcCallDuration, rpcCallsTotal, circuitBreakerTrips, rpcCacheSize as rpcCacheSizeGauge } from "../telemetry/metrics.js";
+// Phase 96B: RPC traces recorded at protocol level in rpcBrokerClient.ts
 
 /* ================================================================== */
 /* Circuit Breaker                                                     */
@@ -279,6 +280,9 @@ export async function resilientRpc<T>(
     rpcCallsTotal.inc({ rpc_name: rpcName, outcome: "success" });
     endRpcSpan(span);
 
+    // Phase 96B: RPC traces now recorded at protocol level in rpcBrokerClient.ts
+    // (no duplicate recording needed here)
+
     log.debug("RPC completed", { rpcName, durationMs });
     return result;
   } catch (err: any) {
@@ -292,6 +296,8 @@ export async function resilientRpc<T>(
     rpcCallDuration.observe({ rpc_name: rpcName, outcome }, durationMs / 1000);
     rpcCallsTotal.inc({ rpc_name: rpcName, outcome });
     endRpcSpan(span, err);
+
+    // Phase 96B: RPC traces now recorded at protocol level in rpcBrokerClient.ts
 
     log.error("RPC failed", { rpcName, durationMs, isTimeout, error: err.message });
     throw err;

@@ -1,0 +1,59 @@
+{
+  "id": "payer-registry-crud",
+  "name": "Payer Registry CRUD Flow",
+  "domain": "rcm",
+  "priority": "regression",
+  "description": "Create, read, update payer via platform persistence",
+  "tags": ["regression", "rcm", "payer"],
+  "expectedRpcs": [],
+  "uiRoute": "/cprs/admin/payer-db",
+  "steps": [
+    {
+      "step": 1,
+      "description": "GET /admin/payer-db/payers lists payers",
+      "method": "GET",
+      "path": "/admin/payer-db/payers",
+      "expectedStatus": 200,
+      "assertions": { "ok": true },
+      "extract": { "payerCount": "total" }
+    },
+    {
+      "step": 2,
+      "description": "POST /admin/payer-db/payers creates new payer",
+      "method": "POST",
+      "path": "/admin/payer-db/payers",
+      "body": {
+        "id": "QA-TEST-001",
+        "canonicalName": "QA Test Payer",
+        "countryCode": "US",
+        "category": "commercial",
+        "integrationMode": "clearinghouse"
+      },
+      "expectedStatus": 200,
+      "assertions": { "ok": true },
+      "extract": { "newPayerId": "payer.id" }
+    },
+    {
+      "step": 3,
+      "description": "GET /admin/payer-db/payers/:id retrieves the payer",
+      "method": "GET",
+      "path": "/admin/payer-db/payers/QA-TEST-001",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 4,
+      "description": "PUT /admin/payer-db/payers/:id/capabilities sets capability",
+      "method": "PUT",
+      "path": "/admin/payer-db/payers/QA-TEST-001/capabilities",
+      "body": {
+        "capabilityKey": "edi_270_271",
+        "value": "available",
+        "confidence": "confirmed",
+        "reason": "QA test verification"
+      },
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": "modules-capabilities",
+  "name": "Module + Capability Check",
+  "domain": "system",
+  "priority": "smoke",
+  "description": "Verify module and capability endpoints respond",
+  "tags": ["smoke", "system", "modules"],
+  "expectedRpcs": [],
+  "uiRoute": "/cprs/admin/modules",
+  "steps": [
+    {
+      "step": 1,
+      "description": "GET /api/modules returns module list",
+      "method": "GET",
+      "path": "/api/modules",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 2,
+      "description": "GET /api/capabilities returns capabilities",
+      "method": "GET",
+      "path": "/api/capabilities",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    }
+  ]
+}

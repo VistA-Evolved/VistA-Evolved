@@ -1,9 +1,9 @@
 {
     "commitSHA": "pending",
-    "stage": "implemented",
-    "verifyScript": "npx playwright test (apps/web) + npx vitest run (apps/api)",
-    "runbook": "docs/runbooks/phase37-quality-harness.md",
-    "promptRef": "prompts/39-PHASE-37-QUALITY-HARDENING/39-01-quality-hardening-IMPLEMENT.md",
+    "stage": "verified",
+    "verifyScript": "scripts/verify-phase104-db-security.ps1",
+    "runbook": "docs/architecture/platform-db-security.md",
+    "promptRef": "prompts/108-PHASE-104-DB-SECURITY/104-99-VERIFY.md",
     "status": "verified",
-    "feature": "Phase 37 -- Release Candidate Hardening: Bug Bash Automation"
+    "feature": "Phase 104 v2 -- Platform DB Security/Compliance Posture (VERIFIED + BUG-067 fixed)"
 }

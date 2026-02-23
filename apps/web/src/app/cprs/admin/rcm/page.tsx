@@ -18,7 +18,7 @@ import styles from '@/components/cprs/cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
-type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions' | 'gateways' | 'adapters' | 'jobs' | 'eligibility' | 'ops-dashboard';
+type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions' | 'gateways' | 'adapters' | 'jobs' | 'eligibility' | 'claim-status' | 'ops-dashboard';
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
@@ -29,10 +29,12 @@ export default function RcmPage() {
   const [tab, setTab] = useState<Tab>('claims');
   const [health, setHealth] = useState<any>(null);
   const [safetyStatus, setSafetyStatus] = useState<any>(null);
+  const [backendInfo, setBackendInfo] = useState<{ backend: string } | null>(null);
 
   useEffect(() => {
     apiFetch('/rcm/health').then(setHealth).catch(() => {});
     apiFetch('/rcm/submission-safety').then(setSafetyStatus).catch(() => {});
+    apiFetch('/admin/payer-db/backend').then(setBackendInfo).catch(() => {});
   }, []);
 
   const tabs: { id: Tab; label: string }[] = [
@@ -48,7 +50,8 @@ export default function RcmPage() {
     { id: 'gateways', label: 'Gateway Readiness' },
     { id: 'adapters', label: 'Payer Adapters' },
     { id: 'jobs', label: 'Jobs & Polling' },
-    { id: 'eligibility', label: 'Eligibility Status' },
+    { id: 'eligibility', label: 'Eligibility Checks' },
+    { id: 'claim-status', label: 'Claim Status' },
     { id: 'ops-dashboard', label: 'Ops Dashboard' },
     { id: 'audit', label: 'Audit Trail' },
   ];
@@ -60,6 +63,15 @@ export default function RcmPage() {
         {health && (
           <span style={{ fontSize: 11, color: health.ok ? '#198754' : '#dc3545', fontWeight: 600 }}>
             {health.ok ? 'ONLINE' : 'OFFLINE'}
+          </span>
+        )}
+        {backendInfo && (
+          <span style={{
+            fontSize: 10, fontWeight: 600, padding: '2px 8px', borderRadius: 4,
+            background: backendInfo.backend === 'pg' ? '#d1e7dd' : '#e2e3e5',
+            color: backendInfo.backend === 'pg' ? '#0f5132' : '#41464b',
+          }}>
+            {backendInfo.backend === 'pg' ? 'PostgreSQL' : 'SQLite'}
           </span>
         )}
         <span style={{ marginLeft: 'auto', fontSize: 11, color: '#6c757d' }}>Phase 40 -- Global RCM</span>
@@ -107,6 +119,7 @@ export default function RcmPage() {
         {tab === 'adapters' && <AdaptersTab />}
         {tab === 'jobs' && <JobsTab />}
         {tab === 'eligibility' && <EligibilityTab />}
+        {tab === 'claim-status' && <ClaimStatusTab />}
         {tab === 'ops-dashboard' && <OpsDashboardTab />}
         {tab === 'audit' && <AuditTab />}
       </div>
@@ -2311,73 +2324,329 @@ function OpsDashboardTab() {
 function EligibilityTab() {
   const [results, setResults] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
+  const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({ patientDfn: '', payerId: '', subscriberId: '', provenance: 'SANDBOX', manualEligible: true, manualNotes: '' });
+  const [submitting, setSubmitting] = useState(false);
 
   const refresh = useCallback(() => {
     setLoading(true);
-    apiFetch('/rcm/eligibility/results?limit=50')
-      .then((data) => {
-        setResults(data?.items ?? []);
-        setTotal(data?.total ?? 0);
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
+    Promise.all([
+      apiFetch('/rcm/eligibility/history?limit=50'),
+      apiFetch('/rcm/eligibility/stats'),
+    ]).then(([hist, st]) => {
+      setResults(hist?.items ?? []);
+      setTotal(hist?.total ?? 0);
+      setStats(st?.stats ?? null);
+    }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
   useEffect(() => { refresh(); }, [refresh]);
 
-  if (loading) return <div style={{ color: '#6c757d', fontSize: 13 }}>Loading eligibility results...</div>;
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    try {
+      const body: any = { patientDfn: formData.patientDfn, payerId: formData.payerId, subscriberId: formData.subscriberId || undefined, provenance: formData.provenance };
+      if (formData.provenance === 'MANUAL') {
+        body.manualResult = { eligible: formData.manualEligible, notes: formData.manualNotes || undefined };
+      }
+      await apiFetch('/rcm/eligibility/check', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      setShowForm(false);
+      refresh();
+    } catch { /* ignore */ }
+    setSubmitting(false);
+  };
+
+  if (loading) return <div style={{ color: '#6c757d', fontSize: 13 }}>Loading eligibility checks...</div>;
 
   return (
     <div>
+      {/* Stats Bar */}
+      {stats && (
+        <div style={{ display: 'flex', gap: 16, marginBottom: 16, flexWrap: 'wrap' }}>
+          {[
+            { label: 'Total', value: stats.totalChecks, color: '#495057' },
+            { label: 'Eligible', value: stats.eligibleCount, color: '#198754' },
+            { label: 'Ineligible', value: stats.ineligibleCount, color: '#dc3545' },
+            { label: 'Failed', value: stats.failedChecks, color: '#fd7e14' },
+            { label: 'Avg ms', value: stats.avgResponseMs != null ? Math.round(stats.avgResponseMs) : '-', color: '#6c757d' },
+          ].map(s => (
+            <div key={s.label} style={{ padding: '8px 16px', background: '#f8f9fa', borderRadius: 6, textAlign: 'center', minWidth: 80 }}>
+              <div style={{ fontSize: 18, fontWeight: 700, color: s.color }}>{s.value}</div>
+              <div style={{ fontSize: 11, color: '#6c757d' }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      )}
+
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
-        <h3 style={{ fontSize: 15, margin: 0 }}>Eligibility Poll Results (Phase 69)</h3>
-        <span style={{ fontSize: 11, color: '#6c757d' }}>{total} total results</span>
+        <h3 style={{ fontSize: 15, margin: 0 }}>Eligibility Checks (Phase 100 -- Durable)</h3>
+        <span style={{ fontSize: 11, color: '#6c757d' }}>{total} total</span>
         <button onClick={refresh} style={{ fontSize: 11, padding: '4px 12px', cursor: 'pointer' }}>Refresh</button>
+        <button onClick={() => setShowForm(!showForm)} style={{ fontSize: 11, padding: '4px 12px', cursor: 'pointer', background: '#0d6efd', color: '#fff', border: 'none', borderRadius: 4 }}>
+          {showForm ? 'Cancel' : '+ New Check'}
+        </button>
       </div>
+
+      {/* New Check Form */}
+      {showForm && (
+        <div style={{ padding: 16, background: '#f8f9fa', borderRadius: 8, marginBottom: 16, border: '1px solid #dee2e6' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 12 }}>
+            <label style={{ fontSize: 12 }}>Patient DFN<br /><input value={formData.patientDfn} onChange={e => setFormData(p => ({ ...p, patientDfn: e.target.value }))} style={{ width: '100%', padding: 6, fontSize: 13 }} placeholder="e.g. 3" /></label>
+            <label style={{ fontSize: 12 }}>Payer ID<br /><input value={formData.payerId} onChange={e => setFormData(p => ({ ...p, payerId: e.target.value }))} style={{ width: '100%', padding: 6, fontSize: 13 }} placeholder="e.g. BCBS-001" /></label>
+            <label style={{ fontSize: 12 }}>Provenance<br />
+              <select value={formData.provenance} onChange={e => setFormData(p => ({ ...p, provenance: e.target.value }))} style={{ width: '100%', padding: 6, fontSize: 13 }}>
+                <option value="MANUAL">Manual</option>
+                <option value="SANDBOX">Sandbox</option>
+                <option value="EDI_270_271">EDI 270/271 (Pending)</option>
+                <option value="CLEARINGHOUSE">Clearinghouse (Pending)</option>
+              </select>
+            </label>
+          </div>
+          {formData.provenance === 'MANUAL' && (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 12, marginBottom: 12 }}>
+              <label style={{ fontSize: 12 }}>Eligible?<br />
+                <select value={String(formData.manualEligible)} onChange={e => setFormData(p => ({ ...p, manualEligible: e.target.value === 'true' }))} style={{ width: '100%', padding: 6, fontSize: 13 }}>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </label>
+              <label style={{ fontSize: 12 }}>Notes<br /><input value={formData.manualNotes} onChange={e => setFormData(p => ({ ...p, manualNotes: e.target.value }))} style={{ width: '100%', padding: 6, fontSize: 13 }} placeholder="Optional notes" /></label>
+            </div>
+          )}
+          <button onClick={handleSubmit} disabled={submitting || !formData.patientDfn || !formData.payerId} style={{ padding: '6px 20px', fontSize: 13, background: '#198754', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
+            {submitting ? 'Checking...' : 'Run Check'}
+          </button>
+        </div>
+      )}
 
       {results.length === 0 ? (
         <div style={{ padding: 24, textAlign: 'center', color: '#6c757d', fontSize: 13 }}>
-          No eligibility poll results yet. Enable polling or submit eligibility check requests.
+          No eligibility checks yet. Use the form above to run a check.
         </div>
       ) : (
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
           <thead>
             <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
               <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Timestamp</th>
-              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Claim ID</th>
+              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Patient</th>
               <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Payer</th>
-              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Mode</th>
+              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Provenance</th>
               <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Eligible</th>
               <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Status</th>
-              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Response ms</th>
+              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>ms</th>
             </tr>
           </thead>
           <tbody>
             {results.map((r: any) => (
               <tr key={r.id}>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0', fontSize: 11, fontFamily: 'monospace' }}>
-                  {r.pollTimestamp ? new Date(r.pollTimestamp).toLocaleString() : '-'}
+                  {r.createdAt ? new Date(r.createdAt).toLocaleString() : '-'}
                 </td>
-                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>{r.claimId}</td>
-                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>{r.payerCode}</td>
-                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0', fontSize: 11 }}>{r.integrationMode}</td>
+                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>{r.patientDfn}</td>
+                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>{r.payerId}</td>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>
-                  <span style={{
-                    display: 'inline-block', padding: '2px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600,
-                    background: r.eligible === true ? '#d1e7dd' : r.eligible === false ? '#f8d7da' : '#e2e3e5',
-                    color: r.eligible === true ? '#0f5132' : r.eligible === false ? '#842029' : '#41464b',
-                  }}>
-                    {r.eligible === null ? 'UNKNOWN' : r.eligible ? 'YES' : 'NO'}
+                  <span style={{ display: 'inline-block', padding: '2px 6px', borderRadius: 4, fontSize: 10, fontWeight: 600, background: r.provenance === 'MANUAL' ? '#cfe2ff' : r.provenance === 'SANDBOX' ? '#d1e7dd' : '#fff3cd', color: r.provenance === 'MANUAL' ? '#084298' : r.provenance === 'SANDBOX' ? '#0f5132' : '#664d03' }}>
+                    {r.provenance}
                   </span>
                 </td>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>
-                  <span style={{
-                    display: 'inline-block', padding: '2px 6px', borderRadius: 4, fontSize: 10, fontWeight: 600,
-                    background: r.status === 'completed' ? '#d1e7dd' : r.status === 'failed' ? '#f8d7da' : '#fff3cd',
-                    color: r.status === 'completed' ? '#0f5132' : r.status === 'failed' ? '#842029' : '#664d03',
-                  }}>
-                    {r.status?.toUpperCase()}
+                  <span style={{ display: 'inline-block', padding: '2px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600, background: r.eligible === true ? '#d1e7dd' : r.eligible === false ? '#f8d7da' : '#e2e3e5', color: r.eligible === true ? '#0f5132' : r.eligible === false ? '#842029' : '#41464b' }}>
+                    {r.eligible === null || r.eligible === undefined ? 'UNKNOWN' : r.eligible ? 'YES' : 'NO'}
+                  </span>
+                </td>
+                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>
+                  <span style={{ display: 'inline-block', padding: '2px 6px', borderRadius: 4, fontSize: 10, fontWeight: 600, background: r.status === 'completed' ? '#d1e7dd' : r.status === 'failed' ? '#f8d7da' : r.status === 'integration_pending' ? '#fff3cd' : '#e2e3e5', color: r.status === 'completed' ? '#0f5132' : r.status === 'failed' ? '#842029' : r.status === 'integration_pending' ? '#664d03' : '#41464b' }}>
+                    {(r.status ?? '').toUpperCase().replaceAll('_', ' ')}
+                  </span>
+                </td>
+                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>{r.responseMs ?? '-'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}
+
+/* ─── Claim Status Tab (Phase 100) ────────────────────────────────── */
+
+function ClaimStatusTab() {
+  const [results, setResults] = useState<any[]>([]);
+  const [total, setTotal] = useState(0);
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({ claimRef: '', payerId: '', payerClaimId: '', provenance: 'SANDBOX', manualClaimStatus: 'pending', manualNotes: '' });
+  const [submitting, setSubmitting] = useState(false);
+  const [timelineRef, setTimelineRef] = useState('');
+  const [timeline, setTimeline] = useState<any[] | null>(null);
+
+  const refresh = useCallback(() => {
+    setLoading(true);
+    Promise.all([
+      apiFetch('/rcm/claim-status/history?limit=50'),
+      apiFetch('/rcm/claim-status/stats'),
+    ]).then(([hist, st]) => {
+      setResults(hist?.items ?? []);
+      setTotal(hist?.total ?? 0);
+      setStats(st?.stats ?? null);
+    }).catch(() => {}).finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    try {
+      const body: any = { claimRef: formData.claimRef, payerId: formData.payerId, payerClaimId: formData.payerClaimId || undefined, provenance: formData.provenance };
+      if (formData.provenance === 'MANUAL') {
+        body.manualResult = { claimStatus: formData.manualClaimStatus, notes: formData.manualNotes || undefined };
+      }
+      await apiFetch('/rcm/claim-status/check', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      setShowForm(false);
+      refresh();
+    } catch { /* ignore */ }
+    setSubmitting(false);
+  };
+
+  const loadTimeline = async () => {
+    if (!timelineRef) return;
+    const data = await apiFetch(`/rcm/claim-status/timeline?claimRef=${encodeURIComponent(timelineRef)}`);
+    setTimeline(data?.timeline ?? []);
+  };
+
+  if (loading) return <div style={{ color: '#6c757d', fontSize: 13 }}>Loading claim status checks...</div>;
+
+  return (
+    <div>
+      {/* Stats Bar */}
+      {stats && (
+        <div style={{ display: 'flex', gap: 16, marginBottom: 16, flexWrap: 'wrap' }}>
+          {[
+            { label: 'Total', value: stats.totalChecks, color: '#495057' },
+            { label: 'Completed', value: stats.completedChecks, color: '#198754' },
+            { label: 'Failed', value: stats.failedChecks, color: '#dc3545' },
+            { label: 'Avg ms', value: stats.avgResponseMs != null ? Math.round(stats.avgResponseMs) : '-', color: '#6c757d' },
+          ].map(s => (
+            <div key={s.label} style={{ padding: '8px 16px', background: '#f8f9fa', borderRadius: 6, textAlign: 'center', minWidth: 80 }}>
+              <div style={{ fontSize: 18, fontWeight: 700, color: s.color }}>{s.value}</div>
+              <div style={{ fontSize: 11, color: '#6c757d' }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+        <h3 style={{ fontSize: 15, margin: 0 }}>Claim Status Checks (Phase 100 -- Durable)</h3>
+        <span style={{ fontSize: 11, color: '#6c757d' }}>{total} total</span>
+        <button onClick={refresh} style={{ fontSize: 11, padding: '4px 12px', cursor: 'pointer' }}>Refresh</button>
+        <button onClick={() => setShowForm(!showForm)} style={{ fontSize: 11, padding: '4px 12px', cursor: 'pointer', background: '#0d6efd', color: '#fff', border: 'none', borderRadius: 4 }}>
+          {showForm ? 'Cancel' : '+ New Check'}
+        </button>
+      </div>
+
+      {/* New Check Form */}
+      {showForm && (
+        <div style={{ padding: 16, background: '#f8f9fa', borderRadius: 8, marginBottom: 16, border: '1px solid #dee2e6' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 12 }}>
+            <label style={{ fontSize: 12 }}>Claim Ref<br /><input value={formData.claimRef} onChange={e => setFormData(p => ({ ...p, claimRef: e.target.value }))} style={{ width: '100%', padding: 6, fontSize: 13 }} placeholder="e.g. CLM-001" /></label>
+            <label style={{ fontSize: 12 }}>Payer ID<br /><input value={formData.payerId} onChange={e => setFormData(p => ({ ...p, payerId: e.target.value }))} style={{ width: '100%', padding: 6, fontSize: 13 }} placeholder="e.g. BCBS-001" /></label>
+            <label style={{ fontSize: 12 }}>Provenance<br />
+              <select value={formData.provenance} onChange={e => setFormData(p => ({ ...p, provenance: e.target.value }))} style={{ width: '100%', padding: 6, fontSize: 13 }}>
+                <option value="MANUAL">Manual</option>
+                <option value="SANDBOX">Sandbox</option>
+                <option value="EDI_276_277">EDI 276/277 (Pending)</option>
+                <option value="CLEARINGHOUSE">Clearinghouse (Pending)</option>
+              </select>
+            </label>
+          </div>
+          {formData.provenance === 'MANUAL' && (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 12, marginBottom: 12 }}>
+              <label style={{ fontSize: 12 }}>Status<br />
+                <select value={formData.manualClaimStatus} onChange={e => setFormData(p => ({ ...p, manualClaimStatus: e.target.value }))} style={{ width: '100%', padding: 6, fontSize: 13 }}>
+                  <option value="pending">Pending</option>
+                  <option value="accepted">Accepted</option>
+                  <option value="denied">Denied</option>
+                  <option value="paid">Paid</option>
+                  <option value="in_review">In Review</option>
+                </select>
+              </label>
+              <label style={{ fontSize: 12 }}>Notes<br /><input value={formData.manualNotes} onChange={e => setFormData(p => ({ ...p, manualNotes: e.target.value }))} style={{ width: '100%', padding: 6, fontSize: 13 }} placeholder="Optional notes" /></label>
+            </div>
+          )}
+          <button onClick={handleSubmit} disabled={submitting || !formData.claimRef || !formData.payerId} style={{ padding: '6px 20px', fontSize: 13, background: '#198754', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
+            {submitting ? 'Checking...' : 'Run Check'}
+          </button>
+        </div>
+      )}
+
+      {/* Timeline Lookup */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 16, alignItems: 'end' }}>
+        <label style={{ fontSize: 12 }}>Timeline for Claim Ref:<br />
+          <input value={timelineRef} onChange={e => setTimelineRef(e.target.value)} style={{ padding: 6, fontSize: 13, width: 200 }} placeholder="e.g. CLM-001" />
+        </label>
+        <button onClick={loadTimeline} disabled={!timelineRef} style={{ padding: '6px 16px', fontSize: 12, cursor: 'pointer' }}>Load Timeline</button>
+      </div>
+
+      {timeline && (
+        <div style={{ marginBottom: 16, padding: 12, background: '#f0f0f0', borderRadius: 6 }}>
+          <strong style={{ fontSize: 13 }}>Timeline: {timelineRef} ({timeline.length} entries)</strong>
+          {timeline.length === 0 ? (
+            <div style={{ fontSize: 12, color: '#6c757d', marginTop: 8 }}>No status checks found for this claim.</div>
+          ) : (
+            <div style={{ marginTop: 8 }}>
+              {timeline.map((t: any, i: number) => (
+                <div key={t.id} style={{ padding: '4px 0', borderBottom: i < timeline.length - 1 ? '1px solid #dee2e6' : 'none', fontSize: 12 }}>
+                  <span style={{ fontFamily: 'monospace', fontSize: 11 }}>{new Date(t.createdAt).toLocaleString()}</span>
+                  {' -- '}
+                  <span style={{ fontWeight: 600 }}>{t.claimStatus ?? 'unknown'}</span>
+                  {' via '}
+                  <span style={{ color: '#6c757d' }}>{t.provenance}</span>
+                  {t.paidAmountCents != null && <span> -- Paid: ${(t.paidAmountCents / 100).toFixed(2)}</span>}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {results.length === 0 ? (
+        <div style={{ padding: 24, textAlign: 'center', color: '#6c757d', fontSize: 13 }}>
+          No claim status checks yet. Use the form above to run a check.
+        </div>
+      ) : (
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+          <thead>
+            <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Timestamp</th>
+              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Claim Ref</th>
+              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Payer</th>
+              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Provenance</th>
+              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Claim Status</th>
+              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>Check Status</th>
+              <th style={{ padding: '8px', borderBottom: '1px solid #dee2e6' }}>ms</th>
+            </tr>
+          </thead>
+          <tbody>
+            {results.map((r: any) => (
+              <tr key={r.id}>
+                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0', fontSize: 11, fontFamily: 'monospace' }}>
+                  {r.createdAt ? new Date(r.createdAt).toLocaleString() : '-'}
+                </td>
+                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>{r.claimRef}</td>
+                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>{r.payerId}</td>
+                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>
+                  <span style={{ display: 'inline-block', padding: '2px 6px', borderRadius: 4, fontSize: 10, fontWeight: 600, background: r.provenance === 'MANUAL' ? '#cfe2ff' : r.provenance === 'SANDBOX' ? '#d1e7dd' : '#fff3cd', color: r.provenance === 'MANUAL' ? '#084298' : r.provenance === 'SANDBOX' ? '#0f5132' : '#664d03' }}>
+                    {r.provenance}
+                  </span>
+                </td>
+                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0', fontWeight: 600, fontSize: 11 }}>{r.claimStatus ?? '-'}</td>
+                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>
+                  <span style={{ display: 'inline-block', padding: '2px 6px', borderRadius: 4, fontSize: 10, fontWeight: 600, background: r.status === 'completed' ? '#d1e7dd' : r.status === 'failed' ? '#f8d7da' : r.status === 'integration_pending' ? '#fff3cd' : '#e2e3e5', color: r.status === 'completed' ? '#0f5132' : r.status === 'failed' ? '#842029' : r.status === 'integration_pending' ? '#664d03' : '#41464b' }}>
+                    {(r.status ?? '').toUpperCase().replaceAll('_', ' ')}
                   </span>
                 </td>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace', fontSize: 11 }}>{r.responseMs ?? '-'}</td>

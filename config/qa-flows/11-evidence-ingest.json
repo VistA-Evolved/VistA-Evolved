@@ -1,0 +1,42 @@
+{
+  "id": "evidence-ingest",
+  "name": "Evidence Ingest + Promote Flow",
+  "domain": "rcm",
+  "priority": "deep",
+  "description": "Ingest JSON evidence snapshot and promote to payer table",
+  "tags": ["deep", "rcm", "evidence"],
+  "expectedRpcs": [],
+  "uiRoute": "/cprs/admin/payer-db",
+  "steps": [
+    {
+      "step": 1,
+      "description": "POST evidence ingest from ph_hmos.json",
+      "method": "POST",
+      "path": "/admin/payer-db/evidence/ingest-json",
+      "body": {
+        "filePath": "data/payers/ph_hmos.json",
+        "asOfDate": "2025-01-20"
+      },
+      "expectedStatus": 200,
+      "assertions": { "ok": true },
+      "extract": { "snapshotId": "snapshotId" }
+    },
+    {
+      "step": 2,
+      "description": "GET evidence list shows the new snapshot",
+      "method": "GET",
+      "path": "/admin/payer-db/evidence",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 3,
+      "description": "POST promote the snapshot",
+      "method": "POST",
+      "path": "/admin/payer-db/evidence/{{snapshotId}}/promote",
+      "expectedStatus": 200,
+      "assertions": { "ok": true },
+      "optional": true
+    }
+  ]
+}

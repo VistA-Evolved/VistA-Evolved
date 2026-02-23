@@ -1,0 +1,21 @@
+{
+  "id": "read-problems",
+  "name": "Problem List Read Flow",
+  "domain": "clinical",
+  "priority": "regression",
+  "description": "Read active problems for a patient",
+  "tags": ["regression", "clinical", "problems"],
+  "expectedRpcs": ["ORQQPL PROBLEM LIST"],
+  "uiRoute": "/cprs",
+  "requiredVariables": ["patientDfn"],
+  "steps": [
+    {
+      "step": 1,
+      "description": "GET /vista/problems returns problem list",
+      "method": "GET",
+      "path": "/vista/problems?dfn={{patientDfn}}",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    }
+  ]
+}

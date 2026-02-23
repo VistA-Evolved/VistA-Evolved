@@ -1031,3 +1031,82 @@ strip BOM first: `raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw`.
 
 **Files**: `scripts/ops/backup-drill-evidence.ts`,
 `scripts/ops/restore-drill-evidence.ts`
+
+### BUG-065: Drizzle ORM `.set()` silently ignores snake_case keys (Phase 102)
+
+**What happened**: `PATCH /admin/payer-db/payers/:id` returned 500 with
+`near "where": syntax error`. The SQLite `updatePayer` function in
+`payer-repo.ts` passed snake_case keys (`updated_at`, `canonical_name`,
+`country_code`, `regulator_source`, `regulator_license_no`,
+`integration_mode`) to Drizzle's `.set()`. Drizzle expects the **camelCase
+JS property names** from the table definition, not the SQL column names.
+
+**Root cause**: Drizzle ORM's `.set()` maps JS property names to SQL
+columns internally. When it receives unrecognized keys (like `updated_at`
+instead of `updatedAt`), it silently skips them. With all keys skipped,
+the generated SQL becomes `UPDATE payer SET WHERE id = ?` — an empty SET
+clause triggers a SQLite syntax error at `WHERE`.
+
+**Fix**: Changed all snake_case keys to camelCase in both `updatePayer`
+functions:
+- `apps/api/src/platform/db/repo/payer-repo.ts` (SQLite)
+- `apps/api/src/platform/pg/repo/payer-repo.ts` (PostgreSQL)
+
+**Prevention**: When using Drizzle ORM `.set()`, `.insert().values()`, or
+`.onConflictDoUpdate()`, always use the **camelCase property names** from
+the Drizzle schema definition, never the raw SQL column names. The
+`as any` cast bypasses type checking but doesn't change runtime behavior.
+
+### BUG-066: Idempotency middleware `reply.then()` overwrites `onSend`-captured body (Phase 103)
+
+**Symptom**: Idempotency replay returns `null` body with content-length 4
+instead of the cached response body. Status code and `Idempotency-Replayed`
+header are correct.
+
+**Root Cause**: The `idempotencyGuard()` preHandler registered a `reply.then()`
+success callback that created a **new** `CachedResponse` with `body: null`
+(because `reply.then()` fires after the response is already sent). This
+overwrote the correct body captured by the `idempotencyOnSend` hook (which
+fires during serialization when the payload is still available).
+
+**Fix**: Changed `reply.then()` success handler to only fill in `statusCode`
+as a fallback if `onSend` missed it (checking `existing.statusCode === 0`),
+instead of creating a new cache entry that clobbers the body. The `onSend`
+hook remains the sole authority for capturing response body.
+
+**Prevention**: When combining Fastify `preHandler` + `onSend` hooks:
+- `onSend` fires during serialization (payload available)
+- `reply.then()` fires after response is sent (payload gone)
+- Never create new cache entries in `reply.then()` if `onSend` already did
+
+
+## Phase 104 — Platform DB Security Posture
+
+### BUG-067: ERR_HTTP_HEADERS_SENT crash on unauthenticated mutations
+
+**Attempted**: Unauthenticated PATCH request to `/admin/payer-db/payers/:id`.
+Expected 401 rejection.
+
+**Error**: Node.js process crash with `ERR_HTTP_HEADERS_SENT`.
+
+**Root Cause**: Fastify v5.7.4 does not stop the `onRequest` hook chain after
+one hook calls `reply.send()`. The auth gateway hook sent 401, but the Origin
+check and CSRF double-submit hooks still executed. The CSRF hook then sent 403,
+causing a double-header write that crashed Node.js.
+
+`reply.sent` was unreliable as a guard because Fastify's hook chain invocation
+can call the next hook before the response is fully flushed.
+
+**Fix**: Added `(request as any)._rejected = true` flag in the auth gateway
+hook on ALL rejection paths (no token → 401, expired session → 401, RBAC
+denied → 403). Added `if ((request as any)._rejected || reply.sent) return;`
+at the top of both the Origin check hook and the CSRF double-submit hook.
+The `_rejected` flag is set synchronously before `reply.send()`, so subsequent
+hooks see it immediately regardless of Fastify's internal response state.
+
+**Prevention**: When using multiple `onRequest` hooks in Fastify:
+- Never assume `reply.sent` will be `true` when the next hook runs
+- Use an explicit request-scoped flag to signal rejection
+- Keep auth rejection in a single hook that sets the flag before sending
+- All downstream hooks must check the flag at their entry point
+

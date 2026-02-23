@@ -1,0 +1,289 @@
+/**
+ * Platform DB — Schema Definition (Drizzle ORM)
+ *
+ * Phase 95B: Platform Persistence Unification
+ *
+ * All payer registry tables defined here. Drizzle infers TS types
+ * from these definitions — no manual interface duplication needed.
+ *
+ * SQLite is the default backend. Postgres support is possible by
+ * swapping drizzle-orm/better-sqlite3 → drizzle-orm/node-postgres
+ * and adjusting column types. That migration is intentionally deferred.
+ */
+
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+
+/* ── A) payer — global reference ─────────────────────────────── */
+
+export const payer = sqliteTable("payer", {
+  id: text("id").primaryKey(),                    // UUID
+  canonicalName: text("canonical_name").notNull(),
+  aliases: text("aliases").notNull().default("[]"),  // JSON array of strings
+  countryCode: text("country_code").notNull().default("PH"),
+  regulatorSource: text("regulator_source"),       // e.g. "IC_PH"
+  regulatorLicenseNo: text("regulator_license_no"),
+  category: text("category"),                      // government | hmo | private_insurance
+  payerType: text("payer_type"),                   // hmo_l1 | hmo_l3 | tpa | government | private_insurance | other (Phase 97B)
+  integrationMode: text("integration_mode"),       // manual | portal | api | clearinghouse_edi
+  active: integer("active", { mode: "boolean" }).notNull().default(true),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/* ── B) tenant_payer — tenant-scoped operational config ───────── */
+
+export const tenantPayer = sqliteTable("tenant_payer", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull(),
+  payerId: text("payer_id").notNull().references(() => payer.id),
+  status: text("status").notNull().default("contracting_needed"), // enabled | contracting_needed | disabled
+  notes: text("notes"),
+  vaultRef: text("vault_ref"),               // credential vault reference (NEVER store secrets)
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/* ── C) payer_capability — tenant-scoped overrides + baseline ── */
+
+export const payerCapability = sqliteTable("payer_capability", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id"),                    // null = global baseline
+  payerId: text("payer_id").notNull().references(() => payer.id),
+  capabilityKey: text("capability_key").notNull(), // e.g. "provider_portal", "loa_portal"
+  value: text("value").notNull(),                  // "available" | "portal" | "manual" | "unknown_publicly" | "unavailable"
+  confidence: text("confidence").notNull().default("unknown"), // confirmed | inferred | unknown
+  evidenceSnapshotId: text("evidence_snapshot_id"),
+  reason: text("reason"),                          // why this value was set
+  updatedAt: text("updated_at").notNull(),
+});
+
+/* ── D) payer_task — contracting + implementation tasks ──────── */
+
+export const payerTask = sqliteTable("payer_task", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id"),
+  payerId: text("payer_id").notNull().references(() => payer.id),
+  title: text("title").notNull(),
+  description: text("description"),
+  status: text("status").notNull().default("open"), // open | in_progress | blocked | done
+  dueDate: text("due_date"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/* ── E) payer_evidence_snapshot — provenance + hash ──────────── */
+
+export const payerEvidenceSnapshot = sqliteTable("payer_evidence_snapshot", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id"),                    // null = global evidence
+  sourceType: text("source_type").notNull(),       // pdf_upload | json_snapshot | url_fetch
+  sourceUrl: text("source_url"),
+  asOfDate: text("as_of_date").notNull(),
+  sha256: text("sha256").notNull(),
+  storedPath: text("stored_path"),                 // file path if stored locally
+  parserVersion: text("parser_version").notNull().default("1.0.0"),
+  status: text("status").notNull().default("pending"), // pending | promoted | superseded
+  payerCount: integer("payer_count"),
+  ingestedAt: text("ingested_at").notNull(),
+});
+
+/* ── F) payer_audit_event — append-only immutable ────────────── */
+
+export const payerAuditEvent = sqliteTable("payer_audit_event", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id"),
+  actorType: text("actor_type").notNull(),         // user | system
+  actorId: text("actor_id"),
+  entityType: text("entity_type").notNull(),       // payer | tenant_payer | payer_capability | payer_task | evidence_snapshot
+  entityId: text("entity_id").notNull(),
+  action: text("action").notNull(),                // create | update | deactivate | ingest | promote
+  beforeJson: text("before_json"),                 // JSON snapshot before change
+  afterJson: text("after_json"),                   // JSON snapshot after change
+  reason: text("reason"),
+  evidenceSnapshotId: text("evidence_snapshot_id"),
+  createdAt: text("created_at").notNull(),
+});
+
+/* ── G) denial_case — Phase 98: Denials & Appeals ────────────── */
+
+export const denialCase = sqliteTable("denial_case", {
+  id: text("id").primaryKey(),
+  claimRef: text("claim_ref").notNull(),
+  vistaClaimIen: text("vista_claim_ien"),
+  patientDfn: text("patient_dfn"),
+  payerId: text("payer_id").notNull(),
+  denialStatus: text("denial_status").notNull().default("NEW"),
+  denialSource: text("denial_source").notNull().default("MANUAL"),
+  denialCodesJson: text("denial_codes_json").notNull().default("[]"),
+  denialNarrative: text("denial_narrative"),
+  receivedDate: text("received_date").notNull(),
+  deadlineDate: text("deadline_date"),
+  assignedTo: text("assigned_to"),
+  assignedTeam: text("assigned_team"),
+  billedAmountCents: integer("billed_amount_cents").notNull().default(0),
+  allowedAmountCents: integer("allowed_amount_cents"),
+  paidAmountCents: integer("paid_amount_cents"),
+  patientRespCents: integer("patient_resp_cents"),
+  adjustmentAmountCents: integer("adjustment_amount_cents"),
+  evidenceRefsJson: text("evidence_refs_json").notNull().default("[]"),
+  importFileHash: text("import_file_hash"),
+  importTimestamp: text("import_timestamp"),
+  importParserVersion: text("import_parser_version"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/* ── H) denial_action — Phase 98: append-only action log ─────── */
+
+export const denialAction = sqliteTable("denial_action", {
+  id: text("id").primaryKey(),
+  denialId: text("denial_id").notNull(),
+  actor: text("actor").notNull(),
+  timestamp: text("timestamp").notNull(),
+  actionType: text("action_type").notNull(),
+  payloadJson: text("payload_json").notNull().default("{}"),
+  previousStatus: text("previous_status"),
+  newStatus: text("new_status"),
+});
+
+/* ── I) denial_attachment — Phase 98: reference-only ─────────── */
+
+export const denialAttachment = sqliteTable("denial_attachment", {
+  id: text("id").primaryKey(),
+  denialId: text("denial_id").notNull(),
+  label: text("label").notNull(),
+  refType: text("ref_type").notNull(),
+  storedPath: text("stored_path"),
+  sha256: text("sha256"),
+  addedAt: text("added_at").notNull(),
+  addedBy: text("added_by"),
+});
+
+/* ── J) resubmission_attempt — Phase 98: appeal/correction ───── */
+
+export const resubmissionAttempt = sqliteTable("resubmission_attempt", {
+  id: text("id").primaryKey(),
+  denialId: text("denial_id").notNull(),
+  createdAt: text("created_at").notNull(),
+  method: text("method").notNull(),
+  referenceNumber: text("reference_number"),
+  followUpDate: text("follow_up_date"),
+  notes: text("notes"),
+  actor: text("actor").notNull(),
+});
+
+/* ── K) remittance_import — Phase 99: Reconciliation ─────────── */
+
+export const remittanceImport = sqliteTable("remittance_import", {
+  id: text("id").primaryKey(),
+  createdAt: text("created_at").notNull(),
+  sourceType: text("source_type").notNull().default("MANUAL"),
+  receivedAt: text("received_at").notNull(),
+  fileHash: text("file_hash"),
+  originalFilename: text("original_filename"),
+  parserName: text("parser_name"),
+  parserVersion: text("parser_version"),
+  mappingVersion: text("mapping_version"),
+  lineCount: integer("line_count").notNull().default(0),
+  totalPaidCents: integer("total_paid_cents").notNull().default(0),
+  totalBilledCents: integer("total_billed_cents").notNull().default(0),
+  importedBy: text("imported_by").notNull(),
+});
+
+/* ── L) payment_record — Phase 99: Individual payment lines ──── */
+
+export const paymentRecord = sqliteTable("payment_record", {
+  id: text("id").primaryKey(),
+  remittanceImportId: text("remittance_import_id").notNull(),
+  createdAt: text("created_at").notNull(),
+  claimRef: text("claim_ref").notNull(),
+  payerId: text("payer_id").notNull(),
+  status: text("status").notNull().default("IMPORTED"),
+  billedAmountCents: integer("billed_amount_cents").notNull().default(0),
+  paidAmountCents: integer("paid_amount_cents").notNull().default(0),
+  allowedAmountCents: integer("allowed_amount_cents"),
+  patientRespCents: integer("patient_resp_cents"),
+  adjustmentAmountCents: integer("adjustment_amount_cents"),
+  traceNumber: text("trace_number"),
+  checkNumber: text("check_number"),
+  postedDate: text("posted_date"),
+  serviceDate: text("service_date"),
+  rawCodesJson: text("raw_codes_json").notNull().default("[]"),
+  patientDfn: text("patient_dfn"),
+  lineIndex: integer("line_index").notNull().default(0),
+});
+
+/* ── M) reconciliation_match — Phase 99: Payment-to-claim match ─ */
+
+export const reconciliationMatch = sqliteTable("reconciliation_match", {
+  id: text("id").primaryKey(),
+  createdAt: text("created_at").notNull(),
+  paymentId: text("payment_id").notNull(),
+  claimRef: text("claim_ref").notNull(),
+  matchConfidence: integer("match_confidence").notNull().default(0),
+  matchMethod: text("match_method").notNull(),
+  matchStatus: text("match_status").notNull().default("REVIEW_REQUIRED"),
+  matchNotes: text("match_notes"),
+  confirmedBy: text("confirmed_by"),
+  confirmedAt: text("confirmed_at"),
+});
+
+/* ── N) underpayment_case — Phase 99: Shortfall tracking ────── */
+
+export const underpaymentCase = sqliteTable("underpayment_case", {
+  id: text("id").primaryKey(),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+  claimRef: text("claim_ref").notNull(),
+  paymentId: text("payment_id").notNull(),
+  payerId: text("payer_id").notNull(),
+  expectedAmountModel: text("expected_amount_model").notNull().default("BILLED_AMOUNT"),
+  expectedAmountCents: integer("expected_amount_cents").notNull(),
+  paidAmountCents: integer("paid_amount_cents").notNull(),
+  deltaCents: integer("delta_cents").notNull(),
+  status: text("status").notNull().default("NEW"),
+  denialCaseId: text("denial_case_id"),
+  resolvedAt: text("resolved_at"),
+  resolvedBy: text("resolved_by"),
+  resolutionNote: text("resolution_note"),
+});
+
+/* ── O) eligibility_check — Phase 100: Durable eligibility results ── */
+
+export const eligibilityCheck = sqliteTable("eligibility_check", {
+  id: text("id").primaryKey(),
+  patientDfn: text("patient_dfn").notNull(),
+  payerId: text("payer_id").notNull(),
+  subscriberId: text("subscriber_id"),
+  memberId: text("member_id"),
+  dateOfService: text("date_of_service"),
+  provenance: text("provenance").notNull(),           // MANUAL | SANDBOX | EDI_270_271 | CLEARINGHOUSE | PORTAL
+  eligible: integer("eligible", { mode: "boolean" }), // null = unknown
+  status: text("status").notNull().default("pending"), // completed | failed | pending | integration_pending
+  responseJson: text("response_json"),                 // Full adapter response
+  errorMessage: text("error_message"),
+  responseMs: integer("response_ms"),
+  checkedBy: text("checked_by"),                       // DUZ or 'system'
+  tenantId: text("tenant_id").notNull().default("default"),
+  createdAt: text("created_at").notNull(),
+});
+
+/* ── P) claim_status_check — Phase 100: Durable claim status results ─ */
+
+export const claimStatusCheck = sqliteTable("claim_status_check", {
+  id: text("id").primaryKey(),
+  claimRef: text("claim_ref").notNull(),
+  payerId: text("payer_id").notNull(),
+  payerClaimId: text("payer_claim_id"),
+  provenance: text("provenance").notNull(),             // MANUAL | SANDBOX | EDI_276_277 | CLEARINGHOUSE | PORTAL
+  claimStatus: text("claim_status"),                    // payer-reported status string
+  adjudicationDate: text("adjudication_date"),
+  paidAmountCents: integer("paid_amount_cents"),
+  status: text("status").notNull().default("pending"),  // completed | failed | pending | integration_pending
+  responseJson: text("response_json"),
+  errorMessage: text("error_message"),
+  responseMs: integer("response_ms"),
+  checkedBy: text("checked_by"),
+  tenantId: text("tenant_id").notNull().default("default"),
+  createdAt: text("created_at").notNull(),
+});

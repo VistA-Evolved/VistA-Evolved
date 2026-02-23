@@ -1,0 +1,1 @@
+{"payerId":"PH-MAXICARE","patientDfn":"3","patientName":"TEST,PATIENT","encounterDate":"2026-02-23","diagnosisCodes":[{"code":"J18.9","system":"ICD10"}],"procedureCodes":[{"code":"99213","system":"CPT"}],"totalCharges":5000,"providerNpi":"1234567890","attendingPhysician":"PROVIDER,CLYDE WV","subscriberId":"MAX-123456","isDemo":false}

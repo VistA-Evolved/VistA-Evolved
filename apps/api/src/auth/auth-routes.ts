@@ -131,6 +131,7 @@ function clearLockout(accountKey: string): void {
 
 /** Helper to require a valid session on a request.  Returns session or throws 401. */
 export function requireSession(request: any, reply: any): SessionData {
+  if (reply.sent) throw new Error("Reply already sent");
   const token = extractToken(request);
   if (!token) {
     reply.code(401).send({ ok: false, error: "Not authenticated" });
@@ -146,6 +147,7 @@ export function requireSession(request: any, reply: any): SessionData {
 
 /** Helper to require a specific role. */
 export function requireRole(session: SessionData, roles: string[], reply: any): void {
+  if (reply.sent) throw new Error("Reply already sent");
   if (!roles.includes(session.role)) {
     reply.code(403).send({ ok: false, error: "Insufficient privileges", requiredRoles: roles });
     throw new Error("Forbidden");

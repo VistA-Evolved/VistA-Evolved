@@ -8,7 +8,9 @@ import {
   validateCredentials,
 } from "./config";
 import { RPC_CONFIG } from "../config/server-config.js";
-import { log } from "../lib/logger.js";
+import { log, getRequestId } from "../lib/logger.js";
+// Phase 96B: RPC trace recording at the protocol level
+import { recordRpcTrace } from "../qa/rpc-trace.js";
 
 /**
  * XWB RPC Broker client for VistA.
@@ -468,12 +470,37 @@ export async function callRpc(
   dbg("RPC CALL", rpcName);
   const rpcMsg = buildRpcMessage(rpcName, params);
   dbgHex("SEND RPC", rpcMsg);
-  await rawSend(rpcMsg);
-  const resp = stripNulls(await readToEOT());
-  dbg("RPC RESP", resp.substring(0, 300));
-  dbgHex("RECV RPC", resp);
-
-  return resp.split(/\r?\n/).filter((l) => l.length > 0);
+  const start = Date.now();
+  try {
+    await rawSend(rpcMsg);
+    const resp = stripNulls(await readToEOT());
+    dbg("RPC RESP", resp.substring(0, 300));
+    dbgHex("RECV RPC", resp);
+    const lines = resp.split(/\r?\n/).filter((l) => l.length > 0);
+    // Phase 96B: record trace
+    recordRpcTrace({
+      rpcName,
+      params: [],   // PHI-safe: never log raw params
+      durationMs: Date.now() - start,
+      success: true,
+      responseLines: lines.length,
+      duz: sessionDuz,
+      requestId: getRequestId(),
+    });
+    return lines;
+  } catch (err: any) {
+    recordRpcTrace({
+      rpcName,
+      params: [],
+      durationMs: Date.now() - start,
+      success: false,
+      error: err.message?.slice(0, 200),
+      responseLines: 0,
+      duz: sessionDuz,
+      requestId: getRequestId(),
+    });
+    throw err;
+  }
 }
 
 /** Return the DUZ of the authenticated user (set during connect). */
@@ -540,12 +567,37 @@ export async function callRpcWithList(
   dbg("RPC CALL", rpcName);
   const rpcMsg = buildRpcMessageEx(rpcName, params);
   dbgHex("SEND RPC", rpcMsg);
-  await rawSend(rpcMsg);
-  const resp = stripNulls(await readToEOT());
-  dbg("RPC RESP", resp.substring(0, 300));
-  dbgHex("RECV RPC", resp);
-
-  return resp.split(/\r?\n/).filter((l) => l.length > 0);
+  const start = Date.now();
+  try {
+    await rawSend(rpcMsg);
+    const resp = stripNulls(await readToEOT());
+    dbg("RPC RESP", resp.substring(0, 300));
+    dbgHex("RECV RPC", resp);
+    const lines = resp.split(/\r?\n/).filter((l) => l.length > 0);
+    // Phase 96B: record trace
+    recordRpcTrace({
+      rpcName,
+      params: [],
+      durationMs: Date.now() - start,
+      success: true,
+      responseLines: lines.length,
+      duz: sessionDuz,
+      requestId: getRequestId(),
+    });
+    return lines;
+  } catch (err: any) {
+    recordRpcTrace({
+      rpcName,
+      params: [],
+      durationMs: Date.now() - start,
+      success: false,
+      error: err.message?.slice(0, 200),
+      responseLines: 0,
+      duz: sessionDuz,
+      requestId: getRequestId(),
+    });
+    throw err;
+  }
 }
 
 // ---- Phase 13: User authentication with custom credentials ----

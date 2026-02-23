@@ -1,0 +1,36 @@
+{
+  "id": "rcm-claims-lifecycle",
+  "name": "RCM Claims Lifecycle",
+  "domain": "rcm",
+  "priority": "deep",
+  "description": "Create and track a claim through lifecycle stages",
+  "tags": ["deep", "rcm", "claims"],
+  "expectedRpcs": [],
+  "uiRoute": "/cprs/admin/rcm",
+  "steps": [
+    {
+      "step": 1,
+      "description": "GET /rcm/claims lists existing claims",
+      "method": "GET",
+      "path": "/rcm/claims",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 2,
+      "description": "GET /rcm/payers lists available payers",
+      "method": "GET",
+      "path": "/rcm/payers",
+      "expectedStatus": 200,
+      "assertions": { "ok": true }
+    },
+    {
+      "step": 3,
+      "description": "GET /rcm/edi/pipeline returns pipeline status",
+      "method": "GET",
+      "path": "/rcm/edi/pipeline",
+      "expectedStatus": 200,
+      "optional": true
+    }
+  ]
+}

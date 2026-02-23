@@ -1,0 +1,9 @@
+{
+  "featureTitle": "Phase 96 — PhilHealth eClaims 3.0 Adapter Skeleton",
+  "stage": "implement",
+  "status": "complete",
+  "promptRefPath": "prompts/100-PHASE-96-PHILHEALTH-ECLAIMS3-ADAPTER/96-01-IMPLEMENT.md",
+  "runbookPath": "docs/runbooks/philhealth-eclaims3-spec-status.md",
+  "verifyScriptUsed": "npx tsc --noEmit (both apps)",
+  "commitSHA": "pending"
+}
