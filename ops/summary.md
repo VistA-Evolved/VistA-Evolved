@@ -1,4 +1,66 @@
-# Phase 107: Production Posture Pack -- Summary
+# Phase 108 VERIFY -- Summary
+
+## What Changed
+
+### Fixes Applied (6 issues from deep code audit)
+
+1. **Tautological UI component tests** -- Generated E2E specs now use `findFile()` recursive directory walk via `readdirSync` instead of checking hardcoded array length (which always passed).
+2. **Duplicate `const r` in API specs** -- `generateApiSpec()` now uses `r${idx}` unique variable names per route iteration. Previous code declared `const r` multiple times in the same scope, making all API specs unrunnable.
+3. **Numeric sort before bucketing** -- Added `phaseSort()` using `parseInt(phaseNumber)` with localeCompare tiebreak. Previously phases were unsorted, causing `phases-5-to-11.spec.ts` to contain phases 100, 96, etc.
+4. **Substring matching in runner** -- Changed `content.includes()` to `RegExp` test so phase "10" no longer matches "Phase 100:".
+5. **Placeholder URL filtering** -- Added `!r.includes("<")` to exclude `<dfn>` placeholder URLs from route test generation.
+6. **Stale file cleanup** -- Generator now deletes old `phases-*.spec.ts` / `phases-*.test.ts` before writing new files. Fixed broken `await import("fs")` in non-async context.
+
+### Files Modified
+- `scripts/generate-phase-qa.mjs` -- All 6 fixes above
+- `scripts/phase-qa-runner.mjs` -- Substring matching fix
+- `docs/qa/phase-index.json` -- Regenerated timestamp
+- 7 old E2E specs deleted, 7 new E2E specs generated (numerically sorted filenames)
+- 2 old API specs deleted, 2 new API specs generated
+
+## How to Test Manually
+
+```powershell
+# Deterministic index generation
+node scripts/build-phase-index.mjs
+
+# Generate specs (should auto-clean stale files)
+node scripts/generate-phase-qa.mjs
+
+# Run all phase UI component tests
+cd apps/web
+pnpm exec playwright test e2e/phases/ --grep "UI component" --reporter=list
+
+# Run a single phase
+node scripts/phase-qa-runner.mjs phase 5
+
+# Run a range
+node scripts/phase-qa-runner.mjs range 5 21
+
+# CI gate
+node scripts/qa-gates/phase-index-gate.mjs
+
+# Full verifier
+powershell -ExecutionPolicy Bypass -File scripts/verify-phase108-phase-audit.ps1
+```
+
+## Verifier Output
+
+Phase 108 Verifier: **15/15 pass**
+Phase-index gate: **6/6 pass**
+E2E "UI component" tests: **77/77 pass** (11.7s)
+qa-smoke tests: **7/7 pass** (1.6m)
+qa:range 5..5: **1/1 pass**
+
+## Follow-ups
+
+- `tsx` not available via `pnpm tsx` (only `npx tsx`) -- causes "Prompts ordering" gate failure. Pre-existing issue, not Phase 108 related.
+- API server exits with code 1 -- pre-existing infrastructure issue.
+- 21 phases with no routes are not covered by generated specs (by design -- no route to test).
+
+---
+
+# Phase 107: Production Posture Pack -- Summary (previous)
 
 ## What Changed
 

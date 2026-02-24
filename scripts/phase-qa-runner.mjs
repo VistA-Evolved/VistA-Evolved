@@ -76,9 +76,10 @@ function findSpecFiles(dir, phaseNumbers) {
       // A spec file is relevant if any requested phase falls in its range
       // We check by reading the file header for phase numbers
       const content = readFileSync(join(dir, f), "utf-8");
-      return phaseNumbers.some((pn) =>
-        content.includes(`Phase ${pn}:`) || content.includes(`Phase ${pn} `)
-      );
+      return phaseNumbers.some((pn) => {
+        const re = new RegExp(`Phase ${pn}[:\\s]`);
+        return re.test(content);
+      });
     });
 }
 
