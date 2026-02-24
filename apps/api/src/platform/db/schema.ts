@@ -574,3 +574,25 @@ export const claimLifecycleEvent = sqliteTable("claim_lifecycle_event", {
   detailJson: text("detail_json").default("{}"),
   occurredAt: text("occurred_at").notNull(),
 });
+
+/* ── AE) integration_evidence — Phase 112: Per-payer integration evidence ── */
+
+export const integrationEvidence = sqliteTable("integration_evidence", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  payerId: text("payer_id").notNull(),                          // FK to payer seed or DB payer
+  method: text("method").notNull(),                             // api | portal | manual | edi | fhir
+  channel: text("channel"),                                     // sftp | https | soap | rest | portal_upload | manual_mail
+  source: text("source").notNull(),                             // URL or document reference backing this claim
+  sourceType: text("source_type").notNull().default("url"),     // url | document | screenshot | contact | manual
+  contactInfo: text("contact_info"),                            // payer contact for integration support
+  submissionRequirements: text("submission_requirements"),       // free-text: what the payer requires
+  supportedChannelsJson: text("supported_channels_json").default("[]"),  // JSON array of channels
+  lastVerifiedAt: text("last_verified_at"),                     // ISO 8601
+  verifiedBy: text("verified_by"),                              // DUZ or name of researcher
+  status: text("status").notNull().default("unverified"),       // unverified | verified | stale | archived
+  confidence: text("confidence").notNull().default("unknown"),  // confirmed | inferred | unknown
+  notes: text("notes"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});

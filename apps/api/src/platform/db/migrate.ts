@@ -642,6 +642,31 @@ CREATE INDEX IF NOT EXISTS idx_cle_tenant ON claim_lifecycle_event(tenant_id);
 CREATE INDEX IF NOT EXISTS idx_cle_status ON claim_lifecycle_event(to_status);
 CREATE INDEX IF NOT EXISTS idx_cle_time ON claim_lifecycle_event(occurred_at);
 
+-- AE) integration_evidence — Phase 112: Per-payer integration proof
+CREATE TABLE IF NOT EXISTS integration_evidence (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  payer_id TEXT NOT NULL,
+  method TEXT NOT NULL,
+  channel TEXT,
+  source TEXT NOT NULL,
+  source_type TEXT NOT NULL DEFAULT 'url',
+  contact_info TEXT,
+  submission_requirements TEXT,
+  supported_channels_json TEXT DEFAULT '[]',
+  last_verified_at TEXT,
+  verified_by TEXT,
+  status TEXT NOT NULL DEFAULT 'unverified',
+  confidence TEXT NOT NULL DEFAULT 'unknown',
+  notes TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_intev_payer ON integration_evidence(payer_id);
+CREATE INDEX IF NOT EXISTS idx_intev_tenant ON integration_evidence(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_intev_status ON integration_evidence(status);
+CREATE INDEX IF NOT EXISTS idx_intev_method ON integration_evidence(method);
+
 `;
 
 // Phase 97B: Add payer_type column (idempotent — catches "duplicate column" error)

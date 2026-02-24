@@ -18,7 +18,7 @@ import styles from '@/components/cprs/cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
-type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions' | 'gateways' | 'adapters' | 'jobs' | 'eligibility' | 'claim-status' | 'ops-dashboard' | 'credential-vault' | 'accreditation' | 'claim-lifecycle';
+type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions' | 'gateways' | 'adapters' | 'jobs' | 'eligibility' | 'claim-status' | 'ops-dashboard' | 'credential-vault' | 'accreditation' | 'claim-lifecycle' | 'evidence';
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
@@ -56,6 +56,7 @@ export default function RcmPage() {
     { id: 'credential-vault', label: 'Credential Vault' },
     { id: 'accreditation', label: 'Accreditation' },
     { id: 'claim-lifecycle', label: 'Claim Lifecycle' },
+    { id: 'evidence', label: 'Evidence Registry' },
     { id: 'audit', label: 'Audit Trail' },
   ];
 
@@ -127,6 +128,7 @@ export default function RcmPage() {
         {tab === 'credential-vault' && <CredentialVaultTab />}
         {tab === 'accreditation' && <AccreditationTab />}
         {tab === 'claim-lifecycle' && <ClaimLifecycleTab />}
+        {tab === 'evidence' && <EvidenceRegistryTab />}
         {tab === 'audit' && <AuditTab />}
       </div>
     </div>
@@ -3485,6 +3487,295 @@ function AgingSubTab() {
       )}
       {!loading && aging.length === 0 && (
         <div style={{ fontSize: 12, color: '#198754', padding: 16, textAlign: 'center' }}>No aging denials found for the selected period.</div>
+      )}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   Phase 112: Evidence Registry Tab
+   ══════════════════════════════════════════════════════════════════════ */
+
+function EvidenceRegistryTab() {
+  const [evidence, setEvidence] = useState<any[]>([]);
+  const [coverage, setCoverage] = useState<any>(null);
+  const [gaps, setGaps] = useState<any[]>([]);
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [subTab, setSubTab] = useState<'list' | 'coverage' | 'gaps' | 'add'>('list');
+
+  // Add form state
+  const [formPayerId, setFormPayerId] = useState('');
+  const [formMethod, setFormMethod] = useState('edi');
+  const [formSource, setFormSource] = useState('');
+  const [formChannel, setFormChannel] = useState('');
+  const [formSourceType, setFormSourceType] = useState('url');
+  const [formContactInfo, setFormContactInfo] = useState('');
+  const [formRequirements, setFormRequirements] = useState('');
+  const [formNotes, setFormNotes] = useState('');
+  const [formConfidence, setFormConfidence] = useState('unknown');
+  const [formStatus, setFormStatus] = useState('unverified');
+
+  const refresh = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const [evRes, covRes, gapRes, stRes] = await Promise.all([
+        apiFetch('/rcm/evidence'),
+        apiFetch('/rcm/evidence/coverage'),
+        apiFetch('/rcm/evidence/gaps'),
+        apiFetch('/rcm/evidence/stats'),
+      ]);
+      setEvidence(evRes.evidence ?? []);
+      setCoverage(covRes.summary ?? null);
+      setGaps(gapRes.gaps ?? []);
+      setStats(stRes);
+    } catch (err: any) {
+      setError(err.message ?? 'Failed to load evidence data');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  const handleCreate = async () => {
+    if (!formPayerId || !formSource) {
+      setError('payerId and source are required');
+      return;
+    }
+    try {
+      setError(null);
+      const res = await fetch(`${API_BASE}/rcm/evidence`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          payerId: formPayerId, method: formMethod, source: formSource,
+          channel: formChannel || undefined, sourceType: formSourceType,
+          contactInfo: formContactInfo || undefined,
+          submissionRequirements: formRequirements || undefined,
+          notes: formNotes || undefined, confidence: formConfidence, status: formStatus,
+        }),
+      });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        setError(errData.error ?? `HTTP ${res.status}`);
+        return;
+      }
+      setFormPayerId(''); setFormSource(''); setFormChannel(''); setFormContactInfo('');
+      setFormRequirements(''); setFormNotes('');
+      setSubTab('list');
+      refresh();
+    } catch (err: any) {
+      setError(err.message ?? 'Failed to create evidence');
+    }
+  };
+
+  const handleArchive = async (id: string) => {
+    try {
+      await fetch(`${API_BASE}/rcm/evidence/${id}`, { method: 'DELETE', credentials: 'include' });
+      refresh();
+    } catch { /* ignore */ }
+  };
+
+  const subTabs: { id: typeof subTab; label: string }[] = [
+    { id: 'list', label: 'All Evidence' },
+    { id: 'coverage', label: 'Coverage' },
+    { id: 'gaps', label: `Gaps${gaps.length ? ` (${gaps.length})` : ''}` },
+    { id: 'add', label: '+ Add Evidence' },
+  ];
+
+  return (
+    <div style={{ padding: 16 }}>
+      <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 12 }}>
+        <h3 style={{ margin: 0, fontSize: 15 }}>Integration Evidence Registry</h3>
+        <button onClick={refresh} style={{ fontSize: 11, padding: '2px 10px', cursor: 'pointer' }}>Refresh</button>
+      </div>
+
+      {error && (
+        <div style={{ background: '#f8d7da', color: '#842029', padding: '6px 12px', borderRadius: 4, fontSize: 12, marginBottom: 8 }}>
+          {error}
+          <button onClick={() => setError(null)} style={{ marginLeft: 8, cursor: 'pointer', border: 'none', background: 'none', color: '#842029', fontWeight: 700 }}>x</button>
+        </div>
+      )}
+
+      {/* Stats banner */}
+      {stats && (
+        <div style={{ display: 'flex', gap: 16, marginBottom: 12, fontSize: 11 }}>
+          <span>Total: <b>{stats.total ?? 0}</b></span>
+          {coverage && <span>Coverage: <b>{coverage.coveragePercent ?? 0}%</b></span>}
+          {coverage && <span>Gaps: <b style={{ color: coverage.missingEvidence > 0 ? '#dc3545' : '#198754' }}>{coverage.missingEvidence ?? 0}</b></span>}
+          {stats.byStatus && Object.entries(stats.byStatus).map(([k, v]) => (
+            <span key={k}>{k}: <b>{String(v)}</b></span>
+          ))}
+        </div>
+      )}
+
+      {/* Sub-tabs */}
+      <div style={{ display: 'flex', gap: 4, marginBottom: 12 }}>
+        {subTabs.map(st => (
+          <button key={st.id} onClick={() => setSubTab(st.id)}
+            style={{ padding: '4px 12px', fontSize: 11, cursor: 'pointer', borderRadius: 4,
+              background: subTab === st.id ? '#0d6efd' : '#e9ecef', color: subTab === st.id ? '#fff' : '#212529',
+              border: 'none' }}>
+            {st.label}
+          </button>
+        ))}
+      </div>
+
+      {loading && <div style={{ fontSize: 12, color: '#6c757d' }}>Loading...</div>}
+
+      {/* List sub-tab */}
+      {!loading && subTab === 'list' && (
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', fontSize: 11, borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ background: '#f8f9fa', borderBottom: '2px solid #dee2e6' }}>
+                <th style={{ padding: '6px 8px', textAlign: 'left' }}>Payer ID</th>
+                <th style={{ padding: '6px 8px', textAlign: 'left' }}>Method</th>
+                <th style={{ padding: '6px 8px', textAlign: 'left' }}>Source</th>
+                <th style={{ padding: '6px 8px', textAlign: 'left' }}>Status</th>
+                <th style={{ padding: '6px 8px', textAlign: 'left' }}>Confidence</th>
+                <th style={{ padding: '6px 8px', textAlign: 'left' }}>Verified</th>
+                <th style={{ padding: '6px 8px', textAlign: 'left' }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {evidence.map((ev: any) => (
+                <tr key={ev.id} style={{ borderBottom: '1px solid #dee2e6' }}>
+                  <td style={{ padding: '4px 8px', fontFamily: 'monospace' }}>{ev.payerId}</td>
+                  <td style={{ padding: '4px 8px' }}>{ev.method}</td>
+                  <td style={{ padding: '4px 8px', maxWidth: 250, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {ev.sourceType === 'url' ? <a href={ev.source} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11 }}>{ev.source}</a> : ev.source}
+                  </td>
+                  <td style={{ padding: '4px 8px' }}>
+                    <span style={{ padding: '1px 6px', borderRadius: 3, fontSize: 10, fontWeight: 600,
+                      background: ev.status === 'verified' ? '#d1e7dd' : ev.status === 'stale' ? '#fff3cd' : '#e2e3e5',
+                      color: ev.status === 'verified' ? '#0f5132' : ev.status === 'stale' ? '#664d03' : '#41464b' }}>
+                      {ev.status}
+                    </span>
+                  </td>
+                  <td style={{ padding: '4px 8px' }}>{ev.confidence}</td>
+                  <td style={{ padding: '4px 8px' }}>{ev.lastVerifiedAt?.slice(0, 10) ?? '--'}</td>
+                  <td style={{ padding: '4px 8px' }}>
+                    <button onClick={() => handleArchive(ev.id)} style={{ fontSize: 10, cursor: 'pointer', color: '#dc3545', border: 'none', background: 'none' }}>Archive</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {evidence.length === 0 && <div style={{ fontSize: 12, color: '#6c757d', padding: 16, textAlign: 'center' }}>No evidence entries yet. Use the "+ Add Evidence" tab to create one.</div>}
+        </div>
+      )}
+
+      {/* Coverage sub-tab */}
+      {!loading && subTab === 'coverage' && coverage && (
+        <div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 8, marginBottom: 12 }}>
+            {[{ label: 'Total Payers', value: coverage.totalPayers },
+              { label: 'With Evidence', value: coverage.withEvidence },
+              { label: 'Verified', value: coverage.withVerified },
+              { label: 'Requires Evidence', value: coverage.requiresEvidence },
+              { label: 'Missing', value: coverage.missingEvidence, color: coverage.missingEvidence > 0 ? '#dc3545' : '#198754' },
+              { label: 'Coverage %', value: `${coverage.coveragePercent}%` },
+            ].map(m => (
+              <div key={m.label} style={{ background: '#f8f9fa', padding: 8, borderRadius: 4, textAlign: 'center' }}>
+                <div style={{ fontSize: 10, color: '#6c757d' }}>{m.label}</div>
+                <div style={{ fontSize: 16, fontWeight: 700, color: m.color ?? '#212529' }}>{m.value}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Gaps sub-tab */}
+      {!loading && subTab === 'gaps' && (
+        <div>
+          {gaps.length === 0 ? (
+            <div style={{ fontSize: 12, color: '#198754', padding: 16, textAlign: 'center' }}>No evidence gaps. All payers with active integration modes have backing evidence.</div>
+          ) : (
+            <table style={{ width: '100%', fontSize: 11, borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ background: '#fff3cd', borderBottom: '2px solid #dee2e6' }}>
+                  <th style={{ padding: '6px 8px', textAlign: 'left' }}>Payer ID</th>
+                  <th style={{ padding: '6px 8px', textAlign: 'left' }}>Name</th>
+                  <th style={{ padding: '6px 8px', textAlign: 'left' }}>Integration Mode</th>
+                  <th style={{ padding: '6px 8px', textAlign: 'left' }}>Country</th>
+                </tr>
+              </thead>
+              <tbody>
+                {gaps.map((g: any) => (
+                  <tr key={g.payerId} style={{ borderBottom: '1px solid #dee2e6' }}>
+                    <td style={{ padding: '4px 8px', fontFamily: 'monospace' }}>{g.payerId}</td>
+                    <td style={{ padding: '4px 8px' }}>{g.payerName}</td>
+                    <td style={{ padding: '4px 8px' }}>{g.integrationMode}</td>
+                    <td style={{ padding: '4px 8px' }}>{g.country}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      )}
+
+      {/* Add form sub-tab */}
+      {!loading && subTab === 'add' && (
+        <div style={{ maxWidth: 500, display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <label style={{ fontSize: 11 }}>Payer ID *
+            <input value={formPayerId} onChange={e => setFormPayerId(e.target.value)} placeholder="US-CMS-MEDICARE-A" style={{ width: '100%', padding: 4, fontSize: 12 }} />
+          </label>
+          <label style={{ fontSize: 11 }}>Method *
+            <select value={formMethod} onChange={e => setFormMethod(e.target.value)} style={{ width: '100%', padding: 4, fontSize: 12 }}>
+              <option value="edi">EDI</option>
+              <option value="api">API</option>
+              <option value="portal">Portal</option>
+              <option value="fhir">FHIR</option>
+              <option value="manual">Manual</option>
+            </select>
+          </label>
+          <label style={{ fontSize: 11 }}>Source URL / Reference *
+            <input value={formSource} onChange={e => setFormSource(e.target.value)} placeholder="https://payer.com/edi-guide" style={{ width: '100%', padding: 4, fontSize: 12 }} />
+          </label>
+          <label style={{ fontSize: 11 }}>Source Type
+            <select value={formSourceType} onChange={e => setFormSourceType(e.target.value)} style={{ width: '100%', padding: 4, fontSize: 12 }}>
+              <option value="url">URL</option>
+              <option value="document">Document</option>
+              <option value="screenshot">Screenshot</option>
+              <option value="contact">Contact</option>
+              <option value="manual">Manual</option>
+            </select>
+          </label>
+          <label style={{ fontSize: 11 }}>Channel
+            <input value={formChannel} onChange={e => setFormChannel(e.target.value)} placeholder="sftp, https, soap, rest" style={{ width: '100%', padding: 4, fontSize: 12 }} />
+          </label>
+          <label style={{ fontSize: 11 }}>Contact Info
+            <input value={formContactInfo} onChange={e => setFormContactInfo(e.target.value)} placeholder="EDI Support: 1-800-XXX-XXXX" style={{ width: '100%', padding: 4, fontSize: 12 }} />
+          </label>
+          <label style={{ fontSize: 11 }}>Submission Requirements
+            <textarea value={formRequirements} onChange={e => setFormRequirements(e.target.value)} rows={2} placeholder="Requires clearinghouse enrollment..." style={{ width: '100%', padding: 4, fontSize: 12 }} />
+          </label>
+          <label style={{ fontSize: 11 }}>Confidence
+            <select value={formConfidence} onChange={e => setFormConfidence(e.target.value)} style={{ width: '100%', padding: 4, fontSize: 12 }}>
+              <option value="unknown">Unknown</option>
+              <option value="inferred">Inferred</option>
+              <option value="confirmed">Confirmed</option>
+            </select>
+          </label>
+          <label style={{ fontSize: 11 }}>Status
+            <select value={formStatus} onChange={e => setFormStatus(e.target.value)} style={{ width: '100%', padding: 4, fontSize: 12 }}>
+              <option value="unverified">Unverified</option>
+              <option value="verified">Verified</option>
+            </select>
+          </label>
+          <label style={{ fontSize: 11 }}>Notes
+            <textarea value={formNotes} onChange={e => setFormNotes(e.target.value)} rows={2} placeholder="Research notes..." style={{ width: '100%', padding: 4, fontSize: 12 }} />
+          </label>
+          <button onClick={handleCreate} style={{ padding: '6px 16px', fontSize: 12, cursor: 'pointer', background: '#0d6efd', color: '#fff', border: 'none', borderRadius: 4, alignSelf: 'flex-start' }}>
+            Create Evidence Entry
+          </button>
+        </div>
       )}
     </div>
   );
