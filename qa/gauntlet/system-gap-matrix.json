@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-02-24T23:23:15.556Z",
-  "headSha": "e16a0c5",
+  "generatedAt": "2026-02-24T23:38:55.327Z",
+  "headSha": "c96fea7",
   "domains": [
     {
       "domain": "AUTH_IAM",
@@ -171,11 +171,6 @@
         }
       ],
       "topGaps": [
-        {
-          "gap": "0 RPCs used but not in registry",
-          "severity": "med",
-          "evidenceFiles": []
-        },
         {
           "gap": "42 registered RPCs not called in code",
           "severity": "low",

@@ -629,8 +629,8 @@ function buildGapMatrix(audit) {
         { metric: "totalCallSites", value: rpcUsage.totalCallSites },
       ],
       topGaps: [
-        { gap: `${rpcUsage.unregisteredUsed.length} RPCs used but not in registry`, severity: rpcUsage.unregisteredUsed.length > 5 ? "high" : "med", evidenceFiles: rpcUsage.unregisteredUsed.slice(0, 5) },
-        { gap: `${rpcUsage.unusedRegistered} registered RPCs not called in code`, severity: "low", evidenceFiles: [] },
+        ...(rpcUsage.unregisteredUsed.length > 0 ? [{ gap: `${rpcUsage.unregisteredUsed.length} RPCs used but not in registry`, severity: rpcUsage.unregisteredUsed.length > 5 ? "high" : "med", evidenceFiles: rpcUsage.unregisteredUsed.slice(0, 5) }] : []),
+        ...(rpcUsage.unusedRegistered > 0 ? [{ gap: `${rpcUsage.unusedRegistered} registered RPCs not called in code`, severity: "low", evidenceFiles: [] }] : []),
       ],
       nextActions: ["Register unregistered RPCs", "Wire unused registered RPCs to endpoints"],
     },
@@ -956,7 +956,7 @@ function buildHumanSummary(audit, gapMatrix) {
   }
   nextItems.sort((a, b) => {
     const sev = { high: 0, med: 1, low: 2 };
-    return (sev[a.severity] || 3) - (sev[b.severity] || 3);
+    return (sev[a.severity] ?? 3) - (sev[b.severity] ?? 3);
   });
   lines.push("| # | Severity | Domain | Gap | Key File |");
   lines.push("|---|----------|--------|-----|----------|");
