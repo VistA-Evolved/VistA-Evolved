@@ -29,6 +29,11 @@ import type {
 } from "./types.js";
 import { log } from "../lib/logger.js";
 
+/** Log DB persistence failures at warn level instead of silently swallowing. */
+function dbWarn(op: string, err: unknown): void {
+  log.warn(`telehealth-room DB ${op} failed`, { error: String(err) });
+}
+
 /* ------------------------------------------------------------------ */
 /* Configuration                                                        */
 /* ------------------------------------------------------------------ */
@@ -82,7 +87,7 @@ function jsonToParticipants(json: string): Map<string, { role: ParticipantRole; 
     for (const [k, v] of Object.entries(obj)) {
       m.set(k, v as { role: ParticipantRole; joinedAt: string });
     }
-  } catch { /* empty map */ }
+  } catch (e) { dbWarn("persist", e); }
   return m;
 }
 
@@ -96,6 +101,11 @@ function rowToEntry(row: any): RoomEntry {
     expiresAt: row.expiresAt,
     participants: jsonToParticipants(row.participantsJson),
     accessToken: row.accessToken ?? "",
+    // Extra DB fields available for future queries:
+    // patientDfn: row.patientDfn, providerDuz: row.providerDuz,
+    // providerName: row.providerName, meetingUrl: row.meetingUrl,
+    // scheduledStart: row.scheduledStart, actualStart: row.actualStart,
+    // actualEnd: row.actualEnd
   };
 }
 
@@ -106,7 +116,7 @@ function getEntry(roomId: string): RoomEntry | null {
     try {
       const row = _repo.findRoomById(roomId);
       if (row) { const e = rowToEntry(row); rooms.set(roomId, e); return e; }
-    } catch { /* non-fatal */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   return null;
 }
@@ -121,7 +131,7 @@ function persistEntry(entry: RoomEntry): void {
         actualStart: entry.status === "active" ? new Date().toISOString() : undefined,
         actualEnd: entry.status === "ended" ? new Date().toISOString() : undefined,
       });
-    } catch { /* non-fatal */ }
+    } catch (e) { dbWarn("persist", e); }
   }
 }
 
@@ -167,7 +177,7 @@ export function createRoom(appointmentId: string, roomId: string): TelehealthRoo
         expiresAt: entry.expiresAt,
         scheduledStart: now,
       });
-    } catch { /* non-fatal */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   log.info("Telehealth room created", { roomId, appointmentId });
   return toPublicRoom(entry);
@@ -202,7 +212,7 @@ export function getRoomByAppointment(appointmentId: string): TelehealthRoom | nu
           return toPublicRoom(e);
         }
       }
-    } catch { /* non-fatal */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   return null;
 }
@@ -293,7 +303,7 @@ export function listActiveRooms(): TelehealthRoom[] {
         if (isExpired(e)) return null;
         return toPublicRoom(e);
       }).filter(Boolean) as TelehealthRoom[];
-    } catch { /* fallback to cache */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   const result: TelehealthRoom[] = [];
   for (const entry of rooms.values()) {
@@ -336,7 +346,7 @@ function expireRoom(entry: RoomEntry): void {
     entry.updatedAt = new Date().toISOString();
     rooms.set(entry.roomId, entry);
     if (_repo) {
-      try { _repo.expireRoom(entry.roomId); } catch { /* non-fatal */ }
+      try { _repo.expireRoom(entry.roomId); } catch (e) { dbWarn("persist", e); }
     }
     log.info("Telehealth room expired", { roomId: entry.roomId });
   }
@@ -382,7 +392,7 @@ export function startRoomCleanup(): void {
   cleanupTimer = setInterval(() => {
     // DB-side cleanup
     if (_repo) {
-      try { _repo.cleanupExpiredRooms(); } catch { /* non-fatal */ }
+      try { _repo.cleanupExpiredRooms(); } catch (e) { dbWarn("persist", e); }
     }
     // Cache-side cleanup
     let expired = 0;

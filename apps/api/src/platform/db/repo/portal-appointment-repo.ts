@@ -17,6 +17,7 @@ export type PortalAppointmentRow = typeof portalAppointment.$inferSelect;
 /* ── Create ────────────────────────────────────────────────── */
 
 export function insertAppointment(data: {
+  id?: string;
   patientDfn: string;
   patientName: string;
   clinicId: string;
@@ -33,7 +34,7 @@ export function insertAppointment(data: {
 }): PortalAppointmentRow {
   const db = getDb();
   const now = new Date().toISOString();
-  const id = randomUUID();
+  const id = data.id ?? randomUUID();
 
   db.insert(portalAppointment).values({
     id,

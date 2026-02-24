@@ -71,6 +71,7 @@ export function findActiveRooms(): TelehealthRoomRow[] {
   return db.select().from(telehealthRoom)
     .where(
       or(
+        eq(telehealthRoom.roomStatus, "created"),
         eq(telehealthRoom.roomStatus, "scheduled"),
         eq(telehealthRoom.roomStatus, "waiting"),
         eq(telehealthRoom.roomStatus, "active"),
@@ -121,6 +122,7 @@ export function cleanupExpiredRooms(): number {
     .where(and(
       sql`${telehealthRoom.expiresAt} < ${now}`,
       or(
+        eq(telehealthRoom.roomStatus, "created"),
         eq(telehealthRoom.roomStatus, "scheduled"),
         eq(telehealthRoom.roomStatus, "waiting"),
         eq(telehealthRoom.roomStatus, "active"),
@@ -139,6 +141,7 @@ export function countRooms(): { total: number; active: number } {
   const active = db.select({ count: sql<number>`count(*)` })
     .from(telehealthRoom)
     .where(or(
+      eq(telehealthRoom.roomStatus, "created"),
       eq(telehealthRoom.roomStatus, "scheduled"),
       eq(telehealthRoom.roomStatus, "waiting"),
       eq(telehealthRoom.roomStatus, "active"),

@@ -19,6 +19,11 @@ import { randomUUID } from "crypto";
 import { audit } from "../lib/audit.js";
 import { log } from "../lib/logger.js";
 
+/** Log DB persistence failures at warn level instead of silently swallowing. */
+function dbWarn(op: string, err: unknown): void {
+  log.warn(`imaging-worklist DB ${op} failed`, { error: String(err) });
+}
+
 /* ================================================================== */
 /* Types                                                               */
 /* ================================================================== */
@@ -168,7 +173,7 @@ export function getWorklistItem(id: string): WorklistItem | undefined {
     try {
       const row = _repo.findWorkOrderById(id);
       if (row) { const item = rowToItem(row); worklistCache.set(id, item); return item; }
-    } catch { /* non-fatal */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   return undefined;
 }
@@ -181,7 +186,7 @@ export function findByAccession(accessionNumber: string): WorklistItem | undefin
     try {
       const row = _repo.findByAccessionNumber(accessionNumber);
       if (row) { const item = rowToItem(row); worklistCache.set(item.id, item); return item; }
-    } catch { /* non-fatal */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   return undefined;
 }
@@ -193,7 +198,7 @@ export function findByPatientDfn(dfn: string): WorklistItem[] {
       const items = rows.map(rowToItem);
       for (const it of items) worklistCache.set(it.id, it);
       return items;
-    } catch { /* fallback to cache */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   return [...worklistCache.values()].filter((w) => w.patientDfn === dfn);
 }
@@ -211,7 +216,7 @@ export function updateWorklistItem(id: string, updates: Partial<WorklistItem>): 
         linkedOrthancStudyId: updated.linkedOrthancStudyId ?? undefined,
         priority: updated.priority,
       });
-    } catch { /* non-fatal */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   return updated;
 }
@@ -223,7 +228,7 @@ export function getAllWorklistItems(): WorklistItem[] {
       const items = rows.map(rowToItem);
       for (const it of items) worklistCache.set(it.id, it);
       return items;
-    } catch { /* fallback to cache */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   return [...worklistCache.values()];
 }
@@ -363,6 +368,7 @@ export default async function imagingWorklistRoutes(server: FastifyInstance): Pr
           patientName: item.patientName,
           accessionNumber: item.accessionNumber,
           scheduledProcedure: item.scheduledProcedure,
+          procedureCode: item.procedureCode ?? undefined,
           modality: item.modality,
           scheduledTime: item.scheduledTime,
           facility: item.facility,
@@ -374,7 +380,7 @@ export default async function imagingWorklistRoutes(server: FastifyInstance): Pr
           status: item.status,
           source: item.source,
         });
-      } catch { /* non-fatal */ }
+      } catch (e) { dbWarn("persist", e); }
     }
 
     log.info("Imaging order created", {

@@ -17,6 +17,12 @@
 
 import { randomBytes } from "node:crypto";
 import { portalAudit } from "./portal-audit.js";
+import { log } from "../lib/logger.js";
+
+/** Log DB persistence failures at warn level instead of silently swallowing. */
+function dbWarn(op: string, err: unknown): void {
+  log.warn(`portal-appointments DB ${op} failed`, { error: String(err) });
+}
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
@@ -66,7 +72,7 @@ let _repo: ApptRepo | null = null;
 /** Wire the portal appointment repo. Called from index.ts. */
 export function initAppointmentRepo(repo: ApptRepo): void {
   _repo = repo;
-  try { apptSeq = repo.countAppointments(); } catch { /* non-fatal */ }
+  try { apptSeq = repo.countAppointments(); } catch (e) { dbWarn("persist", e); }
 }
 
 /* ------------------------------------------------------------------ */
@@ -170,12 +176,13 @@ function seedDemoAppointments() {
     cacheAppt(appt);
     if (_repo) {
       try { _repo.insertAppointment({
+        id: appt.id,
         patientDfn: appt.patientDfn, patientName: appt.patientName,
         clinicId: appt.clinicId, clinicName: appt.clinicName,
         providerName: appt.providerName, appointmentType: appt.appointmentType,
         scheduledAt: appt.scheduledAt, duration: appt.duration,
         status: appt.status, reason: appt.reason, notes: appt.notes,
-      }); } catch { /* non-fatal -- may already exist from previous run */ }
+      }); } catch (e) { dbWarn("persist", e); }
     }
   }
 }
@@ -188,7 +195,7 @@ seedDemoAppointments();
 
 export function getUpcomingAppointments(patientDfn: string): Appointment[] {
   if (_repo) {
-    try { return _repo.findUpcoming(patientDfn).map(rowToAppt); } catch { /* fallback */ }
+    try { return _repo.findUpcoming(patientDfn).map(rowToAppt); } catch (e) { dbWarn("persist", e); }
   }
   const now = new Date().toISOString();
   return [...appointmentCache.values()]
@@ -198,7 +205,7 @@ export function getUpcomingAppointments(patientDfn: string): Appointment[] {
 
 export function getPastAppointments(patientDfn: string): Appointment[] {
   if (_repo) {
-    try { return _repo.findPast(patientDfn).map(rowToAppt); } catch { /* fallback */ }
+    try { return _repo.findPast(patientDfn).map(rowToAppt); } catch (e) { dbWarn("persist", e); }
   }
   const now = new Date().toISOString();
   return [...appointmentCache.values()]
@@ -213,7 +220,7 @@ export function getAppointment(appointmentId: string, patientDfn: string): Appoi
     try {
       const row = _repo.findAppointmentById(appointmentId);
       if (row && row.patientDfn === patientDfn) { const a = rowToAppt(row); cacheAppt(a); return a; }
-    } catch { /* non-fatal */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   return null;
 }
@@ -252,12 +259,13 @@ export function requestAppointment(opts: {
 
   if (_repo) {
     try { _repo.insertAppointment({
+      id: appt.id,
       patientDfn: appt.patientDfn, patientName: appt.patientName,
       clinicId: appt.clinicId, clinicName: appt.clinicName,
       providerName: appt.providerName, appointmentType: appt.appointmentType,
       scheduledAt: appt.scheduledAt, duration: appt.duration,
       status: appt.status, reason: appt.reason, notes: appt.notes,
-    }); } catch { /* non-fatal */ }
+    }); } catch (e) { dbWarn("persist", e); }
   }
   cacheAppt(appt);
 
@@ -284,7 +292,7 @@ export function requestCancellation(
 
   cacheAppt(appt);
   if (_repo) {
-    try { _repo.updateAppointment(appointmentId, { status: "cancel_requested", cancelReason: appt.cancelReason }); } catch { /* */ }
+    try { _repo.updateAppointment(appointmentId, { status: "cancel_requested", cancelReason: appt.cancelReason }); } catch (e) { dbWarn("persist", e); }
   }
 
   portalAudit("portal.appointment.cancel", "success", patientDfn, {
@@ -310,7 +318,7 @@ export function requestReschedule(
 
   cacheAppt(appt);
   if (_repo) {
-    try { _repo.updateAppointment(appointmentId, { status: "reschedule_requested", reschedulePreference: appt.reschedulePreference }); } catch { /* */ }
+    try { _repo.updateAppointment(appointmentId, { status: "reschedule_requested", reschedulePreference: appt.reschedulePreference }); } catch (e) { dbWarn("persist", e); }
   }
 
   portalAudit("portal.appointment.request", "success", patientDfn, {

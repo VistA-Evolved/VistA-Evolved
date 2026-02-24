@@ -23,6 +23,12 @@
 
 import { randomBytes } from "node:crypto";
 import { portalAudit } from "./portal-audit.js";
+import { log } from "../lib/logger.js";
+
+/** Log DB persistence failures at warn level instead of silently swallowing. */
+function dbWarn(op: string, err: unknown): void {
+  log.warn(`portal-messaging DB ${op} failed`, { error: String(err) });
+}
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
@@ -96,7 +102,7 @@ let _repo: MsgRepo | null = null;
 export function initMessageRepo(repo: MsgRepo): void {
   _repo = repo;
   // Seed msgSeq from DB row count to avoid ID collisions after restart
-  try { msgSeq = repo.countMessages(); } catch { /* non-fatal */ }
+  try { msgSeq = repo.countMessages(); } catch (e) { dbWarn("persist", e); }
 }
 
 /* ------------------------------------------------------------------ */
@@ -133,6 +139,7 @@ function rowToMsg(row: any): PortalMessage {
 
 function msgToDbFields(msg: PortalMessage) {
   return {
+    id: msg.id,
     threadId: msg.threadId,
     fromDfn: msg.fromDfn,
     fromName: msg.fromName,
@@ -230,7 +237,7 @@ export function createDraft(opts: {
   if (_repo) {
     try {
       _repo.insertMessage(msgToDbFields(msg));
-    } catch { /* DB write failed — cache-only fallback */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   cacheMsg(msg);
 
@@ -248,7 +255,7 @@ function getMessage_internal(messageId: string): PortalMessage | null {
     try {
       const row = _repo.findMessageById(messageId);
       if (row) { const m = rowToMsg(row); cacheMsg(m); return m; }
-    } catch { /* non-fatal */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   return null;
 }
@@ -262,7 +269,7 @@ export function sendMessage(messageId: string, senderDfn: string): PortalMessage
   msg.vistaSync = "pending";
 
   if (_repo) {
-    try { _repo.updateMessage(messageId, { status: "sent" }); } catch { /* non-fatal */ }
+    try { _repo.updateMessage(messageId, { status: "sent" }); } catch (e) { dbWarn("persist", e); }
   }
   cacheMsg(msg);
 
@@ -308,7 +315,7 @@ export function addAttachment(
       _repo.updateMessage(messageId, {
         attachmentsJson: JSON.stringify(msg.attachments.map(a => ({ ...a, data: "(stored)" }))),
       });
-    } catch { /* non-fatal */ }
+    } catch (e) { dbWarn("persist", e); }
   }
 
   return { ok: true, attachment: { ...att, data: "(stored)" } };
@@ -319,7 +326,7 @@ export function getInbox(patientDfn: string): PortalMessage[] {
     try {
       const rows = _repo.findInbox(patientDfn);
       return rows.map(rowToMsg);
-    } catch { /* fallback to cache */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   return [...messageCache.values()]
     .filter((m) => (m.toDfn === patientDfn || m.fromDfn === patientDfn) && m.status !== "draft")
@@ -331,7 +338,7 @@ export function getDrafts(patientDfn: string): PortalMessage[] {
     try {
       const rows = _repo.findDrafts(patientDfn);
       return rows.map(rowToMsg);
-    } catch { /* fallback to cache */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   return [...messageCache.values()]
     .filter((m) => m.fromDfn === patientDfn && m.status === "draft")
@@ -343,7 +350,7 @@ export function getSent(patientDfn: string): PortalMessage[] {
     try {
       const rows = _repo.findSent(patientDfn);
       return rows.map(rowToMsg);
-    } catch { /* fallback to cache */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   return [...messageCache.values()]
     .filter((m) => m.fromDfn === patientDfn && m.status !== "draft")
@@ -355,7 +362,7 @@ export function getThread(threadId: string): PortalMessage[] {
     try {
       const rows = _repo.findThread(threadId);
       return rows.map(rowToMsg);
-    } catch { /* fallback to cache */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   return [...messageCache.values()]
     .filter((m) => m.threadId === threadId && m.status !== "draft")
@@ -371,7 +378,7 @@ export function getMessage(messageId: string, viewerDfn: string): PortalMessage 
     msg.readAt = new Date().toISOString();
     msg.status = "read";
     if (_repo) {
-      try { _repo.updateMessage(messageId, { status: "read", readAt: msg.readAt }); } catch { /* */ }
+      try { _repo.updateMessage(messageId, { status: "read", readAt: msg.readAt }); } catch (e) { dbWarn("persist", e); }
     }
     cacheMsg(msg);
     portalAudit("portal.message.read", "success", viewerDfn, {
@@ -402,7 +409,7 @@ export function updateDraft(
         subject: msg.subject,
         body: msg.body,
       });
-    } catch { /* non-fatal */ }
+    } catch (e) { dbWarn("persist", e); }
   }
 
   return msg;
@@ -413,7 +420,7 @@ export function deleteDraft(messageId: string, senderDfn: string): boolean {
   if (!msg || msg.fromDfn !== senderDfn || msg.status !== "draft") return false;
   messageCache.delete(messageId);
   if (_repo) {
-    try { _repo.deleteMessage(messageId); } catch { /* non-fatal */ }
+    try { _repo.deleteMessage(messageId); } catch (e) { dbWarn("persist", e); }
   }
   return true;
 }
@@ -470,7 +477,7 @@ export function sendOnBehalf(opts: {
   };
 
   if (_repo) {
-    try { _repo.insertMessage(msgToDbFields(msg)); } catch { /* non-fatal */ }
+    try { _repo.insertMessage(msgToDbFields(msg)); } catch (e) { dbWarn("persist", e); }
   }
   cacheMsg(msg);
   recordSend(opts.patientDfn);
@@ -520,7 +527,7 @@ export function clinicianReply(opts: {
   };
 
   if (_repo) {
-    try { _repo.insertMessage(msgToDbFields(msg)); } catch { /* non-fatal */ }
+    try { _repo.insertMessage(msgToDbFields(msg)); } catch (e) { dbWarn("persist", e); }
   }
   cacheMsg(msg);
 
@@ -529,7 +536,7 @@ export function clinicianReply(opts: {
     original.status = "replied";
     cacheMsg(original);
     if (_repo) {
-      try { _repo.updateMessage(opts.replyToId, { status: "replied" }); } catch { /* */ }
+      try { _repo.updateMessage(opts.replyToId, { status: "replied" }); } catch (e) { dbWarn("persist", e); }
     }
   }
 
@@ -544,7 +551,7 @@ export function getStaffMessageQueue(): PortalMessage[] {
     try {
       const rows = _repo.findStaffQueue();
       return rows.map(rowToMsg);
-    } catch { /* fallback to cache */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   return [...messageCache.values()]
     .filter(m => m.toDfn === "clinic" && m.status === "sent")

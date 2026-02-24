@@ -17,6 +17,12 @@
  */
 
 import type { FastifyRequest, FastifyReply } from "fastify";
+import { log } from "../lib/logger.js";
+
+/** Log DB persistence failures at warn level instead of silently swallowing. */
+function dbWarn(op: string, err: unknown): void {
+  log.warn(`idempotency DB ${op} failed`, { error: String(err) });
+}
 
 /* ------------------------------------------------------------------ */
 /* DB repo -- lazy-wired after initPlatformDb() (Phase 115)              */
@@ -58,7 +64,7 @@ function pruneExpired(): void {
     }
   }
   if (_repo) {
-    try { _repo.pruneExpiredKeys(); } catch { /* non-fatal */ }
+    try { _repo.pruneExpiredKeys(); } catch (e) { dbWarn("persist", e); }
   }
 }
 
@@ -141,7 +147,7 @@ export function idempotencyGuard() {
             .send(restored.body);
           return;
         }
-      } catch { /* non-fatal */ }
+      } catch (e) { dbWarn("persist", e); }
     }
 
     // Store a marker to detect concurrent duplicates
@@ -161,7 +167,7 @@ export function idempotencyGuard() {
           createdAt: marker.createdAt,
           expiresAt: marker.expiresAt,
         });
-      } catch { /* non-fatal */ }
+      } catch (e) { dbWarn("persist", e); }
     }
 
     // On error, remove the marker so the request can be retried.
@@ -182,14 +188,14 @@ export function idempotencyGuard() {
                 createdAt: existing.createdAt,
                 expiresAt: existing.expiresAt,
               });
-            } catch { /* non-fatal */ }
+            } catch (e) { dbWarn("persist", e); }
           }
         }
       },
       () => {
         // On error, remove the marker so the request can be retried
         memoryStore.delete(cKey);
-        if (_repo) { try { _repo.deleteKey(cKey); } catch { /* non-fatal */ } }
+        if (_repo) { try { _repo.deleteKey(cKey); } catch (e) { dbWarn("persist", e); } }
       },
     );
   };
@@ -240,7 +246,7 @@ export async function idempotencyOnSend(
           createdAt: existing.createdAt,
           expiresAt: existing.expiresAt,
         });
-      } catch { /* non-fatal */ }
+      } catch (e) { dbWarn("persist", e); }
     }
   }
 

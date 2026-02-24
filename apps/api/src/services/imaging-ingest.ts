@@ -23,6 +23,11 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { randomUUID } from "crypto";
 import { audit } from "../lib/audit.js";
 import { log } from "../lib/logger.js";
+
+/** Log DB persistence failures at warn level instead of silently swallowing. */
+function dbWarn(op: string, err: unknown): void {
+  log.warn(`imaging-ingest DB ${op} failed`, { error: String(err) });
+}
 import { IMAGING_CONFIG } from "../config/server-config.js";
 import {
   findByAccession,
@@ -313,7 +318,7 @@ function createLinkage(
         reconciliationType: linkage.reconciliationType,
         source: linkage.source,
       });
-    } catch { /* non-fatal */ }
+    } catch (e) { dbWarn("persist", e); }
   }
 
   // Update the worklist item
@@ -346,7 +351,7 @@ function quarantineStudy(payload: OrthancStableStudyPayload, reason: string): Un
         unmatchedCache.set(u.id, u);
         return u;
       }
-    } catch { /* non-fatal */ }
+    } catch (e) { dbWarn("persist", e); }
   }
 
   const unmatched: UnmatchedStudy = {
@@ -383,7 +388,7 @@ function quarantineStudy(payload: OrthancStableStudyPayload, reason: string): Un
         instanceCount: unmatched.instanceCount,
         reason: unmatched.reason,
       });
-    } catch { /* non-fatal */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   return unmatched;
 }
@@ -399,7 +404,7 @@ export function getLinkagesForPatient(dfn: string): StudyLinkage[] {
       const items = rows.map(rowToLinkage);
       for (const it of items) linkageCache.set(it.id, it);
       return items;
-    } catch { /* fallback to cache */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   return [...linkageCache.values()].filter((l) => l.patientDfn === dfn);
 }
@@ -412,7 +417,7 @@ export function getLinkageByStudyUid(studyUid: string): StudyLinkage | undefined
     try {
       const row = _repo.findStudyLinkByStudyUid(studyUid);
       if (row) { const l = rowToLinkage(row); linkageCache.set(l.id, l); return l; }
-    } catch { /* non-fatal */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   return undefined;
 }
@@ -425,7 +430,7 @@ export function getLinkageByOrderId(orderId: string): StudyLinkage | undefined {
     try {
       const row = _repo.findStudyLinkByOrderId(orderId);
       if (row) { const l = rowToLinkage(row); linkageCache.set(l.id, l); return l; }
-    } catch { /* non-fatal */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   return undefined;
 }
@@ -437,7 +442,7 @@ export function getAllUnmatched(): UnmatchedStudy[] {
       const items = rows.map(rowToUnmatched);
       for (const it of items) unmatchedCache.set(it.id, it);
       return items;
-    } catch { /* fallback to cache */ }
+    } catch (e) { dbWarn("persist", e); }
   }
   return [...unmatchedCache.values()].filter((u) => !u.resolved);
 }
@@ -569,7 +574,7 @@ export default async function imagingIngestRoutes(server: FastifyInstance): Prom
       try {
         const row = _repo!.findUnmatchedById(id);
         if (row) { const u = rowToUnmatched(row); unmatchedCache.set(u.id, u); return u; }
-      } catch { /* non-fatal */ }
+      } catch (e) { dbWarn("persist", e); }
       return undefined;
     })() : undefined);
     if (!unmatched || unmatched.resolved) {
@@ -608,7 +613,7 @@ export default async function imagingIngestRoutes(server: FastifyInstance): Prom
     unmatched.resolved = true;
     unmatchedCache.set(id, unmatched);
     if (_repo) {
-      try { _repo.resolveUnmatched(id); } catch { /* non-fatal */ }
+      try { _repo.resolveUnmatched(id); } catch (e) { dbWarn("persist", e); }
     }
 
     log.info("Manual reconciliation", {
@@ -645,7 +650,7 @@ export default async function imagingIngestRoutes(server: FastifyInstance): Prom
       try {
         const rows = _repo.findAllStudyLinks();
         linkages = rows.map(rowToLinkage);
-      } catch { linkages = [...linkageCache.values()]; }
+      } catch (e) { dbWarn("findAllStudyLinks", e); linkages = [...linkageCache.values()]; }
     } else {
       linkages = [...linkageCache.values()];
     }

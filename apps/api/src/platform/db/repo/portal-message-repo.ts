@@ -18,6 +18,7 @@ export type PortalMessageRow = typeof portalMessage.$inferSelect;
 /* ── Create ────────────────────────────────────────────────── */
 
 export function insertMessage(data: {
+  id?: string;
   threadId: string;
   fromDfn: string;
   fromName: string;
@@ -34,7 +35,7 @@ export function insertMessage(data: {
 }): PortalMessageRow {
   const db = getDb();
   const now = new Date().toISOString();
-  const id = randomUUID();
+  const id = data.id ?? randomUUID();
 
   db.insert(portalMessage).values({
     id,
