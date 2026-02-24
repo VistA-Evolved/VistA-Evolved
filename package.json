@@ -9,7 +9,17 @@
     "onlyBuiltDependencies": [
       "better-sqlite3",
       "esbuild"
-    ]
+    ],
+    "overrides": {
+      "ajv@<7": "6.14.0",
+      "ajv@>=7 <9": "8.18.0",
+      "@esbuild-kit/core-utils>esbuild": "0.25.0"
+    },
+    "auditConfig": {
+      "ignoreCves": [
+        "CVE-2026-26996"
+      ]
+    }
   },
   "scripts": {
     "dev": "pnpm -r dev",

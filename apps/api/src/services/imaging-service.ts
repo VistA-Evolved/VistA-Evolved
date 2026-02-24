@@ -52,6 +52,7 @@ import { audit } from "../lib/audit.js";
 import { log } from "../lib/logger.js";
 import { getLinkagesForPatient, getLinkageByStudyUid } from "./imaging-ingest.js";
 import { findByPatientDfn as findOrdersByPatient } from "./imaging-worklist.js";
+import { safeErr } from "../lib/safe-error.js";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -248,7 +249,7 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
       return { ok: true, available: true, text: resp.join("\n"), rpcUsed: "RA DETAILED REPORT" };
     } catch (err: any) {
       disconnect();
-      return { ok: false, error: err.message };
+      return { ok: false, error: safeErr(err) };
     }
   });
 
@@ -473,7 +474,7 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
     } catch (err: any) {
       disconnect();
       log.warn("MAGG PAT PHOTOS failed", { error: err.message, dfn });
-      return { ok: true, available: false, photos: [], error: err.message };
+      return { ok: true, available: false, photos: [], error: safeErr(err) };
     }
   });
 
@@ -537,7 +538,7 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
     } catch (err: any) {
       disconnect();
       log.warn("MAG4 PAT GET IMAGES failed", { error: err.message, dfn });
-      return { ok: true, available: false, images: [], error: err.message };
+      return { ok: true, available: false, images: [], error: safeErr(err) };
     }
   });
 
@@ -642,7 +643,7 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
           ok: true,
           available: false,
           message: "No DICOMweb endpoints configured and Orthanc is unavailable.",
-          error: err.message,
+          error: safeErr(err),
         };
       }
     }
@@ -667,7 +668,7 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
       const metadata = await resp.json();
       return { ok: true, available: true, studyUid, metadata };
     } catch (err: any) {
-      return { ok: false, error: err.message };
+      return { ok: false, error: safeErr(err) };
     }
   });
 

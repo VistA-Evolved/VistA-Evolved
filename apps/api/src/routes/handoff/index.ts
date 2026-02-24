@@ -34,6 +34,7 @@ import {
   archiveHandoffReport,
   getStoreStats,
 } from "./handoff-store.js";
+import { safeErr } from '../../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
@@ -174,10 +175,10 @@ export default async function handoffRoutes(server: FastifyInstance) {
         vistaGrounding: VISTA_GROUNDING,
       };
     } catch (err: any) {
-      log.error("Handoff ward patient assembly failed", { error: err.message, ward });
+      log.error("Handoff ward patient assembly failed", { error: safeErr(err), ward });
       return reply.code(502).send({
         ok: false,
-        error: err.message,
+        error: safeErr(err),
         source: "error",
         rpcUsed: ["ORQPT WARD PATIENTS"],
         pendingTargets: [],

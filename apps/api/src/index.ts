@@ -164,6 +164,7 @@ import postureRoutes from "./posture/index.js";
 import { jobAdminRoutes } from "./routes/job-admin-routes.js";
 // Phase 118: Go-Live Hardening Pack
 import hardeningRoutes from "./routes/hardening-routes.js";
+import { safeErr } from "./lib/safe-error.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -172,22 +173,9 @@ initTracing();
 bridgeTracingToLogger(getCurrentTraceId, getCurrentSpanId);
 
 /* ================================================================== */
-/* Phase 15B helpers: safe error + session-based audit actor             */
+/* Phase 15B helpers: session-based audit actor                          */
+/* safeErr is now imported from ./lib/safe-error.js                     */
 /* ================================================================== */
-
-/** Sanitize error for client response - never leak VistA internals. */
-function safeErr(err: unknown): string {
-  if (err instanceof Error) {
-    const m = err.message;
-    if (m.includes("credential") || m.includes("VISTA_")) return "Configuration error";
-    if (m.includes("ECONNREFUSED") || m.includes("timeout")) return "VistA service unavailable";
-    // Strip MUMPS routine refs, file paths
-    let s = m.replace(/\^[A-Z][A-Z0-9]*/g, "").replace(/[A-Z]:\\[^\s]+/g, "").trim();
-    if (s.length > 120) s = s.slice(0, 120) + "...";
-    return s || "Operation failed";
-  }
-  return "Operation failed";
-}
 
 /** Extract audit actor from request session (set by auth gateway). */
 function auditActor(request: any): { duz: string; name?: string; role?: string } {
@@ -632,7 +620,7 @@ server.get("/vista/ping", async () => {
     await probeConnect();
     return { ok: true, vista: "reachable", port: Number(process.env.VISTA_PORT || 9430) };
   } catch (err: any) {
-    return { ok: false, vista: "unreachable", error: err.message, port: Number(process.env.VISTA_PORT || 9430) };
+    return { ok: false, vista: "unreachable", error: safeErr(err), port: Number(process.env.VISTA_PORT || 9430) };
   }
 });
 
@@ -652,7 +640,7 @@ server.get("/vista/rpc-catalog", async (request, reply) => {
   }
 
   try { validateCredentials(); } catch (err: any) {
-    return { ok: false, error: err.message };
+    return { ok: false, error: safeErr(err) };
   }
 
   try {
@@ -722,7 +710,7 @@ server.get("/vista/rpc-debug/coverage", async (request, reply) => {
     if (!result.present) result.hint = "Run buildRpcCoverageMatrix.ts to generate coverage data";
     return result;
   } catch (err: any) {
-    return { ok: false, error: err.message };
+    return { ok: false, error: safeErr(err) };
   }
 });
 
@@ -736,7 +724,7 @@ server.get("/vista/patient-search", async (request) => {
   try {
     validateCredentials();
   } catch (err: any) {
-    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+    return { ok: false, error: safeErr(err), hint: "Set VISTA credentials in apps/api/.env.local" };
   }
 
   const RPC_NAME = "ORWPT LIST ALL";
@@ -776,7 +764,7 @@ server.get("/vista/patient-search", async (request) => {
     disconnect();
     return {
       ok: false,
-      error: err.message,
+      error: safeErr(err),
       hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
     };
   }
@@ -792,7 +780,7 @@ server.get("/vista/patient-demographics", async (request) => {
   try {
     validateCredentials();
   } catch (err: any) {
-    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+    return { ok: false, error: safeErr(err), hint: "Set VISTA credentials in apps/api/.env.local" };
   }
 
   const RPC_NAME = "ORWPT SELECT";
@@ -840,7 +828,7 @@ server.get("/vista/patient-demographics", async (request) => {
     disconnect();
     return {
       ok: false,
-      error: err.message,
+      error: safeErr(err),
       hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
     };
   }
@@ -856,7 +844,7 @@ server.get("/vista/allergies", async (request) => {
   try {
     validateCredentials();
   } catch (err: any) {
-    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+    return { ok: false, error: safeErr(err), hint: "Set VISTA credentials in apps/api/.env.local" };
   }
 
   const RPC_NAME = "ORQQAL LIST";
@@ -893,7 +881,7 @@ server.get("/vista/allergies", async (request) => {
     disconnect();
     return {
       ok: false,
-      error: err.message,
+      error: safeErr(err),
       hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
     };
   }
@@ -916,7 +904,7 @@ server.post("/vista/allergies", async (request) => {
   try {
     validateCredentials();
   } catch (err: any) {
-    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+    return { ok: false, error: safeErr(err), hint: "Set VISTA credentials in apps/api/.env.local" };
   }
 
   try {
@@ -1015,7 +1003,7 @@ server.post("/vista/allergies", async (request) => {
     disconnect();
     return {
       ok: false,
-      error: err.message,
+      error: safeErr(err),
       hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
     };
   }
@@ -1031,7 +1019,7 @@ server.get("/vista/vitals", async (request) => {
   try {
     validateCredentials();
   } catch (err: any) {
-    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+    return { ok: false, error: safeErr(err), hint: "Set VISTA credentials in apps/api/.env.local" };
   }
 
   // ORQQVI VITALS params: (DFN, ORSDT, OREDT)
@@ -1093,7 +1081,7 @@ server.get("/vista/vitals", async (request) => {
     disconnect();
     return {
       ok: false,
-      error: err.message,
+      error: safeErr(err),
       hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
     };
   }
@@ -1125,7 +1113,7 @@ server.post("/vista/vitals", async (request) => {
   try {
     validateCredentials();
   } catch (err: any) {
-    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+    return { ok: false, error: safeErr(err), hint: "Set VISTA credentials in apps/api/.env.local" };
   }
 
   try {
@@ -1181,7 +1169,7 @@ server.post("/vista/vitals", async (request) => {
     disconnect();
     return {
       ok: false,
-      error: err.message,
+      error: safeErr(err),
       hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
     };
   }
@@ -1197,7 +1185,7 @@ server.get("/vista/notes", async (request) => {
   try {
     validateCredentials();
   } catch (err: any) {
-    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+    return { ok: false, error: safeErr(err), hint: "Set VISTA credentials in apps/api/.env.local" };
   }
 
   const RPC_NAME = "TIU DOCUMENTS BY CONTEXT";
@@ -1297,7 +1285,7 @@ server.get("/vista/notes", async (request) => {
     disconnect();
     return {
       ok: false,
-      error: err.message,
+      error: safeErr(err),
       hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
     };
   }
@@ -1323,7 +1311,7 @@ server.post("/vista/notes", async (request) => {
   try {
     validateCredentials();
   } catch (err: any) {
-    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+    return { ok: false, error: safeErr(err), hint: "Set VISTA credentials in apps/api/.env.local" };
   }
 
   try {
@@ -1426,7 +1414,7 @@ server.post("/vista/notes", async (request) => {
     disconnect();
     return {
       ok: false,
-      error: err.message,
+      error: safeErr(err),
       hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
     };
   }
@@ -1442,7 +1430,7 @@ server.get("/vista/medications", async (request) => {
   try {
     validateCredentials();
   } catch (err: any) {
-    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+    return { ok: false, error: safeErr(err), hint: "Set VISTA credentials in apps/api/.env.local" };
   }
 
   try {
@@ -1544,7 +1532,7 @@ server.get("/vista/medications", async (request) => {
     disconnect();
     return {
       ok: false,
-      error: err.message,
+      error: safeErr(err),
       hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
     };
   }
@@ -1641,7 +1629,7 @@ server.post("/vista/medications", async (request) => {
   try {
     validateCredentials();
   } catch (err: any) {
-    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+    return { ok: false, error: safeErr(err), hint: "Set VISTA credentials in apps/api/.env.local" };
   }
 
   try {
@@ -1677,7 +1665,7 @@ server.post("/vista/medications", async (request) => {
       disconnect();
       return {
         ok: false,
-        error: "AUTOACK failed: " + autoackErr.message,
+        error: "AUTOACK failed: " + safeErr(autoackErr),
         hint: "VistA CPOE quick-order placement failed. This may require full dialog-based ordering.",
       };
     }
@@ -1721,7 +1709,7 @@ server.post("/vista/medications", async (request) => {
     disconnect();
     return {
       ok: false,
-      error: err.message,
+      error: safeErr(err),
       hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
     };
   }
@@ -1732,7 +1720,7 @@ server.get("/vista/default-patient-list", async (request) => {
   try {
     validateCredentials();
   } catch (err: any) {
-    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+    return { ok: false, error: safeErr(err), hint: "Set VISTA credentials in apps/api/.env.local" };
   }
 
   try {
@@ -1766,7 +1754,7 @@ server.get("/vista/default-patient-list", async (request) => {
     disconnect();
     return {
       ok: false,
-      error: err.message,
+      error: safeErr(err),
       hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
     };
   }
@@ -1782,7 +1770,7 @@ server.get("/vista/problems", async (request) => {
   try {
     validateCredentials();
   } catch (err: any) {
-    return { ok: false, error: err.message, hint: "Set VISTA credentials in apps/api/.env.local" };
+    return { ok: false, error: safeErr(err), hint: "Set VISTA credentials in apps/api/.env.local" };
   }
 
   const RPC_NAME = "ORWCH PROBLEM LIST";
@@ -1857,7 +1845,7 @@ server.get("/vista/problems", async (request) => {
     disconnect();
     return {
       ok: false,
-      error: err.message,
+      error: safeErr(err),
       hint: "Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct",
     };
   }
@@ -1933,7 +1921,7 @@ server.get("/vista/icd-search", async (request) => {
     return { ok: false, error: "Search query must be at least 2 characters", hint: "Use ?q=hyper" };
   }
   try { validateCredentials(); } catch (err: any) {
-    return { ok: false, error: err.message };
+    return { ok: false, error: safeErr(err) };
   }
   const RPC_NAME = "ORQQPL4 LEX";
   try {
@@ -1955,7 +1943,7 @@ server.get("/vista/icd-search", async (request) => {
     return { ok: true, rpc: RPC_NAME, count: results.length, results };
   } catch (err: any) {
     disconnect();
-    return { ok: false, rpc: RPC_NAME, error: err.message };
+    return { ok: false, rpc: RPC_NAME, error: safeErr(err) };
   }
 });
 
@@ -1966,7 +1954,7 @@ server.get("/vista/consults", async (request) => {
     return { ok: false, error: "Missing or non-numeric dfn", hint: "Use ?dfn=1" };
   }
   try { validateCredentials(); } catch (err: any) {
-    return { ok: false, error: err.message };
+    return { ok: false, error: safeErr(err) };
   }
   const RPC_NAME = "ORQQCN LIST";
   try {
@@ -2003,7 +1991,7 @@ server.get("/vista/consults", async (request) => {
     return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
   } catch (err: any) {
     disconnect();
-    return { ok: false, error: err.message, rpcUsed: RPC_NAME };
+    return { ok: false, error: safeErr(err), rpcUsed: RPC_NAME };
   }
 });
 
@@ -2013,7 +2001,7 @@ server.get("/vista/consults/detail", async (request) => {
     return { ok: false, error: "Missing or non-numeric consult id", hint: "Use ?id=123" };
   }
   try { validateCredentials(); } catch (err: any) {
-    return { ok: false, error: err.message };
+    return { ok: false, error: safeErr(err) };
   }
   const RPC_NAME = "ORQQCN DETAIL";
   try {
@@ -2023,7 +2011,7 @@ server.get("/vista/consults/detail", async (request) => {
     return { ok: true, text: lines.join("\n"), rpcUsed: RPC_NAME };
   } catch (err: any) {
     disconnect();
-    return { ok: false, error: err.message, rpcUsed: RPC_NAME };
+    return { ok: false, error: safeErr(err), rpcUsed: RPC_NAME };
   }
 });
 
@@ -2034,7 +2022,7 @@ server.get("/vista/surgery", async (request) => {
     return { ok: false, error: "Missing or non-numeric dfn", hint: "Use ?dfn=1" };
   }
   try { validateCredentials(); } catch (err: any) {
-    return { ok: false, error: err.message };
+    return { ok: false, error: safeErr(err) };
   }
   const RPC_NAME = "ORWSR LIST";
   try {
@@ -2069,7 +2057,7 @@ server.get("/vista/surgery", async (request) => {
     return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
   } catch (err: any) {
     disconnect();
-    return { ok: false, error: err.message, rpcUsed: RPC_NAME };
+    return { ok: false, error: safeErr(err), rpcUsed: RPC_NAME };
   }
 });
 
@@ -2080,7 +2068,7 @@ server.get("/vista/dc-summaries", async (request) => {
     return { ok: false, error: "Missing or non-numeric dfn", hint: "Use ?dfn=1" };
   }
   try { validateCredentials(); } catch (err: any) {
-    return { ok: false, error: err.message };
+    return { ok: false, error: safeErr(err) };
   }
   const RPC_NAME = "TIU DOCUMENTS BY CONTEXT";
   try {
@@ -2132,7 +2120,7 @@ server.get("/vista/dc-summaries", async (request) => {
     return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
   } catch (err: any) {
     disconnect();
-    return { ok: false, error: err.message, rpcUsed: RPC_NAME };
+    return { ok: false, error: safeErr(err), rpcUsed: RPC_NAME };
   }
 });
 
@@ -2143,7 +2131,7 @@ server.get("/vista/tiu-text", async (request) => {
     return { ok: false, error: "Missing or non-numeric document id", hint: "Use ?id=123" };
   }
   try { validateCredentials(); } catch (err: any) {
-    return { ok: false, error: err.message };
+    return { ok: false, error: safeErr(err) };
   }
   const RPC_NAME = "TIU GET RECORD TEXT";
   try {
@@ -2153,7 +2141,7 @@ server.get("/vista/tiu-text", async (request) => {
     return { ok: true, text: lines.join("\n"), rpcUsed: RPC_NAME };
   } catch (err: any) {
     disconnect();
-    return { ok: false, error: err.message, rpcUsed: RPC_NAME };
+    return { ok: false, error: safeErr(err), rpcUsed: RPC_NAME };
   }
 });
 
@@ -2164,7 +2152,7 @@ server.get("/vista/labs", async (request) => {
     return { ok: false, error: "Missing or non-numeric dfn", hint: "Use ?dfn=1" };
   }
   try { validateCredentials(); } catch (err: any) {
-    return { ok: false, error: err.message };
+    return { ok: false, error: safeErr(err) };
   }
   const RPC_NAME = "ORWLRR INTERIM";
   try {
@@ -2223,14 +2211,14 @@ server.get("/vista/labs", async (request) => {
     return { ok: true, count: results.length, results, rawText, rpcUsed: RPC_NAME };
   } catch (err: any) {
     disconnect();
-    return { ok: false, error: err.message, rpcUsed: RPC_NAME };
+    return { ok: false, error: safeErr(err), rpcUsed: RPC_NAME };
   }
 });
 
 // Phase 12E: Reports — list available reports + fetch report text
 server.get("/vista/reports", async (_request) => {
   try { validateCredentials(); } catch (err: any) {
-    return { ok: false, error: err.message };
+    return { ok: false, error: safeErr(err) };
   }
   const RPC_NAME = "ORWRP REPORT LISTS";
   try {
@@ -2264,7 +2252,7 @@ server.get("/vista/reports", async (_request) => {
     return { ok: true, count: reports.length, reports, dateRanges, hsTypes, rpcUsed: RPC_NAME };
   } catch (err: any) {
     disconnect();
-    return { ok: false, error: err.message, rpcUsed: RPC_NAME };
+    return { ok: false, error: safeErr(err), rpcUsed: RPC_NAME };
   }
 });
 
@@ -2277,7 +2265,7 @@ server.get("/vista/reports/text", async (request) => {
     return { ok: false, error: "Missing report id", hint: "Use ?dfn=1&id=1" };
   }
   try { validateCredentials(); } catch (err: any) {
-    return { ok: false, error: err.message };
+    return { ok: false, error: safeErr(err) };
   }
   const RPC_NAME = "ORWRP REPORT TEXT";
   try {
@@ -2290,7 +2278,7 @@ server.get("/vista/reports/text", async (request) => {
     return { ok: true, text: lines.join("\n"), rpcUsed: RPC_NAME };
   } catch (err: any) {
     disconnect();
-    return { ok: false, error: err.message, rpcUsed: RPC_NAME };
+    return { ok: false, error: safeErr(err), rpcUsed: RPC_NAME };
   }
 });
 

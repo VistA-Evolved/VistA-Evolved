@@ -24,22 +24,11 @@ import { log } from '../lib/logger.js';
 import { readFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { safeErr } from '../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
 /* ------------------------------------------------------------------ */
-
-function safeErr(err: unknown): string {
-  if (err instanceof Error) {
-    const m = err.message;
-    if (m.includes('credential') || m.includes('VISTA_')) return 'Configuration error';
-    if (m.includes('ECONNREFUSED') || m.includes('timeout')) return 'VistA service unavailable';
-    let s = m.replace(/\^[A-Z][A-Z0-9]*/g, '').replace(/[A-Z]:\\[^\s]+/g, '').trim();
-    if (s.length > 120) s = s.slice(0, 120) + '...';
-    return s || 'Operation failed';
-  }
-  return 'Operation failed';
-}
 
 function auditActor(request: any): { duz: string; name?: string; role?: string } {
   const s = request.session;
@@ -121,7 +110,7 @@ export default async function vistaRcmRoutes(server: FastifyInstance): Promise<v
     }
 
     try { validateCredentials(); } catch (err: any) {
-      return { ok: false, error: err.message, hint: 'Set VISTA credentials in apps/api/.env.local' };
+      return { ok: false, error: safeErr(err), hint: 'Set VISTA credentials in apps/api/.env.local' };
     }
 
     try {
@@ -185,7 +174,7 @@ export default async function vistaRcmRoutes(server: FastifyInstance): Promise<v
     }
 
     try { validateCredentials(); } catch (err: any) {
-      return { ok: false, error: err.message, hint: 'Set VISTA credentials in apps/api/.env.local' };
+      return { ok: false, error: safeErr(err), hint: 'Set VISTA credentials in apps/api/.env.local' };
     }
 
     try {
@@ -246,7 +235,7 @@ export default async function vistaRcmRoutes(server: FastifyInstance): Promise<v
     }
 
     try { validateCredentials(); } catch (err: any) {
-      return { ok: false, error: err.message, hint: 'Set VISTA credentials in apps/api/.env.local' };
+      return { ok: false, error: safeErr(err), hint: 'Set VISTA credentials in apps/api/.env.local' };
     }
 
     try {

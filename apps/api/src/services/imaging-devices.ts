@@ -23,6 +23,7 @@ import { log } from "../lib/logger.js";
 import { audit } from "../lib/audit.js";
 import { imagingAudit } from "./imaging-audit.js";
 import { hasImagingPermission } from "./imaging-authz.js";
+import { safeErr } from "../lib/safe-error.js";
 
 /* ================================================================== */
 /* Types                                                                */
@@ -436,7 +437,7 @@ export async function imagingDeviceRoutes(server: FastifyInstance): Promise<void
         ok: false,
         echoStatus: "error",
         aeTitle: device.aeTitle,
-        error: `Echo test failed: ${err instanceof Error ? err.message : String(err)}`,
+        error: `Echo test failed: ${safeErr(err)}`,
       };
     }
   });

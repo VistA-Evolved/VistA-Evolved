@@ -22,6 +22,7 @@ import { appendFileSync, mkdirSync, existsSync, readFileSync } from "fs";
 import { dirname } from "path";
 import { log } from "./logger.js";
 import { getCurrentTraceId } from "../telemetry/tracing.js";
+import { safeErr } from "./safe-error.js";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -149,10 +150,37 @@ const HASH_SOURCE_IP = process.env.NODE_ENV === "production";
 /* Store                                                               */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Recover the last hash and sequence number from the JSONL file on startup.
+ * This ensures the hash chain remains continuous across API restarts.
+ * Pattern copied from rcm-audit.ts (Phase 113B).
+ */
+function recoverLastEntry(): { hash: string; seq: number } {
+  try {
+    if (AUDIT_SINK !== "file" && AUDIT_SINK !== "both") return { hash: "", seq: 0 };
+    if (!existsSync(AUDIT_FILE_PATH)) return { hash: "", seq: 0 };
+    const content = readFileSync(AUDIT_FILE_PATH, "utf-8");
+    const lines = content.trimEnd().split("\n").filter(Boolean);
+    if (lines.length === 0) return { hash: "", seq: 0 };
+    const lastLine = lines[lines.length - 1];
+    const entry = JSON.parse(lastLine);
+    if (entry && typeof entry.hash === "string") {
+      return {
+        hash: entry.hash,
+        seq: typeof entry.seq === "number" ? entry.seq : 0,
+      };
+    }
+  } catch {
+    // Corrupt or empty file — start fresh
+  }
+  return { hash: "", seq: 0 };
+}
+
 /** Append-only ring buffer. Oldest entries evicted when full. */
 const auditRing: ImmutableAuditEntry[] = [];
-let seq = 0;
-let lastHash = "";
+const _recovered = recoverLastEntry();
+let seq = _recovered.seq;
+let lastHash = _recovered.hash;
 
 /* ------------------------------------------------------------------ */
 /* Hash computation                                                    */
@@ -467,6 +495,6 @@ export function verifyFileAuditChain(): {
 
     return { valid: true, totalEntries: lines.length };
   } catch (err: any) {
-    return { valid: false, totalEntries: 0, error: err.message };
+    return { valid: false, totalEntries: 0, error: safeErr(err) };
   }
 }

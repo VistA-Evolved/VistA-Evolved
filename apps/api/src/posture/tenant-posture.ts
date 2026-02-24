@@ -15,6 +15,7 @@
 
 import { isPgConfigured, getPgPool } from "../platform/pg/pg-db.js";
 import type { PostureGate } from "./observability-posture.js";
+import { safeErr } from "../lib/safe-error.js";
 
 export interface TenantIsolationPosture {
   score: number;
@@ -142,7 +143,7 @@ export async function checkTenantIsolationPosture(): Promise<TenantIsolationPost
       gates.push({
         name: "rls_enabled",
         pass: false,
-        detail: `RLS check failed: ${err.message}`,
+        detail: `RLS check failed: ${safeErr(err)}`,
       });
     }
 

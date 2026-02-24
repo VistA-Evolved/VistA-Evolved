@@ -19,6 +19,7 @@ import { safeCallRpc } from "../../lib/rpc-resilience.js";
 import { connect, disconnect } from "../../vista/rpcBrokerClient.js";
 import { validateCredentials } from "../../vista/config.js";
 import { audit } from "../../lib/audit.js";
+import { safeErr } from '../../lib/safe-error.js';
 
 function auditActor(request: any): { name: string } {
   return { name: (request as any).session?.userName ?? "unknown" };
@@ -70,7 +71,7 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
       };
     } catch (err: any) {
       disconnect();
-      return { ok: false, error: err.message, rpcUsed, vivianPresence };
+      return { ok: false, error: safeErr(err), rpcUsed, vivianPresence };
     }
   });
 
@@ -165,7 +166,7 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
       };
     } catch (err: any) {
       disconnect();
-      return { ok: false, error: err.message, rpcUsed, vivianPresence };
+      return { ok: false, error: safeErr(err), rpcUsed, vivianPresence };
     }
   });
 
@@ -188,7 +189,7 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
       return { ok: true, text: lines.join("\n"), rpcUsed, vivianPresence };
     } catch (err: any) {
       disconnect();
-      return { ok: false, error: err.message, rpcUsed, vivianPresence };
+      return { ok: false, error: safeErr(err), rpcUsed, vivianPresence };
     }
   });
 
@@ -227,7 +228,7 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
       return { ok: true, data, rpcUsed, vivianPresence };
     } catch (err: any) {
       disconnect();
-      return { ok: false, error: err.message, rpcUsed, vivianPresence };
+      return { ok: false, error: safeErr(err), rpcUsed, vivianPresence };
     }
   });
 
@@ -261,7 +262,7 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
       return { ok: true, results, rpcUsed, vivianPresence };
     } catch (err: any) {
       disconnect();
-      return { ok: false, error: err.message, rpcUsed, vivianPresence };
+      return { ok: false, error: safeErr(err), rpcUsed, vivianPresence };
     }
   });
 }

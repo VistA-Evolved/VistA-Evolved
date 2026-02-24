@@ -13,6 +13,7 @@
 
 import type { Claim, DiagnosisCode, ClaimLine, ProcedureCode } from '../domain/claim.js';
 import { createDraftClaim } from '../domain/claim.js';
+import { safeErr } from "../../lib/safe-error.js";
 
 /* ── RPC Caller abstraction (injectable for testing) ──────── */
 
@@ -182,7 +183,7 @@ export async function buildClaimDraftFromVista(
       ok: false,
       candidates: [],
       encountersFound: 0,
-      errors: [`Failed to fetch encounters: ${err.message}`],
+      errors: [`Failed to fetch encounters: ${safeErr(err)}`],
       rpcsCalled,
     };
   }
@@ -366,7 +367,7 @@ export async function getVistaCoverage(
       ok: false,
       policies: [],
       rpcUsed: 'IBCN INSURANCE QUERY',
-      errors: [err.message],
+      errors: [safeErr(err)],
     };
   }
 }

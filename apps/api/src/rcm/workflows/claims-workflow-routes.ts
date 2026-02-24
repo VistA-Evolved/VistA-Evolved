@@ -38,6 +38,7 @@ import {
   listPayerRulepacks,
   getRulepackStats,
 } from "../payers/payer-rulepacks.js";
+import { safeErr } from "../../lib/safe-error.js";
 
 const claimsWorkflowRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
 
@@ -89,7 +90,7 @@ const claimsWorkflowRoutes: FastifyPluginAsync = async (server: FastifyInstance)
     } catch (err) {
       return reply.status(500).send({
         ok: false,
-        error: err instanceof Error ? err.message : String(err),
+        error: safeErr(err),
       });
     }
   });
@@ -128,7 +129,7 @@ const claimsWorkflowRoutes: FastifyPluginAsync = async (server: FastifyInstance)
     } catch (err) {
       return reply.status(400).send({
         ok: false,
-        error: err instanceof Error ? err.message : String(err),
+        error: safeErr(err),
       });
     }
   });

@@ -27,6 +27,7 @@ import { safeCallRpc } from "../../lib/rpc-resilience.js";
 import { audit } from "../../lib/audit.js";
 import { log } from "../../lib/logger.js";
 import { createDraft } from "../write-backs.js";
+import { safeErr } from '../../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
 /* Idempotency (shared store pattern from wave2)                       */
@@ -188,7 +189,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       };
     } catch (err: any) {
       disconnect();
-      return { ok: false, error: err.message, rpcUsed, vivianPresence };
+      return { ok: false, error: safeErr(err), rpcUsed, vivianPresence };
     }
   });
 
@@ -340,8 +341,8 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         await safeCallRpc("ORWDX UNLOCK", [validDfn!], { idempotent: true }).catch(() => {});
       }
       disconnect();
-      log.warn("Lab order AUTOACK failed", { error: err.message });
-      return { ok: false, error: err.message, rpcUsed, vivianPresence };
+      log.warn("Lab order AUTOACK failed", { error: safeErr(err) });
+      return { ok: false, error: safeErr(err), rpcUsed, vivianPresence };
     }
   });
 
@@ -419,7 +420,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         } catch (err: any) {
           if (locked) await safeCallRpc("ORWDX UNLOCK", [validDfn!], { idempotent: true }).catch(() => {});
           disconnect();
-          return { ok: false, error: err.message, rpcUsed, vivianPresence };
+          return { ok: false, error: safeErr(err), rpcUsed, vivianPresence };
         }
       }
     }
@@ -550,7 +551,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         return result;
       } catch (err: any) {
         disconnect();
-        log.warn("ORWOR1 SIG failed", { error: err.message });
+        log.warn("ORWOR1 SIG failed", { error: safeErr(err) });
       }
     }
 
@@ -643,7 +644,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         };
       } catch (err: any) {
         disconnect();
-        log.warn("ORWDXC ACCEPT failed", { error: err.message });
+        log.warn("ORWDXC ACCEPT failed", { error: safeErr(err) });
         // Fall through to pending
       }
     }

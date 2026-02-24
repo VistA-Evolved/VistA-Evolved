@@ -68,6 +68,6 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error("Unhandled error in job worker:", err);
+  log.error("Unhandled error in job worker", { error: err instanceof Error ? err.message : "unknown" });
   process.exit(1);
 });

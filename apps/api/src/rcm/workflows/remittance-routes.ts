@@ -28,6 +28,7 @@ import {
   markAsPosted,
 } from "../workflows/remittance-intake.js";
 import type { RemittanceDocType, RemittanceStatus } from "../workflows/remittance-intake.js";
+import { safeErr } from "../../lib/safe-error.js";
 
 const remittanceRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
 
@@ -122,7 +123,7 @@ const remittanceRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     } catch (err) {
       return reply.status(400).send({
         ok: false,
-        error: err instanceof Error ? err.message : String(err),
+        error: safeErr(err),
       });
     }
   });
@@ -144,7 +145,7 @@ const remittanceRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     } catch (err) {
       return reply.status(400).send({
         ok: false,
-        error: err instanceof Error ? err.message : String(err),
+        error: safeErr(err),
       });
     }
   });
@@ -167,7 +168,7 @@ const remittanceRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     } catch (err) {
       return reply.status(400).send({
         ok: false,
-        error: err instanceof Error ? err.message : String(err),
+        error: safeErr(err),
       });
     }
   });

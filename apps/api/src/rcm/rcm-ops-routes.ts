@@ -35,6 +35,7 @@ import {
   getWorkqueueStats,
 } from "./workqueues/workqueue-store.js";
 import { requirePermission, requireRcmWrite } from "../auth/rbac.js";
+import { safeErr } from "../lib/safe-error.js";
 
 /* ── Route plugin ───────────────────────────────────────────── */
 
@@ -162,9 +163,8 @@ export default async function rcmOpsRoutes(
 
         return { ok: true, ...result, type: "ELIGIBILITY_CHECK" };
       } catch (err: unknown) {
-        const msg = err instanceof Error ? err.message : String(err);
         reply.code(422);
-        return { ok: false, error: msg };
+        return { ok: false, error: safeErr(err) };
       }
     },
   );
@@ -200,9 +200,8 @@ export default async function rcmOpsRoutes(
 
         return { ok: true, ...result, type: "STATUS_POLL" };
       } catch (err: unknown) {
-        const msg = err instanceof Error ? err.message : String(err);
         reply.code(422);
-        return { ok: false, error: msg };
+        return { ok: false, error: safeErr(err) };
       }
     },
   );

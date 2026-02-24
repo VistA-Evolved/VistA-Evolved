@@ -18,7 +18,7 @@
  */
 
 import { createHash, randomUUID } from "crypto";
-import { appendFileSync, mkdirSync, existsSync } from "fs";
+import { appendFileSync, mkdirSync, existsSync, readFileSync } from "fs";
 import { dirname } from "path";
 import { log } from "../lib/logger.js";
 
@@ -97,8 +97,37 @@ export interface ImagingAuditOptions {
 /* ================================================================== */
 
 const auditChain: ImagingAuditEntry[] = [];
-let currentSeq = 0;
 const GENESIS_HASH = "0".repeat(64);
+
+/**
+ * Recover the last hash and sequence number from the JSONL file on startup.
+ * This ensures the hash chain remains continuous across API restarts.
+ * Pattern copied from rcm-audit.ts (Phase 113B).
+ */
+function recoverLastEntry(): { hash: string; seq: number } {
+  try {
+    if (!AUDIT_JSONL_PATH) return { hash: GENESIS_HASH, seq: 0 };
+    if (!existsSync(AUDIT_JSONL_PATH)) return { hash: GENESIS_HASH, seq: 0 };
+    const content = readFileSync(AUDIT_JSONL_PATH, "utf-8");
+    const lines = content.trimEnd().split("\n").filter(Boolean);
+    if (lines.length === 0) return { hash: GENESIS_HASH, seq: 0 };
+    const lastLine = lines[lines.length - 1];
+    const entry = JSON.parse(lastLine);
+    if (entry && typeof entry.hash === "string") {
+      return {
+        hash: entry.hash,
+        seq: typeof entry.seq === "number" ? entry.seq : 0,
+      };
+    }
+  } catch {
+    // Corrupt or empty file -- start fresh
+  }
+  return { hash: GENESIS_HASH, seq: 0 };
+}
+
+const _recovered = recoverLastEntry();
+let currentSeq = _recovered.seq;
+let lastRecoveredHash = _recovered.hash;
 
 /** Max in-memory entries before we start evicting old ones (keep last N). */
 const MAX_MEMORY_ENTRIES = Number(process.env.IMAGING_AUDIT_MAX_ENTRIES || 10000);
@@ -142,7 +171,7 @@ export function imagingAudit(
 ): ImagingAuditEntry {
   const prevHash = auditChain.length > 0
     ? auditChain[auditChain.length - 1].hash
-    : GENESIS_HASH;
+    : lastRecoveredHash;
 
   currentSeq++;
 
@@ -203,7 +232,7 @@ export function imagingAuditDenied(
 ): ImagingAuditEntry {
   const prevHash = auditChain.length > 0
     ? auditChain[auditChain.length - 1].hash
-    : GENESIS_HASH;
+    : lastRecoveredHash;
 
   currentSeq++;
 

@@ -53,6 +53,7 @@ import { requireSession, requireRole } from "../auth/auth-routes.js";
 import { readFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { safeErr } from '../lib/safe-error.js';
 
 const __dirname_resolved = typeof __dirname !== "undefined"
   ? __dirname
@@ -310,7 +311,7 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
       return reply.send({ ok: true, payer: result });
     } catch (err: any) {
       if (err.code === "CONCURRENCY_CONFLICT") {
-        return reply.code(409).send({ ok: false, error: err.message });
+        return reply.code(409).send({ ok: false, error: safeErr(err) });
       }
       throw err;
     }

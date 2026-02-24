@@ -36,6 +36,7 @@ import { hasImagingPermission } from "../services/imaging-authz.js";
 import { imagingAudit, imagingAuditDenied } from "../services/imaging-audit.js";
 import type { AuditActor as ImagingAuditActor } from "../services/imaging-audit.js";
 import type { SessionData } from "../auth/session-store.js";
+import { safeErr } from '../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
@@ -290,7 +291,7 @@ async function proxyToOrthanc(
       log.warn("DICOMweb proxy timeout", { path: orthancPath });
       reply.code(504).send({ ok: false, error: "Imaging service timeout" });
     } else {
-      log.error("DICOMweb proxy error", { path: orthancPath, error: err.message });
+      log.error("DICOMweb proxy error", { path: orthancPath, error: safeErr(err) });
       reply.code(502).send({ ok: false, error: "Imaging service unavailable" });
     }
   }
@@ -659,7 +660,7 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
 
       return { ok: true, result };
     } catch (err: any) {
-      log.error("Demo DICOM upload failed", { error: err.message });
+      log.error("Demo DICOM upload failed", { error: safeErr(err) });
       return reply.code(502).send({ ok: false, error: "Orthanc upload failed" });
     }
   });
@@ -765,7 +766,7 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
     } catch (err: any) {
       return {
         ok: false,
-        orthanc: { status: "disconnected", error: err.message },
+        orthanc: { status: "disconnected", error: safeErr(err) },
         ohif: { url: IMAGING_CONFIG.ohifUrl, status: "unknown" },
         security: { rbacEnabled: true, breakGlassEnabled: true },
         audit: auditStats,

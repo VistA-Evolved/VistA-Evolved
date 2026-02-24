@@ -17,6 +17,7 @@ import type { FastifyInstance } from "fastify";
 import { validateCredentials } from "../vista/config.js";
 import { connect, disconnect, callRpc, getDuz } from "../vista/rpcBrokerClient.js";
 import { optionalRpc } from "../vista/rpcCapabilities.js";
+import { safeErr } from '../lib/safe-error.js';
 
 export interface InboxItem {
   id: string;
@@ -83,7 +84,7 @@ export default async function inboxRoutes(server: FastifyInstance): Promise<void
             }
           }
         } catch (err: any) {
-          featureStatus.push({ rpc: "ORWORB UNSIG ORDERS", status: 'error', detail: err.message });
+          featureStatus.push({ rpc: "ORWORB UNSIG ORDERS", status: 'error', detail: safeErr(err) });
         }
       } else {
         featureStatus.push({ rpc: "ORWORB UNSIG ORDERS", status: 'expected-missing', detail: 'Feature disabled on this distro' });
@@ -124,7 +125,7 @@ export default async function inboxRoutes(server: FastifyInstance): Promise<void
             }
           }
         } catch (err: any) {
-          featureStatus.push({ rpc: "ORWORB FASTUSER", status: 'error', detail: err.message });
+          featureStatus.push({ rpc: "ORWORB FASTUSER", status: 'error', detail: safeErr(err) });
         }
       } else {
         featureStatus.push({ rpc: "ORWORB FASTUSER", status: 'expected-missing', detail: 'Feature disabled on this distro' });

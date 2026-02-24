@@ -19,6 +19,7 @@ import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { requireSession } from "../../auth/auth-routes.js";
 import { safeCallRpc } from "../../lib/rpc-resilience.js";
 import { log } from "../../lib/logger.js";
+import { safeErr } from '../../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
@@ -362,10 +363,10 @@ export default async function emarRoutes(server: FastifyInstance) {
         _heuristicWarning: "Due times are derived from sig text, not from actual BCMA medication log. Install BCMA/PSB for real-time scheduling.",
       };
     } catch (err: any) {
-      log.error("eMAR schedule fetch failed", { error: err.message });
+      log.error("eMAR schedule fetch failed", { error: safeErr(err) });
       return reply.code(502).send({
         ok: false,
-        error: err.message,
+        error: safeErr(err),
         source: "error",
         rpcUsed: ["ORWPS ACTIVE"],
         pendingTargets: [],
@@ -434,10 +435,10 @@ export default async function emarRoutes(server: FastifyInstance) {
         ],
       };
     } catch (err: any) {
-      log.error("eMAR allergy fetch failed", { error: err.message });
+      log.error("eMAR allergy fetch failed", { error: safeErr(err) });
       return reply.code(502).send({
         ok: false,
-        error: err.message,
+        error: safeErr(err),
         source: "error",
         rpcUsed: ["ORQQAL LIST"],
         pendingTargets: [],
@@ -563,10 +564,10 @@ export default async function emarRoutes(server: FastifyInstance) {
         _heuristicDisclaimer: "This check uses name-based therapeutic class matching and is NOT a substitute for pharmacist review or a clinical decision support engine. Always verify with pharmacy before acting on these alerts.",
       };
     } catch (err: any) {
-      log.error("eMAR duplicate check failed", { error: err.message });
+      log.error("eMAR duplicate check failed", { error: safeErr(err) });
       return reply.code(502).send({
         ok: false,
-        error: err.message,
+        error: safeErr(err),
         source: "error",
         rpcUsed: ["ORWPS ACTIVE"],
         pendingTargets: [],

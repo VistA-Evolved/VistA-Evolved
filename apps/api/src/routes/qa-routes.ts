@@ -33,6 +33,7 @@ import {
   getFlowResultsByFlowId,
 } from "../qa/index.js";
 import type { DeadClickEntry } from "../qa/types.js";
+import { safeErr } from '../lib/safe-error.js';
 
 /* ── Guard ────────────────────────────────────────────────── */
 
@@ -122,7 +123,7 @@ export default async function qaRoutes(server: FastifyInstance) {
       storeFlowResult(result);
       return { ok: true, result };
     } catch (err) {
-      return reply.status(500).send({ ok: false, error: (err as Error).message });
+      return reply.status(500).send({ ok: false, error: safeErr(err) });
     }
   });
 

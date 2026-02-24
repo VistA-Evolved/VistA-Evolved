@@ -17,6 +17,7 @@
 import { EXPORT_CONFIG, type ExportFormat } from "../config/report-config.js";
 import { audit, type AuditAction } from "./audit.js";
 import { log } from "./logger.js";
+import { safeErr } from "./safe-error.js";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -222,7 +223,7 @@ export function executeExportJob(
     log.info("Export job completed", { jobId, rowCount: job.rowCount });
   } catch (err: any) {
     job.status = "failed";
-    job.error = err.message;
+    job.error = safeErr(err);
     job.completedAt = new Date().toISOString();
 
     audit("export.download" as AuditAction, "error", job.requestedBy, {

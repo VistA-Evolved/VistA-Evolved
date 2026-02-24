@@ -27,6 +27,7 @@ import { safeCallRpc, safeCallRpcWithList } from "../../lib/rpc-resilience.js";
 import { audit } from "../../lib/audit.js";
 import { log } from "../../lib/logger.js";
 import { createDraft } from "../write-backs.js";
+import { safeErr } from '../../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
 /* Idempotency (shared store pattern from wave2 / orders-cpoe)         */
@@ -216,7 +217,7 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
       };
     } catch (err: any) {
       disconnect();
-      return { ok: false, error: err.message, rpcUsed, vivianPresence };
+      return { ok: false, error: safeErr(err), rpcUsed, vivianPresence };
     }
   });
 
@@ -257,7 +258,7 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
       return { ok: true, ien: String(ien), text, rpcUsed, vivianPresence };
     } catch (err: any) {
       disconnect();
-      return { ok: false, error: err.message, rpcUsed, vivianPresence };
+      return { ok: false, error: safeErr(err), rpcUsed, vivianPresence };
     }
   });
 
@@ -361,7 +362,7 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
         }
       } catch (err: any) {
         disconnect();
-        log.warn("TIU note sign flow failed, falling back to draft", { error: err.message });
+        log.warn("TIU note sign flow failed, falling back to draft", { error: safeErr(err) });
       }
     }
 
@@ -448,7 +449,7 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
         return result;
       } catch (err: any) {
         disconnect();
-        log.warn("TIU addendum creation failed, falling back to draft", { error: err.message });
+        log.warn("TIU addendum creation failed, falling back to draft", { error: safeErr(err) });
       }
     }
 
@@ -517,7 +518,7 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
     } catch (err: any) {
       disconnect();
       return {
-        ok: false, error: err.message, rpcUsed, vivianPresence,
+        ok: false, error: safeErr(err), rpcUsed, vivianPresence,
         defaultTitles: [{ ien: "10", name: "GENERAL NOTE" }],
       };
     }

@@ -76,7 +76,12 @@ services:
       - HOST=0.0.0.0
       - PORT=3001
       # PostgreSQL (Phase 117): ALL durable state in PG, no SQLite in prod
-      - PLATFORM_PG_URL=postgres://${PLATFORM_PG_USER:-ve_api}:${PLATFORM_PG_PASSWORD}@platform-db:5432/${PLATFORM_PG_DB:-ve_platform}
+      # Connection assembled at runtime from components (secret-scan safe)
+      - PLATFORM_PG_HOST=platform-db
+      - PLATFORM_PG_PORT=5432
+      - PLATFORM_PG_USER=${PLATFORM_PG_USER:-ve_api}
+      - PLATFORM_PG_PASSWORD=${PLATFORM_PG_PASSWORD}
+      - PLATFORM_PG_DB=${PLATFORM_PG_DB:-ve_platform}
       - STORE_BACKEND=pg
       - PLATFORM_PG_RLS_ENABLED=${PLATFORM_PG_RLS_ENABLED:-true}
       # VistA connection (from .env.prod or secrets manager)

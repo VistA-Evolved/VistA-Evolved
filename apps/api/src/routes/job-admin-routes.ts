@@ -27,6 +27,7 @@ import {
 } from "../jobs/runner.js";
 import { isPgConfigured } from "../platform/pg/index.js";
 import { log } from "../lib/logger.js";
+import { safeErr } from '../lib/safe-error.js';
 
 export async function jobAdminRoutes(server: FastifyInstance): Promise<void> {
   /**
@@ -119,8 +120,8 @@ export async function jobAdminRoutes(server: FastifyInstance): Promise<void> {
         scheduledAt: job.run_at,
       });
     } catch (err: any) {
-      log.warn("Job trigger failed", { jobName: body.jobName, error: err.message });
-      return reply.code(500).send({ ok: false, error: err.message });
+      log.warn("Job trigger failed", { jobName: body.jobName, error: safeErr(err) });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 }

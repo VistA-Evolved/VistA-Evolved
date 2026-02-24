@@ -19,6 +19,7 @@ import {
 import { connect, disconnect, callRpc } from "../vista/rpcBrokerClient.js";
 import { validateCredentials } from "../vista/config.js";
 import { recordAnalyticsEvent } from "./analytics-store.js";
+import { safeErr } from "../lib/safe-error.js";
 
 /* ================================================================== */
 /* Types                                                                */
@@ -173,7 +174,7 @@ export async function getClinicalReportList(
   } catch (err: any) {
     disconnect();
     log.error("Clinical report list failed", { error: err.message });
-    return { ok: false, count: 0, reports: [], dateRanges: [], hsTypes: [], error: err.message };
+    return { ok: false, count: 0, reports: [], dateRanges: [], hsTypes: [], error: safeErr(err) };
   }
 }
 
@@ -251,7 +252,7 @@ export async function getClinicalReportText(
     disconnect();
     const elapsedMs = Date.now() - startMs;
     log.error("Clinical report text fetch failed", {
-      error: err.message,
+      error: safeErr(err),
       dfn,
       reportId,
       elapsedMs,
@@ -263,7 +264,7 @@ export async function getClinicalReportText(
       tags: { error: err.message.slice(0, 80) },
     });
 
-    return { ok: false, rpcUsed: "ORWRP REPORT TEXT", error: err.message };
+    return { ok: false, rpcUsed: "ORWRP REPORT TEXT", error: safeErr(err) };
   }
 }
 

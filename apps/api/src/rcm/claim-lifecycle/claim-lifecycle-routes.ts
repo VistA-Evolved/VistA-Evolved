@@ -56,6 +56,7 @@ import {
 } from "./scrub-rule-repo.js";
 import { scrubClaimDraft, getScrubDashboardMetrics } from "./scrubber.js";
 import { appendRcmAudit } from "../audit/rcm-audit.js";
+import { safeErr } from "../../lib/safe-error.js";
 
 const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
 
@@ -100,7 +101,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
       });
       return reply.code(201).send({ ok: true, draft });
     } catch (err: any) {
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -170,7 +171,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
       });
       return { ok: true, draft };
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message });
+      return reply.code(400).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -201,7 +202,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
       });
       return { ok: true, draft };
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message });
+      return reply.code(400).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -245,7 +246,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
       });
       return { ok: true, draft };
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message });
+      return reply.code(400).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -263,7 +264,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
       });
       return reply.code(201).send({ ok: true, draft: newDraft });
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message });
+      return reply.code(400).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -284,7 +285,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
       });
       return { ok: true, draft };
     } catch (err: any) {
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -347,7 +348,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
       });
       return reply.code(201).send({ ok: true, rule });
     } catch (err: any) {
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 

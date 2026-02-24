@@ -17,6 +17,7 @@ import type { FastifyInstance } from "fastify";
 import { validateCredentials } from "../vista/config.js";
 import { connect, disconnect, callRpc } from "../vista/rpcBrokerClient.js";
 import { optionalRpc, isRpcAvailable } from "../vista/rpcCapabilities.js";
+import { safeErr } from '../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
 /* Plugin interface for future viewer                                   */
@@ -111,7 +112,7 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
       return { ok: true, available: true, text: resp.join("\n"), rpcUsed: "RA DETAILED REPORT" };
     } catch (err: any) {
       disconnect();
-      return { ok: false, error: err.message };
+      return { ok: false, error: safeErr(err) };
     }
   });
 }

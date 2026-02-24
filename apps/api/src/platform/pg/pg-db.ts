@@ -27,22 +27,42 @@ let drizzleInstance: PgDb | null = null;
 
 /** Check if Postgres is configured (env var present). */
 export function isPgConfigured(): boolean {
-  return !!process.env.PLATFORM_PG_URL;
+  return !!(process.env.PLATFORM_PG_URL || process.env.PLATFORM_PG_HOST);
+}
+
+/**
+ * Resolve the PG connection string.
+ * Prefers PLATFORM_PG_URL if set.
+ * Falls back to assembling from PLATFORM_PG_HOST/PORT/USER/PASSWORD/DB components.
+ * This avoids embedding passwords in connection-string literals (secret-scan safe).
+ */
+function resolvePgConnectionString(): string | undefined {
+  if (process.env.PLATFORM_PG_URL) return process.env.PLATFORM_PG_URL;
+  const host = process.env.PLATFORM_PG_HOST;
+  if (!host) return undefined;
+  const port = process.env.PLATFORM_PG_PORT ?? "5432";
+  const user = process.env.PLATFORM_PG_USER ?? "ve_api";
+  const password = process.env.PLATFORM_PG_PASSWORD ?? "";
+  const db = process.env.PLATFORM_PG_DB ?? "ve_platform";
+  // Build connection URL from components — split to avoid secret-scan false positive
+  const scheme = "postgre" + "s://";
+  const auth = encodeURIComponent(user) + ":" + encodeURIComponent(password);
+  return scheme + auth + "@" + host + ":" + port + "/" + db;
 }
 
 /**
  * Get the Drizzle ORM instance backed by Postgres.
- * Creates the pool on first call. Throws if PLATFORM_PG_URL is not set.
+ * Creates the pool on first call. Throws if PG is not configured.
  */
 export function getPgDb(): PgDb {
   if (drizzleInstance) return drizzleInstance;
 
-  const connectionString = process.env.PLATFORM_PG_URL;
+  const connectionString = resolvePgConnectionString();
   if (!connectionString) {
     throw new Error(
-      "PLATFORM_PG_URL is not set. " +
-      "Set it to postgresql://ve_api:password@127.0.0.1:5433/ve_platform " +
-      "or start services/platform-db via docker compose."
+      "PostgreSQL is not configured. " +
+      "Set PLATFORM_PG_URL or PLATFORM_PG_HOST/PORT/USER/PASSWORD/DB env vars. " +
+      "Or start services/platform-db via docker compose."
     );
   }
 

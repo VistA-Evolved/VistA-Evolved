@@ -23,6 +23,7 @@ import { connect, disconnect, callRpc } from "../vista/rpcBrokerClient.js";
 import { audit as centralAudit, queryAuditEvents } from "../lib/audit.js";
 import { log } from "../lib/logger.js";
 import type { AuditAction } from "../lib/audit.js";
+import { safeErr } from '../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
 /* Centralized audit helper (Phase 15C migration)                       */
@@ -134,7 +135,7 @@ export default async function wsConsoleRoutes(server: FastifyInstance): Promise<
           disconnect();
           socket.send(JSON.stringify({
             type: "error",
-            message: err.message,
+            message: safeErr(err),
             rpcName,
             ts: new Date().toISOString(),
           }));
@@ -162,7 +163,7 @@ export default async function wsConsoleRoutes(server: FastifyInstance): Promise<
             ts: new Date().toISOString(),
           }));
         } catch (err: any) {
-          socket.send(JSON.stringify({ type: "error", message: err.message, ts: new Date().toISOString() }));
+          socket.send(JSON.stringify({ type: "error", message: safeErr(err), ts: new Date().toISOString() }));
         }
       } else if (msg.type === "ping") {
         socket.send(JSON.stringify({ type: "pong", ts: new Date().toISOString() }));

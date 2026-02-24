@@ -51,6 +51,7 @@ import {
   callRpc,
   disconnect,
 } from "../vista/rpcBrokerClient.js";
+import { safeErr } from '../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
 /*  Configuration                                                      */
@@ -226,12 +227,12 @@ async function callInteropRpcCached(
 
 /** Map CircuitOpenError / RpcTimeoutError to appropriate HTTP status. */
 function handleRpcError(err: unknown, rpcName: string, reply: any): void {
-  const message = err instanceof Error ? err.message : String(err);
+  const message = safeErr(err);
   if (err instanceof CircuitOpenError) {
     reply.status(503).send({
       ok: false,
       error: "VistA temporarily unavailable",
-      detail: "Circuit breaker open — too many recent failures",
+      detail: "Circuit breaker open -- too many recent failures",
       rpc: rpcName,
     });
   } else if (err instanceof RpcTimeoutError) {
@@ -551,7 +552,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
               const lines = await callRpc(rpc, rpc.includes("LINKS") ? ["20"] : rpc.includes("MSGS") ? ["168"] : []);
               batch[rpc] = { ok: true, lines };
             } catch (err: any) {
-              batch[rpc] = { ok: false, lines: [], error: err.message };
+              batch[rpc] = { ok: false, lines: [], error: safeErr(err) };
             }
           }
 
@@ -1017,7 +1018,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
               );
               result[rpc] = { ok: true, lines };
             } catch (err: any) {
-              result[rpc] = { ok: false, lines: [], error: err.message };
+              result[rpc] = { ok: false, lines: [], error: safeErr(err) };
             }
           }
           disconnect();
@@ -1124,7 +1125,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
               const lines = await callRpc(rpc, []);
               result[rpc] = { ok: true, lines };
             } catch (err: any) {
-              result[rpc] = { ok: false, lines: [], error: err.message };
+              result[rpc] = { ok: false, lines: [], error: safeErr(err) };
             }
           }
           disconnect();

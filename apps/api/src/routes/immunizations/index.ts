@@ -14,6 +14,7 @@ import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { requireSession } from "../../auth/auth-routes.js";
 import { safeCallRpc } from "../../lib/rpc-resilience.js";
 import { log } from "../../lib/logger.js";
+import { safeErr } from '../../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
@@ -102,7 +103,7 @@ export default async function immunizationsRoutes(
         rpcUsed: [],
         pendingTargets: ["ORQQPX IMMUN LIST"],
         _integration: "pending",
-        _error: err.message?.includes("ECONNREFUSED") ? "VistA unavailable" : err.message,
+        _error: safeErr(err),
       });
     }
   });
@@ -135,7 +136,7 @@ export default async function immunizationsRoutes(
         rpcUsed: [],
         pendingTargets: ["PXVIMM IMM SHORT LIST"],
         _integration: "pending",
-        _error: err.message?.includes("ECONNREFUSED") ? "VistA unavailable" : err.message,
+        _error: safeErr(err),
       });
     }
   });
