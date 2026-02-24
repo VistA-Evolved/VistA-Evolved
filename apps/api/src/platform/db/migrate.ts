@@ -327,6 +327,73 @@ CREATE INDEX IF NOT EXISTS idx_cstat_status ON claim_status_check(status);
 CREATE INDEX IF NOT EXISTS idx_cstat_created ON claim_status_check(created_at);
 CREATE INDEX IF NOT EXISTS idx_cstat_tenant ON claim_status_check(tenant_id);
 
+-- Phase 109: Module Registry + Feature Flags + Entitlements
+
+CREATE TABLE IF NOT EXISTS module_catalog (
+  module_id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  version TEXT NOT NULL DEFAULT '1.0.0',
+  always_enabled INTEGER NOT NULL DEFAULT 0,
+  dependencies_json TEXT NOT NULL DEFAULT '[]',
+  route_patterns_json TEXT NOT NULL DEFAULT '[]',
+  adapters_json TEXT NOT NULL DEFAULT '[]',
+  permissions_json TEXT NOT NULL DEFAULT '[]',
+  data_stores_json TEXT NOT NULL DEFAULT '[]',
+  health_check_endpoint TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tenant_module (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL,
+  module_id TEXT NOT NULL,
+  enabled INTEGER NOT NULL DEFAULT 0,
+  plan_tier TEXT NOT NULL DEFAULT 'base',
+  enabled_at TEXT,
+  disabled_at TEXT,
+  enabled_by TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_tenant_module_unique ON tenant_module(tenant_id, module_id);
+CREATE INDEX IF NOT EXISTS idx_tenant_module_tenant ON tenant_module(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_tenant_module_module ON tenant_module(module_id);
+CREATE INDEX IF NOT EXISTS idx_tenant_module_enabled ON tenant_module(enabled);
+
+CREATE TABLE IF NOT EXISTS tenant_feature_flag (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL,
+  flag_key TEXT NOT NULL,
+  flag_value TEXT NOT NULL DEFAULT 'true',
+  module_id TEXT,
+  description TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_tenant_flag_unique ON tenant_feature_flag(tenant_id, flag_key);
+CREATE INDEX IF NOT EXISTS idx_tenant_flag_tenant ON tenant_feature_flag(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_tenant_flag_module ON tenant_feature_flag(module_id);
+
+CREATE TABLE IF NOT EXISTS module_audit_log (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL,
+  actor_id TEXT NOT NULL,
+  actor_type TEXT NOT NULL DEFAULT 'user',
+  entity_type TEXT NOT NULL,
+  entity_id TEXT NOT NULL,
+  action TEXT NOT NULL,
+  before_json TEXT,
+  after_json TEXT,
+  reason TEXT,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_mod_audit_tenant ON module_audit_log(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_mod_audit_entity ON module_audit_log(entity_type, entity_id);
+CREATE INDEX IF NOT EXISTS idx_mod_audit_created ON module_audit_log(created_at);
+CREATE INDEX IF NOT EXISTS idx_mod_audit_action ON module_audit_log(action);
+
 `;
 
 // Phase 97B: Add payer_type column (idempotent — catches "duplicate column" error)

@@ -60,11 +60,12 @@ import { startAggregationJob, stopAggregationJob } from "./services/analytics-ag
 import { initEtl } from "./services/analytics-etl.js";
 import { initAnalyticsStore } from "./services/analytics-store.js";
 // Phase 37C: Product modularity — module registry, capability service, adapter loader, module guard
-import { initModuleRegistry } from "./modules/module-registry.js";
+import { initModuleRegistry, setDbEntitlementProvider } from "./modules/module-registry.js";
 import { initCapabilityService } from "./modules/capability-service.js";
 import { initAdapters } from "./adapters/adapter-loader.js";
 import { moduleGuardHook } from "./middleware/module-guard.js";
 import moduleCapabilityRoutes from "./routes/module-capability-routes.js";
+import moduleEntitlementRoutes from "./routes/module-entitlement-routes.js";
 // Phase 51: Marketplace tenant config loader
 import { initMarketplaceTenantConfig } from "./config/marketplace-tenant.js";
 // Phase 38: RCM + Payer Connectivity
@@ -330,6 +331,9 @@ server.register(iamRoutes);
 
 // Register module & capability routes -- SKU, adapters, toggles (Phase 37C)
 server.register(moduleCapabilityRoutes);
+
+// Register module entitlement routes -- DB-backed entitlements, feature flags, audit (Phase 109)
+server.register(moduleEntitlementRoutes);
 
 // Register RCM routes -- claim lifecycle, payer registry, EDI pipeline (Phase 38)
 server.register(rcmRoutes);
@@ -2278,6 +2282,17 @@ try {
   const dbResult = initPlatformDb();
   if (dbResult.ok) {
     log.info("Platform DB init", { ok: dbResult.ok, migrated: dbResult.migrated, seeded: dbResult.seeded });
+    // Phase 109: Seed module catalog + default tenant entitlements from modules.json
+    try {
+      const { seedModuleCatalogFromConfig } = await import("./modules/module-catalog-seed.js");
+      const seedResult = seedModuleCatalogFromConfig();
+      log.info("Module catalog seeded", { ...seedResult });
+      // Wire DB-backed entitlement provider into module-registry
+      const { getEnabledModuleIds } = await import("./platform/db/repo/module-repo.js");
+      setDbEntitlementProvider((tenantId: string) => getEnabledModuleIds(tenantId));
+    } catch (seedErr: any) {
+      log.warn("Module catalog seed failed (non-fatal)", { error: seedErr.message });
+    }
   } else {
     log.warn("Platform DB init failed", { ok: false, error: dbResult.error });
   }

@@ -992,8 +992,57 @@ docs/runbooks/
 118. **Phase numbers can be alphanumeric (Phase 108).** E.g. "37B", "95B",
      "96B". All generators and runners handle this. The index builder
      extracts the phase number from the folder name regex, not the prefix.
+119. **Module entitlements are now DB-backed (Phase 109).** The in-memory
+     `tenantModuleOverrides` Map in `module-registry.ts` is supplemented by
+     4 SQLite tables: `module_catalog`, `tenant_module`, `tenant_feature_flag`,
+     `module_audit_log`. The DB is the source of truth when the entitlement
+     provider is registered (via `setDbEntitlementProvider()` in `index.ts`
+     after `initPlatformDb()`). Falls back to in-memory SKU resolution if
+     DB is unavailable.
+120. **Module catalog is seeded from config/modules.json on startup (Phase 109).**
+     `module-catalog-seed.ts` reads `config/modules.json` + `config/skus.json`,
+     upserts all 13 modules into `module_catalog`, then seeds `tenant_module`
+     rows for the default tenant from the active SKU profile. Idempotent --
+     existing entitlements are not overwritten.
+121. **Module audit log is append-only and tenant-scoped (Phase 109).** Every
+     enable/disable, feature flag change, and seed operation writes to
+     `module_audit_log` with actor, before/after JSON, and reason. Query via
+     `GET /admin/modules/audit?limit=100&offset=0`.
+122. **Feature flags are per-tenant key-value pairs (Phase 109).** Stored in
+     `tenant_feature_flag` with unique (tenant_id, flag_key). Optionally
+     scoped to a module_id. Manage via `/admin/modules/feature-flags` CRUD.
+123. **`/admin/modules/*` routes bypass the module guard (Phase 109).** Added
+     to BYPASS_PATTERNS in `module-guard.ts`. Auth is still enforced by
+     AUTH_RULES (`/admin/*` requires admin role).
 
 ---
+
+## 7m. Architecture Quick Map (Phase 109 additions)
+
+```
+apps/api/src/
+  modules/
+    module-catalog-seed.ts        -- Startup seed: modules.json -> DB (Phase 109)
+    module-registry.ts            -- +setDbEntitlementProvider, DB-first resolution (Phase 109)
+  platform/db/
+    schema.ts                     -- +moduleCatalog, tenantModule, tenantFeatureFlag, moduleAuditLog (Phase 109)
+    migrate.ts                    -- +4 CREATE TABLE + 11 indexes (Phase 109)
+    repo/
+      module-repo.ts              -- Full CRUD for all 4 Phase 109 tables (Phase 109)
+  routes/
+    module-entitlement-routes.ts  -- 8 admin endpoints: catalog, entitlements, flags, audit (Phase 109)
+  middleware/
+    module-guard.ts               -- +/admin/modules bypass (Phase 109)
+
+apps/web/src/app/cprs/admin/modules/
+  page.tsx                        -- +Entitlements tab, +Feature Flags tab, +Audit Log tab (Phase 109)
+
+docs/architecture/
+  module-catalog.md               -- 13 modules, 7 SKUs, 9 feature flags documented (Phase 109)
+
+scripts/
+  verify-phase109-modular-packaging.ps1 -- Phase 109 verifier (35 gates) (Phase 109)
+```
 
 ## 8. Bug Tracker & Lessons Learned
 

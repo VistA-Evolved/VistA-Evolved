@@ -1,40 +1,8 @@
-# Phase 109: Modular Packaging + Feature Flags -- Summary
+# Phase 108 VERIFY -- Summary
 
 ## What Changed
 
-### DB Schema (4 new tables)
-- `module_catalog` -- Module definitions synced from config/modules.json
-- `tenant_module` -- Per-tenant module entitlements (enabled/disabled + plan tier)
-- `tenant_feature_flag` -- Per-tenant key-value feature flags
-- `module_audit_log` -- Append-only audit trail for all entitlement changes
-
-### API (8 new endpoints)
-- `GET /admin/modules/catalog` -- Full module catalog from DB
-- `GET /admin/modules/entitlements` -- List tenant entitlements + enabled IDs
-- `POST /admin/modules/entitlements` -- Toggle module (with validation + audit)
-- `POST /admin/modules/entitlements/seed` -- Seed baseline from SKU profile
-- `GET /admin/modules/feature-flags` -- List flags for tenant
-- `POST /admin/modules/feature-flags` -- Upsert flag (with audit)
-- `DELETE /admin/modules/feature-flags` -- Delete flag (with audit)
-- `GET /admin/modules/audit` -- Paginated audit trail
-
-### Runtime Enforcement
-- `module-registry.ts` now checks DB-backed entitlements via `setDbEntitlementProvider()`
-- Falls back to in-memory SKU resolution when DB unavailable
-- Module guard bypasses `/admin/modules/*` to prevent self-lockout
-
-### Admin UI (3 new tabs)
-- Entitlements -- Toggle modules, seed baseline, view plan tiers
-- Feature Flags -- CRUD for per-tenant flags
-- Audit Log -- Paginated append-only audit trail
-
-### Startup Sequence
-- After `initPlatformDb()`, `seedModuleCatalogFromConfig()` upserts all 13 modules
-- Seeds default tenant entitlements from active SKU profile
-- Registers DB entitlement provider into module-registry
-
-## Verifier Output
-35/35 gates PASSED (verify-phase109-modular-packaging.ps1)
+### Fixes Applied (6 issues from deep code audit)
 
 1. **Tautological UI component tests** -- Generated E2E specs now use `findFile()` recursive directory walk via `readdirSync` instead of checking hardcoded array length (which always passed).
 2. **Duplicate `const r` in API specs** -- `generateApiSpec()` now uses `r${idx}` unique variable names per route iteration. Previous code declared `const r` multiple times in the same scope, making all API specs unrunnable.

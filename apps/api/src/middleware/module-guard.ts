@@ -26,6 +26,8 @@ const BYPASS_PATTERNS = [
   /^\/api\/capabilities/,
   /^\/api\/adapters/,
   /^\/api\/marketplace/,
+  /^\/admin\/modules/,    // Phase 109: Module entitlement admin routes
+  /^\/posture\//,         // Phase 107: Infrastructure posture routes
 ];
 
 /* ------------------------------------------------------------------ */

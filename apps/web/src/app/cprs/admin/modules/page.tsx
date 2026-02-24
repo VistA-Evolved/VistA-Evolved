@@ -17,7 +17,7 @@ import styles from '@/components/cprs/cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
-type Tab = 'modules' | 'connectors' | 'jurisdiction' | 'status';
+type Tab = 'modules' | 'connectors' | 'jurisdiction' | 'status' | 'entitlements' | 'flags' | 'audit';
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
@@ -123,8 +123,11 @@ export default function ModulesPage() {
 
   const tabs: { id: Tab; label: string }[] = [
     { id: 'modules', label: 'Modules' },
+    { id: 'entitlements', label: 'Entitlements' },
+    { id: 'flags', label: 'Feature Flags' },
     { id: 'connectors', label: 'Connectors' },
     { id: 'jurisdiction', label: 'Jurisdiction' },
+    { id: 'audit', label: 'Audit Log' },
     { id: 'status', label: 'Status' },
   ];
 
@@ -239,8 +242,11 @@ export default function ModulesPage() {
       {/* Tab content */}
       <div style={{ padding: '16px 24px', overflow: 'auto', flex: 1 }}>
         {tab === 'modules' && <ModulesTab manifests={manifests} onToggle={toggleModule} saving={saving} expanded={expandedModule} onExpand={setExpandedModule} />}
+        {tab === 'entitlements' && <EntitlementsTab />}
+        {tab === 'flags' && <FeatureFlagsTab />}
         {tab === 'connectors' && <ConnectorsTab config={marketplaceConfig} onToggle={toggleConnector} saving={saving} />}
         {tab === 'jurisdiction' && <JurisdictionTab config={marketplaceConfig} jurisdictions={jurisdictions} onChange={handleJurisdictionChange} saving={saving} />}
+        {tab === 'audit' && <ModuleAuditTab />}
         {tab === 'status' && <StatusTab summary={summary} config={marketplaceConfig} manifests={manifests} />}
       </div>
     </div>
@@ -619,6 +625,364 @@ function StatCard({ label, value, color }: { label: string; value: string | numb
     <div style={{ border: '1px solid #dee2e6', borderRadius: 6, padding: '12px 16px', textAlign: 'center' }}>
       <div style={{ fontSize: 24, fontWeight: 700, color: color || '#212529' }}>{value}</div>
       <div style={{ fontSize: 11, color: '#6c757d', marginTop: 4 }}>{label}</div>
+    </div>
+  );
+}
+
+/* ================================================================== */
+/* Entitlements Tab -- Phase 109                                       */
+/* ================================================================== */
+
+interface EntitlementRow {
+  id: string;
+  tenantId: string;
+  moduleId: string;
+  enabled: boolean;
+  planTier: string;
+  enabledAt: string | null;
+  disabledAt: string | null;
+  enabledBy: string | null;
+}
+
+function EntitlementsTab() {
+  const [entitlements, setEntitlements] = useState<EntitlementRow[]>([]);
+  const [enabledIds, setEnabledIds] = useState<string[]>([]);
+  const [catalog, setCatalog] = useState<any[]>([]);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const [seedMsg, setSeedMsg] = useState('');
+
+  const load = useCallback(async () => {
+    try {
+      const [eRes, cRes] = await Promise.all([
+        apiFetch('/admin/modules/entitlements'),
+        apiFetch('/admin/modules/catalog'),
+      ]);
+      if (eRes.ok) {
+        setEntitlements(eRes.entitlements || []);
+        setEnabledIds(eRes.enabledModuleIds || []);
+      }
+      if (cRes.ok) setCatalog(cRes.modules || []);
+    } catch {
+      setError('Failed to load entitlements');
+    }
+  }, []);
+
+  useEffect(() => { load(); }, [load]);
+
+  const toggleEntitlement = async (moduleId: string, currentEnabled: boolean) => {
+    setSaving(true);
+    setError('');
+    const res = await apiPost('/admin/modules/entitlements', {
+      moduleId,
+      enabled: !currentEnabled,
+      reason: `Admin toggle from UI`,
+    });
+    if (!res.ok) setError(res.error || 'Failed to toggle');
+    await load();
+    setSaving(false);
+  };
+
+  const seedBaseline = async () => {
+    setSaving(true);
+    setError('');
+    setSeedMsg('');
+    const res = await apiPost('/admin/modules/entitlements/seed', {});
+    if (res.ok) {
+      setSeedMsg(`Seeded ${res.modulesSeeded} modules (${res.totalEnabled} total enabled)`);
+    } else {
+      setError(res.error || 'Seed failed');
+    }
+    await load();
+    setSaving(false);
+  };
+
+  // Build a map from catalog for display
+  const catalogMap = new Map(catalog.map((c: any) => [c.moduleId, c]));
+
+  return (
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <div>
+          <p style={{ fontSize: 13, color: '#6c757d', margin: 0 }}>
+            DB-backed module entitlements per tenant. Toggle modules to enable/disable them. Always-enabled modules cannot be disabled.
+          </p>
+          <p style={{ fontSize: 12, color: '#0d6efd', marginTop: 4 }}>{enabledIds.length} modules enabled for default tenant</p>
+        </div>
+        <button onClick={seedBaseline} disabled={saving} style={{
+          padding: '6px 16px', fontSize: 12, border: '1px solid #0d6efd', borderRadius: 4,
+          background: '#0d6efd', color: '#fff', cursor: saving ? 'not-allowed' : 'pointer',
+        }}>Seed Baseline</button>
+      </div>
+      {error && <div style={{ padding: '6px 12px', background: '#f8d7da', color: '#842029', fontSize: 12, marginBottom: 8, borderRadius: 4 }}>{error}</div>}
+      {seedMsg && <div style={{ padding: '6px 12px', background: '#d1e7dd', color: '#0f5132', fontSize: 12, marginBottom: 8, borderRadius: 4 }}>{seedMsg}</div>}
+      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+        <thead>
+          <tr style={{ borderBottom: '2px solid #dee2e6', textAlign: 'left' }}>
+            <th style={{ padding: '8px 12px' }}>Module</th>
+            <th style={{ padding: '8px 12px' }}>Name</th>
+            <th style={{ padding: '8px 12px' }}>Enabled</th>
+            <th style={{ padding: '8px 12px' }}>Plan Tier</th>
+            <th style={{ padding: '8px 12px' }}>Last Changed</th>
+            <th style={{ padding: '8px 12px' }}>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {catalog.map((mod: any) => {
+            const ent = entitlements.find(e => e.moduleId === mod.moduleId);
+            const isEnabled = enabledIds.includes(mod.moduleId);
+            return (
+              <tr key={mod.moduleId} style={{ borderBottom: '1px solid #dee2e6' }}>
+                <td style={{ padding: '8px 12px', fontFamily: 'monospace', fontSize: 12 }}>{mod.moduleId}</td>
+                <td style={{ padding: '8px 12px' }}>{mod.name}</td>
+                <td style={{ padding: '8px 12px' }}>
+                  <span style={{
+                    padding: '2px 8px', borderRadius: 3, fontSize: 11, fontWeight: 600,
+                    background: isEnabled ? '#d1e7dd' : '#f8d7da',
+                    color: isEnabled ? '#0f5132' : '#842029',
+                  }}>{isEnabled ? 'ENABLED' : 'DISABLED'}</span>
+                  {mod.alwaysEnabled && <span style={{ marginLeft: 4, fontSize: 10, color: '#6c757d' }}>(always-on)</span>}
+                </td>
+                <td style={{ padding: '8px 12px', fontSize: 12 }}>{ent?.planTier || '-'}</td>
+                <td style={{ padding: '8px 12px', fontSize: 11, color: '#6c757d' }}>
+                  {ent?.enabledAt ? new Date(ent.enabledAt).toLocaleString() : ent?.disabledAt ? new Date(ent.disabledAt).toLocaleString() : '-'}
+                </td>
+                <td style={{ padding: '8px 12px' }}>
+                  {!mod.alwaysEnabled && (
+                    <button
+                      disabled={saving}
+                      onClick={() => toggleEntitlement(mod.moduleId, isEnabled)}
+                      style={{
+                        padding: '3px 10px', fontSize: 11, border: '1px solid',
+                        borderRadius: 3, cursor: saving ? 'not-allowed' : 'pointer',
+                        background: isEnabled ? '#fff' : '#0d6efd',
+                        color: isEnabled ? '#dc3545' : '#fff',
+                        borderColor: isEnabled ? '#dc3545' : '#0d6efd',
+                      }}
+                    >{isEnabled ? 'Disable' : 'Enable'}</button>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+/* ================================================================== */
+/* Feature Flags Tab -- Phase 109                                      */
+/* ================================================================== */
+
+interface FlagRow {
+  id: string;
+  tenantId: string;
+  flagKey: string;
+  flagValue: string;
+  moduleId: string | null;
+  description: string | null;
+}
+
+function FeatureFlagsTab() {
+  const [flags, setFlags] = useState<FlagRow[]>([]);
+  const [error, setError] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [newFlag, setNewFlag] = useState({ flagKey: '', flagValue: '', moduleId: '', description: '' });
+
+  const load = useCallback(async () => {
+    try {
+      const res = await apiFetch('/admin/modules/feature-flags');
+      if (res.ok) setFlags(res.flags || []);
+    } catch {
+      setError('Failed to load flags');
+    }
+  }, []);
+
+  useEffect(() => { load(); }, [load]);
+
+  const createFlag = async () => {
+    if (!newFlag.flagKey || !newFlag.flagValue) { setError('flagKey and flagValue are required'); return; }
+    setSaving(true);
+    setError('');
+    const res = await apiPost('/admin/modules/feature-flags', {
+      flagKey: newFlag.flagKey,
+      flagValue: newFlag.flagValue,
+      moduleId: newFlag.moduleId || undefined,
+      description: newFlag.description || undefined,
+      reason: 'Created from admin UI',
+    });
+    if (!res.ok) setError(res.error || 'Failed to create flag');
+    else setNewFlag({ flagKey: '', flagValue: '', moduleId: '', description: '' });
+    await load();
+    setSaving(false);
+  };
+
+  const deleteFlag = async (flagKey: string) => {
+    setSaving(true);
+    setError('');
+    const res = await apiFetch('/admin/modules/feature-flags', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ flagKey, reason: 'Deleted from admin UI' }),
+    });
+    if (!res.ok) setError(res.error || 'Failed to delete');
+    await load();
+    setSaving(false);
+  };
+
+  return (
+    <div>
+      <p style={{ fontSize: 13, color: '#6c757d', marginBottom: 16 }}>
+        Manage per-tenant feature flags. Flags are key-value pairs that control fine-grained behavior within modules.
+      </p>
+      {error && <div style={{ padding: '6px 12px', background: '#f8d7da', color: '#842029', fontSize: 12, marginBottom: 8, borderRadius: 4 }}>{error}</div>}
+
+      {/* Create new flag form */}
+      <div style={{ border: '1px solid #dee2e6', borderRadius: 6, padding: 12, marginBottom: 16, background: '#f8f9fa' }}>
+        <strong style={{ fontSize: 13, display: 'block', marginBottom: 8 }}>Add / Update Flag</strong>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'flex-end' }}>
+          <input placeholder="Flag key" value={newFlag.flagKey} onChange={e => setNewFlag(f => ({ ...f, flagKey: e.target.value }))}
+            style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #ced4da', borderRadius: 3, width: 160 }} />
+          <input placeholder="Flag value" value={newFlag.flagValue} onChange={e => setNewFlag(f => ({ ...f, flagValue: e.target.value }))}
+            style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #ced4da', borderRadius: 3, width: 160 }} />
+          <input placeholder="Module ID (optional)" value={newFlag.moduleId} onChange={e => setNewFlag(f => ({ ...f, moduleId: e.target.value }))}
+            style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #ced4da', borderRadius: 3, width: 160 }} />
+          <input placeholder="Description" value={newFlag.description} onChange={e => setNewFlag(f => ({ ...f, description: e.target.value }))}
+            style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #ced4da', borderRadius: 3, width: 200 }} />
+          <button onClick={createFlag} disabled={saving}
+            style={{ padding: '4px 14px', fontSize: 12, background: '#198754', color: '#fff', border: 'none', borderRadius: 3, cursor: saving ? 'not-allowed' : 'pointer' }}>
+            Save
+          </button>
+        </div>
+      </div>
+
+      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+        <thead>
+          <tr style={{ borderBottom: '2px solid #dee2e6', textAlign: 'left' }}>
+            <th style={{ padding: '8px 12px' }}>Key</th>
+            <th style={{ padding: '8px 12px' }}>Value</th>
+            <th style={{ padding: '8px 12px' }}>Module</th>
+            <th style={{ padding: '8px 12px' }}>Description</th>
+            <th style={{ padding: '8px 12px' }}>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {flags.length === 0 && (
+            <tr><td colSpan={5} style={{ padding: 16, color: '#6c757d', textAlign: 'center' }}>No feature flags set for this tenant.</td></tr>
+          )}
+          {flags.map(f => (
+            <tr key={f.flagKey} style={{ borderBottom: '1px solid #dee2e6' }}>
+              <td style={{ padding: '8px 12px', fontFamily: 'monospace', fontSize: 12 }}>{f.flagKey}</td>
+              <td style={{ padding: '8px 12px', fontFamily: 'monospace', fontSize: 12 }}>{f.flagValue}</td>
+              <td style={{ padding: '8px 12px', fontSize: 12 }}>{f.moduleId || '-'}</td>
+              <td style={{ padding: '8px 12px', fontSize: 12, color: '#6c757d' }}>{f.description || '-'}</td>
+              <td style={{ padding: '8px 12px' }}>
+                <button onClick={() => deleteFlag(f.flagKey)} disabled={saving}
+                  style={{ padding: '3px 10px', fontSize: 11, background: '#fff', color: '#dc3545', border: '1px solid #dc3545', borderRadius: 3, cursor: saving ? 'not-allowed' : 'pointer' }}>
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+/* ================================================================== */
+/* Module Audit Tab -- Phase 109                                       */
+/* ================================================================== */
+
+interface AuditEntry {
+  id: string;
+  tenantId: string;
+  actorId: string;
+  actorType: string;
+  entityType: string;
+  entityId: string;
+  action: string;
+  beforeJson: string | null;
+  afterJson: string | null;
+  reason: string | null;
+  createdAt: string;
+}
+
+function ModuleAuditTab() {
+  const [entries, setEntries] = useState<AuditEntry[]>([]);
+  const [total, setTotal] = useState(0);
+  const [offset, setOffset] = useState(0);
+  const [error, setError] = useState('');
+  const limit = 50;
+
+  const load = useCallback(async () => {
+    try {
+      const res = await apiFetch(`/admin/modules/audit?limit=${limit}&offset=${offset}`);
+      if (res.ok) {
+        setEntries(res.entries || []);
+        setTotal(res.total || 0);
+      }
+    } catch {
+      setError('Failed to load audit log');
+    }
+  }, [offset]);
+
+  useEffect(() => { load(); }, [load]);
+
+  return (
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <p style={{ fontSize: 13, color: '#6c757d', margin: 0 }}>
+          Append-only audit trail of all module entitlement and feature flag changes. {total} total entries.
+        </p>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button onClick={() => setOffset(Math.max(0, offset - limit))} disabled={offset === 0}
+            style={{ padding: '4px 10px', fontSize: 11, border: '1px solid #ced4da', borderRadius: 3, cursor: offset === 0 ? 'not-allowed' : 'pointer' }}>Prev</button>
+          <span style={{ fontSize: 11, lineHeight: '28px', color: '#6c757d' }}>{offset + 1}-{Math.min(offset + limit, total)} of {total}</span>
+          <button onClick={() => setOffset(offset + limit)} disabled={offset + limit >= total}
+            style={{ padding: '4px 10px', fontSize: 11, border: '1px solid #ced4da', borderRadius: 3, cursor: offset + limit >= total ? 'not-allowed' : 'pointer' }}>Next</button>
+        </div>
+      </div>
+      {error && <div style={{ padding: '6px 12px', background: '#f8d7da', color: '#842029', fontSize: 12, marginBottom: 8, borderRadius: 4 }}>{error}</div>}
+      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+        <thead>
+          <tr style={{ borderBottom: '2px solid #dee2e6', textAlign: 'left' }}>
+            <th style={{ padding: '6px 10px' }}>Time</th>
+            <th style={{ padding: '6px 10px' }}>Actor</th>
+            <th style={{ padding: '6px 10px' }}>Entity</th>
+            <th style={{ padding: '6px 10px' }}>Action</th>
+            <th style={{ padding: '6px 10px' }}>Reason</th>
+            <th style={{ padding: '6px 10px' }}>Before / After</th>
+          </tr>
+        </thead>
+        <tbody>
+          {entries.length === 0 && (
+            <tr><td colSpan={6} style={{ padding: 16, color: '#6c757d', textAlign: 'center' }}>No audit entries yet.</td></tr>
+          )}
+          {entries.map(e => (
+            <tr key={e.id} style={{ borderBottom: '1px solid #dee2e6' }}>
+              <td style={{ padding: '6px 10px', whiteSpace: 'nowrap', color: '#6c757d' }}>{new Date(e.createdAt).toLocaleString()}</td>
+              <td style={{ padding: '6px 10px' }}>{e.actorId} <span style={{ fontSize: 10, color: '#6c757d' }}>({e.actorType})</span></td>
+              <td style={{ padding: '6px 10px', fontFamily: 'monospace' }}>{e.entityType}/{e.entityId}</td>
+              <td style={{ padding: '6px 10px' }}>
+                <span style={{
+                  padding: '1px 6px', borderRadius: 3, fontSize: 10, fontWeight: 600,
+                  background: e.action === 'enable' || e.action === 'create' ? '#d1e7dd' : e.action === 'disable' || e.action === 'delete' ? '#f8d7da' : '#fff3cd',
+                  color: e.action === 'enable' || e.action === 'create' ? '#0f5132' : e.action === 'disable' || e.action === 'delete' ? '#842029' : '#664d03',
+                }}>{e.action.toUpperCase()}</span>
+              </td>
+              <td style={{ padding: '6px 10px', fontSize: 11, color: '#6c757d', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis' }}>{e.reason || '-'}</td>
+              <td style={{ padding: '6px 10px', fontSize: 10, fontFamily: 'monospace', maxWidth: 250, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {e.beforeJson && <span title={e.beforeJson}>B: {e.beforeJson.substring(0, 40)}{e.beforeJson.length > 40 ? '...' : ''}</span>}
+                {e.beforeJson && e.afterJson && ' | '}
+                {e.afterJson && <span title={e.afterJson}>A: {e.afterJson.substring(0, 40)}{e.afterJson.length > 40 ? '...' : ''}</span>}
+                {!e.beforeJson && !e.afterJson && '-'}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

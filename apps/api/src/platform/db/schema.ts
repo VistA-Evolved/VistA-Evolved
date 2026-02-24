@@ -287,3 +287,65 @@ export const claimStatusCheck = sqliteTable("claim_status_check", {
   tenantId: text("tenant_id").notNull().default("default"),
   createdAt: text("created_at").notNull(),
 });
+
+/* ── Q) module_catalog — Phase 109: Module definitions (seeded) ─ */
+
+export const moduleCatalog = sqliteTable("module_catalog", {
+  moduleId: text("module_id").primaryKey(),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  version: text("version").notNull().default("1.0.0"),
+  alwaysEnabled: integer("always_enabled", { mode: "boolean" }).notNull().default(false),
+  dependenciesJson: text("dependencies_json").notNull().default("[]"),   // JSON array of moduleId strings
+  routePatternsJson: text("route_patterns_json").notNull().default("[]"), // JSON array of regex strings
+  adaptersJson: text("adapters_json").notNull().default("[]"),
+  permissionsJson: text("permissions_json").notNull().default("[]"),
+  dataStoresJson: text("data_stores_json").notNull().default("[]"),
+  healthCheckEndpoint: text("health_check_endpoint"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/* ── R) tenant_module — Phase 109: Per-tenant enablement ─────── */
+
+export const tenantModule = sqliteTable("tenant_module", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull(),
+  moduleId: text("module_id").notNull(),
+  enabled: integer("enabled", { mode: "boolean" }).notNull().default(false),
+  planTier: text("plan_tier").notNull().default("base"),    // base | professional | enterprise
+  enabledAt: text("enabled_at"),
+  disabledAt: text("disabled_at"),
+  enabledBy: text("enabled_by"),                             // actor who toggled
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/* ── S) tenant_feature_flag — Phase 109: Per-tenant flag overrides ─ */
+
+export const tenantFeatureFlag = sqliteTable("tenant_feature_flag", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull(),
+  flagKey: text("flag_key").notNull(),                     // e.g. "notes.templates"
+  flagValue: text("flag_value").notNull().default("true"), // string value (parsed by consumer)
+  moduleId: text("module_id"),                             // optional: which module owns this flag
+  description: text("description"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/* ── T) module_audit_log — Phase 109: Append-only change history ─ */
+
+export const moduleAuditLog = sqliteTable("module_audit_log", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull(),
+  actorId: text("actor_id").notNull(),                    // DUZ or system identifier
+  actorType: text("actor_type").notNull().default("user"), // user | system | api
+  entityType: text("entity_type").notNull(),               // module | feature_flag | entitlement
+  entityId: text("entity_id").notNull(),                   // moduleId or flagKey
+  action: text("action").notNull(),                        // enable | disable | update | create | delete
+  beforeJson: text("before_json"),                         // JSON snapshot before change
+  afterJson: text("after_json"),                           // JSON snapshot after change
+  reason: text("reason"),
+  createdAt: text("created_at").notNull(),
+});

@@ -23,6 +23,20 @@ import { fileURLToPath } from "url";
 import { log } from "../lib/logger.js";
 
 /* ------------------------------------------------------------------ */
+/* Phase 109: DB-backed entitlement provider                           */
+/* ------------------------------------------------------------------ */
+// Set via setDbEntitlementProvider() after platform DB is initialized.
+// Falls back to in-memory SKU resolution when provider is not set.
+type DbEntitlementProvider = (tenantId: string) => string[];
+let dbEntitlementProvider: DbEntitlementProvider | null = null;
+
+/** Register a DB-backed entitlement provider (called from index.ts after DB init). */
+export function setDbEntitlementProvider(provider: DbEntitlementProvider): void {
+  dbEntitlementProvider = provider;
+  log.info("Module registry: DB entitlement provider registered");
+}
+
+/* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
@@ -146,13 +160,31 @@ export function getActiveSkuProfile(): SkuProfile | undefined {
 /**
  * Get effective enabled modules for a tenant.
  *
- * Resolution order:
- * 1. Start with SKU profile modules
- * 2. Apply per-tenant overrides (if any)
+ * Resolution order (Phase 109 — DB-first):
+ * 1. If DB entitlement provider is set, use it (DB is source of truth)
+ * 2. Otherwise fall back to SKU profile + in-memory overrides
  * 3. Always include modules with alwaysEnabled: true
- * 4. Validate dependencies
  */
 export function getEnabledModules(tenantId: string = "default"): string[] {
+  // Phase 109: DB-backed resolution (preferred)
+  if (dbEntitlementProvider) {
+    try {
+      const dbEnabled = dbEntitlementProvider(tenantId);
+      if (dbEnabled.length > 0) {
+        // Still ensure alwaysEnabled modules are included
+        const enabled = new Set(dbEnabled);
+        for (const [modId, def] of Object.entries(moduleDefinitions)) {
+          if (def.alwaysEnabled) enabled.add(modId);
+        }
+        return Array.from(enabled);
+      }
+      // DB returned empty — tenant not yet seeded, fall through to SKU
+    } catch {
+      // DB error — fall through to in-memory
+    }
+  }
+
+  // Legacy in-memory resolution (fallback)
   // 1. Start with SKU modules
   const skuProfile = skuProfiles[activeSku];
   let enabled = new Set<string>(skuProfile?.modules || Object.keys(moduleDefinitions));
@@ -231,6 +263,10 @@ export function isRouteAllowed(
 /**
  * Set per-tenant module overrides.
  * Pass null to clear overrides (revert to SKU defaults).
+ *
+ * Phase 109: Also updates in-memory cache for backward compat with
+ * existing module-capability-routes callers. DB is the source of truth
+ * when the entitlement provider is registered.
  */
 export function setTenantModules(tenantId: string, modules: string[] | null): void {
   if (modules === null) {

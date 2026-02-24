@@ -1,0 +1,649 @@
+{
+  "_meta": {
+    "generated": "2025-01-01",
+    "description": "Comprehensive mapping of all API route files to VistA RPCs they call",
+    "searchPatterns": ["callRpc", "safeCallRpc", "safeCallRpcWithList", "cachedRpc", "resilientRpc", "callRpcWithList"],
+    "totalLiveRouteFiles": 20,
+    "totalStubRouteFiles": 6,
+    "totalServiceFiles": 3,
+    "uniqueRpcsUsedLive": 62,
+    "stubRpcCount": 348
+  },
+
+  "liveRoutes": [
+    {
+      "file": "apps/api/src/index.ts",
+      "description": "Main server file — core VistA clinical routes",
+      "routes": [
+        { "method": "GET",  "route": "/vista/rpc-catalog",           "rpcs": ["VE LIST RPCS"] },
+        { "method": "GET",  "route": "/vista/patient-search",        "rpcs": ["ORWPT LIST ALL"] },
+        { "method": "GET",  "route": "/vista/patient-demographics",  "rpcs": ["ORWPT SELECT"] },
+        { "method": "GET",  "route": "/vista/allergies",             "rpcs": ["ORQQAL LIST"] },
+        { "method": "POST", "route": "/vista/allergies",             "rpcs": ["ORWDAL32 ALLERGY MATCH", "ORWDAL32 SAVE ALLERGY"] },
+        { "method": "GET",  "route": "/vista/vitals",                "rpcs": ["ORQQVI VITALS"] },
+        { "method": "POST", "route": "/vista/vitals",                "rpcs": ["GMV ADD VM"] },
+        { "method": "GET",  "route": "/vista/notes",                 "rpcs": ["TIU DOCUMENTS BY CONTEXT"] },
+        { "method": "POST", "route": "/vista/notes",                 "rpcs": ["TIU CREATE RECORD", "TIU SET DOCUMENT TEXT"] },
+        { "method": "GET",  "route": "/vista/medications",           "rpcs": ["ORWPS ACTIVE", "ORWORR GETTXT"] },
+        { "method": "POST", "route": "/vista/medications",           "rpcs": ["ORWDX LOCK", "ORWDXM AUTOACK", "ORWDX UNLOCK"] },
+        { "method": "GET",  "route": "/vista/default-patient-list",  "rpcs": ["ORQPT DEFAULT PATIENT LIST"] },
+        { "method": "GET",  "route": "/vista/problems",              "rpcs": ["ORWCH PROBLEM LIST"] },
+        { "method": "GET",  "route": "/vista/icd-search",            "rpcs": ["ORQQPL4 LEX"] },
+        { "method": "GET",  "route": "/vista/consults",              "rpcs": ["ORQQCN LIST"] },
+        { "method": "GET",  "route": "/vista/consults/detail",       "rpcs": ["ORQQCN DETAIL"] },
+        { "method": "GET",  "route": "/vista/surgery",               "rpcs": ["ORWSR LIST"] },
+        { "method": "GET",  "route": "/vista/dc-summaries",          "rpcs": ["TIU DOCUMENTS BY CONTEXT"] },
+        { "method": "GET",  "route": "/vista/tiu-text",              "rpcs": ["TIU GET RECORD TEXT"] },
+        { "method": "GET",  "route": "/vista/labs",                  "rpcs": ["ORWLRR INTERIM"] },
+        { "method": "GET",  "route": "/vista/reports",               "rpcs": ["ORWRP REPORT LISTS"] },
+        { "method": "GET",  "route": "/vista/reports/text",          "rpcs": ["ORWRP REPORT TEXT"] }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/adt/index.ts",
+      "description": "ADT (Admit/Discharge/Transfer) ward management",
+      "routes": [
+        { "method": "GET", "route": "/vista/adt/wards",              "rpcs": ["ORQPT WARDS"] },
+        { "method": "GET", "route": "/vista/adt/ward-patients",      "rpcs": ["ORQPT WARD PATIENTS"] },
+        { "method": "GET", "route": "/vista/adt/provider-patients",  "rpcs": ["ORQPT PROVIDER PATIENTS"] },
+        { "method": "GET", "route": "/vista/adt/teams",              "rpcs": ["ORQPT TEAMS"] },
+        { "method": "GET", "route": "/vista/adt/team-patients",      "rpcs": ["ORQPT TEAM PATIENTS"] },
+        { "method": "GET", "route": "/vista/adt/specialties",        "rpcs": ["ORQPT SPECIALTIES"] },
+        { "method": "GET", "route": "/vista/adt/specialty-patients", "rpcs": ["ORQPT SPECIALTY PATIENTS"] },
+        { "method": "GET", "route": "/vista/adt/locations",          "rpcs": ["ORWU1 NEWLOC"] },
+        { "method": "GET", "route": "/vista/adt/admission-list",     "rpcs": ["ORWPT16 ADMITLST"] }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/cprs/orders-cpoe.ts",
+      "description": "CPOE order entry — lab, imaging, consult orders + sign + order checks",
+      "routes": [
+        { "method": "GET",  "route": "/vista/cprs/orders",          "rpcs": ["ORWORR AGET"] },
+        { "method": "POST", "route": "/vista/cprs/orders/lab",      "rpcs": ["ORWDX LOCK", "ORWDXM AUTOACK", "ORWDX UNLOCK"] },
+        { "method": "POST", "route": "/vista/cprs/orders/imaging",  "rpcs": ["ORWDX LOCK", "ORWDXM AUTOACK", "ORWDX UNLOCK"] },
+        { "method": "POST", "route": "/vista/cprs/orders/consult",  "rpcs": ["ORWDX LOCK", "ORWDXM AUTOACK", "ORWDX UNLOCK"] },
+        { "method": "POST", "route": "/vista/cprs/orders/sign",     "rpcs": ["ORWOR1 SIG"] },
+        { "method": "POST", "route": "/vista/cprs/order-checks",    "rpcs": ["ORWDXC ACCEPT"] }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/cprs/wave1-routes.ts",
+      "description": "CPRS Wave 1 — read-only clinical parity routes",
+      "routes": [
+        { "method": "GET", "route": "/vista/cprs/orders-summary",     "rpcs": ["ORWORB UNSIG ORDERS"] },
+        { "method": "GET", "route": "/vista/cprs/reminders",          "rpcs": ["ORQQPX REMINDERS LIST"] },
+        { "method": "GET", "route": "/vista/cprs/meds/detail",        "rpcs": ["ORWORR GETTXT"] },
+        { "method": "GET", "route": "/vista/cprs/labs/chart",         "rpcs": ["ORWLRR CHART"] },
+        { "method": "GET", "route": "/vista/cprs/problems/icd-search","rpcs": ["ORQQPL4 LEX"] }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/cprs/wave2-routes.ts",
+      "description": "CPRS Wave 2 — write operations (problems, notes, orders, meds, vitals, allergies, consults)",
+      "routes": [
+        { "method": "POST", "route": "/vista/cprs/problems/add",       "rpcs": ["ORQQPL ADD SAVE"] },
+        { "method": "POST", "route": "/vista/cprs/problems/edit",      "rpcs": ["ORQQPL EDIT SAVE"] },
+        { "method": "POST", "route": "/vista/cprs/notes/create",       "rpcs": ["TIU CREATE RECORD", "TIU SET DOCUMENT TEXT"] },
+        { "method": "POST", "route": "/vista/cprs/orders/draft",       "rpcs": ["ORWDX LOCK", "ORWDX SAVE", "ORWDX UNLOCK"] },
+        { "method": "POST", "route": "/vista/cprs/orders/verify",      "rpcs": ["ORWDXA VERIFY"] },
+        { "method": "POST", "route": "/vista/cprs/orders/dc",          "rpcs": ["ORWDX LOCK", "ORWDXA DC", "ORWDX UNLOCK"] },
+        { "method": "POST", "route": "/vista/cprs/orders/flag",        "rpcs": ["ORWDXA FLAG"] },
+        { "method": "POST", "route": "/vista/cprs/meds/quick-order",   "rpcs": ["ORWDX LOCK", "ORWDXM AUTOACK", "ORWDX UNLOCK"] },
+        { "method": "POST", "route": "/vista/cprs/labs/ack",           "rpcs": ["ORWLRR ACK"] },
+        { "method": "POST", "route": "/vista/cprs/vitals/add",         "rpcs": ["GMV ADD VM"] },
+        { "method": "POST", "route": "/vista/cprs/allergies/add",      "rpcs": ["ORWDAL32 SAVE ALLERGY"] },
+        { "method": "POST", "route": "/vista/cprs/consults/complete",  "rpcs": ["ORQQCN2 MED RESULTS"] }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/cprs/tiu-notes.ts",
+      "description": "TIU Notes — list, read, sign, addendum, titles",
+      "routes": [
+        { "method": "GET",  "route": "/vista/cprs/notes",           "rpcs": ["TIU DOCUMENTS BY CONTEXT"] },
+        { "method": "GET",  "route": "/vista/cprs/notes/text",      "rpcs": ["TIU GET RECORD TEXT"] },
+        { "method": "POST", "route": "/vista/cprs/notes/sign",      "rpcs": ["TIU LOCK RECORD", "TIU SIGN RECORD", "TIU UNLOCK RECORD"] },
+        { "method": "POST", "route": "/vista/cprs/notes/addendum",  "rpcs": ["TIU CREATE ADDENDUM RECORD", "TIU SET DOCUMENT TEXT"] },
+        { "method": "GET",  "route": "/vista/cprs/notes/titles",    "rpcs": ["TIU PERSONAL TITLE LIST"] }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/emar/index.ts",
+      "description": "eMAR — medication schedule, allergy check, duplicate check",
+      "routes": [
+        { "method": "GET", "route": "/emar/schedule",         "rpcs": ["ORWPS ACTIVE", "ORWORR GETTXT"] },
+        { "method": "GET", "route": "/emar/allergies",         "rpcs": ["ORQQAL LIST"] },
+        { "method": "GET", "route": "/emar/duplicate-check",   "rpcs": ["ORWPS ACTIVE"] }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/handoff/index.ts",
+      "description": "Clinical handoff — ward patient aggregation",
+      "routes": [
+        { "method": "GET", "route": "/handoff/ward-patients",  "rpcs": ["ORQPT WARD PATIENTS", "ORWPS ACTIVE", "ORQQAL LIST"] }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/imaging-viewer.ts",
+      "description": "Imaging viewer — study list, radiology reports",
+      "routes": [
+        { "method": "GET", "route": "/imaging/studies/:dfn",       "rpcs": ["MAG4 REMOTE PROCEDURE"] },
+        { "method": "GET", "route": "/imaging/report/:studyId",    "rpcs": ["RA DETAILED REPORT", "TIU GET RECORD TEXT"] }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/imaging.ts",
+      "description": "Legacy imaging — radiology report",
+      "routes": [
+        { "method": "GET", "route": "/vista/imaging/report",       "rpcs": ["RA DETAILED REPORT"] }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/inbox.ts",
+      "description": "Provider inbox — unsigned orders + notifications",
+      "routes": [
+        { "method": "GET", "route": "/vista/inbox",                "rpcs": ["ORWORB UNSIG ORDERS", "ORWORB FASTUSER"] }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/inpatient/index.ts",
+      "description": "Inpatient management — census, ward detail, patient detail, admission history",
+      "routes": [
+        { "method": "GET", "route": "/vista/inpatient/census",                "rpcs": ["ORQPT WARDS", "ORQPT WARD PATIENTS"] },
+        { "method": "GET", "route": "/vista/inpatient/ward/:wardIen",         "rpcs": ["ORQPT WARD PATIENTS", "ORWPT16 ADMITLST"] },
+        { "method": "GET", "route": "/vista/inpatient/patient/:dfn",          "rpcs": ["ORQPT WARD PATIENTS", "ORQPT WARDS", "ORWPT16 ADMITLST"] },
+        { "method": "GET", "route": "/vista/inpatient/admission-history/:dfn","rpcs": ["ORWPT16 ADMITLST"] }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/nursing/index.ts",
+      "description": "Nursing module — vitals, notes, ward patients, patient context, flowsheet",
+      "routes": [
+        { "method": "GET",  "route": "/vista/nursing/vitals",          "rpcs": ["ORQQVI VITALS"] },
+        { "method": "GET",  "route": "/vista/nursing/vitals-range",    "rpcs": ["ORQQVI VITALS FOR DATE RANGE"] },
+        { "method": "GET",  "route": "/vista/nursing/notes",           "rpcs": ["TIU DOCUMENTS BY CONTEXT"] },
+        { "method": "GET",  "route": "/vista/nursing/ward-patients",   "rpcs": ["ORQPT WARD PATIENTS"] },
+        { "method": "GET",  "route": "/vista/nursing/patient-context", "rpcs": ["ORWPT16 ID INFO", "ORWPT ID INFO"] },
+        { "method": "GET",  "route": "/vista/nursing/flowsheet",       "rpcs": ["ORQQVI VITALS"] },
+        { "method": "POST", "route": "/vista/nursing/notes/create",    "rpcs": ["TIU CREATE RECORD", "TIU SET DOCUMENT TEXT"] },
+        { "method": "GET",  "route": "/vista/nursing/note-text",       "rpcs": ["TIU GET RECORD TEXT"] }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/immunizations/index.ts",
+      "description": "Immunizations — list + catalog",
+      "routes": [
+        { "method": "GET", "route": "/vista/immunizations",           "rpcs": ["ORQQPX IMMUN LIST"] },
+        { "method": "GET", "route": "/vista/immunizations/catalog",   "rpcs": ["PXVIMM IMM SHORT LIST"] }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/vista-interop.ts",
+      "description": "HL7/HLO interop dashboard — links, messages, HLO status, queue depth",
+      "routes": [
+        { "method": "GET", "route": "/vista/interop/hl7-links",             "rpcs": ["VE INTEROP HL7 LINKS"] },
+        { "method": "GET", "route": "/vista/interop/hl7-messages",          "rpcs": ["VE INTEROP HL7 MSGS"] },
+        { "method": "GET", "route": "/vista/interop/hlo-status",            "rpcs": ["VE INTEROP HLO STATUS"] },
+        { "method": "GET", "route": "/vista/interop/queue-depth",           "rpcs": ["VE INTEROP QUEUE DEPTH"] },
+        { "method": "GET", "route": "/vista/interop/summary",              "rpcs": ["VE INTEROP HL7 LINKS", "VE INTEROP HL7 MSGS", "VE INTEROP HLO STATUS", "VE INTEROP QUEUE DEPTH"] },
+        { "method": "GET", "route": "/vista/interop/v2/hl7/messages",      "rpcs": ["VE INTEROP HL7 LINKS", "VE INTEROP HL7 MSGS"] },
+        { "method": "GET", "route": "/vista/interop/v2/hl7/messages/:id",  "rpcs": ["VE INTEROP HL7 MSGS"] },
+        { "method": "POST","route": "/vista/interop/v2/hl7/messages/:id/unmask", "rpcs": ["VE INTEROP HL7 MSGS"] },
+        { "method": "GET", "route": "/vista/interop/v2/hl7/summary",       "rpcs": ["VE INTEROP HL7 LINKS", "VE INTEROP HL7 MSGS", "VE INTEROP QUEUE DEPTH"] },
+        { "method": "GET", "route": "/vista/interop/v2/hlo/summary",       "rpcs": ["VE INTEROP HLO STATUS", "VE INTEROP QUEUE DEPTH"] }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/vista-rcm.ts",
+      "description": "VistA RCM bridge — encounters, insurance, ICD search",
+      "routes": [
+        { "method": "GET", "route": "/vista/rcm/encounters",       "rpcs": ["ORWPCE VISIT"] },
+        { "method": "GET", "route": "/vista/rcm/insurance",        "rpcs": ["IBCN INSURANCE QUERY"] },
+        { "method": "GET", "route": "/vista/rcm/icd-search",       "rpcs": ["ORWPCE4 LEX"] }
+      ]
+    },
+    {
+      "file": "apps/api/src/rcm/rcm-routes.ts",
+      "description": "RCM core routes — VistA encounter/coverage bridge + RPC health check",
+      "routes": [
+        { "method": "GET",  "route": "/rcm/vista/rpc-check",          "rpcs": ["ORWPCE VISIT", "ORWPCE DIAG", "ORWPCE PROC", "IBCN INSURANCE QUERY", "VE RCM PROVIDER INFO"], "note": "probes each RPC for availability" },
+        { "method": "GET",  "route": "/rcm/vista/encounters",         "rpcs": ["ORWPCE VISIT"] },
+        { "method": "POST", "route": "/rcm/vista/claim-drafts",       "rpcs": ["ORWPCE VISIT", "ORWPCE DIAG", "ORWPCE PROC", "IBCN INSURANCE QUERY", "VE RCM PROVIDER INFO"] },
+        { "method": "GET",  "route": "/rcm/vista/coverage",           "rpcs": ["IBCN INSURANCE QUERY"] },
+        { "method": "POST", "route": "/rcm/vista/encounter-to-claim", "rpcs": ["ORWPCE VISIT", "ORWPCE DIAG", "ORWPCE PROC", "IBCN INSURANCE QUERY", "VE RCM PROVIDER INFO"] }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/portal-auth.ts",
+      "description": "Patient portal — health data + demographics (via portalRpc helper)",
+      "routes": [
+        { "method": "GET", "route": "/portal/health/allergies",       "rpcs": ["ORQQAL LIST"] },
+        { "method": "GET", "route": "/portal/health/problems",        "rpcs": ["ORWCH PROBLEM LIST"] },
+        { "method": "GET", "route": "/portal/health/vitals",          "rpcs": ["ORQQVI VITALS"] },
+        { "method": "GET", "route": "/portal/health/medications",     "rpcs": ["ORWPS ACTIVE"] },
+        { "method": "GET", "route": "/portal/health/immunizations",   "rpcs": ["ORQQPX IMMUN LIST"] },
+        { "method": "GET", "route": "/portal/health/demographics",    "rpcs": ["ORWPT SELECT"] },
+        { "method": "GET", "route": "/portal/health/labs",            "rpcs": ["ORWLRR INTERIM"] },
+        { "method": "GET", "route": "/portal/health/consults",        "rpcs": ["ORQQCN LIST"] },
+        { "method": "GET", "route": "/portal/health/surgery",         "rpcs": ["ORWSR LIST"] },
+        { "method": "GET", "route": "/portal/health/dc-summaries",    "rpcs": ["TIU DOCUMENTS BY CONTEXT"] },
+        { "method": "GET", "route": "/portal/health/reports",         "rpcs": ["ORWRP REPORT LISTS", "ORWRP REPORT TEXT"] }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/portal-core.ts",
+      "description": "Portal export — section-based VistA data export",
+      "routes": [
+        { "method": "GET", "route": "/portal/export/section/:section", "rpcs": ["ORQQAL LIST", "ORWCH PROBLEM LIST", "ORQQVI VITALS", "ORWPS ACTIVE", "ORWPT SELECT"], "note": "RPC varies by section param" }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/record-portability.ts",
+      "description": "Record portability — health record export/share (aggregates multiple RPCs)",
+      "routes": [
+        { "method": "POST", "route": "/portal/record/export",  "rpcs": ["ORQQAL LIST", "ORWCH PROBLEM LIST", "ORQQVI VITALS", "ORWPS ACTIVE", "ORWPT SELECT", "ORWLRR INTERIMG", "ORWRP REPORT TEXT"], "note": "aggregates per-section RPCs into single export" }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/write-backs.ts",
+      "description": "Write-back routes with optional RPC + server-side draft fallback",
+      "routes": [
+        { "method": "POST", "route": "/vista/orders/sign",       "rpcs": ["ORWDX SAVE"], "note": "falls back to draft if RPC unavailable" },
+        { "method": "POST", "route": "/vista/orders/release",    "rpcs": ["ORWDXA VERIFY"], "note": "falls back to draft if RPC unavailable" },
+        { "method": "POST", "route": "/vista/labs/ack",          "rpcs": ["ORWLRR ACK"], "note": "falls back to draft if RPC unavailable" },
+        { "method": "POST", "route": "/vista/consults/create",   "rpcs": ["ORQQCN2 MED RESULTS"], "note": "falls back to draft if RPC unavailable" },
+        { "method": "POST", "route": "/vista/surgery/create",    "rpcs": [], "note": "always draft — target RPC: SR CASE CREATION (not available)" },
+        { "method": "POST", "route": "/vista/problems/save",     "rpcs": ["ORQQPL ADD SAVE", "ORQQPL EDIT SAVE"], "note": "dynamic RPC based on action param; falls back to draft" }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/ws-console.ts",
+      "description": "WebSocket RPC debug console — executes arbitrary RPCs (with blocklist)",
+      "routes": [
+        { "method": "WS", "route": "/ws/console", "rpcs": ["(dynamic — any RPC name passed by user)"], "note": "blocks XUS AV CODE and XUS SET VISITOR" }
+      ]
+    }
+  ],
+
+  "liveServices": [
+    {
+      "file": "apps/api/src/services/secure-messaging.ts",
+      "description": "Secure messaging service — consumed by messaging routes",
+      "rpcs": [
+        "ZVE MAIL FOLDERS",
+        "ZVE MAIL LIST",
+        "ZVE MAIL GET",
+        "ZVE MAIL SEND",
+        "ZVE MAIL MANAGE",
+        "ORQQXMB MAIL GROUPS"
+      ]
+    },
+    {
+      "file": "apps/api/src/services/imaging-service.ts",
+      "description": "Imaging service — consumed by imaging routes",
+      "rpcs": [
+        "RA DETAILED REPORT",
+        "MAG4 REMOTE PROCEDURE",
+        "MAGG PAT PHOTOS",
+        "MAG4 PAT GET IMAGES"
+      ]
+    },
+    {
+      "file": "apps/api/src/services/clinical-reports.ts",
+      "description": "Clinical reports service — consumed by report routes",
+      "rpcs": [
+        "ORWRP REPORT LISTS",
+        "ORWRP REPORT TEXT"
+      ]
+    }
+  ],
+
+  "integrationPendingRoutes": [
+    {
+      "file": "apps/api/src/routes/adt/index.ts",
+      "routes": [
+        { "method": "POST", "route": "/vista/adt/admit",      "targetRpc": "DGPM NEW ADMISSION",  "note": "ADT admit — not available in sandbox" },
+        { "method": "POST", "route": "/vista/adt/transfer",   "targetRpc": "DGPM NEW TRANSFER",   "note": "ADT transfer — not available in sandbox" },
+        { "method": "POST", "route": "/vista/adt/discharge",  "targetRpc": "DGPM NEW DISCHARGE",  "note": "ADT discharge — not available in sandbox" }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/inpatient/index.ts",
+      "routes": [
+        { "method": "POST", "route": "/vista/inpatient/admit",     "targetRpc": "DGPM NEW ADMISSION",  "note": "integration-pending" },
+        { "method": "POST", "route": "/vista/inpatient/transfer",  "targetRpc": "DGPM NEW TRANSFER",   "note": "integration-pending" },
+        { "method": "POST", "route": "/vista/inpatient/discharge", "targetRpc": "DGPM NEW DISCHARGE",  "note": "integration-pending" }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/nursing/index.ts",
+      "routes": [
+        { "method": "GET",  "route": "/vista/nursing/tasks",            "targetRpc": "ORWOR UNSIGNED", "note": "integration-pending" },
+        { "method": "GET",  "route": "/vista/nursing/mar",              "targetRpc": "PSB MED LOG",    "note": "integration-pending — BCMA/PSB package" },
+        { "method": "POST", "route": "/vista/nursing/mar/administer",   "targetRpc": "PSB MEDPASS",    "note": "integration-pending — BCMA/PSB package" },
+        { "method": "GET",  "route": "/vista/nursing/io",               "targetRpc": "GMRVS IO",       "note": "integration-pending — I&O tracking" },
+        { "method": "GET",  "route": "/vista/nursing/assessments",      "targetRpc": "ORQQPL PROBLEM LIST", "note": "integration-pending — nursing assessments" }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/immunizations/index.ts",
+      "routes": [
+        { "method": "POST", "route": "/vista/immunizations", "targetRpc": "PX SAVE DATA", "note": "integration-pending — also targets PXVIMM ADMIN ROUTE" }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/emar/index.ts",
+      "routes": [
+        { "method": "POST", "route": "/emar/administer",    "targetRpc": "PSB MED LOG",    "note": "integration-pending — BCMA package not in sandbox" },
+        { "method": "POST", "route": "/emar/barcode-scan",  "targetRpc": "PSB BAR CODE",   "note": "integration-pending — BCMA barcode verification" }
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/vista-rcm.ts",
+      "routes": [
+        { "method": "GET", "route": "/vista/rcm/charges",       "targetRpc": null, "note": "integration-pending — ^IB(350) empty in sandbox" },
+        { "method": "GET", "route": "/vista/rcm/claims-status", "targetRpc": null, "note": "integration-pending — ^DGCR(399) empty in sandbox" },
+        { "method": "GET", "route": "/vista/rcm/ar-status",     "targetRpc": null, "note": "integration-pending — ^PRCA(430) empty in sandbox" }
+      ]
+    }
+  ],
+
+  "stubRoutes": [
+    {
+      "file": "apps/api/src/routes/labs.ts",
+      "description": "Auto-generated lab RPC stubs (37 stubs)",
+      "stubCount": 37,
+      "routePrefix": "/vista/labs/rpc/",
+      "rpcs": [
+        "ORWDLR32 ABBSPEC", "ORWDLR32 ALLSAMP", "ORWDLR32 ALLSPEC",
+        "ORWDLR32 DEF", "ORWDLR32 GET LAB TIMES", "ORWDLR32 IC DEFAULT",
+        "ORWDLR32 IC VALID", "ORWDLR32 IMMED COLLECT", "ORWDLR32 LAB COLL TIME",
+        "ORWDLR32 LOAD", "ORWDLR32 MAXDAYS", "ORWDLR32 ONE SAMPLE",
+        "ORWDLR32 ONE SPECIMEN", "ORWDLR32 STOP",
+        "ORWDLR33 FUTURE LAB COLLECTS", "ORWDLR33 LASTTIME", "ORWDLR33 LC TO WC",
+        "ORWLRR ALLTESTS", "ORWLRR ATESTS", "ORWLRR ATG", "ORWLRR ATOMICS",
+        "ORWLRR CHART", "ORWLRR CHEMTEST", "ORWLRR GRID", "ORWLRR INFO",
+        "ORWLRR INTERIM", "ORWLRR INTERIMG", "ORWLRR INTERIMS",
+        "ORWLRR NEWOLD", "ORWLRR PARAM", "ORWLRR SPEC",
+        "ORWLRR TG", "ORWLRR USERS", "ORWLRR UTGA", "ORWLRR UTGD", "ORWLRR UTGR"
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/meds.ts",
+      "description": "Auto-generated medication RPC stubs (60 stubs)",
+      "stubCount": 60,
+      "routePrefix": "/vista/meds/rpc/",
+      "rpcs": [
+        "ORWDPS ALLSCHD",
+        "ORWDPS1 CHK94", "ORWDPS1 DFLTSPLY", "ORWDPS1 DOSEALT", "ORWDPS1 DOWSCH",
+        "ORWDPS1 FAILDEA", "ORWDPS1 FORMALT", "ORWDPS1 HASOIPI", "ORWDPS1 HASROUTE",
+        "ORWDPS1 IVDEA", "ORWDPS1 LOCPICK", "ORWDPS1 MAXDS", "ORWDPS1 ODSLCT",
+        "ORWDPS1 QOMEDALT", "ORWDPS1 SCHALL",
+        "ORWDPS2 ADMIN", "ORWDPS2 CHKGRP", "ORWDPS2 CHKPI", "ORWDPS2 DAY2QTY",
+        "ORWDPS2 MAXREF", "ORWDPS2 OISLCT", "ORWDPS2 QOGRP", "ORWDPS2 QTY2DAY",
+        "ORWDPS2 REQST", "ORWDPS2 SCHREQ",
+        "ORWDPS32 ALLIVRTE", "ORWDPS32 ALLROUTE", "ORWDPS32 AUTH", "ORWDPS32 AUTHNVA",
+        "ORWDPS32 DLGSLCT", "ORWDPS32 DRUGMSG", "ORWDPS32 FORMALT", "ORWDPS32 ISSPLY",
+        "ORWDPS32 IVAMT", "ORWDPS32 MEDISIV", "ORWDPS32 OISLCT", "ORWDPS32 SCSTS",
+        "ORWDPS32 VALQTY", "ORWDPS32 VALRATE", "ORWDPS32 VALROUTE", "ORWDPS32 VALSCH",
+        "ORWDPS33 COMPLOC", "ORWDPS33 GETADDFR", "ORWDPS33 IVDOSFRM",
+        "ORWDPS4 CPINFO", "ORWDPS4 CPLST", "ORWDPS4 IPOD4OP", "ORWDPS4 ISUDIV",
+        "ORWDPS4 UPDTDG",
+        "ORWDPS5 ISVTP", "ORWDPS5 LESAPI", "ORWDPS5 LESGRP",
+        "ORWPS ACTIVE", "ORWPS DETAIL", "ORWPS MEDHIST", "ORWPS REASON",
+        "ORWPS1 NEWDLG", "ORWPS1 PICKUP", "ORWPS1 REFILL"
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/problems.ts",
+      "description": "Auto-generated problem list RPC stubs (25 stubs + 1 catalog)",
+      "stubCount": 25,
+      "routePrefix": "/vista/problems/rpc/",
+      "rpcs": [
+        "ORQQPL ADD SAVE", "ORQQPL AUDIT HIST", "ORQQPL CHECK DUP",
+        "ORQQPL CLIN FILTER LIST", "ORQQPL CLIN SRCH", "ORQQPL DELETE",
+        "ORQQPL DETAIL", "ORQQPL EDIT LOAD", "ORQQPL EDIT SAVE",
+        "ORQQPL INIT PT", "ORQQPL INIT USER", "ORQQPL PROB COMMENTS",
+        "ORQQPL PROBLEM LIST", "ORQQPL PROBLEM NTRT BULLETIN",
+        "ORQQPL PROV FILTER LIST", "ORQQPL PROVIDER LIST",
+        "ORQQPL REPLACE", "ORQQPL SAVEVIEW", "ORQQPL SERV FILTER LIST",
+        "ORQQPL SRVC SRCH", "ORQQPL UPDATE", "ORQQPL USER PROB CATS",
+        "ORQQPL USER PROB LIST", "ORQQPL VERIFY", "ORQQPL4 LEX"
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/orders.ts",
+      "description": "Auto-generated order RPC stubs (135 stubs + 1 catalog)",
+      "stubCount": 135,
+      "routePrefix": "/vista/orders/rpc/",
+      "rpcs": [
+        "ORWDX AGAIN", "ORWDX CHANGE", "ORWDX DGNM", "ORWDX DGRP",
+        "ORWDX DISMSG", "ORWDX DLGDEF", "ORWDX DLGID", "ORWDX FORMID",
+        "ORWDX LOADRSP", "ORWDX LOCK", "ORWDX LOCK ORDER", "ORWDX MSG",
+        "ORWDX ORDITM", "ORWDX SAVE", "ORWDX SEND", "ORWDX SENDED",
+        "ORWDX SENDP", "ORWDX UNLOCK", "ORWDX UNLOCK ORDER", "ORWDX WRLST",
+        "ORWDX1 DCORIG", "ORWDX1 DCREN", "ORWDX1 ORDMATCH", "ORWDX1 PATWARD",
+        "ORWDX1 STCHANGE", "ORWDX1 UNDCORIG",
+        "ORWDX2 DCREASON",
+        "ORWDXA ALERT", "ORWDXA COMPLETE", "ORWDXA DC", "ORWDXA DCREQIEN",
+        "ORWDXA FLAG", "ORWDXA FLAGTXT", "ORWDXA HOLD", "ORWDXA ISACTOI",
+        "ORWDXA OFCPLX", "ORWDXA UNFLAG", "ORWDXA UNHOLD", "ORWDXA VALID",
+        "ORWDXA VERIFY", "ORWDXA WCGET", "ORWDXA WCPUT",
+        "ORWDXC ACCEPT", "ORWDXC DELAY", "ORWDXC DELORD", "ORWDXC DISPLAY",
+        "ORWDXC FILLID", "ORWDXC ON", "ORWDXC SAVECHK", "ORWDXC SESSION",
+        "ORWDXM AUTOACK", "ORWDXM DLGNAME", "ORWDXM FORMID", "ORWDXM LOADSET",
+        "ORWDXM MENU", "ORWDXM MSTYLE", "ORWDXM PROMPTS", "ORWDXM RSCRN",
+        "ORWDXM1 BLDQRSP", "ORWDXM1 SVRPC",
+        "ORWDXM2 CLRRCL", "ORWDXM3 ISUDQO",
+        "ORWDXQ DLGNAME", "ORWDXQ DLGSAVE", "ORWDXQ GETQLST", "ORWDXQ GETQNAM",
+        "ORWDXQ PUTQLST", "ORWDXQ PUTQNAM",
+        "ORWDXR CANRN", "ORWDXR GETPKG", "ORWDXR GTORITM", "ORWDXR ISCPLX",
+        "ORWDXR ISNOW", "ORWDXR ISREL", "ORWDXR ORCPLX", "ORWDXR RENEW",
+        "ORWDXR RNWFLDS",
+        "ORWDXR01 CANCHG", "ORWDXR01 ISSPLY", "ORWDXR01 OXDATA", "ORWDXR01 SAVCHG",
+        "ORWDXVB COMPORD", "ORWDXVB GETALL", "ORWDXVB NURSADMN", "ORWDXVB RAW",
+        "ORWDXVB RESULTS", "ORWDXVB STATALOW", "ORWDXVB SUBCHK", "ORWDXVB VBTNS",
+        "ORWDXVB3 COLLTIM", "ORWDXVB3 DIAGORD", "ORWDXVB3 SWPANEL",
+        "ORWOR ACTION TEXT", "ORWOR EXPIRED", "ORWOR PKISITE", "ORWOR PKIUSE",
+        "ORWOR REQUIRE CURRENT CLIENT", "ORWOR RESULT", "ORWOR RESULT HISTORY",
+        "ORWOR SHEETS", "ORWOR TSALL", "ORWOR UNSIGN", "ORWOR VERIFY NOTE TITLE",
+        "ORWOR VWGET", "ORWOR VWSET",
+        "ORWOR1 CHKDIG", "ORWOR1 GETDSCH", "ORWOR1 GETDTEXT", "ORWOR1 SETDTEXT",
+        "ORWOR1 SIG",
+        "ORWORB AUTOUNFLAG ORDERS", "ORWORB FASTUSER", "ORWORB GETDATA",
+        "ORWORB GETLTXT", "ORWORB GETSORT", "ORWORB KILL EXPIR MED ALERT",
+        "ORWORB KILL EXPIR OI ALERT", "ORWORB KILL UNSIG ORDERS ALERT",
+        "ORWORB KILL UNVER MEDS ALERT", "ORWORB KILL UNVER ORDERS ALERT",
+        "ORWORB SETSORT", "ORWORB TEXT FOLLOWUP", "ORWORB UNSIG ORDERS FOLLOWUP",
+        "ORWORDG ALLTREE", "ORWORDG IEN", "ORWORDG MAPSEQ", "ORWORDG REVSTS",
+        "ORWORR AGET", "ORWORR GET", "ORWORR GET4LST", "ORWORR GETBYIFN",
+        "ORWORR GETDEA", "ORWORR GETDSIG", "ORWORR GETTXT", "ORWORR RGET"
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/notes.ts",
+      "description": "Auto-generated TIU/notes RPC stubs (111 stubs + 1 catalog)",
+      "stubCount": 111,
+      "routePrefix": "/vista/notes/rpc/",
+      "rpcs": [
+        "ORWTIU CANLINK", "ORWTIU CHKTXT", "ORWTIU GET DCSUMM CONTEXT",
+        "ORWTIU GET LISTBOX ITEM", "ORWTIU GET SAVED CP FIELDS",
+        "ORWTIU GET TIU CONTEXT", "ORWTIU GETPASTE", "ORWTIU LDCPIDNT",
+        "ORWTIU POLL", "ORWTIU SAVE DCSUMM CONTEXT", "ORWTIU SAVE TIU CONTEXT",
+        "ORWTIU START", "ORWTIU STOP", "ORWTIU SVCOPY", "ORWTIU SVCPIDNT",
+        "ORWTIU SVPASTE", "ORWTIU VIEWCOPY", "ORWTIU WINPRINT NOTE",
+        "TIU ANCILLARY PACKAGE MESSAGE", "TIU AUTHORIZATION",
+        "TIU CREATE ADDENDUM RECORD", "TIU CREATE RECORD",
+        "TIU DELETE RECORD", "TIU DETAILED DISPLAY", "TIU DIV AND CLASS INFO",
+        "TIU DOCUMENTS BY CONTEXT", "TIU FIELD CAN EDIT", "TIU FIELD CHECK",
+        "TIU FIELD DELETE", "TIU FIELD DOLMTEXT", "TIU FIELD EXPORT",
+        "TIU FIELD IMPORT", "TIU FIELD LIST", "TIU FIELD LIST ADD",
+        "TIU FIELD LIST IMPORT", "TIU FIELD LOAD", "TIU FIELD LOAD BY IEN",
+        "TIU FIELD LOCK", "TIU FIELD NAME IS UNIQUE", "TIU FIELD SAVE",
+        "TIU FIELD UNLOCK", "TIU GET ADDITIONAL SIGNERS", "TIU GET ALERT INFO",
+        "TIU GET BOILERPLATE", "TIU GET DEFAULT PROVIDER",
+        "TIU GET DOCUMENT PARAMETERS", "TIU GET DOCUMENT TITLE",
+        "TIU GET DS URGENCIES", "TIU GET LINKED PRF NOTES",
+        "TIU GET LIST OF OBJECTS", "TIU GET PERSONAL PREFERENCES",
+        "TIU GET PRF ACTIONS", "TIU GET PRF TITLE", "TIU GET PRINT NAME",
+        "TIU GET RECORD TEXT", "TIU GET REQUEST", "TIU GET SITE PARAMETERS",
+        "TIU ID ATTACH ENTRY", "TIU ID CAN ATTACH", "TIU ID CAN RECEIVE",
+        "TIU ID DETACH ENTRY", "TIU IDENTIFY CLINPROC CLASS",
+        "TIU IDENTIFY CONSULTS CLASS", "TIU IDENTIFY SURGERY CLASS",
+        "TIU IS USER A USR PROVIDER", "TIU ISPRF", "TIU LINK TO FLAG",
+        "TIU LOAD BOILERPLATE TEXT", "TIU LOAD RECORD FOR EDIT",
+        "TIU LOAD RECORD TEXT", "TIU LOCK RECORD",
+        "TIU LONG LIST BOILERPLATED", "TIU LONG LIST CLINPROC TITLES",
+        "TIU LONG LIST CONSULT TITLES", "TIU LONG LIST OF TITLES",
+        "TIU LONG LIST SURGERY TITLES", "TIU PERSONAL TITLE LIST",
+        "TIU PRINT RECORD", "TIU REM DLG OK AS TEMPLATE",
+        "TIU REMINDER DIALOGS", "TIU REQUIRES COSIGNATURE",
+        "TIU SET DOCUMENT TEXT", "TIU SIGN RECORD", "TIU SUMMARIES",
+        "TIU TEMPLATE ACCESS LEVEL", "TIU TEMPLATE ALL TITLES",
+        "TIU TEMPLATE CHECK BOILERPLATE", "TIU TEMPLATE DELETE",
+        "TIU TEMPLATE GET DEFAULTS", "TIU TEMPLATE GET DESCRIPTION",
+        "TIU TEMPLATE GETBOIL", "TIU TEMPLATE GETITEMS",
+        "TIU TEMPLATE GETLINK", "TIU TEMPLATE GETROOTS",
+        "TIU TEMPLATE GETTEXT", "TIU TEMPLATE ISEDITOR",
+        "TIU TEMPLATE LOCK", "TIU TEMPLATE PERSONAL OBJECTS",
+        "TIU TEMPLATE SET DEFAULTS", "TIU TEMPLATE SET ITEMS",
+        "TIU TEMPLATE UNLOCK", "TIU UNLOCK RECORD",
+        "TIU UPDATE ADDITIONAL SIGNERS", "TIU UPDATE RECORD",
+        "TIU USER CLASS LONG LIST", "TIU USER IS MEMBER OF CLASS",
+        "TIU WHICH SIGNATURE ACTION",
+        "TIU DOC", "TIUADD", "TIUERR", "TIUID"
+      ]
+    },
+    {
+      "file": "apps/api/src/routes/reports.ts",
+      "description": "Auto-generated report/surgery RPC stubs (38 stubs + 1 catalog)",
+      "stubCount": 38,
+      "routePrefix": "/vista/reports/rpc/",
+      "rpcs": [
+        "ORWRP COLUMN HEADERS", "ORWRP GET DEFAULT PRINTER",
+        "ORWRP LAB REPORT LISTS", "ORWRP PRINT LAB REMOTE",
+        "ORWRP PRINT LAB REPORTS", "ORWRP PRINT REMOTE REPORT",
+        "ORWRP PRINT REPORT", "ORWRP PRINT V REPORT",
+        "ORWRP PRINT WINDOWS LAB REMOTE", "ORWRP PRINT WINDOWS REMOTE",
+        "ORWRP PRINT WINDOWS REPORT", "ORWRP REPORT LISTS",
+        "ORWRP REPORT TEXT", "ORWRP SAVE DEFAULT PRINTER",
+        "ORWRP WINPRINT DEFAULT", "ORWRP WINPRINT LAB REPORTS",
+        "ORWRP1 LISTNUTR",
+        "ORWRP2 COMPABV", "ORWRP2 COMPDISP", "ORWRP2 GETLKUP",
+        "ORWRP2 HS COMP FILES", "ORWRP2 HS COMPONENT SUBS",
+        "ORWRP2 HS COMPONENTS", "ORWRP2 HS FILE LOOKUP",
+        "ORWRP2 HS REPORT TEXT", "ORWRP2 HS SUBITEMS", "ORWRP2 SAVLKUP",
+        "ORWRP3 EXPAND COLUMNS", "ORWRP4 HDR MODIFY",
+        "ORWSR CASELIST", "ORWSR GET SURG CONTEXT", "ORWSR LIST",
+        "ORWSR ONECASE", "ORWSR OPTOP", "ORWSR RPTLIST",
+        "ORWSR SAVE SURG CONTEXT", "ORWSR SHOW OPTOP WHEN SIGNING",
+        "ORWSR SHOW SURG TAB"
+      ]
+    }
+  ],
+
+  "noRpcRouteFiles": [
+    { "file": "apps/api/src/routes/ai-gateway.ts",             "note": "AI gateway — no VistA RPC calls" },
+    { "file": "apps/api/src/routes/analytics-routes.ts",        "note": "Analytics — in-memory store, no RPC" },
+    { "file": "apps/api/src/routes/admin.ts",                   "note": "Admin routes — no RPC" },
+    { "file": "apps/api/src/routes/admin-payer-db-routes.ts",   "note": "Payer DB admin — no RPC" },
+    { "file": "apps/api/src/routes/capabilities.ts",            "note": "Capabilities — no RPC" },
+    { "file": "apps/api/src/routes/iam-routes.ts",              "note": "IAM/audit — no RPC" },
+    { "file": "apps/api/src/routes/imaging-audit-routes.ts",    "note": "Imaging audit — no RPC" },
+    { "file": "apps/api/src/routes/imaging-proxy.ts",           "note": "DICOMweb proxy — proxies to Orthanc, not VistA" },
+    { "file": "apps/api/src/routes/interop.ts",                 "note": "Interop config — no RPC" },
+    { "file": "apps/api/src/routes/messaging/index.ts",         "note": "Messaging routes — delegates to secure-messaging.ts service" },
+    { "file": "apps/api/src/routes/module-capability-routes.ts","note": "Module/capability admin — no RPC" },
+    { "file": "apps/api/src/routes/qa-routes.ts",               "note": "QA routes — no RPC" },
+    { "file": "apps/api/src/routes/reporting.ts",               "note": "Reporting — no RPC" },
+    { "file": "apps/api/src/routes/scheduling/index.ts",        "note": "Scheduling — no RPC (adapter-based)" },
+    { "file": "apps/api/src/routes/telehealth.ts",              "note": "Telehealth — no RPC" },
+    { "file": "apps/api/src/routes/ui-prefs.ts",                "note": "UI preferences — no RPC" }
+  ],
+
+  "uniqueRpcIndex": {
+    "_description": "Deduplicated list of all 62 RPCs actively called (not stubs) across the codebase",
+    "rpcs": [
+      "GMV ADD VM",
+      "IBCN INSURANCE QUERY",
+      "MAG4 PAT GET IMAGES",
+      "MAG4 REMOTE PROCEDURE",
+      "MAGG PAT PHOTOS",
+      "ORQPT DEFAULT PATIENT LIST",
+      "ORQPT PROVIDER PATIENTS",
+      "ORQPT SPECIALTIES",
+      "ORQPT SPECIALTY PATIENTS",
+      "ORQPT TEAM PATIENTS",
+      "ORQPT TEAMS",
+      "ORQPT WARD PATIENTS",
+      "ORQPT WARDS",
+      "ORQQAL LIST",
+      "ORQQCN DETAIL",
+      "ORQQCN LIST",
+      "ORQQCN2 MED RESULTS",
+      "ORQQPL ADD SAVE",
+      "ORQQPL EDIT SAVE",
+      "ORQQPL4 LEX",
+      "ORQQPX IMMUN LIST",
+      "ORQQPX REMINDERS LIST",
+      "ORQQVI VITALS",
+      "ORQQVI VITALS FOR DATE RANGE",
+      "ORQQXMB MAIL GROUPS",
+      "ORWCH PROBLEM LIST",
+      "ORWDAL32 ALLERGY MATCH",
+      "ORWDAL32 SAVE ALLERGY",
+      "ORWDX LOCK",
+      "ORWDX SAVE",
+      "ORWDX UNLOCK",
+      "ORWDXA DC",
+      "ORWDXA FLAG",
+      "ORWDXA VERIFY",
+      "ORWDXC ACCEPT",
+      "ORWDXM AUTOACK",
+      "ORWLRR ACK",
+      "ORWLRR CHART",
+      "ORWLRR INTERIMG",
+      "ORWLRR INTERIM",
+      "ORWOR1 SIG",
+      "ORWORB FASTUSER",
+      "ORWORB UNSIG ORDERS",
+      "ORWORR AGET",
+      "ORWORR GETTXT",
+      "ORWPCE DIAG",
+      "ORWPCE PROC",
+      "ORWPCE VISIT",
+      "ORWPCE4 LEX",
+      "ORWPS ACTIVE",
+      "ORWPT LIST ALL",
+      "ORWPT SELECT",
+      "ORWPT ID INFO",
+      "ORWPT16 ADMITLST",
+      "ORWPT16 ID INFO",
+      "ORWRP REPORT LISTS",
+      "ORWRP REPORT TEXT",
+      "ORWSR LIST",
+      "ORWU1 NEWLOC",
+      "PXVIMM IMM SHORT LIST",
+      "RA DETAILED REPORT",
+      "TIU CREATE ADDENDUM RECORD",
+      "TIU CREATE RECORD",
+      "TIU DOCUMENTS BY CONTEXT",
+      "TIU GET RECORD TEXT",
+      "TIU LOCK RECORD",
+      "TIU PERSONAL TITLE LIST",
+      "TIU SET DOCUMENT TEXT",
+      "TIU SIGN RECORD",
+      "TIU UNLOCK RECORD",
+      "VE INTEROP HL7 LINKS",
+      "VE INTEROP HL7 MSGS",
+      "VE INTEROP HLO STATUS",
+      "VE INTEROP QUEUE DEPTH",
+      "VE LIST RPCS",
+      "VE RCM PROVIDER INFO",
+      "ZVE MAIL FOLDERS",
+      "ZVE MAIL GET",
+      "ZVE MAIL LIST",
+      "ZVE MAIL MANAGE",
+      "ZVE MAIL SEND"
+    ]
+  }
+}
