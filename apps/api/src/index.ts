@@ -162,6 +162,8 @@ import handoffRoutes from "./routes/handoff/index.js";
 import postureRoutes from "./posture/index.js";
 // Phase 116: Job Queue (Graphile Worker)
 import { jobAdminRoutes } from "./routes/job-admin-routes.js";
+// Phase 118: Go-Live Hardening Pack
+import hardeningRoutes from "./routes/hardening-routes.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -459,6 +461,9 @@ server.register(postureRoutes);
 
 // Register job admin routes -- job status, run log, manual trigger (Phase 116)
 server.register(jobAdminRoutes);
+
+// Register go-live hardening routes -- audit verify, security posture, backup status, RC checklist (Phase 118)
+server.register(hardeningRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

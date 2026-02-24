@@ -103,8 +103,8 @@ const GENESIS_HASH = "0".repeat(64);
 /** Max in-memory entries before we start evicting old ones (keep last N). */
 const MAX_MEMORY_ENTRIES = Number(process.env.IMAGING_AUDIT_MAX_ENTRIES || 10000);
 
-/** File path for JSONL persistence (optional). */
-const AUDIT_JSONL_PATH = process.env.IMAGING_AUDIT_FILE || "";
+/** File path for JSONL persistence (default: logs/imaging-audit.jsonl — Phase 118). */
+const AUDIT_JSONL_PATH = process.env.IMAGING_AUDIT_FILE || "logs/imaging-audit.jsonl";
 
 /**
  * Compute SHA-256 hash of an audit entry's content (excluding the hash field itself).

@@ -34,6 +34,7 @@ import { handleEligibilityCheckPoll } from "./tasks/eligibility-check-poll.js";
 import { handleClaimStatusPoll } from "./tasks/claim-status-poll.js";
 import { handleEvidenceStalenessScan } from "./tasks/evidence-staleness-scan.js";
 import { handleRetentionCleanup } from "./tasks/retention-cleanup.js";
+import { handlePgBackup } from "./tasks/pg-backup.js";
 
 /* ── Governance Wrapper ────────────────────────────────────── */
 
@@ -96,6 +97,10 @@ function buildTaskList(): TaskList {
     [JOB_NAMES.RETENTION_CLEANUP]: governedTask(
       JOB_NAMES.RETENTION_CLEANUP,
       handleRetentionCleanup,
+    ),
+    [JOB_NAMES.PG_BACKUP]: governedTask(
+      JOB_NAMES.PG_BACKUP,
+      handlePgBackup,
     ),
   };
 }

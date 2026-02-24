@@ -19,6 +19,7 @@ export const JOB_NAMES = {
   CLAIM_STATUS_POLL: "claim_status_poll",
   EVIDENCE_STALENESS_SCAN: "evidence_staleness_scan",
   RETENTION_CLEANUP: "retention_cleanup",
+  PG_BACKUP: "pg_backup",
 } as const;
 
 export type JobName = (typeof JOB_NAMES)[keyof typeof JOB_NAMES];
@@ -76,6 +77,17 @@ export const RetentionCleanupPayload = z.object({
 });
 export type RetentionCleanupPayload = z.infer<typeof RetentionCleanupPayload>;
 
+/**
+ * pg_backup payload — Phase 118.
+ * Configures backup retention and directory. No PHI.
+ */
+export const PgBackupPayload = z.object({
+  tenantId: z.string().default("default"),
+  retainCount: z.number().int().min(1).max(30).default(7),
+  backupDir: z.string().optional(),
+});
+export type PgBackupPayload = z.infer<typeof PgBackupPayload>;
+
 /* ── Schema Map ────────────────────────────────────────────── */
 
 /**
@@ -87,6 +99,7 @@ export const JOB_PAYLOAD_SCHEMAS: Record<JobName, z.ZodType> = {
   [JOB_NAMES.CLAIM_STATUS_POLL]: ClaimStatusPollPayload,
   [JOB_NAMES.EVIDENCE_STALENESS_SCAN]: EvidenceStalenessScanPayload,
   [JOB_NAMES.RETENTION_CLEANUP]: RetentionCleanupPayload,
+  [JOB_NAMES.PG_BACKUP]: PgBackupPayload,
 };
 
 /* ── PHI Blocklist — structural enforcement ────────────────── */
@@ -151,6 +164,7 @@ export const DEFAULT_CONCURRENCY: Record<JobName, number> = {
   [JOB_NAMES.CLAIM_STATUS_POLL]: 2,
   [JOB_NAMES.EVIDENCE_STALENESS_SCAN]: 1,
   [JOB_NAMES.RETENTION_CLEANUP]: 1,
+  [JOB_NAMES.PG_BACKUP]: 1,
 };
 
 /**
@@ -162,6 +176,7 @@ export const DEFAULT_CRON_SCHEDULES: Record<JobName, string | null> = {
   [JOB_NAMES.CLAIM_STATUS_POLL]: "*/10 * * * *",       // every 10 minutes
   [JOB_NAMES.EVIDENCE_STALENESS_SCAN]: "0 2 * * *",    // daily at 2 AM
   [JOB_NAMES.RETENTION_CLEANUP]: "0 3 * * *",          // daily at 3 AM
+  [JOB_NAMES.PG_BACKUP]: "0 1 * * *",                 // daily at 1 AM (Phase 118)
 };
 
 /**

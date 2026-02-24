@@ -107,6 +107,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/__test__\//, auth: "none" }, // Phase 96B: test-only trace endpoint (own guard)
   { pattern: /^\/posture\//, auth: "admin" }, // Phase 107: production posture (admin only)
   { pattern: /^\/posture$/, auth: "admin" }, // Phase 107: unified posture endpoint
+  { pattern: /^\/hardening\//, auth: "admin" }, // Phase 118: go-live hardening (admin only)
   { pattern: /^\/admin\/my-tenant$/, auth: "session" }, // Phase 17: client tenant config (any user)
   { pattern: /^\/(admin|audit|reports)\//, auth: "admin" },
   { pattern: /^\/ws\//, auth: "session" }, // WebSocket console (has own role check too)
@@ -222,10 +223,14 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
   server.addHook("onRequest", async (_request: FastifyRequest, reply: FastifyReply) => {
     reply.header("X-Content-Type-Options", "nosniff");
     reply.header("X-Frame-Options", "DENY");
-    reply.header("X-XSS-Protection", "0"); // Modern: let CSP handle it
+    reply.header("X-XSS-Protection", "0"); // Modern: CSP handles XSS prevention
     reply.header("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
     reply.header("Cache-Control", "no-store"); // PHI: never cache API responses
     reply.header("Pragma", "no-cache");
+    // Phase 118: OWASP-recommended headers
+    reply.header("Content-Security-Policy", "default-src 'none'; frame-ancestors 'none'");
+    reply.header("Referrer-Policy", "strict-origin-when-cross-origin");
+    reply.header("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=()");
   });
 
   /* ---- Rate limiting ---- */
