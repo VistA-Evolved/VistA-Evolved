@@ -530,6 +530,118 @@ CREATE TABLE IF NOT EXISTS loa_attachment (
 CREATE INDEX IF NOT EXISTS idx_loa_attach_request ON loa_attachment(loa_request_id);
 CREATE INDEX IF NOT EXISTS idx_loa_attach_tenant ON loa_attachment(tenant_id);
 
+-- Phase 111: Claim Lifecycle + Scrubber
+CREATE TABLE IF NOT EXISTS claim_draft (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  idempotency_key TEXT,
+  status TEXT NOT NULL DEFAULT 'draft',
+  claim_type TEXT NOT NULL DEFAULT 'professional',
+  encounter_id TEXT,
+  patient_id TEXT NOT NULL,
+  patient_name TEXT,
+  provider_id TEXT NOT NULL,
+  billing_provider_id TEXT,
+  payer_id TEXT NOT NULL,
+  payer_name TEXT,
+  date_of_service TEXT NOT NULL,
+  diagnoses_json TEXT DEFAULT '[]',
+  lines_json TEXT DEFAULT '[]',
+  attachments_json TEXT DEFAULT '[]',
+  total_charge_cents INTEGER DEFAULT 0,
+  denial_code TEXT,
+  denial_reason TEXT,
+  appeal_packet_ref TEXT,
+  resubmission_of TEXT,
+  resubmission_count INTEGER DEFAULT 0,
+  paid_amount_cents INTEGER,
+  adjustment_cents INTEGER,
+  patient_resp_cents INTEGER,
+  scrub_score INTEGER,
+  last_scrub_at TEXT,
+  submitted_at TEXT,
+  paid_at TEXT,
+  denied_at TEXT,
+  closed_at TEXT,
+  vista_charge_ien TEXT,
+  vista_ar_ien TEXT,
+  metadata_json TEXT DEFAULT '{}',
+  audit_json TEXT DEFAULT '[]',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  created_by TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_cd_tenant ON claim_draft(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_cd_status ON claim_draft(status);
+CREATE INDEX IF NOT EXISTS idx_cd_payer ON claim_draft(payer_id);
+CREATE INDEX IF NOT EXISTS idx_cd_patient ON claim_draft(patient_id);
+CREATE INDEX IF NOT EXISTS idx_cd_encounter ON claim_draft(encounter_id);
+CREATE INDEX IF NOT EXISTS idx_cd_idemp ON claim_draft(tenant_id, idempotency_key);
+CREATE INDEX IF NOT EXISTS idx_cd_dos ON claim_draft(date_of_service);
+CREATE INDEX IF NOT EXISTS idx_cd_resub ON claim_draft(resubmission_of);
+
+CREATE TABLE IF NOT EXISTS scrub_rule (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  payer_id TEXT,
+  service_type TEXT,
+  rule_code TEXT NOT NULL,
+  category TEXT NOT NULL,
+  severity TEXT NOT NULL DEFAULT 'error',
+  field TEXT NOT NULL,
+  description TEXT NOT NULL,
+  condition_json TEXT NOT NULL,
+  suggested_fix TEXT,
+  evidence_source TEXT,
+  evidence_date TEXT,
+  blocks_submission INTEGER NOT NULL DEFAULT 1,
+  is_active INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  created_by TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_sr_tenant ON scrub_rule(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_sr_payer ON scrub_rule(payer_id);
+CREATE INDEX IF NOT EXISTS idx_sr_code ON scrub_rule(rule_code);
+CREATE INDEX IF NOT EXISTS idx_sr_active ON scrub_rule(is_active);
+
+CREATE TABLE IF NOT EXISTS scrub_result (
+  id TEXT PRIMARY KEY,
+  claim_draft_id TEXT NOT NULL,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  rule_id TEXT,
+  rule_code TEXT NOT NULL,
+  severity TEXT NOT NULL,
+  category TEXT NOT NULL,
+  field TEXT NOT NULL,
+  message TEXT NOT NULL,
+  suggested_fix TEXT,
+  blocks_submission INTEGER NOT NULL DEFAULT 1,
+  score INTEGER NOT NULL DEFAULT 100,
+  scrubbed_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_sres_claim ON scrub_result(claim_draft_id);
+CREATE INDEX IF NOT EXISTS idx_sres_tenant ON scrub_result(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_sres_severity ON scrub_result(severity);
+
+CREATE TABLE IF NOT EXISTS claim_lifecycle_event (
+  id TEXT PRIMARY KEY,
+  claim_draft_id TEXT NOT NULL,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  from_status TEXT,
+  to_status TEXT NOT NULL,
+  actor TEXT NOT NULL,
+  reason TEXT,
+  denial_code TEXT,
+  resubmission_ref TEXT,
+  detail_json TEXT DEFAULT '{}',
+  occurred_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_cle_claim ON claim_lifecycle_event(claim_draft_id);
+CREATE INDEX IF NOT EXISTS idx_cle_tenant ON claim_lifecycle_event(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_cle_status ON claim_lifecycle_event(to_status);
+CREATE INDEX IF NOT EXISTS idx_cle_time ON claim_lifecycle_event(occurred_at);
+
 `;
 
 // Phase 97B: Add payer_type column (idempotent — catches "duplicate column" error)

@@ -474,3 +474,103 @@ export const loaAttachment = sqliteTable("loa_attachment", {
   addedBy: text("added_by").notNull(),
   addedAt: text("added_at").notNull(),
 });
+
+/* ── AA) claim_draft — Phase 111: DB-backed claim drafts with lifecycle ── */
+
+export const claimDraft = sqliteTable("claim_draft", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  idempotencyKey: text("idempotency_key"),                     // unique per tenant for dedup
+  status: text("status").notNull().default("draft"),            // draft|scrubbed|ready|submitted|accepted|rejected|paid|denied|appealed|closed
+  claimType: text("claim_type").notNull().default("professional"), // professional|institutional|dental|pharmacy
+  encounterId: text("encounter_id"),                           // VistA encounter IEN or external ref
+  patientId: text("patient_id").notNull(),                     // pseudonymous internal id (not DFN in logs)
+  patientName: text("patient_name"),                           // display only, redacted in audit
+  providerId: text("provider_id").notNull(),                   // rendering provider NPI or DUZ
+  billingProviderId: text("billing_provider_id"),              // billing provider NPI
+  payerId: text("payer_id").notNull(),
+  payerName: text("payer_name"),
+  dateOfService: text("date_of_service").notNull(),
+  diagnosesJson: text("diagnoses_json").default("[]"),         // DiagnosisCode[]
+  linesJson: text("lines_json").default("[]"),                 // ClaimLine[]
+  attachmentsJson: text("attachments_json").default("[]"),     // {fileName, path, type}[]
+  totalChargeCents: integer("total_charge_cents").default(0),
+  denialCode: text("denial_code"),                             // CARC/RARC from payer
+  denialReason: text("denial_reason"),
+  appealPacketRef: text("appeal_packet_ref"),                  // storage path for appeal artifact
+  resubmissionOf: text("resubmission_of"),                     // claim_draft.id of original
+  resubmissionCount: integer("resubmission_count").default(0),
+  paidAmountCents: integer("paid_amount_cents"),
+  adjustmentCents: integer("adjustment_cents"),
+  patientRespCents: integer("patient_resp_cents"),
+  scrubScore: integer("scrub_score"),                          // 0-100 from last scrub
+  lastScrubAt: text("last_scrub_at"),
+  submittedAt: text("submitted_at"),
+  paidAt: text("paid_at"),
+  deniedAt: text("denied_at"),
+  closedAt: text("closed_at"),
+  vistaChargeIen: text("vista_charge_ien"),                    // ^IB(350,IEN)
+  vistaArIen: text("vista_ar_ien"),                            // ^PRCA(430,IEN)
+  metadataJson: text("metadata_json").default("{}"),
+  auditJson: text("audit_json").default("[]"),                 // ClaimAuditEntry[]
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+  createdBy: text("created_by").notNull(),
+});
+
+/* ── AB) scrub_rule — Phase 111: Payer-specific validation rules ── */
+
+export const scrubRule = sqliteTable("scrub_rule", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  payerId: text("payer_id"),                                   // null = applies to all payers
+  serviceType: text("service_type"),                           // null = applies to all services
+  ruleCode: text("rule_code").notNull(),                       // unique identifier e.g. "BCBS-MOD-25"
+  category: text("category").notNull(),                        // syntax|code_set|business_rule|payer_specific|timely_filing|authorization
+  severity: text("severity").notNull().default("error"),       // error|warning|suggestion
+  field: text("field").notNull(),                              // which claim field this checks
+  description: text("description").notNull(),
+  conditionJson: text("condition_json").notNull(),             // machine-readable rule condition
+  suggestedFix: text("suggested_fix"),
+  evidenceSource: text("evidence_source"),                     // URL/doc ref backing this rule
+  evidenceDate: text("evidence_date"),                         // when evidence was captured
+  blocksSubmission: integer("blocks_submission").notNull().default(1),
+  isActive: integer("is_active").notNull().default(1),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+  createdBy: text("created_by").notNull(),
+});
+
+/* ── AC) scrub_result — Phase 111: Scrubbing outcomes per claim draft ── */
+
+export const scrubResult = sqliteTable("scrub_result", {
+  id: text("id").primaryKey(),
+  claimDraftId: text("claim_draft_id").notNull(),              // FK to claim_draft.id
+  tenantId: text("tenant_id").notNull().default("default"),
+  ruleId: text("rule_id"),                                     // FK to scrub_rule.id (null for built-in rules)
+  ruleCode: text("rule_code").notNull(),
+  severity: text("severity").notNull(),                        // error|warning|suggestion
+  category: text("category").notNull(),
+  field: text("field").notNull(),
+  message: text("message").notNull(),
+  suggestedFix: text("suggested_fix"),
+  blocksSubmission: integer("blocks_submission").notNull().default(1),
+  score: integer("score").notNull().default(100),              // 0-100 readiness contribution
+  scrubbedAt: text("scrubbed_at").notNull(),
+});
+
+/* ── AD) claim_lifecycle_event — Phase 111: Temporal claim status tracking ── */
+
+export const claimLifecycleEvent = sqliteTable("claim_lifecycle_event", {
+  id: text("id").primaryKey(),
+  claimDraftId: text("claim_draft_id").notNull(),              // FK to claim_draft.id
+  tenantId: text("tenant_id").notNull().default("default"),
+  fromStatus: text("from_status"),
+  toStatus: text("to_status").notNull(),
+  actor: text("actor").notNull(),                              // DUZ or 'system'
+  reason: text("reason"),                                      // denial reason, appeal justification, etc.
+  denialCode: text("denial_code"),                             // CARC/RARC code if denial
+  resubmissionRef: text("resubmission_ref"),                   // new claim_draft.id if resubmitted
+  detailJson: text("detail_json").default("{}"),
+  occurredAt: text("occurred_at").notNull(),
+});

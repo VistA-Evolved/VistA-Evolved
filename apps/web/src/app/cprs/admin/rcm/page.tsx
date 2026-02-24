@@ -18,7 +18,7 @@ import styles from '@/components/cprs/cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
-type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions' | 'gateways' | 'adapters' | 'jobs' | 'eligibility' | 'claim-status' | 'ops-dashboard' | 'credential-vault' | 'accreditation';
+type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions' | 'gateways' | 'adapters' | 'jobs' | 'eligibility' | 'claim-status' | 'ops-dashboard' | 'credential-vault' | 'accreditation' | 'claim-lifecycle';
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
@@ -55,6 +55,7 @@ export default function RcmPage() {
     { id: 'ops-dashboard', label: 'Ops Dashboard' },
     { id: 'credential-vault', label: 'Credential Vault' },
     { id: 'accreditation', label: 'Accreditation' },
+    { id: 'claim-lifecycle', label: 'Claim Lifecycle' },
     { id: 'audit', label: 'Audit Trail' },
   ];
 
@@ -125,6 +126,7 @@ export default function RcmPage() {
         {tab === 'ops-dashboard' && <OpsDashboardTab />}
         {tab === 'credential-vault' && <CredentialVaultTab />}
         {tab === 'accreditation' && <AccreditationTab />}
+        {tab === 'claim-lifecycle' && <ClaimLifecycleTab />}
         {tab === 'audit' && <AuditTab />}
       </div>
     </div>
@@ -3105,6 +3107,370 @@ function AccreditationTab() {
 
       {!loading && accreditations.length === 0 && (
         <div style={{ fontSize: 12, color: '#6c757d', padding: 16, textAlign: 'center' }}>No accreditation records yet. Click &quot;+ Add Accreditation&quot; to track payer enrollment status.</div>
+      )}
+    </div>
+  );
+}
+
+/* --- Claim Lifecycle Tab (Phase 111) -------------------------------- */
+
+function ClaimLifecycleTab() {
+  const [drafts, setDrafts] = useState<any[]>([]);
+  const [metrics, setMetrics] = useState<any>(null);
+  const [rules, setRules] = useState<any[]>([]);
+  const [scrubMetrics, setScrubMetrics] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [subTab, setSubTab] = useState<'drafts' | 'rules' | 'metrics' | 'aging'>('drafts');
+  const [showCreate, setShowCreate] = useState(false);
+  const [form, setForm] = useState({ patientId: '', providerId: '', payerId: '', dateOfService: '', claimType: 'professional', payerName: '' });
+
+  const refresh = useCallback(() => {
+    setLoading(true);
+    Promise.all([
+      apiFetch('/rcm/claim-lifecycle/drafts'),
+      apiFetch('/rcm/claim-lifecycle/metrics'),
+      apiFetch('/rcm/claim-lifecycle/rules'),
+      apiFetch('/rcm/claim-lifecycle/metrics/scrub'),
+    ]).then(([d, m, r, s]) => {
+      setDrafts(d.drafts || []);
+      setMetrics(m.metrics || null);
+      setRules(r.rules || []);
+      setScrubMetrics(s.metrics || null);
+    }).catch(() => {}).finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  const handleCreate = async () => {
+    if (!form.patientId || !form.providerId || !form.payerId || !form.dateOfService) return;
+    await apiFetch('/rcm/claim-lifecycle/drafts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form),
+    });
+    setShowCreate(false);
+    setForm({ patientId: '', providerId: '', payerId: '', dateOfService: '', claimType: 'professional', payerName: '' });
+    refresh();
+  };
+
+  const handleScrub = async (id: string) => {
+    await apiFetch(`/rcm/claim-lifecycle/drafts/${id}/scrub`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    });
+    refresh();
+  };
+
+  const handleTransition = async (id: string, toStatus: string) => {
+    await apiFetch(`/rcm/claim-lifecycle/drafts/${id}/transition`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ toStatus }),
+    });
+    refresh();
+  };
+
+  const statusColor = (s: string) => {
+    const map: Record<string, string> = {
+      draft: '#6c757d', scrubbed: '#0d6efd', ready: '#198754', submitted: '#0dcaf0',
+      accepted: '#20c997', rejected: '#fd7e14', paid: '#198754', denied: '#dc3545',
+      appealed: '#6f42c1', closed: '#adb5bd',
+    };
+    return map[s] || '#6c757d';
+  };
+
+  const subTabs: { id: typeof subTab; label: string }[] = [
+    { id: 'drafts', label: 'Claim Drafts' },
+    { id: 'metrics', label: 'Metrics & KPIs' },
+    { id: 'rules', label: 'Scrub Rules' },
+    { id: 'aging', label: 'Denial Aging' },
+  ];
+
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+        {subTabs.map(st => (
+          <button key={st.id} onClick={() => setSubTab(st.id)}
+            style={{
+              padding: '6px 14px', border: '1px solid #dee2e6', borderRadius: 4, fontSize: 12,
+              background: subTab === st.id ? '#0d6efd' : '#fff', color: subTab === st.id ? '#fff' : '#495057',
+              cursor: 'pointer', fontWeight: subTab === st.id ? 600 : 400,
+            }}>
+            {st.label}
+          </button>
+        ))}
+        {subTab === 'drafts' && (
+          <button onClick={() => setShowCreate(!showCreate)}
+            style={{ marginLeft: 'auto', padding: '6px 14px', background: '#198754', color: '#fff', border: 'none', borderRadius: 4, fontSize: 12, cursor: 'pointer' }}>
+            + New Draft
+          </button>
+        )}
+      </div>
+
+      {loading && <div style={{ fontSize: 12, color: '#6c757d' }}>Loading...</div>}
+
+      {/* ---- Create Form ---- */}
+      {showCreate && subTab === 'drafts' && (
+        <div style={{ border: '1px solid #dee2e6', borderRadius: 6, padding: 12, marginBottom: 12, background: '#f8f9fa' }}>
+          <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8 }}>New Claim Draft</div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
+            <input placeholder="Patient ID" value={form.patientId} onChange={e => setForm({ ...form, patientId: e.target.value })} style={{ padding: 6, fontSize: 12, border: '1px solid #ced4da', borderRadius: 4 }} />
+            <input placeholder="Provider ID" value={form.providerId} onChange={e => setForm({ ...form, providerId: e.target.value })} style={{ padding: 6, fontSize: 12, border: '1px solid #ced4da', borderRadius: 4 }} />
+            <input placeholder="Payer ID" value={form.payerId} onChange={e => setForm({ ...form, payerId: e.target.value })} style={{ padding: 6, fontSize: 12, border: '1px solid #ced4da', borderRadius: 4 }} />
+            <input placeholder="Date of Service" type="date" value={form.dateOfService} onChange={e => setForm({ ...form, dateOfService: e.target.value })} style={{ padding: 6, fontSize: 12, border: '1px solid #ced4da', borderRadius: 4 }} />
+            <input placeholder="Payer Name" value={form.payerName} onChange={e => setForm({ ...form, payerName: e.target.value })} style={{ padding: 6, fontSize: 12, border: '1px solid #ced4da', borderRadius: 4 }} />
+            <select value={form.claimType} onChange={e => setForm({ ...form, claimType: e.target.value })} style={{ padding: 6, fontSize: 12, border: '1px solid #ced4da', borderRadius: 4 }}>
+              <option value="professional">Professional (CMS-1500)</option>
+              <option value="institutional">Institutional (UB-04)</option>
+            </select>
+          </div>
+          <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+            <button onClick={handleCreate} style={{ padding: '6px 16px', background: '#0d6efd', color: '#fff', border: 'none', borderRadius: 4, fontSize: 12, cursor: 'pointer' }}>Create</button>
+            <button onClick={() => setShowCreate(false)} style={{ padding: '6px 16px', background: '#6c757d', color: '#fff', border: 'none', borderRadius: 4, fontSize: 12, cursor: 'pointer' }}>Cancel</button>
+          </div>
+        </div>
+      )}
+
+      {/* ---- Drafts Sub-Tab ---- */}
+      {!loading && subTab === 'drafts' && (
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+          <thead>
+            <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>ID</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Patient</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Payer</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>DOS</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Status</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Score</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Charge</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {drafts.map((d: any) => (
+              <tr key={d.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                <td style={{ padding: '4px 8px', fontFamily: 'monospace', fontSize: 11 }}>{d.id?.slice(0, 8)}</td>
+                <td style={{ padding: '4px 8px' }}>{d.patientName || d.patientId}</td>
+                <td style={{ padding: '4px 8px' }}>{d.payerName || d.payerId}</td>
+                <td style={{ padding: '4px 8px' }}>{d.dateOfService?.slice(0, 10)}</td>
+                <td style={{ padding: '4px 8px' }}>
+                  <span style={{ padding: '2px 8px', borderRadius: 10, fontSize: 10, fontWeight: 600, background: statusColor(d.status) + '20', color: statusColor(d.status) }}>
+                    {d.status}
+                  </span>
+                </td>
+                <td style={{ padding: '4px 8px', fontWeight: 600, color: (d.scrubScore ?? 0) >= 80 ? '#198754' : (d.scrubScore ?? 0) >= 50 ? '#fd7e14' : '#dc3545' }}>
+                  {d.scrubScore ?? '--'}
+                </td>
+                <td style={{ padding: '4px 8px' }}>${((d.totalChargeCents || 0) / 100).toFixed(2)}</td>
+                <td style={{ padding: '4px 8px' }}>
+                  <div style={{ display: 'flex', gap: 4 }}>
+                    {d.status === 'draft' && <button onClick={() => handleScrub(d.id)} style={{ padding: '2px 8px', fontSize: 10, background: '#0d6efd', color: '#fff', border: 'none', borderRadius: 3, cursor: 'pointer' }}>Scrub</button>}
+                    {d.status === 'scrubbed' && <button onClick={() => handleTransition(d.id, 'ready')} style={{ padding: '2px 8px', fontSize: 10, background: '#198754', color: '#fff', border: 'none', borderRadius: 3, cursor: 'pointer' }}>Ready</button>}
+                    {d.status === 'ready' && <button onClick={() => handleTransition(d.id, 'submitted')} style={{ padding: '2px 8px', fontSize: 10, background: '#0dcaf0', color: '#fff', border: 'none', borderRadius: 3, cursor: 'pointer' }}>Submit</button>}
+                    {(d.status === 'denied' || d.status === 'rejected') && <button onClick={() => handleTransition(d.id, 'appealed')} style={{ padding: '2px 8px', fontSize: 10, background: '#6f42c1', color: '#fff', border: 'none', borderRadius: 3, cursor: 'pointer' }}>Appeal</button>}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {!loading && subTab === 'drafts' && drafts.length === 0 && (
+        <div style={{ fontSize: 12, color: '#6c757d', padding: 16, textAlign: 'center' }}>No claim drafts yet. Click &quot;+ New Draft&quot; to create one.</div>
+      )}
+
+      {/* ---- Metrics Sub-Tab ---- */}
+      {!loading && subTab === 'metrics' && metrics && (
+        <div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 16 }}>
+            <div style={{ background: '#f8f9fa', borderRadius: 8, padding: 16, textAlign: 'center' }}>
+              <div style={{ fontSize: 24, fontWeight: 700 }}>{metrics.total}</div>
+              <div style={{ fontSize: 11, color: '#6c757d' }}>Total Drafts</div>
+            </div>
+            <div style={{ background: '#f8f9fa', borderRadius: 8, padding: 16, textAlign: 'center' }}>
+              <div style={{ fontSize: 24, fontWeight: 700, color: metrics.firstPassRate != null && metrics.firstPassRate >= 90 ? '#198754' : '#dc3545' }}>
+                {metrics.firstPassRate != null ? `${metrics.firstPassRate}%` : '--'}
+              </div>
+              <div style={{ fontSize: 11, color: '#6c757d' }}>First-Pass Rate</div>
+            </div>
+            <div style={{ background: '#f8f9fa', borderRadius: 8, padding: 16, textAlign: 'center' }}>
+              <div style={{ fontSize: 24, fontWeight: 700, color: '#dc3545' }}>{metrics.deniedCount}</div>
+              <div style={{ fontSize: 11, color: '#6c757d' }}>Denied</div>
+            </div>
+            <div style={{ background: '#f8f9fa', borderRadius: 8, padding: 16, textAlign: 'center' }}>
+              <div style={{ fontSize: 24, fontWeight: 700 }}>
+                {metrics.netCollectionRate != null ? `${metrics.netCollectionRate}%` : '--'}
+              </div>
+              <div style={{ fontSize: 11, color: '#6c757d' }}>Net Collection Rate</div>
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 16 }}>
+            <div style={{ background: '#f8f9fa', borderRadius: 8, padding: 16, textAlign: 'center' }}>
+              <div style={{ fontSize: 18, fontWeight: 700 }}>
+                ${((metrics.totalChargeCents || 0) / 100).toFixed(2)}
+              </div>
+              <div style={{ fontSize: 11, color: '#6c757d' }}>Total Charges</div>
+            </div>
+            <div style={{ background: '#f8f9fa', borderRadius: 8, padding: 16, textAlign: 'center' }}>
+              <div style={{ fontSize: 18, fontWeight: 700, color: '#198754' }}>
+                ${((metrics.totalPaidCents || 0) / 100).toFixed(2)}
+              </div>
+              <div style={{ fontSize: 11, color: '#6c757d' }}>Total Paid</div>
+            </div>
+            <div style={{ background: '#f8f9fa', borderRadius: 8, padding: 16, textAlign: 'center' }}>
+              <div style={{ fontSize: 18, fontWeight: 700 }}>
+                {metrics.avgScrubScore ?? '--'}
+              </div>
+              <div style={{ fontSize: 11, color: '#6c757d' }}>Avg Scrub Score</div>
+            </div>
+          </div>
+
+          {/* Status distribution */}
+          {metrics.byStatus && (
+            <div style={{ marginTop: 12 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8 }}>Status Distribution</div>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                {Object.entries(metrics.byStatus).map(([status, cnt]) => (
+                  <div key={status} style={{ padding: '4px 12px', borderRadius: 12, fontSize: 11, fontWeight: 600, background: statusColor(status) + '20', color: statusColor(status) }}>
+                    {status}: {cnt as number}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Scrub metrics */}
+          {scrubMetrics && (
+            <div style={{ marginTop: 16 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8 }}>Scrub Metrics</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+                <div style={{ background: '#fff3cd', borderRadius: 8, padding: 12, textAlign: 'center' }}>
+                  <div style={{ fontSize: 18, fontWeight: 700 }}>{scrubMetrics.totalScrubbed}</div>
+                  <div style={{ fontSize: 10, color: '#6c757d' }}>Total Scrubbed</div>
+                </div>
+                <div style={{ background: '#d1e7dd', borderRadius: 8, padding: 12, textAlign: 'center' }}>
+                  <div style={{ fontSize: 18, fontWeight: 700 }}>{scrubMetrics.passRate != null ? `${scrubMetrics.passRate}%` : '--'}</div>
+                  <div style={{ fontSize: 10, color: '#6c757d' }}>Pass Rate</div>
+                </div>
+                <div style={{ background: '#f8d7da', borderRadius: 8, padding: 12, textAlign: 'center' }}>
+                  <div style={{ fontSize: 18, fontWeight: 700 }}>{scrubMetrics.avgScore ?? '--'}</div>
+                  <div style={{ fontSize: 10, color: '#6c757d' }}>Avg Score</div>
+                </div>
+                <div style={{ background: '#e2e3e5', borderRadius: 8, padding: 12, textAlign: 'center' }}>
+                  <div style={{ fontSize: 18, fontWeight: 700, color: scrubMetrics.contractingNeededCount > 0 ? '#dc3545' : '#198754' }}>{scrubMetrics.contractingNeededCount}</div>
+                  <div style={{ fontSize: 10, color: '#6c757d' }}>Contracting Needed</div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ---- Rules Sub-Tab ---- */}
+      {!loading && subTab === 'rules' && (
+        <div>
+          <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8 }}>Active Scrub Rules ({rules.length})</div>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+            <thead>
+              <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+                <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Code</th>
+                <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Category</th>
+                <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Severity</th>
+                <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Field</th>
+                <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Description</th>
+                <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Evidence</th>
+                <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Blocks?</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rules.map((r: any) => (
+                <tr key={r.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                  <td style={{ padding: '4px 8px', fontFamily: 'monospace', fontSize: 11 }}>{r.ruleCode}</td>
+                  <td style={{ padding: '4px 8px' }}>{r.category}</td>
+                  <td style={{ padding: '4px 8px' }}>
+                    <span style={{ padding: '2px 8px', borderRadius: 10, fontSize: 10, fontWeight: 600,
+                      background: r.severity === 'error' ? '#f8d7da' : r.severity === 'warning' ? '#fff3cd' : '#d1e7dd',
+                      color: r.severity === 'error' ? '#dc3545' : r.severity === 'warning' ? '#856404' : '#198754'
+                    }}>{r.severity}</span>
+                  </td>
+                  <td style={{ padding: '4px 8px' }}>{r.field}</td>
+                  <td style={{ padding: '4px 8px', maxWidth: 300, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.description}</td>
+                  <td style={{ padding: '4px 8px', fontSize: 10, color: r.evidenceSource === 'contracting_needed' ? '#dc3545' : '#6c757d' }}>{r.evidenceSource}</td>
+                  <td style={{ padding: '4px 8px' }}>{r.blocksSubmission ? 'Yes' : 'No'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {rules.length === 0 && <div style={{ fontSize: 12, color: '#6c757d', padding: 16, textAlign: 'center' }}>No scrub rules configured. Rules are evidence-backed -- add via API with evidenceSource.</div>}
+        </div>
+      )}
+
+      {/* ---- Aging Sub-Tab ---- */}
+      {!loading && subTab === 'aging' && (
+        <AgingSubTab />
+      )}
+    </div>
+  );
+}
+
+function AgingSubTab() {
+  const [aging, setAging] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [days, setDays] = useState(30);
+
+  useEffect(() => {
+    setLoading(true);
+    apiFetch(`/rcm/claim-lifecycle/drafts/aging?olderThanDays=${days}`)
+      .then(r => setAging(r.aging || []))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [days]);
+
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 12 }}>
+        <span style={{ fontSize: 13, fontWeight: 600 }}>Denied/Rejected claims older than:</span>
+        <select value={days} onChange={e => setDays(parseInt(e.target.value))} style={{ padding: 4, fontSize: 12, border: '1px solid #ced4da', borderRadius: 4 }}>
+          <option value={7}>7 days</option>
+          <option value={14}>14 days</option>
+          <option value={30}>30 days</option>
+          <option value={60}>60 days</option>
+          <option value={90}>90 days</option>
+        </select>
+      </div>
+      {loading && <div style={{ fontSize: 12, color: '#6c757d' }}>Loading...</div>}
+      {!loading && aging.length > 0 && (
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+          <thead>
+            <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>ID</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Patient</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Payer</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Denial Code</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Reason</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Denied Date</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Charge</th>
+            </tr>
+          </thead>
+          <tbody>
+            {aging.map((a: any) => (
+              <tr key={a.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                <td style={{ padding: '4px 8px', fontFamily: 'monospace', fontSize: 11 }}>{a.id?.slice(0, 8)}</td>
+                <td style={{ padding: '4px 8px' }}>{a.patientName || a.patientId}</td>
+                <td style={{ padding: '4px 8px' }}>{a.payerName || a.payerId}</td>
+                <td style={{ padding: '4px 8px', fontFamily: 'monospace' }}>{a.denialCode || '--'}</td>
+                <td style={{ padding: '4px 8px', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{a.denialReason || '--'}</td>
+                <td style={{ padding: '4px 8px' }}>{a.deniedAt?.slice(0, 10) || '--'}</td>
+                <td style={{ padding: '4px 8px' }}>${((a.totalChargeCents || 0) / 100).toFixed(2)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {!loading && aging.length === 0 && (
+        <div style={{ fontSize: 12, color: '#198754', padding: 16, textAlign: 'center' }}>No aging denials found for the selected period.</div>
       )}
     </div>
   );
