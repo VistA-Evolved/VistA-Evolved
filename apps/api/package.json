@@ -10,6 +10,7 @@
     "test:watch": "vitest",
     "test:contract": "vitest run tests/contract.test.ts",
     "test:rpc": "vitest run tests/rpc-boundary.test.ts",
+    "test:jobs": "vitest run tests/job-worker-smoke.test.ts",
     "worker": "tsx --env-file=.env.local src/jobs/worker-entrypoint.ts"
   },
   "dependencies": {

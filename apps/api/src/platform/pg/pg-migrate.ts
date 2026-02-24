@@ -515,6 +515,9 @@ ALTER TABLE payer_task ADD COLUMN IF NOT EXISTS updated_by TEXT;
 -- Creates a row-level security policy that restricts rows to the
 -- tenant set via SET LOCAL app.current_tenant_id.
 -- Also adds FORCE ROW LEVEL SECURITY so even table owners are subject.
+-- Note: DROP + CREATE is necessary because PG does not allow renaming
+-- input parameters via CREATE OR REPLACE (BUG-069).
+DROP FUNCTION IF EXISTS create_tenant_rls_policy(TEXT);
 CREATE OR REPLACE FUNCTION create_tenant_rls_policy(tbl TEXT) RETURNS void AS $$
 BEGIN
   -- Enable RLS on the table

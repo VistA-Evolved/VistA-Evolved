@@ -60,7 +60,18 @@ export function validateJobPayload(
     return { ok: false, error: `Unknown job name: ${jobName}` };
   }
 
-  // 2. Zod validation
+  // 2. PHI field check on RAW payload (before zod strips unknown keys)
+  if (rawPayload && typeof rawPayload === "object" && !Array.isArray(rawPayload)) {
+    const phiViolations = containsPhiFields(rawPayload as Record<string, unknown>);
+    if (phiViolations.length > 0) {
+      return {
+        ok: false,
+        error: `PHI fields detected in payload: ${phiViolations.join(", ")}`,
+      };
+    }
+  }
+
+  // 3. Zod validation
   const schema = JOB_PAYLOAD_SCHEMAS[jobName as JobName];
   const parsed = schema.safeParse(rawPayload);
   if (!parsed.success) {
@@ -70,16 +81,7 @@ export function validateJobPayload(
     };
   }
 
-  // 3. PHI field check
   const payload = parsed.data as Record<string, unknown>;
-  const phiViolations = containsPhiFields(payload);
-  if (phiViolations.length > 0) {
-    return {
-      ok: false,
-      error: `PHI fields detected in payload: ${phiViolations.join(", ")}`,
-    };
-  }
-
   return { ok: true, payload };
 }
 
@@ -221,7 +223,7 @@ export async function getRecentJobRuns(opts?: {
       id: r.id,
       jobName: r.job_name,
       graphileJobId: r.graphile_job_id ?? undefined,
-      payload: JSON.parse(r.payload_json ?? "{}"),
+      payload: typeof r.payload_json === "string" ? JSON.parse(r.payload_json) : (r.payload_json ?? {}),
       startedAt: r.started_at,
       finishedAt: r.finished_at ?? undefined,
       ok: r.ok,

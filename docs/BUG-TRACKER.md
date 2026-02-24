@@ -1157,3 +1157,47 @@ code path. Either:
    handle the response, OR
 2. Call `reply.send()` and `return` immediately (no throw).
 
+
+---
+
+## Phase 116 — Postgres Job Queue (Graphile Worker)
+
+### BUG-069: Cron eligibility_check_poll validation failure
+
+**Symptom**: Cron job `eligibility_check_poll` failed all 3 retries immediately after worker start.
+
+**Root cause**: The `EligibilityCheckPollPayload` zod schema required `payerId: z.string().min(1)`, but cron jobs only send `{tenantId: "default"}`. The task handler retrieves `payerId` from individual eligibility check records, not the job payload.
+
+**Fix**: Changed `payerId: z.string().min(1)` to `payerId: z.string().optional()` in `apps/api/src/jobs/registry.ts`.
+
+**Prevention**: Cron job payloads should be minimal (tenant context only). Task-specific identifiers belong in the handler's data lookup, not the payload schema.
+
+### BUG-070: PHI rejection bypassed by zod stripping unknown keys
+
+**Symptom**: Job payload `{tenantId:"default", patientName:"John Doe", ssn:"123-45-6789"}` passed validation — no PHI rejection.
+
+**Root cause**: `validateJobPayload()` ran zod `z.object().parse()` first, which strips unknown keys by default. The subsequent `containsPhiFields()` check ran on the already-stripped `parsed.data`, which no longer contained the PHI fields.
+
+**Fix**: In `governance.ts`, moved the PHI field check *before* zod parsing. The sequence is now: (1) check job name known, (2) PHI check on raw payload, (3) zod validation on raw payload.
+
+**Prevention**: PHI/security checks must always run on raw, unprocessed input — never on sanitized/transformed output from a prior step.
+
+### BUG-071: Job run log endpoint returns empty despite PG data
+
+**Symptom**: `GET /admin/jobs/runs` returned `{runs:[], total:0}` even though PG `job_run_log` table had 13 rows.
+
+**Root cause**: The `payload_json` column is JSONB type. The PG driver (`pg`) returns JSONB as a JavaScript object, not a string. The code `JSON.parse(r.payload_json ?? "{}")` threw when `JSON.parse()` received an object, which was caught by the try-catch and silently dropped entries.
+
+**Fix**: Changed to `typeof r.payload_json === "string" ? JSON.parse(r.payload_json) : (r.payload_json ?? {})`.
+
+**Prevention**: Always check `typeof` before calling `JSON.parse()` on PG JSONB columns — the driver returns them pre-parsed.
+
+### BUG-072: PG migration v7 fails on function param rename
+
+**Symptom**: Migration v7 (`security_integrity_posture`) fails with `"cannot change name of input parameter \"target_table\""`.
+
+**Root cause**: The function `create_tenant_rls_policy` was originally created (in a prior run, before migration tracking) with parameter name `target_table`. Migration v7 uses `CREATE OR REPLACE FUNCTION create_tenant_rls_policy(tbl TEXT)...` — PostgreSQL does not allow renaming function parameters via `CREATE OR REPLACE`.
+
+**Fix**: Added `DROP FUNCTION IF EXISTS create_tenant_rls_policy(TEXT);` before the `CREATE OR REPLACE` in `pg-migrate.ts` v7 SQL.
+
+**Prevention**: When changing function signatures (including parameter names), always `DROP FUNCTION IF EXISTS` first, then `CREATE`.

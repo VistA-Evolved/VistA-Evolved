@@ -1,9 +1,31 @@
-# Phase 114: Durability Wave 1 -- Summary
+# Phase 116 VERIFY -- Postgres Job Queue (Graphile Worker)
 
 ## What Changed
-Three critical in-memory stores converted to DB-backed persistence:
 
-1. **Auth sessions** (`auth_session` table) -- sessions survive API restart
+### Bug Fixes (4 bugs found during VERIFY)
+1. **BUG-069** -- `registry.ts`: Made `payerId` optional in eligibility schema (cron sends minimal payload)
+2. **BUG-070** -- `governance.ts`: Moved PHI check before zod parsing (zod strips unknown keys)
+3. **BUG-071** -- `governance.ts`: Fixed JSONB parsing in `getRecentJobRuns` (PG driver returns object)
+4. **BUG-072** -- `pg-migrate.ts`: Added DROP FUNCTION before CREATE OR REPLACE in v7
+
+### New Files
+- `apps/api/tests/job-worker-smoke.test.ts` -- 29-test CI smoke suite
+- `apps/api/package.json` -- Added `test:jobs` script
+
+## Verifier Output
+Phase 116: 34 PASS / 0 FAIL / 0 SKIP
+
+## Test Results
+- job-worker-smoke: 29/29 PASS (NEW)
+- contract: 27/27 PASS
+- qa-security: 12/12 PASS
+- gateway-packs: 33/33 PASS
+- Full suite: 256 PASS / 14 FAIL (all pre-existing)
+
+## Follow-ups
+- PG connection string redaction in `redactErrorMessage`
+- rcm-quality-loop workqueue store init (pre-existing)
+- rpc-boundary VistA Docker auth (pre-existing)1. **Auth sessions** (`auth_session` table) -- sessions survive API restart
 2. **RCM workqueues** (`rcm_work_item` + `rcm_work_item_event`) -- work items + audit trail persist
 3. **Capability matrix audit** -- all mutations write to `payer_audit_event` table
 

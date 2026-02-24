@@ -1,9 +1,9 @@
 {
     "commitSHA": "pending",
     "stage": "verified",
-    "verifyScript": "scripts/verify-phase114-durability-wave1.ps1",
-    "runbook": "docs/runbooks/durability-wave1.md",
-    "promptRef": "prompts/118-PHASE-114-DURABILITY-WAVE1/114-99-VERIFY.md",
+    "verifyScript": "scripts/verify-phase116-job-queue.ps1",
+    "runbook": "docs/runbooks/jobs-graphile-worker.md",
+    "promptRef": "prompts/119-PHASE-116-JOB-QUEUE/116-99-VERIFY.md",
     "status": "verified",
-    "feature": "Phase 114: Durability Wave 1 VERIFIED -- 31/31 gates PASS, live restart test PASS, session revocation PASS"
+    "feature": "Phase 116: Postgres Job Queue VERIFIED -- 34/34 gates PASS, 4 bugs fixed, 29/29 CI smoke tests PASS"
 }

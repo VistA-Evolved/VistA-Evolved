@@ -33,7 +33,7 @@ export const ALL_JOB_NAMES: readonly JobName[] = Object.values(JOB_NAMES);
  */
 export const EligibilityCheckPollPayload = z.object({
   tenantId: z.string().default("default"),
-  payerId: z.string().min(1),
+  payerId: z.string().optional(),
   claimId: z.string().optional(),
   integrationMode: z.string().default("sandbox"),
   batchSize: z.number().int().min(1).max(100).default(10),
