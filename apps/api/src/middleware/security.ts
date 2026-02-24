@@ -482,6 +482,11 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
         try { closeDb(); } catch { /* DB may already be closed */ }
         // Phase 101: close platform Postgres pool
         try { await closePgDb(); } catch { /* pool may already be closed */ }
+        // Phase 116: stop Graphile Worker job runner
+        try {
+          const { stopJobRunner } = await import("../jobs/runner.js");
+          await stopJobRunner();
+        } catch { /* runner may not be started */ }
         // Phase 36: flush OTel traces/metrics
         try { await shutdownTracing(); } catch { /* best effort */ }
         log.info("Server closed gracefully");

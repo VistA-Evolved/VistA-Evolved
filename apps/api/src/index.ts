@@ -160,6 +160,8 @@ import emarRoutes from "./routes/emar/index.js";
 import handoffRoutes from "./routes/handoff/index.js";
 // Phase 107: Production Posture Pack
 import postureRoutes from "./posture/index.js";
+// Phase 116: Job Queue (Graphile Worker)
+import { jobAdminRoutes } from "./routes/job-admin-routes.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -454,6 +456,9 @@ server.register(uiPrefsRoutes);
 
 // Register production posture routes -- observability/tenant/perf/backup gates (Phase 107)
 server.register(postureRoutes);
+
+// Register job admin routes -- job status, run log, manual trigger (Phase 116)
+server.register(jobAdminRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);
@@ -2421,6 +2426,16 @@ try {
   startAggregationJob();
   // Phase 25: Initialize ETL writer (non-blocking — connects to ROcto lazily)
   initEtl();
+  // Phase 116: Optionally start embedded Graphile Worker job runner
+  if (process.env.JOB_WORKER_ENABLED === "true" && isPgConfigured()) {
+    try {
+      const { startJobRunner } = await import("./jobs/runner.js");
+      await startJobRunner({ noHandleSignals: true }); // API handles signals
+      log.info("Embedded job runner started (JOB_WORKER_ENABLED=true)");
+    } catch (jwErr: any) {
+      log.warn("Embedded job runner failed to start (non-fatal)", { error: jwErr.message });
+    }
+  }
 } catch (err) {
   const e = err as NodeJS.ErrnoException;
   if (e.code === "EADDRINUSE") {

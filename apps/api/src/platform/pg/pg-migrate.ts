@@ -570,6 +570,35 @@ DO $$ BEGIN
 END $$;
 `,
   },
+  {
+    version: 8,
+    name: "create_job_run_log",
+    sql: `
+-- ============================================================
+-- Phase 116: Job Run Log (Graphile Worker governance)
+-- ============================================================
+
+-- Tracks every job execution for audit, debugging, and retention.
+-- PHI is structurally excluded from payload_json (validated at enqueue).
+CREATE TABLE IF NOT EXISTS job_run_log (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  job_name TEXT NOT NULL,
+  graphile_job_id TEXT,
+  payload_json JSONB NOT NULL DEFAULT '{}',
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  finished_at TIMESTAMPTZ,
+  ok BOOLEAN NOT NULL DEFAULT false,
+  duration_ms INTEGER,
+  error_redacted TEXT
+);
+
+-- Indexes for common queries
+CREATE INDEX IF NOT EXISTS idx_job_run_log_name ON job_run_log(job_name, started_at);
+CREATE INDEX IF NOT EXISTS idx_job_run_log_tenant ON job_run_log(tenant_id, started_at);
+CREATE INDEX IF NOT EXISTS idx_job_run_log_ok ON job_run_log(ok, finished_at);
+`,
+  },
 ];
 
 /**
@@ -658,6 +687,7 @@ export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: s
     "claim_status_check",
     "capability_matrix_cell",
     "capability_matrix_evidence",
+    "job_run_log",
   ];
 
   const applied: string[] = [];
