@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 104: Platform DB Security/Compliance Posture
-& "$PSScriptRoot\verify-phase104-db-security.ps1" @args
+# Phase 106: VistA Alignment Coverage
+& "$PSScriptRoot\verify-phase106-vista-alignment.ps1" @args

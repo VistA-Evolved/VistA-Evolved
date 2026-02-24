@@ -87,6 +87,7 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "ORWLRR INTERIM",           domain: "labs",       tag: "read",  description: "Interim lab results" },
   { name: "ORWLRR ACK",               domain: "labs",       tag: "write", description: "Acknowledge lab result" },
   { name: "ORWLRR CHART",             domain: "labs",       tag: "read",  description: "Lab chart data" },
+  { name: "ORWLRR INTERIMG",          domain: "labs",       tag: "read",  description: "Interim lab results (imaging context)" },
 
   // --- Medications ---
   { name: "ORWPS ACTIVE",             domain: "medications", tag: "read",  description: "Active medications list" },
@@ -125,6 +126,8 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "ORQPT DEFAULT PATIENT LIST", domain: "patients", tag: "read", description: "Default patient list" },
   { name: "ORWPT LIST ALL",           domain: "patients",   tag: "read",  description: "Search all patients" },
   { name: "ORWPT SELECT",             domain: "patients",   tag: "read",  description: "Select patient demographics" },
+  { name: "ORWPT ID INFO",            domain: "patients",   tag: "read",  description: "Patient ID info (SSN, DOB, etc.)" },
+  { name: "ORWPT16 ID INFO",          domain: "patients",   tag: "read",  description: "Extended patient ID info" },
 
   // --- Problems ---
   { name: "ORQQPL PROBLEM LIST",       domain: "problems",  tag: "read",  description: "Get problem list" },
@@ -175,6 +178,12 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "ZVE MAIL GET",             domain: "messaging",  tag: "read",  description: "Read MailMan message header+body+recipients (ZVEMSGR.m)" },
   { name: "ZVE MAIL SEND",            domain: "messaging",  tag: "write", description: "Send MailMan message via XMXSEND with inline delivery (ZVEMSGR.m)" },
   { name: "ZVE MAIL MANAGE",          domain: "messaging",  tag: "write", description: "Mark read/delete/move MailMan message (ZVEMSGR.m)" },
+
+  // --- Scheduling (Phase 37C: VistA scheduling adapter) ---
+  { name: "SDOE LIST ENCOUNTERS FOR PAT",   domain: "scheduling",  tag: "read",  description: "List encounters/appointments for patient" },
+  { name: "SD W/L RETRIVE HOSP LOC(#44)",   domain: "scheduling",  tag: "read",  description: "Retrieve hospital locations for scheduling" },
+  { name: "SD W/L RETRIVE PERSON(200)",      domain: "scheduling",  tag: "read",  description: "Retrieve person file entries for scheduling" },
+  { name: "SDOE LIST ENCOUNTERS FOR DATES",  domain: "scheduling",  tag: "read",  description: "List encounters for date range" },
 ];
 
 /**
@@ -204,6 +213,13 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
   { name: "ZVE MAIL SEND", reason: "Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan message send (Phase 70)" },
   { name: "ZVE MAIL MANAGE", reason: "Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan message management (Phase 70)" },
   { name: "ORWPT16 ADMITLST", reason: "Admission list RPC; present in CPRS Delphi source but absent from some Vivian snapshots" },
+  { name: "ORWLRR INTERIMG", reason: "Interim lab results imaging variant; absent from Vivian snapshot (ORWLRR has 20+ RPCs)" },
+  { name: "ORWPT ID INFO", reason: "Patient ID info; present in CPRS source but absent from some Vivian snapshots" },
+  { name: "ORWPT16 ID INFO", reason: "Extended patient ID info; present in CPRS source but absent from Vivian" },
+  { name: "SDOE LIST ENCOUNTERS FOR PAT", reason: "Scheduling encounter list; SD package RPCs underrepresented in Vivian" },
+  { name: "SD W/L RETRIVE HOSP LOC(#44)", reason: "Scheduling hospital location lookup; SD package RPCs underrepresented in Vivian" },
+  { name: "SD W/L RETRIVE PERSON(200)", reason: "Scheduling person lookup; SD package RPCs underrepresented in Vivian" },
+  { name: "SDOE LIST ENCOUNTERS FOR DATES", reason: "Scheduling encounter date range list; SD package RPCs underrepresented in Vivian" },
 ];
 
 /* ------------------------------------------------------------------ */
