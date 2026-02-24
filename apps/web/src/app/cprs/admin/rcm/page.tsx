@@ -20,8 +20,20 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions' | 'gateways' | 'adapters' | 'jobs' | 'eligibility' | 'claim-status' | 'ops-dashboard' | 'credential-vault' | 'accreditation' | 'claim-lifecycle' | 'evidence';
 
+function getCsrfToken(): string {
+  if (typeof document === 'undefined') return '';
+  const match = document.cookie.match(/ehr_csrf=([^;]+)/);
+  return match ? match[1] : '';
+}
+
 async function apiFetch(path: string, opts?: RequestInit) {
-  const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
+  const headers: Record<string, string> = { ...((opts?.headers as Record<string, string>) ?? {}) };
+  // Inject CSRF token for non-safe methods
+  const method = (opts?.method ?? 'GET').toUpperCase();
+  if (!['GET', 'HEAD', 'OPTIONS'].includes(method)) {
+    headers['x-csrf-token'] = getCsrfToken();
+  }
+  const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts, headers });
   return res.json();
 }
 
@@ -3549,7 +3561,7 @@ function EvidenceRegistryTab() {
       setError(null);
       const res = await fetch(`${API_BASE}/rcm/evidence`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': getCsrfToken() },
         credentials: 'include',
         body: JSON.stringify({
           payerId: formPayerId, method: formMethod, source: formSource,
@@ -3575,7 +3587,7 @@ function EvidenceRegistryTab() {
 
   const handleArchive = async (id: string) => {
     try {
-      await fetch(`${API_BASE}/rcm/evidence/${id}`, { method: 'DELETE', credentials: 'include' });
+      await fetch(`${API_BASE}/rcm/evidence/${id}`, { method: 'DELETE', credentials: 'include', headers: { 'x-csrf-token': getCsrfToken() } });
       refresh();
     } catch { /* ignore */ }
   };

@@ -35,19 +35,106 @@ const evidenceRoutes: FastifyPluginAsync = async (server) => {
     return { ok: true, evidence: rows, total: rows.length };
   });
 
+  /* ── GET evidence by payer (BEFORE :id to avoid param collision) ── */
+  server.get("/rcm/evidence/by-payer/:payerId", async (request) => {
+    const { payerId } = request.params as { payerId: string };
+    const rows = repo.listByPayer(payerId);
+    return { ok: true, payerId, evidence: rows, total: rows.length };
+  });
+
+  /* ── COVERAGE: cross-ref payers vs evidence (BEFORE :id) ── */
+  server.get("/rcm/evidence/coverage", async () => {
+    const { payers } = listPayers();
+    const allEvidence = repo.listAll();
+
+    // Group evidence by payerId
+    const evidenceByPayer = new Map<string, repo.IntegrationEvidenceRow[]>();
+    for (const ev of allEvidence) {
+      const arr = evidenceByPayer.get(ev.payerId) ?? [];
+      arr.push(ev);
+      evidenceByPayer.set(ev.payerId, arr);
+    }
+
+    const coverage: repo.EvidenceCoverage[] = payers.map((p) => {
+      const payerEvidence = evidenceByPayer.get(p.payerId) ?? [];
+      return {
+        payerId: p.payerId,
+        payerName: p.name,
+        integrationMode: p.integrationMode,
+        evidenceCount: payerEvidence.length,
+        hasVerified: payerEvidence.some((e) => e.status === "verified"),
+        methods: [...new Set(payerEvidence.map((e) => e.method))],
+      };
+    });
+
+    const total = coverage.length;
+    const withEvidence = coverage.filter((c) => c.evidenceCount > 0).length;
+    const withVerified = coverage.filter((c) => c.hasVerified).length;
+    const requiresEvidence = coverage.filter((c) =>
+      EVIDENCE_REQUIRED_MODES.has(c.integrationMode),
+    ).length;
+    const missingEvidence = coverage.filter(
+      (c) => EVIDENCE_REQUIRED_MODES.has(c.integrationMode) && c.evidenceCount === 0,
+    ).length;
+
+    return {
+      ok: true,
+      summary: {
+        totalPayers: total,
+        withEvidence,
+        withVerified,
+        requiresEvidence,
+        missingEvidence,
+        coveragePercent:
+          requiresEvidence > 0
+            ? Math.round(((requiresEvidence - missingEvidence) / requiresEvidence) * 100)
+            : 100,
+      },
+      coverage,
+    };
+  });
+
+  /* ── GAPS: payers needing evidence but missing it (BEFORE :id) ── */
+  server.get("/rcm/evidence/gaps", async () => {
+    const { payers } = listPayers();
+    const allEvidence = repo.listAll();
+
+    const evidenceByPayer = new Map<string, repo.IntegrationEvidenceRow[]>();
+    for (const ev of allEvidence) {
+      const arr = evidenceByPayer.get(ev.payerId) ?? [];
+      arr.push(ev);
+      evidenceByPayer.set(ev.payerId, arr);
+    }
+
+    const gaps = payers
+      .filter((p) => EVIDENCE_REQUIRED_MODES.has(p.integrationMode))
+      .filter((p) => {
+        const ev = evidenceByPayer.get(p.payerId) ?? [];
+        return ev.length === 0;
+      })
+      .map((p) => ({
+        payerId: p.payerId,
+        payerName: p.name,
+        integrationMode: p.integrationMode,
+        country: p.country,
+        status: p.status,
+      }));
+
+    return { ok: true, gaps, totalGaps: gaps.length };
+  });
+
+  /* ── STATS (BEFORE :id) ────────────────────────── */
+  server.get("/rcm/evidence/stats", async () => {
+    const stats = repo.getEvidenceStats();
+    return { ok: true, ...stats };
+  });
+
   /* ── GET single evidence entry ─────────────────── */
   server.get("/rcm/evidence/:id", async (request, reply) => {
     const { id } = request.params as { id: string };
     const row = repo.findById(id);
     if (!row) return reply.code(404).send({ ok: false, error: "Evidence entry not found" });
     return { ok: true, evidence: row };
-  });
-
-  /* ── GET evidence by payer ─────────────────────── */
-  server.get("/rcm/evidence/by-payer/:payerId", async (request) => {
-    const { payerId } = request.params as { payerId: string };
-    const rows = repo.listByPayer(payerId);
-    return { ok: true, payerId, evidence: rows, total: rows.length };
   });
 
   /* ── CREATE evidence entry ─────────────────────── */
@@ -124,93 +211,6 @@ const evidenceRoutes: FastifyPluginAsync = async (server) => {
     const ok = repo.archiveEvidence(id);
     if (!ok) return reply.code(404).send({ ok: false, error: "Evidence entry not found" });
     return { ok: true, archived: true };
-  });
-
-  /* ── COVERAGE: cross-ref payers vs evidence ────── */
-  server.get("/rcm/evidence/coverage", async () => {
-    const { payers } = listPayers();
-    const allEvidence = repo.listAll();
-
-    // Group evidence by payerId
-    const evidenceByPayer = new Map<string, repo.IntegrationEvidenceRow[]>();
-    for (const ev of allEvidence) {
-      const arr = evidenceByPayer.get(ev.payerId) ?? [];
-      arr.push(ev);
-      evidenceByPayer.set(ev.payerId, arr);
-    }
-
-    const coverage: repo.EvidenceCoverage[] = payers.map((p) => {
-      const payerEvidence = evidenceByPayer.get(p.payerId) ?? [];
-      return {
-        payerId: p.payerId,
-        payerName: p.name,
-        integrationMode: p.integrationMode,
-        evidenceCount: payerEvidence.length,
-        hasVerified: payerEvidence.some((e) => e.status === "verified"),
-        methods: [...new Set(payerEvidence.map((e) => e.method))],
-      };
-    });
-
-    const total = coverage.length;
-    const withEvidence = coverage.filter((c) => c.evidenceCount > 0).length;
-    const withVerified = coverage.filter((c) => c.hasVerified).length;
-    const requiresEvidence = coverage.filter((c) =>
-      EVIDENCE_REQUIRED_MODES.has(c.integrationMode),
-    ).length;
-    const missingEvidence = coverage.filter(
-      (c) => EVIDENCE_REQUIRED_MODES.has(c.integrationMode) && c.evidenceCount === 0,
-    ).length;
-
-    return {
-      ok: true,
-      summary: {
-        totalPayers: total,
-        withEvidence,
-        withVerified,
-        requiresEvidence,
-        missingEvidence,
-        coveragePercent:
-          requiresEvidence > 0
-            ? Math.round(((requiresEvidence - missingEvidence) / requiresEvidence) * 100)
-            : 100,
-      },
-      coverage,
-    };
-  });
-
-  /* ── GAPS: payers needing evidence but missing it ── */
-  server.get("/rcm/evidence/gaps", async () => {
-    const { payers } = listPayers();
-    const allEvidence = repo.listAll();
-
-    const evidenceByPayer = new Map<string, repo.IntegrationEvidenceRow[]>();
-    for (const ev of allEvidence) {
-      const arr = evidenceByPayer.get(ev.payerId) ?? [];
-      arr.push(ev);
-      evidenceByPayer.set(ev.payerId, arr);
-    }
-
-    const gaps = payers
-      .filter((p) => EVIDENCE_REQUIRED_MODES.has(p.integrationMode))
-      .filter((p) => {
-        const ev = evidenceByPayer.get(p.payerId) ?? [];
-        return ev.length === 0;
-      })
-      .map((p) => ({
-        payerId: p.payerId,
-        payerName: p.name,
-        integrationMode: p.integrationMode,
-        country: p.country,
-        status: p.status,
-      }));
-
-    return { ok: true, gaps, totalGaps: gaps.length };
-  });
-
-  /* ── STATS ─────────────────────────────────────── */
-  server.get("/rcm/evidence/stats", async () => {
-    const stats = repo.getEvidenceStats();
-    return { ok: true, ...stats };
   });
 };
 
