@@ -4,7 +4,7 @@
  * Admin routes for module entitlement management:
  *   GET    /admin/modules/entitlements       — List tenant module entitlements
  *   POST   /admin/modules/entitlements       — Toggle module for tenant
- *   GET    /admin/modules/entitlements/seed   — Seed baseline modules
+ *   POST   /admin/modules/entitlements/seed  — Seed baseline modules
  *   GET    /admin/modules/catalog            — Full module catalog from DB
  *   GET    /admin/modules/feature-flags      — List feature flags for tenant
  *   POST   /admin/modules/feature-flags      — Upsert a feature flag
@@ -37,6 +37,13 @@ import { getEnabledModules as getSkuEnabledModules } from "../modules/module-reg
 export default async function moduleEntitlementRoutes(
   server: FastifyInstance
 ): Promise<void> {
+
+  // Scoped error handler -- catch DB errors and return clean 500 responses
+  server.setErrorHandler((error, _request, reply) => {
+    const msg = error instanceof Error ? error.message : String(error);
+    log.error("Module entitlement route error", { error: msg });
+    reply.code(500).send({ ok: false, error: "Internal server error" });
+  });
 
   /* ---------------------------------------------------------------- */
   /* Module Catalog                                                    */

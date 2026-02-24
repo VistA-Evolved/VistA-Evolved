@@ -224,3 +224,32 @@ pnpm qa:all          # All gates combined
 
 - Rate limit cooldown between back-to-back suites (qa:smoke then qa:api can trip limiter)
 - Consider adding `vitest.workspace.ts` to separate unit vs integration test configs
+
+---
+
+## Phase 109 VERIFY -- Fixes Applied
+
+### CRITICAL Fixes
+
+1. **CSRF tokens on all UI mutations** -- `page.tsx` now reads `ehr_csrf` cookie
+   via `getCsrfToken()` and sends `x-csrf-token` header on all POST/PUT/PATCH/DELETE.
+   Without this, every mutation from the Modules admin page would get 403.
+
+2. **`dataStoresJson` written + read** -- `ModuleCatalogRow` interface gained
+   `dataStores` field. `upsertModuleCatalog()` writes it, `parseModuleCatalogRow()`
+   reads it, seed passes `def.dataStores` from `config/modules.json`. API now
+   returns real data store info per module.
+
+### MEDIUM Fixes
+
+3. **`countModuleAuditLog` uses SQL COUNT()** -- O(1) aggregate vs O(n) fetch-all.
+4. **Route doc comment corrected** -- Seed endpoint says POST, not GET.
+5. **Scoped error handler** -- `moduleEntitlementRoutes` plugin has `setErrorHandler`.
+6. **`apiFetch` safety** -- Non-JSON error responses no longer silently fail.
+
+### Verify Results
+
+- Phase 109 verifier: **35/35 gates PASSED**
+- TypeScript (API): **CLEAN** (0 errors)
+- Next.js build (web): **CLEAN** (all routes compiled)
+- Regression: 9/9 core endpoints return 200

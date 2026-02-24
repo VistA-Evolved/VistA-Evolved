@@ -1,9 +1,9 @@
 {
     "commitSHA": "pending",
     "stage": "verified",
-    "verifyScript": "scripts/verify-phase108-phase-audit.ps1",
-    "runbook": "docs/runbooks/phase108-phase-audit-harness.md",
-    "promptRef": "prompts/112-PHASE-108-PHASE-AUDIT-HARNESS/108-99-VERIFY.md",
+    "verifyScript": "scripts/verify-phase109-modular-packaging.ps1",
+    "runbook": "docs/architecture/module-catalog.md",
+    "promptRef": "prompts/113-PHASE-109-MODULAR-PACKAGING/109-99-VERIFY.md",
     "status": "verified",
-    "feature": "Phase 108 VERIFY -- Phase Audit Harness (6 fixes + 15/15 gates + 77 E2E pass)"
+    "feature": "Phase 109 VERIFY -- CSRF fix, dataStores wiring, COUNT optimization (35/35 gates)"
 }

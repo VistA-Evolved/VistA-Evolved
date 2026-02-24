@@ -19,15 +19,24 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 type Tab = 'modules' | 'connectors' | 'jurisdiction' | 'status' | 'entitlements' | 'flags' | 'audit';
 
+function getCsrfToken(): string {
+  if (typeof document === 'undefined') return '';
+  const match = document.cookie.match(/ehr_csrf=([^;]+)/);
+  return match?.[1] ?? '';
+}
+
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
+  if (!res.ok && res.headers.get('content-type')?.includes('application/json') === false) {
+    return { ok: false, error: `HTTP ${res.status}` };
+  }
   return res.json();
 }
 
 async function apiPut(path: string, body?: unknown) {
   return apiFetch(path, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-csrf-token': getCsrfToken() },
     body: body ? JSON.stringify(body) : undefined,
   });
 }
@@ -35,7 +44,7 @@ async function apiPut(path: string, body?: unknown) {
 async function apiPatch(path: string, body?: unknown) {
   return apiFetch(path, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-csrf-token': getCsrfToken() },
     body: body ? JSON.stringify(body) : undefined,
   });
 }
@@ -43,7 +52,7 @@ async function apiPatch(path: string, body?: unknown) {
 async function apiPost(path: string, body?: unknown) {
   return apiFetch(path, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-csrf-token': getCsrfToken() },
     body: body ? JSON.stringify(body) : undefined,
   });
 }
@@ -823,7 +832,7 @@ function FeatureFlagsTab() {
     setError('');
     const res = await apiFetch('/admin/modules/feature-flags', {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-csrf-token': getCsrfToken() },
       body: JSON.stringify({ flagKey, reason: 'Deleted from admin UI' }),
     });
     if (!res.ok) setError(res.error || 'Failed to delete');

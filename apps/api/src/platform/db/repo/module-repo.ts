@@ -6,7 +6,7 @@
  * to prevent cross-tenant leakage.
  */
 
-import { eq, and, desc } from "drizzle-orm";
+import { eq, and, desc, count } from "drizzle-orm";
 import { getDb } from "../db.js";
 import {
   moduleCatalog,
@@ -30,6 +30,7 @@ export interface ModuleCatalogRow {
   routePatterns: string[];
   adapters: string[];
   permissions: string[];
+  dataStores: { id: string; type: string; description: string }[];
   healthCheckEndpoint: string | null;
 }
 
@@ -98,6 +99,7 @@ export function upsertModuleCatalog(entry: ModuleCatalogRow): void {
         routePatternsJson: JSON.stringify(entry.routePatterns),
         adaptersJson: JSON.stringify(entry.adapters),
         permissionsJson: JSON.stringify(entry.permissions),
+        dataStoresJson: JSON.stringify(entry.dataStores || []),
         healthCheckEndpoint: entry.healthCheckEndpoint,
         updatedAt: now,
       })
@@ -115,6 +117,7 @@ export function upsertModuleCatalog(entry: ModuleCatalogRow): void {
         routePatternsJson: JSON.stringify(entry.routePatterns),
         adaptersJson: JSON.stringify(entry.adapters),
         permissionsJson: JSON.stringify(entry.permissions),
+        dataStoresJson: JSON.stringify(entry.dataStores || []),
         healthCheckEndpoint: entry.healthCheckEndpoint,
         createdAt: now,
         updatedAt: now,
@@ -152,6 +155,7 @@ function parseModuleCatalogRow(row: any): ModuleCatalogRow {
     routePatterns: safeJsonParse(row.routePatternsJson, []),
     adapters: safeJsonParse(row.adaptersJson, []),
     permissions: safeJsonParse(row.permissionsJson, []),
+    dataStores: safeJsonParse(row.dataStoresJson, []),
     healthCheckEndpoint: row.healthCheckEndpoint,
   };
 }
@@ -442,12 +446,12 @@ export function listModuleAuditLog(
 /** Count total audit entries for a tenant. */
 export function countModuleAuditLog(tenantId: string): number {
   const db = getDb();
-  const rows = db
-    .select()
+  const result = db
+    .select({ cnt: count() })
     .from(moduleAuditLog)
     .where(eq(moduleAuditLog.tenantId, tenantId))
-    .all();
-  return rows.length;
+    .get();
+  return (result as any)?.cnt ?? 0;
 }
 
 /* ------------------------------------------------------------------ */

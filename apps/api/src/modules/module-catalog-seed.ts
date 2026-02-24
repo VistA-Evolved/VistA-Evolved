@@ -57,6 +57,7 @@ export function seedModuleCatalogFromConfig(): SeedResult {
       routePatterns: def.routePatterns || [],
       adapters: def.adapters || [],
       permissions: def.permissions || [],
+      dataStores: def.dataStores || [],
       healthCheckEndpoint: def.healthCheckEndpoint || null,
     });
     catalogCount++;
