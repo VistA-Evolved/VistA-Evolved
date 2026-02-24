@@ -94,7 +94,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
         metadata: body.metadata,
         createdBy: body.createdBy || "system",
       });
-      appendRcmAudit("claim_draft_create" as any, {
+      appendRcmAudit("draft.created", {
         userId: body.createdBy || "system",
         detail: { draftId: draft.id, payerId: draft.payerId, patient: draft.patientId },
       });
@@ -164,7 +164,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
         metadata: body.metadata,
       }, body.actor || "system");
       if (!draft) return reply.code(404).send({ ok: false, error: "Draft not found" });
-      appendRcmAudit("claim_draft_update" as any, {
+      appendRcmAudit("draft.updated", {
         userId: body.actor || "system",
         detail: { draftId: id },
       });
@@ -195,7 +195,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
         },
       );
       if (!draft) return reply.code(404).send({ ok: false, error: "Draft not found" });
-      appendRcmAudit("claim_draft_transition" as any, {
+      appendRcmAudit("draft.transition", {
         userId: body.actor || "system",
         detail: { draftId: id, toStatus: body.toStatus },
       });
@@ -216,7 +216,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
     const outcome = scrubClaimDraft(draft, {
       autoTransition: body.autoTransition !== false,
     });
-    appendRcmAudit("claim_draft_scrub" as any, {
+    appendRcmAudit("draft.scrubbed", {
       userId: body.actor || "system",
       detail: {
         draftId: id,
@@ -239,7 +239,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
     try {
       const draft = recordDenial(tenantId, id, body.denialCode, body.denialReason, body.actor || "system");
       if (!draft) return reply.code(404).send({ ok: false, error: "Draft not found" });
-      appendRcmAudit("claim_draft_denial" as any, {
+      appendRcmAudit("draft.denial", {
         userId: body.actor || "system",
         detail: { draftId: id, denialCode: body.denialCode },
       });
@@ -257,7 +257,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
     try {
       const newDraft = createResubmission(tenantId, id, body.actor || "system", body.overrides);
       if (!newDraft) return reply.code(404).send({ ok: false, error: "Draft not found" });
-      appendRcmAudit("claim_draft_resubmit" as any, {
+      appendRcmAudit("draft.resubmit", {
         userId: body.actor || "system",
         detail: { originalId: id, newDraftId: newDraft.id },
       });
@@ -275,13 +275,17 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
       return reply.code(400).send({ ok: false, error: "Missing appealPacketRef" });
     }
     const tenantId = body.tenantId || "default";
-    const draft = setAppealPacket(tenantId, id, body.appealPacketRef, body.actor || "system");
-    if (!draft) return reply.code(404).send({ ok: false, error: "Draft not found" });
-    appendRcmAudit("claim_draft_appeal_packet" as any, {
-      userId: body.actor || "system",
-      detail: { draftId: id, appealPacketRef: body.appealPacketRef },
-    });
-    return { ok: true, draft };
+    try {
+      const draft = setAppealPacket(tenantId, id, body.appealPacketRef, body.actor || "system");
+      if (!draft) return reply.code(404).send({ ok: false, error: "Draft not found" });
+      appendRcmAudit("draft.appeal_packet", {
+        userId: body.actor || "system",
+        detail: { draftId: id, appealPacketRef: body.appealPacketRef },
+      });
+      return { ok: true, draft };
+    } catch (err: any) {
+      return reply.code(500).send({ ok: false, error: err.message });
+    }
   });
 
   /* -- GET /rcm/claim-lifecycle/drafts/:id/events -- lifecycle events */
@@ -337,7 +341,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
         blocksSubmission: body.blocksSubmission,
         createdBy: body.createdBy || "system",
       });
-      appendRcmAudit("scrub_rule_create" as any, {
+      appendRcmAudit("scrub_rule.created", {
         userId: body.createdBy || "system",
         detail: { ruleId: rule.id, ruleCode: rule.ruleCode },
       });
@@ -385,7 +389,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
       isActive: body.isActive,
     });
     if (!rule) return reply.code(404).send({ ok: false, error: "Rule not found" });
-    appendRcmAudit("scrub_rule_update" as any, {
+    appendRcmAudit("scrub_rule.updated", {
       userId: body.actor || "system",
       detail: { ruleId: id },
     });
@@ -399,8 +403,8 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
     const tenantId = q.tenantId || "default";
     const ok = deleteScrubRule(tenantId, id);
     if (!ok) return reply.code(404).send({ ok: false, error: "Rule not found" });
-    appendRcmAudit("scrub_rule_delete" as any, {
-      userId: "system",
+    appendRcmAudit("scrub_rule.deleted", {
+      userId: (q as any).actor || "system",
       detail: { ruleId: id },
     });
     return { ok: true };

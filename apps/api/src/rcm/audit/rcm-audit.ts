@@ -123,7 +123,17 @@ export type RcmAuditAction =
   | 'recon.underpayment_updated'
   | 'recon.sent_to_denials'
   | 'claim_status.checked'
-  | 'claim_status.scheduled';
+  | 'claim_status.scheduled'
+  | 'draft.created'
+  | 'draft.updated'
+  | 'draft.transition'
+  | 'draft.scrubbed'
+  | 'draft.denial'
+  | 'draft.resubmit'
+  | 'draft.appeal_packet'
+  | 'scrub_rule.created'
+  | 'scrub_rule.updated'
+  | 'scrub_rule.deleted';
 
 export interface RcmAuditEntry {
   id: string;

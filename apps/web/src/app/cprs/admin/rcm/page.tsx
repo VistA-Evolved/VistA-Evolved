@@ -3120,12 +3120,14 @@ function ClaimLifecycleTab() {
   const [rules, setRules] = useState<any[]>([]);
   const [scrubMetrics, setScrubMetrics] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [subTab, setSubTab] = useState<'drafts' | 'rules' | 'metrics' | 'aging'>('drafts');
   const [showCreate, setShowCreate] = useState(false);
   const [form, setForm] = useState({ patientId: '', providerId: '', payerId: '', dateOfService: '', claimType: 'professional', payerName: '' });
 
   const refresh = useCallback(() => {
     setLoading(true);
+    setError(null);
     Promise.all([
       apiFetch('/rcm/claim-lifecycle/drafts'),
       apiFetch('/rcm/claim-lifecycle/metrics'),
@@ -3136,39 +3138,47 @@ function ClaimLifecycleTab() {
       setMetrics(m.metrics || null);
       setRules(r.rules || []);
       setScrubMetrics(s.metrics || null);
-    }).catch(() => {}).finally(() => setLoading(false));
+    }).catch((err) => { setError(err?.message || 'Failed to load claim lifecycle data'); }).finally(() => setLoading(false));
   }, []);
 
   useEffect(() => { refresh(); }, [refresh]);
 
   const handleCreate = async () => {
     if (!form.patientId || !form.providerId || !form.payerId || !form.dateOfService) return;
-    await apiFetch('/rcm/claim-lifecycle/drafts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
-    });
-    setShowCreate(false);
-    setForm({ patientId: '', providerId: '', payerId: '', dateOfService: '', claimType: 'professional', payerName: '' });
-    refresh();
+    try {
+      const res = await apiFetch('/rcm/claim-lifecycle/drafts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) { setError(res.error || 'Failed to create draft'); return; }
+      setShowCreate(false);
+      setForm({ patientId: '', providerId: '', payerId: '', dateOfService: '', claimType: 'professional', payerName: '' });
+      refresh();
+    } catch (err: any) { setError(err?.message || 'Failed to create draft'); }
   };
 
   const handleScrub = async (id: string) => {
-    await apiFetch(`/rcm/claim-lifecycle/drafts/${id}/scrub`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({}),
-    });
-    refresh();
+    try {
+      await apiFetch(`/rcm/claim-lifecycle/drafts/${id}/scrub`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
+      });
+      refresh();
+    } catch (err: any) { setError(err?.message || 'Failed to scrub draft'); }
   };
 
   const handleTransition = async (id: string, toStatus: string) => {
-    await apiFetch(`/rcm/claim-lifecycle/drafts/${id}/transition`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ toStatus }),
-    });
-    refresh();
+    try {
+      const res = await apiFetch(`/rcm/claim-lifecycle/drafts/${id}/transition`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ toStatus }),
+      });
+      if (!res.ok) { setError(res.error || `Failed to transition to ${toStatus}`); return; }
+      refresh();
+    } catch (err: any) { setError(err?.message || 'Failed to transition draft'); }
   };
 
   const statusColor = (s: string) => {
@@ -3209,6 +3219,7 @@ function ClaimLifecycleTab() {
       </div>
 
       {loading && <div style={{ fontSize: 12, color: '#6c757d' }}>Loading...</div>}
+      {error && <div style={{ fontSize: 12, color: '#dc3545', background: '#f8d7da', padding: '8px 12px', borderRadius: 4, marginBottom: 8 }}>{error} <button onClick={() => setError(null)} style={{ marginLeft: 8, background: 'none', border: 'none', color: '#dc3545', cursor: 'pointer', fontWeight: 600 }}>x</button></div>}
 
       {/* ---- Create Form ---- */}
       {showCreate && subTab === 'drafts' && (
@@ -3418,13 +3429,15 @@ function ClaimLifecycleTab() {
 function AgingSubTab() {
   const [aging, setAging] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [agingError, setAgingError] = useState<string | null>(null);
   const [days, setDays] = useState(30);
 
   useEffect(() => {
     setLoading(true);
+    setAgingError(null);
     apiFetch(`/rcm/claim-lifecycle/drafts/aging?olderThanDays=${days}`)
       .then(r => setAging(r.aging || []))
-      .catch(() => {})
+      .catch((err) => { setAgingError(err?.message || 'Failed to load aging data'); })
       .finally(() => setLoading(false));
   }, [days]);
 
@@ -3441,6 +3454,7 @@ function AgingSubTab() {
         </select>
       </div>
       {loading && <div style={{ fontSize: 12, color: '#6c757d' }}>Loading...</div>}
+      {agingError && <div style={{ fontSize: 12, color: '#dc3545', background: '#f8d7da', padding: '8px 12px', borderRadius: 4, marginBottom: 8 }}>{agingError}</div>}
       {!loading && aging.length > 0 && (
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
           <thead>

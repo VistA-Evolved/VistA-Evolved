@@ -93,7 +93,10 @@ function evaluateCondition(draft: ClaimDraftRow, condition: any): boolean {
       if (!field) return false;
       const val = String((draft as any)[field] ?? "");
       try {
-        return !new RegExp(condition.value).test(val);
+        // Safety: limit regex length to prevent ReDoS
+        const pattern = String(condition.value ?? "");
+        if (pattern.length > 500) return false;
+        return !new RegExp(pattern).test(val);
       } catch {
         return false;
       }
