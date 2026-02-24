@@ -1,255 +1,44 @@
-# Phase 109: Modular Packaging + Feature Flags -- Summary
+# Phase 113B VERIFY ???????? Summary
 
-## What Changed
-
-### DB Schema (4 new tables)
-- `module_catalog` -- Module definitions synced from config/modules.json
-- `tenant_module` -- Per-tenant module entitlements (enabled/disabled + plan tier)
-- `tenant_feature_flag` -- Per-tenant key-value feature flags
-- `module_audit_log` -- Append-only audit trail for all entitlement changes
-
-### API (8 new endpoints)
-- `GET /admin/modules/catalog` -- Full module catalog from DB
-- `GET /admin/modules/entitlements` -- List tenant entitlements + enabled IDs
-- `POST /admin/modules/entitlements` -- Toggle module (with validation + audit)
-- `POST /admin/modules/entitlements/seed` -- Seed baseline from SKU profile
-- `GET /admin/modules/feature-flags` -- List flags for tenant
-- `POST /admin/modules/feature-flags` -- Upsert flag (with audit)
-- `DELETE /admin/modules/feature-flags` -- Delete flag (with audit)
-- `GET /admin/modules/audit` -- Paginated audit trail
-
-### Runtime Enforcement
-- `module-registry.ts` now checks DB-backed entitlements via `setDbEntitlementProvider()`
-- Falls back to in-memory SKU resolution when DB unavailable
-- Module guard bypasses `/admin/modules/*` to prevent self-lockout
-
-### Admin UI (3 new tabs)
-- Entitlements -- Toggle modules, seed baseline, view plan tiers
-- Feature Flags -- CRUD for per-tenant flags
-- Audit Log -- Paginated append-only audit trail
-
-### Startup Sequence
-- After `initPlatformDb()`, `seedModuleCatalogFromConfig()` upserts all 13 modules
-- Seeds default tenant entitlements from active SKU profile
-- Registers DB entitlement provider into module-registry
-
-## Verifier Output
-35/35 gates PASSED (verify-phase109-modular-packaging.ps1)
-
-1. **Tautological UI component tests** -- Generated E2E specs now use `findFile()` recursive directory walk via `readdirSync` instead of checking hardcoded array length (which always passed).
-2. **Duplicate `const r` in API specs** -- `generateApiSpec()` now uses `r${idx}` unique variable names per route iteration. Previous code declared `const r` multiple times in the same scope, making all API specs unrunnable.
-3. **Numeric sort before bucketing** -- Added `phaseSort()` using `parseInt(phaseNumber)` with localeCompare tiebreak. Previously phases were unsorted, causing `phases-5-to-11.spec.ts` to contain phases 100, 96, etc.
-4. **Substring matching in runner** -- Changed `content.includes()` to `RegExp` test so phase "10" no longer matches "Phase 100:".
-5. **Placeholder URL filtering** -- Added `!r.includes("<")` to exclude `<dfn>` placeholder URLs from route test generation.
-6. **Stale file cleanup** -- Generator now deletes old `phases-*.spec.ts` / `phases-*.test.ts` before writing new files. Fixed broken `await import("fs")` in non-async context.
-
-### Files Modified
-- `scripts/generate-phase-qa.mjs` -- All 6 fixes above
-- `scripts/phase-qa-runner.mjs` -- Substring matching fix
-- `docs/qa/phase-index.json` -- Regenerated timestamp
-- 7 old E2E specs deleted, 7 new E2E specs generated (numerically sorted filenames)
-- 2 old API specs deleted, 2 new API specs generated
-
-## How to Test Manually
-
-```powershell
-# Deterministic index generation
-node scripts/build-phase-index.mjs
-
-# Generate specs (should auto-clean stale files)
-node scripts/generate-phase-qa.mjs
-
-# Run all phase UI component tests
-cd apps/web
-pnpm exec playwright test e2e/phases/ --grep "UI component" --reporter=list
-
-# Run a single phase
-node scripts/phase-qa-runner.mjs phase 5
-
-# Run a range
-node scripts/phase-qa-runner.mjs range 5 21
-
-# CI gate
-node scripts/qa-gates/phase-index-gate.mjs
-
-# Full verifier
-powershell -ExecutionPolicy Bypass -File scripts/verify-phase108-phase-audit.ps1
-```
-
-## Verifier Output
-
-Phase 108 Verifier: **15/15 pass**
-Phase-index gate: **6/6 pass**
-E2E "UI component" tests: **77/77 pass** (11.7s)
-qa-smoke tests: **7/7 pass** (1.6m)
-qa:range 5..5: **1/1 pass**
-
-## Follow-ups
-
-- `tsx` not available via `pnpm tsx` (only `npx tsx`) -- causes "Prompts ordering" gate failure. Pre-existing issue, not Phase 108 related.
-- API server exits with code 1 -- pre-existing infrastructure issue.
-- 21 phases with no routes are not covered by generated specs (by design -- no route to test).
-
----
-
-# Phase 107: Production Posture Pack -- Summary (previous)
-
-## What Changed
-
-### New Files (10)
-- `apps/api/src/posture/index.ts` -- Fastify plugin with 5 posture routes
-- `apps/api/src/posture/observability-posture.ts` -- 6 observability gates
-- `apps/api/src/posture/tenant-posture.ts` -- 8 tenant isolation gates (live PG RLS check)
-- `apps/api/src/posture/perf-posture.ts` -- 6 performance gates
-- `apps/api/src/posture/backup-posture.ts` -- 6 backup readiness gates
-- `scripts/backup-restore.mjs` -- Unified backup/restore CLI (SQLite + PG + audit)
-- `scripts/qa-gates/prod-posture.mjs` -- Offline QA gate (11 checks)
-- `scripts/verify-phase107-prod-posture.ps1` -- Phase 107 verifier (15 gates)
-- `docs/runbooks/phase107-production-posture.md` -- Comprehensive production runbook
-- `prompts/111-PHASE-107-PRODUCTION-POSTURE/107-01-IMPLEMENT.md` -- Prompt file
-
-### Modified Files (6)
-- `apps/api/src/index.ts` -- Import + register posture routes
-- `apps/api/src/middleware/security.ts` -- AUTH_RULES: /posture -> admin
-- `scripts/qa-runner.mjs` -- Added prod-posture suite
-- `package.json` -- Added qa:prod-posture script
-- `scripts/verify-latest.ps1` -- Delegates to Phase 107
-- `AGENTS.md` -- Section 7k + gotchas 109-112
-
-## How to Test Manually
-
-```bash
-# 1. Offline QA gate (no server needed)
-pnpm qa:prod-posture
-
-# 2. Live posture check (requires API running + admin session)
-curl -b cookies.txt http://127.0.0.1:3001/posture | jq .
-
-# 3. Backup store inventory
-node scripts/backup-restore.mjs status
-
-# 4. Run backup
-node scripts/backup-restore.mjs backup
-
-# 5. Phase 107 verifier
-.\scripts\verify-phase107-prod-posture.ps1
-```
-
-## Verifier Output
-
-Run `.\scripts\verify-phase107-prod-posture.ps1` -- expects 15/15 PASS.
-
-## Follow-Ups
-
-- Activate RLS in staging: set `PLATFORM_PG_RLS_ENABLED=true`
-- Add cron-based backup scheduling in production
-- Add Docker volume backup automation (VistA, Keycloak, Orthanc)
-- Add Grafana dashboards consuming Prometheus posture metrics
-- Add alerting rules for posture score degradation
-vs what is pending. Cross-references three canonical sources:
-
-- **CPRS Delphi extraction** (975 RPCs from `rpc_catalog.json`)
-- **Vivian RPC index** (3,747 RPCs from `rpc_index.json`)
-- **API RPC registry** (109 registered + 29 exceptions)
-
-### Key Metrics
-
-| Metric | Value |
-|--------|-------|
-| Live Wired RPCs | 76 |
-| Registered Only | 34 |
-| Stub Routes | 368 |
-| CPRS-Only Gap | 538 |
-| Coverage vs CPRS | 7.8% |
-| Coverage vs Vivian | 2.0% |
-| Total Tracked | 1,016 |
-
-### New Files
-
-1. `tools/rpc-extract/build-coverage-map.mjs` -- coverage alignment tool
-2. `docs/vista-alignment/rpc-coverage.json` -- canonical coverage data
-3. `docs/vista-alignment/rpc-coverage.md` -- human-readable report
-4. `apps/web/src/lib/vista-panel-wiring.ts` -- per-panel wiring metadata
-5. `apps/web/src/components/cprs/VistaAlignmentBanner.tsx` -- dev-mode banner
-6. `scripts/verify-phase106-vista-alignment.ps1` -- CI/QA gate (23 checks)
-
-### Modified Files
-
-- `apps/api/src/vista/rpcRegistry.ts` -- 7 RPCs + 7 exceptions added
-- `scripts/verify-latest.ps1` -- delegates to Phase 106
-
-## How to Test Manually
-
-```powershell
-# Regenerate coverage map
-node tools/rpc-extract/build-coverage-map.mjs
-
-# Run verification
-.\scripts\verify-phase106-vista-alignment.ps1
-```
-
-## Verifier Output
-
-23 PASS / 0 FAIL / 0 WARN
-
-## Follow-ups
-
-- Wire more CPRS RPCs to close the 7.8% coverage gap
-- Add Phase 106 VERIFY prompt
-- Consider CI integration (GitHub Actions step)
-- **qa-api-routes clinical reads**: Tightened assertion — `expect(status).toBeLessThan(400)` instead of `< 500`, removed `json.ok !== undefined` escape hatch that let 401 responses pass silently.
-- **Secret scan exclusions**: Added `tests/k6/`, `scripts/audit/`, `docs/evidence/`, `.hooks/`, `tools/`, `e2e/`, `artifacts/` to VistA creds allow list. Added `.md` to connection string allow list.
-- **PHI leak scan exclusions**: Added `telemetry/`, `pg-db.ts` to console.log allow list. Added `tools/` for CLI scripts. Added `admin-payer-db-routes.ts` to stack-trace allow (controlled CONCURRENCY_CONFLICT err.message).
-- **CI workflow**: Changed `api-tests` job from `vitest run` (all tests) to `vitest run tests/qa-security.test.ts` (no external services needed).
+## What Changed (113B IMPLEMENT ???????? commit c52c579)
+- RCM audit JSONL file sink (hash-chained, PHI-redacted)
+- Evidence gate staleness check (Gate 6)
+- CI wiring: evidence-gate + prompts-tree-health in 3 workflows
+- Prompts tree repair (Phase 111/112 folders, flat duplicates removed)
+- Prompts tree health gate (5 convention checks)
+- verify-phase113b-hardening.ps1 (34 gates)
 
 ## Verification Results
 
-| Suite | Result | Detail |
-|-------|--------|--------|
-| qa:smoke | **3/3 PASS** | health 0.2s, API 23.5s, E2E 90.2s |
-| qa:api | **4/4 PASS** | health, integration (28), security, contract (27) |
-| qa:security | **4/4 PASS** | secret scan, PHI leak, security tests, dep audit |
-| TypeScript | **CLEAN** | 0 errors via `tsc --noEmit` |
+| # | Gate | Result | Detail |
+|---|------|--------|--------|
+| 1 | API typecheck | **PASS** | Zero errors |
+| 2 | Web build | **PASS** | Compiled successfully 24.6s |
+| 3 | Portal typecheck | **PASS** | Zero errors |
+| 4 | verify-phase113b-hardening.ps1 | **PASS** | 34/34 PASS, 0 WARN, 0 FAIL |
+| 5 | No new scattered docs | **PASS** | docs/reports is pre-existing Phase 53 artifact |
+| 6 | Prompts tree fixes | **PASS** | 111/112 in folders, 110 canonical, flat dupes gone |
+| 7 | RCM audit: trigger events | **PASS** | 4+ events triggered via API |
+| 8 | RCM audit: JSONL hash chain | **PASS** | 7 entries, previousHash chaining correct |
+| 9 | RCM audit: chain verify endpoint | **PASS** | valid:true |
+| 10 | RCM audit: restart + chain continuity | **PASS** | Hash recovered from JSONL after restart |
+| 11 | RCM audit: PHI redaction | **PASS** | patientDfn=[DFN], no SSN/names/creds |
+| 12 | Evidence gate: standard mode | **PASS** | 4P/4W/0F, exit 0 |
+| 13 | Evidence gate: strict mode | **PASS** | 4P/1W/3F, exit 1 (expected) |
+| 14 | CI: ci-verify.yml wiring | **PASS** | evidence-gate + prompts-tree-health |
+| 15 | CI: quality-gates.yml wiring | **PASS** | evidence-gate + prompts-tree-health |
+| 16 | CI: qa-gauntlet.yml wiring | **PASS** | standard + strict + tree-health |
 
-## How to Test
+**Overall: 16/16 PASS -- zero regressions**
 
-```bash
-pnpm qa:smoke        # 3 gates: health + API tests + E2E smoke
-pnpm qa:api          # 4 gates: health + integration + security + contracts
-pnpm qa:security     # 4 gates: secret scan + PHI + security tests + audit
-pnpm qa:all          # All gates combined
+## How to Test Manually
+```powershell
+.\scripts\verify-phase113b-hardening.ps1
+node scripts/qa-gates/evidence-gate.mjs
+node scripts/qa-gates/evidence-gate.mjs --strict
+node scripts/qa-gates/prompts-tree-health.mjs
 ```
 
 ## Follow-ups
-
-- Rate limit cooldown between back-to-back suites (qa:smoke then qa:api can trip limiter)
-- Consider adding `vitest.workspace.ts` to separate unit vs integration test configs
-
----
-
-## Phase 109 VERIFY -- Fixes Applied
-
-### CRITICAL Fixes
-
-1. **CSRF tokens on all UI mutations** -- `page.tsx` now reads `ehr_csrf` cookie
-   via `getCsrfToken()` and sends `x-csrf-token` header on all POST/PUT/PATCH/DELETE.
-   Without this, every mutation from the Modules admin page would get 403.
-
-2. **`dataStoresJson` written + read** -- `ModuleCatalogRow` interface gained
-   `dataStores` field. `upsertModuleCatalog()` writes it, `parseModuleCatalogRow()`
-   reads it, seed passes `def.dataStores` from `config/modules.json`. API now
-   returns real data store info per module.
-
-### MEDIUM Fixes
-
-3. **`countModuleAuditLog` uses SQL COUNT()** -- O(1) aggregate vs O(n) fetch-all.
-4. **Route doc comment corrected** -- Seed endpoint says POST, not GET.
-5. **Scoped error handler** -- `moduleEntitlementRoutes` plugin has `setErrorHandler`.
-6. **`apiFetch` safety** -- Non-JSON error responses no longer silently fail.
-
-### Verify Results
-
-- Phase 109 verifier: **35/35 gates PASSED**
-- TypeScript (API): **CLEAN** (0 errors)
-- Next.js build (web): **CLEAN** (all routes compiled)
-- Regression: 9/9 core endpoints return 200
+- Evidence entries for 8 payers with api/fhir/portal mode
+- docs/reports cleanup (pre-existing Phase 53 cruft)
