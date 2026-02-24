@@ -60,7 +60,7 @@ function inferTags(folderName) {
 // ── Default gate assignments by tag ─────────────────────────
 
 const FAST_GATES = ["G0_prompts_integrity", "G1_build_typecheck", "G2_unit_tests", "G3_security_scans", "G4_contract_alignment"];
-const RC_GATES = [...FAST_GATES, "G5_api_smoke", "G7_restart_durability", "G8_ui_dead_click"];
+const RC_GATES = [...FAST_GATES, "G5_api_smoke", "G7_restart_durability", "G8_ui_dead_click", "G10_system_audit"];
 const FULL_GATES = [...RC_GATES, "G6_vista_probe", "G9_performance_budget"];
 
 function buildSuites(tags) {

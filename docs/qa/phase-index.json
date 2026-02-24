@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-24T21:49:33.212Z",
+  "generatedAt": "2026-02-24T23:16:17.419Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 128,
+  "phaseCount": 129,
   "phases": [
     {
       "phaseNumber": "1",
@@ -1315,6 +1315,33 @@
         "apps/api/src/rcm/claim-lifecycle/claim-lifecycle-routes.ts",
         "apps/api/src/rcm/vistaBindings/buildClaimDraftFromVista.ts",
         "docker-compose.prod.yml"
+      ]
+    },
+    {
+      "phaseNumber": "120",
+      "title": "Full System Audit + Evidence-Based Gap Matrix",
+      "folder": "124-PHASE-120-FULL-SYSTEM-AUDIT",
+      "files": [
+        "120-01-IMPLEMENT.md",
+        "120-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "120-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "120-99-VERIFY.md"
+      ],
+      "routes": [
+        "/reports"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/audit/system-audit.mjs",
+        "qa/gauntlet/gates/g10-system-audit.mjs",
+        "qa/gauntlet/system-gap-matrix.json",
+        "docs/audits/system-audit.md",
+        "package.json"
       ]
     },
     {
