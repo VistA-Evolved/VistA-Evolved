@@ -11,8 +11,13 @@
 
 import { existsSync, readFileSync } from "fs";
 import { join } from "path";
+import { fileURLToPath } from "url";
 import { getCircuitBreakerStats } from "../lib/rpc-resilience.js";
 import type { PostureGate } from "./observability-posture.js";
+
+// Resolve workspace root from this file's location (apps/api/src/posture/)
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+const WS_ROOT = join(__dirname, "..", "..", "..", "..");
 
 export interface PerfPosture {
   score: number;
@@ -30,19 +35,13 @@ export function checkPerfPosture(): PerfPosture {
   const gates: PostureGate[] = [];
 
   // Gate 1: Performance budgets file exists
-  const budgetsPath = join(process.cwd(), "..", "..", "config", "performance-budgets.json");
-  // Also check relative from common start locations
-  const altPath = join(process.cwd(), "config", "performance-budgets.json");
-  const altPath2 = join(process.cwd(), "..", "config", "performance-budgets.json");
-  const found = existsSync(budgetsPath) || existsSync(altPath) || existsSync(altPath2);
+  const budgetsPath = join(WS_ROOT, "config", "performance-budgets.json");
+  const found = existsSync(budgetsPath);
 
   let budgetCount = 0;
   if (found) {
     try {
-      const raw = readFileSync(
-        existsSync(altPath) ? altPath : existsSync(budgetsPath) ? budgetsPath : altPath2,
-        "utf8"
-      );
+      const raw = readFileSync(budgetsPath, "utf8");
       const parsed = JSON.parse(raw);
       budgetCount =
         Object.keys(parsed.webVitals || {}).filter((k) => !k.startsWith("_")).length +

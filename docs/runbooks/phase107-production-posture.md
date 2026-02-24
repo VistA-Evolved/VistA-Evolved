@@ -176,11 +176,12 @@ On API startup, `initPlatformPg()` calls `applyRlsPolicies()` which:
 
 ### 5.3 Covered Tables (21)
 
-payers, payer_capabilities, payer_contacts, payer_audit_events,
-payer_rules, payer_enrollments, payer_timelines, payer_credentials,
-portal_users, portal_sessions, claims, claim_lines, claim_events,
-remittances, remittance_lines, denial_records, appeal_records,
-eligibility_checks, prior_auth_records, payment_batches, payment_postings
+platform_audit_event, idempotency_key, outbox_event, payer, tenant_payer,
+payer_capability, payer_task, payer_evidence_snapshot, payer_audit_event,
+denial_case, denial_action, denial_attachment, resubmission_attempt,
+remittance_import, payment_record, reconciliation_match, underpayment_case,
+eligibility_check, claim_status_check, capability_matrix_cell,
+capability_matrix_evidence
 
 ### 5.4 Verify Tenant Isolation
 

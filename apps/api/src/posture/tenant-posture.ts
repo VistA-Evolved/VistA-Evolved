@@ -54,32 +54,37 @@ export async function checkTenantIsolationPosture(): Promise<TenantIsolationPost
   const pgActive = isPgConfigured();
   const rlsTables: string[] = [];
 
+  // Gates 1-4: Design attestations -- these verify architectural patterns
+  // present in the codebase (middleware registration, SET LOCAL usage,
+  // injection guard, release-after-query). They always pass because the
+  // code structure is verified at review time, not at runtime.
+
   // Gate 1: Tenant context middleware
   gates.push({
     name: "tenant_middleware",
     pass: true,
-    detail: "Tenant context middleware registered (X-Tenant-Id + session extraction)",
+    detail: "Tenant context middleware registered (X-Tenant-Id + session extraction) [attestation]",
   });
 
   // Gate 2: Transaction-scoped tenant context (SET LOCAL)
   gates.push({
     name: "transaction_scoped_context",
     pass: true,
-    detail: "createTenantContext() uses SET LOCAL for transaction-scoped isolation",
+    detail: "createTenantContext() uses SET LOCAL for transaction-scoped isolation [attestation]",
   });
 
   // Gate 3: SQL injection guard on tenantId
   gates.push({
     name: "tenant_id_validation",
     pass: true,
-    detail: "createTenantContext() rejects tenantId with [';\\\\] characters",
+    detail: "createTenantContext() rejects tenantId with [';\\\\] characters [attestation]",
   });
 
   // Gate 4: Connection release pattern (no leakage)
   gates.push({
     name: "connection_release",
     pass: true,
-    detail: "All tenant queries use try/finally with client.release() -- no pooled leakage",
+    detail: "All tenant queries use try/finally with client.release() -- no pooled leakage [attestation]",
   });
 
   if (pgActive) {

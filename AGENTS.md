@@ -944,6 +944,17 @@ docs/runbooks/
      verify actual RLS status. `/posture/performance` checks live heap
      usage and circuit breaker state. These require a running API.
      Use `pnpm qa:prod-posture` for offline file-existence checks.
+113. **`requirePortalSession()` must throw, never `reply.send()` + throw.**
+     The portal route helper previously called `reply.code(401).send(...)` then
+     `throw new Error(...)`. Fastify catches the throw and tries to send a 500,
+     but headers were already sent from the 401, crashing Node with
+     `ERR_HTTP_HEADERS_SENT`. Fix: throw an error with `statusCode: 401`
+     property and let Fastify handle the response natively. See BUG-068.
+114. **`backup-restore.mjs` uses `execFileSync`, not `execSync`.**
+     Shell injection via `PLATFORM_PG_URL` was possible when interpolating
+     the URL into `execSync('pg_dump "${URL}"')`. Fixed to use `execFileSync`
+     with array arguments. Restore requires `--yes` flag to prevent
+     accidental data overwrite.
 
 ---
 

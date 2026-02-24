@@ -149,8 +149,11 @@ function requirePortalSession(
 ): PortalSessionData {
   const session = portalSessionLookup?.(request);
   if (!session) {
-    reply.code(401).send({ ok: false, error: "Not authenticated" });
-    throw new Error("No portal session");
+    // BUG-068: reply.send() + throw causes ERR_HTTP_HEADERS_SENT crash.
+    // Throw a Fastify-aware error with statusCode -- Fastify sends the response.
+    const err: any = new Error("Not authenticated");
+    err.statusCode = 401;
+    throw err;
   }
   return session;
 }

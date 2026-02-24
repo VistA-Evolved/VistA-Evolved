@@ -6,7 +6,7 @@
  *
  * Usage:
  *   node scripts/backup-restore.mjs backup [--output dir]   # Create backups
- *   node scripts/backup-restore.mjs restore [--from dir]    # Restore from backup
+ *   node scripts/backup-restore.mjs restore --from dir --yes  # Restore from backup
  *   node scripts/backup-restore.mjs status                  # Show store inventory
  *
  * Supported stores:
@@ -17,9 +17,9 @@
  *   5. Immutable audit JSONL (logs/immutable-audit.jsonl) -- file copy
  */
 
-import { existsSync, copyFileSync, mkdirSync, readdirSync, statSync, readFileSync } from "fs";
+import { existsSync, copyFileSync, mkdirSync, readdirSync, statSync, readFileSync, writeFileSync } from "fs";
 import { join, basename } from "path";
-import { execSync } from "child_process";
+import { execFileSync } from "child_process";
 
 const ROOT = process.cwd();
 const args = process.argv.slice(2);
@@ -172,14 +172,15 @@ function backup() {
     }
   }
 
-  // 2. Postgres (if configured)
+  // 2. Postgres (if configured) -- uses execFileSync to avoid shell injection (M-1)
   if (process.env.PLATFORM_PG_URL) {
     try {
       const dumpFile = join(outputDir, "platform-pg.sql");
-      execSync(`pg_dump "${process.env.PLATFORM_PG_URL}" > "${dumpFile}"`, {
-        stdio: ["pipe", "pipe", "pipe"],
+      const dump = execFileSync("pg_dump", ["--dbname", process.env.PLATFORM_PG_URL], {
         timeout: 60000,
+        maxBuffer: 50 * 1024 * 1024, // 50MB
       });
+      writeFileSync(dumpFile, dump);
       console.log(`  BACKED UP  Postgres -> platform-pg.sql`);
       backed++;
     } catch (err) {
@@ -196,7 +197,7 @@ function backup() {
 function restore() {
   const fromFlag = args.indexOf("--from");
   if (fromFlag < 0 || !args[fromFlag + 1]) {
-    console.error("Usage: node scripts/backup-restore.mjs restore --from <backup-dir>");
+    console.error("Usage: node scripts/backup-restore.mjs restore --from <backup-dir> [--yes]");
     process.exit(1);
   }
   const fromDir = args[fromFlag + 1];
@@ -208,6 +209,12 @@ function restore() {
 
   console.log(`\n=== Restore from: ${fromDir} ===\n`);
   console.log("WARNING: This will overwrite current data. Ensure the API server is stopped.\n");
+
+  // Safety gate: require --yes to confirm destructive operation
+  if (!args.includes("--yes")) {
+    console.error("Destructive operation -- pass --yes to confirm restore.");
+    process.exit(1);
+  }
 
   let restored = 0;
 
@@ -239,12 +246,13 @@ function restore() {
     restored++;
   }
 
-  // 2. Postgres
+  // 2. Postgres -- uses execFileSync + stdin to avoid shell injection (M-1)
   const pgBackup = join(fromDir, "platform-pg.sql");
   if (existsSync(pgBackup) && process.env.PLATFORM_PG_URL) {
     try {
-      execSync(`psql "${process.env.PLATFORM_PG_URL}" < "${pgBackup}"`, {
-        stdio: ["pipe", "pipe", "pipe"],
+      const sqlData = readFileSync(pgBackup);
+      execFileSync("psql", ["--dbname", process.env.PLATFORM_PG_URL], {
+        input: sqlData,
         timeout: 120000,
       });
       console.log(`  RESTORED  Postgres from platform-pg.sql`);

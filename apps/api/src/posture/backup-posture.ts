@@ -10,8 +10,25 @@
 
 import { existsSync } from "fs";
 import { join } from "path";
+import { fileURLToPath } from "url";
 import { isPgConfigured } from "../platform/pg/pg-db.js";
 import type { PostureGate } from "./observability-posture.js";
+
+// Resolve workspace root from this file's location (apps/api/src/posture/)
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+const WS_ROOT = join(__dirname, "..", "..", "..", "..");
+
+/**
+ * Number of in-memory Map/Set stores across the API codebase.
+ * Inventoried in Phase 107 IMPLEMENT (room-store, imaging-worklist,
+ * imaging-ingest, claim-store, session-store, analytics-store,
+ * payer-registry, edi-pipeline, rcm connectors, device-check,
+ * imaging-devices, imaging-audit, immutable-audit, rcm-audit,
+ * tenant-config, capability caches, policy-engine, biometric
+ * challenge stores, rate-limiter buckets, circuit breaker state,
+ * etc.). Update when new stores are added.
+ */
+const IN_MEMORY_STORE_COUNT = 30;
 
 export interface BackupPosture {
   score: number;
@@ -28,14 +45,12 @@ export function checkBackupPosture(): BackupPosture {
   const gates: PostureGate[] = [];
   const pgActive = isPgConfigured();
 
-  // Resolve workspace root (from apps/api/)
-  const wsRoot = join(process.cwd(), "..", "..");
-  const altRoot = process.cwd();
+  // Resolve workspace root from import.meta.url (stable regardless of cwd)
+  const wsRoot = WS_ROOT;
 
   // Gate 1: SQLite DB exists
   const sqlitePath = join(wsRoot, "data", "platform.db");
-  const altSqlitePath = join(altRoot, "data", "platform.db");
-  const sqliteExists = existsSync(sqlitePath) || existsSync(altSqlitePath);
+  const sqliteExists = existsSync(sqlitePath);
   gates.push({
     name: "sqlite_store",
     pass: true, // DB is created on first run
@@ -46,8 +61,7 @@ export function checkBackupPosture(): BackupPosture {
 
   // Gate 2: Backup script exists
   const backupScript = join(wsRoot, "scripts", "backup-restore.mjs");
-  const altBackupScript = join(altRoot, "scripts", "backup-restore.mjs");
-  const hasBackupScript = existsSync(backupScript) || existsSync(altBackupScript);
+  const hasBackupScript = existsSync(backupScript);
   gates.push({
     name: "backup_script",
     pass: hasBackupScript,
@@ -73,17 +87,15 @@ export function checkBackupPosture(): BackupPosture {
   });
 
   // Gate 5: In-memory store awareness
-  const IN_MEMORY_STORES = 30; // inventoried in Phase 107
   gates.push({
     name: "in_memory_stores",
     pass: true,
-    detail: `${IN_MEMORY_STORES} in-memory stores documented (ephemeral, reset on restart)`,
+    detail: `${IN_MEMORY_STORE_COUNT} in-memory stores documented (ephemeral, reset on restart)`,
   });
 
   // Gate 6: Runbook exists
   const runbook = join(wsRoot, "docs", "runbooks", "phase107-production-posture.md");
-  const altRunbook = join(altRoot, "docs", "runbooks", "phase107-production-posture.md");
-  const hasRunbook = existsSync(runbook) || existsSync(altRunbook);
+  const hasRunbook = existsSync(runbook);
   gates.push({
     name: "backup_runbook",
     pass: hasRunbook,
@@ -102,7 +114,7 @@ export function checkBackupPosture(): BackupPosture {
     stores: {
       sqlite: { active: true, path: "data/platform.db" },
       postgres: { active: pgActive, url: pgActive ? "(configured)" : "(not configured)" },
-      inMemoryStoreCount: IN_MEMORY_STORES,
+      inMemoryStoreCount: IN_MEMORY_STORE_COUNT,
     },
   };
 }

@@ -1117,3 +1117,43 @@ Fixed by: (1) rate limiter sets `_rejected = true` before sending 429,
 (2) origin check sets `_rejected = true` before sending 403,
 (3) auth gateway checks `_rejected || reply.sent` at entry.
 
+
+### BUG-068: ERR_HTTP_HEADERS_SENT crash in requirePortalSession()
+
+**Attempted**: E2E Playwright hits `/portal/staff/messages` without a portal
+session cookie.
+
+**Error**: `ERR_HTTP_HEADERS_SENT: Cannot write headers after they are sent to
+the client` at `ServerResponse.writeHead` — crashes the entire Node.js process.
+
+**Root Cause**: `requirePortalSession()` in `portal-core.ts` called
+`reply.code(401).send({ ok: false, error: "Not authenticated" })` and then
+`throw new Error("No portal session")`. Fastify catches the thrown error
+and tries to send a 500 error response, but headers were already committed
+from the 401 `.send()` call. This is a different manifestation from BUG-067:
+BUG-067 was double-send across multiple `onRequest` hooks; BUG-068 is
+double-send within a single route handler (`.send()` + `throw`).
+
+**Fix**: Changed `requirePortalSession()` to throw an error with a
+`statusCode: 401` property instead of calling `reply.send()` before throwing.
+Fastify natively recognizes errors with a `statusCode` property and
+generates the proper HTTP response without the caller needing to do
+explicit reply management.
+
+```typescript
+// Before (crashes):
+reply.code(401).send({ ok: false, error: "Not authenticated" });
+throw new Error("No portal session");
+
+// After (safe):
+const err: any = new Error("Not authenticated");
+err.statusCode = 401;
+throw err;
+```
+
+**Prevention**: Never call `reply.send()` followed by `throw` in the same
+code path. Either:
+1. Throw a Fastify-aware error (with `statusCode` property) and let Fastify
+   handle the response, OR
+2. Call `reply.send()` and `return` immediately (no throw).
+
