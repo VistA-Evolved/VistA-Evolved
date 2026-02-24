@@ -956,6 +956,43 @@ docs/runbooks/
      with array arguments. Restore requires `--yes` flag to prevent
      accidental data overwrite.
 
+## 7l. Architecture Quick Map (Phase 108 additions)
+
+```
+scripts/
+  build-phase-index.mjs         -- Scans prompts/, generates docs/qa/phase-index.json (Phase 108)
+  generate-phase-qa.mjs         -- Reads phase-index, generates E2E + API test specs (Phase 108)
+  phase-qa-runner.mjs           -- Progressive QA runner: phase N, range N M, all (Phase 108)
+  qa-gates/phase-index-gate.mjs -- CI gate: validates phase-index.json consistency (Phase 108)
+
+docs/qa/
+  phase-index.json              -- Generated: 115 phases with routes/RPCs/UI metadata (Phase 108)
+
+apps/web/e2e/phases/
+  phases-*.spec.ts              -- Generated E2E specs (7 files, 78 UI phases) (Phase 108)
+
+apps/api/tests/phases/
+  phases-*.test.ts              -- Generated API specs (2 files, 17 API-only phases) (Phase 108)
+
+docs/runbooks/
+  phase108-phase-audit-harness.md -- Phase audit harness runbook (Phase 108)
+```
+
+115. **Generated test specs are auto-generated -- do NOT edit manually (Phase 108).**
+     Run `node scripts/generate-phase-qa.mjs` to regenerate. Manual edits
+     will be overwritten. The generator reads `docs/qa/phase-index.json`.
+116. **`phase-index.json` must be committed and kept fresh (Phase 108).**
+     The CI gate (`phase-index-gate.mjs`) checks existence, phase count
+     match, freshness (<30 days), and consistency. Regenerate with
+     `pnpm qa:phase-index` after adding phases.
+117. **Phase QA runner (`phase-qa-runner.mjs`) supports 5 commands (Phase 108):**
+     `phase <N>` (single), `range <from> <to>`, `all`, `index` (rebuild),
+     `generate` (regen specs). It delegates to Playwright for E2E and
+     Vitest for API specs with 5-minute per-spec timeout.
+118. **Phase numbers can be alphanumeric (Phase 108).** E.g. "37B", "95B",
+     "96B". All generators and runners handle this. The index builder
+     extracts the phase number from the folder name regex, not the prefix.
+
 ---
 
 ## 8. Bug Tracker & Lessons Learned

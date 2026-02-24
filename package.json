@@ -24,6 +24,10 @@
     "qa:security": "node scripts/qa-runner.mjs security",
     "qa:vista": "node scripts/qa-runner.mjs vista",
     "qa:prompts": "node scripts/qa-runner.mjs prompts",
-    "qa:prod-posture": "node scripts/qa-runner.mjs prod-posture"
+    "qa:prod-posture": "node scripts/qa-runner.mjs prod-posture",
+    "qa:phase": "node scripts/phase-qa-runner.mjs phase",
+    "qa:range": "node scripts/phase-qa-runner.mjs range",
+    "qa:phase-index": "node scripts/build-phase-index.mjs",
+    "qa:phase-audit": "node scripts/qa-runner.mjs phase-audit"
   }
 }

@@ -56,6 +56,10 @@ const SUITES = {
   "prod-posture": [
     { name: "Production posture", cmd: "node scripts/qa-gates/prod-posture.mjs" },
   ],
+  "phase-audit": [
+    { name: "Phase index integrity", cmd: "node scripts/qa-gates/phase-index-gate.mjs" },
+    { name: "Prompts ordering", cmd: "pnpm exec tsx scripts/check-prompts-ordering.ts" },
+  ],
 };
 
 // "all" is the union of every suite
@@ -63,6 +67,7 @@ SUITES.all = [
   ...SUITES.security,
   ...SUITES.api,
   ...SUITES.prompts,
+  ...SUITES["phase-audit"],
   // web/E2E only if both API + web servers are expected
   ...SUITES.smoke,
 ];

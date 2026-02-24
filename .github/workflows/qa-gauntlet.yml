@@ -52,6 +52,9 @@ jobs:
       - name: Prompts ordering gate
         run: pnpm qa:prompts
 
+      - name: Phase index integrity gate
+        run: node scripts/qa-gates/phase-index-gate.mjs
+
   # ---- API integration tests (no VistA needed) ----
   api-tests:
     name: API Integration Tests
@@ -129,6 +132,9 @@ jobs:
 
       - name: Run smoke E2E
         run: cd apps/web && pnpm exec playwright test e2e/qa-smoke.spec.ts --reporter=list
+
+      - name: Phase audit gate (nightly)
+        run: pnpm qa:phase-audit
 
       - name: Upload test results
         if: always()
