@@ -2297,6 +2297,34 @@ try {
   const dbResult = initPlatformDb();
   if (dbResult.ok) {
     log.info("Platform DB init", { ok: dbResult.ok, migrated: dbResult.migrated, seeded: dbResult.seeded });
+    // Phase 114: Wire DB-backed durable session store
+    try {
+      const sessionRepoMod = await import("./platform/db/repo/session-repo.js");
+      const { initSessionRepo } = await import("./auth/session-store.js");
+      initSessionRepo(sessionRepoMod);
+      log.info("Session store wired to DB");
+    } catch (sessErr: any) {
+      log.warn("Session repo wire failed (cache-only fallback)", { error: sessErr.message });
+    }
+    // Phase 114: Wire DB-backed durable workqueue store
+    try {
+      const wqRepoMod = await import("./platform/db/repo/workqueue-repo.js");
+      const { initWorkqueueRepo } = await import("./rcm/workqueues/workqueue-store.js");
+      initWorkqueueRepo(wqRepoMod);
+      log.info("Workqueue store wired to DB");
+    } catch (wqErr: any) {
+      log.warn("Workqueue repo wire failed (non-fatal)", { error: wqErr.message });
+    }
+    // Phase 114: Wire capability matrix audit to DB
+    try {
+      const { getDb } = await import("./platform/db/db.js");
+      const { payerAuditEvent } = await import("./platform/db/schema.js");
+      const { initCapabilityAudit } = await import("./rcm/payerOps/capability-matrix.js");
+      initCapabilityAudit({ getDb, payerAuditEvent });
+      log.info("Capability matrix audit wired to DB");
+    } catch (capErr: any) {
+      log.warn("Capability audit wire failed (non-fatal)", { error: capErr.message });
+    }
     // Phase 109: Seed module catalog + default tenant entitlements from modules.json
     try {
       const { seedModuleCatalogFromConfig } = await import("./modules/module-catalog-seed.js");

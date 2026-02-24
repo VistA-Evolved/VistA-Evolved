@@ -1,1 +1,1 @@
-{"patientDfn":"3","patientName":"TEST,PATIENT","payerId":"PH-MAXICARE","encounterDate":"2026-02-23","diagnosisCodes":["J18.9"],"procedureCodes":["99213"],"providerName":"PROVIDER,CLYDE WV","providerDuz":"87","facilityName":"VOE OFFICE","memberId":"MAX-123456"}
+{"patientDfn":"3","payerId":"US-BCBS","type":"initial","reason":"New provider credentialing"}

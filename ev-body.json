@@ -1,0 +1,1 @@
+{"payerId":"US-CMS-MEDICARE-A","method":"edi","source":"https://www.cms.gov/Medicare/Billing/ElectronicBillingEDITrans","channel":"sftp","sourceType":"url","submissionRequirements":"Via clearinghouse. Payer ID 00882. Accepts 837P/I.","confidence":"confirmed","status":"verified","notes":"CMS official EDI page"}

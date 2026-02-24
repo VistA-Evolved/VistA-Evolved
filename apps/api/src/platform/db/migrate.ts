@@ -667,6 +667,86 @@ CREATE INDEX IF NOT EXISTS idx_intev_tenant ON integration_evidence(tenant_id);
 CREATE INDEX IF NOT EXISTS idx_intev_status ON integration_evidence(status);
 CREATE INDEX IF NOT EXISTS idx_intev_method ON integration_evidence(method);
 
+-- AF) auth_session — Phase 114: Durable sessions
+CREATE TABLE IF NOT EXISTS auth_session (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  user_id TEXT NOT NULL,
+  user_name TEXT NOT NULL,
+  user_role TEXT NOT NULL,
+  facility_station TEXT NOT NULL,
+  facility_name TEXT NOT NULL,
+  division_ien TEXT NOT NULL,
+  token_hash TEXT NOT NULL,
+  csrf_secret TEXT,
+  ip_hash TEXT,
+  user_agent_hash TEXT,
+  created_at TEXT NOT NULL,
+  last_seen_at TEXT NOT NULL,
+  expires_at TEXT NOT NULL,
+  revoked_at TEXT,
+  metadata_json TEXT DEFAULT '{}'
+);
+CREATE INDEX IF NOT EXISTS idx_authsess_token ON auth_session(token_hash);
+CREATE INDEX IF NOT EXISTS idx_authsess_user ON auth_session(user_id);
+CREATE INDEX IF NOT EXISTS idx_authsess_tenant ON auth_session(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_authsess_expires ON auth_session(expires_at);
+
+-- AG) rcm_work_item — Phase 114: Durable work queue items
+CREATE TABLE IF NOT EXISTS rcm_work_item (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  type TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'open',
+  claim_id TEXT NOT NULL,
+  payer_id TEXT,
+  payer_name TEXT,
+  patient_dfn TEXT,
+  reason_code TEXT NOT NULL,
+  reason_description TEXT NOT NULL,
+  reason_category TEXT,
+  recommended_action TEXT NOT NULL,
+  field_to_fix TEXT,
+  triggering_rule TEXT,
+  source_type TEXT NOT NULL,
+  source_id TEXT,
+  source_timestamp TEXT,
+  priority TEXT NOT NULL DEFAULT 'medium',
+  assigned_to TEXT,
+  due_date TEXT,
+  resolved_at TEXT,
+  resolved_by TEXT,
+  resolution_note TEXT,
+  locked_by TEXT,
+  locked_at TEXT,
+  lock_expires_at TEXT,
+  attempts INTEGER NOT NULL DEFAULT 0,
+  last_error TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rcmwi_tenant ON rcm_work_item(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rcmwi_claim ON rcm_work_item(claim_id);
+CREATE INDEX IF NOT EXISTS idx_rcmwi_status ON rcm_work_item(status);
+CREATE INDEX IF NOT EXISTS idx_rcmwi_type ON rcm_work_item(type);
+CREATE INDEX IF NOT EXISTS idx_rcmwi_priority ON rcm_work_item(priority);
+CREATE INDEX IF NOT EXISTS idx_rcmwi_locked ON rcm_work_item(locked_by, lock_expires_at);
+
+-- AH) rcm_work_item_event — Phase 114: Append-only work item audit
+CREATE TABLE IF NOT EXISTS rcm_work_item_event (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  work_item_id TEXT NOT NULL,
+  action TEXT NOT NULL,
+  before_status TEXT,
+  after_status TEXT,
+  actor TEXT NOT NULL,
+  detail TEXT,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rcmwie_item ON rcm_work_item_event(work_item_id);
+CREATE INDEX IF NOT EXISTS idx_rcmwie_tenant ON rcm_work_item_event(tenant_id);
+
 `;
 
 // Phase 97B: Add payer_type column (idempotent — catches "duplicate column" error)

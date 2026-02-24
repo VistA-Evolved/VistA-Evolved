@@ -1,13 +1,16 @@
 /**
- * Capability Matrix Store — Phase 88: Evidence-backed integration matrix
+ * Capability Matrix Store -- Phase 88: Evidence-backed integration matrix
+ *                         -- Phase 114: Durable audit (every mutation writes to payerAuditEvent)
  *
  * Every payer capability (eligibility / LOA / claims / claim status / remittance)
  * has mode, maturity, and evidence. No "green" state without proof.
  *
- * In-memory (same pattern as other payerops stores).
+ * Classification: Ephemeral Cache + Durable Audit
+ *   - Matrix state is in-memory (reconstructable from payer seeds + evidence)
+ *   - All mutations audit-logged to payerAuditEvent table (survives restart)
  */
 
-import { randomBytes } from "node:crypto";
+import { randomBytes, randomUUID } from "node:crypto";
 
 /* ── Types ──────────────────────────────────────────────────── */
 
@@ -58,6 +61,51 @@ function cellKey(payerId: string, capability: CapabilityType): string {
 /* ── Store ──────────────────────────────────────────────────── */
 
 const matrix = new Map<string, PayerCapability>();
+
+/* ── DB audit sink (Phase 114 -- durable audit trail) ───────── */
+
+type AuditRepo = {
+  getDb: () => any;
+  payerAuditEvent: any;
+};
+
+let _dbAudit: AuditRepo | null = null;
+
+/**
+ * Wire DB audit sink. Called from index.ts after initPlatformDb().
+ */
+export function initCapabilityAudit(repo: AuditRepo): void {
+  _dbAudit = repo;
+}
+
+function auditMutation(
+  action: string,
+  entityId: string,
+  before: any,
+  after: any,
+  actor: string,
+  reason?: string,
+): void {
+  if (!_dbAudit) return;
+  try {
+    const db = _dbAudit.getDb();
+    const { payerAuditEvent } = _dbAudit;
+    db.insert(payerAuditEvent).values({
+      id: randomUUID(),
+      tenantId: null,
+      actorType: actor === "system" ? "system" : "user",
+      actorId: actor,
+      entityType: "capability_matrix",
+      entityId,
+      action,
+      beforeJson: before ? JSON.stringify(before) : null,
+      afterJson: after ? JSON.stringify(after) : null,
+      reason: reason ?? null,
+      evidenceSnapshotId: null,
+      createdAt: new Date().toISOString(),
+    }).run();
+  } catch { /* audit failure must not break operations */ }
+}
 
 /* ── CRUD ────────────────────────────────────────────────────── */
 
@@ -155,6 +203,7 @@ export function setCapability(data: {
     updatedBy: data.actor,
   };
   matrix.set(key, cap);
+  auditMutation("set_capability", key, existing ?? null, cap, data.actor, `mode=${data.mode}, maturity=${data.maturity}`);
   return { ok: true, capability: cap };
 }
 
@@ -184,6 +233,7 @@ export function addEvidence(data: {
   cap.evidence.push(evidence);
   cap.updatedAt = evidence.addedAt;
   cap.updatedBy = data.actor;
+  auditMutation("add_evidence", key, null, evidence, data.actor, `type=${data.type}`);
   return { ok: true, capability: cap };
 }
 
@@ -210,6 +260,7 @@ export function removeEvidence(data: {
     cap.maturity = "in_progress";
   }
   cap.updatedAt = new Date().toISOString();
+  auditMutation("remove_evidence", key, { evidenceId: data.evidenceId }, cap, "system", "evidence removed");
   return { ok: true, capability: cap };
 }
 

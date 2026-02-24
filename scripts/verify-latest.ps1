@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 113B: Hardening (RCM audit persistence, evidence gate CI, prompts tree)
-& "$PSScriptRoot\verify-phase113b-hardening.ps1" @args
+# Phase 114: Durability Wave 1 (sessions + workqueues + capability audit)
+& "$PSScriptRoot\verify-phase114-durability-wave1.ps1" @args

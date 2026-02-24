@@ -1,17 +1,18 @@
 /**
- * RCM — Workqueue Store (Phase 43)
+ * RCM -- Workqueue Store (Phase 43, durability Phase 114)
  *
- * In-memory workqueue items for Rejections, Denials, and Missing Info.
+ * DB-backed durable workqueue items for Rejections, Denials, and Missing Info.
  * Each workqueue item is a normalized representation of a claim issue
  * that needs human attention: why it failed, recommended fix, which
  * field to correct, and which payer rule triggered it.
  *
- * Resets on API restart — matches imaging-worklist pattern (Phase 23).
+ * Classification: Durable Domain State (per docs/architecture/store-policy.md)
+ * Survives API restart via rcm_work_item + rcm_work_item_event tables.
+ *
+ * Public API unchanged from Phase 43.
  */
 
-import { randomUUID } from 'node:crypto';
-
-/* ── Workqueue Types ───────────────────────────────────────── */
+/* ── Workqueue Types (unchanged) ───────────────────────────── */
 
 export type WorkqueueType = 'rejection' | 'denial' | 'missing_info';
 
@@ -34,22 +35,22 @@ export interface WorkqueueItem {
   patientDfn?: string;
 
   /** Issue details */
-  reasonCode: string;       // CARC, payer-specific code, or internal code
-  reasonDescription: string; // Human-readable reason
-  reasonCategory?: string;   // CO/PR/OA/PI/CR for denials; internal category for rejections
+  reasonCode: string;
+  reasonDescription: string;
+  reasonCategory?: string;
 
   /** Remediation */
-  recommendedAction: string;  // e.g "Correct NPI in billing provider segment"
-  fieldToFix?: string;        // e.g. "billingProviderNpi", "diagnosisCodes[0]"
-  triggeringRule?: string;    // Which payer rule or validation rule triggered this
+  recommendedAction: string;
+  fieldToFix?: string;
+  triggeringRule?: string;
 
   /** Source */
   sourceType: 'ack_999' | 'ack_277ca' | 'status_277' | 'remit_835' | 'validation' | 'manual';
-  sourceId?: string;          // ID of the ack/status/remit that created this item
+  sourceId?: string;
   sourceTimestamp?: string;
 
   /** Assignment */
-  assignedTo?: string;       // User DUZ
+  assignedTo?: string;
   priority: 'critical' | 'high' | 'medium' | 'low';
   dueDate?: string;
 
@@ -64,12 +65,52 @@ export interface WorkqueueItem {
   updatedAt: string;
 }
 
-/* ── In-Memory Store ───────────────────────────────────────── */
+/* ── DB repo -- lazy-wired after initPlatformDb() ──────────── */
 
-const items = new Map<string, WorkqueueItem>();
-const claimIndex = new Map<string, Set<string>>(); // claimId → item IDs
+type WorkqueueRepo = typeof import("../../platform/db/repo/workqueue-repo.js");
+let _repo: WorkqueueRepo | null = null;
 
-/* ── CRUD ──────────────────────────────────────────────────── */
+/**
+ * Wire the workqueue repo after DB init.
+ * Called from index.ts once initPlatformDb() succeeds.
+ */
+export function initWorkqueueRepo(repo: WorkqueueRepo): void {
+  _repo = repo;
+}
+
+/* ── Row → WorkqueueItem mapper ────────────────────────────── */
+
+function rowToItem(row: any): WorkqueueItem {
+  return {
+    id: row.id,
+    type: row.type as WorkqueueType,
+    status: row.status as WorkqueueItemStatus,
+    claimId: row.claimId,
+    payerId: row.payerId ?? undefined,
+    payerName: row.payerName ?? undefined,
+    patientDfn: row.patientDfn ?? undefined,
+    reasonCode: row.reasonCode,
+    reasonDescription: row.reasonDescription,
+    reasonCategory: row.reasonCategory ?? undefined,
+    recommendedAction: row.recommendedAction,
+    fieldToFix: row.fieldToFix ?? undefined,
+    triggeringRule: row.triggeringRule ?? undefined,
+    sourceType: row.sourceType as WorkqueueItem['sourceType'],
+    sourceId: row.sourceId ?? undefined,
+    sourceTimestamp: row.sourceTimestamp ?? undefined,
+    assignedTo: row.assignedTo ?? undefined,
+    priority: row.priority as WorkqueueItem['priority'],
+    dueDate: row.dueDate ?? undefined,
+    resolvedAt: row.resolvedAt ?? undefined,
+    resolvedBy: row.resolvedBy ?? undefined,
+    resolutionNote: row.resolutionNote ?? undefined,
+    tenantId: row.tenantId,
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt,
+  };
+}
+
+/* ── CRUD (same signatures as Phase 43) ────────────────────── */
 
 export function createWorkqueueItem(params: {
   type: WorkqueueType;
@@ -89,54 +130,44 @@ export function createWorkqueueItem(params: {
   priority?: WorkqueueItem['priority'];
   tenantId?: string;
 }): WorkqueueItem {
-  const now = new Date().toISOString();
-  const item: WorkqueueItem = {
-    id: randomUUID(),
-    type: params.type,
-    status: 'open',
-    claimId: params.claimId,
-    payerId: params.payerId,
-    payerName: params.payerName,
-    patientDfn: params.patientDfn,
-    reasonCode: params.reasonCode,
-    reasonDescription: params.reasonDescription,
-    reasonCategory: params.reasonCategory,
-    recommendedAction: params.recommendedAction,
-    fieldToFix: params.fieldToFix,
-    triggeringRule: params.triggeringRule,
-    sourceType: params.sourceType,
-    sourceId: params.sourceId,
-    sourceTimestamp: params.sourceTimestamp,
-    priority: params.priority ?? 'medium',
-    tenantId: params.tenantId ?? 'default',
-    createdAt: now,
-    updatedAt: now,
-  };
-
-  items.set(item.id, item);
-  if (!claimIndex.has(params.claimId)) {
-    claimIndex.set(params.claimId, new Set());
+  if (_repo) {
+    const row = _repo.createWorkItem({
+      type: params.type,
+      claimId: params.claimId,
+      payerId: params.payerId,
+      payerName: params.payerName,
+      patientDfn: params.patientDfn,
+      reasonCode: params.reasonCode,
+      reasonDescription: params.reasonDescription,
+      reasonCategory: params.reasonCategory,
+      recommendedAction: params.recommendedAction,
+      fieldToFix: params.fieldToFix,
+      triggeringRule: params.triggeringRule,
+      sourceType: params.sourceType,
+      sourceId: params.sourceId,
+      sourceTimestamp: params.sourceTimestamp,
+      priority: params.priority,
+      tenantId: params.tenantId,
+    });
+    return rowToItem(row);
   }
-  claimIndex.get(params.claimId)!.add(item.id);
-
-  return item;
+  throw new Error("Workqueue store not initialized (DB not ready)");
 }
 
 export function getWorkqueueItem(id: string): WorkqueueItem | undefined {
-  return items.get(id);
+  if (_repo) {
+    const row = _repo.findWorkItemById(id);
+    return row ? rowToItem(row) : undefined;
+  }
+  return undefined;
 }
 
 export function updateWorkqueueItem(id: string, updates: Partial<WorkqueueItem>): WorkqueueItem | undefined {
-  const item = items.get(id);
-  if (!item) return undefined;
-  const updated: WorkqueueItem = {
-    ...item,
-    ...updates,
-    id: item.id, // immutable
-    updatedAt: new Date().toISOString(),
-  };
-  items.set(id, updated);
-  return updated;
+  if (_repo) {
+    const row = _repo.updateWorkItem(id, updates as any);
+    return row ? rowToItem(row) : undefined;
+  }
+  return undefined;
 }
 
 export function listWorkqueueItems(filters?: {
@@ -149,33 +180,18 @@ export function listWorkqueueItems(filters?: {
   limit?: number;
   offset?: number;
 }): { items: WorkqueueItem[]; total: number } {
-  let result = Array.from(items.values());
-
-  if (filters?.type) result = result.filter(i => i.type === filters.type);
-  if (filters?.status) result = result.filter(i => i.status === filters.status);
-  if (filters?.claimId) result = result.filter(i => i.claimId === filters.claimId);
-  if (filters?.payerId) result = result.filter(i => i.payerId === filters.payerId);
-  if (filters?.priority) result = result.filter(i => i.priority === filters.priority);
-  if (filters?.tenantId) result = result.filter(i => i.tenantId === filters.tenantId);
-
-  // Sort by priority (critical first), then by createdAt desc
-  const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
-  result.sort((a, b) =>
-    (priorityOrder[a.priority] - priorityOrder[b.priority]) ||
-    b.createdAt.localeCompare(a.createdAt),
-  );
-
-  const total = result.length;
-  const offset = filters?.offset ?? 0;
-  const limit = filters?.limit ?? 50;
-
-  return { items: result.slice(offset, offset + limit), total };
+  if (_repo) {
+    const result = _repo.listWorkItems(filters);
+    return { items: result.items.map(rowToItem), total: result.total };
+  }
+  return { items: [], total: 0 };
 }
 
 export function getWorkqueueItemsForClaim(claimId: string): WorkqueueItem[] {
-  const ids = claimIndex.get(claimId);
-  if (!ids) return [];
-  return Array.from(ids).map(id => items.get(id)!).filter(Boolean);
+  if (_repo) {
+    return _repo.findWorkItemsForClaim(claimId).map(rowToItem);
+  }
+  return [];
 }
 
 export function getWorkqueueStats(tenantId?: string): {
@@ -184,28 +200,25 @@ export function getWorkqueueStats(tenantId?: string): {
   byStatus: Record<WorkqueueItemStatus, number>;
   byPriority: Record<string, number>;
 } {
-  let all = Array.from(items.values());
-  if (tenantId) all = all.filter(i => i.tenantId === tenantId);
-
-  const byType: Record<string, number> = { rejection: 0, denial: 0, missing_info: 0 };
-  const byStatus: Record<string, number> = { open: 0, in_progress: 0, resolved: 0, escalated: 0, dismissed: 0 };
-  const byPriority: Record<string, number> = { critical: 0, high: 0, medium: 0, low: 0 };
-
-  for (const item of all) {
-    byType[item.type] = (byType[item.type] ?? 0) + 1;
-    byStatus[item.status] = (byStatus[item.status] ?? 0) + 1;
-    byPriority[item.priority] = (byPriority[item.priority] ?? 0) + 1;
+  if (_repo) {
+    const stats = _repo.getWorkItemStats(tenantId);
+    return {
+      total: stats.total,
+      byType: stats.byType as Record<WorkqueueType, number>,
+      byStatus: stats.byStatus as Record<WorkqueueItemStatus, number>,
+      byPriority: stats.byPriority,
+    };
   }
-
   return {
-    total: all.length,
-    byType: byType as Record<WorkqueueType, number>,
-    byStatus: byStatus as Record<WorkqueueItemStatus, number>,
-    byPriority,
+    total: 0,
+    byType: { rejection: 0, denial: 0, missing_info: 0 },
+    byStatus: { open: 0, in_progress: 0, resolved: 0, escalated: 0, dismissed: 0 },
+    byPriority: { critical: 0, high: 0, medium: 0, low: 0 },
   };
 }
 
 export function resetWorkqueueStore(): void {
-  items.clear();
-  claimIndex.clear();
+  if (_repo) {
+    _repo.resetWorkItems();
+  }
 }

@@ -1,44 +1,51 @@
-# Phase 113B VERIFY ???????? Summary
+# Phase 114: Durability Wave 1 -- Summary
 
-## What Changed (113B IMPLEMENT ???????? commit c52c579)
-- RCM audit JSONL file sink (hash-chained, PHI-redacted)
-- Evidence gate staleness check (Gate 6)
-- CI wiring: evidence-gate + prompts-tree-health in 3 workflows
-- Prompts tree repair (Phase 111/112 folders, flat duplicates removed)
-- Prompts tree health gate (5 convention checks)
-- verify-phase113b-hardening.ps1 (34 gates)
+## What Changed
+Three critical in-memory stores converted to DB-backed persistence:
+
+1. **Auth sessions** (`auth_session` table) -- sessions survive API restart
+2. **RCM workqueues** (`rcm_work_item` + `rcm_work_item_event`) -- work items + audit trail persist
+3. **Capability matrix audit** -- all mutations write to `payer_audit_event` table
+
+Additional artifacts:
+- `docs/architecture/store-policy.md` -- 4-class store classification standard
+- `scripts/qa-gates/restart-durability.mjs` -- 25-gate structural QA gate
+- `scripts/verify-phase114-durability-wave1.ps1` -- full phase verifier
+- `docs/runbooks/durability-wave1.md` -- runbook
 
 ## Verification Results
 
-| # | Gate | Result | Detail |
-|---|------|--------|--------|
-| 1 | API typecheck | **PASS** | Zero errors |
-| 2 | Web build | **PASS** | Compiled successfully 24.6s |
-| 3 | Portal typecheck | **PASS** | Zero errors |
-| 4 | verify-phase113b-hardening.ps1 | **PASS** | 34/34 PASS, 0 WARN, 0 FAIL |
-| 5 | No new scattered docs | **PASS** | docs/reports is pre-existing Phase 53 artifact |
-| 6 | Prompts tree fixes | **PASS** | 111/112 in folders, 110 canonical, flat dupes gone |
-| 7 | RCM audit: trigger events | **PASS** | 4+ events triggered via API |
-| 8 | RCM audit: JSONL hash chain | **PASS** | 7 entries, previousHash chaining correct |
-| 9 | RCM audit: chain verify endpoint | **PASS** | valid:true |
-| 10 | RCM audit: restart + chain continuity | **PASS** | Hash recovered from JSONL after restart |
-| 11 | RCM audit: PHI redaction | **PASS** | patientDfn=[DFN], no SSN/names/creds |
-| 12 | Evidence gate: standard mode | **PASS** | 4P/4W/0F, exit 0 |
-| 13 | Evidence gate: strict mode | **PASS** | 4P/1W/3F, exit 1 (expected) |
-| 14 | CI: ci-verify.yml wiring | **PASS** | evidence-gate + prompts-tree-health |
-| 15 | CI: quality-gates.yml wiring | **PASS** | evidence-gate + prompts-tree-health |
-| 16 | CI: qa-gauntlet.yml wiring | **PASS** | standard + strict + tree-health |
+### Automated Gates
+| # | Gate | Result |
+|---|------|--------|
+| 1 | Restart-Durability QA Gate | **25/25 PASS** |
+| 2 | verify-phase114-durability-wave1.ps1 | **31/31 PASS** |
+| 3 | API TypeScript compile | **PASS** (0 errors) |
+| 4 | Web build (next build) | **PASS** |
+| 5 | IDE errors (all Phase 114 files) | **0 errors** |
 
-**Overall: 16/16 PASS -- zero regressions**
+### Live API Tests
+| # | Test | Result |
+|---|------|--------|
+| 6 | Health endpoint | **PASS** |
+| 7 | Login (PROV123) | **PASS** |
+| 8 | Session check (authenticated) | **PASS** |
+| 9 | Session token stored as SHA-256 hash in DB | **PASS** |
+| 10 | **Session survives API restart** | **PASS** |
+| 11 | Logout revokes session (revoked_at set in DB) | **PASS** |
+| 12 | RCM workqueue stats endpoint | **PASS** |
+| 13 | RCM claims endpoint | **PASS** |
+| 14 | Capability matrix endpoint | **PASS** |
+| 15 | No new PHI introduced | **PASS** |
 
 ## How to Test Manually
 ```powershell
-.\scripts\verify-phase113b-hardening.ps1
-node scripts/qa-gates/evidence-gate.mjs
-node scripts/qa-gates/evidence-gate.mjs --strict
-node scripts/qa-gates/prompts-tree-health.mjs
+.\scripts\verify-phase114-durability-wave1.ps1
+node scripts/qa-gates/restart-durability.mjs
 ```
 
 ## Follow-ups
-- Evidence entries for 8 payers with api/fhir/portal mode
-- docs/reports cleanup (pre-existing Phase 53 cruft)
+- registry-store.ts durability (Phase 115)
+- payerops store.ts durability (Phase 116)
+- Imaging worklist/ingest store durability
+- Telehealth room store durability

@@ -596,3 +596,74 @@ export const integrationEvidence = sqliteTable("integration_evidence", {
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
+
+/* ── AF) auth_session — Phase 114: Durable sessions ─────────────────────── */
+
+export const authSession = sqliteTable("auth_session", {
+  id: text("id").primaryKey(),                                   // UUID
+  tenantId: text("tenant_id").notNull().default("default"),
+  userId: text("user_id").notNull(),                             // DUZ
+  userName: text("user_name").notNull(),
+  userRole: text("user_role").notNull(),                         // provider | nurse | admin | ...
+  facilityStation: text("facility_station").notNull(),
+  facilityName: text("facility_name").notNull(),
+  divisionIen: text("division_ien").notNull(),
+  tokenHash: text("token_hash").notNull(),                       // SHA-256 of raw token (NEVER store raw)
+  csrfSecret: text("csrf_secret"),                               // CSRF secret for this session
+  ipHash: text("ip_hash"),                                       // hashed client IP
+  userAgentHash: text("user_agent_hash"),                        // hashed UA
+  createdAt: text("created_at").notNull(),
+  lastSeenAt: text("last_seen_at").notNull(),
+  expiresAt: text("expires_at").notNull(),
+  revokedAt: text("revoked_at"),                                 // null = active
+  metadataJson: text("metadata_json").default("{}"),             // strictly non-PHI
+});
+
+/* ── AG) rcm_work_item — Phase 114: Durable work queue items ────────────── */
+
+export const rcmWorkItem = sqliteTable("rcm_work_item", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  type: text("type").notNull(),                                  // rejection | denial | missing_info
+  status: text("status").notNull().default("open"),              // open | in_progress | resolved | escalated | dismissed
+  claimId: text("claim_id").notNull(),
+  payerId: text("payer_id"),
+  payerName: text("payer_name"),
+  patientDfn: text("patient_dfn"),
+  reasonCode: text("reason_code").notNull(),
+  reasonDescription: text("reason_description").notNull(),
+  reasonCategory: text("reason_category"),
+  recommendedAction: text("recommended_action").notNull(),
+  fieldToFix: text("field_to_fix"),
+  triggeringRule: text("triggering_rule"),
+  sourceType: text("source_type").notNull(),                     // ack_999 | ack_277ca | status_277 | remit_835 | validation | manual
+  sourceId: text("source_id"),
+  sourceTimestamp: text("source_timestamp"),
+  priority: text("priority").notNull().default("medium"),        // critical | high | medium | low
+  assignedTo: text("assigned_to"),
+  dueDate: text("due_date"),
+  resolvedAt: text("resolved_at"),
+  resolvedBy: text("resolved_by"),
+  resolutionNote: text("resolution_note"),
+  lockedBy: text("locked_by"),
+  lockedAt: text("locked_at"),
+  lockExpiresAt: text("lock_expires_at"),
+  attempts: integer("attempts").notNull().default(0),
+  lastError: text("last_error"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/* ── AH) rcm_work_item_event — Phase 114: Append-only work item audit ───── */
+
+export const rcmWorkItemEvent = sqliteTable("rcm_work_item_event", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  workItemId: text("work_item_id").notNull(),
+  action: text("action").notNull(),                              // created | status_changed | assigned | locked | unlocked | resolved | escalated
+  beforeStatus: text("before_status"),
+  afterStatus: text("after_status"),
+  actor: text("actor").notNull(),                                // DUZ or 'system'
+  detail: text("detail"),                                        // JSON — no PHI
+  createdAt: text("created_at").notNull(),
+});
