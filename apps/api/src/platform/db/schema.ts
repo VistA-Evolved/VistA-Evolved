@@ -349,3 +349,128 @@ export const moduleAuditLog = sqliteTable("module_audit_log", {
   reason: text("reason"),
   createdAt: text("created_at").notNull(),
 });
+
+/* ── U) credential_artifact — Phase 110: Provider/facility credential metadata ─ */
+
+export const credentialArtifact = sqliteTable("credential_artifact", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  entityType: text("entity_type").notNull(),               // provider | facility | group
+  entityId: text("entity_id").notNull(),                   // NPI or facility ID
+  entityName: text("entity_name").notNull(),
+  credentialType: text("credential_type").notNull(),       // npi | state_license | dea | board_cert | clia | facility_license | malpractice | caqh | tax_id
+  credentialValue: text("credential_value").notNull(),     // The actual credential number/ID
+  issuingAuthority: text("issuing_authority"),              // e.g. "State of California", "DEA"
+  state: text("state"),                                    // US state code if applicable
+  status: text("status").notNull().default("active"),      // active | expiring | expired | revoked | pending_verification
+  issuedAt: text("issued_at"),
+  expiresAt: text("expires_at"),
+  renewalReminderDays: integer("renewal_reminder_days").default(90),
+  verifiedAt: text("verified_at"),
+  verifiedBy: text("verified_by"),
+  metadataJson: text("metadata_json").default("{}"),       // Extra KV pairs
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+  createdBy: text("created_by").notNull(),
+});
+
+/* ── V) credential_document — Phase 110: Object storage pointers ─────── */
+
+export const credentialDocument = sqliteTable("credential_document", {
+  id: text("id").primaryKey(),
+  credentialId: text("credential_id").notNull(),           // FK to credential_artifact.id
+  tenantId: text("tenant_id").notNull().default("default"),
+  fileName: text("file_name").notNull(),
+  mimeType: text("mime_type").notNull(),
+  storagePath: text("storage_path").notNull(),             // Object storage URI or relative path
+  fileSizeBytes: integer("file_size_bytes"),
+  sha256Hash: text("sha256_hash"),                         // Integrity check
+  uploadedBy: text("uploaded_by").notNull(),
+  uploadedAt: text("uploaded_at").notNull(),
+});
+
+/* ── W) accreditation_status — Phase 110: Per-payer accreditation state ── */
+
+export const accreditationStatus = sqliteTable("accreditation_status", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  payerId: text("payer_id").notNull(),
+  payerName: text("payer_name").notNull(),
+  providerEntityId: text("provider_entity_id").notNull(),  // NPI or facility ID
+  status: text("status").notNull().default("pending"),     // active | pending | expiring | denied | contracting_needed | suspended
+  effectiveDate: text("effective_date"),
+  expirationDate: text("expiration_date"),
+  lastVerifiedAt: text("last_verified_at"),
+  lastVerifiedBy: text("last_verified_by"),
+  notesJson: text("notes_json").default("[]"),             // JSON array of notes
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+  createdBy: text("created_by").notNull(),
+});
+
+/* ── X) accreditation_task — Phase 110: Actionable next-steps per payer ── */
+
+export const accreditationTask = sqliteTable("accreditation_task", {
+  id: text("id").primaryKey(),
+  accreditationId: text("accreditation_id").notNull(),     // FK to accreditation_status.id
+  tenantId: text("tenant_id").notNull().default("default"),
+  title: text("title").notNull(),
+  description: text("description"),
+  status: text("status").notNull().default("pending"),     // pending | in_progress | completed | blocked | cancelled
+  priority: text("priority").notNull().default("medium"),  // low | medium | high | urgent
+  dueDate: text("due_date"),
+  assignedTo: text("assigned_to"),
+  completedAt: text("completed_at"),
+  completedBy: text("completed_by"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/* ── Y) loa_request — Phase 110: LOA request tied to encounter/order ─── */
+
+export const loaRequest = sqliteTable("loa_request", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  patientDfn: text("patient_dfn").notNull(),               // VistA DFN (not stored as PHI in logs)
+  patientName: text("patient_name"),                       // Display only, not shown in audit
+  payerId: text("payer_id").notNull(),
+  payerName: text("payer_name"),
+  encounterIen: text("encounter_ien"),                     // VistA encounter IEN if available
+  orderIen: text("order_ien"),                             // VistA order IEN if available
+  loaType: text("loa_type").notNull(),                     // prior_auth | referral | precert | concurrent_review | retrospective
+  status: text("status").notNull().default("draft"),       // draft | pending_review | submitted | approved | denied | appealed | expired | closed
+  urgency: text("urgency").notNull().default("standard"),  // standard | urgent | emergency
+  diagnosisCodesJson: text("diagnosis_codes_json").default("[]"),   // JSON array of ICD-10 codes
+  procedureCodesJson: text("procedure_codes_json").default("[]"),   // JSON array of CPT/HCPCS codes
+  clinicalSummary: text("clinical_summary"),               // Brief clinical justification
+  requestedServiceDesc: text("requested_service_desc"),    // What is being requested
+  requestedBy: text("requested_by").notNull(),             // DUZ of requesting provider
+  requestedAt: text("requested_at").notNull(),
+  authorizationNumber: text("authorization_number"),       // Payer-assigned auth number
+  approvedUnits: integer("approved_units"),                 // Approved qty if applicable
+  approvedFrom: text("approved_from"),                     // Auth valid from date
+  approvedThrough: text("approved_through"),               // Auth valid through date
+  denialReason: text("denial_reason"),
+  packetGeneratedAt: text("packet_generated_at"),
+  submittedAt: text("submitted_at"),
+  resolvedAt: text("resolved_at"),
+  metadataJson: text("metadata_json").default("{}"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/* ── Z) loa_attachment — Phase 110: Attachments linked to LOA packets ── */
+
+export const loaAttachment = sqliteTable("loa_attachment", {
+  id: text("id").primaryKey(),
+  loaRequestId: text("loa_request_id").notNull(),          // FK to loa_request.id
+  tenantId: text("tenant_id").notNull().default("default"),
+  attachmentType: text("attachment_type").notNull(),        // clinical_note | lab_result | imaging_report | referral_letter | custom
+  fileName: text("file_name").notNull(),
+  mimeType: text("mime_type").notNull(),
+  storagePath: text("storage_path"),                       // Object storage URI (null if inline)
+  inlineContent: text("inline_content"),                   // For small text-based attachments
+  description: text("description"),
+  addedBy: text("added_by").notNull(),
+  addedAt: text("added_at").notNull(),
+});

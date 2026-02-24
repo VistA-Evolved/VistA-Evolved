@@ -1,0 +1,10 @@
+{
+  "featureTitle": "Phase 110: RCM Core v1 (Credential Vault + LOA Engine)",
+  "stage": "implement",
+  "status": "complete",
+  "promptRef": "prompts/114-PHASE-110-RCM-CREDENTIAL-VAULT-LOA/110-01-IMPLEMENT.md",
+  "verifyPromptRef": "prompts/114-PHASE-110-RCM-CREDENTIAL-VAULT-LOA/110-99-VERIFY.md",
+  "runbookPath": "docs/runbooks/phase110-rcm-credential-vault-loa.md",
+  "verifyScriptUsed": "manual (tsc + next build + curl endpoint tests)",
+  "commitSHA": "pending"
+}

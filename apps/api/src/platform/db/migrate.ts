@@ -394,6 +394,142 @@ CREATE INDEX IF NOT EXISTS idx_mod_audit_entity ON module_audit_log(entity_type,
 CREATE INDEX IF NOT EXISTS idx_mod_audit_created ON module_audit_log(created_at);
 CREATE INDEX IF NOT EXISTS idx_mod_audit_action ON module_audit_log(action);
 
+-- Phase 110: Credential Vault + LOA Engine
+
+CREATE TABLE IF NOT EXISTS credential_artifact (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  entity_type TEXT NOT NULL,
+  entity_id TEXT NOT NULL,
+  entity_name TEXT NOT NULL,
+  credential_type TEXT NOT NULL,
+  credential_value TEXT NOT NULL,
+  issuing_authority TEXT,
+  state TEXT,
+  status TEXT NOT NULL DEFAULT 'active',
+  issued_at TEXT,
+  expires_at TEXT,
+  renewal_reminder_days INTEGER DEFAULT 90,
+  verified_at TEXT,
+  verified_by TEXT,
+  metadata_json TEXT DEFAULT '{}',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  created_by TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_cred_artifact_tenant ON credential_artifact(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_cred_artifact_entity ON credential_artifact(entity_type, entity_id);
+CREATE INDEX IF NOT EXISTS idx_cred_artifact_type ON credential_artifact(credential_type);
+CREATE INDEX IF NOT EXISTS idx_cred_artifact_status ON credential_artifact(status);
+CREATE INDEX IF NOT EXISTS idx_cred_artifact_expires ON credential_artifact(expires_at);
+
+CREATE TABLE IF NOT EXISTS credential_document (
+  id TEXT PRIMARY KEY,
+  credential_id TEXT NOT NULL,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  file_name TEXT NOT NULL,
+  mime_type TEXT NOT NULL,
+  storage_path TEXT NOT NULL,
+  file_size_bytes INTEGER,
+  sha256_hash TEXT,
+  uploaded_by TEXT NOT NULL,
+  uploaded_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_cred_doc_credential ON credential_document(credential_id);
+CREATE INDEX IF NOT EXISTS idx_cred_doc_tenant ON credential_document(tenant_id);
+
+CREATE TABLE IF NOT EXISTS accreditation_status (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  payer_id TEXT NOT NULL,
+  payer_name TEXT NOT NULL,
+  provider_entity_id TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending',
+  effective_date TEXT,
+  expiration_date TEXT,
+  last_verified_at TEXT,
+  last_verified_by TEXT,
+  notes_json TEXT DEFAULT '[]',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  created_by TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_accred_tenant ON accreditation_status(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_accred_payer ON accreditation_status(payer_id);
+CREATE INDEX IF NOT EXISTS idx_accred_provider ON accreditation_status(provider_entity_id);
+CREATE INDEX IF NOT EXISTS idx_accred_status ON accreditation_status(status);
+
+CREATE TABLE IF NOT EXISTS accreditation_task (
+  id TEXT PRIMARY KEY,
+  accreditation_id TEXT NOT NULL,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  title TEXT NOT NULL,
+  description TEXT,
+  status TEXT NOT NULL DEFAULT 'pending',
+  priority TEXT NOT NULL DEFAULT 'medium',
+  due_date TEXT,
+  assigned_to TEXT,
+  completed_at TEXT,
+  completed_by TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_accred_task_accred ON accreditation_task(accreditation_id);
+CREATE INDEX IF NOT EXISTS idx_accred_task_tenant ON accreditation_task(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_accred_task_status ON accreditation_task(status);
+
+CREATE TABLE IF NOT EXISTS loa_request (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  patient_name TEXT,
+  payer_id TEXT NOT NULL,
+  payer_name TEXT,
+  encounter_ien TEXT,
+  order_ien TEXT,
+  loa_type TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'draft',
+  urgency TEXT NOT NULL DEFAULT 'standard',
+  diagnosis_codes_json TEXT DEFAULT '[]',
+  procedure_codes_json TEXT DEFAULT '[]',
+  clinical_summary TEXT,
+  requested_service_desc TEXT,
+  requested_by TEXT NOT NULL,
+  requested_at TEXT NOT NULL,
+  authorization_number TEXT,
+  approved_units INTEGER,
+  approved_from TEXT,
+  approved_through TEXT,
+  denial_reason TEXT,
+  packet_generated_at TEXT,
+  submitted_at TEXT,
+  resolved_at TEXT,
+  metadata_json TEXT DEFAULT '{}',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_loa_tenant ON loa_request(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_loa_patient ON loa_request(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_loa_payer ON loa_request(payer_id);
+CREATE INDEX IF NOT EXISTS idx_loa_status ON loa_request(status);
+CREATE INDEX IF NOT EXISTS idx_loa_type ON loa_request(loa_type);
+
+CREATE TABLE IF NOT EXISTS loa_attachment (
+  id TEXT PRIMARY KEY,
+  loa_request_id TEXT NOT NULL,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  attachment_type TEXT NOT NULL,
+  file_name TEXT NOT NULL,
+  mime_type TEXT NOT NULL,
+  storage_path TEXT,
+  inline_content TEXT,
+  description TEXT,
+  added_by TEXT NOT NULL,
+  added_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_loa_attach_request ON loa_attachment(loa_request_id);
+CREATE INDEX IF NOT EXISTS idx_loa_attach_tenant ON loa_attachment(tenant_id);
+
 `;
 
 // Phase 97B: Add payer_type column (idempotent — catches "duplicate column" error)

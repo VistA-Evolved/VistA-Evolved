@@ -18,7 +18,7 @@ import styles from '@/components/cprs/cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
-type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions' | 'gateways' | 'adapters' | 'jobs' | 'eligibility' | 'claim-status' | 'ops-dashboard';
+type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions' | 'gateways' | 'adapters' | 'jobs' | 'eligibility' | 'claim-status' | 'ops-dashboard' | 'credential-vault' | 'accreditation';
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
@@ -53,6 +53,8 @@ export default function RcmPage() {
     { id: 'eligibility', label: 'Eligibility Checks' },
     { id: 'claim-status', label: 'Claim Status' },
     { id: 'ops-dashboard', label: 'Ops Dashboard' },
+    { id: 'credential-vault', label: 'Credential Vault' },
+    { id: 'accreditation', label: 'Accreditation' },
     { id: 'audit', label: 'Audit Trail' },
   ];
 
@@ -121,6 +123,8 @@ export default function RcmPage() {
         {tab === 'eligibility' && <EligibilityTab />}
         {tab === 'claim-status' && <ClaimStatusTab />}
         {tab === 'ops-dashboard' && <OpsDashboardTab />}
+        {tab === 'credential-vault' && <CredentialVaultTab />}
+        {tab === 'accreditation' && <AccreditationTab />}
         {tab === 'audit' && <AuditTab />}
       </div>
     </div>
@@ -2654,6 +2658,453 @@ function ClaimStatusTab() {
             ))}
           </tbody>
         </table>
+      )}
+    </div>
+  );
+}
+
+/* ─── Credential Vault Tab (Phase 110) ──────────────────────────── */
+
+function CredentialVaultTab() {
+  const [credentials, setCredentials] = useState<any[]>([]);
+  const [stats, setStats] = useState<any>(null);
+  const [expiring, setExpiring] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showAdd, setShowAdd] = useState(false);
+  const [selectedCred, setSelectedCred] = useState<any>(null);
+  const [documents, setDocuments] = useState<any[]>([]);
+
+  const refresh = useCallback(() => {
+    setLoading(true);
+    Promise.all([
+      apiFetch('/rcm/credential-vault'),
+      apiFetch('/rcm/credential-vault/stats'),
+      apiFetch('/rcm/credential-vault/expiring?withinDays=90'),
+    ]).then(([credData, statsData, expiringData]) => {
+      setCredentials(credData.items ?? []);
+      setStats(statsData.stats ?? null);
+      setExpiring(expiringData.items ?? []);
+      setLoading(false);
+    }).catch(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const body: Record<string, string> = {};
+    fd.forEach((v, k) => { if (v) body[k] = v as string; });
+    body.createdBy = 'admin';
+    await apiFetch('/rcm/credential-vault', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    setShowAdd(false);
+    refresh();
+  };
+
+  const loadDetail = async (id: string) => {
+    const data = await apiFetch(`/rcm/credential-vault/${id}`);
+    setSelectedCred(data.item);
+    setDocuments(data.documents ?? []);
+  };
+
+  const statusColor = (s: string) => {
+    if (s === 'active') return { bg: '#d1e7dd', fg: '#0f5132' };
+    if (s === 'expiring') return { bg: '#fff3cd', fg: '#664d03' };
+    if (s === 'expired' || s === 'revoked') return { bg: '#f8d7da', fg: '#842029' };
+    return { bg: '#e2e3e5', fg: '#41464b' };
+  };
+
+  return (
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <h3 style={{ margin: 0, fontSize: 16 }}>Credential Vault (DB-backed)</h3>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button onClick={refresh} style={{ padding: '4px 12px', fontSize: 12, cursor: 'pointer' }}>Refresh</button>
+          <button onClick={() => setShowAdd(!showAdd)} style={{ padding: '4px 12px', fontSize: 12, cursor: 'pointer', background: '#0d6efd', color: '#fff', border: 'none', borderRadius: 4 }}>
+            + Add Credential
+          </button>
+        </div>
+      </div>
+
+      {stats && (
+        <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
+          <div style={{ padding: '8px 16px', background: '#e2e3e5', borderRadius: 6, fontSize: 12 }}>
+            <strong>Total:</strong> {stats.total}
+          </div>
+          <div style={{ padding: '8px 16px', background: expiring.length > 0 ? '#fff3cd' : '#d1e7dd', borderRadius: 6, fontSize: 12 }}>
+            <strong>Expiring (90d):</strong> {stats.expiringSoon}
+          </div>
+        </div>
+      )}
+
+      {showAdd && (
+        <form onSubmit={handleCreate} style={{ marginBottom: 16, padding: 16, border: '1px solid #dee2e6', borderRadius: 6, background: '#f8f9fa' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 8 }}>
+            <select name="entityType" required style={{ padding: '4px 8px', fontSize: 12 }}>
+              <option value="">Entity Type...</option>
+              <option value="provider">Provider</option>
+              <option value="facility">Facility</option>
+              <option value="group">Group</option>
+            </select>
+            <input name="entityId" placeholder="Entity ID (NPI, etc.)" required style={{ padding: '4px 8px', fontSize: 12 }} />
+            <input name="entityName" placeholder="Entity Name" required style={{ padding: '4px 8px', fontSize: 12 }} />
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 8 }}>
+            <select name="credentialType" required style={{ padding: '4px 8px', fontSize: 12 }}>
+              <option value="">Credential Type...</option>
+              <option value="npi">NPI</option>
+              <option value="state_license">State License</option>
+              <option value="dea">DEA</option>
+              <option value="board_cert">Board Certification</option>
+              <option value="clia">CLIA</option>
+              <option value="facility_license">Facility License</option>
+              <option value="malpractice">Malpractice Insurance</option>
+              <option value="caqh">CAQH</option>
+              <option value="tax_id">Tax ID</option>
+            </select>
+            <input name="credentialValue" placeholder="Credential Value / Number" required style={{ padding: '4px 8px', fontSize: 12 }} />
+            <input name="issuingAuthority" placeholder="Issuing Authority (optional)" style={{ padding: '4px 8px', fontSize: 12 }} />
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 8 }}>
+            <input name="state" placeholder="State (optional)" style={{ padding: '4px 8px', fontSize: 12 }} />
+            <input name="issuedAt" type="date" style={{ padding: '4px 8px', fontSize: 12 }} />
+            <input name="expiresAt" type="date" style={{ padding: '4px 8px', fontSize: 12 }} />
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button type="submit" style={{ padding: '6px 16px', fontSize: 12, background: '#198754', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer' }}>Save</button>
+            <button type="button" onClick={() => setShowAdd(false)} style={{ padding: '6px 16px', fontSize: 12, cursor: 'pointer' }}>Cancel</button>
+          </div>
+        </form>
+      )}
+
+      {loading && <div style={{ color: '#6c757d', fontSize: 13 }}>Loading credentials...</div>}
+
+      {selectedCred && (
+        <div style={{ marginBottom: 16, padding: 16, border: '1px solid #0d6efd', borderRadius: 6, background: '#f0f7ff' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <h4 style={{ margin: 0, fontSize: 14 }}>{selectedCred.entityName} - {selectedCred.credentialType.toUpperCase()}</h4>
+            <button onClick={() => setSelectedCred(null)} style={{ border: 'none', background: 'transparent', cursor: 'pointer', fontSize: 14 }}>x</button>
+          </div>
+          <div style={{ fontSize: 12, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
+            <div><strong>Value:</strong> {selectedCred.credentialValue}</div>
+            <div><strong>Status:</strong> {selectedCred.status}</div>
+            <div><strong>Entity:</strong> {selectedCred.entityType} / {selectedCred.entityId}</div>
+            <div><strong>Authority:</strong> {selectedCred.issuingAuthority || '-'}</div>
+            <div><strong>Issued:</strong> {selectedCred.issuedAt?.slice(0, 10) || '-'}</div>
+            <div><strong>Expires:</strong> {selectedCred.expiresAt?.slice(0, 10) || '-'}</div>
+            <div><strong>Verified:</strong> {selectedCred.verifiedAt ? `${selectedCred.verifiedAt.slice(0, 10)} by ${selectedCred.verifiedBy}` : 'Not verified'}</div>
+          </div>
+          {documents.length > 0 && (
+            <div style={{ marginTop: 8 }}>
+              <strong style={{ fontSize: 12 }}>Documents ({documents.length}):</strong>
+              <ul style={{ margin: '4px 0', paddingLeft: 16, fontSize: 11 }}>
+                {documents.map((d: any) => (
+                  <li key={d.id}>{d.fileName} ({d.mimeType}) -- {d.storagePath}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+
+      {!loading && credentials.length > 0 && (
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12, tableLayout: 'fixed' }}>
+          <thead>
+            <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Entity</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Type</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Value</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Status</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Expires</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Verified</th>
+            </tr>
+          </thead>
+          <tbody>
+            {credentials.map((c: any) => {
+              const sc = statusColor(c.status);
+              return (
+                <tr key={c.id} onClick={() => loadDetail(c.id)} style={{ cursor: 'pointer' }}>
+                  <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>{c.entityName}</td>
+                  <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>
+                    <span style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', background: '#e2e3e5', padding: '2px 6px', borderRadius: 4 }}>
+                      {c.credentialType.replaceAll('_', ' ')}
+                    </span>
+                  </td>
+                  <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace' }}>{c.credentialValue}</td>
+                  <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>
+                    <span style={{ padding: '2px 6px', borderRadius: 4, fontSize: 10, fontWeight: 600, background: sc.bg, color: sc.fg }}>
+                      {c.status.toUpperCase()}
+                    </span>
+                  </td>
+                  <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>{c.expiresAt?.slice(0, 10) || '--'}</td>
+                  <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>{c.verifiedAt ? 'Yes' : '--'}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
+
+      {!loading && credentials.length === 0 && (
+        <div style={{ fontSize: 12, color: '#6c757d', padding: 16, textAlign: 'center' }}>No credentials yet. Click &quot;+ Add Credential&quot; to begin.</div>
+      )}
+
+      {expiring.length > 0 && (
+        <div style={{ marginTop: 16, padding: 12, background: '#fff3cd', borderRadius: 6, border: '1px solid #ffecb5' }}>
+          <strong style={{ fontSize: 12, color: '#664d03' }}>Expiring within 90 days ({expiring.length}):</strong>
+          <ul style={{ margin: '4px 0', paddingLeft: 16, fontSize: 11, color: '#664d03' }}>
+            {expiring.slice(0, 5).map((c: any) => (
+              <li key={c.id}>{c.entityName} -- {c.credentialType} -- expires {c.expiresAt?.slice(0, 10)}</li>
+            ))}
+            {expiring.length > 5 && <li>...and {expiring.length - 5} more</li>}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─── Accreditation Tab (Phase 110) ─────────────────────────────── */
+
+function AccreditationTab() {
+  const [accreditations, setAccreditations] = useState<any[]>([]);
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [showAdd, setShowAdd] = useState(false);
+  const [selectedAccred, setSelectedAccred] = useState<any>(null);
+  const [tasks, setTasks] = useState<any[]>([]);
+
+  const refresh = useCallback(() => {
+    setLoading(true);
+    Promise.all([
+      apiFetch('/rcm/accreditation'),
+      apiFetch('/rcm/accreditation/stats'),
+    ]).then(([accredData, statsData]) => {
+      setAccreditations(accredData.items ?? []);
+      setStats(statsData.stats ?? null);
+      setLoading(false);
+    }).catch(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const body: Record<string, string> = {};
+    fd.forEach((v, k) => { if (v) body[k] = v as string; });
+    body.createdBy = 'admin';
+    await apiFetch('/rcm/accreditation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    setShowAdd(false);
+    refresh();
+  };
+
+  const loadDetail = async (id: string) => {
+    const data = await apiFetch(`/rcm/accreditation/${id}`);
+    setSelectedAccred(data.item);
+    setTasks(data.tasks ?? []);
+  };
+
+  const handleAddTask = async (accredId: string) => {
+    const title = prompt('Task title:');
+    if (!title) return;
+    await apiFetch(`/rcm/accreditation/${accredId}/tasks`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, priority: 'medium' }),
+    });
+    loadDetail(accredId);
+  };
+
+  const handleCompleteTask = async (taskId: string) => {
+    await apiFetch(`/rcm/accreditation/tasks/${taskId}/complete`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ completedBy: 'admin' }),
+    });
+    if (selectedAccred) loadDetail(selectedAccred.id);
+  };
+
+  const statusColor = (s: string) => {
+    if (s === 'active') return { bg: '#d1e7dd', fg: '#0f5132' };
+    if (s === 'pending' || s === 'contracting_needed') return { bg: '#fff3cd', fg: '#664d03' };
+    if (s === 'expiring') return { bg: '#fff3cd', fg: '#664d03' };
+    if (s === 'denied' || s === 'suspended') return { bg: '#f8d7da', fg: '#842029' };
+    return { bg: '#e2e3e5', fg: '#41464b' };
+  };
+
+  return (
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <h3 style={{ margin: 0, fontSize: 16 }}>Accreditation Status Dashboard (DB-backed)</h3>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button onClick={refresh} style={{ padding: '4px 12px', fontSize: 12, cursor: 'pointer' }}>Refresh</button>
+          <button onClick={() => setShowAdd(!showAdd)} style={{ padding: '4px 12px', fontSize: 12, cursor: 'pointer', background: '#0d6efd', color: '#fff', border: 'none', borderRadius: 4 }}>
+            + Add Accreditation
+          </button>
+        </div>
+      </div>
+
+      {stats && (
+        <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
+          <div style={{ padding: '8px 16px', background: '#e2e3e5', borderRadius: 6, fontSize: 12 }}>
+            <strong>Total:</strong> {stats.total}
+          </div>
+          {stats.byStatus && Object.entries(stats.byStatus).map(([s, cnt]) => {
+            const sc = statusColor(s);
+            return (
+              <div key={s} style={{ padding: '8px 16px', background: sc.bg, color: sc.fg, borderRadius: 6, fontSize: 12 }}>
+                <strong>{s.replaceAll('_', ' ').toUpperCase()}:</strong> {cnt as number}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {showAdd && (
+        <form onSubmit={handleCreate} style={{ marginBottom: 16, padding: 16, border: '1px solid #dee2e6', borderRadius: 6, background: '#f8f9fa' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 8 }}>
+            <input name="payerId" placeholder="Payer ID" required style={{ padding: '4px 8px', fontSize: 12 }} />
+            <input name="payerName" placeholder="Payer Name" required style={{ padding: '4px 8px', fontSize: 12 }} />
+            <input name="providerEntityId" placeholder="Provider NPI / Facility ID" required style={{ padding: '4px 8px', fontSize: 12 }} />
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 8 }}>
+            <select name="status" style={{ padding: '4px 8px', fontSize: 12 }}>
+              <option value="pending">Pending</option>
+              <option value="active">Active</option>
+              <option value="contracting_needed">Contracting Needed</option>
+              <option value="expiring">Expiring</option>
+              <option value="denied">Denied</option>
+              <option value="suspended">Suspended</option>
+            </select>
+            <input name="effectiveDate" type="date" style={{ padding: '4px 8px', fontSize: 12 }} />
+            <input name="expirationDate" type="date" style={{ padding: '4px 8px', fontSize: 12 }} />
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button type="submit" style={{ padding: '6px 16px', fontSize: 12, background: '#198754', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer' }}>Save</button>
+            <button type="button" onClick={() => setShowAdd(false)} style={{ padding: '6px 16px', fontSize: 12, cursor: 'pointer' }}>Cancel</button>
+          </div>
+        </form>
+      )}
+
+      {loading && <div style={{ color: '#6c757d', fontSize: 13 }}>Loading accreditations...</div>}
+
+      {selectedAccred && (
+        <div style={{ marginBottom: 16, padding: 16, border: '1px solid #0d6efd', borderRadius: 6, background: '#f0f7ff' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <h4 style={{ margin: 0, fontSize: 14 }}>{selectedAccred.payerName} -- {selectedAccred.providerEntityId}</h4>
+            <button onClick={() => setSelectedAccred(null)} style={{ border: 'none', background: 'transparent', cursor: 'pointer', fontSize: 14 }}>x</button>
+          </div>
+          <div style={{ fontSize: 12, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4, marginBottom: 8 }}>
+            <div><strong>Payer ID:</strong> {selectedAccred.payerId}</div>
+            <div><strong>Status:</strong> {selectedAccred.status}</div>
+            <div><strong>Effective:</strong> {selectedAccred.effectiveDate?.slice(0, 10) || '-'}</div>
+            <div><strong>Expiration:</strong> {selectedAccred.expirationDate?.slice(0, 10) || '-'}</div>
+            <div><strong>Last Verified:</strong> {selectedAccred.lastVerifiedAt ? `${selectedAccred.lastVerifiedAt.slice(0, 10)} by ${selectedAccred.lastVerifiedBy}` : 'Not verified'}</div>
+          </div>
+          {selectedAccred.notes?.length > 0 && (
+            <div style={{ marginBottom: 8 }}>
+              <strong style={{ fontSize: 12 }}>Notes:</strong>
+              <ul style={{ margin: '4px 0', paddingLeft: 16, fontSize: 11 }}>
+                {selectedAccred.notes.map((n: any, i: number) => (
+                  <li key={i}>{n.date?.slice(0, 10)} ({n.author}): {n.text}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+              <strong style={{ fontSize: 12 }}>Tasks ({tasks.length}):</strong>
+              <button onClick={() => handleAddTask(selectedAccred.id)} style={{ fontSize: 11, padding: '2px 8px', cursor: 'pointer', background: '#0d6efd', color: '#fff', border: 'none', borderRadius: 4 }}>+ Task</button>
+            </div>
+            {tasks.length > 0 ? (
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11 }}>
+                <thead>
+                  <tr style={{ background: '#e2e3e5', textAlign: 'left' }}>
+                    <th style={{ padding: '4px 6px' }}>Title</th>
+                    <th style={{ padding: '4px 6px' }}>Priority</th>
+                    <th style={{ padding: '4px 6px' }}>Status</th>
+                    <th style={{ padding: '4px 6px' }}>Due</th>
+                    <th style={{ padding: '4px 6px' }}>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {tasks.map((t: any) => (
+                    <tr key={t.id}>
+                      <td style={{ padding: '3px 6px', borderBottom: '1px solid #f0f0f0' }}>{t.title}</td>
+                      <td style={{ padding: '3px 6px', borderBottom: '1px solid #f0f0f0' }}>
+                        <span style={{
+                          fontSize: 10, fontWeight: 600, padding: '1px 6px', borderRadius: 4,
+                          background: t.priority === 'urgent' ? '#f8d7da' : t.priority === 'high' ? '#fff3cd' : '#e2e3e5',
+                          color: t.priority === 'urgent' ? '#842029' : t.priority === 'high' ? '#664d03' : '#41464b',
+                        }}>{t.priority?.toUpperCase()}</span>
+                      </td>
+                      <td style={{ padding: '3px 6px', borderBottom: '1px solid #f0f0f0' }}>
+                        <span style={{
+                          fontSize: 10, fontWeight: 600, padding: '1px 6px', borderRadius: 4,
+                          background: t.status === 'completed' ? '#d1e7dd' : t.status === 'blocked' ? '#f8d7da' : '#e2e3e5',
+                          color: t.status === 'completed' ? '#0f5132' : t.status === 'blocked' ? '#842029' : '#41464b',
+                        }}>{t.status?.toUpperCase()}</span>
+                      </td>
+                      <td style={{ padding: '3px 6px', borderBottom: '1px solid #f0f0f0' }}>{t.dueDate?.slice(0, 10) || '--'}</td>
+                      <td style={{ padding: '3px 6px', borderBottom: '1px solid #f0f0f0' }}>
+                        {t.status !== 'completed' && (
+                          <button onClick={() => handleCompleteTask(t.id)} style={{ fontSize: 10, padding: '1px 6px', cursor: 'pointer', background: '#198754', color: '#fff', border: 'none', borderRadius: 3 }}>Complete</button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div style={{ fontSize: 11, color: '#6c757d' }}>No tasks. Click &quot;+ Task&quot; to add.</div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {!loading && accreditations.length > 0 && (
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12, tableLayout: 'fixed' }}>
+          <thead>
+            <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Payer</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Provider Entity</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Status</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Effective</th>
+              <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Expiration</th>
+            </tr>
+          </thead>
+          <tbody>
+            {accreditations.map((a: any) => {
+              const sc = statusColor(a.status);
+              return (
+                <tr key={a.id} onClick={() => loadDetail(a.id)} style={{ cursor: 'pointer' }}>
+                  <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>{a.payerName}</td>
+                  <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0', fontFamily: 'monospace' }}>{a.providerEntityId}</td>
+                  <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>
+                    <span style={{ padding: '2px 6px', borderRadius: 4, fontSize: 10, fontWeight: 600, background: sc.bg, color: sc.fg }}>
+                      {a.status.toUpperCase().replaceAll('_', ' ')}
+                    </span>
+                  </td>
+                  <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>{a.effectiveDate?.slice(0, 10) || '--'}</td>
+                  <td style={{ padding: '4px 8px', borderBottom: '1px solid #f0f0f0' }}>{a.expirationDate?.slice(0, 10) || '--'}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
+
+      {!loading && accreditations.length === 0 && (
+        <div style={{ fontSize: 12, color: '#6c757d', padding: 16, textAlign: 'center' }}>No accreditation records yet. Click &quot;+ Add Accreditation&quot; to track payer enrollment status.</div>
       )}
     </div>
   );

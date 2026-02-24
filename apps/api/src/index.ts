@@ -114,6 +114,8 @@ import denialRoutes from "./rcm/denials/denial-routes.js";
 import reconciliationRoutes from "./rcm/reconciliation/recon-routes.js";
 // Phase 100: Eligibility + Claim Status Polling Framework (Adapter-first)
 import eligibilityClaimStatusRoutes from "./rcm/eligibility/routes.js";
+// Phase 110: RCM Core v1 -- DB-backed credential vault + accreditation
+import credentialVaultRoutes from "./rcm/credential-vault/credential-vault-routes.js";
 // Phase 41: RPC Registry + Action Registry (Vivian snapshot integration)
 import { RPC_REGISTRY, RPC_EXCEPTIONS, getFullRpcInventory } from "./vista/rpcRegistry.js";
 // Phase 48: Unified audit + connector resilience stats
@@ -394,6 +396,9 @@ server.register(reconciliationRoutes);
 
 // Register Phase 100 — Eligibility + Claim Status Polling Framework
 server.register(eligibilityClaimStatusRoutes);
+
+// Register Phase 110 — DB-backed Credential Vault + Accreditation Dashboard
+server.register(credentialVaultRoutes);
 
 // Register Migration Toolkit routes -- data portability import/export (Phase 50)
 server.register(migrationRoutes);
