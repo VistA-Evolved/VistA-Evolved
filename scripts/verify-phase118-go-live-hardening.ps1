@@ -105,15 +105,13 @@ else { Gate-Fail "/hardening/ auth" "Not in AUTH_RULES or not admin" }
 Write-Host "--- Gate 8: Incident Runbooks ---" -ForegroundColor White
 $runbooks = @("incident-auth-outage.md", "incident-vista-outage.md",
               "incident-pg-outage.md", "incident-pacs-outage.md")
-$allRb = $true
 foreach ($rb in $runbooks) {
   if (Test-Path "docs\runbooks\$rb") {
     $rbContent = Get-Content "docs\runbooks\$rb" -Raw
     if ($rbContent.Length -gt 500) { Gate-Pass "Runbook: $rb" }
-    else { Gate-Fail "Runbook: $rb" "Content too short"; $allRb = $false }
+    else { Gate-Fail "Runbook: $rb" "Content too short" }
   } else {
     Gate-Fail "Runbook: $rb" "Not found"
-    $allRb = $false
   }
 }
 

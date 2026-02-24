@@ -204,12 +204,13 @@ export default async function hardeningRoutes(server: FastifyInstance): Promise<
       detail: secureCookies ? "Secure flag enabled" : "NODE_ENV != production (secure flag off)",
     });
 
-    // 7. Imaging audit file sink
-    const imagingSinkEnabled = !!process.env.IMAGING_AUDIT_FILE || true; // default on (Phase 118)
+    // 7. Imaging audit file sink (default-on since Phase 118)
+    const imagingSinkPath = process.env.IMAGING_AUDIT_FILE || "logs/imaging-audit.jsonl";
+    const imagingSinkEnabled = imagingSinkPath.length > 0;
     checks.push({
       name: "imaging_audit_file_sink",
       status: imagingSinkEnabled ? "pass" : "warn",
-      detail: process.env.IMAGING_AUDIT_FILE || "logs/imaging-audit.jsonl (default)",
+      detail: imagingSinkPath + (process.env.IMAGING_AUDIT_FILE ? "" : " (default)"),
     });
 
     const passed = checks.filter((c) => c.status === "pass").length;

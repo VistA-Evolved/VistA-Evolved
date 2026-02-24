@@ -1,8 +1,8 @@
 /**
  * Release Candidate Baseline Load Test — Phase 118
  *
- * Validates p95 latency budgets from config/performance-budgets.json
- * against live API endpoints. Runs in 3 tiers: smoke, load, stress.
+ * Validates p95 latency budgets against live API endpoints.
+ * Runs in 3 tiers: smoke (default), load, stress.
  *
  * This test is the CI gate for performance regression detection.
  * If p95 exceeds the budget, the test fails.
