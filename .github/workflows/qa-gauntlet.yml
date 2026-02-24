@@ -7,15 +7,21 @@ on:
     # Nightly at 02:00 UTC
     - cron: "0 2 * * *"
   workflow_dispatch:
+    inputs:
+      suite:
+        description: "Suite to run (fast/rc/full)"
+        required: false
+        default: "rc"
 
 concurrency:
   group: qa-gauntlet-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  # ---- PR gates: fast feedback ----
-  smoke-and-security:
-    name: Smoke + Security
+  # ---- PR gates: FAST suite ----
+  gauntlet-fast:
+    name: Gauntlet FAST
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -43,30 +49,23 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: TypeScript check (API)
-        run: cd apps/api && pnpm exec tsc --noEmit
+      - name: Run QA Gauntlet (FAST)
+        run: pnpm qa:gauntlet:fast
 
-      - name: Security gates
-        run: pnpm qa:security
+      - name: Upload gauntlet results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-gauntlet-fast
+          path: artifacts/qa-gauntlet.json
+          retention-days: 7
 
-      - name: Prompts ordering gate
-        run: pnpm qa:prompts
-
-      - name: Phase index integrity gate
-        run: node scripts/qa-gates/phase-index-gate.mjs
-
-      - name: Evidence gate (standard)
-        run: node scripts/qa-gates/evidence-gate.mjs
-
-      - name: Prompts tree health gate
-        run: node scripts/qa-gates/prompts-tree-health.mjs
-
-  # ---- API integration tests (no VistA needed) ----
-  api-tests:
-    name: API Integration Tests
+  # ---- Nightly / manual: RC suite with --strict ----
+  gauntlet-rc:
+    name: Gauntlet RC (Strict)
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    needs: smoke-and-security
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
 
@@ -92,65 +91,16 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Unit tests (vitest, no external services)
-        run: cd apps/api && pnpm exec vitest run tests/qa-security.test.ts
-
-  # ---- Nightly: full E2E (requires servers) ----
-  nightly-e2e:
-    name: Full E2E Gauntlet
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "24.13.0"
-
-      - uses: pnpm/action-setup@v4
-        with:
-          version: "10.29.2"
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Install Playwright browsers
-        run: cd apps/web && pnpm exec playwright install --with-deps chromium
-
-      - name: Build web
-        run: cd apps/web && pnpm build
-
-      - name: Start API (background)
-        run: |
-          cd apps/api
-          cp .env.example .env.local 2>/dev/null || true
-          npx tsx --env-file=.env.local src/index.ts &
-          sleep 10
-        env:
-          NODE_ENV: test
-
-      - name: Start web (background)
-        run: |
-          cd apps/web
-          npx next start &
-          sleep 5
-
-      - name: Run smoke E2E
-        run: cd apps/web && pnpm exec playwright test e2e/qa-smoke.spec.ts --reporter=list
-
-      - name: Phase audit gate (nightly)
-        run: pnpm qa:phase-audit
+      - name: Run QA Gauntlet (RC + Strict)
+        run: node qa/gauntlet/cli.mjs --suite ${{ github.event.inputs.suite || 'rc' }} --strict --ci
 
       - name: Evidence gate (strict - nightly)
         run: node scripts/qa-gates/evidence-gate.mjs --strict
 
-      - name: Upload test results
+      - name: Upload gauntlet results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-results
-          path: |
-            apps/web/e2e-results.json
-            apps/web/e2e-report/
+          name: qa-gauntlet-rc
+          path: artifacts/qa-gauntlet.json
           retention-days: 7

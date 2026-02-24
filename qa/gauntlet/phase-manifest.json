@@ -1,0 +1,6392 @@
+{
+  "generatedAt": "2026-02-24T20:50:36.718Z",
+  "generator": "qa/gauntlet/build-manifest.mjs",
+  "phaseCount": 127,
+  "phases": [
+    {
+      "phaseId": "1",
+      "title": "HELLO SYSTEM",
+      "folder": "02-PHASE-1-HELLO-SYSTEM",
+      "tags": [
+        "infrastructure"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/health"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "2",
+      "title": "VISTA SANDBOX",
+      "folder": "03-PHASE-2-VISTA-SANDBOX",
+      "tags": [
+        "vista",
+        "infrastructure"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "3",
+      "title": "VISTA PING",
+      "folder": "04-PHASE-3-VISTA-PING",
+      "tags": [
+        "vista"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "4A",
+      "title": "DEFAULT PATIENT LIST",
+      "folder": "05-PHASE-4A-DEFAULT-PATIENT-LIST",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": [
+          "OR CPRS GUI CHART"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "4B",
+      "title": "PATIENT SEARCH",
+      "folder": "06-PHASE-4B-PATIENT-SEARCH",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/vista/patient-search?q=SMI"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "5",
+      "title": "CORE CLINICAL WORKFLOW",
+      "folder": "07-PHASE-5-CORE-CLINICAL-WORKFLOW",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/vista/allergies",
+          "/vista/allergies?dfn=<dfn>",
+          "/vista/patient-demographics?dfn=<dfn>",
+          "/vista/patient-search?q=SMI"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "6",
+      "title": "VITALS",
+      "folder": "08-PHASE-6-VITALS",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/vista/vitals",
+          "/vista/vitals?dfn=1",
+          "/vista/vitals?dfn=<dfn>"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "7",
+      "title": "NOTES",
+      "folder": "09-PHASE-7-NOTES",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/vista/notes",
+          "/vista/notes?dfn=1",
+          "/vista/notes?dfn=<dfn>"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "8",
+      "title": "MEDICATIONS",
+      "folder": "10-PHASE-8-MEDICATIONS",
+      "tags": [
+        "rcm"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/vista/medications",
+          "/vista/medications?dfn=1",
+          "/vista/medications?dfn=<dfn>"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "100",
+      "title": "ELIGIBILITY CLAIMSTATUS",
+      "folder": "100-PHASE-100-ELIGIBILITY-CLAIMSTATUS",
+      "tags": [
+        "rcm",
+        "analytics"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/rcm/claim-status/check",
+          "/rcm/claim-status/history",
+          "/rcm/claim-status/schedule",
+          "/rcm/claim-status/stats",
+          "/rcm/claim-status/timeline/:claimRef",
+          "/rcm/eligibility/check",
+          "/rcm/eligibility/history",
+          "/rcm/eligibility/stats"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "96",
+      "title": "PHILHEALTH ECLAIMS3 ADAPTER",
+      "folder": "100-PHASE-96-PHILHEALTH-ECLAIMS3-ADAPTER",
+      "tags": [
+        "rcm"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "96B",
+      "title": "QA AUDIT OS",
+      "folder": "101-PHASE-96B-QA-AUDIT-OS",
+      "tags": [
+        "security",
+        "qa"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/qa/dead-clicks",
+          "/qa/flows",
+          "/qa/flows/reload",
+          "/qa/flows/smoke-health/run",
+          "/qa/traces",
+          "/qa/traces/stats",
+          "/vista/default-patient-list"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "97",
+      "title": "HMO PORTAL ADAPTER",
+      "folder": "101-PHASE-97-HMO-PORTAL-ADAPTER",
+      "tags": [
+        "portal"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/rcm/hmo-portal/*",
+          "/rcm/hmo-portal/adapters",
+          "/rcm/hmo-portal/claims/build",
+          "/rcm/hmo-portal/claims/export",
+          "/rcm/hmo-portal/claims/submit",
+          "/rcm/hmo-portal/loa/build",
+          "/rcm/hmo-portal/loa/export",
+          "/rcm/hmo-portal/loa/submit",
+          "/rcm/hmo-portal/specialties",
+          "/rcm/hmo-portal/submissions",
+          "/rcm/hmo-portal/submissions/:id",
+          "/rcm/hmo-portal/submissions/:id/note",
+          "/rcm/hmo-portal/submissions/:id/status",
+          "/rcm/hmo-portal/submissions/stats"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "97B",
+      "title": "PH HMO DEEPENING V2",
+      "folder": "102-PHASE-97B-PH-HMO-DEEPENING-V2",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/rcm/hmo/contracting",
+          "/rcm/hmo/contracting/:taskId",
+          "/rcm/hmo/manifest",
+          "/rcm/hmo/market-summary"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "98",
+      "title": "RCM DENIALS",
+      "folder": "103-PHASE-98-RCM-DENIALS",
+      "tags": [
+        "rcm"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/rcm/denials",
+          "/rcm/denials/:id",
+          "/rcm/denials/:id/actions",
+          "/rcm/denials/:id/appeal-packet",
+          "/rcm/denials/:id/resolve",
+          "/rcm/denials/:id/resubmit",
+          "/rcm/denials/import/835"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "99",
+      "title": "RCM RECONCILIATION",
+      "folder": "104-PHASE-99-RCM-RECONCILIATION",
+      "tags": [
+        "rcm"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/rcm/reconciliation/import",
+          "/rcm/reconciliation/imports",
+          "/rcm/reconciliation/imports/:id",
+          "/rcm/reconciliation/match-batch",
+          "/rcm/reconciliation/matches/:id",
+          "/rcm/reconciliation/matches/review",
+          "/rcm/reconciliation/payments",
+          "/rcm/reconciliation/payments/:id",
+          "/rcm/reconciliation/payments/:id/match",
+          "/rcm/reconciliation/stats",
+          "/rcm/reconciliation/underpayments",
+          "/rcm/reconciliation/underpayments/:id",
+          "/rcm/reconciliation/underpayments/:id/send-to-denials"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "101",
+      "title": "PLATFORM DATA LAYER",
+      "folder": "105-PHASE-101-PLATFORM-DATA-LAYER",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "102",
+      "title": "REGISTRY MIGRATION",
+      "folder": "106-PHASE-102-REGISTRY-MIGRATION",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "103",
+      "title": "DB PERFORMANCE",
+      "folder": "107-PHASE-103-DB-PERFORMANCE",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "104",
+      "title": "DB SECURITY",
+      "folder": "108-PHASE-104-DB-SECURITY",
+      "tags": [
+        "security"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/admin/payer-db/audit/export",
+          "/admin/payer-db/audit/verify"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "105",
+      "title": "QA GAUNTLET",
+      "folder": "109-PHASE-105-QA-GAUNTLET",
+      "tags": [
+        "qa"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "9",
+      "title": "PROBLEM LIST",
+      "folder": "11-PHASE-9-PROBLEM-LIST",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/vista/problems",
+          "/vista/problems?dfn=1",
+          "/vista/problems?dfn=<dfn>"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "106",
+      "title": "VISTA ALIGNMENT",
+      "folder": "110-PHASE-106-VISTA-ALIGNMENT",
+      "tags": [
+        "vista"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": [
+          "FAKE NONEXISTENT RPC XYZ"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "107",
+      "title": "PRODUCTION POSTURE",
+      "folder": "111-PHASE-107-PRODUCTION-POSTURE",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/posture",
+          "/posture/backup",
+          "/posture/observability",
+          "/posture/performance",
+          "/posture/tenant",
+          "/posture/tenant-isolation"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "108",
+      "title": "PHASE AUDIT HARNESS",
+      "folder": "112-PHASE-108-PHASE-AUDIT-HARNESS",
+      "tags": [
+        "security",
+        "qa"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "109",
+      "title": "MODULAR PACKAGING",
+      "folder": "113-PHASE-109-MODULAR-PACKAGING",
+      "tags": [
+        "modularity"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/admin/modules/audit",
+          "/admin/modules/entitlements",
+          "/admin/modules/feature-flags?tenantId=X"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "110",
+      "title": "RCM CREDENTIAL VAULT LOA",
+      "folder": "114-PHASE-110-RCM-CREDENTIAL-VAULT-LOA",
+      "tags": [
+        "rcm"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/cprs/admin/rcm",
+          "/expiring",
+          "/rcm/accreditation",
+          "/rcm/accreditation/:id",
+          "/rcm/accreditation/:id/notes",
+          "/rcm/accreditation/:id/tasks",
+          "/rcm/accreditation/:id/verify",
+          "/rcm/accreditation/stats",
+          "/rcm/accreditation/tasks/:taskId",
+          "/rcm/accreditation/tasks/:taskId/complete",
+          "/rcm/audit/verify",
+          "/rcm/credential-vault",
+          "/rcm/credential-vault/:id",
+          "/rcm/credential-vault/:id/documents",
+          "/rcm/credential-vault/:id/verify",
+          "/rcm/credential-vault/documents/:docId",
+          "/rcm/credential-vault/expiring",
+          "/rcm/credential-vault/stats",
+          "/stats"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "111",
+      "title": "CLAIM LIFECYCLE SCRUBBER",
+      "folder": "115-PHASE-111-CLAIM-LIFECYCLE-SCRUBBER",
+      "tags": [
+        "rcm"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/rcm/claim-lifecycle/drafts",
+          "/rcm/claim-lifecycle/drafts/:id/denial",
+          "/rcm/claim-lifecycle/drafts/:id/events",
+          "/rcm/claim-lifecycle/drafts/:id/resubmit",
+          "/rcm/claim-lifecycle/drafts/:id/scrub",
+          "/rcm/claim-lifecycle/drafts/:id/scrub-results",
+          "/rcm/claim-lifecycle/drafts/:id/transition",
+          "/rcm/claim-lifecycle/drafts/aging",
+          "/rcm/claim-lifecycle/drafts/stats",
+          "/rcm/claim-lifecycle/metrics",
+          "/rcm/claim-lifecycle/metrics/scrub",
+          "/rcm/claim-lifecycle/rules"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "115",
+      "title": "DURABILITY WAVE2",
+      "folder": "115-PHASE-115-DURABILITY-WAVE2",
+      "tags": [
+        "analytics",
+        "durability"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "112",
+      "title": "EVIDENCE GATING",
+      "folder": "116-PHASE-112-EVIDENCE-GATING",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/rcm/evidence",
+          "/rcm/evidence/:id",
+          "/rcm/evidence/by-payer/:payerId",
+          "/rcm/evidence/by-payer/US-CMS-MEDICARE-A",
+          "/rcm/evidence/coverage",
+          "/rcm/evidence/gaps",
+          "/rcm/evidence/nonexistent",
+          "/rcm/evidence/stats",
+          "/rcm/evidence?status=archived"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "113B",
+      "title": "HARDENING",
+      "folder": "117-PHASE-113B-HARDENING",
+      "tags": [
+        "security"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "114",
+      "title": "DURABILITY WAVE1",
+      "folder": "118-PHASE-114-DURABILITY-WAVE1",
+      "tags": [
+        "analytics",
+        "durability"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "116",
+      "title": "JOB QUEUE",
+      "folder": "119-PHASE-116-JOB-QUEUE",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/admin/jobs/runs",
+          "/admin/jobs/status",
+          "/admin/jobs/trigger"
+        ],
+        "vistaProbes": [
+          "CREATE OR REPLACE",
+          "DROP FUNCTION IF EXISTS"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "10",
+      "title": "CPRS EXTRACT",
+      "folder": "12-PHASE-10-CPRS-EXTRACT",
+      "tags": [
+        "cprs"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/chart/100/cover",
+          "/chart/100/problems",
+          "/vista/medications",
+          "/vista/notes",
+          "/vista/problems",
+          "/vista/{domain",
+          "/vista/{domain}/rpc/{rpc-slug}"
+        ],
+        "vistaProbes": [
+          "ORQQPL PROBLEM LIST"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "117",
+      "title": "PG PROD POSTURE",
+      "folder": "120-PHASE-117-PG-PROD-POSTURE",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/api/capabilities",
+          "/auth/login",
+          "/auth/logout",
+          "/auth/session",
+          "/health",
+          "/posture/backup",
+          "/rcm/acks/ingest",
+          "/rcm/claims/draft",
+          "/rcm/workqueues",
+          "/rcm/workqueues/stats",
+          "/ready",
+          "/vista/allergies?dfn=3"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "118",
+      "title": "GO LIVE HARDENING",
+      "folder": "121-PHASE-118-GO-LIVE-HARDENING",
+      "tags": [
+        "security"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/admin/jobs/status",
+          "/api/capabilities",
+          "/auth/session",
+          "/hardening/audit-verify",
+          "/hardening/backup-status",
+          "/hardening/rc-checklist",
+          "/hardening/security-posture",
+          "/health",
+          "/iam/audit/verify",
+          "/imaging/audit/verify",
+          "/metrics/prometheus",
+          "/posture/observability",
+          "/rcm/audit/verify",
+          "/ready",
+          "/vista/allergies?dfn=3"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "119",
+      "title": "QA GAUNTLET",
+      "folder": "122-PHASE-119-QA-GAUNTLET",
+      "tags": [
+        "qa"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "11",
+      "title": "CPRS WEB REPLICA",
+      "folder": "13-PHASE-11-CPRS-WEB-REPLICA",
+      "tags": [
+        "cprs"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/cprs/chart/{dfn}/cover",
+          "/cprs/login",
+          "/cprs/patient-search",
+          "/cprs/settings/preferences",
+          "/cprs/verify"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "12",
+      "title": "CPRS PARITY WIRING",
+      "folder": "14-PHASE-12-CPRS-PARITY-WIRING",
+      "tags": [
+        "cprs"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/cprs/verify",
+          "/vista/consults/detail?id=",
+          "/vista/consults/detail?id=1",
+          "/vista/consults?dfn=",
+          "/vista/consults?dfn=1",
+          "/vista/dc-summaries?dfn=",
+          "/vista/dc-summaries?dfn=1",
+          "/vista/icd-search?q=",
+          "/vista/icd-search?q=hyper",
+          "/vista/labs?dfn=",
+          "/vista/labs?dfn=1",
+          "/vista/ping",
+          "/vista/reports",
+          "/vista/reports/text?dfn=&id=&hsType=",
+          "/vista/reports/text?dfn=1&id=1",
+          "/vista/surgery?dfn=",
+          "/vista/surgery?dfn=1",
+          "/vista/tiu-text?id=",
+          "/vista/tiu-text?id=1"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "13",
+      "title": "CPRS OPERATIONALIZATION",
+      "folder": "15-PHASE-13-CPRS-OPERATIONALIZATION",
+      "tags": [
+        "cprs"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/admin/audit-log",
+          "/auth/login",
+          "/auth/logout",
+          "/auth/session",
+          "/cprs/inbox",
+          "/cprs/login",
+          "/cprs/order-sets",
+          "/cprs/remote-data-viewer",
+          "/vista/inbox",
+          "/ws/console"
+        ],
+        "vistaProbes": [
+          "ORWPT LIST ALL"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "14",
+      "title": "PARITY CLOSURE",
+      "folder": "16-PHASE-14-PARITY-CLOSURE",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/vista/consults/create",
+          "/vista/drafts",
+          "/vista/drafts/stats",
+          "/vista/imaging/report",
+          "/vista/imaging/status",
+          "/vista/inbox",
+          "/vista/labs/ack",
+          "/vista/orders/release",
+          "/vista/orders/sign",
+          "/vista/problems/save",
+          "/vista/rpc-capabilities",
+          "/vista/surgery/create",
+          "/vista/write-audit"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "15",
+      "title": "ENTERPRISE HARDENING",
+      "folder": "17-PHASE-15-ENTERPRISE-HARDENING",
+      "tags": [
+        "security"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/audit/events",
+          "/audit/stats",
+          "/auth/login",
+          "/auth/session",
+          "/health",
+          "/metrics",
+          "/ready"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "16",
+      "title": "PRODUCTION READINESS",
+      "folder": "18-PHASE-16-PRODUCTION-READINESS",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/health",
+          "/metrics",
+          "/ready",
+          "/version"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "17",
+      "title": "MULTITENANT CONTROL PLANE",
+      "folder": "19-PHASE-17-MULTITENANT-CONTROL-PLANE",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/admin/feature-flags",
+          "/admin/templates",
+          "/admin/tenant-config",
+          "/admin/ui-defaults"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "18",
+      "title": "INTEROP IMAGING",
+      "folder": "20-PHASE-18-INTEROP-IMAGING",
+      "tags": [
+        "imaging",
+        "interop"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/admin/integrations/registry/*",
+          "/vista/imaging/studies",
+          "/vista/imaging/viewer-url"
+        ],
+        "vistaProbes": [
+          "C0FHIR GET FULL BUNDLE",
+          "MAG4 IMAGE INFO",
+          "MAG4 PAT GET IMAGES",
+          "MAG4 REMOTE PROCEDURE",
+          "RA DETAILED REPORT"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "19",
+      "title": "REPORTING GOVERNANCE",
+      "folder": "21-PHASE-19-REPORTING-GOVERNANCE",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/audit/events",
+          "/audit/stats",
+          "/cprs/admin/rcm",
+          "/cprs/admin/reports",
+          "/metrics",
+          "/reports/",
+          "/reports/*",
+          "/reports/audit",
+          "/reports/clinical",
+          "/reports/clinical-activity",
+          "/reports/export",
+          "/reports/export/:jobId",
+          "/reports/export/jobs",
+          "/reports/integrations",
+          "/reports/operations"
+        ],
+        "vistaProbes": [
+          "ORWRP REPORT TEXT"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "20",
+      "title": "VISTA FIRST GROUNDING",
+      "folder": "22-PHASE-20-VISTA-FIRST-GROUNDING",
+      "tags": [
+        "vista"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "21",
+      "title": "INTEROP REALITY",
+      "folder": "23-PHASE-21-INTEROP-REALITY",
+      "tags": [
+        "interop"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/vista/interop/hl7-links",
+          "/vista/interop/hl7-messages",
+          "/vista/interop/hlo-status",
+          "/vista/interop/queue-depth",
+          "/vista/interop/summary"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "22",
+      "title": "IMAGING PLATFORM",
+      "folder": "24-PHASE-22-IMAGING-PLATFORM",
+      "tags": [
+        "imaging"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/imaging/dicom-web/studies",
+          "/imaging/health",
+          "/vista/imaging/patient-images?dfn=X",
+          "/vista/imaging/patient-photos?dfn=X",
+          "/vista/imaging/status"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "23",
+      "title": "IMAGING WORKFLOW",
+      "folder": "25-PHASE-23-IMAGING-WORKFLOW",
+      "tags": [
+        "imaging"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/imaging/ingest/callback",
+          "/imaging/ingest/unmatched",
+          "/imaging/ingest/unmatched/:id/link",
+          "/imaging/worklist",
+          "/imaging/worklist/:id",
+          "/imaging/worklist/:id/status",
+          "/imaging/worklist/orders"
+        ],
+        "vistaProbes": [
+          "CHEST 2 VIEWS"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "24",
+      "title": "IMAGING ENTERPRISE",
+      "folder": "26-PHASE-24-IMAGING-ENTERPRISE",
+      "tags": [
+        "imaging"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/security/break-glass/start",
+          "/security/break-glass/stop"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "25",
+      "title": "BI ANALYTICS",
+      "folder": "27-PHASE-25-BI-ANALYTICS",
+      "tags": [
+        "analytics"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/analytics/dashboards/clinical-utilization",
+          "/analytics/dashboards/ops",
+          "/analytics/etl/status",
+          "/analytics/etl/sync",
+          "/vista/reports",
+          "/vista/reports/text"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "26",
+      "title": "PORTAL TELEHEALTH",
+      "folder": "28-PHASE-26-PORTAL-TELEHEALTH",
+      "tags": [
+        "portal",
+        "telehealth"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/dashboard",
+          "/dashboard/appointments",
+          "/dashboard/health",
+          "/dashboard/medications",
+          "/dashboard/messages",
+          "/dashboard/profile",
+          "/dashboard/telehealth",
+          "/portal/*",
+          "/portal/audit/events",
+          "/portal/audit/stats",
+          "/portal/auth/login",
+          "/portal/auth/logout",
+          "/portal/auth/session",
+          "/portal/health/*"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "27",
+      "title": "PORTAL CORE",
+      "folder": "29-PHASE-27-PORTAL-CORE",
+      "tags": [
+        "portal"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "28",
+      "title": "ENTERPRISE INTAKE OS",
+      "folder": "30-PHASE-28-ENTERPRISE-INTAKE-OS",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "29",
+      "title": "PATIENT IAM",
+      "folder": "31-PHASE-29-PATIENT-IAM",
+      "tags": [
+        "security"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "30",
+      "title": "TELEHEALTH",
+      "folder": "32-PHASE-30-TELEHEALTH",
+      "tags": [
+        "telehealth"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "31",
+      "title": "SHARING EXPORTS",
+      "folder": "33-PHASE-31-SHARING-EXPORTS",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "32",
+      "title": "MESSAGING REFILLS",
+      "folder": "34-PHASE-32-MESSAGING-REFILLS",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/portal/staff/tasks",
+          "/portal/tasks"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "33",
+      "title": "AI ASSIST GATEWAY",
+      "folder": "35-PHASE-33-AI-ASSIST-GATEWAY",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "34",
+      "title": "REGULATED SDLC",
+      "folder": "36-PHASE-34-REGULATED-SDLC",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "35",
+      "title": "IAM AUTHZ AUDIT",
+      "folder": "37-PHASE-35-IAM-AUTHZ-AUDIT",
+      "tags": [
+        "security"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "36",
+      "title": "OBSERVABILITY RELIABILITY",
+      "folder": "38-PHASE-36-OBSERVABILITY-RELIABILITY",
+      "tags": [
+        "analytics",
+        "observability"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/health",
+          "/metrics",
+          "/metrics/prometheus",
+          "/ready",
+          "/version"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "37",
+      "title": "QUALITY HARDENING",
+      "folder": "39-PHASE-37-QUALITY-HARDENING",
+      "tags": [
+        "security"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "37B",
+      "title": "CPRS PARITY GROUNDING",
+      "folder": "40-PHASE-37B-CPRS-PARITY-GROUNDING",
+      "tags": [
+        "cprs"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/vista/rpc-catalog"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "37C",
+      "title": "PRODUCT MODULARITY",
+      "folder": "41-PHASE-37C-PRODUCT-MODULARITY",
+      "tags": [
+        "modularity"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "38",
+      "title": "RCM PAYER CONNECTIVITY",
+      "folder": "42-PHASE-38-RCM-PAYER-CONNECTIVITY",
+      "tags": [
+        "rcm"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/auth/login",
+          "/rcm/",
+          "/rcm/*",
+          "/rcm/audit/verify",
+          "/rcm/claims/:id/submit",
+          "/rcm/claims/:id/timeline",
+          "/rcm/claims/:id/transition",
+          "/rcm/claims/:id/validate",
+          "/rcm/claims/draft",
+          "/rcm/claims/stats",
+          "/rcm/connectors",
+          "/rcm/edi/pipeline",
+          "/rcm/health",
+          "/rcm/payers",
+          "/rcm/remittances",
+          "/rcm/remittances/import",
+          "/rcm/validation/rules"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "39",
+      "title": "BILLING GROUNDING",
+      "folder": "43-PHASE-39-BILLING-GROUNDING",
+      "tags": [
+        "rcm",
+        "analytics"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/vista/rcm/ar-status?dfn=N",
+          "/vista/rcm/charges?dfn=N",
+          "/vista/rcm/claims-status?dfn=N",
+          "/vista/rcm/encounters?dfn=N",
+          "/vista/rcm/icd-search?text=X",
+          "/vista/rcm/insurance?dfn=N"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "40",
+      "title": "PAYER CONNECTIVITY",
+      "folder": "44-PHASE-40-PAYER-CONNECTIVITY",
+      "tags": [
+        "rcm"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "41",
+      "title": "VIVIAN RPC CATALOG",
+      "folder": "45-PHASE-41-VIVIAN-RPC-CATALOG",
+      "tags": [
+        "vista"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/vista/rpc-catalog"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "42",
+      "title": "VISTA BILLING RCM",
+      "folder": "46-PHASE-42-VISTA-BILLING-RCM",
+      "tags": [
+        "rcm",
+        "vista",
+        "analytics"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/rcm/vista/claim-drafts",
+          "/rcm/vista/coverage",
+          "/rcm/vista/encounters"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "43",
+      "title": "RCM LOOP",
+      "folder": "47-PHASE-43-RCM-LOOP",
+      "tags": [
+        "rcm"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "43",
+      "title": "VERIFY",
+      "folder": "48-PHASE-43-VERIFY",
+      "tags": [
+        "qa"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "44",
+      "title": "PAYER DIRECTORY",
+      "folder": "49-PHASE-44-PAYER-DIRECTORY",
+      "tags": [
+        "rcm"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "45",
+      "title": "TRANSACTION ENGINE",
+      "folder": "50-PHASE-45-TRANSACTION-ENGINE",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/rcm/connectivity/profile",
+          "/rcm/transactions/*"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "46",
+      "title": "NATIONAL GATEWAY PACKS",
+      "folder": "51-PHASE-46-NATIONAL-GATEWAY-PACKS",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/rcm/gateways/readiness"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "47",
+      "title": "CI EVIDENCE QUALITY GATES",
+      "folder": "52-PHASE-47-CI-EVIDENCE-QUALITY-GATES",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "48",
+      "title": "OBSERVABILITY INCIDENT RUNTIME",
+      "folder": "53-PHASE-48-OBSERVABILITY-INCIDENT-RUNTIME",
+      "tags": [
+        "analytics",
+        "observability"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "49",
+      "title": "VISTA AUTH HARDENING RBAC",
+      "folder": "54-PHASE-49-VISTA-AUTH-HARDENING-RBAC",
+      "tags": [
+        "security",
+        "vista"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "50",
+      "title": "MIGRATION TOOLKIT",
+      "folder": "55-PHASE-50-MIGRATION-TOOLKIT",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/migration/health",
+          "/migration/templates"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "51",
+      "title": "ENTERPRISE PACKAGING",
+      "folder": "56-PHASE-51-ENTERPRISE-PACKAGING",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "52",
+      "title": "E2E PERF BUDGETS",
+      "folder": "57-PHASE-52-E2E-PERF-BUDGETS",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "53",
+      "title": "PROMPTOS GOVERNANCE",
+      "folder": "58-PHASE-53-PROMPTOS-GOVERNANCE",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/artifacts",
+          "/artifacts/",
+          "/artifacts/**",
+          "/artifacts/_legacy_verify_outputs/",
+          "/artifacts/promptos/",
+          "/docs/decisions",
+          "/docs/reports",
+          "/docs/reports/",
+          "/docs/runbooks",
+          "/prompts",
+          "/reports",
+          "/reports/",
+          "/scripts"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "54",
+      "title": "ALIGNMENT AUDIT",
+      "folder": "59-PHASE-54-ALIGNMENT-AUDIT",
+      "tags": [
+        "security",
+        "vista"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/artifacts/audit/*",
+          "/artifacts/audit/**"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "55",
+      "title": "CPRS PARITY HARNESS",
+      "folder": "60-PHASE-55-CPRS-PARITY-HARNESS",
+      "tags": [
+        "cprs",
+        "qa"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "56",
+      "title": "CPRS WAVE1 LAYOUT",
+      "folder": "61-PHASE-56-CPRS-WAVE1-LAYOUT",
+      "tags": [
+        "cprs"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "57",
+      "title": "CPRS WAVE2 WRITE",
+      "folder": "62-PHASE-57-CPRS-WAVE2-WRITE",
+      "tags": [
+        "cprs"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/vista/cprs/allergies/add",
+          "/vista/cprs/labs/ack",
+          "/vista/cprs/meds/quick-order",
+          "/vista/cprs/notes/create",
+          "/vista/cprs/orders/draft",
+          "/vista/cprs/problems/add",
+          "/vista/cprs/problems/edit",
+          "/vista/cprs/vitals/add"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "58",
+      "title": "INTEROP MONITOR V2",
+      "folder": "63-PHASE-58-INTEROP-MONITOR-V2",
+      "tags": [
+        "interop"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/interop/hl7/summary",
+          "/v2/hl7/messages",
+          "/v2/hl7/messages/:id",
+          "/v2/hl7/messages/:id/unmask",
+          "/v2/hl7/summary",
+          "/v2/hlo/summary"
+        ],
+        "vistaProbes": [
+          "VE INTEROP MSG DETAIL",
+          "VE INTEROP MSG LIST"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "59",
+      "title": "CPOE PARITY",
+      "folder": "64-PHASE-59-CPOE-PARITY",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/vista/cprs/order-checks",
+          "/vista/cprs/orders",
+          "/vista/cprs/orders/imaging",
+          "/vista/cprs/orders/lab",
+          "/vista/cprs/orders/sign"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "60",
+      "title": "TIU NOTES PARITY",
+      "folder": "65-PHASE-60-TIU-NOTES-PARITY",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/vista/cprs/notes",
+          "/vista/cprs/notes/addendum",
+          "/vista/cprs/notes/create",
+          "/vista/cprs/notes/sign",
+          "/vista/cprs/notes/text",
+          "/vista/cprs/notes/titles"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "61",
+      "title": "PORTAL DIGITAL FRONT DOOR",
+      "folder": "66-PHASE-61-PORTAL-DIGITAL-FRONT-DOOR",
+      "tags": [
+        "portal"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/portal/health/consults",
+          "/portal/health/dc-summaries",
+          "/portal/health/labs",
+          "/portal/health/reports",
+          "/portal/health/surgery"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "62",
+      "title": "GO LIVE HARDENING",
+      "folder": "67-PHASE-62-GO-LIVE-HARDENING",
+      "tags": [
+        "security"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "63",
+      "title": "SCHEDULING V1",
+      "folder": "68-PHASE-63-SCHEDULING-V1",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/scheduling/appointments/:id/cancel",
+          "/scheduling/appointments/:id/reschedule",
+          "/scheduling/appointments/provider?duz=X",
+          "/scheduling/appointments/request",
+          "/scheduling/appointments?dfn=X",
+          "/scheduling/clinics",
+          "/scheduling/slots?clinicIen=X&date=Y"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "64",
+      "title": "SECURE MESSAGING V1",
+      "folder": "69-PHASE-64-SECURE-MESSAGING-V1",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/artifacts/verify/phase64/"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "70",
+      "title": "MAILMAN RPC BRIDGE",
+      "folder": "70-PHASE-70-MAILMAN-RPC-BRIDGE",
+      "tags": [
+        "vista"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/messaging/compose",
+          "/messaging/folders",
+          "/messaging/health",
+          "/messaging/inbox",
+          "/messaging/mail-get",
+          "/messaging/mail-get?ien=<N>",
+          "/messaging/mail-list",
+          "/messaging/mail-list?folderId=1",
+          "/messaging/mail-manage"
+        ],
+        "vistaProbes": [
+          "DSIC SEND MAIL MSG"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "65",
+      "title": "IMMUNIZATIONS",
+      "folder": "71-PHASE-65-IMMUNIZATIONS",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/vista/immunizations",
+          "/vista/immunizations?dfn=3",
+          "/vista/immunizations?dfn=X",
+          "/vista/immunizations?dfn=abc"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "66",
+      "title": "PRODUCTION IAM V1",
+      "folder": "72-PHASE-66-PRODUCTION-IAM-V1",
+      "tags": [
+        "security"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "67",
+      "title": "ADT INPATIENT",
+      "folder": "73-PHASE-67-ADT-INPATIENT",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/vista/adt/*",
+          "/vista/adt/admit",
+          "/vista/adt/discharge",
+          "/vista/adt/locations?search=TEXT",
+          "/vista/adt/provider-patients",
+          "/vista/adt/specialties",
+          "/vista/adt/specialty-patients?specialty=IEN",
+          "/vista/adt/team-patients?team=IEN",
+          "/vista/adt/teams",
+          "/vista/adt/transfer",
+          "/vista/adt/ward-patients?ward=IEN",
+          "/vista/adt/wards"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "68",
+      "title": "NURSING WORKFLOW",
+      "folder": "74-PHASE-68-NURSING-WORKFLOW",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "69",
+      "title": "RCM OPS EXCELLENCE",
+      "folder": "75-PHASE-69-RCM-OPS-EXCELLENCE",
+      "tags": [
+        "rcm"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "71",
+      "title": "INTEROP MONITOR V2",
+      "folder": "76-PHASE-71-INTEROP-MONITOR-V2",
+      "tags": [
+        "interop"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": [
+          "VE INTEROP HL7 LINKS"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "72",
+      "title": "REALITY VERIFIER PACK",
+      "folder": "77-PHASE-72-REALITY-VERIFIER-PACK",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/messaging/read/:id",
+          "/portal/messages/:id",
+          "/portal/proxy/revoke",
+          "/portal/shares/:id/revoke",
+          "/version"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "73",
+      "title": "DRIFT LOCK",
+      "folder": "78-PHASE-73-DRIFT-LOCK",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "74",
+      "title": "REALITY VERIFIER V2",
+      "folder": "79-PHASE-74-REALITY-VERIFIER-V2",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/admin/fake-success-audit"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "75",
+      "title": "GO LIVE EVIDENCE PACK",
+      "folder": "80-PHASE-75-GO-LIVE-EVIDENCE-PACK",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/artifacts/evidence/phase75/backup/",
+          "/artifacts/evidence/phase75/perf/"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "76",
+      "title": "MODULARIZATION V1",
+      "folder": "81-PHASE-76-MODULARIZATION-V1",
+      "tags": [
+        "modularity"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/api/modules/override"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "77",
+      "title": "OBSERVABILITY V1",
+      "folder": "82-PHASE-77-OBSERVABILITY-V1",
+      "tags": [
+        "analytics",
+        "observability"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/docs/reports",
+          "/metrics",
+          "/metrics/prometheus",
+          "/reports"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "78",
+      "title": "PENDING BURNDOWN",
+      "folder": "83-PHASE-78-PENDING-BURNDOWN",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/vista/cprs/consults/detail",
+          "/vista/imaging/patient-images",
+          "/vista/imaging/patient-photos",
+          "/vista/imaging/radiology-report"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "79",
+      "title": "COVERSHEET LAYOUT",
+      "folder": "84-PHASE-79-COVERSHEET-LAYOUT",
+      "tags": [
+        "cprs"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/ui-prefs/coversheet"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "80",
+      "title": "PATIENT RECORD PORTABILITY",
+      "folder": "85-PHASE-80-PATIENT-RECORD-PORTABILITY",
+      "tags": [
+        "analytics"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/portal/record/export",
+          "/portal/record/export/:token",
+          "/portal/record/share",
+          "/portal/record/share/:id/revoke",
+          "/portal/record/share/audit"
+        ],
+        "vistaProbes": [
+          "ORWRP REPORT LISTS"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "81",
+      "title": "IMAGING VIEWER V1",
+      "folder": "86-PHASE-81-IMAGING-VIEWER-V1",
+      "tags": [
+        "imaging"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/imaging/report/:studyId",
+          "/imaging/studies/:dfn",
+          "/imaging/viewer-link/:studyId",
+          "/vista/imaging/report",
+          "/vista/imaging/status"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "82",
+      "title": "RCM ADAPTER EXPANSION V2",
+      "folder": "87-PHASE-82-RCM-ADAPTER-EXPANSION-V2",
+      "tags": [
+        "rcm"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "83",
+      "title": "INPATIENT ADT",
+      "folder": "88-PHASE-83-INPATIENT-ADT",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/cprs/inpatient/",
+          "/vista/inpatient/*"
+        ],
+        "vistaProbes": [
+          "ORQPT WARD PATIENTS",
+          "ORQPT WARDS",
+          "ORWPT16 ADMITLST"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "84",
+      "title": "NURSING",
+      "folder": "89-PHASE-84-NURSING",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/cprs/nursing",
+          "/vista/nursing/assessments?dfn=N",
+          "/vista/nursing/critical-thresholds",
+          "/vista/nursing/flowsheet?dfn=N",
+          "/vista/nursing/io?dfn=N",
+          "/vista/nursing/note-text?ien=N",
+          "/vista/nursing/notes/create",
+          "/vista/nursing/patient-context?dfn=N"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "85",
+      "title": "EMAR BCMA",
+      "folder": "90-PHASE-85-EMAR-BCMA",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/emar/administer",
+          "/emar/allergies?dfn=N",
+          "/emar/barcode-scan",
+          "/emar/duplicate-check?dfn=N",
+          "/emar/history?dfn=N",
+          "/emar/schedule?dfn=N"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "86",
+      "title": "SHIFT HANDOFF",
+      "folder": "91-PHASE-86-SHIFT-HANDOFF",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": [
+          "CRHD GET PAT LIST",
+          "CRHD GET PREFERENCES",
+          "CRHD HOT TEAM LIST",
+          "CRHD HOT TEAM SAVE",
+          "CRHD INPT LIST"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "87",
+      "title": "MEGA AUDIT",
+      "folder": "92-PHASE-87-MEGA-AUDIT",
+      "tags": [
+        "security"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/rcm/payerops/*",
+          "/rcm/payerops/adapters",
+          "/rcm/payerops/credentials",
+          "/rcm/payerops/credentials/:id",
+          "/rcm/payerops/credentials/expiring",
+          "/rcm/payerops/enrollments",
+          "/rcm/payerops/enrollments/:id/status",
+          "/rcm/payerops/health",
+          "/rcm/payerops/loa",
+          "/rcm/payerops/loa/:id/pack",
+          "/rcm/payerops/loa/:id/status",
+          "/rcm/payerops/loa/:id/submit",
+          "/rcm/payerops/stats"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "87",
+      "title": "PH RCM",
+      "folder": "93-PHASE-87-PH-RCM",
+      "tags": [
+        "rcm"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/rcm/payerops/*",
+          "/rcm/payerops/adapters",
+          "/rcm/payerops/credentials",
+          "/rcm/payerops/credentials/:id",
+          "/rcm/payerops/credentials/expiring",
+          "/rcm/payerops/enrollments",
+          "/rcm/payerops/enrollments/:id/status",
+          "/rcm/payerops/health",
+          "/rcm/payerops/loa",
+          "/rcm/payerops/loa/:id/pack",
+          "/rcm/payerops/loa/:id/status",
+          "/rcm/payerops/loa/:id/submit",
+          "/rcm/payerops/stats"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "88",
+      "title": "PH PAYER REGISTRY",
+      "folder": "94-PHASE-88-PH-PAYER-REGISTRY",
+      "tags": [
+        "rcm"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "89",
+      "title": "LOA ENGINE V1",
+      "folder": "95-PHASE-89-LOA-ENGINE-V1",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/loa/:id/assign",
+          "/rcm/",
+          "/rcm/payerops/loa-queue"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "90",
+      "title": "PHILHEALTH ECLAIMS3",
+      "folder": "96-PHASE-90-PHILHEALTH-ECLAIMS3",
+      "tags": [
+        "rcm"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "91",
+      "title": "CLAIMS LIFECYCLE",
+      "folder": "97-PHASE-91-CLAIMS-LIFECYCLE",
+      "tags": [
+        "rcm"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/cprs/admin/claims-queue",
+          "/cprs/admin/denials",
+          "/rcm/claims/*"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "92",
+      "title": "PAYMENTS",
+      "folder": "98-PHASE-92-PAYMENTS",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/batches/:id/import",
+          "/batches/:id/match",
+          "/batches/:id/upload",
+          "/payerops/",
+          "/payerops/analytics/aging",
+          "/payerops/analytics/payer-intelligence",
+          "/payerops/exports/payments/:id?format=csv",
+          "/payerops/exports/payments/:id?format=json",
+          "/payerops/payments/batches",
+          "/payerops/payments/batches/:id",
+          "/payerops/payments/reconciliation",
+          "/payerops/payments/store-info",
+          "/payerops/payments/underpayments",
+          "/rcm/",
+          "/rcm/claims",
+          "/rcm/payers",
+          "/reconciliation/:lineId/link-claim",
+          "/reports",
+          "/vista/ping"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "93",
+      "title": "PH HMO DEEPENING",
+      "folder": "99-PHASE-93-PH-HMO-DEEPENING",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/rcm/payers/ph/hmos",
+          "/rcm/payers/ph/hmos/:payerId",
+          "/rcm/payers/ph/hmos/:payerId/capabilities",
+          "/rcm/payers/ph/hmos/:payerId/claim-packet",
+          "/rcm/payers/ph/hmos/:payerId/loa-packet",
+          "/rcm/payers/ph/hmos/stats",
+          "/rcm/payers/ph/hmos/validate"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "94",
+      "title": "PH HMO WORKFLOW",
+      "folder": "99-PHASE-94-PH-HMO-WORKFLOW",
+      "tags": [
+        "general"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "95",
+      "title": "PAYER REGISTRY PERSISTENCE",
+      "folder": "99-PHASE-95-PAYER-REGISTRY-PERSISTENCE",
+      "tags": [
+        "rcm",
+        "durability"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G7_restart_durability"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [
+          "/admin/payers",
+          "/admin/payers/:id",
+          "/admin/payers/:id/audit",
+          "/admin/payers/:id/capabilities",
+          "/admin/payers/:id/tasks",
+          "/admin/payers/import"
+        ],
+        "vistaProbes": []
+      },
+      "notes": ""
+    },
+    {
+      "phaseId": "95B",
+      "title": "PLATFORM PERSISTENCE",
+      "folder": "99-PHASE-95B-PLATFORM-PERSISTENCE",
+      "tags": [
+        "durability"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": [],
+        "vistaProbes": []
+      },
+      "notes": ""
+    }
+  ]
+}

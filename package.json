@@ -28,6 +28,10 @@
     "qa:phase": "node scripts/phase-qa-runner.mjs phase",
     "qa:range": "node scripts/phase-qa-runner.mjs range",
     "qa:phase-index": "node scripts/build-phase-index.mjs",
-    "qa:phase-audit": "node scripts/qa-runner.mjs phase-audit"
+    "qa:phase-audit": "node scripts/qa-runner.mjs phase-audit",
+    "qa:gauntlet:fast": "node qa/gauntlet/cli.mjs --suite fast",
+    "qa:gauntlet:rc": "node qa/gauntlet/cli.mjs --suite rc",
+    "qa:gauntlet:full": "node qa/gauntlet/cli.mjs --suite full",
+    "qa:gauntlet:manifest": "node qa/gauntlet/build-manifest.mjs"
   }
 }

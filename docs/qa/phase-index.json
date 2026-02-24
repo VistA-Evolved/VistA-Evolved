@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-24T02:28:41.557Z",
+  "generatedAt": "2026-02-24T20:46:04.233Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 116,
+  "phaseCount": 127,
   "phases": [
     {
       "phaseNumber": "1",
@@ -757,6 +757,324 @@
       ]
     },
     {
+      "phaseNumber": "109",
+      "title": "Modular Packaging + Feature Flags",
+      "folder": "113-PHASE-109-MODULAR-PACKAGING",
+      "files": [
+        "109-01-IMPLEMENT.md",
+        "109-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "109-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "109-99-VERIFY.md"
+      ],
+      "routes": [
+        "/admin/modules/audit",
+        "/admin/modules/entitlements",
+        "/admin/modules/feature-flags?tenantId=X"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "docs/architecture/module-catalog.md",
+        "apps/api/src/platform/db/schema.ts",
+        "apps/api/src/platform/db/migrate.ts",
+        "apps/api/src/platform/db/repo/module-repo.ts",
+        "apps/api/src/platform/db/repo/index.ts",
+        "apps/api/src/modules/module-registry.ts",
+        "apps/api/src/modules/feature-flags.ts",
+        "apps/api/src/routes/module-entitlement-routes.ts",
+        "apps/api/src/middleware/module-guard.ts",
+        "apps/api/src/index.ts",
+        "apps/web/src/app/cprs/admin/modules/page.tsx",
+        "scripts/verify-phase109-modular-packaging.ps",
+        "docs/qa/phase-index.json"
+      ]
+    },
+    {
+      "phaseNumber": "110",
+      "title": "RCM Core v1: Credential Vault + LOA Engine",
+      "folder": "114-PHASE-110-RCM-CREDENTIAL-VAULT-LOA",
+      "files": [
+        "110-01-IMPLEMENT.md",
+        "110-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "110-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "110-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/admin/rcm",
+        "/expiring",
+        "/rcm/accreditation",
+        "/rcm/accreditation/:id",
+        "/rcm/accreditation/:id/notes",
+        "/rcm/accreditation/:id/tasks",
+        "/rcm/accreditation/:id/verify",
+        "/rcm/accreditation/stats",
+        "/rcm/accreditation/tasks/:taskId",
+        "/rcm/accreditation/tasks/:taskId/complete",
+        "/rcm/audit/verify",
+        "/rcm/credential-vault",
+        "/rcm/credential-vault/:id",
+        "/rcm/credential-vault/:id/documents",
+        "/rcm/credential-vault/:id/verify",
+        "/rcm/credential-vault/documents/:docId",
+        "/rcm/credential-vault/expiring",
+        "/rcm/credential-vault/stats",
+        "/stats"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/platform/db/schema.ts",
+        "apps/api/src/platform/db/migrate.ts",
+        "apps/api/src/index.ts",
+        "apps/web/src/app/cprs/admin/rcm/page.tsx",
+        "docs/runbooks/phase110-rcm-credential-vault-loa.md"
+      ]
+    },
+    {
+      "phaseNumber": "111",
+      "title": "IMPLEMENT: Claim Scrubbing + Claim Lifecycle",
+      "folder": "115-PHASE-111-CLAIM-LIFECYCLE-SCRUBBER",
+      "files": [
+        "111-01-IMPLEMENT.md",
+        "111-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "111-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "111-99-VERIFY.md"
+      ],
+      "routes": [
+        "/rcm/claim-lifecycle/drafts",
+        "/rcm/claim-lifecycle/drafts/:id/denial",
+        "/rcm/claim-lifecycle/drafts/:id/events",
+        "/rcm/claim-lifecycle/drafts/:id/resubmit",
+        "/rcm/claim-lifecycle/drafts/:id/scrub",
+        "/rcm/claim-lifecycle/drafts/:id/scrub-results",
+        "/rcm/claim-lifecycle/drafts/:id/transition",
+        "/rcm/claim-lifecycle/drafts/aging",
+        "/rcm/claim-lifecycle/drafts/stats",
+        "/rcm/claim-lifecycle/metrics",
+        "/rcm/claim-lifecycle/metrics/scrub",
+        "/rcm/claim-lifecycle/rules"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/platform/db/schema.ts",
+        "apps/api/src/platform/db/migrate.ts",
+        "apps/api/src/rcm/claim-lifecycle/claim-draft-repo.ts",
+        "apps/api/src/rcm/claim-lifecycle/scrub-rule-repo.ts",
+        "apps/api/src/rcm/claim-lifecycle/scrubber.ts",
+        "apps/api/src/rcm/claim-lifecycle/claim-lifecycle-routes.ts",
+        "apps/api/src/rcm/audit/rcm-audit.ts",
+        "apps/api/src/index.ts",
+        "apps/web/src/app/cprs/admin/rcm/page.tsx",
+        "docs/runbooks/phase111-claim-lifecycle.md"
+      ]
+    },
+    {
+      "phaseNumber": "115",
+      "title": "IMPLEMENT: Durability Wave 2 (Portal/Telehealth/Imaging/Idempotency)",
+      "folder": "115-PHASE-115-DURABILITY-WAVE2",
+      "files": [
+        "115-01-IMPLEMENT.md",
+        "115-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "115-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "115-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/platform/db/schema.ts",
+        "apps/api/src/platform/db/migrate.ts",
+        "apps/api/src/platform/db/repo/portal-message-repo.ts",
+        "apps/api/src/platform/db/repo/portal-appointment-repo.ts",
+        "apps/api/src/platform/db/repo/telehealth-room-repo.ts",
+        "apps/api/src/platform/db/repo/imaging-worklist-repo.ts",
+        "apps/api/src/platform/db/repo/imaging-ingest-repo.ts",
+        "apps/api/src/platform/db/repo/idempotency-repo.ts",
+        "apps/api/src/platform/db/repo/index.ts",
+        "apps/api/src/services/portal-messaging.ts",
+        "apps/api/src/services/portal-appointments.ts",
+        "apps/api/src/telehealth/room-store.ts",
+        "apps/api/src/services/imaging-worklist.ts",
+        "apps/api/src/services/imaging-ingest.ts",
+        "apps/api/src/middleware/idempotency.ts",
+        "apps/api/src/index.ts",
+        "scripts/verify-phase115-durability-wave2.ps",
+        "scripts/verify-latest.ps",
+        "docs/runbooks/durability-wave2.md",
+        "prompts/115-PHASE-115-DURABILITY-WAVE2/115-01-IMPLEMENT.md"
+      ]
+    },
+    {
+      "phaseNumber": "112",
+      "title": "Evidence Pipeline + No-Fake-Integrations Gate",
+      "folder": "116-PHASE-112-EVIDENCE-GATING",
+      "files": [
+        "112-01-IMPLEMENT.md",
+        "112-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "112-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "112-99-VERIFY.md"
+      ],
+      "routes": [
+        "/rcm/evidence",
+        "/rcm/evidence/:id",
+        "/rcm/evidence/by-payer/:payerId",
+        "/rcm/evidence/by-payer/US-CMS-MEDICARE-A",
+        "/rcm/evidence/coverage",
+        "/rcm/evidence/gaps",
+        "/rcm/evidence/nonexistent",
+        "/rcm/evidence/stats",
+        "/rcm/evidence?status=archived"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/platform/db/schema.ts",
+        "apps/api/src/platform/db/migrate.ts",
+        "apps/api/src/rcm/evidence/evidence-registry-repo.ts",
+        "apps/api/src/rcm/evidence/evidence-routes.ts",
+        "apps/api/src/index.ts",
+        "scripts/qa-gates/evidence-gate.mjs",
+        "docs/templates/payer-evidence-template.md",
+        "apps/web/src/app/cprs/admin/rcm/page.tsx",
+        "docs/runbooks/phase112-evidence-gating.md"
+      ]
+    },
+    {
+      "phaseNumber": "113B",
+      "title": "IMPLEMENT: Hardening (RCM Audit Persistence + CI Evidence Gate + Prompts Tree)",
+      "folder": "117-PHASE-113B-HARDENING",
+      "files": [
+        "113B-01-IMPLEMENT.md",
+        "113B-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "113B-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "113B-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/rcm/audit/rcm-audit.ts",
+        "scripts/qa-gates/evidence-gate.mjs",
+        "scripts/qa-gates/prompts-tree-health.mjs",
+        ".github/workflows/ci-verify.yml",
+        ".github/workflows/qa-gauntlet.yml",
+        ".github/workflows/quality-gates.yml",
+        "scripts/verify-latest.ps",
+        "scripts/verify-phase113b-hardening.ps",
+        "prompts/114-PHASE-110-RCM-CREDENTIAL-VAULT-LOA/110-99-VERIFY.md"
+      ]
+    },
+    {
+      "phaseNumber": "114",
+      "title": "IMPLEMENT: Durability Wave 1 (No More Restart Data Loss)",
+      "folder": "118-PHASE-114-DURABILITY-WAVE1",
+      "files": [
+        "114-01-IMPLEMENT.md",
+        "114-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "114-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "114-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/platform/db/schema.ts",
+        "apps/api/src/platform/db/migrate.ts",
+        "apps/api/src/platform/db/repo/session-repo.ts",
+        "apps/api/src/platform/db/repo/workqueue-repo.ts",
+        "apps/api/src/platform/db/repo/index.ts",
+        "apps/api/src/auth/session-store.ts",
+        "apps/api/src/rcm/workqueues/workqueue-store.ts",
+        "apps/api/src/rcm/payerOps/capability-matrix.ts",
+        "apps/api/src/middleware/security.ts",
+        "scripts/qa-gates/restart-durability.mjs",
+        "scripts/verify-phase114-durability-wave1.ps",
+        "scripts/verify-latest.ps",
+        ".github/workflows/qa-gauntlet.yml",
+        "docs/architecture/store-policy.md",
+        "docs/runbooks/durability-wave1.md"
+      ]
+    },
+    {
+      "phaseNumber": "116",
+      "title": "IMPLEMENT: Postgres Job Queue (Graphile Worker) + Job Governance",
+      "folder": "119-PHASE-116-JOB-QUEUE",
+      "files": [
+        "116-01-IMPLEMENT.md",
+        "116-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "116-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "116-99-VERIFY.md"
+      ],
+      "routes": [
+        "/admin/jobs/runs",
+        "/admin/jobs/status",
+        "/admin/jobs/trigger"
+      ],
+      "rpcs": [
+        "CREATE OR REPLACE",
+        "DROP FUNCTION IF EXISTS"
+      ],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/package.json",
+        "apps/api/src/jobs/registry.ts",
+        "apps/api/src/jobs/runner.ts",
+        "apps/api/src/jobs/worker-entrypoint.ts",
+        "apps/api/src/jobs/governance.ts",
+        "apps/api/src/jobs/tasks/eligibility-check-poll.ts",
+        "apps/api/src/jobs/tasks/claim-status-poll.ts",
+        "apps/api/src/jobs/tasks/evidence-staleness-scan.ts",
+        "apps/api/src/jobs/tasks/retention-cleanup.ts",
+        "apps/api/src/jobs/index.ts",
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "scripts/verify-phase116-job-queue.ps",
+        "docs/runbooks/jobs-graphile-worker.md",
+        "prompts/119-PHASE-116-JOB-QUEUE/116-01-IMPLEMENT.md",
+        "prompts/119-PHASE-116-JOB-QUEUE/116-99-VERIFY.md"
+      ]
+    },
+    {
       "phaseNumber": "10",
       "title": "CPRS Inventory Extraction",
       "folder": "12-PHASE-10-CPRS-EXTRACT",
@@ -813,6 +1131,136 @@
         "tools/cprs-extract/extract-forms.mjs",
         "tools/cprs-extract/extract-rpcs.mjs",
         "tools/cprs-extract/run-all.mjs",
+        "package.json"
+      ]
+    },
+    {
+      "phaseNumber": "117",
+      "title": "IMPLEMENT: Postgres-First Prod Posture + Multi-Instance",
+      "folder": "120-PHASE-117-PG-PROD-POSTURE",
+      "files": [
+        "117-01-IMPLEMENT.md",
+        "117-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "117-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "117-99-VERIFY.md"
+      ],
+      "routes": [
+        "/api/capabilities",
+        "/auth/login",
+        "/auth/logout",
+        "/auth/session",
+        "/health",
+        "/posture/backup",
+        "/rcm/acks/ingest",
+        "/rcm/claims/draft",
+        "/rcm/workqueues",
+        "/rcm/workqueues/stats",
+        "/ready",
+        "/vista/allergies?dfn=3"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "docker-compose.prod.yml",
+        "apps/api/src/platform/store-resolver.ts",
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/platform/pg/pg-schema.ts",
+        "apps/api/src/platform/pg/repo/session-repo.ts",
+        "apps/api/src/platform/pg/repo/workqueue-repo.ts",
+        "apps/api/src/index.ts",
+        "scripts/test-multi-instance.mjs",
+        "scripts/verify-phase117-pg-prod-posture.ps",
+        "docs/runbooks/pg-backup-pitr.md",
+        "prompts/120-PHASE-117-PG-PROD-POSTURE/117-01-IMPLEMENT.md"
+      ]
+    },
+    {
+      "phaseNumber": "118",
+      "title": "Go-Live Hardening Pack",
+      "folder": "121-PHASE-118-GO-LIVE-HARDENING",
+      "files": [
+        "118-01-IMPLEMENT.md",
+        "118-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "118-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "118-99-VERIFY.md"
+      ],
+      "routes": [
+        "/admin/jobs/status",
+        "/api/capabilities",
+        "/auth/session",
+        "/hardening/audit-verify",
+        "/hardening/backup-status",
+        "/hardening/rc-checklist",
+        "/hardening/security-posture",
+        "/health",
+        "/iam/audit/verify",
+        "/imaging/audit/verify",
+        "/metrics/prometheus",
+        "/posture/observability",
+        "/rcm/audit/verify",
+        "/ready",
+        "/vista/allergies?dfn=3"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/services/imaging-audit.ts",
+        "apps/api/src/routes/hardening-routes.ts",
+        "apps/api/src/index.ts",
+        "docs/runbooks/pg-backup-restore.md",
+        "docs/runbooks/incident-*.md",
+        "tests/k6/rc-baseline.js",
+        "scripts/rc-checklist.ps",
+        "scripts/rc-perf-gate.ps",
+        "scripts/rc-dep-audit.ps",
+        "scripts/verify-phase118-go-live-hardening.ps"
+      ]
+    },
+    {
+      "phaseNumber": "119",
+      "title": "QA Gauntlet Generator",
+      "folder": "122-PHASE-119-QA-GAUNTLET",
+      "files": [
+        "119-01-IMPLEMENT.md",
+        "119-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "119-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "119-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "qa/gauntlet/build-manifest.mjs",
+        "qa/gauntlet/phase-manifest.json",
+        "qa/gauntlet/phase-manifest.overrides.json",
+        "qa/gauntlet/cli.mjs",
+        "qa/gauntlet/gates/g0-prompts-integrity.mjs",
+        "qa/gauntlet/gates/g1-build-typecheck.mjs",
+        "qa/gauntlet/gates/g2-unit-tests.mjs",
+        "qa/gauntlet/gates/g3-security-scans.mjs",
+        "qa/gauntlet/gates/g4-contract-alignment.mjs",
+        "qa/gauntlet/gates/g5-api-smoke.mjs",
+        "qa/gauntlet/gates/g6-vista-probe.mjs",
+        "qa/gauntlet/gates/g7-restart-durability.mjs",
+        "qa/gauntlet/gates/g8-ui-dead-click.mjs",
+        "qa/gauntlet/gates/g9-performance-budget.mjs",
+        "scripts/verify-phase119-qa-gauntlet.ps",
+        "scripts/verify-latest.ps",
+        ".github/workflows/qa-gauntlet.yml",
+        "docs/runbooks/qa-gauntlet.md",
         "package.json"
       ]
     },

@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 114: Durability Wave 1 (sessions + workqueues + capability audit)
-& "$PSScriptRoot\verify-phase114-durability-wave1.ps1" @args
+# Phase 119: QA Gauntlet Generator (phase-by-phase regression + CI-enforced)
+& "$PSScriptRoot\verify-phase119-qa-gauntlet.ps1" @args
