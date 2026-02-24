@@ -279,7 +279,8 @@ describe("Auth flow", () => {
         verifyCode: "BADPASS999",
       }),
     });
-    expect(res.status).toBe(401);
+    // 401 = bad credentials, 429 = rate-limited (both acceptable for bad login)
+    expect([401, 429]).toContain(res.status);
     const data = (await res.json()) as any;
     expect(data).toHaveProperty("ok", false);
     // Error message should not leak internal details

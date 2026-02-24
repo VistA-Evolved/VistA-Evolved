@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-24T20:46:04.233Z",
+  "generatedAt": "2026-02-24T21:49:33.212Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 127,
+  "phaseCount": 128,
   "phases": [
     {
       "phaseNumber": "1",
@@ -1262,6 +1262,59 @@
         ".github/workflows/qa-gauntlet.yml",
         "docs/runbooks/qa-gauntlet.md",
         "package.json"
+      ]
+    },
+    {
+      "phaseNumber": "120",
+      "title": "Pre-existing Fixes: IMPLEMENT",
+      "folder": "123-PHASE-120-PREEXISTING-FIXES",
+      "files": [
+        "120-01-IMPLEMENT.md",
+        "120-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "120-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "120-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "package.json",
+        "apps/api/src/lib/safe-error.ts",
+        "apps/api/src/lib/immutable-audit.ts",
+        "apps/api/src/lib/export-governance.ts",
+        "apps/api/src/services/imaging-audit.ts",
+        "apps/api/src/services/imaging-service.ts",
+        "apps/api/src/services/imaging-devices.ts",
+        "apps/api/src/services/clinical-reports.ts",
+        "apps/api/src/platform/pg/pg-db.ts",
+        "apps/api/src/index.ts",
+        "apps/api/src/jobs/worker-entrypoint.ts",
+        "apps/api/src/posture/tenant-posture.ts",
+        "apps/api/src/routes/vista-rcm.ts",
+        "apps/api/src/routes/vista-interop.ts",
+        "apps/api/src/routes/imaging.ts",
+        "apps/api/src/routes/imaging-proxy.ts",
+        "apps/api/src/routes/inbox.ts",
+        "apps/api/src/routes/ws-console.ts",
+        "apps/api/src/routes/qa-routes.ts",
+        "apps/api/src/routes/admin-payer-db-routes.ts",
+        "apps/api/src/routes/job-admin-routes.ts",
+        "apps/api/src/routes/immunizations/index.ts",
+        "apps/api/src/routes/cprs/wave1-routes.ts",
+        "apps/api/src/routes/cprs/tiu-notes.ts",
+        "apps/api/src/routes/cprs/orders-cpoe.ts",
+        "apps/api/src/routes/handoff/index.ts",
+        "apps/api/src/routes/emar/index.ts",
+        "apps/api/src/rcm/workflows/claims-workflow-routes.ts",
+        "apps/api/src/rcm/workflows/remittance-routes.ts",
+        "apps/api/src/rcm/rcm-ops-routes.ts",
+        "apps/api/src/rcm/claim-lifecycle/claim-lifecycle-routes.ts",
+        "apps/api/src/rcm/vistaBindings/buildClaimDraftFromVista.ts",
+        "docker-compose.prod.yml"
       ]
     },
     {
