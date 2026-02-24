@@ -145,7 +145,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
 
   /* ------ GET /handoff/ward-patients?ward=X ------ */
   server.get("/handoff/ward-patients", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const ward = String((request.query as any)?.ward || "").trim();
 
     if (!ward) {
@@ -187,7 +187,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
 
   /* ------ GET /handoff/reports ------ */
   server.get("/handoff/reports", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const query = request.query as any;
     const ward = query?.ward ? String(query.ward).trim() : undefined;
     const status = query?.status ? String(query.status).trim() : undefined;
@@ -225,7 +225,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
 
   /* ------ GET /handoff/reports/:id ------ */
   server.get("/handoff/reports/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const { id } = request.params as { id: string };
 
     const report = getHandoffReport(id);
@@ -249,7 +249,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
 
   /* ------ POST /handoff/reports ------ */
   server.post("/handoff/reports", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const body = (request.body as any) || {};
 
     const ward = String(body.ward || "").trim();
@@ -318,7 +318,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
 
   /* ------ PUT /handoff/reports/:id ------ */
   server.put("/handoff/reports/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
 
@@ -367,7 +367,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
 
   /* ------ POST /handoff/reports/:id/submit ------ */
   server.post("/handoff/reports/:id/submit", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const { id } = request.params as { id: string };
 
     const submitted = submitHandoffReport(id);
@@ -392,7 +392,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
 
   /* ------ POST /handoff/reports/:id/accept ------ */
   server.post("/handoff/reports/:id/accept", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const { id } = request.params as { id: string };
 
     const actor = actorFromSession(session);
@@ -417,7 +417,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
 
   /* ------ POST /handoff/reports/:id/archive ------ */
   server.post("/handoff/reports/:id/archive", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const { id } = request.params as { id: string };
 
     const archived = archiveHandoffReport(id);

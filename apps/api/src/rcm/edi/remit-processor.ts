@@ -89,7 +89,7 @@ const processedRemittances = new Map<string, Remittance>();
 
 /* ── Ingestion ─────────────────────────────────────────────── */
 
-export function ingestRemittance(input: RemitIngestInput): RemitIngestResult {
+export async function ingestRemittance(input: RemitIngestInput): Promise<RemitIngestResult> {
   // Idempotency check
   const existingId = remitIdempotencyIndex.get(input.idempotencyKey);
   if (existingId) {
@@ -196,7 +196,7 @@ export function ingestRemittance(input: RemitIngestInput): RemitIngestResult {
           // Denials (group CO or PI with denial category codes)
           if (carc.category === 'denial' && (adj.groupCode === 'CO' || adj.groupCode === 'PI')) {
             const { action, fieldHint } = buildActionRecommendation(adj.reasonCode, sl.remarkCodes);
-            createWorkqueueItem({
+            await createWorkqueueItem({
               type: 'denial',
               claimId: linkedClaimId,
               payerId: input.payerId,

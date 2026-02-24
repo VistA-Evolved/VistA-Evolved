@@ -1,5 +1,5 @@
 /**
- * Session Store -- DB-backed durable sessions (Phase 114: Durability Wave 1)
+ * Session Store -- DB-backed durable sessions (Phase 114 + Phase 117)
  *
  * Classification: Durable Domain State (per docs/architecture/store-policy.md)
  *
@@ -9,7 +9,11 @@
  * An in-memory LRU cache (Ephemeral Cache, 60s TTL) avoids hitting DB on
  * every request while still being fully reconstructable from DB on cache miss.
  *
- * The public API is unchanged: createSession(), getSession(), destroySession(),
+ * Phase 117: Functions are async to support both SQLite (sync, awaited as no-op)
+ * and PG (async) repo backends. The store-resolver STORE_BACKEND env var
+ * controls which repo is wired at startup.
+ *
+ * The public API: createSession(), getSession(), destroySession(),
  * listSessions(), rotateSession(), mapUserRole().
  */
 
@@ -55,16 +59,47 @@ function hashToken(token: string): string {
 
 /* ------------------------------------------------------------------ */
 /* DB session repo -- lazy-wired after initPlatformDb()                 */
+/* Phase 117: Accepts both sync (SQLite) and async (PG) repos          */
 /* ------------------------------------------------------------------ */
 
-type SessionRepo = typeof import("../platform/db/repo/session-repo.js");
-let _repo: SessionRepo | null = null;
+/**
+ * Session repo interface — both sync and async repos satisfy this.
+ * sync return values are auto-promoted to Promise via await.
+ */
+interface SessionRepoLike {
+  createAuthSession(data: {
+    tenantId: string;
+    userId: string;
+    userName: string;
+    userRole: string;
+    facilityStation: string;
+    facilityName: string;
+    divisionIen: string;
+    tokenHash: string;
+    csrfSecret?: string;
+    ipHash?: string;
+    userAgentHash?: string;
+    expiresAt: string;
+  }): any; // AuthSessionRow | Promise<AuthSessionRow>
+  findSessionById(id: string): any;
+  findSessionByTokenHash(tokenHash: string): any;
+  touchSession(id: string): any;
+  revokeSession(id: string): any;
+  revokeSessionByTokenHash(tokenHash: string): any;
+  listActiveSessions(tenantId?: string): any;
+  cleanupExpiredSessions(): any;
+  replaceTokenHash(id: string, newTokenHash: string): any;
+  countActiveSessions(): any;
+}
+
+let _repo: SessionRepoLike | null = null;
 
 /**
  * Wire the session repo after DB init.
  * Called from index.ts once initPlatformDb() succeeds.
+ * Accepts either the SQLite session-repo module or the PG session-repo module.
  */
-export function initSessionRepo(repo: SessionRepo): void {
+export function initSessionRepo(repo: SessionRepoLike): void {
   _repo = repo;
 }
 
@@ -89,7 +124,13 @@ setInterval(() => {
       sessionCache.delete(hash);
     }
   }
-  try { _repo?.cleanupExpiredSessions(); } catch { /* non-fatal */ }
+  // Phase 117: repo may be async (PG) — fire-and-forget with .catch
+  try {
+    const result = _repo?.cleanupExpiredSessions();
+    if (result && typeof result === "object" && "catch" in result) {
+      (result as Promise<any>).catch(() => { /* non-fatal */ });
+    }
+  } catch { /* non-fatal */ }
 }, SESSION_CONFIG.cleanupIntervalMs);
 
 /* ------------------------------------------------------------------ */
@@ -97,7 +138,7 @@ setInterval(() => {
 /* ------------------------------------------------------------------ */
 
 /** Create a new session and return its token. */
-export function createSession(data: Omit<SessionData, "token" | "createdAt" | "lastActivity">): string {
+export async function createSession(data: Omit<SessionData, "token" | "createdAt" | "lastActivity">): Promise<string> {
   const token = randomBytes(32).toString("hex");
   const now = Date.now();
   const tokenH = hashToken(token);
@@ -106,7 +147,7 @@ export function createSession(data: Omit<SessionData, "token" | "createdAt" | "l
   if (_repo) {
     try {
       const expiresAt = new Date(now + SESSION_CONFIG.absoluteTtlMs).toISOString();
-      const row = _repo.createAuthSession({
+      const row = await _repo.createAuthSession({
         tenantId: data.tenantId,
         userId: data.duz,
         userName: data.userName,
@@ -130,7 +171,7 @@ export function createSession(data: Omit<SessionData, "token" | "createdAt" | "l
 }
 
 /** Retrieve a session by token. Returns null if expired or unknown. */
-export function getSession(token: string): SessionData | null {
+export async function getSession(token: string): Promise<SessionData | null> {
   const now = Date.now();
   const tokenH = hashToken(token);
 
@@ -139,33 +180,33 @@ export function getSession(token: string): SessionData | null {
   if (cached && (now - cached.cachedAt < CACHE_TTL_MS)) {
     if (now - cached.data.createdAt > SESSION_CONFIG.absoluteTtlMs) {
       sessionCache.delete(tokenH);
-      if (_repo && cached.dbId) try { _repo.revokeSession(cached.dbId); } catch { /* */ }
+      if (_repo && cached.dbId) try { await _repo.revokeSession(cached.dbId); } catch { /* */ }
       return null;
     }
     if (now - cached.data.lastActivity > SESSION_CONFIG.idleTtlMs) {
       sessionCache.delete(tokenH);
-      if (_repo && cached.dbId) try { _repo.revokeSession(cached.dbId); } catch { /* */ }
+      if (_repo && cached.dbId) try { await _repo.revokeSession(cached.dbId); } catch { /* */ }
       return null;
     }
     cached.data.lastActivity = now;
-    if (_repo && cached.dbId) try { _repo.touchSession(cached.dbId); } catch { /* */ }
+    if (_repo && cached.dbId) try { await _repo.touchSession(cached.dbId); } catch { /* */ }
     return cached.data;
   }
 
   // 2. Cache miss -- check DB
   if (_repo) {
     try {
-      const row = _repo.findSessionByTokenHash(tokenH);
+      const row = await _repo.findSessionByTokenHash(tokenH);
       if (!row) return null;
 
       const expiresMs = new Date(row.expiresAt).getTime();
       if (now > expiresMs) {
-        _repo.revokeSession(row.id);
+        await _repo.revokeSession(row.id);
         return null;
       }
       const lastSeen = new Date(row.lastSeenAt).getTime();
       if (now - lastSeen > SESSION_CONFIG.idleTtlMs) {
-        _repo.revokeSession(row.id);
+        await _repo.revokeSession(row.id);
         return null;
       }
 
@@ -182,7 +223,7 @@ export function getSession(token: string): SessionData | null {
         lastActivity: now,
       };
       sessionCache.set(tokenH, { data: sessionData, dbId: row.id, cachedAt: now });
-      _repo.touchSession(row.id);
+      await _repo.touchSession(row.id);
       return sessionData;
     } catch {
       // DB read failed -- check stale cache
@@ -203,15 +244,15 @@ export function getSession(token: string): SessionData | null {
 }
 
 /** Destroy a session. */
-export function destroySession(token: string): boolean {
+export async function destroySession(token: string): Promise<boolean> {
   const tokenH = hashToken(token);
   const cached = sessionCache.get(tokenH);
   sessionCache.delete(tokenH);
 
   if (_repo) {
     try {
-      if (cached?.dbId) return _repo.revokeSession(cached.dbId);
-      return _repo.revokeSessionByTokenHash(tokenH);
+      if (cached?.dbId) return await _repo.revokeSession(cached.dbId);
+      return await _repo.revokeSessionByTokenHash(tokenH);
     } catch {
       return !!cached;
     }
@@ -220,11 +261,11 @@ export function destroySession(token: string): boolean {
 }
 
 /** Get all active sessions (for admin audit). */
-export function listSessions(): SessionData[] {
+export async function listSessions(): Promise<SessionData[]> {
   if (_repo) {
     try {
-      const rows = _repo.listActiveSessions();
-      return rows.map(row => ({
+      const rows = await _repo.listActiveSessions();
+      return rows.map((row: any) => ({
         token: "[redacted]",
         duz: row.userId,
         userName: row.userName,
@@ -256,7 +297,7 @@ export function listSessions(): SessionData[] {
  * Creates a new token for an existing session, deletes the old one.
  * Returns the new token.
  */
-export function rotateSession(oldToken: string): string | null {
+export async function rotateSession(oldToken: string): Promise<string | null> {
   const oldHash = hashToken(oldToken);
   const cached = sessionCache.get(oldHash);
   const newToken = randomBytes(32).toString("hex");
@@ -264,7 +305,7 @@ export function rotateSession(oldToken: string): string | null {
 
   if (_repo && cached?.dbId) {
     try {
-      const ok = _repo.replaceTokenHash(cached.dbId, newHash);
+      const ok = await _repo.replaceTokenHash(cached.dbId, newHash);
       if (!ok) return null;
       sessionCache.delete(oldHash);
       const now = Date.now();

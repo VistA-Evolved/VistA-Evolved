@@ -106,7 +106,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/vitals?dfn=N ------ */
   server.get("/vista/nursing/vitals", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = requireSession(request, reply);
+    const _session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
@@ -130,7 +130,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/vitals-range?dfn=N&start=D&end=D ------ */
   server.get("/vista/nursing/vitals-range", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = requireSession(request, reply);
+    const _session = await requireSession(request, reply);
     const { dfn, start, end } = request.query as any;
     const dfnStr = String(dfn || "").trim();
     if (!dfnStr) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
@@ -158,7 +158,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/notes?dfn=N ------ */
   server.get("/vista/nursing/notes", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = requireSession(request, reply);
+    const _session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
@@ -185,7 +185,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/ward-patients?ward=IEN ------ */
   server.get("/vista/nursing/ward-patients", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = requireSession(request, reply);
+    const _session = await requireSession(request, reply);
     const ward = String((request.query as any)?.ward || "").trim();
     if (!ward) return reply.code(400).send({ ok: false, error: "Missing ward parameter" });
     if (!/^\d+$/.test(ward)) return reply.code(400).send({ ok: false, error: "Invalid ward -- must be a positive integer" });
@@ -209,7 +209,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/tasks?dfn=N (integration-pending) ------ */
   server.get("/vista/nursing/tasks", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = requireSession(request, reply);
+    const _session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
@@ -224,7 +224,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/mar?dfn=N (integration-pending) ------ */
   server.get("/vista/nursing/mar", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = requireSession(request, reply);
+    const _session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
@@ -237,7 +237,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ POST /vista/nursing/mar/administer (integration-pending) ------ */
   server.post("/vista/nursing/mar/administer", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = requireSession(request, reply);
+    const _session = await requireSession(request, reply);
 
     return reply.code(202).send({
       ok: true,
@@ -275,7 +275,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/critical-thresholds ------ */
   server.get("/vista/nursing/critical-thresholds", async (request: FastifyRequest, reply: FastifyReply) => {
-    requireSession(request, reply);
+    await requireSession(request, reply);
     return {
       ok: true,
       source: "config",
@@ -288,7 +288,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/patient-context?dfn=N ------ */
   server.get("/vista/nursing/patient-context", async (request: FastifyRequest, reply: FastifyReply) => {
-    requireSession(request, reply);
+    await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
@@ -342,7 +342,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/flowsheet?dfn=N ------ */
   server.get("/vista/nursing/flowsheet", async (request: FastifyRequest, reply: FastifyReply) => {
-    requireSession(request, reply);
+    await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
@@ -427,7 +427,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/io?dfn=N (integration-pending) ------ */
   server.get("/vista/nursing/io", async (request: FastifyRequest, reply: FastifyReply) => {
-    requireSession(request, reply);
+    await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
@@ -459,7 +459,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/assessments?dfn=N (integration-pending) ------ */
   server.get("/vista/nursing/assessments", async (request: FastifyRequest, reply: FastifyReply) => {
-    requireSession(request, reply);
+    await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
@@ -496,7 +496,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ POST /vista/nursing/notes/create ------ */
   server.post("/vista/nursing/notes/create", async (request: FastifyRequest, reply: FastifyReply) => {
-    requireSession(request, reply);
+    await requireSession(request, reply);
     const body = ((request as any).body as any) || {};
     const { dfn, title, text, shift } = body;
     const dfnStr = String(dfn || "").trim();
@@ -600,7 +600,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/note-text?ien=N ------ */
   server.get("/vista/nursing/note-text", async (request: FastifyRequest, reply: FastifyReply) => {
-    requireSession(request, reply);
+    await requireSession(request, reply);
     const ien = String((request.query as any)?.ien || "").trim();
     if (!ien) return reply.code(400).send({ ok: false, error: "Missing ien parameter" });
     if (!/^\d+$/.test(ien)) return reply.code(400).send({ ok: false, error: "Invalid ien -- must be a positive integer" });

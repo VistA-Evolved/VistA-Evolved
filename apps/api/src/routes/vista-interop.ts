@@ -259,7 +259,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
 
   // ---- GET /vista/interop/hl7-links ----
   server.get("/vista/interop/hl7-links", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin", "provider"], reply);
 
     const parsed = validate(Hl7LinksQuerySchema, request.query);
@@ -320,7 +320,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
 
   // ---- GET /vista/interop/hl7-messages ----
   server.get("/vista/interop/hl7-messages", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin", "provider"], reply);
 
     const parsed = validate(Hl7MessagesQuerySchema, request.query);
@@ -384,7 +384,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
 
   // ---- GET /vista/interop/hlo-status ----
   server.get("/vista/interop/hlo-status", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin", "provider"], reply);
 
     try {
@@ -463,7 +463,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
 
   // ---- GET /vista/interop/queue-depth ----
   server.get("/vista/interop/queue-depth", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin", "provider"], reply);
 
     try {
@@ -527,7 +527,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
   // ---- GET /vista/interop/summary ----
   // Combined dashboard endpoint — calls all 4 RPCs, cached as aggregate
   server.get("/vista/interop/summary", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin", "provider"], reply);
 
     const startTime = Date.now();
@@ -683,7 +683,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
   // Uses VE INTEROP MSG LIST (MSGLIST^ZVEMIOP).
   // Returns metadata only — NO message bodies.
   server.get("/vista/interop/v2/hl7/messages", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin", "provider"], reply);
 
     const parsed = validate(MsgListQuerySchema, request.query);
@@ -765,7 +765,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
   // Returns segment TYPE COUNTS only — no raw segment content.
   // PHI segment types (PID, NK1, GT1, IN1, IN2, ACC) are flagged as masked.
   server.get("/vista/interop/v2/hl7/messages/:id", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin", "provider"], reply);
 
     const { id } = request.params as { id: string };
@@ -870,7 +870,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
   // If future M routines return actual segment content, this endpoint
   // would gate access to that content.
   server.post("/vista/interop/v2/hl7/messages/:id/unmask", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
     const { id } = request.params as { id: string };
@@ -995,7 +995,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
   // Enhanced HL7 dashboard summary combining links + messages + queue depth.
   // Uses 3 existing RPCs in parallel (through the summary batch approach).
   server.get("/vista/interop/v2/hl7/summary", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin", "provider"], reply);
 
     const startTime = Date.now();
@@ -1109,7 +1109,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
   // ---- GET /vista/interop/v2/hlo/summary ----
   // Enhanced HLO dashboard summary combining HLO status + queue depth.
   server.get("/vista/interop/v2/hlo/summary", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin", "provider"], reply);
 
     const startTime = Date.now();

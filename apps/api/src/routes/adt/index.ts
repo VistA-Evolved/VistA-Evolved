@@ -130,7 +130,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
 
   /* ---- GET /vista/adt/wards ---- */
   server.get("/vista/adt/wards", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     try {
       const lines = await safeCallRpc("ORQPT WARDS", []);
       const results = parseIenNameList(lines);
@@ -145,7 +145,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
 
   /* ---- GET /vista/adt/ward-patients?ward=IEN ---- */
   server.get("/vista/adt/ward-patients", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const ward = (request.query as any)?.ward;
     if (!ward) {
       return reply.status(400).send({ ok: false, error: "ward query parameter required" });
@@ -164,7 +164,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
 
   /* ---- GET /vista/adt/provider-patients ---- */
   server.get("/vista/adt/provider-patients", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     try {
       // ORQPT PROVIDER PATIENTS takes DUZ as param
       const duz = (session as any)?.duz || "";
@@ -181,7 +181,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
 
   /* ---- GET /vista/adt/teams ---- */
   server.get("/vista/adt/teams", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     try {
       const lines = await safeCallRpc("ORQPT TEAMS", []);
       const results = parseIenNameList(lines);
@@ -196,7 +196,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
 
   /* ---- GET /vista/adt/team-patients?team=IEN ---- */
   server.get("/vista/adt/team-patients", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const team = (request.query as any)?.team;
     if (!team) {
       return reply.status(400).send({ ok: false, error: "team query parameter required" });
@@ -215,7 +215,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
 
   /* ---- GET /vista/adt/specialties ---- */
   server.get("/vista/adt/specialties", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     try {
       const lines = await safeCallRpc("ORQPT SPECIALTIES", []);
       const results = parseIenNameList(lines);
@@ -230,7 +230,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
 
   /* ---- GET /vista/adt/specialty-patients?specialty=IEN ---- */
   server.get("/vista/adt/specialty-patients", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const specialty = (request.query as any)?.specialty;
     if (!specialty) {
       return reply.status(400).send({ ok: false, error: "specialty query parameter required" });
@@ -249,7 +249,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
 
   /* ---- GET /vista/adt/locations?search=TEXT ---- */
   server.get("/vista/adt/locations", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const search = (request.query as any)?.search || "";
     if (!search) {
       return reply.status(400).send({ ok: false, error: "search query parameter required" });
@@ -268,7 +268,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
 
   /* ---- GET /vista/adt/admission-list?dfn=N ---- */
   server.get("/vista/adt/admission-list", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const dfn = (request.query as any)?.dfn;
     if (!dfn) {
       return reply.status(400).send({ ok: false, error: "dfn query parameter required" });
@@ -287,7 +287,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
 
   /* ---- POST /vista/adt/admit -- INTEGRATION PENDING ---- */
   server.post("/vista/adt/admit", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     return reply.status(202).send({
       ok: false,
       status: "integration-pending",
@@ -305,7 +305,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
 
   /* ---- POST /vista/adt/transfer -- INTEGRATION PENDING ---- */
   server.post("/vista/adt/transfer", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     return reply.status(202).send({
       ok: false,
       status: "integration-pending",
@@ -323,7 +323,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
 
   /* ---- POST /vista/adt/discharge -- INTEGRATION PENDING ---- */
   server.post("/vista/adt/discharge", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     return reply.status(202).send({
       ok: false,
       status: "integration-pending",

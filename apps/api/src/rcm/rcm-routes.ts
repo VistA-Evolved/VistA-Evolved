@@ -1304,7 +1304,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       });
     }
 
-    const result = ingestAck({
+    const result = await ingestAck({
       type,
       disposition,
       originalControlNumber,
@@ -1363,7 +1363,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       });
     }
 
-    const result = ingestStatusUpdate({
+    const result = await ingestStatusUpdate({
       claimId: body.claimId,
       payerClaimId: body.payerClaimId,
       categoryCode,
@@ -1417,7 +1417,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
 
     const claimAcks = getAcksForClaim(id);
     const claimStatuses = getStatusUpdatesForClaim(id);
-    const claimWorkqueue = getWorkqueueItemsForClaim(id);
+    const claimWorkqueue = await getWorkqueueItemsForClaim(id);
     const auditEntries = getRcmAuditEntries({ claimId: id, limit: 1000 });
 
     return {
@@ -1443,7 +1443,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       });
     }
 
-    const result = processRemittance({
+    const result = await processRemittance({
       payerId,
       payerName: body.payerName,
       checkNumber: body.checkNumber,
@@ -1473,7 +1473,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   // ───── Workqueues ──────────────────────────────────────────────
   server.get('/rcm/workqueues', async (request: FastifyRequest) => {
     const q = request.query as Record<string, string>;
-    const result = listWorkqueueItems({
+    const result = await listWorkqueueItems({
       type: q.type as any,
       status: q.status as any,
       claimId: q.claimId,
@@ -1487,12 +1487,12 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   });
 
   server.get('/rcm/workqueues/stats', async () => {
-    return { ok: true, stats: getWorkqueueStats() };
+    return { ok: true, stats: await getWorkqueueStats() };
   });
 
   server.get('/rcm/workqueues/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
-    const item = getWorkqueueItem(id);
+    const item = await getWorkqueueItem(id);
     if (!item) return reply.code(404).send({ ok: false, error: 'Workqueue item not found' });
     return { ok: true, item };
   });
@@ -1500,7 +1500,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   server.patch('/rcm/workqueues/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const existing = getWorkqueueItem(id);
+    const existing = await getWorkqueueItem(id);
     if (!existing) return reply.code(404).send({ ok: false, error: 'Workqueue item not found' });
 
     const session = (request as any).session;
@@ -1515,7 +1515,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       updates.resolvedBy = session?.duz ?? 'unknown';
     }
 
-    const updated = updateWorkqueueItem(id, updates as any);
+    const updated = await updateWorkqueueItem(id, updates as any);
 
     appendRcmAudit('workqueue.updated', {
       claimId: existing.claimId,
@@ -1529,7 +1529,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     const { id } = request.params as { id: string };
     const claim = getClaim(id);
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
-    const items = getWorkqueueItemsForClaim(id);
+    const items = await getWorkqueueItemsForClaim(id);
     return { ok: true, claimId: id, items, total: items.length };
   });
 

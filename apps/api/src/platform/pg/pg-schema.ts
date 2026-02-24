@@ -425,3 +425,98 @@ export const capabilityMatrixEvidence = pgTable("capability_matrix_evidence", {
 }, (table) => [
   index("idx_cap_evidence_cell").on(table.cellId),
 ]);
+
+/* ================================================================
+ *  SESSION + WORKQUEUE TABLES (Phase 117: Postgres-first prod posture)
+ * ================================================================ */
+
+/**
+ * Auth Session — durable session storage for multi-instance deployments.
+ * Mirrors SQLite auth_session. Token hashes stored, never raw tokens.
+ */
+export const pgAuthSession = pgTable("auth_session", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  userId: text("user_id").notNull(),
+  userName: text("user_name").notNull(),
+  userRole: text("user_role").notNull(),
+  facilityStation: text("facility_station").notNull(),
+  facilityName: text("facility_name").notNull(),
+  divisionIen: text("division_ien").notNull(),
+  tokenHash: text("token_hash").notNull(),
+  csrfSecret: text("csrf_secret"),
+  ipHash: text("ip_hash"),
+  userAgentHash: text("user_agent_hash"),
+  createdAt: text("created_at").notNull(),
+  lastSeenAt: text("last_seen_at").notNull(),
+  expiresAt: text("expires_at").notNull(),
+  revokedAt: text("revoked_at"),
+  metadataJson: text("metadata_json"),
+}, (table) => [
+  index("idx_auth_session_tenant").on(table.tenantId),
+  uniqueIndex("idx_auth_session_token_hash").on(table.tokenHash),
+  index("idx_auth_session_expires").on(table.expiresAt),
+  index("idx_auth_session_user").on(table.userId),
+]);
+
+/**
+ * RCM Work Item — durable work queue for multi-instance deployments.
+ * Mirrors SQLite rcm_work_item.
+ */
+export const pgRcmWorkItem = pgTable("rcm_work_item", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  type: text("type").notNull(),
+  status: text("status").notNull().default("open"),
+  claimId: text("claim_id").notNull(),
+  payerId: text("payer_id"),
+  payerName: text("payer_name"),
+  patientDfn: text("patient_dfn"),
+  reasonCode: text("reason_code").notNull(),
+  reasonDescription: text("reason_description").notNull(),
+  reasonCategory: text("reason_category"),
+  recommendedAction: text("recommended_action").notNull(),
+  fieldToFix: text("field_to_fix"),
+  triggeringRule: text("triggering_rule"),
+  sourceType: text("source_type").notNull(),
+  sourceId: text("source_id"),
+  sourceTimestamp: text("source_timestamp"),
+  priority: text("priority").notNull().default("medium"),
+  assignedTo: text("assigned_to"),
+  dueDate: text("due_date"),
+  resolvedAt: text("resolved_at"),
+  resolvedBy: text("resolved_by"),
+  resolutionNote: text("resolution_note"),
+  lockedBy: text("locked_by"),
+  lockedAt: text("locked_at"),
+  lockExpiresAt: text("lock_expires_at"),
+  attempts: integer("attempts").notNull().default(0),
+  lastError: text("last_error"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_work_item_tenant").on(table.tenantId),
+  index("idx_work_item_status_updated").on(table.status, table.updatedAt),
+  index("idx_work_item_claim").on(table.claimId),
+  index("idx_work_item_priority_created").on(table.priority, table.createdAt),
+  index("idx_work_item_locked").on(table.lockedBy, table.lockExpiresAt),
+]);
+
+/**
+ * RCM Work Item Event — audit trail for work item status changes.
+ * Mirrors SQLite rcm_work_item_event.
+ */
+export const pgRcmWorkItemEvent = pgTable("rcm_work_item_event", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  workItemId: text("work_item_id").notNull(),
+  action: text("action").notNull(),
+  beforeStatus: text("before_status"),
+  afterStatus: text("after_status"),
+  actor: text("actor").notNull(),
+  detail: text("detail"),
+  createdAt: text("created_at").notNull(),
+}, (table) => [
+  index("idx_work_event_item").on(table.workItemId),
+  index("idx_work_event_tenant").on(table.tenantId),
+]);

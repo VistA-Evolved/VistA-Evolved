@@ -130,14 +130,14 @@ function clearLockout(accountKey: string): void {
 }
 
 /** Helper to require a valid session on a request.  Returns session or throws 401. */
-export function requireSession(request: any, reply: any): SessionData {
+export async function requireSession(request: any, reply: any): Promise<SessionData> {
   if (reply.sent) throw new Error("Reply already sent");
   const token = extractToken(request);
   if (!token) {
     reply.code(401).send({ ok: false, error: "Not authenticated" });
     throw new Error("No session");
   }
-  const session = getSession(token);
+  const session = await getSession(token);
   if (!session) {
     reply.code(401).send({ ok: false, error: "Session expired or invalid" });
     throw new Error("Invalid session");
@@ -204,7 +204,7 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
       // Create session
       const role = mapUserRole(userInfo.userName);
       const tenantId = resolveTenantId(userInfo.facilityStation);
-      const token = createSession({
+      const token = await createSession({
         duz: userInfo.duz,
         userName: userInfo.userName,
         role,
@@ -216,7 +216,7 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
 
       // Rotate session token to prevent fixation (Phase 15B)
       const finalToken = SESSION_CONFIG.rotateOnLogin
-        ? (rotateSession(token) ?? token)
+        ? ((await rotateSession(token)) ?? token)
         : token;
 
       // Set cookie (httpOnly — no JS access)
@@ -288,10 +288,10 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
   // POST /auth/logout
   server.post("/auth/logout", async (request, reply) => {
     const token = extractToken(request);
-    const session = token ? getSession(token) : null;
+    const session = token ? await getSession(token) : null;
 
     if (token) {
-      destroySession(token);
+      await destroySession(token);
     }
     reply.clearCookie(COOKIE_NAME, { path: "/" });
 
@@ -320,7 +320,7 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
     if (!token) {
       return { ok: false, authenticated: false };
     }
-    const session = getSession(token);
+    const session = await getSession(token);
     if (!session) {
       reply.clearCookie(COOKIE_NAME, { path: "/" });
       return { ok: false, authenticated: false };
@@ -347,7 +347,7 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
     if (!token) {
       return reply.code(401).send({ ok: false, error: "Not authenticated" });
     }
-    const session = getSession(token);
+    const session = await getSession(token);
     if (!session) {
       return reply.code(401).send({ ok: false, error: "Session expired or invalid" });
     }
@@ -364,7 +364,7 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
     if (!token) {
       return reply.code(401).send({ ok: false, error: "Not authenticated" });
     }
-    const session = getSession(token);
+    const session = await getSession(token);
     if (!session) {
       return reply.code(401).send({ ok: false, error: "Session expired or invalid" });
     }

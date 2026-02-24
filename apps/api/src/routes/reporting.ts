@@ -89,7 +89,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
 
   /* ── GET /reports/operations ─────────────────────────────────── */
   server.get("/reports/operations", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
     const cached = getCached<object>("report:operations");
@@ -134,7 +134,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
 
   /* ── GET /reports/integrations ───────────────────────────────── */
   server.get("/reports/integrations", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
     const cached = getCached<object>("report:integrations");
@@ -183,7 +183,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
 
   /* ── GET /reports/audit ──────────────────────────────────────── */
   server.get("/reports/audit", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
     const query = request.query as any;
@@ -230,7 +230,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
 
   /* ── GET /reports/clinical-activity ──────────────────────────── */
   server.get("/reports/clinical-activity", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
     const cached = getCached<object>("report:clinical");
@@ -292,7 +292,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
 
   /* ── POST /reports/export ────────────────────────────────────── */
   server.post("/reports/export", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
     const body = request.body as any;
@@ -409,7 +409,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
 
   /* ── GET /reports/export/jobs ────────────────────────────────── */
   server.get("/reports/export/jobs", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
     const query = request.query as any;
@@ -433,7 +433,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
 
   /* ── GET /reports/export/:jobId ──────────────────────────────── */
   server.get("/reports/export/:jobId", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
     const { jobId } = request.params as { jobId: string };

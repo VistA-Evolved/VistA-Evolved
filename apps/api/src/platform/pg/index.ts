@@ -37,4 +37,6 @@ export {
   pgEvidenceRepo,
   pgAuditRepo,
   pgCapabilityMatrixRepo,
+  pgSessionRepo,
+  pgWorkqueueRepo,
 } from "./repo/index.js";

@@ -2,6 +2,12 @@
  * Store Resolver — Selects PG or SQLite backend automatically
  *
  * Phase 102: Migrate Prototype Stores to PlatformStore
+ * Phase 117: STORE_BACKEND env var + session/workqueue resolution
+ *
+ * STORE_BACKEND controls the backend:
+ *   "auto"   (default) — PG if PLATFORM_PG_URL is set, else SQLite
+ *   "pg"     — Force PG (fails fast if PLATFORM_PG_URL missing)
+ *   "sqlite" — Force SQLite (local dev)
  *
  * All functions are async (Promises). When PG is configured, delegates
  * to PG repos. Otherwise, wraps synchronous SQLite repo calls in
@@ -33,6 +39,40 @@ import * as pgCapabilityRepo from "./pg/repo/capability-repo.js";
 import * as pgTaskRepo from "./pg/repo/task-repo.js";
 import * as pgEvidenceRepo from "./pg/repo/evidence-repo.js";
 import * as pgAuditRepo from "./pg/repo/audit-repo.js";
+
+/* ----------------------------------------------------------------
+ *  STORE_BACKEND resolution (Phase 117)
+ * ---------------------------------------------------------------- */
+
+export type StoreBackend = "pg" | "sqlite";
+
+/**
+ * Determine which backend to use based on STORE_BACKEND env var.
+ *
+ * "auto" (default): PG if PLATFORM_PG_URL is set, else SQLite.
+ * "pg": Force PG — throws if PLATFORM_PG_URL missing.
+ * "sqlite": Force SQLite.
+ */
+export function resolveBackend(): StoreBackend {
+  const env = (process.env.STORE_BACKEND || "auto").toLowerCase().trim();
+
+  if (env === "pg") {
+    if (!isPgConfigured()) {
+      throw new Error(
+        "STORE_BACKEND=pg but PLATFORM_PG_URL is not set. " +
+        "Set PLATFORM_PG_URL or use STORE_BACKEND=auto."
+      );
+    }
+    return "pg";
+  }
+
+  if (env === "sqlite") {
+    return "sqlite";
+  }
+
+  // auto: prefer PG when configured
+  return isPgConfigured() ? "pg" : "sqlite";
+}
 
 /* ----------------------------------------------------------------
  *  Async wrappers for SQLite repos (sync → Promise)
@@ -116,7 +156,7 @@ const sqliteTenantPayerRepoAsync = {
  * ---------------------------------------------------------------- */
 
 export interface ResolvedStore {
-  backend: "pg" | "sqlite";
+  backend: StoreBackend;
   payerRepo: typeof pgPayerRepo;
   auditRepo: typeof pgAuditRepo;
   capabilityRepo: typeof pgCapabilityRepo;
@@ -130,7 +170,9 @@ export interface ResolvedStore {
  * Call once at route initialization or per-request.
  */
 export function resolveStore(): ResolvedStore {
-  if (isPgConfigured()) {
+  const backend = resolveBackend();
+
+  if (backend === "pg") {
     return {
       backend: "pg",
       payerRepo: pgPayerRepo,

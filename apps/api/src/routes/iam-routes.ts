@@ -38,7 +38,7 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
    * Requires admin or support role.
    */
   server.get("/iam/audit/events", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin", "support"], reply);
 
     const query = request.query as Record<string, string>;
@@ -68,7 +68,7 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
    * Requires admin or support role.
    */
   server.get("/iam/audit/stats", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin", "support"], reply);
 
     const stats = getImmutableAuditStats();
@@ -80,7 +80,7 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
    * Requires admin role only.
    */
   server.get("/iam/audit/verify", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
     const verification = verifyAuditChain();
@@ -104,7 +104,7 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
    * Any authenticated user can query their own capabilities.
    */
   server.get("/iam/policy/capabilities", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
 
     const actions = getActionsForRoles([session.role as PolicyRole]);
     return {
@@ -120,7 +120,7 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
    * Used for testing/debugging policies.
    */
   server.post("/iam/policy/evaluate", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin", "support"], reply);
 
     const body = (request.body as any) || {};
@@ -152,7 +152,7 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
    * Any authenticated user can view role definitions.
    */
   server.get("/iam/policy/roles", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
 
     const roles: PolicyRole[] = ["provider", "nurse", "pharmacist", "clerk", "admin", "patient", "support"];
     const roleMap: Record<string, { actions: string[]; count: number }> = {};
@@ -194,7 +194,7 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
    * Any authenticated user can see what's available.
    */
   server.get("/iam/biometric/providers", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
 
     return {
       ok: true,

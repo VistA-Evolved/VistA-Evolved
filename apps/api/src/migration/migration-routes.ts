@@ -74,14 +74,14 @@ export default async function migrationRoutes(server: FastifyInstance) {
   // ---- Health / Stats ----
 
   server.get("/migration/health", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requirePermission(session, "migration:read", reply);
     const stats = getMigrationStats();
     return { ok: true, ...stats };
   });
 
   server.get("/migration/stats", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requirePermission(session, "migration:read", reply);
     return { ok: true, ...getMigrationStats() };
   });
@@ -89,13 +89,13 @@ export default async function migrationRoutes(server: FastifyInstance) {
   // ---- Template management ----
 
   server.get("/migration/templates", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requirePermission(session, "migration:read", reply);
     return { ok: true, templates: listTemplates() };
   });
 
   server.get("/migration/templates/:id", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requirePermission(session, "migration:read", reply);
     const { id } = request.params as { id: string };
     const tpl = getTemplate(id);
@@ -104,7 +104,7 @@ export default async function migrationRoutes(server: FastifyInstance) {
   });
 
   server.post("/migration/templates", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requirePermission(session, "migration:admin", reply);
     const body = (request.body as any) || {};
     if (!body.id || !body.name || !body.entityType || !body.fields) {
@@ -117,7 +117,7 @@ export default async function migrationRoutes(server: FastifyInstance) {
   });
 
   server.delete("/migration/templates/:id", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requirePermission(session, "migration:admin", reply);
     const { id } = request.params as { id: string };
     const deleted = deleteTemplate(id);
@@ -129,7 +129,7 @@ export default async function migrationRoutes(server: FastifyInstance) {
   // ---- Job lifecycle ----
 
   server.get("/migration/jobs", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requirePermission(session, "migration:read", reply);
     const q = request.query as any;
     const jobs = listJobs({
@@ -143,7 +143,7 @@ export default async function migrationRoutes(server: FastifyInstance) {
   });
 
   server.get("/migration/jobs/:id", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requirePermission(session, "migration:read", reply);
     const { id } = request.params as { id: string };
     const job = getJob(id);
@@ -154,7 +154,7 @@ export default async function migrationRoutes(server: FastifyInstance) {
   });
 
   server.post("/migration/jobs/import", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requirePermission(session, "migration:admin", reply);
     const body = (request.body as any) || {};
 
@@ -188,7 +188,7 @@ export default async function migrationRoutes(server: FastifyInstance) {
   });
 
   server.post("/migration/jobs/export", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requirePermission(session, "migration:admin", reply);
     const body = (request.body as any) || {};
 
@@ -220,7 +220,7 @@ export default async function migrationRoutes(server: FastifyInstance) {
   // ---- Pipeline actions ----
 
   server.post("/migration/jobs/:id/validate", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requirePermission(session, "migration:admin", reply);
     const { id } = request.params as { id: string };
 
@@ -240,7 +240,7 @@ export default async function migrationRoutes(server: FastifyInstance) {
   });
 
   server.post("/migration/jobs/:id/dry-run", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requirePermission(session, "migration:admin", reply);
     const { id } = request.params as { id: string };
 
@@ -259,7 +259,7 @@ export default async function migrationRoutes(server: FastifyInstance) {
   });
 
   server.post("/migration/jobs/:id/run", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requirePermission(session, "migration:admin", reply);
     const { id } = request.params as { id: string };
 
@@ -318,7 +318,7 @@ export default async function migrationRoutes(server: FastifyInstance) {
   // ---- Rollback ----
 
   server.get("/migration/jobs/:id/rollback-plan", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requirePermission(session, "migration:admin", reply);
     const { id } = request.params as { id: string };
 
@@ -328,7 +328,7 @@ export default async function migrationRoutes(server: FastifyInstance) {
   });
 
   server.post("/migration/jobs/:id/rollback", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requirePermission(session, "migration:admin", reply);
     const { id } = request.params as { id: string };
 
@@ -361,7 +361,7 @@ export default async function migrationRoutes(server: FastifyInstance) {
   // ---- Delete job ----
 
   server.delete("/migration/jobs/:id", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requirePermission(session, "migration:admin", reply);
     const { id } = request.params as { id: string };
 

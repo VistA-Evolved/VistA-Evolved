@@ -156,7 +156,7 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
 
   server.post("/admin/payer-db/evidence/ingest-json", async (request, reply) => {
     // Phase 104: Explicit admin role enforcement for mutations
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
     await ensureDb();
@@ -188,7 +188,7 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
 
   server.post("/admin/payer-db/evidence/upload-pdf", async (request, reply) => {
     // Phase 104: Explicit admin role enforcement for mutations
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
     await ensureDb();
@@ -260,7 +260,7 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
 
   server.post("/admin/payer-db/evidence/:id/promote", async (request, reply) => {
     // Phase 104: Explicit admin role enforcement for mutations
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
     await ensureDb();
@@ -290,7 +290,7 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
 
   server.patch("/admin/payer-db/payers/:id", async (request, reply) => {
     // Phase 104: Explicit admin role enforcement for mutations
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
     await ensureDb();
@@ -331,7 +331,7 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
 
   server.put("/admin/payer-db/payers/:id/capabilities", async (request, reply) => {
     // Phase 104: Explicit admin role enforcement for mutations
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
     await ensureDb();
@@ -378,7 +378,7 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
 
   server.post("/admin/payer-db/payers/:id/tasks", async (request, reply) => {
     // Phase 104: Explicit admin role enforcement for mutations
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
     await ensureDb();
@@ -404,7 +404,7 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
 
   server.patch("/admin/payer-db/tasks/:taskId", async (request, reply) => {
     // Phase 104: Explicit admin role enforcement for mutations
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
     await ensureDb();
@@ -465,7 +465,7 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
 
   server.get("/admin/payer-db/audit/verify", async (request, reply) => {
     // Phase 104: Verify hash chain integrity of platform_audit_event
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
     const result = await verifyAuditChain();
@@ -474,7 +474,7 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
 
   server.get("/admin/payer-db/audit/export", async (request, reply) => {
     // Phase 104: Export audit entries (PHI-sanitized)
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
     const query = request.query as {
@@ -511,7 +511,7 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
 
   server.put("/admin/payer-db/tenant/:tenantId/payers/:payerId", async (request, reply) => {
     // Phase 104: Explicit admin role enforcement for mutations
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
 
     await ensureDb();

@@ -55,14 +55,14 @@ function auditWs(session: SessionData, action: string, rpcName?: string, result?
 
 export default async function wsConsoleRoutes(server: FastifyInstance): Promise<void> {
   // WebSocket console endpoint
-  server.get("/ws/console", { websocket: true }, (socket, request) => {
+  server.get("/ws/console", { websocket: true }, async (socket, request) => {
     // Session is already validated by the security middleware (cookie or Bearer).
     // Fall back to ?token= query param for backward compatibility.
     let session = request.session ?? null;
     if (!session) {
       const url = new URL(request.url, `http://${request.headers.host}`);
       const qToken = url.searchParams.get("token") || "";
-      if (qToken) session = getSession(qToken);
+      if (qToken) session = await getSession(qToken);
     }
 
     if (!session) {

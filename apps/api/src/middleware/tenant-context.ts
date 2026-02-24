@@ -35,7 +35,7 @@ export interface TenantContext {
  * Extract tenantId from request (uses the session cookie).
  * Returns null for unauthenticated requests.
  */
-export function getRequestTenantId(request: FastifyRequest): string | null {
+export async function getRequestTenantId(request: FastifyRequest): Promise<string | null> {
   // Check decorated property first
   const ctx = (request as any).__tenantCtx as TenantContext | undefined;
   if (ctx) return ctx.tenantId;
@@ -46,7 +46,7 @@ export function getRequestTenantId(request: FastifyRequest): string | null {
     (request.cookies as any)?.portal_session;
   if (!token) return null;
 
-  const session = getSession(token);
+  const session = await getSession(token);
   return session?.tenantId ?? "default";
 }
 
@@ -81,7 +81,7 @@ export async function registerTenantContextMiddleware(
         return;
       }
 
-      const session = getSession(token);
+      const session = await getSession(token);
       if (!session) {
         // Invalid/expired session -- auth middleware will handle 401
         return;

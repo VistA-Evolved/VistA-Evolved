@@ -133,7 +133,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
   // ── List integrations ───────────────────────────────────────────
 
   server.get("/admin/registry/:tenantId", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId } = request.params as { tenantId: string };
     const entries = listIntegrations(tenantId);
@@ -143,7 +143,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
   // ── Get single integration ─────────────────────────────────────
 
   server.get("/admin/registry/:tenantId/:integrationId", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId, integrationId } = request.params as { tenantId: string; integrationId: string };
     const entry = getIntegration(tenantId, integrationId);
@@ -154,7 +154,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
   // ── Create/update integration ──────────────────────────────────
 
   server.put("/admin/registry/:tenantId/:integrationId", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId, integrationId } = request.params as { tenantId: string; integrationId: string };
     const body = request.body as Partial<IntegrationEntry>;
@@ -197,7 +197,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
   // ── Delete integration ─────────────────────────────────────────
 
   server.delete("/admin/registry/:tenantId/:integrationId", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId, integrationId } = request.params as { tenantId: string; integrationId: string };
     const deleted = deleteIntegration(tenantId, integrationId);
@@ -215,7 +215,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
   // ── Toggle enable/disable ──────────────────────────────────────
 
   server.post("/admin/registry/:tenantId/:integrationId/toggle", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId, integrationId } = request.params as { tenantId: string; integrationId: string };
     const { enabled } = request.body as { enabled: boolean };
@@ -235,7 +235,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
   // ── Probe single integration ───────────────────────────────────
 
   server.post("/admin/registry/:tenantId/:integrationId/probe", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId, integrationId } = request.params as { tenantId: string; integrationId: string };
 
@@ -261,7 +261,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
   // ── Probe all enabled integrations ─────────────────────────────
 
   server.post("/admin/registry/:tenantId/probe-all", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId } = request.params as { tenantId: string };
 
@@ -290,7 +290,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
   // ── Health summary ─────────────────────────────────────────────
 
   server.get("/admin/registry/:tenantId/health-summary", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId } = request.params as { tenantId: string };
     const summary = getIntegrationHealthSummary(tenantId);
@@ -307,7 +307,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
   // ── Error log for one integration ──────────────────────────────
 
   server.get("/admin/registry/:tenantId/error-log/:integrationId", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId, integrationId } = request.params as { tenantId: string; integrationId: string };
     const entry = getIntegration(tenantId, integrationId);
@@ -327,7 +327,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
    *         modalityCode, aeTitle, location, worklistAeTitle?, conformanceClasses? }
    */
   server.post("/admin/registry/:tenantId/onboard-device", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId } = request.params as { tenantId: string };
     const body = request.body as Record<string, any>;

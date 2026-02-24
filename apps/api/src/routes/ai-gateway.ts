@@ -53,7 +53,7 @@ export default async function aiGatewayRoutes(server: FastifyInstance): Promise<
   /* ================================================================ */
   server.post("/ai/request", async (request, reply) => {
     if (!requireSessionFn) return reply.code(500).send({ error: "AI routes not initialized" });
-    const session = requireSessionFn(request, reply);
+    const session = await requireSessionFn(request, reply);
     if (!session) return;
 
     const body = (request.body as any) || {};
@@ -96,7 +96,7 @@ export default async function aiGatewayRoutes(server: FastifyInstance): Promise<
   /* ================================================================ */
   server.post("/ai/confirm/:id", async (request, reply) => {
     if (!requireSessionFn) return reply.code(500).send({ error: "AI routes not initialized" });
-    const session = requireSessionFn(request, reply);
+    const session = await requireSessionFn(request, reply);
     if (!session) return;
 
     const { id } = request.params as { id: string };
@@ -126,7 +126,7 @@ export default async function aiGatewayRoutes(server: FastifyInstance): Promise<
   /* ================================================================ */
   server.get("/ai/models", async (request, reply) => {
     if (!requireSessionFn) return reply.code(500).send({ error: "AI routes not initialized" });
-    const session = requireSessionFn(request, reply);
+    const session = await requireSessionFn(request, reply);
     if (!session) return;
 
     return reply.send({ ok: true, models: listModels() });
@@ -137,7 +137,7 @@ export default async function aiGatewayRoutes(server: FastifyInstance): Promise<
   /* ================================================================ */
   server.get("/ai/prompts", async (request, reply) => {
     if (!requireSessionFn) return reply.code(500).send({ error: "AI routes not initialized" });
-    const session = requireSessionFn(request, reply);
+    const session = await requireSessionFn(request, reply);
     if (!session) return;
 
     return reply.send({ ok: true, prompts: listPrompts() });
@@ -148,7 +148,7 @@ export default async function aiGatewayRoutes(server: FastifyInstance): Promise<
   /* ================================================================ */
   server.get("/ai/audit", async (request, reply) => {
     if (!requireSessionFn) return reply.code(500).send({ error: "AI routes not initialized" });
-    const session = requireSessionFn(request, reply);
+    const session = await requireSessionFn(request, reply);
     if (!session) return;
 
     // Admin role check
@@ -172,7 +172,7 @@ export default async function aiGatewayRoutes(server: FastifyInstance): Promise<
   /* ================================================================ */
   server.get("/ai/audit/stats", async (request, reply) => {
     if (!requireSessionFn) return reply.code(500).send({ error: "AI routes not initialized" });
-    const session = requireSessionFn(request, reply);
+    const session = await requireSessionFn(request, reply);
     if (!session) return;
 
     if (session.role !== "admin") {
@@ -187,7 +187,7 @@ export default async function aiGatewayRoutes(server: FastifyInstance): Promise<
   /* ================================================================ */
   server.get("/ai/policy", async (request, reply) => {
     if (!requireSessionFn) return reply.code(500).send({ error: "AI routes not initialized" });
-    const session = requireSessionFn(request, reply);
+    const session = await requireSessionFn(request, reply);
     if (!session) return;
 
     return reply.send({ ok: true, policy: getFacilityPolicy() });
@@ -198,7 +198,7 @@ export default async function aiGatewayRoutes(server: FastifyInstance): Promise<
   /* ================================================================ */
   server.put("/ai/policy", async (request, reply) => {
     if (!requireSessionFn) return reply.code(500).send({ error: "AI routes not initialized" });
-    const session = requireSessionFn(request, reply);
+    const session = await requireSessionFn(request, reply);
     if (!session) return;
 
     if (session.role !== "admin") {

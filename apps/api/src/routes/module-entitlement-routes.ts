@@ -53,7 +53,7 @@ export default async function moduleEntitlementRoutes(
   server.get(
     "/admin/modules/catalog",
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = requireSession(request, reply);
+      const session = await requireSession(request, reply);
       if (!session) return;
 
       const catalog = listModuleCatalog();
@@ -69,7 +69,7 @@ export default async function moduleEntitlementRoutes(
   server.get(
     "/admin/modules/entitlements",
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = requireSession(request, reply);
+      const session = await requireSession(request, reply);
       if (!session) return;
 
       const tenantId =
@@ -90,7 +90,7 @@ export default async function moduleEntitlementRoutes(
   server.post(
     "/admin/modules/entitlements",
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = requireSession(request, reply);
+      const session = await requireSession(request, reply);
       if (!session) return;
 
       const body = (request.body as any) || {};
@@ -166,7 +166,7 @@ export default async function moduleEntitlementRoutes(
   server.post(
     "/admin/modules/entitlements/seed",
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = requireSession(request, reply);
+      const session = await requireSession(request, reply);
       if (!session) return;
 
       const body = (request.body as any) || {};
@@ -206,7 +206,7 @@ export default async function moduleEntitlementRoutes(
   server.get(
     "/admin/modules/feature-flags",
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = requireSession(request, reply);
+      const session = await requireSession(request, reply);
       if (!session) return;
 
       const tenantId =
@@ -221,7 +221,7 @@ export default async function moduleEntitlementRoutes(
   server.post(
     "/admin/modules/feature-flags",
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = requireSession(request, reply);
+      const session = await requireSession(request, reply);
       if (!session) return;
 
       const body = (request.body as any) || {};
@@ -275,7 +275,7 @@ export default async function moduleEntitlementRoutes(
   server.delete(
     "/admin/modules/feature-flags",
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = requireSession(request, reply);
+      const session = await requireSession(request, reply);
       if (!session) return;
 
       const body = (request.body as any) || {};
@@ -324,7 +324,7 @@ export default async function moduleEntitlementRoutes(
   server.get(
     "/admin/modules/audit",
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = requireSession(request, reply);
+      const session = await requireSession(request, reply);
       if (!session) return;
 
       const query = (request.query as any) || {};

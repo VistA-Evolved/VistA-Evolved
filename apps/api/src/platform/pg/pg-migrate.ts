@@ -602,6 +602,101 @@ CREATE INDEX IF NOT EXISTS idx_job_run_log_tenant ON job_run_log(tenant_id, star
 CREATE INDEX IF NOT EXISTS idx_job_run_log_ok ON job_run_log(ok, finished_at);
 `,
   },
+  {
+    version: 9,
+    name: "session_workqueue_multi_instance",
+    sql: `
+-- ============================================================
+-- Phase 117: Postgres-first Prod Posture + Multi-Instance
+-- auth_session, rcm_work_item, rcm_work_item_event tables
+-- ============================================================
+
+-- Auth session table (mirrors SQLite auth_session)
+CREATE TABLE IF NOT EXISTS auth_session (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  user_id TEXT NOT NULL,
+  user_name TEXT NOT NULL,
+  user_role TEXT NOT NULL,
+  facility_station TEXT NOT NULL,
+  facility_name TEXT NOT NULL,
+  division_ien TEXT NOT NULL,
+  token_hash TEXT NOT NULL,
+  csrf_secret TEXT,
+  ip_hash TEXT,
+  user_agent_hash TEXT,
+  created_at TEXT NOT NULL,
+  last_seen_at TEXT NOT NULL,
+  expires_at TEXT NOT NULL,
+  revoked_at TEXT,
+  metadata_json TEXT
+);
+
+-- Session indexes: tenant scope, token lookup, expiry cleanup, user query
+CREATE INDEX IF NOT EXISTS idx_auth_session_tenant ON auth_session(tenant_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_auth_session_token_hash ON auth_session(token_hash);
+CREATE INDEX IF NOT EXISTS idx_auth_session_expires ON auth_session(expires_at);
+CREATE INDEX IF NOT EXISTS idx_auth_session_user ON auth_session(user_id);
+
+-- RCM work item table (mirrors SQLite rcm_work_item)
+CREATE TABLE IF NOT EXISTS rcm_work_item (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  type TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'open',
+  claim_id TEXT NOT NULL,
+  payer_id TEXT,
+  payer_name TEXT,
+  patient_dfn TEXT,
+  reason_code TEXT NOT NULL,
+  reason_description TEXT NOT NULL,
+  reason_category TEXT,
+  recommended_action TEXT NOT NULL,
+  field_to_fix TEXT,
+  triggering_rule TEXT,
+  source_type TEXT NOT NULL,
+  source_id TEXT,
+  source_timestamp TEXT,
+  priority TEXT NOT NULL DEFAULT 'medium',
+  assigned_to TEXT,
+  due_date TEXT,
+  resolved_at TEXT,
+  resolved_by TEXT,
+  resolution_note TEXT,
+  locked_by TEXT,
+  locked_at TEXT,
+  lock_expires_at TEXT,
+  attempts INTEGER NOT NULL DEFAULT 0,
+  last_error TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+-- Work item indexes: tenant, status+updated (queue queries), claim, priority, lock
+CREATE INDEX IF NOT EXISTS idx_work_item_tenant ON rcm_work_item(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_work_item_status_updated ON rcm_work_item(status, updated_at);
+CREATE INDEX IF NOT EXISTS idx_work_item_claim ON rcm_work_item(claim_id);
+CREATE INDEX IF NOT EXISTS idx_work_item_priority_created ON rcm_work_item(priority, created_at);
+CREATE INDEX IF NOT EXISTS idx_work_item_locked ON rcm_work_item(locked_by, lock_expires_at);
+
+-- RCM work item event table (mirrors SQLite rcm_work_item_event)
+CREATE TABLE IF NOT EXISTS rcm_work_item_event (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  work_item_id TEXT NOT NULL,
+  action TEXT NOT NULL,
+  before_status TEXT,
+  after_status TEXT,
+  actor TEXT NOT NULL,
+  detail TEXT,
+  created_at TEXT NOT NULL
+);
+
+-- Work event indexes: item lookup, tenant scope
+CREATE INDEX IF NOT EXISTS idx_work_event_item ON rcm_work_item_event(work_item_id);
+CREATE INDEX IF NOT EXISTS idx_work_event_tenant ON rcm_work_item_event(tenant_id);
+`,
+  },
 ];
 
 /**
@@ -691,6 +786,9 @@ export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: s
     "capability_matrix_cell",
     "capability_matrix_evidence",
     "job_run_log",
+    "auth_session",
+    "rcm_work_item",
+    "rcm_work_item_event",
   ];
 
   const applied: string[] = [];

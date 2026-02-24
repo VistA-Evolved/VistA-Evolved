@@ -60,7 +60,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
 
   /** GET /api/capabilities — resolved capabilities for current tenant. */
   server.get("/api/capabilities", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     if (!session) return;
 
     const tenantId = (session as any).tenantId || "default";
@@ -75,7 +75,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
 
   /** GET /api/capabilities/summary — live/pending/disabled counts. */
   server.get("/api/capabilities/summary", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     if (!session) return;
 
     const tenantId = (session as any).tenantId || "default";
@@ -90,7 +90,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
 
   /** GET /api/capabilities/by-module — grouped capabilities. */
   server.get("/api/capabilities/by-module", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     if (!session) return;
 
     const tenantId = (session as any).tenantId || "default";
@@ -109,7 +109,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
 
   /** GET /api/modules/status — module enablement status. */
   server.get("/api/modules/status", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     if (!session) return;
 
     // Admin check
@@ -133,7 +133,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
 
   /** GET /api/modules/skus — available SKU profiles. */
   server.get("/api/modules/skus", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     if (!session) return;
 
     if ((session as any).role !== "admin") {
@@ -150,7 +150,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
 
   /** POST /api/modules/override — per-tenant module override. */
   server.post("/api/modules/override", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     if (!session) return;
 
     if ((session as any).role !== "admin") {
@@ -226,7 +226,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
 
   /** GET /api/adapters/health — adapter health status. */
   server.get("/api/adapters/health", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     if (!session) return;
 
     if ((session as any).role !== "admin") {
@@ -240,7 +240,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
 
   /** GET /api/adapters/list — all loaded adapters. */
   server.get("/api/adapters/list", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     if (!session) return;
 
     if ((session as any).role !== "admin") {
@@ -264,7 +264,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
 
   /** GET /api/modules/manifests — full module manifests with dependency status. */
   server.get("/api/modules/manifests", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     if (!session) return;
 
     if ((session as any).role !== "admin") {
@@ -288,7 +288,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
 
   /** GET /api/marketplace/config — marketplace tenant config. */
   server.get("/api/marketplace/config", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     if (!session) return;
 
     if ((session as any).role !== "admin") {
@@ -309,7 +309,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
 
   /** PUT /api/marketplace/config — update marketplace tenant config. */
   server.put("/api/marketplace/config", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     if (!session) return;
 
     if ((session as any).role !== "admin") {
@@ -344,7 +344,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
 
   /** PATCH /api/marketplace/connectors — update connector settings only. */
   server.patch("/api/marketplace/connectors", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     if (!session) return;
 
     if ((session as any).role !== "admin") {
@@ -371,7 +371,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
 
   /** PATCH /api/marketplace/jurisdiction — change jurisdiction pack. */
   server.patch("/api/marketplace/jurisdiction", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     if (!session) return;
 
     if ((session as any).role !== "admin") {
@@ -398,7 +398,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
 
   /** GET /api/marketplace/jurisdictions — available jurisdiction packs. */
   server.get("/api/marketplace/jurisdictions", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     if (!session) return;
 
     if ((session as any).role !== "admin") {
@@ -411,7 +411,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
 
   /** GET /api/marketplace/summary — marketplace summary stats. */
   server.get("/api/marketplace/summary", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     if (!session) return;
 
     if ((session as any).role !== "admin") {

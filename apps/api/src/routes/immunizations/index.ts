@@ -75,7 +75,7 @@ export default async function immunizationsRoutes(
    * Returns patient immunization history from VistA ORQQPX IMMUN LIST.
    */
   server.get("/vista/immunizations", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const dfn = (request.query as any)?.dfn;
     if (!dfn) {
       return reply.status(400).send({ ok: false, error: "dfn query parameter required" });
@@ -112,7 +112,7 @@ export default async function immunizationsRoutes(
    * Returns immunization type picker list from PXVIMM IMM SHORT LIST.
    */
   server.get("/vista/immunizations/catalog", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
 
     try {
       const lines = await safeCallRpc("PXVIMM IMM SHORT LIST", []);
@@ -147,7 +147,7 @@ export default async function immunizationsRoutes(
    * Returns honest pending posture with target RPC info.
    */
   server.post("/vista/immunizations", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const dfn = (request.query as any)?.dfn;
     if (!dfn) {
       return reply.status(400).send({ ok: false, error: "dfn query parameter required" });

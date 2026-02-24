@@ -306,9 +306,9 @@ initIntakeRoutes(
     const ps = getPortalSession(req);
     return ps ? { patientDfn: ps.patientDfn, patientName: ps.patientName } : null;
   },
-  (req: any) => {
+  async (req: any) => {
     try {
-      const session = requireSession(req, { code: () => ({ send: () => {} }) });
+      const session = await requireSession(req, { code: () => ({ send: () => {} }) });
       return session ? { duz: session.duz, name: session.userName } : null;
     } catch { return null; }
   }
@@ -322,14 +322,14 @@ server.register(portalIamRoutes);
 // Register telehealth routes -- video visit lifecycle, device check, waiting room (Phase 30)
 initTelehealthRoutes(
   getPortalSession,
-  (req: any, reply: any) => requireSession(req, reply)
+  async (req: any, reply: any) => await requireSession(req, reply)
 );
 server.register(telehealthRoutes);
 startRoomCleanup();
 
 // Register AI Gateway routes -- governed AI assist (Phase 33)
 initAiRoutes(
-  (req: any, reply: any) => requireSession(req, reply),
+  async (req: any, reply: any) => await requireSession(req, reply),
   getPortalSession
 );
 server.register(aiGatewayRoutes);
@@ -638,7 +638,7 @@ let rpcCatalogCache: { data: any; ts: number } | null = null;
 const RPC_CATALOG_TTL = 60_000; // 60 seconds cache
 
 server.get("/vista/rpc-catalog", async (request, reply) => {
-  const session = requireSession(request, reply);
+  const session = await requireSession(request, reply);
   if (!session) return;
 
   // Return cached if fresh
@@ -686,7 +686,7 @@ server.get("/vista/rpc-catalog", async (request, reply) => {
 
 // Phase 41: RPC Debug endpoints (admin/dev) — action registry + rpc registry
 server.get("/vista/rpc-debug/actions", async (request, reply) => {
-  const session = requireSession(request, reply);
+  const session = await requireSession(request, reply);
   if (!session) return;
   // Inline action registry data (avoids cross-app import)
   const { ACTION_REGISTRY_DATA } = await import("./vista/rpcDebugData.js");
@@ -694,14 +694,14 @@ server.get("/vista/rpc-debug/actions", async (request, reply) => {
 });
 
 server.get("/vista/rpc-debug/registry", async (request, reply) => {
-  const session = requireSession(request, reply);
+  const session = await requireSession(request, reply);
   if (!session) return;
   const { registry, exceptions } = getFullRpcInventory();
   return { ok: true, registry, exceptions, count: registry.length };
 });
 
 server.get("/vista/rpc-debug/coverage", async (request, reply) => {
-  const session = requireSession(request, reply);
+  const session = await requireSession(request, reply);
   if (!session) return;
   try {
     const { readFileSync, existsSync } = await import("node:fs");
@@ -2408,6 +2408,29 @@ try {
         rls: pgResult.rls ? { applied: pgResult.rls.applied.length } : null,
         latencyMs: pgResult.healthCheck?.latencyMs,
       });
+      // Phase 117: Re-wire session + workqueue repos to PG when STORE_BACKEND resolves to "pg"
+      const { resolveBackend } = await import("./platform/store-resolver.js");
+      const backend = resolveBackend();
+      if (backend === "pg") {
+        // Session repo → PG (overrides SQLite wiring above)
+        try {
+          const pgSessionRepoMod = await import("./platform/pg/repo/session-repo.js");
+          const { initSessionRepo } = await import("./auth/session-store.js");
+          initSessionRepo(pgSessionRepoMod);
+          log.info("Session store re-wired to PG (multi-instance safe)");
+        } catch (psErr: any) {
+          log.warn("PG session repo wire failed (SQLite fallback)", { error: psErr.message });
+        }
+        // Workqueue repo → PG (overrides SQLite wiring above)
+        try {
+          const pgWqRepoMod = await import("./platform/pg/repo/workqueue-repo.js");
+          const { initWorkqueueRepo } = await import("./rcm/workqueues/workqueue-store.js");
+          initWorkqueueRepo(pgWqRepoMod);
+          log.info("Workqueue store re-wired to PG (multi-instance safe)");
+        } catch (pwqErr: any) {
+          log.warn("PG workqueue repo wire failed (SQLite fallback)", { error: pwqErr.message });
+        }
+      }
     } else {
       log.warn("Platform PG init failed (SQLite fallback active)", {
         ok: false,

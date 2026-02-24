@@ -47,14 +47,14 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
 
   /** GET /admin/tenants — list all tenants */
   server.get("/admin/tenants", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     return { ok: true, tenants: listTenants() };
   });
 
   /** GET /admin/tenants/:tenantId — get single tenant */
   server.get("/admin/tenants/:tenantId", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId } = request.params as { tenantId: string };
     const tenant = getTenant(tenantId);
@@ -64,7 +64,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
 
   /** PUT /admin/tenants/:tenantId — create or update tenant */
   server.put("/admin/tenants/:tenantId", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId } = request.params as { tenantId: string };
     const body = request.body as Partial<TenantConfig>;
@@ -100,7 +100,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
 
   /** DELETE /admin/tenants/:tenantId — delete tenant */
   server.delete("/admin/tenants/:tenantId", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId } = request.params as { tenantId: string };
     const deleted = deleteTenant(tenantId);
@@ -112,7 +112,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
 
   /** GET /admin/feature-flags/:tenantId — get feature flags */
   server.get("/admin/feature-flags/:tenantId", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId } = request.params as { tenantId: string };
     const tenant = getTenant(tenantId);
@@ -122,7 +122,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
 
   /** PUT /admin/feature-flags/:tenantId — update feature flags (partial merge) */
   server.put("/admin/feature-flags/:tenantId", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId } = request.params as { tenantId: string };
     const flags = request.body as FeatureFlags;
@@ -142,7 +142,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
 
   /** GET /admin/ui-defaults/:tenantId — get UI defaults */
   server.get("/admin/ui-defaults/:tenantId", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId } = request.params as { tenantId: string };
     const tenant = getTenant(tenantId);
@@ -152,7 +152,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
 
   /** PUT /admin/ui-defaults/:tenantId — update UI defaults (partial merge) */
   server.put("/admin/ui-defaults/:tenantId", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId } = request.params as { tenantId: string };
     const defaults = request.body as Partial<UIDefaults>;
@@ -172,7 +172,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
 
   /** GET /admin/modules/:tenantId — get enabled modules */
   server.get("/admin/modules/:tenantId", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId } = request.params as { tenantId: string };
     const tenant = getTenant(tenantId);
@@ -182,7 +182,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
 
   /** PUT /admin/modules/:tenantId — update enabled modules */
   server.put("/admin/modules/:tenantId", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId } = request.params as { tenantId: string };
     const { modules } = request.body as { modules: ModuleId[] };
@@ -202,7 +202,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
 
   /** GET /admin/templates/:tenantId — list note templates */
   server.get("/admin/templates/:tenantId", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId } = request.params as { tenantId: string };
     const tenant = getTenant(tenantId);
@@ -212,7 +212,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
 
   /** PUT /admin/templates/:tenantId/:templateId — upsert a note template */
   server.put("/admin/templates/:tenantId/:templateId", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId, templateId } = request.params as { tenantId: string; templateId: string };
     const body = request.body as Partial<NoteTemplate>;
@@ -240,7 +240,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
 
   /** DELETE /admin/templates/:tenantId/:templateId — delete a note template */
   server.delete("/admin/templates/:tenantId/:templateId", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId, templateId } = request.params as { tenantId: string; templateId: string };
     const deleted = deleteNoteTemplate(tenantId, templateId);
@@ -259,7 +259,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
 
   /** GET /admin/integrations/:tenantId — list connectors with status */
   server.get("/admin/integrations/:tenantId", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId } = request.params as { tenantId: string };
     const tenant = getTenant(tenantId);
@@ -269,7 +269,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
 
   /** POST /admin/integrations/:tenantId/probe — probe all connectors */
   server.post("/admin/integrations/:tenantId/probe", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId } = request.params as { tenantId: string };
     const tenant = getTenant(tenantId);
@@ -305,7 +305,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
 
   /** GET /admin/my-tenant — get current user's tenant config (non-admin). */
   server.get("/admin/my-tenant", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const tenant = getTenant(session.tenantId);
     if (!tenant) return reply.code(404).send({ ok: false, error: "Tenant not found" });
     // Return only client-safe fields (no vistaHost/port, no connector details)

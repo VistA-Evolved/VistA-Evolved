@@ -276,7 +276,7 @@ export default async function emarRoutes(server: FastifyInstance) {
 
   /* ------ GET /emar/schedule?dfn=N ------ */
   server.get("/emar/schedule", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = requireSession(request, reply);
+    const _session = await requireSession(request, reply);
     const dfn = validateDfn((request.query as any)?.dfn, reply);
     if (!dfn) return;
 
@@ -375,7 +375,7 @@ export default async function emarRoutes(server: FastifyInstance) {
 
   /* ------ GET /emar/allergies?dfn=N ------ */
   server.get("/emar/allergies", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = requireSession(request, reply);
+    const _session = await requireSession(request, reply);
     const dfn = validateDfn((request.query as any)?.dfn, reply);
     if (!dfn) return;
 
@@ -447,7 +447,7 @@ export default async function emarRoutes(server: FastifyInstance) {
 
   /* ------ GET /emar/history?dfn=N (integration-pending) ------ */
   server.get("/emar/history", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = requireSession(request, reply);
+    const _session = await requireSession(request, reply);
     const dfn = validateDfn((request.query as any)?.dfn, reply);
     if (!dfn) return;
 
@@ -465,7 +465,7 @@ export default async function emarRoutes(server: FastifyInstance) {
 
   /* ------ POST /emar/administer (integration-pending) ------ */
   server.post("/emar/administer", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = requireSession(request, reply);
+    const _session = await requireSession(request, reply);
 
     const body = (request.body as any) || {};
     const dfn = String(body.dfn || "").trim();
@@ -518,7 +518,7 @@ export default async function emarRoutes(server: FastifyInstance) {
 
   /* ------ GET /emar/duplicate-check?dfn=N ------ */
   server.get("/emar/duplicate-check", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = requireSession(request, reply);
+    const _session = await requireSession(request, reply);
     const dfn = validateDfn((request.query as any)?.dfn, reply);
     if (!dfn) return;
 
@@ -576,7 +576,7 @@ export default async function emarRoutes(server: FastifyInstance) {
 
   /* ------ POST /emar/barcode-scan (integration-pending) ------ */
   server.post("/emar/barcode-scan", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = requireSession(request, reply);
+    const _session = await requireSession(request, reply);
 
     const body = (request.body as any) || {};
     const barcode = String(body.barcode || "").trim();

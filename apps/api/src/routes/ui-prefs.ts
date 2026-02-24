@@ -27,7 +27,7 @@ export default async function uiPrefsRoutes(server: FastifyInstance): Promise<vo
    * Returns the user's saved coversheet layout, or defaults if none saved.
    * ---------------------------------------------------------------- */
   server.get("/ui-prefs/coversheet", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     if (!session) return;
 
     const tenantId = (request as any).session?.tenantId ?? "default";
@@ -57,7 +57,7 @@ export default async function uiPrefsRoutes(server: FastifyInstance): Promise<vo
    * Save the user's coversheet layout. Partial updates are merged with defaults.
    * ---------------------------------------------------------------- */
   server.put("/ui-prefs/coversheet", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     if (!session) return;
 
     const tenantId = (request as any).session?.tenantId ?? "default";
@@ -91,7 +91,7 @@ export default async function uiPrefsRoutes(server: FastifyInstance): Promise<vo
    * Reset to defaults (removes saved prefs).
    * ---------------------------------------------------------------- */
   server.delete("/ui-prefs/coversheet", async (request, reply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     if (!session) return;
 
     const tenantId = (request as any).session?.tenantId ?? "default";

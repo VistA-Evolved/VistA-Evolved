@@ -259,7 +259,7 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
 
     // Create session from IdP identity
     const identity = result.identity;
-    const token = createSession({
+    const token = await createSession({
       duz: identity.duz || identity.sub,
       userName: identity.displayName,
       role: identity.role,
@@ -271,7 +271,7 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
 
     // Rotate token to prevent fixation
     const finalToken = SESSION_CONFIG.rotateOnLogin
-      ? (rotateSession(token) ?? token)
+      ? ((await rotateSession(token)) ?? token)
       : token;
 
     // Set session cookie (httpOnly -- no JS access)
@@ -343,7 +343,7 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
     if (!token) {
       return reply.code(401).send({ ok: false, error: "Not authenticated" });
     }
-    const session = getSession(token);
+    const session = await getSession(token);
     if (!session) {
       return reply.code(401).send({ ok: false, error: "Session expired" });
     }
@@ -415,7 +415,7 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
     if (!token) {
       return reply.code(401).send({ ok: false, error: "Not authenticated" });
     }
-    const session = getSession(token);
+    const session = await getSession(token);
     if (!session) {
       return reply.code(401).send({ ok: false, error: "Session expired" });
     }

@@ -283,7 +283,7 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
       return;
     }
 
-    const session = getSession(token);
+    const session = await getSession(token);
     if (!session) {
       (request as any)._rejected = true;
       reply.code(401).send({ ok: false, error: "Session expired or invalid" });

@@ -39,7 +39,7 @@ import type {
 /* ------------------------------------------------------------------ */
 
 type PortalSessionFn = (req: any) => { patientDfn: string; patientName: string } | null;
-type ClinicianSessionFn = (req: any) => { duz: string; name: string } | null;
+type ClinicianSessionFn = (req: any) => { duz: string; name: string } | null | Promise<{ duz: string; name: string } | null>;
 
 let getPortalSessionFn: PortalSessionFn = () => null;
 let getClinicianSessionFn: ClinicianSessionFn = () => null;
@@ -61,8 +61,8 @@ function requirePortalSession(request: any, reply: any): { patientDfn: string; p
   return session;
 }
 
-function requireClinicianSession(request: any, reply: any): { duz: string; name: string } | null {
-  const session = getClinicianSessionFn(request);
+async function requireClinicianSession(request: any, reply: any): Promise<{ duz: string; name: string } | null> {
+  const session = await getClinicianSessionFn(request);
   if (!session) {
     reply.code(401).send({ error: "Clinician session required" });
     return null;
@@ -102,7 +102,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   server.get("/intake/sessions/:id", async (request, reply) => {
     // Allow both portal and clinician sessions
     const portal = getPortalSessionFn(request);
-    const clinician = getClinicianSessionFn(request);
+    const clinician = await getClinicianSessionFn(request);
     if (!portal && !clinician) {
       return reply.code(401).send({ error: "Session required" });
     }
@@ -347,7 +347,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
 
   /** List intakes for a specific patient (clinician view) */
   server.get("/intake/by-patient/:dfn", async (request, reply) => {
-    const clinician = requireClinicianSession(request, reply);
+    const clinician = await requireClinicianSession(request, reply);
     if (!clinician) return;
 
     const { dfn } = request.params as { dfn: string };
@@ -357,7 +357,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
 
   /** Get intake for clinician review */
   server.get("/intake/sessions/:id/review", async (request, reply) => {
-    const clinician = requireClinicianSession(request, reply);
+    const clinician = await requireClinicianSession(request, reply);
     if (!clinician) return;
 
     const { id } = request.params as { id: string };
@@ -389,7 +389,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
 
   /** Clinician edit/confirm */
   server.put("/intake/sessions/:id/review", async (request, reply) => {
-    const clinician = requireClinicianSession(request, reply);
+    const clinician = await requireClinicianSession(request, reply);
     if (!clinician) return;
 
     const { id } = request.params as { id: string };
@@ -445,7 +445,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
 
   /** File reviewed intake to VistA */
   server.post("/intake/sessions/:id/file", async (request, reply) => {
-    const clinician = requireClinicianSession(request, reply);
+    const clinician = await requireClinicianSession(request, reply);
     if (!clinician) return;
 
     const { id } = request.params as { id: string };
@@ -492,7 +492,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
 
   /** Export draft note */
   server.post("/intake/sessions/:id/export", async (request, reply) => {
-    const clinician = requireClinicianSession(request, reply);
+    const clinician = await requireClinicianSession(request, reply);
     if (!clinician) return;
 
     const { id } = request.params as { id: string };
@@ -523,7 +523,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
 
   /** Filing queue */
   server.get("/intake/filing-queue", async (request, reply) => {
-    const clinician = requireClinicianSession(request, reply);
+    const clinician = await requireClinicianSession(request, reply);
     if (!clinician) return;
 
     const queue = listFilingQueue();
@@ -592,7 +592,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   server.get("/intake/packs", async (request, reply) => {
     // Allow both portal and clinician
     const portal = getPortalSessionFn(request);
-    const clinician = getClinicianSessionFn(request);
+    const clinician = await getClinicianSessionFn(request);
     if (!portal && !clinician) {
       return reply.code(401).send({ error: "Session required" });
     }
@@ -614,7 +614,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   /** Get pack detail */
   server.get("/intake/packs/:packId", async (request, reply) => {
     const portal = getPortalSessionFn(request);
-    const clinician = getClinicianSessionFn(request);
+    const clinician = await getClinicianSessionFn(request);
     if (!portal && !clinician) {
       return reply.code(401).send({ error: "Session required" });
     }
@@ -633,7 +633,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   // =============================================
 
   server.get("/intake/stats", async (request, reply) => {
-    const clinician = requireClinicianSession(request, reply);
+    const clinician = await requireClinicianSession(request, reply);
     if (!clinician) return;
 
     return { ok: true, stats: getIntakeStats(), packCount: getPackCount() };
@@ -644,7 +644,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   // =============================================
 
   server.get("/intake/sessions/:id/events", async (request, reply) => {
-    const clinician = requireClinicianSession(request, reply);
+    const clinician = await requireClinicianSession(request, reply);
     if (!clinician) return;
 
     const { id } = request.params as { id: string };
@@ -657,7 +657,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   // =============================================
 
   server.get("/intake/sessions/:id/snapshots", async (request, reply) => {
-    const clinician = requireClinicianSession(request, reply);
+    const clinician = await requireClinicianSession(request, reply);
     if (!clinician) return;
 
     const { id } = request.params as { id: string };

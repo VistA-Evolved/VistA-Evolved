@@ -163,7 +163,7 @@ export default async function inpatientRoutes(
   server.get(
     "/vista/inpatient/wards",
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = requireSession(request, reply);
+      const session = await requireSession(request, reply);
       try {
         const wardLines = await safeCallRpc("ORQPT WARDS", []);
         const wards = parseWardList(wardLines);
@@ -208,7 +208,7 @@ export default async function inpatientRoutes(
   server.get(
     "/vista/inpatient/ward-census",
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = requireSession(request, reply);
+      const session = await requireSession(request, reply);
       const wardIen = (request.query as any)?.ward;
       if (!wardIen) {
         return reply
@@ -282,7 +282,7 @@ export default async function inpatientRoutes(
   server.get(
     "/vista/inpatient/bedboard",
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = requireSession(request, reply);
+      const session = await requireSession(request, reply);
       const wardIen = (request.query as any)?.ward;
       if (!wardIen) {
         return reply
@@ -371,7 +371,7 @@ export default async function inpatientRoutes(
   server.get(
     "/vista/inpatient/patient-movements",
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = requireSession(request, reply);
+      const session = await requireSession(request, reply);
       const dfn = (request.query as any)?.dfn;
       if (!dfn) {
         return reply
@@ -432,7 +432,7 @@ export default async function inpatientRoutes(
   server.post(
     "/vista/inpatient/admit",
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = requireSession(request, reply);
+      const session = await requireSession(request, reply);
       return reply.status(202).send({
         ok: false,
         status: "integration-pending",
@@ -471,7 +471,7 @@ export default async function inpatientRoutes(
   server.post(
     "/vista/inpatient/transfer",
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = requireSession(request, reply);
+      const session = await requireSession(request, reply);
       return reply.status(202).send({
         ok: false,
         status: "integration-pending",
@@ -509,7 +509,7 @@ export default async function inpatientRoutes(
   server.post(
     "/vista/inpatient/discharge",
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = requireSession(request, reply);
+      const session = await requireSession(request, reply);
       return reply.status(202).send({
         ok: false,
         status: "integration-pending",

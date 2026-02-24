@@ -67,14 +67,31 @@ export interface WorkqueueItem {
 
 /* ── DB repo -- lazy-wired after initPlatformDb() ──────────── */
 
-type WorkqueueRepo = typeof import("../../platform/db/repo/workqueue-repo.js");
-let _repo: WorkqueueRepo | null = null;
+/**
+ * WorkqueueRepoLike: accepts both sync (SQLite) and async (PG) repos.
+ * Every method may return T or Promise<T>. The store `await`s all calls
+ * (no-op for sync repos).
+ */
+export interface WorkqueueRepoLike {
+  createWorkItem(params: any): any;
+  findWorkItemById(id: string): any;
+  findWorkItemsForClaim(claimId: string): any;
+  updateWorkItem(id: string, updates: any): any;
+  listWorkItems(filters?: any): any;
+  getWorkItemStats(tenantId?: string): any;
+  appendEvent?(params: any): any;
+  getEventsForWorkItem?(workItemId: string): any;
+  resetWorkItems(): any;
+}
+
+let _repo: WorkqueueRepoLike | null = null;
 
 /**
  * Wire the workqueue repo after DB init.
  * Called from index.ts once initPlatformDb() succeeds.
+ * Accepts both sync (SQLite) and async (PG) repo implementations.
  */
-export function initWorkqueueRepo(repo: WorkqueueRepo): void {
+export function initWorkqueueRepo(repo: WorkqueueRepoLike): void {
   _repo = repo;
 }
 
@@ -110,9 +127,9 @@ function rowToItem(row: any): WorkqueueItem {
   };
 }
 
-/* ── CRUD (same signatures as Phase 43) ────────────────────── */
+/* ── CRUD (same signatures as Phase 43, now async for PG) ──── */
 
-export function createWorkqueueItem(params: {
+export async function createWorkqueueItem(params: {
   type: WorkqueueType;
   claimId: string;
   payerId?: string;
@@ -129,9 +146,9 @@ export function createWorkqueueItem(params: {
   sourceTimestamp?: string;
   priority?: WorkqueueItem['priority'];
   tenantId?: string;
-}): WorkqueueItem {
+}): Promise<WorkqueueItem> {
   if (_repo) {
-    const row = _repo.createWorkItem({
+    const row = await _repo.createWorkItem({
       type: params.type,
       claimId: params.claimId,
       payerId: params.payerId,
@@ -154,23 +171,23 @@ export function createWorkqueueItem(params: {
   throw new Error("Workqueue store not initialized (DB not ready)");
 }
 
-export function getWorkqueueItem(id: string): WorkqueueItem | undefined {
+export async function getWorkqueueItem(id: string): Promise<WorkqueueItem | undefined> {
   if (_repo) {
-    const row = _repo.findWorkItemById(id);
+    const row = await _repo.findWorkItemById(id);
     return row ? rowToItem(row) : undefined;
   }
   return undefined;
 }
 
-export function updateWorkqueueItem(id: string, updates: Partial<WorkqueueItem>): WorkqueueItem | undefined {
+export async function updateWorkqueueItem(id: string, updates: Partial<WorkqueueItem>): Promise<WorkqueueItem | undefined> {
   if (_repo) {
-    const row = _repo.updateWorkItem(id, updates as any);
+    const row = await _repo.updateWorkItem(id, updates as any);
     return row ? rowToItem(row) : undefined;
   }
   return undefined;
 }
 
-export function listWorkqueueItems(filters?: {
+export async function listWorkqueueItems(filters?: {
   type?: WorkqueueType;
   status?: WorkqueueItemStatus;
   claimId?: string;
@@ -179,29 +196,30 @@ export function listWorkqueueItems(filters?: {
   tenantId?: string;
   limit?: number;
   offset?: number;
-}): { items: WorkqueueItem[]; total: number } {
+}): Promise<{ items: WorkqueueItem[]; total: number }> {
   if (_repo) {
-    const result = _repo.listWorkItems(filters);
+    const result = await _repo.listWorkItems(filters);
     return { items: result.items.map(rowToItem), total: result.total };
   }
   return { items: [], total: 0 };
 }
 
-export function getWorkqueueItemsForClaim(claimId: string): WorkqueueItem[] {
+export async function getWorkqueueItemsForClaim(claimId: string): Promise<WorkqueueItem[]> {
   if (_repo) {
-    return _repo.findWorkItemsForClaim(claimId).map(rowToItem);
+    const rows = await _repo.findWorkItemsForClaim(claimId);
+    return rows.map(rowToItem);
   }
   return [];
 }
 
-export function getWorkqueueStats(tenantId?: string): {
+export async function getWorkqueueStats(tenantId?: string): Promise<{
   total: number;
   byType: Record<WorkqueueType, number>;
   byStatus: Record<WorkqueueItemStatus, number>;
   byPriority: Record<string, number>;
-} {
+}> {
   if (_repo) {
-    const stats = _repo.getWorkItemStats(tenantId);
+    const stats = await _repo.getWorkItemStats(tenantId);
     return {
       total: stats.total,
       byType: stats.byType as Record<WorkqueueType, number>,
@@ -217,8 +235,8 @@ export function getWorkqueueStats(tenantId?: string): {
   };
 }
 
-export function resetWorkqueueStore(): void {
+export async function resetWorkqueueStore(): Promise<void> {
   if (_repo) {
-    _repo.resetWorkItems();
+    await _repo.resetWorkItems();
   }
 }

@@ -53,7 +53,7 @@ export interface AckIngestResult {
   idempotent: boolean;
 }
 
-export function ingestAck(input: AckIngestInput): AckIngestResult {
+export async function ingestAck(input: AckIngestInput): Promise<AckIngestResult> {
   // Idempotency check
   const existingId = idempotencyIndex.get(input.idempotencyKey);
   if (existingId) {
@@ -101,7 +101,7 @@ export function ingestAck(input: AckIngestInput): AckIngestResult {
         // Create workqueue item for rejection
         for (const err of ack.errors) {
           const recommendation = buildActionRecommendation(err.errorCode);
-          createWorkqueueItem({
+          await createWorkqueueItem({
             type: 'rejection',
             claimId: ack.claimId,
             payerId: ack.payerId,
@@ -163,7 +163,7 @@ export interface StatusIngestResult {
   idempotent: boolean;
 }
 
-export function ingestStatusUpdate(input: StatusIngestInput): StatusIngestResult {
+export async function ingestStatusUpdate(input: StatusIngestInput): Promise<StatusIngestResult> {
   // Idempotency check
   const existingId = statusIdempotencyIndex.get(input.idempotencyKey);
   if (existingId) {
@@ -217,7 +217,7 @@ export function ingestStatusUpdate(input: StatusIngestInput): StatusIngestResult
         updateClaim(updated);
         claimUpdated = true;
 
-        createWorkqueueItem({
+        await createWorkqueueItem({
           type: 'denial',
           claimId: status.claimId,
           payerId: status.payerId,
@@ -234,7 +234,7 @@ export function ingestStatusUpdate(input: StatusIngestInput): StatusIngestResult
       }
       // P1/R0/R1 = Pending additional info
       else if (['P1', 'R0', 'R1'].includes(cat)) {
-        createWorkqueueItem({
+        await createWorkqueueItem({
           type: 'missing_info',
           claimId: status.claimId,
           payerId: status.payerId,

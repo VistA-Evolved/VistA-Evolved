@@ -3,15 +3,46 @@
 # Usage:
 #   docker compose -f docker-compose.prod.yml up -d
 #
+# Multi-instance usage (Phase 117):
+#   docker compose -f docker-compose.prod.yml up -d --scale api=2
+#
 # Prerequisites:
 #   - Create .env.prod from .env.example and fill in credentials
 #   - VistA sandbox must be accessible (either via services/vista or remote)
 #
 # Architecture:
-#   nginx (reverse proxy, TLS termination) → api (Fastify) + web (Next.js)
-#   api → VistA RPC Broker (port 9430)
+#   nginx (reverse proxy, TLS termination) → api-1, api-2 (Fastify) + web (Next.js)
+#   api → platform-db (PostgreSQL 16) + VistA RPC Broker (port 9430)
+#
+# Phase 117: All durable state uses PostgreSQL in prod. SQLite is NOT used.
 
 services:
+  # ---------- Platform PostgreSQL (shared state for multi-instance) ----------
+  platform-db:
+    image: postgres:16-alpine
+    container_name: ve-platform-db-prod
+    environment:
+      POSTGRES_DB: ${PLATFORM_PG_DB:-ve_platform}
+      POSTGRES_USER: ${PLATFORM_PG_USER:-ve_api}
+      POSTGRES_PASSWORD: ${PLATFORM_PG_PASSWORD:?Set PLATFORM_PG_PASSWORD in .env.prod}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./services/platform-db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    expose:
+      - "5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PLATFORM_PG_USER:-ve_api} -d ${PLATFORM_PG_DB:-ve_platform}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - backend
+    # PITR: enable WAL archiving in production by mounting a wal-archive volume
+    # and adding: -c archive_mode=on -c archive_command='cp %p /wal-archive/%f'
+    # to the command. See docs/runbooks/pg-backup-pitr.md for full guide.
+
   # ---------- Reverse proxy (TLS termination placeholder) ----------
   proxy:
     image: nginx:alpine
@@ -32,7 +63,7 @@ services:
     networks:
       - frontend
 
-  # ---------- API server (Fastify) ----------
+  # ---------- API server (Fastify) — scalable: --scale api=2 ----------
   api:
     build:
       context: .
@@ -44,6 +75,10 @@ services:
       - NODE_ENV=production
       - HOST=0.0.0.0
       - PORT=3001
+      # PostgreSQL (Phase 117): ALL durable state in PG, no SQLite in prod
+      - PLATFORM_PG_URL=postgres://${PLATFORM_PG_USER:-ve_api}:${PLATFORM_PG_PASSWORD}@platform-db:5432/${PLATFORM_PG_DB:-ve_platform}
+      - STORE_BACKEND=pg
+      - PLATFORM_PG_RLS_ENABLED=${PLATFORM_PG_RLS_ENABLED:-true}
       # VistA connection (from .env.prod or secrets manager)
       - VISTA_HOST=${VISTA_HOST:-vista}
       - VISTA_PORT=${VISTA_PORT:-9430}
@@ -61,6 +96,8 @@ services:
       # Performance
       - RPC_CALL_TIMEOUT_MS=${RPC_CALL_TIMEOUT_MS:-15000}
       - CACHE_DEFAULT_TTL_MS=${CACHE_DEFAULT_TTL_MS:-60000}
+      # Job runner (only first instance should run jobs; use JOB_WORKER_ENABLED=true selectively)
+      - JOB_WORKER_ENABLED=${JOB_WORKER_ENABLED:-false}
     volumes:
       - api-logs:/app/logs
     expose:
@@ -72,6 +109,9 @@ services:
       timeout: 5s
       retries: 5
       start_period: 60s
+    depends_on:
+      platform-db:
+        condition: service_healthy
     networks:
       - frontend
       - backend
@@ -105,6 +145,8 @@ services:
 
 volumes:
   api-logs:
+    driver: local
+  pgdata:
     driver: local
 
 networks:

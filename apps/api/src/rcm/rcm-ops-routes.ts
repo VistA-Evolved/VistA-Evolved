@@ -220,7 +220,7 @@ export default async function rcmOpsRoutes(
       const offset = parseInt(q.offset ?? "0", 10) || 0;
       const limit = Math.min(parseInt(q.limit ?? "50", 10) || 50, 200);
 
-      const items = listWorkqueueItems({
+      const items = await listWorkqueueItems({
         type: "denial",
         status,
         priority,
@@ -229,7 +229,7 @@ export default async function rcmOpsRoutes(
         offset,
       });
 
-      const stats = getWorkqueueStats(tenantId);
+      const stats = await getWorkqueueStats(tenantId);
 
       return {
         ok: true,
@@ -290,7 +290,7 @@ export default async function rcmOpsRoutes(
         getConnectorStateSummary(),
         getJobStatsByTenant(tenantId),
         Promise.resolve(getPollingScheduler().getStatus()),
-        Promise.resolve(getWorkqueueStats(tenantId)),
+        getWorkqueueStats(tenantId),
       ]);
 
       const { connectors: connectorStates, adapters: adapterStates, summary } = stateSummary;
