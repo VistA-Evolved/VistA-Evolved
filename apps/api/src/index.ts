@@ -151,6 +151,8 @@ import uiPrefsRoutes from "./routes/ui-prefs.js";
 import emarRoutes from "./routes/emar/index.js";
 // Phase 86: Shift Handoff + Signout (SBAR workflow)
 import handoffRoutes from "./routes/handoff/index.js";
+// Phase 107: Production Posture Pack
+import postureRoutes from "./posture/index.js";
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -430,6 +432,9 @@ server.register(handoffRoutes);
 
 // Register UI preferences routes -- coversheet layout persistence (Phase 79)
 server.register(uiPrefsRoutes);
+
+// Register production posture routes -- observability/tenant/perf/backup gates (Phase 107)
+server.register(postureRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

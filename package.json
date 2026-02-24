@@ -23,6 +23,7 @@
     "qa:web": "node scripts/qa-runner.mjs web",
     "qa:security": "node scripts/qa-runner.mjs security",
     "qa:vista": "node scripts/qa-runner.mjs vista",
-    "qa:prompts": "node scripts/qa-runner.mjs prompts"
+    "qa:prompts": "node scripts/qa-runner.mjs prompts",
+    "qa:prod-posture": "node scripts/qa-runner.mjs prod-posture"
   }
 }

@@ -1,8 +1,57 @@
-# Phase 106 -- VistA Alignment Coverage (IMPLEMENT)
+# Phase 107: Production Posture Pack -- Summary
 
 ## What Changed
 
-Machine-checkable VistA alignment coverage map proving what is wired to VistA
+### New Files (10)
+- `apps/api/src/posture/index.ts` -- Fastify plugin with 5 posture routes
+- `apps/api/src/posture/observability-posture.ts` -- 6 observability gates
+- `apps/api/src/posture/tenant-posture.ts` -- 8 tenant isolation gates (live PG RLS check)
+- `apps/api/src/posture/perf-posture.ts` -- 6 performance gates
+- `apps/api/src/posture/backup-posture.ts` -- 6 backup readiness gates
+- `scripts/backup-restore.mjs` -- Unified backup/restore CLI (SQLite + PG + audit)
+- `scripts/qa-gates/prod-posture.mjs` -- Offline QA gate (11 checks)
+- `scripts/verify-phase107-prod-posture.ps1` -- Phase 107 verifier (15 gates)
+- `docs/runbooks/phase107-production-posture.md` -- Comprehensive production runbook
+- `prompts/111-PHASE-107-PRODUCTION-POSTURE/107-01-IMPLEMENT.md` -- Prompt file
+
+### Modified Files (6)
+- `apps/api/src/index.ts` -- Import + register posture routes
+- `apps/api/src/middleware/security.ts` -- AUTH_RULES: /posture -> admin
+- `scripts/qa-runner.mjs` -- Added prod-posture suite
+- `package.json` -- Added qa:prod-posture script
+- `scripts/verify-latest.ps1` -- Delegates to Phase 107
+- `AGENTS.md` -- Section 7k + gotchas 109-112
+
+## How to Test Manually
+
+```bash
+# 1. Offline QA gate (no server needed)
+pnpm qa:prod-posture
+
+# 2. Live posture check (requires API running + admin session)
+curl -b cookies.txt http://127.0.0.1:3001/posture | jq .
+
+# 3. Backup store inventory
+node scripts/backup-restore.mjs status
+
+# 4. Run backup
+node scripts/backup-restore.mjs backup
+
+# 5. Phase 107 verifier
+.\scripts\verify-phase107-prod-posture.ps1
+```
+
+## Verifier Output
+
+Run `.\scripts\verify-phase107-prod-posture.ps1` -- expects 15/15 PASS.
+
+## Follow-Ups
+
+- Activate RLS in staging: set `PLATFORM_PG_RLS_ENABLED=true`
+- Add cron-based backup scheduling in production
+- Add Docker volume backup automation (VistA, Keycloak, Orthanc)
+- Add Grafana dashboards consuming Prometheus posture metrics
+- Add alerting rules for posture score degradation
 vs what is pending. Cross-references three canonical sources:
 
 - **CPRS Delphi extraction** (975 RPCs from `rpc_catalog.json`)

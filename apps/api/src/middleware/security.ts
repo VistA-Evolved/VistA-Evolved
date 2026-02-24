@@ -105,6 +105,8 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/handoff\//, auth: "session" }, // Phase 86: Shift handoff + signout (session required)
   { pattern: /^\/qa\//, auth: "none" }, // Phase 96B: QA routes (own NODE_ENV/QA_ROUTES_ENABLED guard)
   { pattern: /^\/__test__\//, auth: "none" }, // Phase 96B: test-only trace endpoint (own guard)
+  { pattern: /^\/posture\//, auth: "admin" }, // Phase 107: production posture (admin only)
+  { pattern: /^\/posture$/, auth: "admin" }, // Phase 107: unified posture endpoint
   { pattern: /^\/admin\/my-tenant$/, auth: "session" }, // Phase 17: client tenant config (any user)
   { pattern: /^\/(admin|audit|reports)\//, auth: "admin" },
   { pattern: /^\/ws\//, auth: "session" }, // WebSocket console (has own role check too)

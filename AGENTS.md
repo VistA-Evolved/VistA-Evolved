@@ -907,6 +907,44 @@ scripts/
      (Origin check, CSRF) must check `if ((request as any)._rejected || reply.sent) return;`
      at entry.
 
+## 7k. Architecture Quick Map (Phase 107 additions)
+
+```
+apps/api/src/posture/
+  index.ts                    -- Fastify plugin: /posture/* routes (Phase 107)
+  observability-posture.ts    -- 6 gates: logging, request IDs, prometheus, OTel, audit, security (Phase 107)
+  tenant-posture.ts           -- 8 gates: middleware, RLS, FORCE RLS, connection release (Phase 107)
+  perf-posture.ts             -- 6 gates: budgets, rate limiter, circuit breaker, SLO, heap, shutdown (Phase 107)
+  backup-posture.ts           -- 6 gates: SQLite, backup script, PG, Docker, in-memory, runbook (Phase 107)
+
+scripts/
+  backup-restore.mjs          -- Unified backup/restore for SQLite + PG + audit JSONL (Phase 107)
+  qa-gates/prod-posture.mjs   -- Offline production posture QA gate (11 checks) (Phase 107)
+  verify-phase107-prod-posture.ps1 -- Phase 107 verifier (15 gates) (Phase 107)
+
+docs/runbooks/
+  phase107-production-posture.md -- Production posture runbook (Phase 107)
+```
+
+109. **Posture routes require admin auth (Phase 107).** The `/posture/*`
+     endpoints expose infrastructure details (RLS status, circuit breaker
+     state, heap memory, store inventory). AUTH_RULES enforce `admin` level.
+     Do not downgrade to `session`.
+110. **Tenant RLS activation is gated by `PLATFORM_PG_RLS_ENABLED=true`.**
+     Without this env var, `applyRlsPolicies()` is a no-op. The function
+     covers 21 tables with ENABLE + FORCE RLS + tenant_id policy. RLS is
+     transaction-scoped via `SET LOCAL app.current_tenant_id` so pooled
+     connections cannot leak tenant context.
+111. **`backup-restore.mjs` handles SQLite + PG + audit JSONL.** Docker
+     volume backups (VistA, Keycloak, Orthanc, YottaDB) require manual
+     steps documented in the runbook. In-memory stores (~30) are ephemeral
+     by design and not backed up.
+112. **Posture checks are live introspection, not unit tests.** The
+     `/posture/tenant` endpoint queries `pg_tables` and `pg_class` to
+     verify actual RLS status. `/posture/performance` checks live heap
+     usage and circuit breaker state. These require a running API.
+     Use `pnpm qa:prod-posture` for offline file-existence checks.
+
 ---
 
 ## 8. Bug Tracker & Lessons Learned

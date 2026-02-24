@@ -53,6 +53,9 @@ const SUITES = {
   prompts: [
     { name: "Prompts ordering", cmd: "pnpm exec tsx scripts/check-prompts-ordering.ts" },
   ],
+  "prod-posture": [
+    { name: "Production posture", cmd: "node scripts/qa-gates/prod-posture.mjs" },
+  ],
 };
 
 // "all" is the union of every suite
