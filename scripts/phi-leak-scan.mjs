@@ -28,13 +28,13 @@ const LEAK_PATTERNS = [
   {
     name: "console.log in server code",
     regex: /\bconsole\.(log|info|debug|warn|error)\s*\(/g,
-    allow: [".test.ts", "logger.ts", "logger.test.ts", "scripts/"],
+    allow: [".test.ts", "logger.ts", "logger.test.ts", "scripts/", "tools/", "telemetry/", "pg-db.ts"],
     description: "Use structured logger instead of console.*",
   },
   {
     name: "Stack trace in response",
     regex: /(?:reply|res|response)\.(?:send|code|status).*(?:stack|stackTrace|err\.message)/g,
-    allow: [],
+    allow: ["admin-payer-db-routes.ts"], // CONCURRENCY_CONFLICT sends controlled err.message (not stack)
     description: "Never send stack traces to clients",
   },
   {

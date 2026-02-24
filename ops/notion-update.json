@@ -1,9 +1,9 @@
 {
     "commitSHA": "pending",
-    "stage": "implemented",
-    "verifyScript": "pnpm qa:smoke",
+    "stage": "verified",
+    "verifyScript": "pnpm qa:smoke && pnpm qa:api && pnpm qa:security",
     "runbook": "docs/runbooks/phase105-qa-gauntlet.md",
-    "promptRef": "prompts/109-PHASE-105-QA-GAUNTLET/105-01-IMPLEMENT.md",
-    "status": "implemented",
-    "feature": "Phase 105 -- QA Gauntlet v1 (smoke + api + security + CI + BUG-067 rate-limiter fix)"
+    "promptRef": "prompts/109-PHASE-105-QA-GAUNTLET/105-99-VERIFY.md",
+    "status": "verified",
+    "feature": "Phase 105 -- QA Gauntlet v1 VERIFY (cookie fix, assertion hardening, scan exclusions, CI fix)"
 }

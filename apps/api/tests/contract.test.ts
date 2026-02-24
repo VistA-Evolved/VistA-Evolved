@@ -55,9 +55,12 @@ async function getSessionCookie(): Promise<string> {
   });
 
   const setCookie = res.headers.get("set-cookie") ?? "";
-  // Extract the session cookie name=value
-  const match = setCookie.match(/([^=]+=[^;]+)/);
-  return match?.[1] ?? "";
+  // Extract ALL cookies (ehr_session + ehr_csrf) from comma-separated Set-Cookie header
+  const cookies = setCookie.split(",").map((c) => {
+    const m = c.trim().match(/^([^=]+=[^;]+)/);
+    return m?.[1] ?? "";
+  }).filter(Boolean);
+  return cookies.join("; ");
 }
 
 // ─── Public endpoints (no auth required) ───────────────────────────

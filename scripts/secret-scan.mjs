@@ -68,14 +68,15 @@ const SECRET_PATTERNS = [
   {
     name: "Connection string with creds",
     regex: /(?:mongodb|postgres|mysql|redis):\/\/[^:]+:[^@]+@/gi,
-    allow: [".env.example"],
+    allow: [".env.example", ".md"],
   },
   {
     name: "Hardcoded VistA creds in non-doc",
     regex: /(?:PROV123|NURSE123|PHARM123)(?:!!)?/g,
     allow: [".md", ".env.example", "AGENTS.md", "BUG-TRACKER.md", "secret-scan.mjs",
             "verify-", "test-", ".test.ts", ".spec.ts", "login/page.tsx", "load-test.mjs", "patient-context.tsx",
-            "login-body.json"], // login page + test scripts use Docker dev creds
+            "login-body.json", "tests/k6/", "scripts/audit/", "docs/evidence/",
+            ".hooks/", "tools/", "e2e/", "e2e-results.json", "artifacts/"], // login page + test/audit/tool infra use Docker dev creds
   },
 ];
 

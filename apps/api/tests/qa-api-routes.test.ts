@@ -172,14 +172,14 @@ describe("Authenticated clinical reads", () => {
   for (const { path, name } of clinicalReads) {
     it(`GET ${path} returns data or structured pending`, async () => {
       const { status, json } = await apiGet(path, { cookie: authed.cookie });
-      // Must respond (not 404, not 500)
-      expect(status).toBeLessThan(500);
+      // Must authenticate successfully (not 401/403)
+      expect(status).toBeLessThan(400);
       // Response must be structured JSON
       expect(json).toBeTruthy();
-      // Must have ok field or structured integration-pending
+      // Must have ok:true or structured integration-pending
       const isOk = json.ok === true;
       const isPending = json.integrationPending === true || json.status === "integration-pending";
-      const isData = Array.isArray(json.data) || Array.isArray(json.items) || json.ok !== undefined;
+      const isData = Array.isArray(json.data) || Array.isArray(json.items);
       expect(isOk || isPending || isData).toBe(true);
     });
   }
