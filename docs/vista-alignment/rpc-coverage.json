@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-24T00:36:15.417Z",
+    "generatedAt": "2026-02-24T00:39:49.000Z",
     "tool": "tools/rpc-extract/build-coverage-map.mjs",
     "sources": {
       "cprs": {

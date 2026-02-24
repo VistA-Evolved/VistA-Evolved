@@ -796,6 +796,42 @@ scripts/
   verify-phase40-payer-connectivity.ps1 — Phase 40 verifier (53 gates) (Phase 40)
 ```
 
+## 7j. Architecture Quick Map (Phase 106 additions)
+
+```
+tools/rpc-extract/
+  build-coverage-map.mjs        -- CPRS+Vivian+API cross-reference generator (Phase 106)
+
+docs/vista-alignment/
+  rpc-coverage.json              -- 1016 tracked RPCs with status + call sites (Phase 106)
+  rpc-coverage.md                -- Human-readable coverage report (Phase 106)
+
+apps/web/src/
+  components/cprs/
+    VistaAlignmentBanner.tsx     -- Dev-mode VistA wiring status banner (Phase 106)
+  lib/
+    vista-panel-wiring.ts        -- Auto-generated panel wiring metadata (Phase 106)
+
+scripts/
+  verify-phase106-vista-alignment.ps1 -- Phase 106 verifier (23 checks, 8 gates) (Phase 106)
+```
+
+106. **`build-coverage-map.mjs` is deterministic (content-hash stable).**
+     File hash varies due to `generatedAt` timestamp, but stripping the
+     timestamp produces identical content hashes across runs. The tool
+     cross-references CPRS Delphi extraction (975 RPCs), Vivian index
+     (3747 RPCs), and the API `rpcRegistry.ts` (109+29). Output includes
+     `rpc-coverage.json`, `rpc-coverage.md`, and `vista-panel-wiring.ts`.
+107. **VistaAlignmentBanner is dev-mode only and not yet integrated.**
+     The component returns null in production (`NODE_ENV === 'production'`).
+     Panels can import it as `<VistaAlignmentBanner panelName="CoverSheetPanel" />`
+     to display a wiring status badge. No panel imports it yet -- adoption
+     is optional and incremental.
+108. **Phase 106 verifier catches unregistered RPCs at CI time.**
+     Gate 3 scans all `callRpc`/`safeCallRpc`/`safeCallRpcWithList` call
+     sites and fails if any reference an RPC not in `RPC_REGISTRY` or
+     `RPC_EXCEPTIONS`. This prevents silent drift between code and registry.
+
 89. **VistA billing data is split across IB/PRCA/PCE subsystems (Phase 39).**
     PCE encounters (^AUPNVSIT, ^AUPNVCPT, ^AUPNVPOV) have data in the sandbox.
     IB charges (^IB(350)) and claims (^DGCR(399)) are empty in WorldVistA Docker.

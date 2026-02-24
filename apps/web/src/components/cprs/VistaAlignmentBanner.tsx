@@ -23,10 +23,11 @@ interface Props {
 }
 
 export default function VistaAlignmentBanner({ panelName }: Props) {
+  // useMemo must be called unconditionally (Rules of Hooks)
+  const wiring = useMemo(() => getPanelWiring(panelName), [panelName]);
+
   // Only render in development
   if (process.env.NODE_ENV === 'production') return null;
-
-  const wiring = useMemo(() => getPanelWiring(panelName), [panelName]);
   if (!wiring) return null;
 
   const { label, color, bg, detail } = getStatusDisplay(wiring);

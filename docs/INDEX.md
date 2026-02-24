@@ -19,6 +19,7 @@
 ### Architecture
 - [docs/architecture/](architecture/) -- Architecture specifications
 - [docs/vista/](vista/) -- VistA capability maps and grounding docs
+- [docs/vista-alignment/](vista-alignment/) -- RPC coverage maps (CPRS + Vivian + API cross-reference)
 
 ### Operational Runbooks
 - [docs/runbooks/](runbooks/) -- Step-by-step guides for each phase and subsystem
