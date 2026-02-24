@@ -9,9 +9,56 @@
  * immutable-audit.ts (Phase 35).
  *
  * Phase 38 — RCM + Payer Connectivity
+ * Phase 113B — Added JSONL file sink with hash-chain continuity across restart
  */
 
 import { createHash } from 'node:crypto';
+import { appendFileSync, mkdirSync, existsSync, readFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+/* ─── File sink configuration (Phase 113B) ───────────────────── */
+
+const __dirname_resolved = typeof __dirname !== 'undefined'
+  ? __dirname
+  : dirname(fileURLToPath(import.meta.url));
+
+const REPO_ROOT = join(__dirname_resolved, '..', '..', '..', '..', '..');
+const DEFAULT_AUDIT_FILE = join(REPO_ROOT, 'logs', 'rcm-audit.jsonl');
+const AUDIT_FILE = process.env.RCM_AUDIT_FILE || DEFAULT_AUDIT_FILE;
+const AUDIT_DIR = dirname(AUDIT_FILE);
+
+function ensureAuditDir(): void {
+  if (!existsSync(AUDIT_DIR)) mkdirSync(AUDIT_DIR, { recursive: true });
+}
+
+/**
+ * Recover the last hash from the existing JSONL file on startup.
+ * Only reads the LAST line — does NOT load the whole file.
+ */
+function recoverLastHash(): string {
+  try {
+    if (!existsSync(AUDIT_FILE)) return '0'.repeat(64);
+    const content = readFileSync(AUDIT_FILE, 'utf-8');
+    const lines = content.trimEnd().split('\n');
+    const lastLine = lines[lines.length - 1];
+    if (!lastLine) return '0'.repeat(64);
+    const entry = JSON.parse(lastLine);
+    if (entry && typeof entry.hash === 'string') return entry.hash;
+  } catch {
+    // Corrupt or empty file — start fresh
+  }
+  return '0'.repeat(64);
+}
+
+function appendToFile(entry: RcmAuditEntry): void {
+  try {
+    ensureAuditDir();
+    appendFileSync(AUDIT_FILE, JSON.stringify(entry) + '\n', 'utf-8');
+  } catch {
+    // Non-fatal: file write failure doesn't block operation
+  }
+}
 
 /* ─── Types ──────────────────────────────────────────────────────── */
 
@@ -188,7 +235,7 @@ function sanitizeDetail(detail: Record<string, unknown>): Record<string, unknown
 const MAX_ENTRIES = 20_000;
 const entries: RcmAuditEntry[] = [];
 let seq = 0;
-let lastHash = '0'.repeat(64); // genesis hash
+let lastHash = recoverLastHash(); // recover from JSONL on startup (Phase 113B)
 
 function computeHash(entry: Omit<RcmAuditEntry, 'hash'>): string {
   const data = JSON.stringify({
@@ -238,7 +285,10 @@ export function appendRcmAudit(
   entries.push(entry);
   lastHash = hash;
 
-  // Evict oldest when over capacity
+  // Persist to JSONL file (Phase 113B)
+  appendToFile(entry);
+
+  // Evict oldest from memory when over capacity
   if (entries.length > MAX_ENTRIES) {
     entries.splice(0, entries.length - MAX_ENTRIES);
   }

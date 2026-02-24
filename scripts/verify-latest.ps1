@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 107: Production Posture Pack
-& "$PSScriptRoot\verify-phase107-prod-posture.ps1" @args
+# Phase 113B: Hardening (RCM audit persistence, evidence gate CI, prompts tree)
+& "$PSScriptRoot\verify-phase113b-hardening.ps1" @args

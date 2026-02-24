@@ -320,6 +320,55 @@ function checkRouteCode() {
   }
 }
 
+// ── Gate 6: Evidence staleness check (Phase 113B) ─────
+
+const STALENESS_THRESHOLD_DAYS = 180;
+
+function checkStaleness() {
+  if (!jsonOutput) console.log("\n== Gate 6: Evidence Staleness ==");
+
+  const evidence = loadEvidenceEntries();
+  if (evidence.length === 0) {
+    warn("staleness", "No evidence entries found to check");
+    return;
+  }
+
+  const now = Date.now();
+  const thresholdMs = STALENESS_THRESHOLD_DAYS * 24 * 60 * 60 * 1000;
+  let stale = 0;
+  let missing = 0;
+  const staleIds = [];
+
+  for (const entry of evidence) {
+    const verifiedAt = entry.lastVerifiedAt || entry.last_verified_at;
+    if (!verifiedAt) {
+      missing++;
+      continue;
+    }
+    const age = now - new Date(verifiedAt).getTime();
+    if (age > thresholdMs) {
+      stale++;
+      staleIds.push(entry.payerId || entry.payer_id || entry.id || "unknown");
+    }
+  }
+
+  if (missing > 0) {
+    const msg = `${missing}/${evidence.length} entries missing lastVerifiedAt`;
+    if (strict) fail("staleness", msg);
+    else warn("staleness", msg);
+  }
+
+  if (stale > 0) {
+    const msg = `${stale}/${evidence.length} entries stale (>${STALENESS_THRESHOLD_DAYS}d): ${staleIds.slice(0, 5).join(", ")}${staleIds.length > 5 ? "..." : ""}`;
+    if (strict) fail("staleness", msg);
+    else warn("staleness", msg);
+  }
+
+  if (stale === 0 && missing === 0) {
+    pass("staleness", `All ${evidence.length} entries verified within ${STALENESS_THRESHOLD_DAYS}d`);
+  }
+}
+
 // ── Helpers ───────────────────────────────────────────
 
 function loadEvidenceEntries() {
@@ -361,6 +410,7 @@ checkConnectorEndpoints();
 checkDocsGrounding();
 checkTemplate();
 checkRouteCode();
+checkStaleness();
 
 if (!jsonOutput) {
   console.log("\n=== Summary ===");

@@ -54,6 +54,13 @@ jobs:
       - name: PHI leak scan
         run: node scripts/phi-leak-scan.mjs
 
+      # --- Evidence & health gates (Phase 113B) ---
+      - name: Evidence gate (standard)
+        run: node scripts/qa-gates/evidence-gate.mjs
+
+      - name: Prompts tree health gate
+        run: node scripts/qa-gates/prompts-tree-health.mjs
+
       # --- Build ---
       - name: Build all packages
         run: pnpm -r build

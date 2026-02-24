@@ -55,6 +55,12 @@ jobs:
       - name: Phase index integrity gate
         run: node scripts/qa-gates/phase-index-gate.mjs
 
+      - name: Evidence gate (standard)
+        run: node scripts/qa-gates/evidence-gate.mjs
+
+      - name: Prompts tree health gate
+        run: node scripts/qa-gates/prompts-tree-health.mjs
+
   # ---- API integration tests (no VistA needed) ----
   api-tests:
     name: API Integration Tests
@@ -135,6 +141,9 @@ jobs:
 
       - name: Phase audit gate (nightly)
         run: pnpm qa:phase-audit
+
+      - name: Evidence gate (strict - nightly)
+        run: node scripts/qa-gates/evidence-gate.mjs --strict
 
       - name: Upload test results
         if: always()
