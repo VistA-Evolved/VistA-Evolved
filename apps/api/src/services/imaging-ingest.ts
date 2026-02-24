@@ -117,22 +117,72 @@ interface OrthancStableStudyPayload {
 }
 
 /* ================================================================== */
-/* In-Memory Stores (prototype — migrate to VistA ^MAG(2005))          */
+/* DB repo -- lazy-wired after initPlatformDb() (Phase 115)            */
+/* ================================================================== */
+
+type IngestRepo = typeof import("../platform/db/repo/imaging-ingest-repo.js");
+let _repo: IngestRepo | null = null;
+
+/** Wire the imaging ingest repo. Called from index.ts. */
+export function initIngestRepo(repo: IngestRepo): void {
+  _repo = repo;
+}
+
+/* ================================================================== */
+/* In-Memory Caches (prototype -- migrate to VistA ^MAG(2005))         */
 /* ================================================================== */
 
 /**
- * PROTOTYPE LINKAGE STORE — Phase 23 sidecar.
+ * PROTOTYPE LINKAGE STORE -- Phase 23 sidecar.
  *
  * Migration plan:
- * 1. Target: VistA Image file ^MAG(2005) — each entry links a DICOM
+ * 1. Target: VistA Image file ^MAG(2005) -- each entry links a DICOM
  *    study to a patient and optionally to an order/TIU note.
  * 2. Write linkage via MAG4 ADD IMAGE (if available) or direct
  *    FileMan SET on file 2005 via XWBFM.
  * 3. Read linkage via MAG4 PAT GET IMAGES / MAGG PAT PHOTOS
  *    (already wired in Phase 22).
  */
-const linkageStore = new Map<string, StudyLinkage>();
-const unmatchedStore = new Map<string, UnmatchedStudy>();
+const linkageCache = new Map<string, StudyLinkage>();
+const unmatchedCache = new Map<string, UnmatchedStudy>();
+
+function rowToLinkage(row: any): StudyLinkage {
+  return {
+    id: row.id,
+    orderId: row.orderId ?? "",
+    patientDfn: row.patientDfn ?? "",
+    studyInstanceUid: row.studyInstanceUid ?? "",
+    orthancStudyId: row.orthancStudyId ?? "",
+    accessionNumber: row.accessionNumber ?? "",
+    modality: row.modality ?? "",
+    studyDate: row.studyDate ?? "",
+    studyDescription: row.studyDescription ?? "",
+    seriesCount: row.seriesCount ?? 0,
+    instanceCount: row.instanceCount ?? 0,
+    reconciliationType: (row.reconciliationType ?? "manual") as StudyLinkage["reconciliationType"],
+    source: (row.source ?? "prototype-sidecar") as StudyLinkage["source"],
+    linkedAt: row.linkedAt ?? "",
+  };
+}
+
+function rowToUnmatched(row: any): UnmatchedStudy {
+  return {
+    id: row.id,
+    orthancStudyId: row.orthancStudyId ?? "",
+    studyInstanceUid: row.studyInstanceUid ?? "",
+    dicomPatientId: row.dicomPatientId ?? "",
+    dicomPatientName: row.dicomPatientName ?? "",
+    accessionNumber: row.accessionNumber ?? "",
+    modality: row.modality ?? "",
+    studyDate: row.studyDate ?? "",
+    studyDescription: row.studyDescription ?? "",
+    seriesCount: row.seriesCount ?? 0,
+    instanceCount: row.instanceCount ?? 0,
+    reason: row.reason ?? "",
+    quarantinedAt: row.quarantinedAt ?? "",
+    resolved: row.resolved === 1 || row.resolved === true,
+  };
+}
 
 /* ================================================================== */
 /* Service key validation                                              */
@@ -172,7 +222,7 @@ function reconcileStudy(payload: OrthancStableStudyPayload): ReconcileResult {
   // Idempotency guard: if this studyInstanceUid is already linked, return existing
   const existingLinkage = getLinkageByStudyUid(studyInstanceUid);
   if (existingLinkage) {
-    log.info("Duplicate ingest — study already linked (idempotent)", {
+    log.info("Duplicate ingest -- study already linked (idempotent)", {
       studyUid: studyInstanceUid,
       existingLinkageId: existingLinkage.id,
     });
@@ -212,7 +262,7 @@ function reconcileStudy(payload: OrthancStableStudyPayload): ReconcileResult {
     }
     if (candidates.length > 1) {
       const unmatched = quarantineStudy(payload,
-        `Multiple unlinked ${modality} orders for patient ${patientId} on ${today} — ambiguous`);
+        `Multiple unlinked ${modality} orders for patient ${patientId} on ${today} -- ambiguous`);
       return { matched: false, unmatched };
     }
   }
@@ -245,7 +295,26 @@ function createLinkage(
     linkedAt: new Date().toISOString(),
   };
 
-  linkageStore.set(linkage.id, linkage);
+  linkageCache.set(linkage.id, linkage);
+  if (_repo) {
+    try {
+      _repo.insertStudyLink({
+        id: linkage.id,
+        orderId: linkage.orderId,
+        patientDfn: linkage.patientDfn,
+        studyInstanceUid: linkage.studyInstanceUid,
+        orthancStudyId: linkage.orthancStudyId,
+        accessionNumber: linkage.accessionNumber,
+        modality: linkage.modality,
+        studyDate: linkage.studyDate,
+        studyDescription: linkage.studyDescription,
+        seriesCount: linkage.seriesCount,
+        instanceCount: linkage.instanceCount,
+        reconciliationType: linkage.reconciliationType,
+        source: linkage.source,
+      });
+    } catch { /* non-fatal */ }
+  }
 
   // Update the worklist item
   updateWorklistItem(order.id, {
@@ -259,14 +328,25 @@ function createLinkage(
 
 function quarantineStudy(payload: OrthancStableStudyPayload, reason: string): UnmatchedStudy {
   // Idempotency guard: don't re-quarantine same study
-  for (const u of unmatchedStore.values()) {
+  for (const u of unmatchedCache.values()) {
     if (u.studyInstanceUid === payload.studyInstanceUid && !u.resolved) {
-      log.info("Duplicate ingest — study already quarantined (idempotent)", {
+      log.info("Duplicate ingest -- study already quarantined (idempotent)", {
         studyUid: payload.studyInstanceUid,
         existingUnmatchedId: u.id,
       });
       return u;
     }
+  }
+  // Also check DB
+  if (_repo) {
+    try {
+      const row = _repo.findUnmatchedByStudyUid(payload.studyInstanceUid);
+      if (row && !row.resolved) {
+        const u = rowToUnmatched(row);
+        unmatchedCache.set(u.id, u);
+        return u;
+      }
+    } catch { /* non-fatal */ }
   }
 
   const unmatched: UnmatchedStudy = {
@@ -286,7 +366,25 @@ function quarantineStudy(payload: OrthancStableStudyPayload, reason: string): Un
     resolved: false,
   };
 
-  unmatchedStore.set(unmatched.id, unmatched);
+  unmatchedCache.set(unmatched.id, unmatched);
+  if (_repo) {
+    try {
+      _repo.insertUnmatched({
+        id: unmatched.id,
+        orthancStudyId: unmatched.orthancStudyId,
+        studyInstanceUid: unmatched.studyInstanceUid,
+        dicomPatientId: unmatched.dicomPatientId,
+        dicomPatientName: unmatched.dicomPatientName,
+        accessionNumber: unmatched.accessionNumber,
+        modality: unmatched.modality,
+        studyDate: unmatched.studyDate,
+        studyDescription: unmatched.studyDescription,
+        seriesCount: unmatched.seriesCount,
+        instanceCount: unmatched.instanceCount,
+        reason: unmatched.reason,
+      });
+    } catch { /* non-fatal */ }
+  }
   return unmatched;
 }
 
@@ -295,25 +393,53 @@ function quarantineStudy(payload: OrthancStableStudyPayload, reason: string): Un
 /* ================================================================== */
 
 export function getLinkagesForPatient(dfn: string): StudyLinkage[] {
-  return [...linkageStore.values()].filter((l) => l.patientDfn === dfn);
+  if (_repo) {
+    try {
+      const rows = _repo.findStudyLinksForPatient(dfn);
+      const items = rows.map(rowToLinkage);
+      for (const it of items) linkageCache.set(it.id, it);
+      return items;
+    } catch { /* fallback to cache */ }
+  }
+  return [...linkageCache.values()].filter((l) => l.patientDfn === dfn);
 }
 
 export function getLinkageByStudyUid(studyUid: string): StudyLinkage | undefined {
-  for (const l of linkageStore.values()) {
+  for (const l of linkageCache.values()) {
     if (l.studyInstanceUid === studyUid) return l;
+  }
+  if (_repo) {
+    try {
+      const row = _repo.findStudyLinkByStudyUid(studyUid);
+      if (row) { const l = rowToLinkage(row); linkageCache.set(l.id, l); return l; }
+    } catch { /* non-fatal */ }
   }
   return undefined;
 }
 
 export function getLinkageByOrderId(orderId: string): StudyLinkage | undefined {
-  for (const l of linkageStore.values()) {
+  for (const l of linkageCache.values()) {
     if (l.orderId === orderId) return l;
+  }
+  if (_repo) {
+    try {
+      const row = _repo.findStudyLinkByOrderId(orderId);
+      if (row) { const l = rowToLinkage(row); linkageCache.set(l.id, l); return l; }
+    } catch { /* non-fatal */ }
   }
   return undefined;
 }
 
 export function getAllUnmatched(): UnmatchedStudy[] {
-  return [...unmatchedStore.values()].filter((u) => !u.resolved);
+  if (_repo) {
+    try {
+      const rows = _repo.findAllUnresolved();
+      const items = rows.map(rowToUnmatched);
+      for (const it of items) unmatchedCache.set(it.id, it);
+      return items;
+    } catch { /* fallback to cache */ }
+  }
+  return [...unmatchedCache.values()].filter((u) => !u.resolved);
 }
 
 /* ================================================================== */
@@ -439,7 +565,13 @@ export default async function imagingIngestRoutes(server: FastifyInstance): Prom
     const { id } = request.params as { id: string };
     const body = request.body as { orderId?: string };
 
-    const unmatched = unmatchedStore.get(id);
+    const unmatched = unmatchedCache.get(id) || (_repo ? (() => {
+      try {
+        const row = _repo!.findUnmatchedById(id);
+        if (row) { const u = rowToUnmatched(row); unmatchedCache.set(u.id, u); return u; }
+      } catch { /* non-fatal */ }
+      return undefined;
+    })() : undefined);
     if (!unmatched || unmatched.resolved) {
       reply.code(404).send({ ok: false, error: "Unmatched study not found or already resolved" });
       return;
@@ -474,7 +606,10 @@ export default async function imagingIngestRoutes(server: FastifyInstance): Prom
 
     // Mark unmatched as resolved
     unmatched.resolved = true;
-    unmatchedStore.set(id, unmatched);
+    unmatchedCache.set(id, unmatched);
+    if (_repo) {
+      try { _repo.resolveUnmatched(id); } catch { /* non-fatal */ }
+    }
 
     log.info("Manual reconciliation", {
       unmatchedId: id,
@@ -505,7 +640,15 @@ export default async function imagingIngestRoutes(server: FastifyInstance): Prom
     if (!session) { reply.code(401).send({ ok: false, error: "Authentication required" }); return; }
 
     const q = request.query as Record<string, string>;
-    let linkages = [...linkageStore.values()];
+    let linkages: StudyLinkage[];
+    if (_repo) {
+      try {
+        const rows = _repo.findAllStudyLinks();
+        linkages = rows.map(rowToLinkage);
+      } catch { linkages = [...linkageCache.values()]; }
+    } else {
+      linkages = [...linkageCache.values()];
+    }
 
     if (q.patientDfn) linkages = linkages.filter((l) => l.patientDfn === q.patientDfn);
     if (q.orderId) linkages = linkages.filter((l) => l.orderId === q.orderId);

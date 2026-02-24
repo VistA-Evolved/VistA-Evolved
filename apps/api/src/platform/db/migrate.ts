@@ -747,6 +747,160 @@ CREATE TABLE IF NOT EXISTS rcm_work_item_event (
 CREATE INDEX IF NOT EXISTS idx_rcmwie_item ON rcm_work_item_event(work_item_id);
 CREATE INDEX IF NOT EXISTS idx_rcmwie_tenant ON rcm_work_item_event(tenant_id);
 
+-- AI) portal_message — Phase 115: Durable portal secure messaging
+CREATE TABLE IF NOT EXISTS portal_message (
+  id TEXT PRIMARY KEY,
+  thread_id TEXT NOT NULL,
+  from_dfn TEXT NOT NULL,
+  from_name TEXT NOT NULL,
+  to_dfn TEXT NOT NULL,
+  to_name TEXT NOT NULL,
+  subject TEXT NOT NULL,
+  category TEXT NOT NULL DEFAULT 'general',
+  body TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'draft',
+  attachments_json TEXT DEFAULT '[]',
+  reply_to_id TEXT,
+  vista_sync INTEGER DEFAULT 0,
+  vista_ref TEXT,
+  read_at TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_pmsg_thread ON portal_message(thread_id);
+CREATE INDEX IF NOT EXISTS idx_pmsg_from ON portal_message(from_dfn);
+CREATE INDEX IF NOT EXISTS idx_pmsg_to ON portal_message(to_dfn);
+CREATE INDEX IF NOT EXISTS idx_pmsg_status ON portal_message(status);
+CREATE INDEX IF NOT EXISTS idx_pmsg_category ON portal_message(category);
+
+-- AJ) portal_appointment — Phase 115: Durable portal appointment requests
+CREATE TABLE IF NOT EXISTS portal_appointment (
+  id TEXT PRIMARY KEY,
+  patient_dfn TEXT NOT NULL,
+  patient_name TEXT NOT NULL,
+  clinic_id TEXT NOT NULL,
+  clinic_name TEXT NOT NULL,
+  provider_name TEXT,
+  appointment_type TEXT NOT NULL DEFAULT 'in-person',
+  scheduled_at TEXT NOT NULL,
+  duration INTEGER NOT NULL DEFAULT 30,
+  status TEXT NOT NULL DEFAULT 'requested',
+  reason TEXT,
+  notes TEXT,
+  vista_sync INTEGER DEFAULT 0,
+  vista_ref TEXT,
+  cancel_reason TEXT,
+  reschedule_preference TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_pappt_dfn ON portal_appointment(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_pappt_status ON portal_appointment(status);
+CREATE INDEX IF NOT EXISTS idx_pappt_sched ON portal_appointment(scheduled_at);
+
+-- AK) telehealth_room — Phase 115: Durable telehealth room state
+CREATE TABLE IF NOT EXISTS telehealth_room (
+  id TEXT PRIMARY KEY,
+  appointment_id TEXT,
+  patient_dfn TEXT NOT NULL,
+  provider_duz TEXT NOT NULL,
+  provider_name TEXT,
+  room_status TEXT NOT NULL DEFAULT 'scheduled',
+  meeting_url TEXT,
+  access_token TEXT,
+  participants_json TEXT DEFAULT '{}',
+  scheduled_start TEXT,
+  actual_start TEXT,
+  actual_end TEXT,
+  expires_at TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_troom_status ON telehealth_room(room_status);
+CREATE INDEX IF NOT EXISTS idx_troom_appt ON telehealth_room(appointment_id);
+CREATE INDEX IF NOT EXISTS idx_troom_expires ON telehealth_room(expires_at);
+
+-- AL) imaging_work_order — Phase 115: Durable imaging worklist items
+CREATE TABLE IF NOT EXISTS imaging_work_order (
+  id TEXT PRIMARY KEY,
+  vista_order_id TEXT,
+  patient_dfn TEXT NOT NULL,
+  patient_name TEXT NOT NULL,
+  accession_number TEXT NOT NULL,
+  scheduled_procedure TEXT NOT NULL,
+  procedure_code TEXT,
+  modality TEXT NOT NULL,
+  scheduled_time TEXT NOT NULL,
+  facility TEXT NOT NULL DEFAULT 'DEFAULT',
+  location TEXT NOT NULL DEFAULT 'Radiology',
+  ordering_provider_duz TEXT NOT NULL,
+  ordering_provider_name TEXT NOT NULL,
+  clinical_indication TEXT,
+  priority TEXT NOT NULL DEFAULT 'routine',
+  status TEXT NOT NULL DEFAULT 'ordered',
+  linked_study_uid TEXT,
+  linked_orthanc_study_id TEXT,
+  source TEXT NOT NULL DEFAULT 'prototype-sidecar',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_imgwo_dfn ON imaging_work_order(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_imgwo_accn ON imaging_work_order(accession_number);
+CREATE INDEX IF NOT EXISTS idx_imgwo_status ON imaging_work_order(status);
+CREATE INDEX IF NOT EXISTS idx_imgwo_mod ON imaging_work_order(modality);
+
+-- AM) imaging_study_link — Phase 115: Durable study-to-order linkages
+CREATE TABLE IF NOT EXISTS imaging_study_link (
+  id TEXT PRIMARY KEY,
+  order_id TEXT NOT NULL,
+  patient_dfn TEXT NOT NULL,
+  study_instance_uid TEXT NOT NULL,
+  orthanc_study_id TEXT NOT NULL,
+  accession_number TEXT NOT NULL,
+  modality TEXT NOT NULL,
+  study_date TEXT,
+  study_description TEXT,
+  series_count INTEGER DEFAULT 0,
+  instance_count INTEGER DEFAULT 0,
+  reconciliation_type TEXT NOT NULL,
+  source TEXT NOT NULL DEFAULT 'prototype-sidecar',
+  linked_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_imgsl_order ON imaging_study_link(order_id);
+CREATE INDEX IF NOT EXISTS idx_imgsl_dfn ON imaging_study_link(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_imgsl_uid ON imaging_study_link(study_instance_uid);
+CREATE INDEX IF NOT EXISTS idx_imgsl_accn ON imaging_study_link(accession_number);
+
+-- AN) imaging_unmatched — Phase 115: Quarantined unmatched studies
+CREATE TABLE IF NOT EXISTS imaging_unmatched (
+  id TEXT PRIMARY KEY,
+  orthanc_study_id TEXT NOT NULL,
+  study_instance_uid TEXT NOT NULL,
+  dicom_patient_id TEXT NOT NULL,
+  dicom_patient_name TEXT,
+  accession_number TEXT,
+  modality TEXT,
+  study_date TEXT,
+  study_description TEXT,
+  series_count INTEGER DEFAULT 0,
+  instance_count INTEGER DEFAULT 0,
+  reason TEXT NOT NULL,
+  resolved INTEGER NOT NULL DEFAULT 0,
+  quarantined_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_imgum_uid ON imaging_unmatched(study_instance_uid);
+CREATE INDEX IF NOT EXISTS idx_imgum_resolved ON imaging_unmatched(resolved);
+
+-- AO) idempotency_key — Phase 115: Durable request deduplication
+CREATE TABLE IF NOT EXISTS idempotency_key (
+  composite_key TEXT PRIMARY KEY,
+  status_code INTEGER NOT NULL DEFAULT 0,
+  response_body TEXT,
+  created_at INTEGER NOT NULL,
+  expires_at INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_idem_expires ON idempotency_key(expires_at);
+
 `;
 
 // Phase 97B: Add payer_type column (idempotent — catches "duplicate column" error)

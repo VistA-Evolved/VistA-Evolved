@@ -2325,6 +2325,60 @@ try {
     } catch (capErr: any) {
       log.warn("Capability audit wire failed (non-fatal)", { error: capErr.message });
     }
+    // Phase 115: Wire DB-backed portal messaging store
+    try {
+      const pmRepo = await import("./platform/db/repo/portal-message-repo.js");
+      const { initMessageRepo } = await import("./services/portal-messaging.js");
+      initMessageRepo(pmRepo);
+      log.info("Portal messaging store wired to DB");
+    } catch (pmErr: any) {
+      log.warn("Portal message repo wire failed (non-fatal)", { error: pmErr.message });
+    }
+    // Phase 115: Wire DB-backed portal appointments store
+    try {
+      const paRepo = await import("./platform/db/repo/portal-appointment-repo.js");
+      const { initAppointmentRepo } = await import("./services/portal-appointments.js");
+      initAppointmentRepo(paRepo);
+      log.info("Portal appointments store wired to DB");
+    } catch (paErr: any) {
+      log.warn("Portal appointment repo wire failed (non-fatal)", { error: paErr.message });
+    }
+    // Phase 115: Wire DB-backed telehealth room store
+    try {
+      const trRepo = await import("./platform/db/repo/telehealth-room-repo.js");
+      const { initTelehealthRoomRepo } = await import("./telehealth/room-store.js");
+      initTelehealthRoomRepo(trRepo);
+      log.info("Telehealth room store wired to DB");
+    } catch (trErr: any) {
+      log.warn("Telehealth room repo wire failed (non-fatal)", { error: trErr.message });
+    }
+    // Phase 115: Wire DB-backed imaging worklist store
+    try {
+      const iwRepo = await import("./platform/db/repo/imaging-worklist-repo.js");
+      const { initWorklistRepo } = await import("./services/imaging-worklist.js");
+      initWorklistRepo(iwRepo);
+      log.info("Imaging worklist store wired to DB");
+    } catch (iwErr: any) {
+      log.warn("Imaging worklist repo wire failed (non-fatal)", { error: iwErr.message });
+    }
+    // Phase 115: Wire DB-backed imaging ingest store
+    try {
+      const iiRepo = await import("./platform/db/repo/imaging-ingest-repo.js");
+      const { initIngestRepo } = await import("./services/imaging-ingest.js");
+      initIngestRepo(iiRepo);
+      log.info("Imaging ingest store wired to DB");
+    } catch (iiErr: any) {
+      log.warn("Imaging ingest repo wire failed (non-fatal)", { error: iiErr.message });
+    }
+    // Phase 115: Wire DB-backed idempotency store
+    try {
+      const idRepo = await import("./platform/db/repo/idempotency-repo.js");
+      const { initIdempotencyRepo } = await import("./middleware/idempotency.js");
+      initIdempotencyRepo(idRepo);
+      log.info("Idempotency store wired to DB");
+    } catch (idErr: any) {
+      log.warn("Idempotency repo wire failed (non-fatal)", { error: idErr.message });
+    }
     // Phase 109: Seed module catalog + default tenant entitlements from modules.json
     try {
       const { seedModuleCatalogFromConfig } = await import("./modules/module-catalog-seed.js");

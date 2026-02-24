@@ -667,3 +667,142 @@ export const rcmWorkItemEvent = sqliteTable("rcm_work_item_event", {
   detail: text("detail"),                                        // JSON — no PHI
   createdAt: text("created_at").notNull(),
 });
+
+/* ── AI) portal_message — Phase 115: Durable portal secure messaging ────── */
+
+export const portalMessage = sqliteTable("portal_message", {
+  id: text("id").primaryKey(),
+  threadId: text("thread_id").notNull(),
+  fromDfn: text("from_dfn").notNull(),                           // patient or provider DFN
+  fromName: text("from_name").notNull(),
+  toDfn: text("to_dfn").notNull(),
+  toName: text("to_name").notNull(),
+  subject: text("subject").notNull(),
+  category: text("category").notNull().default("general"),       // general | prescription | appointment | lab_results | billing
+  body: text("body").notNull(),
+  status: text("status").notNull().default("draft"),             // draft | sent | read | archived | deleted
+  attachmentsJson: text("attachments_json").default("[]"),       // MessageAttachment[] as JSON
+  replyToId: text("reply_to_id"),
+  vistaSync: integer("vista_sync", { mode: "boolean" }).default(false),
+  vistaRef: text("vista_ref"),
+  readAt: text("read_at"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/* ── AJ) portal_appointment — Phase 115: Durable portal appointment requests ── */
+
+export const portalAppointment = sqliteTable("portal_appointment", {
+  id: text("id").primaryKey(),
+  patientDfn: text("patient_dfn").notNull(),
+  patientName: text("patient_name").notNull(),
+  clinicId: text("clinic_id").notNull(),
+  clinicName: text("clinic_name").notNull(),
+  providerName: text("provider_name"),
+  appointmentType: text("appointment_type").notNull().default("in-person"), // in-person | telehealth | phone
+  scheduledAt: text("scheduled_at").notNull(),
+  duration: integer("duration").notNull().default(30),           // minutes
+  status: text("status").notNull().default("requested"),         // requested | confirmed | checked-in | in-progress | completed | cancelled | no-show
+  reason: text("reason"),
+  notes: text("notes"),
+  vistaSync: integer("vista_sync", { mode: "boolean" }).default(false),
+  vistaRef: text("vista_ref"),
+  cancelReason: text("cancel_reason"),
+  reschedulePreference: text("reschedule_preference"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/* ── AK) telehealth_room — Phase 115: Durable telehealth room state ──────── */
+
+export const telehealthRoom = sqliteTable("telehealth_room", {
+  id: text("id").primaryKey(),                                   // room ID (e.g. "ve-abc123")
+  appointmentId: text("appointment_id"),
+  patientDfn: text("patient_dfn").notNull(),
+  providerDuz: text("provider_duz").notNull(),
+  providerName: text("provider_name"),
+  roomStatus: text("room_status").notNull().default("scheduled"),  // scheduled | waiting | active | ended | expired
+  meetingUrl: text("meeting_url"),
+  accessToken: text("access_token"),                             // opaque join token (no PHI)
+  participantsJson: text("participants_json").default("{}"),     // { participantId: { role, joinedAt } }
+  scheduledStart: text("scheduled_start"),
+  actualStart: text("actual_start"),
+  actualEnd: text("actual_end"),
+  expiresAt: text("expires_at").notNull(),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/* ── AL) imaging_work_order — Phase 115: Durable imaging worklist items ───── */
+
+export const imagingWorkOrder = sqliteTable("imaging_work_order", {
+  id: text("id").primaryKey(),
+  vistaOrderId: text("vista_order_id"),
+  patientDfn: text("patient_dfn").notNull(),
+  patientName: text("patient_name").notNull(),
+  accessionNumber: text("accession_number").notNull(),
+  scheduledProcedure: text("scheduled_procedure").notNull(),
+  procedureCode: text("procedure_code"),
+  modality: text("modality").notNull(),
+  scheduledTime: text("scheduled_time").notNull(),
+  facility: text("facility").notNull().default("DEFAULT"),
+  location: text("location").notNull().default("Radiology"),
+  orderingProviderDuz: text("ordering_provider_duz").notNull(),
+  orderingProviderName: text("ordering_provider_name").notNull(),
+  clinicalIndication: text("clinical_indication"),
+  priority: text("priority").notNull().default("routine"),       // routine | stat | urgent
+  status: text("status").notNull().default("ordered"),           // ordered | scheduled | in-progress | completed | cancelled | discontinued
+  linkedStudyUid: text("linked_study_uid"),
+  linkedOrthancStudyId: text("linked_orthanc_study_id"),
+  source: text("source").notNull().default("prototype-sidecar"), // prototype-sidecar | vista-radiology
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/* ── AM) imaging_study_link — Phase 115: Durable study-to-order linkages ──── */
+
+export const imagingStudyLink = sqliteTable("imaging_study_link", {
+  id: text("id").primaryKey(),
+  orderId: text("order_id").notNull(),
+  patientDfn: text("patient_dfn").notNull(),
+  studyInstanceUid: text("study_instance_uid").notNull(),
+  orthancStudyId: text("orthanc_study_id").notNull(),
+  accessionNumber: text("accession_number").notNull(),
+  modality: text("modality").notNull(),
+  studyDate: text("study_date"),
+  studyDescription: text("study_description"),
+  seriesCount: integer("series_count").default(0),
+  instanceCount: integer("instance_count").default(0),
+  reconciliationType: text("reconciliation_type").notNull(),     // automatic-accession | automatic-patient-modality | manual
+  source: text("source").notNull().default("prototype-sidecar"), // prototype-sidecar | vista-mag-2005
+  linkedAt: text("linked_at").notNull(),
+});
+
+/* ── AN) imaging_unmatched — Phase 115: Quarantined unmatched studies ──────── */
+
+export const imagingUnmatched = sqliteTable("imaging_unmatched", {
+  id: text("id").primaryKey(),
+  orthancStudyId: text("orthanc_study_id").notNull(),
+  studyInstanceUid: text("study_instance_uid").notNull(),
+  dicomPatientId: text("dicom_patient_id").notNull(),
+  dicomPatientName: text("dicom_patient_name"),
+  accessionNumber: text("accession_number"),
+  modality: text("modality"),
+  studyDate: text("study_date"),
+  studyDescription: text("study_description"),
+  seriesCount: integer("series_count").default(0),
+  instanceCount: integer("instance_count").default(0),
+  reason: text("reason").notNull(),
+  resolved: integer("resolved", { mode: "boolean" }).notNull().default(false),
+  quarantinedAt: text("quarantined_at").notNull(),
+});
+
+/* ── AO) idempotency_key — Phase 115: Durable request deduplication ────────── */
+
+export const idempotencyKey = sqliteTable("idempotency_key", {
+  compositeKey: text("composite_key").primaryKey(),              // "tenantId::key"
+  statusCode: integer("status_code").notNull().default(0),
+  responseBody: text("response_body"),                           // JSON-serialized response
+  createdAt: integer("created_at").notNull(),                    // epoch ms
+  expiresAt: integer("expires_at").notNull(),                    // epoch ms
+});

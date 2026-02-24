@@ -18,6 +18,18 @@
 
 import type { FastifyRequest, FastifyReply } from "fastify";
 
+/* ------------------------------------------------------------------ */
+/* DB repo -- lazy-wired after initPlatformDb() (Phase 115)              */
+/* ------------------------------------------------------------------ */
+
+type IdempotencyRepo = typeof import("../platform/db/repo/idempotency-repo.js");
+let _repo: IdempotencyRepo | null = null;
+
+/** Wire the idempotency repo. Called from index.ts. */
+export function initIdempotencyRepo(repo: IdempotencyRepo): void {
+  _repo = repo;
+}
+
 /** In-memory idempotency store (SQLite mode / lightweight fallback). */
 interface CachedResponse {
   statusCode: number;
@@ -44,6 +56,9 @@ function pruneExpired(): void {
     if (cached.expiresAt < now) {
       memoryStore.delete(key);
     }
+  }
+  if (_repo) {
+    try { _repo.pruneExpiredKeys(); } catch { /* non-fatal */ }
   }
 }
 
@@ -100,12 +115,33 @@ export function idempotencyGuard() {
     // Check if key exists and is not expired
     const cached = memoryStore.get(cKey);
     if (cached && cached.expiresAt > Date.now()) {
-      // Return cached response with indicator header
       reply
         .status(cached.statusCode)
         .header("Idempotency-Replayed", "true")
         .send(cached.body);
       return;
+    }
+    // Check DB if not in cache
+    if (!cached && _repo) {
+      try {
+        const row = _repo.findByKey(cKey);
+        if (row && row.expiresAt > Date.now()) {
+          let body: unknown = null;
+          try { body = JSON.parse(row.responseBody ?? ""); } catch { body = row.responseBody; }
+          const restored: CachedResponse = {
+            statusCode: row.statusCode ?? 200,
+            body,
+            createdAt: row.createdAt ?? Date.now(),
+            expiresAt: row.expiresAt ?? Date.now(),
+          };
+          memoryStore.set(cKey, restored);
+          reply
+            .status(restored.statusCode)
+            .header("Idempotency-Replayed", "true")
+            .send(restored.body);
+          return;
+        }
+      } catch { /* non-fatal */ }
     }
 
     // Store a marker to detect concurrent duplicates
@@ -116,21 +152,44 @@ export function idempotencyGuard() {
       expiresAt: Date.now() + getTtlMs(),
     };
     memoryStore.set(cKey, marker);
+    if (_repo) {
+      try {
+        _repo.upsertKey({
+          compositeKey: cKey,
+          statusCode: 0,
+          responseBody: "",
+          createdAt: marker.createdAt,
+          expiresAt: marker.expiresAt,
+        });
+      } catch { /* non-fatal */ }
+    }
 
     // On error, remove the marker so the request can be retried.
     // The onSend hook handles capturing the actual response body + status.
     reply.then(
       () => {
-        // onSend already captured status + body — only update statusCode
+        // onSend already captured status + body -- only update statusCode
         // as a fallback if onSend somehow missed it
         const existing = memoryStore.get(cKey);
         if (existing && existing.statusCode === 0) {
           existing.statusCode = reply.statusCode;
+          if (_repo) {
+            try {
+              _repo.upsertKey({
+                compositeKey: cKey,
+                statusCode: reply.statusCode,
+                responseBody: existing.body != null ? JSON.stringify(existing.body) : "",
+                createdAt: existing.createdAt,
+                expiresAt: existing.expiresAt,
+              });
+            } catch { /* non-fatal */ }
+          }
         }
       },
       () => {
         // On error, remove the marker so the request can be retried
         memoryStore.delete(cKey);
+        if (_repo) { try { _repo.deleteKey(cKey); } catch { /* non-fatal */ } }
       },
     );
   };
@@ -172,6 +231,17 @@ export async function idempotencyOnSend(
   if (existing) {
     existing.statusCode = reply.statusCode;
     existing.body = body;
+    if (_repo) {
+      try {
+        _repo.upsertKey({
+          compositeKey: cKey,
+          statusCode: reply.statusCode,
+          responseBody: body != null ? JSON.stringify(body) : "",
+          createdAt: existing.createdAt,
+          expiresAt: existing.expiresAt,
+        });
+      } catch { /* non-fatal */ }
+    }
   }
 
   return payload;

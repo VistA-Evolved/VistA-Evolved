@@ -86,11 +86,68 @@ export const SLA_DISCLAIMER =
   "Response times may vary based on clinic staffing.";
 
 /* ------------------------------------------------------------------ */
-/* Store                                                                */
+/* DB repo — lazy-wired after initPlatformDb() (Phase 115)              */
 /* ------------------------------------------------------------------ */
 
-const messageStore = new Map<string, PortalMessage>();
+type MsgRepo = typeof import("../platform/db/repo/portal-message-repo.js");
+let _repo: MsgRepo | null = null;
+
+/** Wire the portal message repo after DB init. Called from index.ts. */
+export function initMessageRepo(repo: MsgRepo): void {
+  _repo = repo;
+  // Seed msgSeq from DB row count to avoid ID collisions after restart
+  try { msgSeq = repo.countMessages(); } catch { /* non-fatal */ }
+}
+
+/* ------------------------------------------------------------------ */
+/* In-memory cache (Ephemeral — falls back to DB on miss)               */
+/* ------------------------------------------------------------------ */
+
+const messageCache = new Map<string, PortalMessage>();
 let msgSeq = 0;
+
+function cacheMsg(msg: PortalMessage): void {
+  messageCache.set(msg.id, msg);
+}
+
+function rowToMsg(row: any): PortalMessage {
+  return {
+    id: row.id,
+    threadId: row.threadId,
+    fromDfn: row.fromDfn,
+    fromName: row.fromName,
+    toDfn: row.toDfn,
+    toName: row.toName,
+    subject: row.subject,
+    category: row.category as MessageCategory,
+    body: row.body,
+    status: row.status as MessageStatus,
+    attachments: JSON.parse(row.attachmentsJson || "[]"),
+    createdAt: row.createdAt,
+    readAt: row.readAt ?? null,
+    replyToId: row.replyToId ?? null,
+    vistaSync: row.vistaSync ? "synced" : "not_synced",
+    vistaRef: row.vistaRef ?? null,
+  };
+}
+
+function msgToDbFields(msg: PortalMessage) {
+  return {
+    threadId: msg.threadId,
+    fromDfn: msg.fromDfn,
+    fromName: msg.fromName,
+    toDfn: msg.toDfn,
+    toName: msg.toName,
+    subject: msg.subject,
+    category: msg.category,
+    body: msg.body,
+    status: msg.status,
+    attachmentsJson: JSON.stringify(msg.attachments.map(a => ({ ...a, data: "(stored)" }))),
+    replyToId: msg.replyToId ?? undefined,
+    vistaSync: msg.vistaSync === "synced",
+    vistaRef: msg.vistaRef ?? undefined,
+  };
+}
 
 /* ------------------------------------------------------------------ */
 /* Phase 32: Rate limiter                                               */
@@ -148,7 +205,7 @@ export function createDraft(opts: {
 }): PortalMessage {
   const id = `msg-${++msgSeq}-${randomBytes(4).toString("hex")}`;
   const threadId = opts.replyToId
-    ? (messageStore.get(opts.replyToId)?.threadId || id)
+    ? (getMessage_internal(opts.replyToId)?.threadId || id)
     : id;
 
   const msg: PortalMessage = {
@@ -170,20 +227,44 @@ export function createDraft(opts: {
     vistaRef: null,
   };
 
-  messageStore.set(id, msg);
+  if (_repo) {
+    try {
+      _repo.insertMessage(msgToDbFields(msg));
+    } catch { /* DB write failed — cache-only fallback */ }
+  }
+  cacheMsg(msg);
+
   portalAudit("portal.message.draft", "success", opts.fromDfn, {
     detail: { messageId: id, category: opts.category },
   });
   return msg;
 }
 
+/** Internal lookup — no access-control, used for thread resolution. */
+function getMessage_internal(messageId: string): PortalMessage | null {
+  const cached = messageCache.get(messageId);
+  if (cached) return cached;
+  if (_repo) {
+    try {
+      const row = _repo.findMessageById(messageId);
+      if (row) { const m = rowToMsg(row); cacheMsg(m); return m; }
+    } catch { /* non-fatal */ }
+  }
+  return null;
+}
+
 export function sendMessage(messageId: string, senderDfn: string): PortalMessage | null {
-  const msg = messageStore.get(messageId);
+  const msg = getMessage_internal(messageId);
   if (!msg || msg.fromDfn !== senderDfn) return null;
   if (msg.status !== "draft") return null;
 
   msg.status = "sent";
-  msg.vistaSync = "pending"; // Will attempt VistA MailMan sync when available
+  msg.vistaSync = "pending";
+
+  if (_repo) {
+    try { _repo.updateMessage(messageId, { status: "sent" }); } catch { /* non-fatal */ }
+  }
+  cacheMsg(msg);
 
   portalAudit("portal.message.send", "success", senderDfn, {
     detail: { messageId, threadId: msg.threadId, category: msg.category },
@@ -196,7 +277,7 @@ export function addAttachment(
   senderDfn: string,
   attachment: { filename: string; mimeType: string; data: string }
 ): { ok: boolean; error?: string; attachment?: MessageAttachment } {
-  const msg = messageStore.get(messageId);
+  const msg = getMessage_internal(messageId);
   if (!msg || msg.fromDfn !== senderDfn) return { ok: false, error: "Message not found" };
   if (msg.status !== "draft") return { ok: false, error: "Can only add attachments to drafts" };
   if (msg.attachments.length >= MAX_ATTACHMENTS_PER_MSG) {
@@ -220,41 +301,79 @@ export function addAttachment(
   };
 
   msg.attachments.push(att);
+  cacheMsg(msg);
+
+  if (_repo) {
+    try {
+      _repo.updateMessage(messageId, {
+        attachmentsJson: JSON.stringify(msg.attachments.map(a => ({ ...a, data: "(stored)" }))),
+      });
+    } catch { /* non-fatal */ }
+  }
+
   return { ok: true, attachment: { ...att, data: "(stored)" } };
 }
 
 export function getInbox(patientDfn: string): PortalMessage[] {
-  return [...messageStore.values()]
+  if (_repo) {
+    try {
+      const rows = _repo.findInbox(patientDfn);
+      return rows.map(rowToMsg);
+    } catch { /* fallback to cache */ }
+  }
+  return [...messageCache.values()]
     .filter((m) => (m.toDfn === patientDfn || m.fromDfn === patientDfn) && m.status !== "draft")
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
 export function getDrafts(patientDfn: string): PortalMessage[] {
-  return [...messageStore.values()]
+  if (_repo) {
+    try {
+      const rows = _repo.findDrafts(patientDfn);
+      return rows.map(rowToMsg);
+    } catch { /* fallback to cache */ }
+  }
+  return [...messageCache.values()]
     .filter((m) => m.fromDfn === patientDfn && m.status === "draft")
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
 export function getSent(patientDfn: string): PortalMessage[] {
-  return [...messageStore.values()]
+  if (_repo) {
+    try {
+      const rows = _repo.findSent(patientDfn);
+      return rows.map(rowToMsg);
+    } catch { /* fallback to cache */ }
+  }
+  return [...messageCache.values()]
     .filter((m) => m.fromDfn === patientDfn && m.status !== "draft")
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
 export function getThread(threadId: string): PortalMessage[] {
-  return [...messageStore.values()]
+  if (_repo) {
+    try {
+      const rows = _repo.findThread(threadId);
+      return rows.map(rowToMsg);
+    } catch { /* fallback to cache */ }
+  }
+  return [...messageCache.values()]
     .filter((m) => m.threadId === threadId && m.status !== "draft")
     .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 }
 
 export function getMessage(messageId: string, viewerDfn: string): PortalMessage | null {
-  const msg = messageStore.get(messageId);
+  const msg = getMessage_internal(messageId);
   if (!msg) return null;
   if (msg.fromDfn !== viewerDfn && msg.toDfn !== viewerDfn) return null;
 
   if (msg.toDfn === viewerDfn && !msg.readAt) {
     msg.readAt = new Date().toISOString();
     msg.status = "read";
+    if (_repo) {
+      try { _repo.updateMessage(messageId, { status: "read", readAt: msg.readAt }); } catch { /* */ }
+    }
+    cacheMsg(msg);
     portalAudit("portal.message.read", "success", viewerDfn, {
       detail: { messageId },
     });
@@ -269,20 +388,33 @@ export function updateDraft(
   senderDfn: string,
   updates: Partial<Pick<PortalMessage, "subject" | "category" | "body">>
 ): PortalMessage | null {
-  const msg = messageStore.get(messageId);
+  const msg = getMessage_internal(messageId);
   if (!msg || msg.fromDfn !== senderDfn || msg.status !== "draft") return null;
 
   if (updates.subject) msg.subject = updates.subject.slice(0, 200);
   if (updates.category) msg.category = updates.category;
   if (updates.body) msg.body = updates.body.slice(0, MAX_BODY_LENGTH);
 
+  cacheMsg(msg);
+  if (_repo) {
+    try {
+      _repo.updateMessage(messageId, {
+        subject: msg.subject,
+        body: msg.body,
+      });
+    } catch { /* non-fatal */ }
+  }
+
   return msg;
 }
 
 export function deleteDraft(messageId: string, senderDfn: string): boolean {
-  const msg = messageStore.get(messageId);
+  const msg = getMessage_internal(messageId);
   if (!msg || msg.fromDfn !== senderDfn || msg.status !== "draft") return false;
-  messageStore.delete(messageId);
+  messageCache.delete(messageId);
+  if (_repo) {
+    try { _repo.deleteMessage(messageId); } catch { /* non-fatal */ }
+  }
   return true;
 }
 
@@ -337,7 +469,10 @@ export function sendOnBehalf(opts: {
     vistaRef: null,
   };
 
-  messageStore.set(id, msg);
+  if (_repo) {
+    try { _repo.insertMessage(msgToDbFields(msg)); } catch { /* non-fatal */ }
+  }
+  cacheMsg(msg);
   recordSend(opts.patientDfn);
 
   portalAudit("portal.message.send", "success", opts.proxyDfn, {
@@ -361,7 +496,7 @@ export function clinicianReply(opts: {
   replyToId: string;
   body: string;
 }): PortalMessage | { error: string } {
-  const original = messageStore.get(opts.replyToId);
+  const original = getMessage_internal(opts.replyToId);
   if (!original) return { error: "Original message not found." };
 
   const id = `msg-${++msgSeq}-${randomBytes(4).toString("hex")}`;
@@ -384,11 +519,18 @@ export function clinicianReply(opts: {
     vistaRef: null,
   };
 
-  messageStore.set(id, msg);
+  if (_repo) {
+    try { _repo.insertMessage(msgToDbFields(msg)); } catch { /* non-fatal */ }
+  }
+  cacheMsg(msg);
 
   // Mark original as replied
   if (original.status === "read" || original.status === "sent") {
     original.status = "replied";
+    cacheMsg(original);
+    if (_repo) {
+      try { _repo.updateMessage(opts.replyToId, { status: "replied" }); } catch { /* */ }
+    }
   }
 
   return msg;
@@ -398,7 +540,13 @@ export function clinicianReply(opts: {
  * Get all unread patient messages for staff queue (CPRS shell).
  */
 export function getStaffMessageQueue(): PortalMessage[] {
-  return [...messageStore.values()]
+  if (_repo) {
+    try {
+      const rows = _repo.findStaffQueue();
+      return rows.map(rowToMsg);
+    } catch { /* fallback to cache */ }
+  }
+  return [...messageCache.values()]
     .filter(m => m.toDfn === "clinic" && m.status === "sent")
     .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 }

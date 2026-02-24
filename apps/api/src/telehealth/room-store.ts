@@ -44,7 +44,19 @@ const CLEANUP_INTERVAL_MS = 5 * 60 * 1000;
 const MAX_ROOMS = 500;
 
 /* ------------------------------------------------------------------ */
-/* Store                                                                */
+/* DB repo -- lazy-wired after initPlatformDb() (Phase 115)              */
+/* ------------------------------------------------------------------ */
+
+type RoomRepo = typeof import("../platform/db/repo/telehealth-room-repo.js");
+let _repo: RoomRepo | null = null;
+
+/** Wire the telehealth room repo. Called from index.ts. */
+export function initTelehealthRoomRepo(repo: RoomRepo): void {
+  _repo = repo;
+}
+
+/* ------------------------------------------------------------------ */
+/* Store (in-memory cache, DB is source of truth when wired)            */
 /* ------------------------------------------------------------------ */
 
 interface RoomEntry extends TelehealthRoom {
@@ -57,13 +69,68 @@ interface RoomEntry extends TelehealthRoom {
 const rooms = new Map<string, RoomEntry>();
 let cleanupTimer: ReturnType<typeof setInterval> | null = null;
 
+function participantsToJson(p: Map<string, { role: ParticipantRole; joinedAt: string }>): string {
+  const obj: Record<string, { role: string; joinedAt: string }> = {};
+  for (const [k, v] of p) obj[k] = v;
+  return JSON.stringify(obj);
+}
+
+function jsonToParticipants(json: string): Map<string, { role: ParticipantRole; joinedAt: string }> {
+  const m = new Map<string, { role: ParticipantRole; joinedAt: string }>();
+  try {
+    const obj = JSON.parse(json || "{}");
+    for (const [k, v] of Object.entries(obj)) {
+      m.set(k, v as { role: ParticipantRole; joinedAt: string });
+    }
+  } catch { /* empty map */ }
+  return m;
+}
+
+function rowToEntry(row: any): RoomEntry {
+  return {
+    roomId: row.id,
+    appointmentId: row.appointmentId ?? "",
+    status: row.roomStatus as RoomStatus,
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt,
+    expiresAt: row.expiresAt,
+    participants: jsonToParticipants(row.participantsJson),
+    accessToken: row.accessToken ?? "",
+  };
+}
+
+function getEntry(roomId: string): RoomEntry | null {
+  const cached = rooms.get(roomId);
+  if (cached) return cached;
+  if (_repo) {
+    try {
+      const row = _repo.findRoomById(roomId);
+      if (row) { const e = rowToEntry(row); rooms.set(roomId, e); return e; }
+    } catch { /* non-fatal */ }
+  }
+  return null;
+}
+
+function persistEntry(entry: RoomEntry): void {
+  rooms.set(entry.roomId, entry);
+  if (_repo) {
+    try {
+      _repo.updateRoom(entry.roomId, {
+        roomStatus: entry.status,
+        participantsJson: participantsToJson(entry.participants),
+        actualStart: entry.status === "active" ? new Date().toISOString() : undefined,
+        actualEnd: entry.status === "ended" ? new Date().toISOString() : undefined,
+      });
+    } catch { /* non-fatal */ }
+  }
+}
+
 /* ------------------------------------------------------------------ */
 /* Lifecycle                                                            */
 /* ------------------------------------------------------------------ */
 
 export function createRoom(appointmentId: string, roomId: string): TelehealthRoom {
   if (rooms.size >= MAX_ROOMS) {
-    // Evict oldest ended rooms first
     for (const [id, room] of rooms) {
       if (room.status === "ended") {
         rooms.delete(id);
@@ -88,12 +155,26 @@ export function createRoom(appointmentId: string, roomId: string): TelehealthRoo
   };
 
   rooms.set(roomId, entry);
+  if (_repo) {
+    try {
+      _repo.insertRoom({
+        id: roomId,
+        appointmentId,
+        patientDfn: "",
+        providerDuz: "",
+        roomStatus: "created",
+        accessToken: entry.accessToken,
+        expiresAt: entry.expiresAt,
+        scheduledStart: now,
+      });
+    } catch { /* non-fatal */ }
+  }
   log.info("Telehealth room created", { roomId, appointmentId });
   return toPublicRoom(entry);
 }
 
 export function getRoom(roomId: string): TelehealthRoom | null {
-  const entry = rooms.get(roomId);
+  const entry = getEntry(roomId);
   if (!entry) return null;
   if (isExpired(entry)) {
     expireRoom(entry);
@@ -103,28 +184,37 @@ export function getRoom(roomId: string): TelehealthRoom | null {
 }
 
 export function getRoomByAppointment(appointmentId: string): TelehealthRoom | null {
+  // Check cache first
   for (const entry of rooms.values()) {
     if (entry.appointmentId === appointmentId && entry.status !== "ended") {
-      if (isExpired(entry)) {
-        expireRoom(entry);
-        continue;
-      }
+      if (isExpired(entry)) { expireRoom(entry); continue; }
       return toPublicRoom(entry);
     }
+  }
+  // Check DB
+  if (_repo) {
+    try {
+      const row = _repo.findRoomByAppointment(appointmentId);
+      if (row) {
+        const e = rowToEntry(row);
+        if (!isExpired(e)) {
+          rooms.set(e.roomId, e);
+          return toPublicRoom(e);
+        }
+      }
+    } catch { /* non-fatal */ }
   }
   return null;
 }
 
 export function updateRoomStatus(roomId: string, status: RoomStatus): TelehealthRoom | null {
-  const entry = rooms.get(roomId);
+  const entry = getEntry(roomId);
   if (!entry) return null;
-  if (isExpired(entry)) {
-    expireRoom(entry);
-    return null;
-  }
+  if (isExpired(entry)) { expireRoom(entry); return null; }
 
   entry.status = status;
   entry.updatedAt = new Date().toISOString();
+  persistEntry(entry);
   log.info("Telehealth room status updated", { roomId, status });
   return toPublicRoom(entry);
 }
@@ -134,52 +224,51 @@ export function joinRoom(
   participantId: string,
   role: ParticipantRole
 ): WaitingRoomState | null {
-  const entry = rooms.get(roomId);
+  const entry = getEntry(roomId);
   if (!entry || isExpired(entry)) return null;
 
   const now = new Date().toISOString();
   entry.participants.set(participantId, { role, joinedAt: now });
   entry.updatedAt = now;
 
-  // Update room status based on who joined
   const hasPatient = [...entry.participants.values()].some((p) => p.role === "patient");
   const hasProvider = [...entry.participants.values()].some((p) => p.role === "provider");
 
   if (hasPatient && hasProvider) {
     entry.status = "active";
-  } else if (hasPatient) {
-    entry.status = "waiting";
-  } else if (hasProvider) {
+  } else if (hasPatient || hasProvider) {
     entry.status = "waiting";
   }
 
+  persistEntry(entry);
   log.info("Telehealth room joined", { roomId, role });
   return toWaitingState(entry);
 }
 
 export function endRoom(roomId: string): TelehealthRoom | null {
-  const entry = rooms.get(roomId);
+  const entry = getEntry(roomId);
   if (!entry) return null;
   entry.status = "ended";
   entry.updatedAt = new Date().toISOString();
+  persistEntry(entry);
   log.info("Telehealth room ended", { roomId });
   return toPublicRoom(entry);
 }
 
 export function getWaitingRoomState(roomId: string): WaitingRoomState | null {
-  const entry = rooms.get(roomId);
+  const entry = getEntry(roomId);
   if (!entry || isExpired(entry)) return null;
   return toWaitingState(entry);
 }
 
 export function getRoomAccessToken(roomId: string): string | null {
-  const entry = rooms.get(roomId);
+  const entry = getEntry(roomId);
   if (!entry || isExpired(entry)) return null;
   return entry.accessToken;
 }
 
 export function verifyRoomAccess(roomId: string, token: string): boolean {
-  const entry = rooms.get(roomId);
+  const entry = getEntry(roomId);
   if (!entry || isExpired(entry)) return false;
   // Constant-time comparison
   if (entry.accessToken.length !== token.length) return false;
@@ -195,15 +284,21 @@ export function verifyRoomAccess(roomId: string, token: string): boolean {
 /* ------------------------------------------------------------------ */
 
 export function listActiveRooms(): TelehealthRoom[] {
+  // Load from DB if available
+  if (_repo) {
+    try {
+      const rows = _repo.findActiveRooms();
+      return rows.map(r => {
+        const e = rowToEntry(r);
+        if (isExpired(e)) return null;
+        return toPublicRoom(e);
+      }).filter(Boolean) as TelehealthRoom[];
+    } catch { /* fallback to cache */ }
+  }
   const result: TelehealthRoom[] = [];
   for (const entry of rooms.values()) {
-    if (isExpired(entry)) {
-      expireRoom(entry);
-      continue;
-    }
-    if (entry.status !== "ended") {
-      result.push(toPublicRoom(entry));
-    }
+    if (isExpired(entry)) { expireRoom(entry); continue; }
+    if (entry.status !== "ended") result.push(toPublicRoom(entry));
   }
   return result;
 }
@@ -239,6 +334,10 @@ function expireRoom(entry: RoomEntry): void {
   if (entry.status !== "ended") {
     entry.status = "ended";
     entry.updatedAt = new Date().toISOString();
+    rooms.set(entry.roomId, entry);
+    if (_repo) {
+      try { _repo.expireRoom(entry.roomId); } catch { /* non-fatal */ }
+    }
     log.info("Telehealth room expired", { roomId: entry.roomId });
   }
 }
@@ -281,6 +380,11 @@ function toWaitingState(entry: RoomEntry): WaitingRoomState {
 export function startRoomCleanup(): void {
   if (cleanupTimer) return;
   cleanupTimer = setInterval(() => {
+    // DB-side cleanup
+    if (_repo) {
+      try { _repo.cleanupExpiredRooms(); } catch { /* non-fatal */ }
+    }
+    // Cache-side cleanup
     let expired = 0;
     for (const entry of rooms.values()) {
       if (isExpired(entry) && entry.status !== "ended") {
@@ -288,7 +392,6 @@ export function startRoomCleanup(): void {
         expired++;
       }
     }
-    // Remove ended rooms older than 1 hour
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
     for (const [id, entry] of rooms) {
       if (entry.status === "ended" && entry.updatedAt < oneHourAgo) {

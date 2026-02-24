@@ -92,11 +92,23 @@ export interface CreateImagingOrderInput {
 }
 
 /* ================================================================== */
-/* In-Memory Sidecar Store (prototype — migrate to VistA #2005/RAD)    */
+/* DB repo -- lazy-wired after initPlatformDb() (Phase 115)            */
+/* ================================================================== */
+
+type WorklistRepo = typeof import("../platform/db/repo/imaging-worklist-repo.js");
+let _repo: WorklistRepo | null = null;
+
+/** Wire the imaging worklist repo. Called from index.ts. */
+export function initWorklistRepo(repo: WorklistRepo): void {
+  _repo = repo;
+}
+
+/* ================================================================== */
+/* In-Memory Cache + Sidecar Store (prototype -- migrate to VistA)     */
 /* ================================================================== */
 
 /**
- * PROTOTYPE ORDER SOURCE — Phase 23 sidecar.
+ * PROTOTYPE ORDER SOURCE -- Phase 23 sidecar.
  *
  * Migration plan:
  * 1. When VistA Radiology RPCs (ORWDXR NEW ORDER, RAD/NUC MED REGISTER)
@@ -107,7 +119,7 @@ export interface CreateImagingOrderInput {
  * 4. Accession number generation should eventually come from VistA
  *    (file #74, RA MASTER ACCESSION NUMBER).
  */
-const worklistStore = new Map<string, WorklistItem>();
+const worklistCache = new Map<string, WorklistItem>();
 
 /** Counter for prototype accession numbers. */
 let accessionCounter = 1000;
@@ -119,35 +131,101 @@ function generateAccessionNumber(): string {
   return `VE-${ds}-${String(++accessionCounter).padStart(4, "0")}`;
 }
 
+function rowToItem(row: any): WorklistItem {
+  return {
+    id: row.id,
+    vistaOrderId: row.vistaOrderId ?? null,
+    patientDfn: row.patientDfn,
+    patientName: row.patientName ?? "",
+    accessionNumber: row.accessionNumber,
+    scheduledProcedure: row.scheduledProcedure ?? "",
+    procedureCode: row.procedureCode ?? null,
+    modality: row.modality ?? "",
+    scheduledTime: row.scheduledTime ?? "",
+    facility: row.facility ?? "DEFAULT",
+    location: row.location ?? "Radiology",
+    orderingProviderDuz: row.orderingProviderDuz ?? "",
+    orderingProviderName: row.orderingProviderName ?? "",
+    clinicalIndication: row.clinicalIndication ?? "",
+    priority: (row.priority ?? "routine") as WorklistItem["priority"],
+    status: (row.status ?? "ordered") as WorklistItemStatus,
+    linkedStudyUid: row.linkedStudyUid ?? null,
+    linkedOrthancStudyId: row.linkedOrthancStudyId ?? null,
+    source: (row.source ?? "prototype-sidecar") as WorklistItem["source"],
+    createdAt: row.createdAt ?? "",
+    updatedAt: row.updatedAt ?? "",
+  };
+}
+
 /* ================================================================== */
 /* Store operations                                                    */
 /* ================================================================== */
 
 export function getWorklistItem(id: string): WorklistItem | undefined {
-  return worklistStore.get(id);
+  const cached = worklistCache.get(id);
+  if (cached) return cached;
+  if (_repo) {
+    try {
+      const row = _repo.findWorkOrderById(id);
+      if (row) { const item = rowToItem(row); worklistCache.set(id, item); return item; }
+    } catch { /* non-fatal */ }
+  }
+  return undefined;
 }
 
 export function findByAccession(accessionNumber: string): WorklistItem | undefined {
-  for (const item of worklistStore.values()) {
+  for (const item of worklistCache.values()) {
     if (item.accessionNumber === accessionNumber) return item;
+  }
+  if (_repo) {
+    try {
+      const row = _repo.findByAccessionNumber(accessionNumber);
+      if (row) { const item = rowToItem(row); worklistCache.set(item.id, item); return item; }
+    } catch { /* non-fatal */ }
   }
   return undefined;
 }
 
 export function findByPatientDfn(dfn: string): WorklistItem[] {
-  return [...worklistStore.values()].filter((w) => w.patientDfn === dfn);
+  if (_repo) {
+    try {
+      const rows = _repo.findByPatientDfn(dfn);
+      const items = rows.map(rowToItem);
+      for (const it of items) worklistCache.set(it.id, it);
+      return items;
+    } catch { /* fallback to cache */ }
+  }
+  return [...worklistCache.values()].filter((w) => w.patientDfn === dfn);
 }
 
 export function updateWorklistItem(id: string, updates: Partial<WorklistItem>): WorklistItem | undefined {
-  const item = worklistStore.get(id);
+  const item = getWorklistItem(id);
   if (!item) return undefined;
   const updated = { ...item, ...updates, updatedAt: new Date().toISOString() };
-  worklistStore.set(id, updated);
+  worklistCache.set(id, updated);
+  if (_repo) {
+    try {
+      _repo.updateWorkOrder(id, {
+        status: updated.status,
+        linkedStudyUid: updated.linkedStudyUid ?? undefined,
+        linkedOrthancStudyId: updated.linkedOrthancStudyId ?? undefined,
+        priority: updated.priority,
+      });
+    } catch { /* non-fatal */ }
+  }
   return updated;
 }
 
 export function getAllWorklistItems(): WorklistItem[] {
-  return [...worklistStore.values()];
+  if (_repo) {
+    try {
+      const rows = _repo.findAllWorkOrders();
+      const items = rows.map(rowToItem);
+      for (const it of items) worklistCache.set(it.id, it);
+      return items;
+    } catch { /* fallback to cache */ }
+  }
+  return [...worklistCache.values()];
 }
 
 /* ================================================================== */
@@ -276,7 +354,28 @@ export default async function imagingWorklistRoutes(server: FastifyInstance): Pr
       updatedAt: now,
     };
 
-    worklistStore.set(item.id, item);
+    worklistCache.set(item.id, item);
+    if (_repo) {
+      try {
+        _repo.insertWorkOrder({
+          id: item.id,
+          patientDfn: item.patientDfn,
+          patientName: item.patientName,
+          accessionNumber: item.accessionNumber,
+          scheduledProcedure: item.scheduledProcedure,
+          modality: item.modality,
+          scheduledTime: item.scheduledTime,
+          facility: item.facility,
+          location: item.location,
+          orderingProviderDuz: item.orderingProviderDuz,
+          orderingProviderName: item.orderingProviderName,
+          clinicalIndication: item.clinicalIndication,
+          priority: item.priority,
+          status: item.status,
+          source: item.source,
+        });
+      } catch { /* non-fatal */ }
+    }
 
     log.info("Imaging order created", {
       orderId: item.id,
