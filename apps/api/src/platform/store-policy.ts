@@ -1,7 +1,8 @@
 /**
  * Store Policy — Phase 136: Store Policy Gate + Durability Sweep
  *
- * Machine-readable registry of ALL in-memory Map stores in the API.
+ * Machine-readable registry of ALL in-memory stores in the API.
+ * Covers Map stores, array buffers, and ring buffers.
  * Each store is classified by risk level and durability status.
  *
  * Classifications:
@@ -67,9 +68,9 @@ export interface StoreEntry {
 }
 
 /**
- * Complete inventory of all in-memory Map stores.
+ * Complete inventory of all in-memory stores.
  *
- * IMPORTANT: When adding a new Map store to the API, you MUST add an entry here.
+ * IMPORTANT: When adding a new in-memory store to the API, you MUST add an entry here.
  * The store-policy QA gate will fail if it detects unregistered `new Map` patterns
  * in source files that are not in this inventory.
  */

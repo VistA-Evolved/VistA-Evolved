@@ -82,13 +82,21 @@ export async function run(opts = {}) {
 
   // ── 4. Critical stores with migrationTarget ────────────────
   // Check that critical + in_memory_only all have migrationTarget
+  // Uses block-by-block parsing (regex spanning across entries is unreliable)
   const critInMemNoMigration = [];
-  const blockRegex =
-    /\{\s*\n\s*id:\s*"([^"]+)"[\s\S]*?classification:\s*"critical"[\s\S]*?durability:\s*"in_memory_only"([\s\S]*?)\}/g;
-  let bm;
-  while ((bm = blockRegex.exec(policySrc)) !== null) {
-    if (!bm[0].includes("migrationTarget")) {
-      critInMemNoMigration.push(bm[1]);
+  const entryBlocks = policySrc.split(/\n  \{/).slice(1);
+  for (const rawBlock of entryBlocks) {
+    const block = "{" + rawBlock.split(/\n  \},/)[0] + "}";
+    const idMatch = block.match(/id:\s*"([^"]+)"/);
+    if (!idMatch) continue;
+    const classMatch = block.match(/classification:\s*"([^"]+)"/);
+    const durMatch = block.match(/durability:\s*"([^"]+)"/);
+    if (
+      classMatch && classMatch[1] === "critical" &&
+      durMatch && durMatch[1] === "in_memory_only" &&
+      !block.includes("migrationTarget")
+    ) {
+      critInMemNoMigration.push(idMatch[1]);
     }
   }
 
