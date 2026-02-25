@@ -12,9 +12,11 @@
  */
 
 import { AUDIT_CONFIG, PHI_CONFIG } from "../config/server-config.js";
-import { log } from "./logger.js";
+import { log, getRequestId } from "./logger.js";
 import { appendFileSync, mkdirSync, existsSync } from "fs";
 import { dirname } from "path";
+// Phase 133: audit events counter metric
+import { auditEventsTotal } from "../telemetry/metrics.js";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -253,12 +255,17 @@ export function audit(
     actorName: actor.name || "unknown",
     actorRole: actor.role || "unknown",
     patientDfn: PHI_CONFIG.auditIncludesDfn ? opts?.patientDfn : undefined,
-    requestId: opts?.requestId,
+    // Phase 133: auto-inject correlationId from request context
+    requestId: opts?.requestId || getRequestId(),
     sourceIp: opts?.sourceIp,
     detail: opts?.detail,
   };
 
   writeSink(event);
+
+  // Phase 133: increment audit events counter
+  const actionPrefix = action.split(".")[0] || "unknown";
+  try { auditEventsTotal.inc({ action_prefix: actionPrefix }); } catch { /* metric not critical */ }
 
   // Also emit to structured log for correlation
   log.info(`AUDIT: ${action} → ${outcome}`, {

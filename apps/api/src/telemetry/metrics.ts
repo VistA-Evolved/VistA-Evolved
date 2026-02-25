@@ -171,6 +171,52 @@ export const unifiedAuditEntries = new client.Gauge({
 });
 
 /* ------------------------------------------------------------------ */
+/* Database pool metrics — Phase 133                                    */
+/* ------------------------------------------------------------------ */
+
+/** DB pool connections currently in use (totalCount - idleCount) */
+export const dbPoolInUse = new client.Gauge({
+  name: "db_pool_in_use",
+  help: "Number of database pool connections currently in use",
+  registers: [registry],
+});
+
+/** DB pool total connections */
+export const dbPoolTotal = new client.Gauge({
+  name: "db_pool_total",
+  help: "Total number of database pool connections",
+  registers: [registry],
+});
+
+/** DB pool waiting clients */
+export const dbPoolWaiting = new client.Gauge({
+  name: "db_pool_waiting",
+  help: "Number of clients waiting for a database pool connection",
+  registers: [registry],
+});
+
+/** DB query duration histogram (seconds) */
+export const dbQueryDuration = new client.Histogram({
+  name: "db_query_duration_seconds",
+  help: "Duration of database queries in seconds",
+  labelNames: ["operation"] as const,
+  buckets: [0.001, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5],
+  registers: [registry],
+});
+
+/* ------------------------------------------------------------------ */
+/* Audit metrics — Phase 133                                            */
+/* ------------------------------------------------------------------ */
+
+/** Total audit events recorded (counter, not gauge) */
+export const auditEventsTotal = new client.Counter({
+  name: "audit_events_total",
+  help: "Total audit events recorded",
+  labelNames: ["action_prefix"] as const,
+  registers: [registry],
+});
+
+/* ------------------------------------------------------------------ */
 /* Helpers                                                             */
 /* ------------------------------------------------------------------ */
 

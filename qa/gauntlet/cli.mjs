@@ -69,6 +69,7 @@ const SUITE_GATES = {
     "G12_data_plane",
     "G13_imaging_scheduling_restart",
     "G14_qa_ladder",
+    "G15_observability",
   ],
   full: [
     "G0_prompts_integrity",
@@ -86,6 +87,7 @@ const SUITE_GATES = {
     "G12_data_plane",
     "G13_imaging_scheduling_restart",
     "G14_qa_ladder",
+    "G15_observability",
   ],
 };
 
@@ -112,6 +114,7 @@ const GATE_MODULES = {
   G12_data_plane: "gates/g12-data-plane.mjs",
   G13_imaging_scheduling_restart: "gates/g13-imaging-scheduling-restart.mjs",
   G14_qa_ladder: "gates/g14-qa-ladder.mjs",
+  G15_observability: "gates/g15-observability.mjs",
 };
 
 // ── Resolve which gates to run ──────────────────────────────

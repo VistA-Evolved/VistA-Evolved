@@ -1,7 +1,7 @@
 # VistA-Evolved System Audit
 
-> Generated: 2026-02-25T10:00:43.573Z  
-> HEAD: 4b422c7  
+> Generated: 2026-02-25T15:04:09.763Z  
+> HEAD: 3ffe959  
 > Node: v24.13.0 | pnpm: 10.29.2
 
 ## What Is Truly Wired End-to-End
@@ -67,13 +67,13 @@
 
 ## API Inventory
 
-- **Total endpoints:** 1215
-- **By tag:** vista(544), rcm(348), other(92), admin(82), portal(82), infra(60), imaging(20), scheduling(19), analytics(14), telehealth(13), interop(10), iam(9), posture(5), auth(3)
+- **Total endpoints:** 1221
+- **By tag:** vista(544), rcm(348), other(96), admin(84), portal(82), infra(60), imaging(20), scheduling(19), analytics(14), telehealth(13), interop(10), iam(9), posture(5), auth(3)
 
 ## UI Inventory
 
 - **web:** 48 pages, 38 dead-click markers
-- **portal:** 23 pages, 10 dead-click markers
+- **portal:** 23 pages, 9 dead-click markers
 
 ## CI Enforcement Posture
 

@@ -14,6 +14,7 @@ import { NodeSDK } from "@opentelemetry/sdk-node";
 import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-http";
+import { ConsoleSpanExporter } from "@opentelemetry/sdk-trace-base";
 import { resourceFromAttributes } from "@opentelemetry/resources";
 import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from "@opentelemetry/semantic-conventions";
 import { PeriodicExportingMetricReader } from "@opentelemetry/sdk-metrics";
@@ -57,13 +58,16 @@ export function initTracing(): void {
     url: `${OTEL_ENDPOINT}/v1/traces`,
   });
 
+  // Phase 133: Use console exporter for dev mode if no collector is reachable
+  const useConsoleExporter = process.env.OTEL_DEV_CONSOLE === "true";
+
   const metricExporter = new OTLPMetricExporter({
     url: `${OTEL_ENDPOINT}/v1/metrics`,
   });
 
   sdk = new NodeSDK({
     resource,
-    traceExporter,
+    traceExporter: useConsoleExporter ? new ConsoleSpanExporter() : traceExporter,
     metricReader: new PeriodicExportingMetricReader({
       exporter: metricExporter,
       exportIntervalMillis: 30_000,
@@ -78,6 +82,11 @@ export function initTracing(): void {
           responseHook: (_span: Span, _response: any) => {},
         },
         "@opentelemetry/instrumentation-net": { enabled: true },
+        // Phase 133: Enable PG instrumentation for database span tracing
+        "@opentelemetry/instrumentation-pg": {
+          enabled: true,
+          enhancedDatabaseReporting: false, // PHI-safe: no query params
+        },
       }),
     ],
   });

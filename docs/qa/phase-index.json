@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-25T13:16:48.863Z",
+  "generatedAt": "2026-02-25T14:58:29.215Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 143,
+  "phaseCount": 144,
   "phases": [
     {
       "phaseNumber": "1",
@@ -1846,6 +1846,37 @@
         "apps/api/src/intake/intake-question-schema.ts",
         "apps/portal/src/app/dashboard/intake/page.tsx",
         "config/capabilities.json"
+      ]
+    },
+    {
+      "phaseNumber": "133",
+      "title": "IMPLEMENT (Enterprise Observability Baseline)",
+      "folder": "138-PHASE-133-OBSERVABILITY-BASELINE",
+      "files": [
+        "133-01-IMPLEMENT.md",
+        "133-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "133-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "133-99-VERIFY.md"
+      ],
+      "routes": [
+        "/metrics/prometheus"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/telemetry/tracing.ts",
+        "apps/api/src/telemetry/register.ts",
+        "apps/api/src/telemetry/metrics.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/lib/audit.ts",
+        "apps/api/src/index.ts",
+        "qa/gauntlet/gates/g15-observability.mjs",
+        "qa/gauntlet/cli.mjs",
+        "docs/runbooks/observability.md"
       ]
     },
     {

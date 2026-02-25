@@ -174,3 +174,65 @@ POST /admin/connector-cb/reset      -- Reset specific or all CBs
 | High Error Rate | `rate(vista_errors_total[5m]) > 10` | High |
 | Audit Chain Broken | `/audit/unified/stats` chainValid=false | Critical |
 | Pipeline Backlog | `rcm_pipeline_depth{stage="enqueue"} > 100` | Medium |
+
+---
+
+## Phase 133 Additions — Enterprise Observability Baseline
+
+### Request Correlation
+
+Every inbound request gets a **correlation ID** (UUID v4) assigned in the
+`onRequest` hook of `security.ts`. The same value is returned as:
+
+| Header | Description |
+|--------|-------------|
+| `X-Request-Id` | Primary request identifier |
+| `X-Correlation-Id` | Same value, for downstream service propagation |
+| `X-Trace-Id` | OTel trace ID (when tracing is enabled) |
+
+The correlation ID auto-propagates to:
+- Structured logs via `AsyncLocalStorage` in `logger.ts`
+- Audit events via `getRequestId()` fallback in `audit.ts`
+- OTel spans via W3C Trace Context
+
+### PG Instrumentation
+
+`@opentelemetry/instrumentation-pg` is enabled in both `tracing.ts` and
+`register.ts` with `enhancedDatabaseReporting: false` (PHI-safe — no SQL
+query text in spans).
+
+### Console Exporter (Dev Mode)
+
+Set `OTEL_DEV_CONSOLE=true` with `OTEL_ENABLED=true` to print spans to
+stdout without needing an OTel Collector running.
+
+### New Metrics (Phase 133)
+
+| Metric | Type | Labels | Description |
+|--------|------|--------|-------------|
+| `db_pool_in_use` | Gauge | — | Active PG connections (total - idle) |
+| `db_pool_total` | Gauge | — | Total PG pool connections |
+| `db_pool_waiting` | Gauge | — | Queued PG connection requests |
+| `db_query_duration_seconds` | Histogram | operation | Query latency |
+| `audit_events_total` | Counter | action_prefix | Audit events emitted |
+
+Pool stats are collected every 15s from `pg.Pool` when PG is configured.
+
+### SLO Tracking
+
+`recordSloSample()` is now wired in the `onResponse` hook. Every request
+is evaluated against `SLO_P95_BUDGET_MS` (default 500ms). Violations
+increment `slo_request_budget_violations`.
+
+| Env Var | Default | Description |
+|---------|---------|-------------|
+| `SLO_P95_BUDGET_MS` | `500` | P95 latency budget in milliseconds |
+
+### CI Gate G15
+
+Gauntlet gate `G15_observability` validates all Phase 133 requirements.
+Runs in the RC and FULL suites.
+
+```bash
+node qa/gauntlet/cli.mjs rc   # includes G15
+```

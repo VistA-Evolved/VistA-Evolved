@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-02-25T05:26:40.044Z",
-  "headSha": "78e23b6",
+  "generatedAt": "2026-02-25T15:04:11.181Z",
+  "headSha": "3ffe959",
   "domains": [
     {
       "domain": "AUTH_IAM",
@@ -159,20 +159,30 @@
       "evidence": [
         {
           "metric": "uniqueRpcsUsed",
-          "value": 81
+          "value": 85
         },
         {
           "metric": "registeredRpcs",
-          "value": 148
+          "value": 151
         },
         {
           "metric": "totalCallSites",
-          "value": 156
+          "value": 160
         }
       ],
       "topGaps": [
         {
-          "gap": "42 registered RPCs not called in code",
+          "gap": "4 RPCs used but not in registry",
+          "severity": "med",
+          "evidenceFiles": [
+            "ORWPT APPTLST",
+            "SD W/L CURRENT STATUS",
+            "SD W/L PRIORITY",
+            "SD W/L TYPE"
+          ]
+        },
+        {
+          "gap": "45 registered RPCs not called in code",
           "severity": "low",
           "evidenceFiles": []
         }
@@ -237,11 +247,11 @@
           "file": "apps/api/src/routes/scheduling/index.ts"
         },
         {
-          "route": "GET /scheduling/appointments/range",
+          "route": "GET /scheduling/appointments/cprs",
           "file": "apps/api/src/routes/scheduling/index.ts"
         },
         {
-          "route": "POST /scheduling/appointments/request",
+          "route": "GET /scheduling/appointments/range",
           "file": "apps/api/src/routes/scheduling/index.ts"
         }
       ],
@@ -691,8 +701,8 @@
           "file": "apps/api/src/routes/admin.ts"
         },
         {
-          "route": "GET /admin/integrations/:tenantId",
-          "file": "apps/api/src/routes/admin.ts"
+          "route": "GET /admin/intake/question-schema",
+          "file": "apps/api/src/routes/i18n-routes.ts"
         }
       ],
       "topGaps": [],

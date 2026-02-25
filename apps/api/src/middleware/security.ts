@@ -26,7 +26,7 @@ import { stopEtl } from "../services/analytics-etl.js";
 import { getCurrentTraceId } from "../telemetry/tracing.js";
 import {
   httpRequestDuration, httpRequestsTotal, httpActiveRequests,
-  errorsTotal, sanitizeRoute,
+  errorsTotal, sanitizeRoute, recordSloSample, auditEventsTotal,
 } from "../telemetry/metrics.js";
 import { shutdownTracing } from "../telemetry/tracing.js";
 import { closeDb } from "../platform/db/db.js";
@@ -213,6 +213,8 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
 
     // Expose in response
     reply.header("X-Request-Id", requestId);
+    // Phase 133: correlation ID header (same as requestId for distributed tracing)
+    reply.header("X-Correlation-Id", requestId);
 
     // Phase 36: trace ID header
     const traceId = getCurrentTraceId();
@@ -438,6 +440,11 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
     httpRequestDuration.observe({ method, route, status_code: statusCode }, duration / 1000);
     httpRequestsTotal.inc({ method, route, status_code: statusCode });
     httpActiveRequests.dec();
+
+    // Phase 133: SLO sample (p95 latency budget + error budget tracking)
+    const SLO_P95_BUDGET_MS = Number(process.env.SLO_P95_BUDGET_MS) || 500;
+    const isError = reply.statusCode >= 500;
+    recordSloSample(route, duration, isError, SLO_P95_BUDGET_MS);
 
     clearRequestId();
   });

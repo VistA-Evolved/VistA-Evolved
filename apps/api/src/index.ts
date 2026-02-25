@@ -46,7 +46,7 @@ import aiGatewayRoutes, { initAiRoutes } from "./routes/ai-gateway.js";
 import iamRoutes from "./routes/iam-routes.js";
 // Phase 36: Observability & Reliability
 import { initTracing, isTracingEnabled, getCurrentTraceId, getCurrentSpanId } from "./telemetry/tracing.js";
-import { getPrometheusMetrics, getMetricsContentType, circuitBreakerState as cbStateGauge } from "./telemetry/metrics.js";
+import { getPrometheusMetrics, getMetricsContentType, circuitBreakerState as cbStateGauge, dbPoolInUse, dbPoolTotal, dbPoolWaiting } from "./telemetry/metrics.js";
 import { bridgeTracingToLogger } from "./lib/logger.js";
 // Phase 15: Enterprise hardening imports
 import { registerSecurityMiddleware, corsOriginValidator } from "./middleware/security.js";
@@ -97,7 +97,7 @@ import adminPayerDbRoutes from "./routes/admin-payer-db-routes.js";
 import { initPlatformDb } from "./platform/db/init.js";
 // closeDb now called from security.ts shutdown handler
 // Phase 101: Platform Data Architecture Convergence (Postgres)
-import { initPlatformPg, isPgConfigured, pgHealthCheck } from "./platform/pg/index.js";
+import { initPlatformPg, isPgConfigured, pgHealthCheck, getPgPool } from "./platform/pg/index.js";
 // Phase 96: PhilHealth eClaims 3.0 Adapter Skeleton
 import eclaims3Routes from "./rcm/philhealth-eclaims3/eclaims3-routes.js";
 // Phase 96B: QA/Audit OS v1.1
@@ -2622,6 +2622,19 @@ try {
   startAggregationJob();
   // Phase 25: Initialize ETL writer (non-blocking — connects to ROcto lazily)
   initEtl();
+  // Phase 133: Periodic PG pool stats collection (every 15s)
+  if (isPgConfigured()) {
+    const poolStatsTimer = setInterval(() => {
+      try {
+        const pool = getPgPool();
+        dbPoolInUse.set(pool.totalCount - pool.idleCount);
+        dbPoolTotal.set(pool.totalCount);
+        dbPoolWaiting.set(pool.waitingCount);
+      } catch { /* non-fatal — metrics skip */ }
+    }, 15_000);
+    poolStatsTimer.unref(); // don't keep process alive
+    log.info("PG pool stats collection started (15s interval)");
+  }
   // Phase 116: Optionally start embedded Graphile Worker job runner
   if (process.env.JOB_WORKER_ENABLED === "true" && isPgConfigured()) {
     try {
