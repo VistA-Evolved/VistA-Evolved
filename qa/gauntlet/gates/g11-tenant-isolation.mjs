@@ -66,7 +66,7 @@ export async function run(opts = {}) {
     status = "fail";
   } else {
     const scopedSrc = readFileSync(scopedPath, "utf8");
-    const fnCount = (scopedSrc.match(/export async function/g) || []).length;
+    const fnCount = (scopedSrc.match(/export function/g) || []).length;
     details.push(`tenant-scoped-queries.ts: ${fnCount} exported functions`);
     if (fnCount < 2) {
       details.push("  expected >= 2 tenant-scoped query wrappers");

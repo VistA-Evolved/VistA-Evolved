@@ -29,4 +29,4 @@ export * as rcmClaimCaseRepo from "./rcm-claim-case-repo.js";
 export * as accessLogRepo from "./access-log-repo.js";
 export * as schedulingRequestRepo from "./scheduling-request-repo.js";
 export * as tenantScopedQueries from "./tenant-scoped-queries.js";
-export { requireTenantId, assertTenantMatch, TenantIsolationError, TENANT_SCOPED_TABLES, GLOBAL_TABLES } from "./tenant-guard.js";
+export { requireTenantId, assertTenantMatch, TenantIsolationError, TENANT_SCOPED_TABLES, GLOBAL_TABLES, PENDING_TENANT_ID_TABLES } from "./tenant-guard.js";

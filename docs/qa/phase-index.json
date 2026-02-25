@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-25T00:35:37.774Z",
+  "generatedAt": "2026-02-25T00:59:27.443Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 130,
+  "phaseCount": 131,
   "phases": [
     {
       "phaseNumber": "1",
@@ -1377,6 +1377,31 @@
         "apps/api/src/adapters/scheduling/vista-adapter.ts",
         "apps/api/src/index.ts",
         "docs/runbooks/durability-wave-1.md"
+      ]
+    },
+    {
+      "phaseNumber": "122",
+      "title": "IMPLEMENT: Multi-Tenancy Isolation (PG RLS + SQLite Guards)",
+      "folder": "126-PHASE-122-TENANT-ISOLATION",
+      "files": [
+        "122-01-IMPLEMENT.md",
+        "122-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "122-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "122-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/platform/db/repo/tenant-guard.ts",
+        "apps/api/src/posture/tenant-posture.ts",
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "qa/gauntlet/gates/g11-tenant-isolation.mjs",
+        "qa/gauntlet/cli.mjs"
       ]
     },
     {

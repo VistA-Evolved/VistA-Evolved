@@ -15,6 +15,7 @@ import {
   TenantIsolationError,
   TENANT_SCOPED_TABLES,
   GLOBAL_TABLES,
+  PENDING_TENANT_ID_TABLES,
 } from "../src/platform/db/repo/tenant-guard.js";
 
 describe("Phase 122: Tenant Isolation Guards", () => {
@@ -110,7 +111,7 @@ describe("Phase 122: Tenant Isolation Guards", () => {
   /* ── Table inventory ─────────────────────────────── */
 
   describe("Table inventory", () => {
-    it("TENANT_SCOPED_TABLES has entries", () => {
+    it("TENANT_SCOPED_TABLES has entries (tables with tenantId column)", () => {
       expect(TENANT_SCOPED_TABLES.length).toBeGreaterThan(20);
     });
 
@@ -118,10 +119,28 @@ describe("Phase 122: Tenant Isolation Guards", () => {
       expect(GLOBAL_TABLES.length).toBeGreaterThan(0);
     });
 
+    it("PENDING_TENANT_ID_TABLES tracks tables needing migration", () => {
+      expect(PENDING_TENANT_ID_TABLES.length).toBeGreaterThan(0);
+    });
+
     it("no overlap between global and scoped tables", () => {
       const scopedSet = new Set(TENANT_SCOPED_TABLES);
       for (const g of GLOBAL_TABLES) {
         expect(scopedSet.has(g as any)).toBe(false);
+      }
+    });
+
+    it("no overlap between pending and scoped tables", () => {
+      const scopedSet = new Set(TENANT_SCOPED_TABLES as readonly string[]);
+      for (const p of PENDING_TENANT_ID_TABLES) {
+        expect(scopedSet.has(p)).toBe(false);
+      }
+    });
+
+    it("no overlap between pending and global tables", () => {
+      const globalSet = new Set(GLOBAL_TABLES as readonly string[]);
+      for (const p of PENDING_TENANT_ID_TABLES) {
+        expect(globalSet.has(p)).toBe(false);
       }
     });
   });

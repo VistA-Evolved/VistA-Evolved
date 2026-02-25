@@ -87,11 +87,11 @@ export const GLOBAL_TABLES = [
 ] as const;
 
 /**
- * List of repos/tables that MUST have tenant_id guards.
+ * List of repos/tables that HAVE a tenant_id column and MUST use tenant guards.
+ * assertTenantMatch() enforces isolation on these tables at the application layer.
  * Used by the CI gate to verify enforcement.
  */
 export const TENANT_SCOPED_TABLES = [
-  // Tables with tenant_id column
   "tenant_payer",
   "payer_capability",
   "payer_task",
@@ -119,7 +119,18 @@ export const TENANT_SCOPED_TABLES = [
   "rcm_claim",
   "rcm_remittance",
   "rcm_claim_case",
-  // Tables needing tenant_id column (Phase 122 adds guards at app layer)
+] as const;
+
+/**
+ * Tables that NEED a tenant_id column but don't have one yet.
+ * These are tracked separately because assertTenantMatch() cannot enforce
+ * isolation on rows without a tenantId field (it silently passes through).
+ * Migration to add tenant_id is a follow-up task.
+ *
+ * WARNING: Until these tables gain a tenant_id column, they have NO
+ * application-layer tenant isolation. PG RLS does not cover them either.
+ */
+export const PENDING_TENANT_ID_TABLES = [
   "portal_access_log",
   "portal_message",
   "portal_appointment",
