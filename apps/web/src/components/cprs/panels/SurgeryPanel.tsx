@@ -52,6 +52,21 @@ export default function SurgeryPanel({ dfn }: Props) {
               <div className={styles.formGroup}><label>Date</label><div>{selected.date}</div></div>
               <div className={styles.formGroup}><label>Case #</label><div>{selected.caseNum}</div></div>
               <div className={styles.formGroup}><label>Surgeon</label><div>{selected.surgeon}</div></div>
+              <div style={{
+                marginTop: 12, padding: '8px 10px', borderRadius: 4,
+                background: 'rgba(255,165,0,0.06)', border: '1px solid rgba(255,165,0,0.3)',
+              }}>
+                <div style={{ fontSize: 12, fontWeight: 600, color: '#856404' }}>
+                  Operative Report -- Integration Pending
+                </div>
+                <div style={{ fontSize: 11, color: 'var(--cprs-text-muted)', marginTop: 4 }}>
+                  Full operative/surgical report text requires ORWSR REPORT RPC (not yet wired).
+                  Currently showing list-level fields from ORWSR LIST only.
+                </div>
+                <div style={{ fontSize: 10, color: 'var(--cprs-text-muted)', marginTop: 4 }}>
+                  Target RPC: ORWSR REPORT | VistA File: Surgery (File 130)
+                </div>
+              </div>
             </div>
           ) : (
             <p className={styles.emptyText}>Select a surgical case to view details</p>

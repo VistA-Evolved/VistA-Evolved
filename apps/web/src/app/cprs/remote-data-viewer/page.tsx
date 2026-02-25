@@ -77,8 +77,18 @@ export default function RemoteDataViewerPage() {
 
   useEffect(() => {
     async function init() {
-      // 1. Check for CIRN remote facilities (Docker sandbox → none)
-      const facTimer = setTimeout(() => setFacilities([]), 500);
+      // 1. Attempt real CIRN facility fetch (sandbox will return empty/error)
+      try {
+        const facRes = await fetch(`${API_BASE}/vista/remote-facilities`, { credentials: 'include' });
+        const facData = await facRes.json();
+        if (facData.ok && facData.facilities?.length > 0) {
+          setFacilities(facData.facilities);
+        } else {
+          setFacilities([]);
+        }
+      } catch {
+        setFacilities([]);
+      }
 
       // 2. Fetch external sources from integration registry (Phase 18E)
       try {
@@ -94,7 +104,6 @@ export default function RemoteDataViewerPage() {
       } catch { /* ignore — admin API may not be accessible for non-admin users */ }
 
       setLoading(false);
-      return () => clearTimeout(facTimer);
     }
     init();
   }, []);
@@ -103,22 +112,48 @@ export default function RemoteDataViewerPage() {
     if (!selectedFacility) return;
     setQuerying(true);
     setQueryResult(null);
-    // Simulated delay — in production, would call ORWCIRN HDRA or FHIR query
-    setTimeout(() => {
-      const source = externalSources.find((s) => s.id === selectedFacility);
-      if (source) {
-        setQueryResult(
-          `External source: ${source.label} (${source.type})\n` +
-          `Endpoint: ${source.host}:${source.port}\n` +
-          `Status: ${source.status}\n\n` +
-          `In production, this would query the ${source.type === 'fhir-c0fhir' ? 'C0FHIR Suite' : source.type.toUpperCase()} endpoint ` +
-          `for ${REMOTE_DOMAINS.find((d) => d.id === selectedDomain)?.label || selectedDomain} data.`
+
+    // Attempt real API call; fall back to integration-pending notice
+    (async () => {
+      try {
+        const res = await fetch(
+          `${API_BASE}/vista/remote-data?facility=${encodeURIComponent(selectedFacility)}&domain=${encodeURIComponent(selectedDomain)}&dfn=${dfn || ''}`,
+          { credentials: 'include' },
         );
-      } else {
-        setQueryResult('No remote data available in Docker sandbox. This endpoint would call ORWCIRN HDRA with the selected facility station number and data domain.');
+        const data = await res.json();
+        if (data.ok && data.result) {
+          setQueryResult(data.result);
+        } else {
+          setQueryResult(integrationPendingMessage(selectedFacility));
+        }
+      } catch {
+        setQueryResult(integrationPendingMessage(selectedFacility));
+      } finally {
+        setQuerying(false);
       }
-      setQuerying(false);
-    }, 800);
+    })();
+  }
+
+  function integrationPendingMessage(facilityId: string): string {
+    const source = externalSources.find((s) => s.id === facilityId);
+    const domainLabel = REMOTE_DOMAINS.find((d) => d.id === selectedDomain)?.label || selectedDomain;
+    const lines = [
+      '--- INTEGRATION PENDING ---',
+      '',
+      `Domain: ${domainLabel}`,
+      `Source: ${source ? `${source.label} (${source.type})` : `CIRN Facility ${facilityId}`}`,
+      '',
+      'This query requires one of the following RPCs to be available:',
+      '  - ORWCIRN FACLIST (discover remote VistA facilities)',
+      '  - ORWCIRN HDRA (retrieve remote patient data by facility + domain)',
+      '',
+      'Neither is functional in the Docker sandbox.',
+      'For external FHIR sources, a C0FHIR Suite or FHIR R4 endpoint is required.',
+      '',
+      'Blocker: VistA CIRN/HDRA package not installed in WorldVistA Docker image.',
+      'Migration: Install VistA CIRN patch or configure external FHIR endpoint.',
+    ];
+    return lines.join('\n');
   }
 
   return (

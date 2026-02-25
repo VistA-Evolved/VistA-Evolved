@@ -71,6 +71,10 @@ export default function OrdersPanel({ dfn }: Props) {
   const [signLoading, setSignLoading] = useState(false);
   const [signMsg, setSignMsg] = useState<string | null>(null);
 
+  // Discontinue state
+  const [dcLoading, setDcLoading] = useState(false);
+  const [dcMsg, setDcMsg] = useState<string | null>(null);
+
   // Saving state for lab/imaging/consult
   const [orderSaving, setOrderSaving] = useState(false);
 
@@ -258,6 +262,39 @@ export default function OrdersPanel({ dfn }: Props) {
       setSignMsg(`Sign error: ${(e as Error).message}`);
     } finally {
       setSignLoading(false);
+    }
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Discontinue order (Phase 124: honest API call + pending fallback)  */
+  /* ---------------------------------------------------------------- */
+  async function handleDiscontinue(orderId: string) {
+    setDcLoading(true);
+    setDcMsg(null);
+    try {
+      const res = await fetch(`${API_BASE}/vista/cprs/orders/discontinue`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ dfn, orderIds: [orderId] }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setDcMsg('Order discontinued');
+        cache.updateOrderStatus(dfn, orderId, 'discontinued');
+        fetchVistaOrders();
+      } else if (data.integrationPending || data.pending) {
+        cache.updateOrderStatus(dfn, orderId, 'discontinued');
+        setDcMsg(`Discontinue -- integration pending: ${data.pendingReason || 'ORWDXA DC not yet wired'}`);
+      } else {
+        setDcMsg(`Discontinue failed: ${data.error || 'unknown error'}`);
+      }
+    } catch {
+      // API endpoint may not exist yet -- show honest pending status
+      cache.updateOrderStatus(dfn, orderId, 'discontinued');
+      setDcMsg('Discontinue -- integration pending: ORWDXA DC endpoint not available');
+    } finally {
+      setDcLoading(false);
     }
   }
 
@@ -451,11 +488,28 @@ export default function OrdersPanel({ dfn }: Props) {
                 )}
                 {/* Discontinue button */}
                 {selected.status !== 'discontinued' && selected.status !== 'cancelled' && (
-                  <button className={styles.btnDanger} onClick={() => cache.updateOrderStatus(dfn, selected.id, 'discontinued')}>
-                    Discontinue
+                  <button className={styles.btnDanger} onClick={() => handleDiscontinue(selected.id)} disabled={dcLoading}>
+                    {dcLoading ? 'Processing...' : 'Discontinue'}
                   </button>
                 )}
               </div>
+
+              {/* Discontinue status message */}
+              {dcMsg && (
+                <div style={{
+                  marginTop: 8, padding: '6px 10px', borderRadius: 4, fontSize: 12,
+                  background: dcMsg.includes('pending') ? 'rgba(255,165,0,0.08)' : dcMsg.includes('failed') ? 'rgba(220,53,69,0.08)' : 'rgba(40,167,69,0.08)',
+                  border: `1px solid ${dcMsg.includes('pending') ? 'orange' : dcMsg.includes('failed') ? '#dc3545' : '#28a745'}`,
+                  color: dcMsg.includes('pending') ? '#856404' : dcMsg.includes('failed') ? '#721c24' : '#155724',
+                }}>
+                  {dcMsg}
+                  {dcMsg.includes('pending') && (
+                    <div style={{ fontSize: 10, marginTop: 4, color: 'var(--cprs-text-muted)' }}>
+                      Target RPC: ORWDXA DC | VistA discontinue write-back requires active VistA connection
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           ) : (
             <p className={styles.emptyText}>Select an order to view details</p>

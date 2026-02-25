@@ -55,6 +55,7 @@ export default function InboxPage() {
   const [error, setError] = useState('');
   const [filter, setFilter] = useState<string>('all');
   const [acknowledged, setAcknowledged] = useState<Set<string>>(new Set());
+  const [ackPending, setAckPending] = useState<Set<string>>(new Set());
 
   const fetchInbox = useCallback(async () => {
     setLoading(true);
@@ -78,8 +79,24 @@ export default function InboxPage() {
     fetchInbox();
   }, [fetchInbox]);
 
-  function handleAcknowledge(id: string) {
+  async function handleAcknowledge(id: string) {
+    // Optimistically hide the item
     setAcknowledged((prev) => new Set(prev).add(id));
+    try {
+      const res = await fetch(`${API_BASE}/vista/inbox/acknowledge`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ itemId: id }),
+      });
+      const data = await res.json();
+      if (!data.ok && (data.integrationPending || data.pending)) {
+        setAckPending((prev) => new Set(prev).add(id));
+      }
+    } catch {
+      // API endpoint not yet available -- mark as integration-pending
+      setAckPending((prev) => new Set(prev).add(id));
+    }
   }
 
   function handleOpenChart(dfn: string) {
@@ -129,6 +146,14 @@ export default function InboxPage() {
         {error && (
           <div style={{ padding: '8px 12px', background: '#f8d7da', border: '1px solid #dc3545', borderRadius: 4, color: '#721c24', fontSize: 12, marginBottom: 12 }}>
             {error}
+          </div>
+        )}
+
+        {ackPending.size > 0 && (
+          <div style={{ padding: '8px 12px', background: '#fff3cd', border: '1px solid #ffc107', borderRadius: 4, color: '#856404', fontSize: 12, marginBottom: 12 }}>
+            <strong>Integration Pending:</strong> {ackPending.size} item{ackPending.size !== 1 ? 's' : ''} acknowledged locally only.
+            VistA persistence requires ORWORB KILL EXPIR MSG RPC (not available in sandbox).
+            Items will reappear on page refresh.
           </div>
         )}
 
