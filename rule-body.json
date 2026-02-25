@@ -1,1 +1,0 @@
-{"ruleCode":"DX-REQUIRED","category":"diagnosis","field":"diagnoses","description":"At least one diagnosis required","condition":{"operator":"min_items","value":1},"severity":"error","blocksSubmission":true,"evidenceSource":"CMS-1500-FL21","evidenceDate":"2024-01-01","createdBy":"system"}
