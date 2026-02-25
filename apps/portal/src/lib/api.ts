@@ -114,6 +114,24 @@ export function exportFullRecordUrl(): string {
 
 // ─── Secure Messaging (Phase 27) ───
 
+/** Phase 130: VistA MailMan inbox (primary — falls back to PG store server-side). */
+export async function fetchVistaMailmanInbox(limit = 50) {
+  return portalFetch(`/portal/mailman/inbox?limit=${limit}`);
+}
+
+/** Phase 130: VistA MailMan single message by IEN or local PG ID. */
+export async function fetchVistaMailmanMessage(id: string) {
+  return portalFetch(`/portal/mailman/message/${id}`);
+}
+
+/** Phase 130: Send via VistA MailMan primary, PG fallback. */
+export async function sendVistaMailmanMessage(body: { subject: string; body: string; category?: string; clinicGroup?: string }) {
+  return portalFetch("/portal/mailman/send", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
 export async function fetchInbox() {
   return portalFetch("/portal/messages");
 }

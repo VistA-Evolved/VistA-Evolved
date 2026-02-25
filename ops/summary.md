@@ -1,8 +1,33 @@
-# Phase 129 VERIFY -- QA Ladder
+# Phase 130 — VistA MailMan Bridge
 
-## What Changed (VERIFY fixes)
+## What Changed
 
-### Contract Tests (qa-ladder-contracts.test.ts)
+### New Files
+- `apps/api/src/routes/vista-mailman.ts` — Clinician-facing VistA MailMan routes (inbox, message, send, manage, folders)
+- `apps/api/src/routes/portal-mailman.ts` — Portal VistA-first inbox with Postgres fallback (inbox, message, send)
+- `prompts/134-PHASE-130-MAILMAN-BRIDGE/130-01-IMPLEMENT.md` — Implement prompt
+- `prompts/134-PHASE-130-MAILMAN-BRIDGE/130-99-VERIFY.md` — Verify prompt
+
+### Modified Files
+- `apps/api/src/index.ts` — Import + register vistaMailmanRoutes + portalMailmanRoutes; inject portal session
+- `apps/portal/src/lib/api.ts` — Added 3 VistA MailMan fetch helpers
+- `apps/portal/src/app/dashboard/messages/page.tsx` — VistA-first inbox + send, data source badge, Local Mode
+
+## Architecture
+- **Clinician routes**: `/vista/mailman/*` — session-auth, direct VistA MailMan RPC calls
+- **Portal routes**: `/portal/mailman/*` — portal-session-auth, VistA-first with PG fallback, `source` field in every response
+- **Portal UI**: loadMessages tries VistA first; handleSend uses VistA primary send; DataSourceBadge shows ehr/local
+- **Audit**: HIPAA immutableAudit on all operations; message bodies NEVER in logs/audit
+
+## How to Test
+```bash
+curl http://localhost:3001/vista/mailman/inbox -b cookies.txt
+curl http://localhost:3001/portal/mailman/inbox -b portal-cookies.txt
+```
+
+## Follow-ups
+- Wire Phase 130 VERIFY script
+- Monitor VistA MailMan fallback rate via audit logs
 - **MAX_RESPONSE_MS**: 5000 -> 10000 (VistA RPC latency variability)
 - **Demographics key**: `["demographics"]` -> `["patient"]` (actual API response shape)
 - **Input validation tests**: Expect HTTP 200 + `{ok:false}` instead of 400/422 (API uses graceful validation pattern)

@@ -19,9 +19,9 @@ import {
   createMessageDraft,
   sendMessageDraft,
   deleteMessageDraft,
+  fetchVistaMailmanInbox,
+  sendVistaMailmanMessage,
 } from "@/lib/api";
-
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
 type Tab = "inbox" | "drafts" | "sent" | "compose";
 
@@ -38,6 +38,7 @@ export default function MessagesPage() {
   const [sending, setSending] = useState(false);
   const [notice, setNotice] = useState("");
   const [vistaSync, setVistaSync] = useState<string>("");
+  const [inboxSource, setInboxSource] = useState<"vista" | "local" | "">("");
 
   useEffect(() => {
     loadMessages();
@@ -45,15 +46,31 @@ export default function MessagesPage() {
 
   async function loadMessages() {
     setLoading(true);
-    const [inRes, dRes, sRes] = await Promise.all([
-      fetchInbox(),
+    // Phase 130: Try VistA MailMan inbox first, fall back to Postgres
+    let inboxMessages: any[] = [];
+    let source: "vista" | "local" = "local";
+    try {
+      const vistaRes = await fetchVistaMailmanInbox(50);
+      if (vistaRes.ok && (vistaRes.data as any)?.source === "vista") {
+        inboxMessages = (vistaRes.data as any)?.messages || [];
+        source = "vista";
+      }
+    } catch { /* VistA unavailable — fall through */ }
+    if (source !== "vista") {
+      const inRes = await fetchInbox();
+      inboxMessages = (inRes.data as any)?.messages || [];
+      source = (inRes.data as any)?.source === "vista" ? "vista" : "local";
+    }
+    setInbox(inboxMessages);
+    setInboxSource(source);
+    setSlaDisclaimer(source === "local" ? "Local Mode — VistA MailMan unavailable. Messages are stored locally." : "");
+
+    const [dRes, sRes] = await Promise.all([
       fetchDrafts(),
       fetchSentMessages(),
     ]);
-    setInbox((inRes.data as any)?.messages || []);
     setDrafts((dRes.data as any)?.messages || []);
     setSent((sRes.data as any)?.messages || []);
-    setSlaDisclaimer((inRes.data as any)?.slaDisclaimer || "");
     setLoading(false);
   }
 
@@ -64,7 +81,33 @@ export default function MessagesPage() {
     }
     setSending(true);
     setNotice("");
-    // Create draft then send
+
+    // Phase 130: Try VistA MailMan primary send first
+    try {
+      const mmRes = await sendVistaMailmanMessage({
+        subject: composeSubject,
+        body: composeBody,
+        category: composeCategory,
+      });
+      if (mmRes.ok && (mmRes.data as any)?.ok) {
+        const src = (mmRes.data as any)?.source || "unknown";
+        const syncStatus = (mmRes.data as any)?.vistaSync || "pending";
+        setVistaSync(syncStatus);
+        const label = src === "vista"
+          ? " (sent to clinic via VistA MailMan)"
+          : " (stored locally — VistA MailMan unavailable)";
+        setSubject("");
+        setBody("");
+        setCategory("general");
+        setNotice("Message sent successfully." + label);
+        setSending(false);
+        setTab("sent");
+        loadMessages();
+        return;
+      }
+    } catch { /* fall through to legacy path */ }
+
+    // Fallback: legacy draft+send via Postgres store
     const draftRes = await createMessageDraft({
       subject: composeSubject,
       body: composeBody,
@@ -84,40 +127,11 @@ export default function MessagesPage() {
     const sendRes = await sendMessageDraft(draftId);
     setSending(false);
     if (sendRes.ok) {
-      // Phase 64: Also send via MailMan bridge to clinic mail group
-      let mailmanNote = "";
-      try {
-        const mmRes = await fetch(`${API_BASE}/messaging/portal/send`, {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            patientDfn: "portal-user",
-            patientName: "Portal Patient",
-            subject: composeSubject,
-            body: composeBody,
-            category: composeCategory,
-          }),
-        });
-        const mmData = await mmRes.json();
-        if (mmData.ok && !mmData.pending) {
-          const syncStatus = mmData.vistaSync || "unknown";
-          setVistaSync(syncStatus);
-          mailmanNote = syncStatus === "synced"
-            ? " (also sent to clinic via VistA MailMan)"
-            : " (VistA MailMan: pending)";
-        } else if (mmData.pending) {
-          setVistaSync("integration-pending");
-          mailmanNote = " (VistA MailMan: integration pending -- configure MESSAGING_DEFAULT_CLINIC_GROUP)";
-        }
-      } catch {
-        setVistaSync("unavailable");
-        mailmanNote = " (VistA MailMan bridge unavailable)";
-      }
+      setVistaSync("local-only");
       setSubject("");
       setBody("");
       setCategory("general");
-      setNotice("Message sent successfully." + mailmanNote);
+      setNotice("Message sent successfully. (stored locally — VistA MailMan unavailable)");
       setTab("sent");
       loadMessages();
     } else {
@@ -147,6 +161,17 @@ export default function MessagesPage() {
       {slaDisclaimer && (
         <div style={{ padding: "0.5rem 0.75rem", background: "#fef3c7", borderRadius: 4, fontSize: "0.8125rem", color: "#92400e", marginBottom: "1rem" }}>
           {slaDisclaimer}
+        </div>
+      )}
+
+      {/* Phase 130: Data source indicator */}
+      {inboxSource && (
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem", fontSize: "0.8125rem", color: "#64748b" }}>
+          <span>Data source:</span>
+          <DataSourceBadge source={inboxSource === "vista" ? "ehr" : "local"} />
+          {inboxSource === "local" && (
+            <span style={{ color: "#92400e" }}>(Local Mode)</span>
+          )}
         </div>
       )}
 

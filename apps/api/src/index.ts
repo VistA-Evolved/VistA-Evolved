@@ -139,6 +139,9 @@ import tiuNotesRoutes from "./routes/cprs/tiu-notes.js";
 import schedulingRoutes from "./routes/scheduling/index.js";
 // Phase 64: Secure messaging v1 (MailMan-backed)
 import messagingRoutes from "./routes/messaging/index.js";
+// Phase 130: VistA MailMan bridge — clinician + portal routes
+import vistaMailmanRoutes from "./routes/vista-mailman.js";
+import portalMailmanRoutes, { initPortalMailman } from "./routes/portal-mailman.js";
 // Phase 65: Immunizations v1 (VistA-first)
 import immunizationsRoutes from "./routes/immunizations/index.js";
 // Phase 66: Production IAM v1 (OIDC + SAML posture)
@@ -291,6 +294,7 @@ server.register(portalAuthRoutes);
 
 // Register portal core routes — messaging, appointments, sharing, settings, export (Phase 27)
 initPortalCore(getPortalSession);
+initPortalMailman(getPortalSession);
 server.register(portalCoreRoutes);
 
 // Register record portability routes — export, download, share, audit (Phase 80)
@@ -430,6 +434,10 @@ server.register(schedulingRoutes);
 
 // Register secure messaging routes -- VistA MailMan bridge (Phase 64)
 server.register(messagingRoutes);
+
+// Register VistA MailMan clinician + portal bridge routes (Phase 130)
+server.register(vistaMailmanRoutes);
+server.register(portalMailmanRoutes);
 
 // Register immunization routes -- VistA-first ORQQPX IMMUN LIST (Phase 65)
 server.register(immunizationsRoutes);
