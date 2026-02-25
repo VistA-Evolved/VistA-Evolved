@@ -62,6 +62,7 @@
     "starting": "Iniciando...",
     "connectionError": "Error de conexion",
     "failedToStart": "No se pudo iniciar el cuestionario",
+    "changeViaSidebar": "cambiar en la barra lateral",
     "chiefComplaint": "Motivo de Consulta",
     "allergiesQuestion": "Tiene alguna alergia conocida?",
     "medicationsQuestion": "Esta tomando algun medicamento actualmente?",

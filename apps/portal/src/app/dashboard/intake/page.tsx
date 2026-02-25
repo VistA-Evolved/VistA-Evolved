@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useLocale } from "@/components/I18nProvider";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
@@ -16,60 +17,7 @@ async function portalFetch<T = unknown>(path: string, options: RequestInit = {})
 }
 
 /* ================================================================== */
-/* i18n labels — Phase 132                                             */
-/* ================================================================== */
-
-const I18N: Record<string, Record<string, string>> = {
-  en: {
-    title: "Pre-Visit Intake",
-    subtitle: "Complete your health questionnaire before your appointment to save time during your visit.",
-    startNew: "Start New Intake",
-    language: "Language:",
-    begin: "Begin Questionnaire",
-    starting: "Starting...",
-    continueTitle: "Continue In-Progress",
-    continueBtn: "Continue",
-    started: "Started:",
-    loading: "Loading...",
-    connectionError: "Connection error",
-    failedStart: "Failed to start intake",
-  },
-  fil: {
-    title: "Pre-Visit Intake",
-    subtitle: "Kumpletuhin ang iyong health questionnaire bago ang iyong appointment para makatipid ng oras.",
-    startNew: "Magsimula ng Bagong Intake",
-    language: "Wika:",
-    begin: "Simulan ang Questionnaire",
-    starting: "Sinisimulan...",
-    continueTitle: "Ipagpatuloy ang In-Progress",
-    continueBtn: "Ipagpatuloy",
-    started: "Nagsimula:",
-    loading: "Naglo-load...",
-    connectionError: "Error sa koneksyon",
-    failedStart: "Hindi nasimulan ang intake",
-  },
-  es: {
-    title: "Cuestionario Pre-Visita",
-    subtitle: "Complete su cuestionario de salud antes de su cita para ahorrar tiempo durante su visita.",
-    startNew: "Iniciar Nuevo Cuestionario",
-    language: "Idioma:",
-    begin: "Comenzar Cuestionario",
-    starting: "Iniciando...",
-    continueTitle: "Continuar en Progreso",
-    continueBtn: "Continuar",
-    started: "Iniciado:",
-    loading: "Cargando...",
-    connectionError: "Error de conexion",
-    failedStart: "No se pudo iniciar el cuestionario",
-  },
-};
-
-function t(locale: string, key: string): string {
-  return I18N[locale]?.[key] || I18N.en[key] || key;
-}
-
-/* ================================================================== */
-/* Intake Start Page — locale-aware with question schema                */
+/* Intake Start Page — locale-aware with question schema (Phase 132)   */
 /* ================================================================== */
 
 interface IntakeQuestion {
@@ -84,6 +32,9 @@ interface IntakeQuestion {
 export default function IntakeStartPage() {
   const router = useRouter();
   const { locale } = useLocale();
+  const t = useTranslations("intake");
+  const tCommon = useTranslations("common");
+  const tLang = useTranslations("language");
   const [sessions, setSessions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
@@ -133,10 +84,10 @@ export default function IntakeStartPage() {
       if (res.ok && res.session) {
         router.push(`/dashboard/intake/${res.session.id}`);
       } else {
-        setNotice({ type: "error", text: res.error || t(locale, "failedStart") });
+        setNotice({ type: "error", text: res.error || t("failedToStart") });
       }
     } catch {
-      setNotice({ type: "error", text: t(locale, "connectionError") });
+      setNotice({ type: "error", text: t("connectionError") });
     }
     setCreating(false);
   }
@@ -177,20 +128,13 @@ export default function IntakeStartPage() {
     clinician_reviewed: "#6366f1",
   };
 
-  // Language labels for the selector
-  const langOptions: Record<string, string> = {
-    en: "English",
-    fil: "Filipino",
-    es: "Espanol",
-  };
-
   return (
     <div style={{ maxWidth: 700, margin: "0 auto", padding: "24px 16px" }}>
       <h1 style={{ fontSize: "24px", fontWeight: 700, marginBottom: "8px" }}>
-        {t(locale, "title")}
+        {t("title")}
       </h1>
       <p style={{ color: "var(--portal-text-muted, #6b7280)", marginBottom: "24px" }}>
-        {t(locale, "subtitle")}
+        {t("description")}
       </p>
 
       {notice && (
@@ -207,13 +151,13 @@ export default function IntakeStartPage() {
       {/* Start new intake */}
       <div style={cardStyle}>
         <h2 style={{ fontSize: "18px", fontWeight: 600, marginBottom: "12px" }}>
-          {t(locale, "startNew")}
+          {t("startNew")}
         </h2>
         <p style={{ fontSize: "14px", color: "var(--portal-text-muted, #6b7280)", marginBottom: "12px" }}>
-          {t(locale, "language")}{" "}
-          <strong>{langOptions[locale] || locale}</strong>
+          {t("language")}{" "}
+          <strong>{tLang(locale)}</strong>
           <span style={{ fontSize: "12px", marginLeft: "8px", color: "#9ca3af" }}>
-            (change via nav sidebar)
+            ({t("changeViaSidebar")})
           </span>
         </p>
 
@@ -221,7 +165,7 @@ export default function IntakeStartPage() {
         {questions.length > 0 && (
           <div style={{ marginBottom: "16px" }}>
             <p style={{ fontSize: "13px", color: "var(--portal-text-muted, #6b7280)", marginBottom: "8px" }}>
-              {locale === "fil" ? "Mga tanong na sasagutin:" : locale === "es" ? "Preguntas que responder:" : "Questions you will answer:"}
+              {t("reasonForVisit")}
             </p>
             <ul style={{ paddingLeft: "20px", margin: "0 0 8px", fontSize: "13px", color: "#6b7280" }}>
               {questions.slice(0, 5).map((q) => (
@@ -240,17 +184,17 @@ export default function IntakeStartPage() {
         )}
 
         <button style={btnPrimary} onClick={startNewIntake} disabled={creating}>
-          {creating ? t(locale, "starting") : t(locale, "begin")}
+          {creating ? t("starting") : t("beginQuestionnaire")}
         </button>
       </div>
 
       {/* Existing sessions */}
       {loading ? (
-        <p style={{ color: "var(--portal-text-muted, #6b7280)" }}>{t(locale, "loading")}</p>
+        <p style={{ color: "var(--portal-text-muted, #6b7280)" }}>{tCommon("loading")}</p>
       ) : sessions.length > 0 ? (
         <div>
           <h2 style={{ fontSize: "18px", fontWeight: 600, marginBottom: "12px" }}>
-            {t(locale, "continueTitle")}
+            {t("continueInProgress")}
           </h2>
           {sessions.map((s) => (
             <div key={s.id} style={cardStyle}>
@@ -263,7 +207,7 @@ export default function IntakeStartPage() {
                     {s.status?.replace(/_/g, " ")}
                   </span>
                   <p style={{ fontSize: "14px", color: "var(--portal-text-muted, #6b7280)", marginTop: "4px" }}>
-                    {t(locale, "started")} {new Date(s.createdAt).toLocaleDateString()}
+                    {t("started")} {new Date(s.createdAt).toLocaleDateString(locale)}
                     {s.context?.chiefComplaint && ` - ${s.context.chiefComplaint}`}
                   </p>
                 </div>
@@ -271,7 +215,7 @@ export default function IntakeStartPage() {
                   style={btnSecondary}
                   onClick={() => router.push(`/dashboard/intake/${s.id}`)}
                 >
-                  {t(locale, "continueBtn")}
+                  {t("continue")}
                 </button>
               </div>
             </div>

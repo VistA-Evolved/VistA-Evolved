@@ -1,1 +1,18 @@
-{"feature":"Phase 132: I18N Foundation (Multilingual UI + Intake Schema)","stage":"implemented","status":"verified","promptRef":"prompts/137-PHASE-132-I18N/","runbookPath":"docs/runbooks/phase132-i18n-foundation.md","verifyScript":"qa/gauntlet/cli.mjs --suite rc","gauntletResult":"12 PASS, 0 FAIL, 1 WARN"}
+{
+  "featureTitle": "Phase 132 VERIFY: I18N Foundation - Wiring + Regression Fixes",
+  "stage": "verified",
+  "status": "complete",
+  "promptRefPath": "prompts/137-PHASE-132-I18N/132-99-VERIFY.md",
+  "runbookPath": "ops/summary.md",
+  "verifyScriptUsed": "qa/gauntlet/cli.mjs fast + rc",
+  "commitSHA": "pending",
+  "gauntletFast": "4 PASS / 0 FAIL / 1 WARN",
+  "gauntletRc": "12 PASS / 0 FAIL / 1 WARN",
+  "i18nGates": "13/13 PASS",
+  "regressionGates": "11/11 PASS",
+  "fixesBeyondScope": [
+    "security.ts error handler missing return (ERR_HTTP_HEADERS_SENT crash)",
+    "6 dead duplicate message files removed",
+    "Espanol -> Espanol (tilde-n) typo fix"
+  ]
+}

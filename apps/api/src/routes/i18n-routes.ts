@@ -21,7 +21,7 @@ import { log } from "../lib/logger.js";
 const SUPPORTED_LOCALES = [
   { code: "en", label: "English", nativeLabel: "English" },
   { code: "fil", label: "Filipino", nativeLabel: "Filipino" },
-  { code: "es", label: "Spanish", nativeLabel: "Espanol" },
+  { code: "es", label: "Spanish", nativeLabel: "Español" },
 ] as const;
 
 const VALID_LOCALE_CODES = SUPPORTED_LOCALES.map((l) => l.code);

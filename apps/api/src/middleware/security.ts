@@ -461,7 +461,7 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
       ? "Internal server error"
       : sanitizeClientError(error.message);
 
-    reply.code(statusCode).send({
+    return reply.code(statusCode).send({
       ok: false,
       error: clientError,
       requestId,

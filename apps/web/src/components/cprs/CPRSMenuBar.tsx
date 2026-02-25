@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { cleanCaption, sanitizeLabel } from '@/lib/contracts/loader';
 import { useCPRSUI } from '@/stores/cprs-ui-state';
 import { usePatient } from '@/stores/patient-context';
@@ -99,10 +100,20 @@ export default function CPRSMenuBar({ dfn }: { dfn?: string }) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const tNav = useTranslations('nav');
   const { updatePreferences, openModal } = useCPRSUI();
   const patient = usePatient();
   const { logout } = useSession();
   const menus = buildMenus();
+
+  /** Map internal menu keys to nav i18n keys */
+  const menuI18n: Record<string, string> = {
+    File: tNav('file'),
+    Edit: tNav('edit'),
+    View: tNav('view'),
+    Tools: tNav('tools'),
+    Help: tNav('help'),
+  };
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -232,7 +243,7 @@ export default function CPRSMenuBar({ dfn }: { dfn?: string }) {
               onClick={() => setOpenMenu(openMenu === name ? null : name)}
               onMouseEnter={() => { if (openMenu) setOpenMenu(name); }}
             >
-              {name}
+              {menuI18n[name] || name}
             </button>
             {openMenu === name && (
               <div className={styles.menuDropdown}>

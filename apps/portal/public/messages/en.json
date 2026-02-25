@@ -62,6 +62,7 @@
     "starting": "Starting...",
     "connectionError": "Connection error",
     "failedToStart": "Failed to start intake",
+    "changeViaSidebar": "change via nav sidebar",
     "chiefComplaint": "Chief Complaint",
     "allergiesQuestion": "Do you have any known allergies?",
     "medicationsQuestion": "Are you currently taking any medications?",

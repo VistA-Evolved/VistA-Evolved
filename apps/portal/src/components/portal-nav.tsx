@@ -11,36 +11,40 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
+/** Nav items with i18n keys that map to portal messages/nav.* */
 const NAV_ITEMS = [
-  { href: "/dashboard", label: "Home", icon: "🏠" },
-  { href: "/dashboard/tasks", label: "Tasks", icon: "📋" },
-  { href: "/dashboard/intake", label: "Pre-Visit Intake", icon: "📝" },
-  { href: "/dashboard/health", label: "Health Records", icon: "🏥" },
-  { href: "/dashboard/medications", label: "Medications", icon: "💊" },
-  { href: "/dashboard/refills", label: "Refill Requests", icon: "🔄" },
-  { href: "/dashboard/messages", label: "Messages", icon: "✉️" },
-  { href: "/dashboard/appointments", label: "Appointments", icon: "📅" },
-  { href: "/dashboard/telehealth", label: "Telehealth", icon: "📹" },
-  { href: "/dashboard/records", label: "My Records", icon: "📄" },
-  { href: "/dashboard/sharing", label: "Share Records", icon: "🔗" },
-  { href: "/dashboard/exports", label: "Export", icon: "📥" },
-  { href: "/dashboard/proxy", label: "Family Access", icon: "👥" },
-  { href: "/dashboard/activity", label: "Activity Log", icon: "📜" },
-  { href: "/dashboard/account", label: "Account", icon: "🔐" },
-  { href: "/dashboard/profile", label: "My Profile", icon: "👤" },
-  { href: "/dashboard/ai-help", label: "AI Help", icon: "🤖" },
+  { href: "/dashboard", i18nKey: "home", icon: "🏠" },
+  { href: "/dashboard/tasks", i18nKey: "tasks", icon: "📋" },
+  { href: "/dashboard/intake", i18nKey: "intake", icon: "📝" },
+  { href: "/dashboard/health", i18nKey: "healthRecords", icon: "🏥" },
+  { href: "/dashboard/medications", i18nKey: "medications", icon: "💊" },
+  { href: "/dashboard/refills", i18nKey: "refillRequests", icon: "🔄" },
+  { href: "/dashboard/messages", i18nKey: "messages", icon: "✉️" },
+  { href: "/dashboard/appointments", i18nKey: "appointments", icon: "📅" },
+  { href: "/dashboard/telehealth", i18nKey: "telehealth", icon: "📹" },
+  { href: "/dashboard/records", i18nKey: "myRecords", icon: "📄" },
+  { href: "/dashboard/sharing", i18nKey: "shareRecords", icon: "🔗" },
+  { href: "/dashboard/exports", i18nKey: "export", icon: "📥" },
+  { href: "/dashboard/proxy", i18nKey: "familyAccess", icon: "👥" },
+  { href: "/dashboard/activity", i18nKey: "activityLog", icon: "📜" },
+  { href: "/dashboard/account", i18nKey: "account", icon: "🔐" },
+  { href: "/dashboard/profile", i18nKey: "myProfile", icon: "👤" },
+  { href: "/dashboard/ai-help", i18nKey: "aiHelp", icon: "🤖" },
 ] as const;
 
 export function PortalNav() {
   const pathname = usePathname();
+  const tNav = useTranslations("nav");
+  const tCommon = useTranslations("common");
 
   return (
     <nav style={styles.nav}>
       <div style={styles.brand}>
         <span style={styles.brandIcon}>🏥</span>
-        <span style={styles.brandText}>Health Portal</span>
+        <span style={styles.brandText}>{tNav("brand")}</span>
       </div>
       <ul style={styles.list}>
         {NAV_ITEMS.map((item) => {
@@ -58,7 +62,7 @@ export function PortalNav() {
                 }}
               >
                 <span style={styles.icon}>{item.icon}</span>
-                {item.label}
+                {tNav(item.i18nKey)}
               </Link>
             </li>
           );
@@ -70,7 +74,7 @@ export function PortalNav() {
         </div>
         <form action="/api/logout" method="POST">
           <button type="submit" style={styles.logoutBtn}>
-            Sign Out
+            {tCommon("signOut")}
           </button>
         </form>
       </div>
