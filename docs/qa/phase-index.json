@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-25T09:58:47.670Z",
+  "generatedAt": "2026-02-25T10:33:14.552Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 141,
+  "phaseCount": 142,
   "phases": [
     {
       "phaseNumber": "1",
@@ -4980,6 +4980,82 @@
         "apps/web/src/app/cprs/admin/payments/page.tsx",
         "apps/web/src/app/cprs/admin/payer-intelligence/page.tsx",
         "docs/runbooks/ph-payments-reconciliation-v1.md"
+      ]
+    },
+    {
+      "phaseNumber": "131",
+      "title": "132 VERIFY",
+      "folder": "99-PHASE-131-132-VERIFY",
+      "files": [
+        "131-99-VERIFY.md"
+      ],
+      "implementFiles": [],
+      "verifyFiles": [
+        "131-99-VERIFY.md"
+      ],
+      "routes": [
+        "/scheduling/appointments/cprs?dfn=3",
+        "/scheduling/health",
+        "/scheduling/lifecycle",
+        "/scheduling/lifecycle/transition",
+        "/scheduling/posture",
+        "/scheduling/reference-data"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "AIAssistPanel.tsx",
+        "AcknowledgeLabDialog.tsx",
+        "AddAllergyDialog.tsx",
+        "AddMedicationDialog.tsx",
+        "AddProblemDialog.tsx",
+        "AddVitalDialog.tsx",
+        "CreateNoteDialog.tsx",
+        "EditProblemDialog.tsx",
+        "ImagingPanel.tsx",
+        "IntakePanel.tsx",
+        "MessagingTasksPanel.tsx",
+        "NotesPanel.tsx",
+        "OrdersPanel.tsx",
+        "TelehealthPanel.tsx",
+        "cprs-ui-state.tsx",
+        "page.tsx",
+        "session-context.tsx"
+      ],
+      "filesTouched": [
+        "prompts/99-PHASE-131-132-VERIFY/131-99-VERIFY.md",
+        "apps/web/src/lib/csrf.ts",
+        "apps/web/src/stores/session-context.tsx",
+        "apps/web/src/stores/cprs-ui-state.tsx",
+        "apps/web/src/app/cprs/scheduling/page.tsx",
+        "apps/web/src/app/cprs/nursing/page.tsx",
+        "apps/web/src/app/cprs/inpatient/page.tsx",
+        "apps/web/src/app/cprs/handoff/page.tsx",
+        "apps/web/src/app/cprs/emar/page.tsx",
+        "apps/web/src/app/cprs/messages/page.tsx",
+        "apps/web/src/app/cprs/inbox/page.tsx",
+        "apps/web/src/app/cprs/admin/hmo-portal/page.tsx",
+        "apps/web/src/app/cprs/admin/loa-queue/page.tsx",
+        "apps/web/src/app/cprs/admin/migration/page.tsx",
+        "apps/web/src/app/cprs/admin/denial-cases/page.tsx",
+        "apps/web/src/app/cprs/admin/capability-matrix/page.tsx",
+        "apps/web/src/app/cprs/admin/claims-queue/page.tsx",
+        "apps/web/src/app/cprs/admin/claims-workbench/page.tsx",
+        "apps/web/src/app/cprs/admin/philhealth-eclaims3/page.tsx",
+        "apps/web/src/app/cprs/admin/denials/page.tsx",
+        "apps/web/src/components/cprs/dialogs/AddAllergyDialog.tsx",
+        "apps/web/src/components/cprs/dialogs/AddProblemDialog.tsx",
+        "apps/web/src/components/cprs/dialogs/AddVitalDialog.tsx",
+        "apps/web/src/components/cprs/dialogs/EditProblemDialog.tsx",
+        "apps/web/src/components/cprs/dialogs/CreateNoteDialog.tsx",
+        "apps/web/src/components/cprs/dialogs/AddMedicationDialog.tsx",
+        "apps/web/src/components/cprs/dialogs/AcknowledgeLabDialog.tsx",
+        "apps/web/src/components/cprs/panels/AIAssistPanel.tsx",
+        "apps/web/src/components/cprs/panels/ImagingPanel.tsx",
+        "apps/web/src/components/cprs/panels/TelehealthPanel.tsx",
+        "apps/web/src/components/cprs/panels/OrdersPanel.tsx",
+        "apps/web/src/components/cprs/panels/NotesPanel.tsx",
+        "apps/web/src/components/cprs/panels/MessagingTasksPanel.tsx",
+        "apps/web/src/components/cprs/panels/IntakePanel.tsx"
       ]
     },
     {

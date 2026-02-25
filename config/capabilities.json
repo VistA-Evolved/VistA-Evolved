@@ -667,6 +667,46 @@
       "targetPackage": "SD",
       "description": "Create VistA wait-list entry (Phase 123)"
     },
+    "scheduling.lifecycle.read": {
+      "status": "live",
+      "module": "scheduling",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Read appointment lifecycle tracking entries from PG (Phase 131)"
+    },
+    "scheduling.lifecycle.transition": {
+      "status": "live",
+      "module": "scheduling",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Record lifecycle state transitions in PG (Phase 131)"
+    },
+    "scheduling.appointments.cprs": {
+      "status": "configured",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "ORWPT APPTLST",
+      "targetPackage": "OR",
+      "description": "CPRS cover sheet appointment list (Phase 131)"
+    },
+    "scheduling.referenceData": {
+      "status": "configured",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SD W/L PRIORITY + TYPE + STATUS",
+      "targetPackage": "SD",
+      "description": "Scheduling reference data (priorities, types, statuses) (Phase 131)"
+    },
+    "scheduling.posture": {
+      "status": "live",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": null,
+      "targetPackage": "SD",
+      "description": "Scheduling RPC posture report (Phase 131)"
+    },
     "migration.import.csv": {
       "status": "live",
       "module": "migration",

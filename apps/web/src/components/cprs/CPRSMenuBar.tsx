@@ -73,6 +73,7 @@ function buildMenus(): Record<string, MenuAction[]> {
       { label: 'Graphing...', action: 'graphing' },
       { label: 'Legacy Console', action: 'legacyConsole' },
       { separator: true, label: '', action: '' },
+      { label: 'Scheduling', action: 'scheduling' },
       { label: 'Inpatient Operations', action: 'inpatient' },
       { label: 'Nursing Documentation', action: 'nursing' },
       { label: 'eMAR (Medication Admin)', action: 'emar' },
@@ -175,6 +176,8 @@ export default function CPRSMenuBar({ dfn }: { dfn?: string }) {
       openModal('remoteData');
     } else if (action === 'remoteDataPage') {
       router.push('/cprs/remote-data-viewer');
+    } else if (action === 'scheduling') {
+      router.push('/cprs/scheduling');
     } else if (action === 'inpatient') {
       router.push('/cprs/inpatient');
     } else if (action === 'nursing') {

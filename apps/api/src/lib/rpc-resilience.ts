@@ -13,7 +13,7 @@
 
 import { RPC_CONFIG, CACHE_CONFIG } from "../config/server-config.js";
 import { log, getRequestId } from "./logger.js";
-import { callRpc, callRpcWithList, withBrokerLock, getDuz, type RpcParam } from "../vista/rpcBrokerClient.js";
+import { callRpc, callRpcWithList, withBrokerLock, getDuz, connect, type RpcParam } from "../vista/rpcBrokerClient.js";
 // Phase 36: OTel tracing + Prometheus metrics
 import { startRpcSpan, endRpcSpan, getCurrentTraceId } from "../telemetry/tracing.js";
 import { rpcCallDuration, rpcCallsTotal, circuitBreakerTrips, rpcCacheSize as rpcCacheSizeGauge } from "../telemetry/metrics.js";
@@ -427,7 +427,7 @@ export async function safeCallRpc(
   opts?: { idempotent?: boolean; timeoutMs?: number },
 ): Promise<string[]> {
   return resilientRpc(
-    () => withBrokerLock(() => callRpc(rpcName, params)),
+    () => withBrokerLock(async () => { await connect(); return callRpc(rpcName, params); }),
     rpcName,
     { idempotent: opts?.idempotent ?? true, timeoutMs: opts?.timeoutMs },
   );
@@ -442,7 +442,7 @@ export async function safeCallRpcWithList(
   opts?: { idempotent?: boolean; timeoutMs?: number },
 ): Promise<string[]> {
   return resilientRpc(
-    () => withBrokerLock(() => callRpcWithList(rpcName, params)),
+    () => withBrokerLock(async () => { await connect(); return callRpcWithList(rpcName, params); }),
     rpcName,
     { idempotent: opts?.idempotent ?? true, timeoutMs: opts?.timeoutMs },
   );

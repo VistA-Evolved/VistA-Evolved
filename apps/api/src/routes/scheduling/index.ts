@@ -541,6 +541,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
 
       const entry = await pgLifecycleRepo.insertLifecycleEntry({
         id: randomUUID(),
+        tenantId: request.session?.tenantId || "default",
         appointmentRef,
         patientDfn,
         clinicIen: clinicIen || undefined,
