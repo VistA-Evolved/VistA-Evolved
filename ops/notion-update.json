@@ -1,18 +1,21 @@
 {
-  "featureTitle": "Phase 132 VERIFY: I18N Foundation - Wiring + Regression Fixes",
+  "featureTitle": "Phase 137: ADT + Bedboard + Census (VistA-first)",
   "stage": "verified",
   "status": "complete",
-  "promptRefPath": "prompts/137-PHASE-132-I18N/132-99-VERIFY.md",
+  "promptRefPath": "prompts/142-PHASE-137-ADT-BEDBOARD/137-01-IMPLEMENT.md",
   "runbookPath": "ops/summary.md",
-  "verifyScriptUsed": "qa/gauntlet/cli.mjs fast + rc",
+  "verifyScriptUsed": "qa/gauntlet/cli.mjs --suite fast + --suite rc",
   "commitSHA": "pending",
-  "gauntletFast": "4 PASS / 0 FAIL / 1 WARN",
-  "gauntletRc": "12 PASS / 0 FAIL / 1 WARN",
-  "i18nGates": "13/13 PASS",
-  "regressionGates": "11/11 PASS",
-  "fixesBeyondScope": [
-    "security.ts error handler missing return (ERR_HTTP_HEADERS_SENT crash)",
-    "6 dead duplicate message files removed",
-    "Espanol -> Espanol (tilde-n) typo fix"
-  ]
+  "gauntletFast": "5 PASS / 0 FAIL / 0 WARN",
+  "gauntletRc": "16 PASS / 0 FAIL / 0 WARN",
+  "vitest": "20/20 files, 413/413 tests PASS",
+  "newEndpoints": [
+    "GET /vista/adt/census",
+    "GET /vista/adt/movements?dfn=N"
+  ],
+  "newUI": [
+    "/inpatient/census",
+    "/inpatient/bedboard"
+  ],
+  "vistaBridge": "ZVEADT.m (WARDS, BEDS, MVHIST) -- not yet installed in Docker"
 }

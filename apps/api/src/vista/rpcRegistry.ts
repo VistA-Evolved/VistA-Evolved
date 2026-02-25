@@ -166,6 +166,11 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "ORWU1 NEWLOC",               domain: "adt",            tag: "read",  description: "Location search/lookup" },
   { name: "ORWPT16 ADMITLST",            domain: "adt",            tag: "read",  description: "Patient admission history list" },
 
+  // --- Phase 137: ZVEADT custom RPCs (expected missing until ZVEADT.m installed) ---
+  { name: "ZVEADT WARDS",               domain: "adt",            tag: "read",  description: "Ward census with bed counts (custom)" },
+  { name: "ZVEADT BEDS",                domain: "adt",            tag: "read",  description: "Bed-level occupancy for a ward (custom)" },
+  { name: "ZVEADT MVHIST",              domain: "adt",            tag: "read",  description: "Patient movement history from File 405 (custom)" },
+
   // --- Clinical Reminders (Phase 78: VistA-first reminder evaluation) ---
   { name: "ORQQPX REMINDERS LIST",       domain: "reminders",      tag: "read",  description: "Evaluate clinical reminders for patient (due/applicable list)" },
   { name: "ORQQPX REMINDER DETAIL",      domain: "reminders",      tag: "read",  description: "Detailed info for a single clinical reminder" },
@@ -235,6 +240,10 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
   { name: "SDOE GET DIAGNOSES", reason: "SDOE encounter diagnoses; SD package RPCs underrepresented in Vivian" },
   { name: "SD W/L CREATE FILE", reason: "SD wait-list write; SD package RPCs underrepresented in Vivian" },
   { name: "SD W/L RETRIVE FULL DATA", reason: "SD wait-list full data retrieval; SD package RPCs underrepresented in Vivian" },
+  // Phase 137: ZVEADT custom RPCs — expected missing until ZVEADT.m installed
+  { name: "ZVEADT WARDS", reason: "Custom RPC installed by VistA-Evolved (ZVEADT.m) for ward census with bed counts (Phase 137)" },
+  { name: "ZVEADT BEDS", reason: "Custom RPC installed by VistA-Evolved (ZVEADT.m) for bed-level occupancy (Phase 137)" },
+  { name: "ZVEADT MVHIST", reason: "Custom RPC installed by VistA-Evolved (ZVEADT.m) for patient movement history from File 405 (Phase 137)" },
 ];
 
 /* ------------------------------------------------------------------ */

@@ -104,7 +104,12 @@ export type ImmutableAuditAction =
   | "auth.vista-bind"
   // Phase 76: Module toggle events
   | "module.toggle"
-  | "module.override-clear";
+  | "module.override-clear"
+  // Phase 137: Inpatient ADT + census + bedboard audit events
+  | "inpatient.wards"
+  | "inpatient.census"
+  | "inpatient.bedboard"
+  | "inpatient.movements";
 
 export type ImmutableAuditOutcome = "success" | "failure" | "denied" | "error";
 

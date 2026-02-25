@@ -899,6 +899,54 @@
       "targetPackage": "DG",
       "description": "Discharge patient (integration-pending, Phase 67B)"
     },
+    "clinical.adt.census": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQPT WARD PATIENTS",
+      "targetPackage": "OR",
+      "description": "Ward census with enriched patient data (Phase 137)"
+    },
+    "clinical.adt.bedboard": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQPT WARD PATIENTS",
+      "targetPackage": "OR",
+      "description": "Bed-level occupancy grid for a ward (Phase 137, pending ZVEADT BEDS)"
+    },
+    "clinical.adt.movements": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORWPT16 ADMITLST",
+      "targetPackage": "OR",
+      "description": "Patient movement timeline (Phase 137, admissions only until ZVEADT MVHIST installed)"
+    },
+    "clinical.adt.wardCensus": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ZVEADT WARDS",
+      "targetPackage": "ZVE",
+      "description": "Ward census with bed counts via ZVEADT.m custom routine (Phase 137)"
+    },
+    "clinical.adt.bedOccupancy": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ZVEADT BEDS",
+      "targetPackage": "ZVE",
+      "description": "Bed-level occupancy from Room-Bed file via ZVEADT.m (Phase 137)"
+    },
+    "clinical.adt.movementHistory": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ZVEADT MVHIST",
+      "targetPackage": "ZVE",
+      "description": "Full patient movement history from File 405 via ZVEADT.m (Phase 137)"
+    },
     "clinical.nursing.vitals": {
       "status": "live",
       "module": "clinical",

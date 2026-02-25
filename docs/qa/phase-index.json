@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-25T18:22:02.910Z",
+  "generatedAt": "2026-02-25T22:43:43.108Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 147,
+  "phaseCount": 148,
   "phases": [
     {
       "phaseNumber": "1",
@@ -2034,6 +2034,57 @@
         "docs/audits/system-store-inventory.json",
         "prompts/141-PHASE-136-STORE-POLICY-GATE/136-01-IMPLEMENT.md",
         "prompts/141-PHASE-136-STORE-POLICY-GATE/136-99-VERIFY.md"
+      ]
+    },
+    {
+      "phaseNumber": "137",
+      "title": "ADT + Bedboard + Census (VistA-First)",
+      "folder": "142-PHASE-137-ADT-BEDBOARD",
+      "files": [
+        "137-01-IMPLEMENT.md",
+        "137-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "137-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "137-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/inpatient",
+        "/inpatient/bedboard",
+        "/inpatient/census",
+        "/vista/adt/census",
+        "/vista/adt/census?ward=IEN",
+        "/vista/adt/movements",
+        "/vista/adt/movements?dfn=N",
+        "/vista/adt/wards",
+        "/vista/inpatient/bedboard",
+        "/vista/inpatient/ward-census",
+        "/vista/inpatient/wards"
+      ],
+      "rpcs": [
+        "ORQPT PROVIDER PATIENTS",
+        "ORQPT SPECIALTIES",
+        "ORQPT SPECIALTY PATIENTS",
+        "ORQPT TEAM PATIENTS",
+        "ORQPT TEAMS",
+        "ORQPT WARD PATIENTS",
+        "ORQPT WARDS",
+        "ORWPT16 ADMITLST",
+        "ORWU1 NEWLOC"
+      ],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/routes/adt/index.ts",
+        "apps/api/src/routes/inpatient/index.ts",
+        "apps/web/src/app/inpatient/bedboard/page.tsx",
+        "apps/web/src/app/inpatient/census/page.tsx",
+        "services/vista/ZVEADT.m",
+        "config/capabilities.json",
+        "apps/api/src/platform/store-policy.ts"
       ]
     },
     {

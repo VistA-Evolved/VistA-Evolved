@@ -22,7 +22,21 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { requireSession } from "../../auth/auth-routes.js";
 import { safeCallRpc } from "../../lib/rpc-resilience.js";
+import { immutableAudit } from "../../lib/immutable-audit.js";
 import { log } from "../../lib/logger.js";
+
+/* ------------------------------------------------------------------ */
+/* Audit helper                                                         */
+/* ------------------------------------------------------------------ */
+
+function auditActor(request: FastifyRequest): { sub: string; name: string; roles: string[] } {
+  const s = request.session;
+  return {
+    sub: s?.duz || "anonymous",
+    name: s?.userName || "unknown",
+    roles: s?.role ? [s.role] : [],
+  };
+}
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
@@ -183,6 +197,10 @@ export default async function inpatientRoutes(
           summaries.push({ ien: w.ien, name: w.name, patientCount: count });
         }
 
+        immutableAudit("inpatient.wards", "success", auditActor(request), {
+          detail: { wardCount: summaries.length },
+        });
+
         return reply.send({
           ok: true,
           source: "vista",
@@ -191,9 +209,12 @@ export default async function inpatientRoutes(
           rpcUsed: ["ORQPT WARDS", "ORQPT WARD PATIENTS"],
           pendingTargets: [],
           _note:
-            "patientCount uses N+1 ward queries; production should use ZVEWARD CENSUS RPC",
+            "patientCount uses N+1 ward queries; production should use ZVEADT WARDS RPC",
         });
       } catch (err: any) {
+        immutableAudit("inpatient.wards", "failure", auditActor(request), {
+          detail: { error: err?.message },
+        });
         return pendingFallback(reply, "ORQPT WARDS", err);
       }
     },
@@ -252,6 +273,10 @@ export default async function inpatientRoutes(
           });
         }
 
+        immutableAudit("inpatient.census", "success", auditActor(request), {
+          detail: { wardIen: String(wardIen), patientCount: census.length },
+        });
+
         return reply.send({
           ok: true,
           source: "vista",
@@ -262,6 +287,9 @@ export default async function inpatientRoutes(
           wardIen: String(wardIen),
         });
       } catch (err: any) {
+        immutableAudit("inpatient.census", "failure", auditActor(request), {
+          detail: { wardIen: String(wardIen), error: err?.message },
+        });
         return pendingFallback(reply, "ORQPT WARD PATIENTS", err);
       }
     },
@@ -337,6 +365,10 @@ export default async function inpatientRoutes(
           });
         }
 
+        immutableAudit("inpatient.bedboard", "success", auditActor(request), {
+          detail: { wardIen: String(wardIen), wardName, bedCount: beds.length },
+        });
+
         return reply.send({
           ok: true,
           source: "vista",
@@ -345,11 +377,14 @@ export default async function inpatientRoutes(
           wardName,
           wardIen: String(wardIen),
           rpcUsed: ["ORQPT WARD PATIENTS", "ORWPT16 ADMITLST", "ORQPT WARDS"],
-          pendingTargets: ["ZVEBED LIST"],
+          pendingTargets: ["ZVEADT BEDS"],
           _note:
-            "Only occupied beds shown. Empty/OOS bed data requires ZVEBED LIST RPC reading ROOM-BED (405.4) / WARD LOCATION (42).",
+            "Only occupied beds shown. Empty/OOS bed data requires ZVEADT BEDS RPC reading ROOM-BED (405.4) / WARD LOCATION (42).",
         });
       } catch (err: any) {
+        immutableAudit("inpatient.bedboard", "failure", auditActor(request), {
+          detail: { wardIen: String(wardIen), error: err?.message },
+        });
         return pendingFallback(reply, "ORQPT WARD PATIENTS", err);
       }
     },
@@ -396,6 +431,10 @@ export default async function inpatientRoutes(
           provider: "",
         }));
 
+        immutableAudit("inpatient.movements", "success", auditActor(request), {
+          detail: { dfn: String(dfn), movementCount: movements.length },
+        });
+
         return reply.send({
           ok: true,
           source: "vista",
@@ -403,22 +442,25 @@ export default async function inpatientRoutes(
           results: movements,
           dfn: String(dfn),
           rpcUsed: ["ORWPT16 ADMITLST"],
-          pendingTargets: ["ZVEADTM LIST"],
+          pendingTargets: ["ZVEADT MVHIST"],
           _note:
-            "Only admission events shown. Transfer/discharge movements require ZVEADTM LIST RPC reading PATIENT MOVEMENT (405).",
+            "Only admission events shown. Transfer/discharge movements require ZVEADT MVHIST RPC reading PATIENT MOVEMENT (405).",
           vistaGrounding: {
             vistaFiles: [
               "PATIENT MOVEMENT (405)",
               "PATIENT MOVEMENT TYPE (405.1)",
             ],
-            targetRoutines: ["DGPMV", "DGPMU"],
+            targetRoutines: ["DGPMV", "DGPMU", "ZVEADT"],
             migrationPath:
-              "Phase 83B: Implement ZVEADTM LIST RPC to read ^DGPM(405) movement chain for a patient",
+              "Phase 137B: Install ZVEADT.m and register ZVEADT MVHIST RPC to read ^DGPM(405) movement chain",
             sandboxNote:
               "ORWPT16 ADMITLST returns admission episodes only, not inter-ward transfers or discharges",
           },
         });
       } catch (err: any) {
+        immutableAudit("inpatient.movements", "failure", auditActor(request), {
+          detail: { dfn: String(dfn), error: err?.message },
+        });
         return pendingFallback(reply, "ORWPT16 ADMITLST", err);
       }
     },
@@ -541,5 +583,5 @@ export default async function inpatientRoutes(
     },
   );
 
-  log.info("Phase 83 inpatient routes registered (7 endpoints)");
+  log.info("Phase 83+137 inpatient routes registered (7 endpoints, HIPAA audit)");
 }

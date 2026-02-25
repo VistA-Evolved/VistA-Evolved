@@ -1,7 +1,7 @@
 # VistA-Evolved System Audit
 
-> Generated: 2026-02-25T21:52:55.728Z  
-> HEAD: c4a4b4b  
+> Generated: 2026-02-25T22:47:04.606Z  
+> HEAD: aae062d  
 > Node: v24.13.0 | pnpm: 10.29.2
 
 ## What Is Truly Wired End-to-End
@@ -60,19 +60,19 @@
 ## VistA RPC Coverage
 
 - **Unique RPCs used in code:** 85
-- **RPCs in registry:** 151
-- **Total call sites:** 160
+- **RPCs in registry:** 157
+- **Total call sites:** 165
 - **Unregistered RPCs used:** 4
-- **Unused registered RPCs:** 45
+- **Unused registered RPCs:** 51
 
 ## API Inventory
 
-- **Total endpoints:** 1222
-- **By tag:** vista(544), rcm(348), other(96), admin(84), portal(82), infra(60), imaging(20), scheduling(19), analytics(14), telehealth(13), interop(10), iam(9), posture(6), auth(3)
+- **Total endpoints:** 1224
+- **By tag:** vista(546), rcm(348), other(96), admin(84), portal(82), infra(60), imaging(20), scheduling(19), analytics(14), telehealth(13), interop(10), iam(9), posture(6), auth(3)
 
 ## UI Inventory
 
-- **web:** 49 pages, 39 dead-click markers
+- **web:** 51 pages, 39 dead-click markers
 - **portal:** 23 pages, 9 dead-click markers
 
 ## CI Enforcement Posture

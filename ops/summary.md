@@ -1,33 +1,49 @@
-# Phase 136: Store Policy Gate + Durability Sweep
+# Phase 137: ADT + Bedboard + Census (VistA-first)
 
 ## What Changed
 
 ### New Files
-- apps/api/src/platform/store-policy.ts -- 119 classified in-memory stores
-- apps/api/tests/store-policy.test.ts -- 22 unit tests
-- scripts/qa-gates/store-policy-gate.mjs -- Standalone CI gate
-- qa/gauntlet/gates/g17-store-policy.mjs -- Gauntlet G17 gate
-- docs/audits/system-store-inventory.json -- Generated inventory artifact
-- prompts/141-PHASE-136-STORE-POLICY-GATE/ -- Prompt files
+- services/vista/ZVEADT.m -- Custom M routine: WARDS, BEDS, MVHIST entry points for inpatient ADT
+- apps/web/src/app/inpatient/census/page.tsx -- Ward census UI (ward grid + drill-down patient table)
+- apps/web/src/app/inpatient/bedboard/page.tsx -- Bed board UI (ward selector + bed grid visualization)
+- prompts/142-PHASE-137-ADT-BEDBOARD/137-01-IMPLEMENT.md -- Implementation prompt
+- prompts/142-PHASE-137-ADT-BEDBOARD/137-99-VERIFY.md -- Verification prompt
 
 ### Modified Files
-- apps/api/src/posture/index.ts -- /posture/store-policy endpoint
-- qa/gauntlet/cli.mjs -- G17 in RC (16 gates) + FULL (18 gates)
-- docs/qa/phase-index.json -- Phase 136 entry added
-- apps/api/tests/phases/phases-134-to-136.test.ts -- Generated phase spec
+- apps/api/src/routes/adt/index.ts -- +2 endpoints (census, movements) + HIPAA audit on all routes
+- apps/api/src/routes/inpatient/index.ts -- +HIPAA audit on all 4 GET endpoints, updated pending targets
+- apps/api/src/lib/immutable-audit.ts -- +4 ImmutableAuditAction types (inpatient.wards/census/bedboard/movements)
+- apps/api/src/vista/rpcRegistry.ts -- +3 RPC_REGISTRY + 3 RPC_EXCEPTIONS for ZVEADT RPCs
+- config/capabilities.json -- +7 clinical.adt.* capabilities (3 live, 4 pending)
+- docs/qa/phase-index.json -- Phase 137 entry added (regenerated)
 
-### Verification Fixes (VERIFY commit)
-- scripts/qa-gates/store-policy-gate.mjs -- Fixed greedy regex (42->41 critical count)
-- qa/gauntlet/gates/g17-store-policy.mjs -- Fixed cross-boundary regex for migrationTarget check
-- apps/api/tests/rcm-quality-loop.test.ts -- Added mock WorkqueueRepo + async/await (Phase 114 refactor)
-- apps/api/tests/job-worker-smoke.test.ts -- Updated job count 4->5 (Phase 118 pg_backup)
-- apps/api/tests/scheduling-sd.test.ts -- Added session cookie + CSRF + 201|409 handling
-- apps/api/tests/qa-api-routes.test.ts -- Health probe guard in beforeAll
+### New Endpoints
+- GET /vista/adt/census -- Ward census (no param: ward list with counts; ?ward=IEN: enriched patient list)
+- GET /vista/adt/movements?dfn=N -- Patient movement timeline (admission events + vistaGrounding)
+
+## How to Test Manually
+```bash
+# Login
+curl -s -X POST http://127.0.0.1:3001/auth/login -H "Content-Type: application/json" -d '{"accessCode":"PROV123","verifyCode":"PROV123!!"}' -c cookies.txt
+
+# Census (all wards)
+curl -s -b cookies.txt -H "X-CSRF-Token: <token>" http://127.0.0.1:3001/vista/adt/census
+
+# Movements for DFN=3
+curl -s -b cookies.txt -H "X-CSRF-Token: <token>" "http://127.0.0.1:3001/vista/adt/movements?dfn=3"
+
+# Inpatient wards (HIPAA-audited)
+curl -s -b cookies.txt -H "X-CSRF-Token: <token>" http://127.0.0.1:3001/vista/inpatient/wards
+```
 
 ## Verifier Output
-- TypeScript: API, web, portal clean
-- Unit tests: 22/22 store-policy tests PASS, 20/20 files (413/413 tests) full suite
-- Store policy gate: PASS (119 entries, 41 critical+in_memory_only)
-- Strict mode: correctly FAIL with exit 1
+- TypeScript: API clean (tsc --noEmit)
+- Vitest: 20/20 files, 413/413 tests PASS
 - Gauntlet FAST: 5P/0F/0W
 - Gauntlet RC: 16P/0F/0W
+- All 4 new endpoints return correct responses (tested via curl)
+
+## Follow-ups
+- Phase 137B: Install ZVEADT.m in VistA Docker, register RPCs, wire live data
+- Phase 137C: Add real-time ADT event push via HL7 ADT messages or polling
+- Census/bedboard pages need navigation integration from main inpatient tabs
