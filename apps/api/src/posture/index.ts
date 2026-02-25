@@ -18,6 +18,7 @@ import { checkTenantIsolationPosture } from "./tenant-posture.js";
 import { checkPerfPosture } from "./perf-posture.js";
 import { checkBackupPosture } from "./backup-posture.js";
 import { checkDataPlanePosture } from "./data-plane-posture.js";
+import { getStoreInventorySummary } from "../platform/store-policy.js";
 
 export default async function postureRoutes(server: FastifyInstance) {
   // Unified posture report
@@ -29,6 +30,7 @@ export default async function postureRoutes(server: FastifyInstance) {
       checkBackupPosture(),
     ]);
     const dataPlane = checkDataPlanePosture();
+    const storePolicy = getStoreInventorySummary();
 
     const totalGates = [
       ...observability.gates,
@@ -50,6 +52,11 @@ export default async function postureRoutes(server: FastifyInstance) {
         performance,
         backup,
         dataPlane,
+        storePolicy: {
+          total: storePolicy.total,
+          criticalInMemoryCount: storePolicy.criticalInMemoryCount,
+          byClassification: storePolicy.byClassification,
+        },
       },
       timestamp: new Date().toISOString(),
     };
@@ -90,5 +97,17 @@ export default async function postureRoutes(server: FastifyInstance) {
   // Phase 125: Data plane posture
   server.get("/posture/data-plane", async () => {
     return { ok: true, ...checkDataPlanePosture() };
+  });
+
+  // Phase 136: Store policy posture
+  server.get("/posture/store-policy", async () => {
+    const summary = getStoreInventorySummary();
+    const pass = summary.criticalInMemoryCount === 0;
+    return {
+      ok: true,
+      pass,
+      summary: `${summary.total} stores inventoried, ${summary.criticalInMemoryCount} critical+in_memory_only`,
+      ...summary,
+    };
   });
 }

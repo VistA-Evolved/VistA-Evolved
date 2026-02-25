@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-25T17:55:02.373Z",
+  "generatedAt": "2026-02-25T18:22:02.910Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 146,
+  "phaseCount": 147,
   "phases": [
     {
       "phaseNumber": "1",
@@ -2003,6 +2003,37 @@
         "apps/web/src/app/cprs/admin/module-disabled/page.tsx",
         "apps/api/src/routes/tenant-entitlement-api.ts",
         "docs/runbooks/tenant-onboarding.md"
+      ]
+    },
+    {
+      "phaseNumber": "136",
+      "title": "IMPLEMENT: Store Policy Gate + Durability Sweep",
+      "folder": "141-PHASE-136-STORE-POLICY-GATE",
+      "files": [
+        "136-01-IMPLEMENT.md",
+        "136-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "136-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "136-99-VERIFY.md"
+      ],
+      "routes": [
+        "/posture/store-policy"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/platform/store-policy.ts",
+        "scripts/qa-gates/store-policy-gate.mjs",
+        "qa/gauntlet/gates/g17-store-policy.mjs",
+        "qa/gauntlet/cli.mjs",
+        "apps/api/src/posture/index.ts",
+        "apps/api/tests/store-policy.test.ts",
+        "docs/audits/system-store-inventory.json",
+        "prompts/141-PHASE-136-STORE-POLICY-GATE/136-01-IMPLEMENT.md",
+        "prompts/141-PHASE-136-STORE-POLICY-GATE/136-99-VERIFY.md"
       ]
     },
     {

@@ -71,6 +71,7 @@ const SUITE_GATES = {
     "G14_qa_ladder",
     "G15_observability",
     "G16_dr_chaos",
+    "G17_store_policy",
   ],
   full: [
     "G0_prompts_integrity",
@@ -90,6 +91,7 @@ const SUITE_GATES = {
     "G14_qa_ladder",
     "G15_observability",
     "G16_dr_chaos",
+    "G17_store_policy",
   ],
 };
 
@@ -118,6 +120,7 @@ const GATE_MODULES = {
   G14_qa_ladder: "gates/g14-qa-ladder.mjs",
   G15_observability: "gates/g15-observability.mjs",
   G16_dr_chaos: "gates/g16-dr-chaos.mjs",
+  G17_store_policy: "gates/g17-store-policy.mjs",
 };
 
 // ── Resolve which gates to run ──────────────────────────────
