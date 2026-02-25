@@ -3,11 +3,16 @@
  *
  * Phase 102: Migrate Prototype Stores to PlatformStore
  * Phase 117: STORE_BACKEND env var + session/workqueue resolution
+ * Phase 125: Postgres-only data plane enforcement for rc/prod
  *
  * STORE_BACKEND controls the backend:
  *   "auto"   (default) — PG if PLATFORM_PG_URL is set, else SQLite
  *   "pg"     — Force PG (fails fast if PLATFORM_PG_URL missing)
- *   "sqlite" — Force SQLite (local dev)
+ *   "sqlite" — Force SQLite (local dev only — blocked in rc/prod)
+ *
+ * Phase 125: When PLATFORM_RUNTIME_MODE is "rc" or "prod", the
+ * resolver always returns "pg" and refuses "sqlite". This ensures
+ * no SQLite runtime in production deployments.
  *
  * All functions are async (Promises). When PG is configured, delegates
  * to PG repos. Otherwise, wraps synchronous SQLite repo calls in
@@ -23,6 +28,7 @@
  */
 
 import { isPgConfigured } from "./pg/pg-db.js";
+import { getRuntimeMode, requiresPg } from "./runtime-mode.js";
 
 // SQLite repos (sync)
 import * as sqlitePayerRepo from "./db/repo/payer-repo.js";
@@ -51,10 +57,16 @@ export type StoreBackend = "pg" | "sqlite";
  *
  * "auto" (default): PG if PLATFORM_PG_URL is set, else SQLite.
  * "pg": Force PG — throws if PLATFORM_PG_URL missing.
- * "sqlite": Force SQLite.
+ * "sqlite": Force SQLite (blocked in rc/prod — Phase 125).
+ *
+ * Phase 125: When PLATFORM_RUNTIME_MODE is "rc" or "prod",
+ * this function ALWAYS returns "pg". Requesting "sqlite" in
+ * rc/prod throws immediately. "auto" also rejects SQLite fallback.
  */
 export function resolveBackend(): StoreBackend {
   const env = (process.env.STORE_BACKEND || "auto").toLowerCase().trim();
+  const pgRequired = requiresPg();
+  const mode = getRuntimeMode();
 
   if (env === "pg") {
     if (!isPgConfigured()) {
@@ -67,11 +79,31 @@ export function resolveBackend(): StoreBackend {
   }
 
   if (env === "sqlite") {
+    // Phase 125: Block SQLite in rc/prod
+    if (pgRequired) {
+      throw new Error(
+        `STORE_BACKEND=sqlite is not allowed in PLATFORM_RUNTIME_MODE=${mode}. ` +
+        `Production deployments require PostgreSQL. ` +
+        `Set PLATFORM_PG_URL and use STORE_BACKEND=pg or STORE_BACKEND=auto.`
+      );
+    }
     return "sqlite";
   }
 
   // auto: prefer PG when configured
-  return isPgConfigured() ? "pg" : "sqlite";
+  if (isPgConfigured()) {
+    return "pg";
+  }
+
+  // Phase 125: auto mode cannot fall back to SQLite in rc/prod
+  if (pgRequired) {
+    throw new Error(
+      `PLATFORM_RUNTIME_MODE=${mode} requires PostgreSQL but PLATFORM_PG_URL is not set. ` +
+      `Set PLATFORM_PG_URL to enable Postgres, or use PLATFORM_RUNTIME_MODE=dev for local development.`
+    );
+  }
+
+  return "sqlite";
 }
 
 /* ----------------------------------------------------------------

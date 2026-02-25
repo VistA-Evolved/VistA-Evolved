@@ -27,6 +27,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
 import { renameSync } from "node:fs";
+import { blocksJsonStores, getRuntimeMode } from "../../platform/runtime-mode.js";
 import type {
   PhHmo,
   PhHmoRegistryData,
@@ -141,6 +142,13 @@ function hashRecord(record: PhHmo): string {
 }
 
 function atomicWrite(path: string, data: unknown): void {
+  // Phase 125: Block JSON file writes in rc/prod runtime modes
+  if (blocksJsonStores()) {
+    throw new Error(
+      `JSON file writes are blocked in PLATFORM_RUNTIME_MODE=${getRuntimeMode()}. ` +
+      `Use the PostgreSQL-backed payer repository (store-resolver) instead.`
+    );
+  }
   const tmpPath = path + ".tmp";
   writeFileSync(tmpPath, JSON.stringify(data, null, 2), "utf-8");
   // Rename is atomic on most filesystems

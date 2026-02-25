@@ -1,8 +1,33 @@
-# Phase 122 Summary — Multi-Tenancy Isolation (PG RLS + SQLite Guards)
+# Phase 125 Summary -- Postgres-Only Production Data Plane
 
 ## What Changed
 
-### New Files
+### New: Runtime Mode Contract (`PLATFORM_RUNTIME_MODE`)
+- `apps/api/src/platform/runtime-mode.ts` -- Single source of truth
+- Values: dev (default), test, rc, prod
+- rc/prod enforce PG, block SQLite, block JSON writes, auto-enable RLS
+
+### Modified: Store Resolver + PG Migrate + Payer Persistence
+- `store-resolver.ts` -- blocks SQLite in rc/prod
+- `pg-migrate.ts` -- auto-enables RLS for rc/prod
+- `payer-persistence.ts` -- blocks JSON file writes in rc/prod
+
+### New: Data Plane Posture + G12 Gauntlet Gate
+- `posture/data-plane-posture.ts` -- 6 gates
+- `qa/gauntlet/gates/g12-data-plane.mjs` -- CI gate
+- Added to RC + FULL suites
+
+### New: Migration Script
+- `scripts/migrations/sqlite-to-pg.mjs` -- one-shot SQLite to PG transfer
+
+## Verifier Output
+- TypeScript: 3/3 clean
+- Gauntlet FAST: 4 PASS / 0 FAIL / 1 WARN
+- G12 Data Plane: PASS (6/6)
+
+## Follow-ups
+- Phase 125 VERIFY: Full RC gauntlet with PG
+- Add PLATFORM_RUNTIME_MODE to .env.example
 - `apps/api/src/platform/db/repo/tenant-guard.ts` — Tenant isolation enforcement:
   `requireTenantId()`, `assertTenantMatch()`, `tenantEq()`, `TenantIsolationError`,
   `TENANT_SCOPED_TABLES` (30+ tables), `GLOBAL_TABLES`

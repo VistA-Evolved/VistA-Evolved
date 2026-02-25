@@ -1044,6 +1044,50 @@ scripts/
   verify-phase109-modular-packaging.ps1 -- Phase 109 verifier (35 gates) (Phase 109)
 ```
 
+## 7n. Architecture Quick Map (Phase 125 additions)
+
+```
+apps/api/src/
+  platform/
+    runtime-mode.ts               -- PLATFORM_RUNTIME_MODE contract (dev/test/rc/prod) (Phase 125)
+    store-resolver.ts             -- +blocks SQLite in rc/prod (Phase 125)
+  posture/
+    data-plane-posture.ts         -- 6 production data plane gates (Phase 125)
+    index.ts                      -- +/posture/data-plane endpoint (Phase 125)
+  platform/pg/
+    pg-migrate.ts                 -- +auto-enables RLS for rc/prod mode (Phase 125)
+  rcm/payers/
+    payer-persistence.ts          -- +blocks JSON file writes in rc/prod (Phase 125)
+
+qa/gauntlet/
+  gates/g12-data-plane.mjs        -- Data plane gauntlet gate (Phase 125)
+  cli.mjs                         -- +G12 in RC + FULL suites (Phase 125)
+
+scripts/migrations/
+  sqlite-to-pg.mjs                -- One-shot SQLite -> PG data transfer (Phase 125)
+
+docs/runbooks/
+  postgres-only-dataplane.md      -- Data plane runbook (Phase 125)
+```
+
+124. **`PLATFORM_RUNTIME_MODE` controls the data plane contract (Phase 125).**
+     Values: `dev` (default), `test`, `rc`, `prod`. In `rc`/`prod` mode,
+     PostgreSQL is required -- the API throws on startup if `PLATFORM_PG_URL`
+     is not set. SQLite store backend is blocked. JSON mutable file stores
+     are blocked. RLS auto-enables. Falls back to `NODE_ENV` mapping if unset.
+125. **Store resolver blocks SQLite in rc/prod (Phase 125).** `resolveBackend()`
+     in `store-resolver.ts` checks `requiresPg()` and refuses to return
+     `"sqlite"` in rc/prod modes. `STORE_BACKEND=sqlite` throws immediately.
+     `STORE_BACKEND=auto` also throws if PG is not configured.
+126. **JSON mutable file stores blocked in rc/prod (Phase 125).**
+     `payer-persistence.ts` `atomicWrite()` checks `blocksJsonStores()` and
+     throws if the runtime mode is rc/prod. Use the PG-backed payer repository
+     via store-resolver instead.
+127. **Migration script: `scripts/migrations/sqlite-to-pg.mjs` (Phase 125).**
+     One-shot idempotent SQLite-to-PG data transfer. Uses `ON CONFLICT DO NOTHING`.
+     Supports `--dry-run` and `--table TABLE` flags. Requires `PLATFORM_PG_URL`
+     and an existing `data/platform.db`.
+
 ## 8. Bug Tracker & Lessons Learned
 
 A comprehensive log of every bug, challenge, and fix from Phase 1 through

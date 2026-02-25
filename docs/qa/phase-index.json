@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-25T02:06:42.501Z",
+  "generatedAt": "2026-02-25T03:13:00.932Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 133,
+  "phaseCount": 134,
   "phases": [
     {
       "phaseNumber": "1",
@@ -1464,6 +1464,37 @@
         "apps/web/src/app/cprs/inbox/page.tsx",
         "apps/web/src/app/cprs/remote-data-viewer/page.tsx",
         "tests/tripwire/tripwire-source-scan.test.ts"
+      ]
+    },
+    {
+      "phaseNumber": "125",
+      "title": "IMPLEMENT: Postgres-Only Production Data Plane",
+      "folder": "129-PHASE-125-POSTGRES-ONLY-DATAPLANE",
+      "files": [
+        "125-01-IMPLEMENT.md",
+        "125-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "125-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "125-99-VERIFY.md"
+      ],
+      "routes": [
+        "/posture/data-plane"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/platform/runtime-mode.ts",
+        "apps/api/src/platform/store-resolver.ts",
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/posture/data-plane-posture.ts",
+        "apps/api/src/posture/index.ts",
+        "apps/api/src/rcm/payers/payer-persistence.ts",
+        "apps/api/src/index.ts",
+        "scripts/migrations/sqlite-to-pg.mjs",
+        "docs/runbooks/postgres-only-dataplane.md"
       ]
     },
     {

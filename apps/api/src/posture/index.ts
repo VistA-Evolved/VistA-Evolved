@@ -17,6 +17,7 @@ import { checkObservabilityPosture } from "./observability-posture.js";
 import { checkTenantIsolationPosture } from "./tenant-posture.js";
 import { checkPerfPosture } from "./perf-posture.js";
 import { checkBackupPosture } from "./backup-posture.js";
+import { checkDataPlanePosture } from "./data-plane-posture.js";
 
 export default async function postureRoutes(server: FastifyInstance) {
   // Unified posture report
@@ -27,12 +28,14 @@ export default async function postureRoutes(server: FastifyInstance) {
       checkPerfPosture(),
       checkBackupPosture(),
     ]);
+    const dataPlane = checkDataPlanePosture();
 
     const totalGates = [
       ...observability.gates,
       ...tenant.gates,
       ...performance.gates,
       ...backup.gates,
+      ...dataPlane.gates,
     ];
     const passCount = totalGates.filter((g) => g.pass).length;
     const totalScore = Math.round((passCount / totalGates.length) * 100);
@@ -46,6 +49,7 @@ export default async function postureRoutes(server: FastifyInstance) {
         tenant,
         performance,
         backup,
+        dataPlane,
       },
       timestamp: new Date().toISOString(),
     };
@@ -81,5 +85,10 @@ export default async function postureRoutes(server: FastifyInstance) {
 
   server.get("/posture/backup", async () => {
     return { ok: true, ...checkBackupPosture() };
+  });
+
+  // Phase 125: Data plane posture
+  server.get("/posture/data-plane", async () => {
+    return { ok: true, ...checkDataPlanePosture() };
   });
 }

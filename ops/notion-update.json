@@ -2,8 +2,8 @@
     "commitSHA": "pending",
     "stage": "implemented",
     "verifyScript": "node qa/gauntlet/cli.mjs --suite rc",
-    "runbook": "docs/runbooks/phase122-tenant-isolation.md",
-    "promptRef": "prompts/126-PHASE-122-TENANT-ISOLATION/122-01-IMPLEMENT.md",
+    "runbook": "docs/runbooks/postgres-only-dataplane.md",
+    "promptRef": "prompts/129-PHASE-125-POSTGRES-ONLY-DATAPLANE/125-01-IMPLEMENT.md",
     "status": "implemented",
-    "feature": "Phase 122: Multi-Tenancy Isolation -- PG RLS auto-enable, SQLite tenant guards, G11 CI gate"
+    "feature": "Phase 125: Postgres-only data plane -- runtime mode contract, SQLite/JSON blocked in rc/prod, G12 gate"
 }

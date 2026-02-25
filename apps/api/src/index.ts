@@ -165,6 +165,14 @@ import { jobAdminRoutes } from "./routes/job-admin-routes.js";
 // Phase 118: Go-Live Hardening Pack
 import hardeningRoutes from "./routes/hardening-routes.js";
 import { safeErr } from "./lib/safe-error.js";
+// Phase 125: Runtime mode contract (Postgres-only data plane)
+import { validateRuntimeMode, getRuntimeMode } from "./platform/runtime-mode.js";
+
+/* ================================================================== */
+/* Phase 125: Validate runtime mode contract BEFORE anything else       */
+/* Throws in rc/prod if PLATFORM_PG_URL is missing.                     */
+/* ================================================================== */
+validateRuntimeMode();
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -2288,6 +2296,12 @@ const host = process.env.HOST || "127.0.0.1"
 try {
   await server.listen({ port, host });
   log.info("Server listening", { host, port, url: `http://${host}:${port}` });
+  // Phase 125: Log resolved runtime mode
+  log.info("Runtime mode", {
+    mode: getRuntimeMode(),
+    pgConfigured: isPgConfigured(),
+    storeBackend: process.env.STORE_BACKEND || "auto",
+  });
   audit("system.startup", "success", { duz: "system", name: "system", role: "system" }, {
     detail: { host, port, phase: "25-bi-analytics", commitSha: process.env.BUILD_SHA || "dev" },
   });

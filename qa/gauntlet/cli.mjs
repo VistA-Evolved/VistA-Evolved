@@ -66,6 +66,7 @@ const SUITE_GATES = {
     "G8_ui_dead_click",
     "G10_system_audit",
     "G11_tenant_isolation",
+    "G12_data_plane",
   ],
   full: [
     "G0_prompts_integrity",
@@ -80,6 +81,7 @@ const SUITE_GATES = {
     "G9_performance_budget",
     "G10_system_audit",
     "G11_tenant_isolation",
+    "G12_data_plane",
   ],
 };
 
@@ -103,6 +105,7 @@ const GATE_MODULES = {
   G9_performance_budget: "gates/g9-performance-budget.mjs",
   G10_system_audit: "gates/g10-system-audit.mjs",
   G11_tenant_isolation: "gates/g11-tenant-isolation.mjs",
+  G12_data_plane: "gates/g12-data-plane.mjs",
 };
 
 // ── Resolve which gates to run ──────────────────────────────
