@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-02-25T01:03:21.445Z",
-  "headSha": "6c933f1",
+  "generatedAt": "2026-02-25T02:11:58.774Z",
+  "headSha": "be9fe2e",
   "domains": [
     {
       "domain": "AUTH_IAM",
@@ -159,15 +159,15 @@
       "evidence": [
         {
           "metric": "uniqueRpcsUsed",
-          "value": 76
+          "value": 81
         },
         {
           "metric": "registeredRpcs",
-          "value": 138
+          "value": 148
         },
         {
           "metric": "totalCallSites",
-          "value": 151
+          "value": 156
         }
       ],
       "topGaps": [

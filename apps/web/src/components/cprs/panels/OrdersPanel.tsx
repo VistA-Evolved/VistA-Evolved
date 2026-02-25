@@ -272,20 +272,24 @@ export default function OrdersPanel({ dfn }: Props) {
     setDcLoading(true);
     setDcMsg(null);
     try {
-      const res = await fetch(`${API_BASE}/vista/cprs/orders/discontinue`, {
+      const res = await fetch(`${API_BASE}/vista/cprs/orders/dc`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ dfn, orderIds: [orderId] }),
+        body: JSON.stringify({ dfn, orderId }),
       });
       const data = await res.json();
-      if (data.ok) {
-        setDcMsg('Order discontinued');
+      if (data.ok && data.mode === 'real') {
+        setDcMsg('Order discontinued via ORWDXA DC');
         cache.updateOrderStatus(dfn, orderId, 'discontinued');
         fetchVistaOrders();
-      } else if (data.integrationPending || data.pending) {
+      } else if (data.ok && data.syncPending) {
         cache.updateOrderStatus(dfn, orderId, 'discontinued');
-        setDcMsg(`Discontinue -- integration pending: ${data.pendingReason || 'ORWDXA DC not yet wired'}`);
+        setDcMsg(`Discontinue stored as draft -- sync pending (${data.message || 'ORWDXA DC draft'})`);
+      } else if (data.ok) {
+        setDcMsg(data.message || 'Order discontinue processed');
+        cache.updateOrderStatus(dfn, orderId, 'discontinued');
+        fetchVistaOrders();
       } else {
         setDcMsg(`Discontinue failed: ${data.error || 'unknown error'}`);
       }

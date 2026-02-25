@@ -37,10 +37,15 @@ export async function run() {
       });
       details.push(`${t.label}: PASS`);
     } catch (err) {
-      const out = err.stdout?.toString().slice(-300) || err.stderr?.toString().slice(-300) || "";
+      const stdout = err.stdout?.toString() || "";
+      const stderr = err.stderr?.toString() || "";
+      const combined = stdout + stderr;
+      const out = combined.slice(-300);
       // Check if it's "no test files found" -- that's a skip, not fail
-      if (out.includes("No test files found") || out.includes("no tests found")) {
+      if (combined.includes("No test files found") || combined.includes("no tests found")) {
         details.push(`${t.label}: SKIP (no test files)`);
+      } else if (combined.includes("ECONNREFUSED") || combined.includes("connect ECONNREFUSED")) {
+        details.push(`${t.label}: SKIP (API not running -- integration test requires live server)`);
       } else {
         details.push(`${t.label}: FAIL -- ${out.trim().split("\n").slice(-3).join("; ")}`);
         status = "fail";

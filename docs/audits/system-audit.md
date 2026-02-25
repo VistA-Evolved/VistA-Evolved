@@ -1,7 +1,7 @@
 # VistA-Evolved System Audit
 
-> Generated: 2026-02-25T01:03:20.596Z  
-> HEAD: 6c933f1  
+> Generated: 2026-02-25T02:11:57.687Z  
+> HEAD: be9fe2e  
 > Node: v24.13.0 | pnpm: 10.29.2
 
 ## What Is Truly Wired End-to-End
@@ -59,20 +59,20 @@
 
 ## VistA RPC Coverage
 
-- **Unique RPCs used in code:** 76
-- **RPCs in registry:** 138
-- **Total call sites:** 151
+- **Unique RPCs used in code:** 81
+- **RPCs in registry:** 148
+- **Total call sites:** 156
 - **Unregistered RPCs used:** 0
 - **Unused registered RPCs:** 42
 
 ## API Inventory
 
-- **Total endpoints:** 1197
-- **By tag:** vista(539), rcm(348), other(92), admin(82), portal(79), infra(60), imaging(20), analytics(14), telehealth(13), scheduling(10), interop(10), iam(9), posture(4), auth(3)
+- **Total endpoints:** 1201
+- **By tag:** vista(539), rcm(348), other(92), admin(82), portal(79), infra(60), imaging(20), analytics(14), scheduling(14), telehealth(13), interop(10), iam(9), posture(4), auth(3)
 
 ## UI Inventory
 
-- **web:** 48 pages, 36 dead-click markers
+- **web:** 48 pages, 38 dead-click markers
 - **portal:** 23 pages, 10 dead-click markers
 
 ## CI Enforcement Posture
@@ -90,13 +90,13 @@
 
 | Marker | Files | Total Hits |
 |--------|-------|------------|
-| integration_pending | 60 | 319 |
+| integration_pending | 63 | 331 |
 | mock | 2 | 2 |
 | placeholder | 74 | 197 |
 | todo | 1 | 1 |
 | fixme | 0 | 0 |
 | local_only | 3 | 5 |
-| stub | 42 | 966 |
+| stub | 42 | 970 |
 | not_implemented | 13 | 424 |
 
 ## Top 20 Prioritized Next Build Items

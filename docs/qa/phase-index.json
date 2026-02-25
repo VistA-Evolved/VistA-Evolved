@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-25T01:32:01.059Z",
+  "generatedAt": "2026-02-25T02:06:42.501Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 132,
+  "phaseCount": 133,
   "phases": [
     {
       "phaseNumber": "1",
@@ -1435,6 +1435,35 @@
         "apps/api/tests/scheduling-sd.test.ts",
         "prompts/127-PHASE-123-SCHEDULING-SD/123-01-IMPLEMENT.md",
         "prompts/127-PHASE-123-SCHEDULING-SD/123-99-VERIFY.md"
+      ]
+    },
+    {
+      "phaseNumber": "124",
+      "title": "UI Dead-Click Zero + Stub Reduction (Credibility Pass)",
+      "folder": "128-PHASE-124-DEADCLICK-ZERO",
+      "files": [
+        "124-01-IMPLEMENT.md",
+        "124-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "124-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "124-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "OrdersPanel.tsx",
+        "SurgeryPanel.tsx",
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/web/src/components/cprs/panels/OrdersPanel.tsx",
+        "apps/web/src/components/cprs/panels/SurgeryPanel.tsx",
+        "apps/web/src/app/cprs/inbox/page.tsx",
+        "apps/web/src/app/cprs/remote-data-viewer/page.tsx",
+        "tests/tripwire/tripwire-source-scan.test.ts"
       ]
     },
     {
