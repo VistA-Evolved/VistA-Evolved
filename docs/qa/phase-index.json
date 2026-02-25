@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-25T16:24:56.006Z",
+  "generatedAt": "2026-02-25T17:28:55.549Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 145,
+  "phaseCount": 146,
   "phases": [
     {
       "phaseNumber": "1",
@@ -1972,6 +1972,37 @@
         "apps/web/src/components/cprs/CPRSMenuBar.tsx",
         "docs/parity-coverage-report.md",
         "docs/runbooks/vista-rpc-phase12-parity.md"
+      ]
+    },
+    {
+      "phaseNumber": "135",
+      "title": "Tenant Onboarding + Module Packaging",
+      "folder": "140-PHASE-135-TENANT-ONBOARDING-MODULES",
+      "files": [
+        "135-01-IMPLEMENT.md",
+        "135-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "135-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "135-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "layout.tsx",
+        "page.tsx",
+        "tenant-context.tsx"
+      ],
+      "filesTouched": [
+        "scripts/tenant/provision.mjs",
+        "scripts/tenant/enable-module.mjs",
+        "scripts/tenant/disable-module.mjs",
+        "apps/api/tests/tenant-entitlements.test.ts",
+        "apps/web/src/app/cprs/admin/module-disabled/page.tsx",
+        "apps/api/src/routes/tenant-entitlement-api.ts",
+        "docs/runbooks/tenant-onboarding.md"
       ]
     },
     {

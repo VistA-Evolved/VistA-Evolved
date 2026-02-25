@@ -1,16 +1,17 @@
 'use client';
 
 /**
- * Admin Layout — Phase 76.
+ * Admin Layout — Phase 76, enhanced Phase 135 (deep-link protection).
  *
  * Shared layout for all /cprs/admin/* pages. Provides a sidebar
  * navigation linking to admin consoles. Module-gated: links to
- * disabled module admin pages are hidden.
+ * disabled module admin pages are hidden. Deep-links to disabled
+ * module areas redirect to the module-disabled page.
  */
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, redirect } from 'next/navigation';
 import { useTenant } from '@/stores/tenant-context';
 import styles from '@/components/cprs/cprs.module.css';
 
@@ -55,12 +56,20 @@ const ADMIN_NAV: AdminNavItem[] = [
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { isModuleEnabled } = useTenant();
+  const { isModuleEnabled, tenant } = useTenant();
 
   const visibleItems = ADMIN_NAV.filter((item) => {
     if (!item.moduleId) return true;
     return isModuleEnabled(item.moduleId);
   });
+
+  // Phase 135: Deep-link protection — if the current page belongs to a
+  // disabled module, show the module-disabled page instead of the content.
+  const matchingItem = ADMIN_NAV.find(
+    (item) => item.moduleId && pathname && (pathname === item.href || pathname.startsWith(item.href + '/'))
+  );
+  const isBlockedModule = matchingItem?.moduleId && tenant && !isModuleEnabled(matchingItem.moduleId);
+  const blockedModuleName = matchingItem?.label;
 
   return (
     <div className={styles.cprsPage} style={{ display: 'flex', height: '100%' }}>
@@ -104,7 +113,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         })}
       </nav>
       <main style={{ flex: 1, overflow: 'auto' }}>
-        {children}
+        {isBlockedModule ? (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+            <div style={{ textAlign: 'center', maxWidth: 480, padding: 32, border: '1px solid var(--cprs-border, #d1d5db)', borderRadius: 8, background: 'var(--cprs-surface, #f8f9fa)' }}>
+              <div style={{ fontSize: 48, marginBottom: 16 }}>&#128274;</div>
+              <h1 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 8px' }}>Module Not Enabled</h1>
+              <p style={{ fontSize: 14, color: 'var(--cprs-text-muted, #6b7280)', margin: '0 0 16px' }}>
+                <strong>{blockedModuleName}</strong> is not enabled for your facility.
+                Contact your system administrator to enable this module.
+              </p>
+              <Link href="/cprs/admin/modules" style={{ display: 'inline-block', padding: '8px 20px', fontSize: 13, fontWeight: 600, color: '#fff', background: 'var(--cprs-accent, #2563eb)', borderRadius: 6, textDecoration: 'none' }}>
+                Module Administration
+              </Link>
+            </div>
+          </div>
+        ) : children}
       </main>
     </div>
   );

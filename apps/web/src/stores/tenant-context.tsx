@@ -44,6 +44,8 @@ export interface TenantData {
   facilityName: string;
   facilityStation: string;
   enabledModules: ModuleId[];
+  /** System-level module IDs (kernel, clinical, rcm, etc.) — Phase 135 */
+  systemModules: string[];
   featureFlags: Record<string, boolean>;
   uiDefaults: UIDefaults;
   noteTemplates: NoteTemplate[];
@@ -122,7 +124,11 @@ export function TenantProvider({ children }: { children: ReactNode }) {
 
   const isModuleEnabled = useCallback((moduleId: string): boolean => {
     if (!tenant) return true; // before config loads, allow everything
-    return tenant.enabledModules.includes(moduleId as ModuleId);
+    // Check tab-level modules (cover, meds, etc.)
+    if (tenant.enabledModules.includes(moduleId as ModuleId)) return true;
+    // Check system-level modules (rcm, telehealth, imaging, etc.) — Phase 135
+    if (tenant.systemModules?.includes(moduleId)) return true;
+    return false;
   }, [tenant]);
 
   const isFeatureEnabled = useCallback((flagId: string): boolean => {

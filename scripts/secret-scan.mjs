@@ -76,7 +76,8 @@ const SECRET_PATTERNS = [
     allow: [".md", ".env.example", "AGENTS.md", "BUG-TRACKER.md", "secret-scan.mjs",
             "verify-", "test-", ".test.ts", ".spec.ts", "login/page.tsx", "load-test.mjs", "patient-context.tsx",
             "login-body.json", "tests/k6/", "scripts/audit/", "docs/evidence/",
-            ".hooks/", "tools/", "e2e/", "e2e-results.json", "artifacts/", "qa/gauntlet/"], // login page + test/audit/tool/QA infra use Docker dev creds
+            ".hooks/", "tools/", "e2e/", "e2e-results.json", "artifacts/", "qa/gauntlet/",
+            "scripts/tenant/"], // login page + test/audit/tool/QA infra use Docker dev creds
   },
 ];
 

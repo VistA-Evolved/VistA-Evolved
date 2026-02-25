@@ -27,6 +27,7 @@ import {
   type NoteTemplate,
 } from "../config/tenant-config.js";
 import { probeConnect } from "../vista/rpcBroker.js";
+import { getEnabledModules } from "../modules/module-registry.js";
 
 /* ------------------------------------------------------------------ */
 /* Helper                                                              */
@@ -308,6 +309,10 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     const session = await requireSession(request, reply);
     const tenant = getTenant(session.tenantId);
     if (!tenant) return reply.code(404).send({ ok: false, error: "Tenant not found" });
+
+    // System-level module entitlements (Phase 135)
+    const systemModules = getEnabledModules(session.tenantId || "default");
+
     // Return only client-safe fields (no vistaHost/port, no connector details)
     return {
       ok: true,
@@ -316,6 +321,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
         facilityName: tenant.facilityName,
         facilityStation: tenant.facilityStation,
         enabledModules: tenant.enabledModules,
+        systemModules,
         featureFlags: tenant.featureFlags,
         uiDefaults: tenant.uiDefaults,
         noteTemplates: tenant.noteTemplates.filter((t) => t.active),
