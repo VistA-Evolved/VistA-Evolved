@@ -170,15 +170,23 @@ export function getEnabledModules(tenantId: string = "default"): string[] {
   if (dbEntitlementProvider) {
     try {
       const dbEnabled = dbEntitlementProvider(tenantId);
-      if (dbEnabled.length > 0) {
-        // Still ensure alwaysEnabled modules are included
+      // Check if tenant has actual seeded entitlements (not just alwaysEnabled defaults).
+      // getEnabledModuleIds always returns alwaysEnabled modules (e.g. kernel) even
+      // for unseeded tenants. Detect unseeded tenants by checking whether any returned
+      // module is NOT alwaysEnabled — if all are alwaysEnabled, the tenant has no
+      // explicit entitlements and should fall through to SKU resolution. (Phase 135 fix)
+      const hasExplicitEntitlements = dbEnabled.some(
+        (id) => !moduleDefinitions[id]?.alwaysEnabled
+      );
+      if (hasExplicitEntitlements) {
+        // Tenant has been seeded — use DB as source of truth
         const enabled = new Set(dbEnabled);
         for (const [modId, def] of Object.entries(moduleDefinitions)) {
           if (def.alwaysEnabled) enabled.add(modId);
         }
         return Array.from(enabled);
       }
-      // DB returned empty — tenant not yet seeded, fall through to SKU
+      // Only alwaysEnabled found — tenant not yet seeded, fall through to SKU
     } catch {
       // DB error — fall through to in-memory
     }

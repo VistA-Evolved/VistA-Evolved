@@ -11,7 +11,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname, redirect } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useTenant } from '@/stores/tenant-context';
 import styles from '@/components/cprs/cprs.module.css';
 

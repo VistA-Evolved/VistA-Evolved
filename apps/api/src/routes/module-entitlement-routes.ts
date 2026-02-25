@@ -32,7 +32,10 @@ import {
   countModuleAuditLog,
   isModuleEnabledForTenant,
 } from "../platform/db/repo/module-repo.js";
-import { getEnabledModules as getSkuEnabledModules } from "../modules/module-registry.js";
+import {
+  getActiveSkuProfile,
+  getModuleDefinitions,
+} from "../modules/module-registry.js";
 
 export default async function moduleEntitlementRoutes(
   server: FastifyInstance
@@ -172,8 +175,15 @@ export default async function moduleEntitlementRoutes(
       const body = (request.body as any) || {};
       const tenantId = body.tenantId || session.tenantId || "default";
 
-      // Use SKU-enabled modules as baseline
-      const skuModules = getSkuEnabledModules(tenantId);
+      // If caller provides explicit modules list, use it; otherwise read from SKU config
+      let skuModules: string[];
+      if (Array.isArray(body.modules) && body.modules.length > 0) {
+        skuModules = body.modules;
+      } else {
+        // Read modules directly from SKU config (not from tenant's current state)
+        const skuProfile = getActiveSkuProfile();
+        skuModules = skuProfile?.modules || Object.keys(getModuleDefinitions());
+      }
       const seeded = seedTenantModules(tenantId, skuModules, session.duz);
 
       // Audit

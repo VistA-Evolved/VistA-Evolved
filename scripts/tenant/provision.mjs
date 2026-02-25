@@ -170,11 +170,12 @@ async function main() {
     console.error(`  WARN: Tenant creation via API failed (${err.message}). Continuing with module seeding...`);
   }
 
-  // Step 2: Seed module entitlements
+  // Step 2: Seed module entitlements (pass SKU-specific modules list)
   console.log("Step 2: Seeding module entitlements...");
   try {
     const seedResult = await apiCall("POST", "/admin/modules/entitlements/seed", {
       tenantId: opts.tenantId,
+      modules,
     });
     console.log(`  Seeded ${seedResult.modulesSeeded} modules (${seedResult.totalEnabled} total enabled).`);
   } catch (err) {

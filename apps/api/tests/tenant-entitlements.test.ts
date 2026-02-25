@@ -239,4 +239,55 @@ describe("Phase 135: Module Entitlement Enforcement", () => {
       expect(adminSrc).toContain("getEnabledModules");
     });
   });
+
+  /* ── getEnabledModules unseeded-tenant fallback (Phase 135 fix) ── */
+
+  describe("Unseeded tenant fallback", () => {
+    it("module-registry handles unseeded tenants by checking alwaysEnabled", () => {
+      const registrySrc = readFileSync(
+        join(__dirname, "..", "src", "modules", "module-registry.ts"),
+        "utf-8"
+      );
+      // Phase 135 fix: must check for explicit (non-alwaysEnabled) entitlements
+      expect(registrySrc).toContain("hasExplicitEntitlements");
+      expect(registrySrc).toContain("alwaysEnabled");
+    });
+
+    it("seed route reads SKU modules directly from config, not tenant state", () => {
+      const seedSrc = readFileSync(
+        join(__dirname, "..", "src", "routes", "module-entitlement-routes.ts"),
+        "utf-8"
+      );
+      expect(seedSrc).toContain("getActiveSkuProfile");
+      expect(seedSrc).toContain("getModuleDefinitions");
+    });
+  });
+
+  /* ── Route → module resolution is comprehensive ────── */
+
+  describe("Route to module resolution", () => {
+    it("all modules with routePatterns have valid regex", () => {
+      for (const [modId, def] of Object.entries(modules) as [string, any][]) {
+        for (const pattern of def.routePatterns || []) {
+          expect(() => new RegExp(pattern)).not.toThrow();
+        }
+      }
+    });
+
+    it("telehealth routes are gated by the telehealth module", () => {
+      const telDef = modules.telehealth;
+      expect(telDef).toBeDefined();
+      const patterns = (telDef.routePatterns || []).map((p: string) => new RegExp(p));
+      const matches = patterns.some((r: RegExp) => r.test("/telehealth/rooms"));
+      expect(matches).toBe(true);
+    });
+
+    it("portal routes are gated by the portal module", () => {
+      const portalDef = modules.portal;
+      expect(portalDef).toBeDefined();
+      const patterns = (portalDef.routePatterns || []).map((p: string) => new RegExp(p));
+      const matches = patterns.some((r: RegExp) => r.test("/portal/dashboard"));
+      expect(matches).toBe(true);
+    });
+  });
 });
