@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
 
 interface Props { dfn: string; }
@@ -300,7 +301,7 @@ export default function ImagingPanel({ dfn }: Props) {
       const resp = await fetch(`${API_BASE}/security/break-glass/start`, {
         method: 'POST',
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: JSON.stringify({ reason: breakGlassReason, patientDfn: dfn, ttlMinutes: 30 }),
       });
       if (resp.ok) {
@@ -322,7 +323,7 @@ export default function ImagingPanel({ dfn }: Props) {
       await fetch(`${API_BASE}/security/break-glass/stop`, {
         method: 'POST',
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: JSON.stringify({ breakGlassId: breakGlass.id }),
       });
       setBreakGlass(null);
@@ -1223,7 +1224,7 @@ function ImagingOrderForm({ dfn, onCreated }: { dfn: string; onCreated: () => vo
     try {
       const resp = await fetch(`${API_BASE}/imaging/worklist/orders`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({
           patientDfn: dfn,

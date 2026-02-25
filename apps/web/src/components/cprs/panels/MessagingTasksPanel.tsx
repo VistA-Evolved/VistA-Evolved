@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
 
 /**
@@ -95,7 +96,7 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
       const res = await fetch(`${base}/portal/staff/refills/${refillId}/review`, {
         method: 'POST',
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: JSON.stringify({ action, note: `${action === 'approve' ? 'Approved' : 'Denied'} via CPRS` }),
       });
       if (res.ok) fetchData();
@@ -110,7 +111,7 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
       await fetch(`${base}/portal/staff/messages/${msgId}/reply`, {
         method: 'POST',
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: JSON.stringify({ body }),
       });
       fetchData();

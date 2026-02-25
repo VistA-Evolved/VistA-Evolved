@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
 
 /* ------------------------------------------------------------------ */
@@ -178,7 +179,7 @@ export default function IntakePanel({ dfn }: Props) {
     try {
       const res = await fetch(`${API_BASE}/intake/sessions/${selectedId}/review`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({ reviewed: true }),
       });
@@ -205,7 +206,7 @@ export default function IntakePanel({ dfn }: Props) {
     try {
       const res = await fetch(`${API_BASE}/intake/sessions/${selectedId}/file`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({}),
       });
@@ -232,7 +233,7 @@ export default function IntakePanel({ dfn }: Props) {
     try {
       const res = await fetch(`${API_BASE}/intake/sessions/${selectedId}/export`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({}),
       });

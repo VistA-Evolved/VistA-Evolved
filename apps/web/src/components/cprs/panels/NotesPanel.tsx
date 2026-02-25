@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import { useDataCache, type Note } from '@/stores/data-cache';
 import { useTenant } from '@/stores/tenant-context';
+import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
 
 /* ------------------------------------------------------------------ */
@@ -147,7 +148,7 @@ export default function NotesPanel({ dfn }: Props) {
     try {
       const res = await fetch(`${API_BASE}/vista/cprs/notes/create`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({
           dfn,
@@ -181,7 +182,7 @@ export default function NotesPanel({ dfn }: Props) {
     try {
       const res = await fetch(`${API_BASE}/vista/cprs/notes/sign`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({ dfn, docIen: selected.id, esCode }),
       });
@@ -209,7 +210,7 @@ export default function NotesPanel({ dfn }: Props) {
     try {
       const res = await fetch(`${API_BASE}/vista/cprs/notes/addendum`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({ dfn, parentDocIen: selected.id, noteText: addendumText }),
       });

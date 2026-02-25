@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from '@/stores/session-context';
 import CPRSMenuBar from '@/components/cprs/CPRSMenuBar';
 import styles from '@/components/cprs/cprs.module.css';
+import { csrfHeaders } from '@/lib/csrf';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
@@ -85,7 +86,7 @@ export default function InboxPage() {
     try {
       const res = await fetch(`${API_BASE}/vista/inbox/acknowledge`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({ itemId: id }),
       });

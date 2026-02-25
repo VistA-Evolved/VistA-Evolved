@@ -13,6 +13,7 @@
  */
 
 import React, { useEffect, useState, useCallback } from 'react';
+import { csrfHeaders } from '@/lib/csrf';
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -158,7 +159,7 @@ export default function ClaimsQueuePage() {
       const res = await fetch(`${API}/rcm/claims/lifecycle/${id}/scrub`, {
         method: 'POST',
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: JSON.stringify({}),
       });
       const data = await res.json();
@@ -176,7 +177,7 @@ export default function ClaimsQueuePage() {
       const res = await fetch(`${API}/rcm/claims/lifecycle/${id}/transition`, {
         method: 'PUT',
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: JSON.stringify({ toStatus }),
       });
       const data = await res.json();
@@ -197,7 +198,7 @@ export default function ClaimsQueuePage() {
       const res = await fetch(`${API}/rcm/claims/lifecycle`, {
         method: 'POST',
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: JSON.stringify(formData),
       });
       const data = await res.json();

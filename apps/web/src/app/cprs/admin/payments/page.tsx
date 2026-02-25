@@ -16,6 +16,7 @@
  */
 
 import React, { useEffect, useState, useCallback } from 'react';
+import { csrfHeaders } from '@/lib/csrf';
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -168,7 +169,7 @@ function BatchesTab() {
     try {
       const res = await fetch(`${API}/payerops/payments/batches`, {
         method: 'POST', credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: JSON.stringify(formData),
       });
       const data = await res.json();
@@ -184,13 +185,13 @@ function BatchesTab() {
       // Upload
       await fetch(`${API}/payerops/payments/batches/${batchId}/upload`, {
         method: 'POST', credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: JSON.stringify({ content: csvContent, fileName: 'remittance.csv' }),
       });
       // Import
       const res = await fetch(`${API}/payerops/payments/batches/${batchId}/import`, {
         method: 'POST', credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
       });
       const data = await res.json();
       if (data.ok) {
@@ -210,7 +211,7 @@ function BatchesTab() {
     try {
       const res = await fetch(`${API}/payerops/payments/batches/${batchId}/match`, {
         method: 'POST', credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
       });
       const data = await res.json();
       if (data.ok) {
@@ -401,7 +402,7 @@ function ReconciliationTab() {
     try {
       const res = await fetch(`${API}/payerops/payments/reconciliation/${lineId}/link-claim`, {
         method: 'POST', credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: JSON.stringify({ claimCaseId: claimIdInput }),
       });
       const data = await res.json();

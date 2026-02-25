@@ -15,6 +15,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import { csrfHeaders } from '@/lib/csrf';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -66,7 +67,7 @@ async function clinicianFetch<T = unknown>(
     const res = await fetch(`${API_BASE}${path}`, {
       ...opts,
       credentials: 'include',
-      headers: { 'Content-Type': 'application/json', ...opts.headers },
+      headers: { 'Content-Type': 'application/json', ...csrfHeaders(), ...opts.headers },
     });
     if (!res.ok) {
       const body = await res.text();

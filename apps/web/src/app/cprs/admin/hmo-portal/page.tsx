@@ -14,6 +14,7 @@
  */
 
 import React, { useState, useEffect, useCallback } from "react";
+import { csrfHeaders } from '@/lib/csrf';
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
@@ -95,8 +96,8 @@ interface SpecialtyTemplate {
 async function apiFetch<T>(path: string, opts?: RequestInit): Promise<T> {
   const res = await fetch(`${API}${path}`, {
     credentials: "include",
-    headers: { "Content-Type": "application/json" },
     ...opts,
+    headers: { "Content-Type": "application/json", ...csrfHeaders(), ...(opts?.headers as Record<string,string> || {}) },
   });
   return res.json() as Promise<T>;
 }

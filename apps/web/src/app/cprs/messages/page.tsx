@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from '@/stores/session-context';
 import CPRSMenuBar from '@/components/cprs/CPRSMenuBar';
 import styles from '@/components/cprs/cprs.module.css';
+import { csrfHeaders } from '@/lib/csrf';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
@@ -218,6 +219,7 @@ export default function MessagesPage() {
         await fetch(`${API_BASE}/messaging/message/${msg.id}/read`, {
           method: 'POST',
           credentials: 'include',
+          headers: { ...csrfHeaders() },
         });
       } catch { /* silent */ }
     }
@@ -233,7 +235,7 @@ export default function MessagesPage() {
         await fetch(`${API_BASE}/messaging/mail-manage`, {
           method: 'POST',
           credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
           body: JSON.stringify({ action: 'markread', ien: msg.ien, basket: selectedFolderId }),
         });
         // Refresh folder counts
@@ -267,7 +269,7 @@ export default function MessagesPage() {
       const res = await fetch(`${API_BASE}/messaging/compose`, {
         method: 'POST',
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: JSON.stringify({
           subject: composeSubject,
           body: composeBody,

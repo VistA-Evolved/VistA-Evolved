@@ -16,11 +16,16 @@
 
 import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { csrfHeaders } from '@/lib/csrf';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 async function apiFetch(path: string, opts?: RequestInit) {
-  const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
+  const res = await fetch(`${API_BASE}${path}`, {
+    credentials: 'include',
+    ...opts,
+    headers: { ...csrfHeaders(), ...(opts?.headers || {}) },
+  });
   if (!res.ok) throw new Error(`API ${res.status}`);
   return res.json();
 }

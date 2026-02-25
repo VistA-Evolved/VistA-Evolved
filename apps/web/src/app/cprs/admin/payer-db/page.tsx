@@ -10,6 +10,7 @@
  */
 
 import React, { useEffect, useState, useCallback } from 'react';
+import { csrfHeaders } from '@/lib/csrf';
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
@@ -63,8 +64,8 @@ interface AuditEvent {
 async function api(path: string, opts?: RequestInit) {
   const res = await fetch(`${API}${path}`, {
     credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
     ...opts,
+    headers: { 'Content-Type': 'application/json', ...csrfHeaders(), ...(opts?.headers || {}) },
   });
   return res.json();
 }

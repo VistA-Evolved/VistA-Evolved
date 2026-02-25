@@ -12,6 +12,7 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { csrfHeaders } from '@/lib/csrf';
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -112,7 +113,7 @@ export default function LoaWorkbenchPage() {
     try {
       const res = await fetch(`${API}/rcm/loa`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({
           patientDfn: formPatientDfn,
@@ -145,7 +146,7 @@ export default function LoaWorkbenchPage() {
     try {
       const res = await fetch(`${API}/rcm/loa/${id}/submit`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({ actor: 'billing-staff' }),
       });
@@ -163,7 +164,7 @@ export default function LoaWorkbenchPage() {
     try {
       const res = await fetch(`${API}/rcm/loa/${id}/approve`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({ referenceNumber: refNum, actor: 'billing-staff' }),
       });
@@ -181,7 +182,7 @@ export default function LoaWorkbenchPage() {
     try {
       const res = await fetch(`${API}/rcm/loa/${id}/deny`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({ reason, actor: 'billing-staff' }),
       });

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useCPRSUI } from '../../../stores/cprs-ui-state';
 import { useDataCache, type Vital } from '../../../stores/data-cache';
+import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
@@ -44,7 +45,7 @@ export default function AddVitalDialog() {
     try {
       const res = await fetch(`${API_BASE}/vista/cprs/vitals/add`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Idempotency-Key': `vital-${dfn}-${Date.now()}` },
+        headers: { 'Content-Type': 'application/json', 'X-Idempotency-Key': `vital-${dfn}-${Date.now()}`, ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({ dfn, vitalType, value, units }),
       });

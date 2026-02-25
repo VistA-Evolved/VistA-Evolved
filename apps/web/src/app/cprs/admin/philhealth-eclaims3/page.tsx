@@ -13,6 +13,7 @@
  */
 
 import React, { useState, useEffect, useCallback } from "react";
+import { csrfHeaders } from '@/lib/csrf';
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
@@ -202,7 +203,7 @@ export default function PhilHealthEClaims3Page() {
       const res = await fetch(`${API}/rcm/eclaims3/packets`, {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...csrfHeaders() },
         body: JSON.stringify({ draftId: selectedDraftId, actor: "admin-ui" }),
       });
       const data = await res.json();
@@ -224,7 +225,7 @@ export default function PhilHealthEClaims3Page() {
       const res = await fetch(`${API}/rcm/eclaims3/packets/${builtPacket.packetId}/export`, {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...csrfHeaders() },
         body: JSON.stringify({ actor: "admin-ui" }),
       });
       const data = await res.json();
@@ -241,7 +242,7 @@ export default function PhilHealthEClaims3Page() {
       const res = await fetch(`${API}/rcm/eclaims3/submissions/${subId}/status`, {
         method: "PUT",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...csrfHeaders() },
         body: JSON.stringify({
           status: toStatus,
           actor: "admin-ui",
@@ -264,7 +265,7 @@ export default function PhilHealthEClaims3Page() {
       await fetch(`${API}/rcm/eclaims3/submissions/${subId}/denial`, {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...csrfHeaders() },
         body: JSON.stringify({
           text: denialText,
           code: denialCode || undefined,

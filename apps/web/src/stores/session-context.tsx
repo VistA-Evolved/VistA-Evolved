@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
-import { setCsrfToken, clearCsrfToken } from '@/lib/csrf';
+import { setCsrfToken, clearCsrfToken, csrfHeaders } from '@/lib/csrf';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -99,7 +99,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       await fetch(`${API_BASE}/auth/logout`, {
         method: 'POST',
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: '{}',
       });
     } catch { /* best-effort */ }

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useCPRSUI } from '../../../stores/cprs-ui-state';
+import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
@@ -30,7 +31,7 @@ export default function AcknowledgeLabDialog() {
     try {
       const res = await fetch(`${API_BASE}/vista/cprs/labs/ack`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Idempotency-Key': `lab-ack-${dfn}-${Date.now()}` },
+        headers: { 'Content-Type': 'application/json', 'X-Idempotency-Key': `lab-ack-${dfn}-${Date.now()}`, ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({ dfn, labIds }),
       });

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useCPRSUI } from '../../../stores/cprs-ui-state';
 import { useDataCache } from '../../../stores/data-cache';
+import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
@@ -37,7 +38,7 @@ export default function AddAllergyDialog() {
     try {
       const res = await fetch(`${API_BASE}/vista/cprs/allergies/add`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Idempotency-Key': `allergy-${dfn}-${Date.now()}` },
+        headers: { 'Content-Type': 'application/json', 'X-Idempotency-Key': `allergy-${dfn}-${Date.now()}`, ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({ dfn, reactant, reactions: reactionList, severity, observedHistorical, comments }),
       });

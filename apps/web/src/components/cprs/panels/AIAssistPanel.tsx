@@ -14,6 +14,7 @@
  */
 
 import { useState, useCallback } from 'react';
+import { csrfHeaders } from '@/lib/csrf';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -74,8 +75,8 @@ interface AuditStats {
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, {
     credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
     ...opts,
+    headers: { 'Content-Type': 'application/json', ...csrfHeaders(), ...(opts?.headers || {}) },
   });
   return res.json();
 }

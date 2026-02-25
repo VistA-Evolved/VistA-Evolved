@@ -13,6 +13,7 @@
  */
 
 import React, { useEffect, useState, useCallback } from 'react';
+import { csrfHeaders } from '@/lib/csrf';
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -95,7 +96,7 @@ export default function PhilHealthSetupPage() {
     try {
       const res = await fetch(`${API}/rcm/philhealth/setup`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({ facilityCode, facilityName, accreditationNumber, accreditationExpiry }),
       });
@@ -118,7 +119,7 @@ export default function PhilHealthSetupPage() {
     try {
       const res = await fetch(`${API}/rcm/philhealth/setup/providers`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({
           providerName: newProviderName,
@@ -144,6 +145,7 @@ export default function PhilHealthSetupPage() {
       const res = await fetch(`${API}/rcm/philhealth/setup/providers/${encodeURIComponent(prc)}`, {
         method: 'DELETE',
         credentials: 'include',
+        headers: { ...csrfHeaders() },
       });
       const data = await res.json();
       if (data.ok) setSetup(data.setup);
@@ -156,7 +158,7 @@ export default function PhilHealthSetupPage() {
     try {
       const res = await fetch(`${API}/rcm/philhealth/setup/readiness/${encodeURIComponent(itemId)}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({ completed }),
       });

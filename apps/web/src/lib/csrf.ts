@@ -66,6 +66,15 @@ export function getCsrfTokenSync(): string {
 }
 
 /**
+ * Get a headers object with the CSRF token for mutation requests.
+ * Returns `{ 'x-csrf-token': token }` if cached, empty object otherwise.
+ * Usage: `headers: { 'content-type': 'application/json', ...csrfHeaders() }`
+ */
+export function csrfHeaders(): Record<string, string> {
+  return _token ? { "x-csrf-token": _token } : {};
+}
+
+/**
  * Clear the cached CSRF token (on logout).
  */
 export function clearCsrfToken(): void {

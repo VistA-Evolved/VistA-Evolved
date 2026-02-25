@@ -10,6 +10,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import styles from '@/components/cprs/cprs.module.css';
+import { csrfHeaders } from '@/lib/csrf';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
@@ -17,7 +18,11 @@ type SLARisk = 'on_track' | 'at_risk' | 'overdue' | 'critical';
 type Priority = 'routine' | 'urgent' | 'stat';
 
 async function apiFetch(path: string, opts?: RequestInit) {
-  const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
+  const res = await fetch(`${API_BASE}${path}`, {
+    credentials: 'include',
+    ...opts,
+    headers: { ...csrfHeaders(), ...(opts?.headers || {}) },
+  });
   return res.json();
 }
 

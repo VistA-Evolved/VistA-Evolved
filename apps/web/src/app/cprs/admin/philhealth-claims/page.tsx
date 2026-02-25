@@ -14,6 +14,7 @@
  */
 
 import React, { useEffect, useState, useCallback } from 'react';
+import { csrfHeaders } from '@/lib/csrf';
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -119,7 +120,7 @@ export default function PhilHealthClaimsPage() {
     try {
       const res = await fetch(`${API}/rcm/philhealth/claims`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({
           patientLastName: fLastName,
@@ -149,6 +150,7 @@ export default function PhilHealthClaimsPage() {
       const res = await fetch(`${API}/rcm/philhealth/claims/${selectedId}/validate`, {
         method: 'POST',
         credentials: 'include',
+        headers: { ...csrfHeaders() },
       });
       const data = await res.json();
       if (data.ok) setValidation(data.validation);
@@ -162,7 +164,7 @@ export default function PhilHealthClaimsPage() {
     try {
       const res = await fetch(`${API}/rcm/philhealth/claims/${selectedId}/status`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({ status }),
       });
@@ -184,6 +186,7 @@ export default function PhilHealthClaimsPage() {
       const res = await fetch(`${API}/rcm/philhealth/claims/${selectedId}/export`, {
         method: 'POST',
         credentials: 'include',
+        headers: { ...csrfHeaders() },
       });
       const data = await res.json();
       if (data.ok) {
@@ -203,6 +206,7 @@ export default function PhilHealthClaimsPage() {
       const res = await fetch(`${API}/rcm/philhealth/claims/${selectedId}/test-upload`, {
         method: 'POST',
         credentials: 'include',
+        headers: { ...csrfHeaders() },
       });
       const data = await res.json();
       if (data.ok) {

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useCPRSUI } from '../../../stores/cprs-ui-state';
 import { useDataCache } from '../../../stores/data-cache';
+import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
@@ -32,7 +33,7 @@ export default function EditProblemDialog() {
       // Try API first
       const res = await fetch(`${API_BASE}/vista/cprs/problems/edit`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Idempotency-Key': `problem-edit-${dfn}-${Date.now()}` },
+        headers: { 'Content-Type': 'application/json', 'X-Idempotency-Key': `problem-edit-${dfn}-${Date.now()}`, ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({ dfn, problemIen: problem.id, problemText: problem.description, status, comment: note, icdCode: problem.icdCode }),
       });

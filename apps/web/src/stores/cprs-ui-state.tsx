@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useCallback, useEffect, useRef, type ReactNode } from 'react';
+import { csrfHeaders } from '@/lib/csrf';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -151,7 +152,7 @@ async function pushServerPrefs(layout: CoverSheetLayout): Promise<boolean> {
   try {
     const res = await fetch(`${API_BASE}/ui-prefs/coversheet`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
       credentials: 'include',
       body: JSON.stringify(layout),
     });
@@ -164,6 +165,7 @@ async function resetServerPrefs(): Promise<boolean> {
     const res = await fetch(`${API_BASE}/ui-prefs/coversheet`, {
       method: 'DELETE',
       credentials: 'include',
+      headers: { ...csrfHeaders() },
     });
     return res.ok;
   } catch { return false; }

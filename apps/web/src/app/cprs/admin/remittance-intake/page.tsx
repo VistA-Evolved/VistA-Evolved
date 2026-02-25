@@ -12,6 +12,7 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { csrfHeaders } from '@/lib/csrf';
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -108,7 +109,7 @@ export default function RemittanceIntakePage() {
     try {
       const res = await fetch(`${API}/rcm/remittance`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({
           payerId: formPayer,
@@ -137,7 +138,7 @@ export default function RemittanceIntakePage() {
     try {
       const res = await fetch(`${API}/rcm/remittance/${id}/review`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({ actor: 'billing-staff' }),
       });
@@ -161,7 +162,7 @@ export default function RemittanceIntakePage() {
     try {
       const res = await fetch(`${API}/rcm/remittance/${id}/post`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({ postingNotes: notes, actor: 'billing-staff' }),
       });

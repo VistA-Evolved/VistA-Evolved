@@ -19,6 +19,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useSession } from '@/stores/session-context';
+import { csrfHeaders } from '@/lib/csrf';
 import styles from '@/components/cprs/cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
@@ -340,7 +341,7 @@ export default function IntegrationsPage() {
         {
           method: 'POST',
           credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
           body: JSON.stringify({ reason: unmaskReason }),
           signal: AbortSignal.timeout(15000),
         },
@@ -374,11 +375,11 @@ export default function IntegrationsPage() {
     setError(null);
     try {
       await fetch(`${API_BASE}/admin/registry/${tenantId}/probe-all`, {
-        method: 'POST', credentials: 'include',
+        method: 'POST', credentials: 'include', headers: { ...csrfHeaders() },
       });
       // Also probe legacy connectors
       await fetch(`${API_BASE}/admin/integrations/${tenantId}/probe`, {
-        method: 'POST', credentials: 'include',
+        method: 'POST', credentials: 'include', headers: { ...csrfHeaders() },
       });
       await fetchAll();
     } catch (e: unknown) {
@@ -393,7 +394,7 @@ export default function IntegrationsPage() {
       await fetch(`${API_BASE}/admin/registry/${tenantId}/${integrationId}/toggle`, {
         method: 'POST',
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: JSON.stringify({ enabled }),
       });
       await fetchRegistry();
@@ -404,7 +405,7 @@ export default function IntegrationsPage() {
   async function handleProbeSingle(integrationId: string) {
     try {
       await fetch(`${API_BASE}/admin/registry/${tenantId}/${integrationId}/probe`, {
-        method: 'POST', credentials: 'include',
+        method: 'POST', credentials: 'include', headers: { ...csrfHeaders() },
       });
       await fetchRegistry();
       await fetchHealthSummary();
@@ -428,7 +429,7 @@ export default function IntegrationsPage() {
       const res = await fetch(`${API_BASE}/admin/registry/${tenantId}/onboard-device`, {
         method: 'POST',
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: JSON.stringify({ ...deviceForm, port: Number(deviceForm.port) }),
       });
       const data = await res.json();

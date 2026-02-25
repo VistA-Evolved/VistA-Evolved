@@ -13,6 +13,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import { csrfHeaders } from '@/lib/csrf';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
@@ -143,7 +144,11 @@ export default function AnalyticsPage() {
   /* ── Fetchers ──────────────────────────────────────────────────── */
 
   const apiFetch = useCallback(async (path: string, opts?: RequestInit) => {
-    const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
+    const res = await fetch(`${API_BASE}${path}`, {
+      credentials: 'include',
+      ...opts,
+      headers: { ...csrfHeaders(), ...(opts?.headers || {}) },
+    });
     if (!res.ok) {
       const body = await res.json().catch(() => ({ error: res.statusText }));
       throw new Error(body.error || res.statusText);

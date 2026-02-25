@@ -14,6 +14,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import { csrfHeaders } from '@/lib/csrf';
 import styles from '@/components/cprs/cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
@@ -21,7 +22,11 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 type Tab = 'upload' | 'payments' | 'matches' | 'underpayments' | 'dashboard';
 
 async function apiFetch(path: string, opts?: RequestInit) {
-  const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
+  const res = await fetch(`${API_BASE}${path}`, {
+    credentials: 'include',
+    ...opts,
+    headers: { ...csrfHeaders(), ...(opts?.headers || {}) },
+  });
   return res.json();
 }
 
