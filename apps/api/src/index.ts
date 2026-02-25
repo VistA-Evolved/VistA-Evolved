@@ -2377,6 +2377,42 @@ try {
     } catch (idErr: any) {
       log.warn("Idempotency repo wire failed (non-fatal)", { error: idErr.message });
     }
+    // Phase 121: Wire DB-backed RCM claim store
+    try {
+      const rcRepo = await import("./platform/db/repo/rcm-claim-repo.js");
+      const { initClaimStoreRepo } = await import("./rcm/domain/claim-store.js");
+      initClaimStoreRepo(rcRepo);
+      log.info("RCM claim store wired to DB");
+    } catch (rcErr: any) {
+      log.warn("RCM claim repo wire failed (non-fatal)", { error: rcErr.message });
+    }
+    // Phase 121: Wire DB-backed RCM claim case store
+    try {
+      const ccRepo = await import("./platform/db/repo/rcm-claim-case-repo.js");
+      const { initClaimCaseRepo } = await import("./rcm/claims/claim-store.js");
+      initClaimCaseRepo(ccRepo);
+      log.info("RCM claim case store wired to DB");
+    } catch (ccErr: any) {
+      log.warn("RCM claim case repo wire failed (non-fatal)", { error: ccErr.message });
+    }
+    // Phase 121: Wire DB-backed portal access log store
+    try {
+      const alRepo = await import("./platform/db/repo/access-log-repo.js");
+      const { initAccessLogRepo } = await import("./portal-iam/access-log-store.js");
+      initAccessLogRepo(alRepo);
+      log.info("Portal access log store wired to DB");
+    } catch (alErr: any) {
+      log.warn("Portal access log repo wire failed (non-fatal)", { error: alErr.message });
+    }
+    // Phase 121: Wire DB-backed scheduling request store
+    try {
+      const srRepo = await import("./platform/db/repo/scheduling-request-repo.js");
+      const { initSchedulingRepo } = await import("./adapters/scheduling/vista-adapter.js");
+      initSchedulingRepo(srRepo);
+      log.info("Scheduling request store wired to DB");
+    } catch (srErr: any) {
+      log.warn("Scheduling request repo wire failed (non-fatal)", { error: srErr.message });
+    }
     // Phase 109: Seed module catalog + default tenant entitlements from modules.json
     try {
       const { seedModuleCatalogFromConfig } = await import("./modules/module-catalog-seed.js");

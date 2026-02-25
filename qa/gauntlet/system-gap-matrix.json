@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-02-24T23:38:55.327Z",
-  "headSha": "c96fea7",
+  "generatedAt": "2026-02-25T00:16:54.515Z",
+  "headSha": "291c615",
   "domains": [
     {
       "domain": "AUTH_IAM",
@@ -771,7 +771,7 @@
       "evidence": [
         {
           "metric": "sqliteTables",
-          "value": 41
+          "value": 46
         },
         {
           "metric": "inMemoryMaps",
@@ -779,23 +779,23 @@
         },
         {
           "metric": "highRiskMaps",
-          "value": 49
+          "value": 40
         },
         {
           "metric": "medRiskMaps",
-          "value": 28
+          "value": 27
         }
       ],
       "topGaps": [
         {
-          "gap": "49 high-risk in-memory stores lose data on restart",
+          "gap": "40 high-risk in-memory stores lose data on restart",
           "severity": "high",
           "evidenceFiles": [
             "apps/api/src/adapters/adapter-loader.ts",
-            "apps/api/src/adapters/scheduling/vista-adapter.ts",
-            "apps/api/src/adapters/scheduling/vista-adapter.ts",
             "apps/api/src/rcm/claim-lifecycle/scrubber.ts",
-            "apps/api/src/rcm/claims/claim-store.ts"
+            "apps/api/src/rcm/edi/ack-status-processor.ts",
+            "apps/api/src/rcm/edi/ack-status-processor.ts",
+            "apps/api/src/rcm/edi/ack-status-processor.ts"
           ]
         }
       ],
@@ -837,20 +837,6 @@
       ]
     },
     {
-      "risk": "In-memory store requestStore in apps/api/src/adapters/scheduling/vista-adapter.ts loses WaitListEntry data on restart",
-      "severity": "high",
-      "evidence": [
-        "apps/api/src/adapters/scheduling/vista-adapter.ts:144"
-      ]
-    },
-    {
-      "risk": "In-memory store bookingLocks in apps/api/src/adapters/scheduling/vista-adapter.ts loses number data on restart",
-      "severity": "high",
-      "evidence": [
-        "apps/api/src/adapters/scheduling/vista-adapter.ts:148"
-      ]
-    },
-    {
       "risk": "In-memory store ruleMap in apps/api/src/rcm/claim-lifecycle/scrubber.ts loses ScrubRuleRow data on restart",
       "severity": "high",
       "evidence": [
@@ -858,10 +844,24 @@
       ]
     },
     {
-      "risk": "In-memory store cases in apps/api/src/rcm/claims/claim-store.ts loses ClaimCase data on restart",
+      "risk": "In-memory store claimAckIndex in apps/api/src/rcm/edi/ack-status-processor.ts loses string data on restart",
       "severity": "high",
       "evidence": [
-        "apps/api/src/rcm/claims/claim-store.ts:24"
+        "apps/api/src/rcm/edi/ack-status-processor.ts:24"
+      ]
+    },
+    {
+      "risk": "In-memory store statusUpdates in apps/api/src/rcm/edi/ack-status-processor.ts loses ClaimStatusUpdate data on restart",
+      "severity": "high",
+      "evidence": [
+        "apps/api/src/rcm/edi/ack-status-processor.ts:29"
+      ]
+    },
+    {
+      "risk": "In-memory store claimStatusIndex in apps/api/src/rcm/edi/ack-status-processor.ts loses string data on restart",
+      "severity": "high",
+      "evidence": [
+        "apps/api/src/rcm/edi/ack-status-processor.ts:30"
       ]
     },
     {

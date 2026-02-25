@@ -1,5 +1,5 @@
 /**
- * Access Log Store — Phase 29
+ * Access Log Store — Phase 29 (DB-hybrid Phase 121)
  *
  * Patient-visible activity log: "events performed by you or your proxy"
  *
@@ -8,11 +8,53 @@
  *
  * PHI-safe: No SSN, DOB, or clinical content in log entries.
  * Only stores event type, actor name, timestamp, and generic metadata.
+ *
+ * Phase 121: DB-backed hybrid — writes go to both cache + DB,
+ * reads try cache first then fall back to DB on miss.
  */
 
 import { randomBytes } from "node:crypto";
 import type { AccessLogEntry, AccessLogEventType } from "./types.js";
 import { log } from "../lib/logger.js";
+
+/* ------------------------------------------------------------------ */
+/* DB-backed hybrid (Phase 121)                                          */
+/* ------------------------------------------------------------------ */
+
+export interface AccessLogRepo {
+  insertAccessLog(data: {
+    id: string;
+    userId: string;
+    actorName: string;
+    isProxy: boolean;
+    targetPatientDfn: string | null;
+    eventType: string;
+    description: string;
+    metadataJson?: string;
+    createdAt: string;
+  }): void;
+  findAccessLogsByUser(
+    userId: string,
+    opts?: { eventType?: string; since?: string; limit?: number; offset?: number },
+  ): any[];
+  countAccessLogsByUser(userId: string): number;
+  countAllAccessLogs(): number;
+  getAccessLogStats(): { total: number; users: number };
+}
+
+let dbRepo: AccessLogRepo | null = null;
+
+/** Called from index.ts after initPlatformDb() */
+export function initAccessLogRepo(repo: AccessLogRepo): void {
+  dbRepo = repo;
+  log.info("Access log store wired to DB (Phase 121)");
+}
+
+function dbWarn(op: string, err: unknown): void {
+  log.warn(`Access log DB ${op} failed (cache-only)`, {
+    error: err instanceof Error ? err.message : String(err),
+  });
+}
 
 /* ------------------------------------------------------------------ */
 /* Configuration                                                        */
@@ -109,6 +151,25 @@ export function appendAccessLog(
   userLog.push(logEntry);
   totalEntries++;
 
+  // Phase 121: Write-through to DB
+  if (dbRepo) {
+    try {
+      dbRepo.insertAccessLog({
+        id: logEntry.id,
+        userId,
+        actorName: logEntry.actorName,
+        isProxy: logEntry.isProxy,
+        targetPatientDfn: logEntry.targetPatientDfn,
+        eventType: logEntry.eventType,
+        description: logEntry.description,
+        metadataJson: JSON.stringify(logEntry.metadata ?? {}),
+        createdAt: logEntry.timestamp,
+      });
+    } catch (err) {
+      dbWarn("insert", err);
+    }
+  }
+
   return logEntry;
 }
 
@@ -150,7 +211,53 @@ export function getAccessLog(
 ): { entries: AccessLogEntry[]; total: number } {
   const userLog = accessLogs.get(userId) ?? [];
 
-  let filtered = userLog;
+  // Phase 121: If cache is empty for this user, try DB
+  if (userLog.length === 0 && dbRepo) {
+    try {
+      const dbRows = dbRepo.findAccessLogsByUser(userId, {
+        eventType: opts?.eventType,
+        since: opts?.since,
+        limit: opts?.limit ?? 50,
+        offset: opts?.offset ?? 0,
+      });
+      if (dbRows.length > 0) {
+        const total = dbRepo.countAccessLogsByUser(userId);
+        const entries: AccessLogEntry[] = dbRows.map((r: any) => ({
+          id: r.id,
+          timestamp: r.createdAt,
+          userId: r.userId,
+          actorName: r.actorName,
+          isProxy: Boolean(r.isProxy),
+          targetPatientDfn: r.targetPatientDfn,
+          eventType: r.eventType as AccessLogEventType,
+          description: r.description,
+          metadata: r.metadataJson ? JSON.parse(r.metadataJson) : {},
+        }));
+        // Rehydrate cache
+        const all = dbRepo.findAccessLogsByUser(userId, { limit: MAX_ENTRIES_PER_USER });
+        const rehydrated: AccessLogEntry[] = all.map((r: any) => ({
+          id: r.id,
+          timestamp: r.createdAt,
+          userId: r.userId,
+          actorName: r.actorName,
+          isProxy: Boolean(r.isProxy),
+          targetPatientDfn: r.targetPatientDfn,
+          eventType: r.eventType as AccessLogEventType,
+          description: r.description,
+          metadata: r.metadataJson ? JSON.parse(r.metadataJson) : {},
+        }));
+        // DB returns newest-first, cache stores oldest-first
+        rehydrated.reverse();
+        accessLogs.set(userId, rehydrated);
+        totalEntries += rehydrated.length;
+        return { entries, total };
+      }
+    } catch (err) {
+      dbWarn("fallback-read", err);
+    }
+  }
+
+  let filtered: AccessLogEntry[] = userLog;
 
   if (opts?.eventType) {
     filtered = filtered.filter((e) => e.eventType === opts.eventType);
@@ -303,9 +410,23 @@ export function getAccessLogStats(): {
       byEventType[e.eventType] = (byEventType[e.eventType] || 0) + 1;
     }
   }
+
+  // Phase 121: Supplement with DB counts when cache is cold
+  let effectiveTotal = totalEntries;
+  let effectiveUsers = accessLogs.size;
+  if (dbRepo && totalEntries === 0) {
+    try {
+      const dbStats = dbRepo.getAccessLogStats();
+      effectiveTotal = dbStats.total;
+      effectiveUsers = dbStats.users;
+    } catch (err) {
+      dbWarn("stats", err);
+    }
+  }
+
   return {
-    totalEntries,
-    usersWithLogs: accessLogs.size,
+    totalEntries: effectiveTotal,
+    usersWithLogs: effectiveUsers,
     byEventType,
   };
 }

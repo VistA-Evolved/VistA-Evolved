@@ -901,6 +901,165 @@ CREATE TABLE IF NOT EXISTS idempotency_key (
 );
 CREATE INDEX IF NOT EXISTS idx_idem_expires ON idempotency_key(expires_at);
 
+-- AP) rcm_claim — Phase 121: Durable RCM claims
+CREATE TABLE IF NOT EXISTS rcm_claim (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  claim_type TEXT NOT NULL DEFAULT 'professional',
+  status TEXT NOT NULL DEFAULT 'draft',
+  patient_dfn TEXT NOT NULL,
+  patient_name TEXT,
+  patient_dob TEXT,
+  patient_first_name TEXT,
+  patient_last_name TEXT,
+  patient_gender TEXT,
+  subscriber_id TEXT,
+  billing_provider_npi TEXT,
+  rendering_provider_npi TEXT,
+  facility_npi TEXT,
+  facility_name TEXT,
+  facility_tax_id TEXT,
+  payer_id TEXT NOT NULL,
+  payer_name TEXT,
+  payer_claim_id TEXT,
+  date_of_service TEXT NOT NULL,
+  diagnoses_json TEXT NOT NULL DEFAULT '[]',
+  lines_json TEXT NOT NULL DEFAULT '[]',
+  total_charge INTEGER NOT NULL DEFAULT 0,
+  edi_transaction_id TEXT,
+  connector_id TEXT,
+  submitted_at TEXT,
+  response_received_at TEXT,
+  paid_amount INTEGER,
+  adjustment_amount INTEGER,
+  patient_responsibility INTEGER,
+  remit_date TEXT,
+  vista_charge_ien TEXT,
+  vista_ar_ien TEXT,
+  validation_result_json TEXT,
+  pipeline_entry_id TEXT,
+  export_artifact_path TEXT,
+  is_demo INTEGER NOT NULL DEFAULT 0,
+  submission_safety_mode TEXT NOT NULL DEFAULT 'export_only',
+  is_mock INTEGER NOT NULL DEFAULT 0,
+  audit_trail_json TEXT NOT NULL DEFAULT '[]',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rcmcl_tenant ON rcm_claim(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rcmcl_status ON rcm_claim(status);
+CREATE INDEX IF NOT EXISTS idx_rcmcl_payer ON rcm_claim(payer_id);
+CREATE INDEX IF NOT EXISTS idx_rcmcl_patient ON rcm_claim(patient_dfn);
+
+-- AQ) rcm_remittance — Phase 121: Durable remittances
+CREATE TABLE IF NOT EXISTS rcm_remittance (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  status TEXT NOT NULL DEFAULT 'received',
+  edi_transaction_id TEXT,
+  check_number TEXT,
+  check_date TEXT,
+  eft_trace_number TEXT,
+  payer_id TEXT NOT NULL,
+  payer_name TEXT,
+  claim_id TEXT,
+  payer_claim_id TEXT,
+  patient_dfn TEXT,
+  total_charged INTEGER NOT NULL DEFAULT 0,
+  total_paid INTEGER NOT NULL DEFAULT 0,
+  total_adjusted INTEGER NOT NULL DEFAULT 0,
+  total_patient_responsibility INTEGER NOT NULL DEFAULT 0,
+  service_lines_json TEXT NOT NULL DEFAULT '[]',
+  is_mock INTEGER NOT NULL DEFAULT 0,
+  imported_at TEXT NOT NULL,
+  matched_at TEXT,
+  posted_at TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rcmrm_tenant ON rcm_remittance(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rcmrm_claim ON rcm_remittance(claim_id);
+CREATE INDEX IF NOT EXISTS idx_rcmrm_payer ON rcm_remittance(payer_id);
+
+-- AR) rcm_claim_case — Phase 121: Durable claim lifecycle cases
+CREATE TABLE IF NOT EXISTS rcm_claim_case (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  lifecycle_status TEXT NOT NULL DEFAULT 'draft',
+  base_claim_id TEXT,
+  philhealth_draft_id TEXT,
+  loa_case_id TEXT,
+  patient_dfn TEXT NOT NULL,
+  patient_name TEXT,
+  patient_dob TEXT,
+  patient_gender TEXT,
+  subscriber_id TEXT,
+  member_pin TEXT,
+  billing_provider_npi TEXT,
+  rendering_provider_npi TEXT,
+  facility_code TEXT,
+  facility_name TEXT,
+  payer_id TEXT NOT NULL,
+  payer_name TEXT,
+  payer_type TEXT,
+  claim_type TEXT NOT NULL DEFAULT 'professional',
+  date_of_service TEXT NOT NULL,
+  date_of_discharge TEXT,
+  diagnoses_json TEXT NOT NULL DEFAULT '[]',
+  procedures_json TEXT NOT NULL DEFAULT '[]',
+  total_charge INTEGER NOT NULL DEFAULT 0,
+  scrub_history_json TEXT NOT NULL DEFAULT '[]',
+  last_scrub_result_json TEXT,
+  attachments_json TEXT NOT NULL DEFAULT '[]',
+  events_json TEXT NOT NULL DEFAULT '[]',
+  denials_json TEXT NOT NULL DEFAULT '[]',
+  is_demo INTEGER NOT NULL DEFAULT 0,
+  is_mock INTEGER NOT NULL DEFAULT 0,
+  priority TEXT NOT NULL DEFAULT 'medium',
+  vista_encounter_ien TEXT,
+  vista_charge_ien TEXT,
+  vista_ar_ien TEXT,
+  created_by TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rcmcc_tenant ON rcm_claim_case(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rcmcc_status ON rcm_claim_case(lifecycle_status);
+CREATE INDEX IF NOT EXISTS idx_rcmcc_payer ON rcm_claim_case(payer_id);
+CREATE INDEX IF NOT EXISTS idx_rcmcc_patient ON rcm_claim_case(patient_dfn);
+
+-- AS) portal_access_log — Phase 121: Durable portal access logs
+CREATE TABLE IF NOT EXISTS portal_access_log (
+  id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  actor_name TEXT NOT NULL,
+  is_proxy INTEGER NOT NULL DEFAULT 0,
+  target_patient_dfn TEXT,
+  event_type TEXT NOT NULL,
+  description TEXT NOT NULL,
+  metadata_json TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_pal_user ON portal_access_log(user_id);
+CREATE INDEX IF NOT EXISTS idx_pal_type ON portal_access_log(event_type);
+CREATE INDEX IF NOT EXISTS idx_pal_created ON portal_access_log(created_at);
+
+-- AT) scheduling_request — Phase 121: Durable scheduling requests
+CREATE TABLE IF NOT EXISTS scheduling_request (
+  id TEXT PRIMARY KEY,
+  patient_dfn TEXT NOT NULL,
+  clinic_name TEXT NOT NULL,
+  preferred_date TEXT NOT NULL,
+  priority TEXT NOT NULL DEFAULT 'routine',
+  status TEXT NOT NULL DEFAULT 'pending',
+  reason TEXT,
+  request_type TEXT NOT NULL DEFAULT 'new_appointment',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_schedreq_patient ON scheduling_request(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_schedreq_status ON scheduling_request(status);
+
 `;
 
 // Phase 97B: Add payer_type column (idempotent — catches "duplicate column" error)

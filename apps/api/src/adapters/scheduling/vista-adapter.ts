@@ -1,5 +1,5 @@
 /**
- * VistA Scheduling Adapter -- Phase 63.
+ * VistA Scheduling Adapter -- Phase 63 (DB-hybrid Phase 121).
  *
  * Real RPC integration using SDOE (encounters), SD W/L (wait list),
  * and DVBAB (appointment list) RPCs available in WorldVistA sandbox.
@@ -8,6 +8,10 @@
  *        SD W/L RETRIVE HOSP LOC(#44), SD W/L RETRIVE PERSON(200)
  * Writes: SD W/L CREATE FILE (wait list request)
  * Pending: SDEC APPADD (direct booking), SDEC APPDEL (cancel)
+ *
+ * Phase 121: requestStore is DB-backed hybrid — writes go to both
+ * cache + DB, reads try cache first then fall back to DB.
+ * Booking locks remain in-memory (intentionally ephemeral, TTL-based).
  */
 
 import type {
@@ -23,6 +27,106 @@ import type { AdapterResult } from "../types.js";
 import { safeCallRpc } from "../../lib/rpc-resilience.js";
 import { getDuz } from "../../vista/rpcBrokerClient.js";
 import { log } from "../../lib/logger.js";
+
+/* ------------------------------------------------------------------ */
+/* DB-backed hybrid (Phase 121)                                          */
+/* ------------------------------------------------------------------ */
+
+export interface SchedulingRepo {
+  insertSchedulingRequest(data: {
+    id: string;
+    patientDfn: string;
+    clinicName: string;
+    preferredDate: string;
+    priority?: string;
+    status?: string;
+    reason?: string;
+    requestType?: string;
+    createdAt: string;
+    updatedAt: string;
+  }): any;
+  findSchedulingRequestById(id: string): any | undefined;
+  findSchedulingRequestsByPatient(patientDfn: string): any[];
+  findAllActiveRequests(): any[];
+  findPendingByPatientClinicDate(
+    patientDfn: string,
+    clinicName: string,
+    preferredDate: string,
+  ): any | undefined;
+  updateSchedulingRequest(id: string, updates: Partial<{
+    status: string;
+    reason: string;
+  }>): any | undefined;
+}
+
+let dbRepo: SchedulingRepo | null = null;
+
+/** Called from index.ts after initPlatformDb() */
+export function initSchedulingRepo(repo: SchedulingRepo): void {
+  dbRepo = repo;
+  // Rehydrate cache from DB
+  try {
+    const active = repo.findAllActiveRequests();
+    for (const row of active) {
+      const entry = dbRowToEntry(row);
+      requestStore.set(entry.id, entry);
+    }
+    if (active.length > 0) {
+      log.info(`Scheduling store rehydrated ${active.length} requests from DB`);
+    }
+  } catch (err) {
+    dbWarn("rehydrate", err);
+  }
+  log.info("Scheduling request store wired to DB (Phase 121)");
+}
+
+function dbWarn(op: string, err: unknown): void {
+  log.warn(`Scheduling DB ${op} failed (cache-only)`, {
+    error: err instanceof Error ? err.message : String(err),
+  });
+}
+
+function dbRowToEntry(row: any): WaitListEntry {
+  return {
+    id: row.id,
+    patientDfn: row.patientDfn,
+    clinicName: row.clinicName,
+    preferredDate: row.preferredDate,
+    priority: row.priority || "routine",
+    status: row.status || "pending",
+    createdAt: row.createdAt,
+    reason: row.reason || undefined,
+    type: row.requestType || "new_appointment",
+  };
+}
+
+function persistEntry(entry: WaitListEntry): void {
+  if (!dbRepo) return;
+  try {
+    const existing = dbRepo.findSchedulingRequestById(entry.id);
+    if (existing) {
+      dbRepo.updateSchedulingRequest(entry.id, {
+        status: entry.status,
+        reason: entry.reason,
+      });
+    } else {
+      dbRepo.insertSchedulingRequest({
+        id: entry.id,
+        patientDfn: entry.patientDfn,
+        clinicName: entry.clinicName,
+        preferredDate: entry.preferredDate,
+        priority: entry.priority,
+        status: entry.status,
+        reason: entry.reason,
+        requestType: entry.type,
+        createdAt: entry.createdAt,
+        updatedAt: new Date().toISOString(),
+      });
+    }
+  } catch (err) {
+    dbWarn("persist", err);
+  }
+}
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
@@ -293,6 +397,9 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
 
       requestStore.set(id, entry);
 
+      // Phase 121: Write-through to DB
+      persistEntry(entry);
+
       return {
         ok: true,
         data: entry,
@@ -320,12 +427,14 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         return { ok: false, error: "Patient mismatch" };
       }
       existing.status = "cancelled";
+      // Phase 121: Write-through cancel to DB
+      persistEntry(existing);
       return { ok: true, data: undefined };
     }
 
     // For VistA encounters — store a cancel request
     const id = `cancel-${++requestSeq}-${Date.now().toString(36)}`;
-    requestStore.set(id, {
+    const cancelEntry: WaitListEntry = {
       id,
       patientDfn: patientDfn || "",
       clinicName: "",
@@ -335,7 +444,11 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       createdAt: new Date().toISOString(),
       reason: reason,
       type: "cancel_request",
-    });
+    };
+    requestStore.set(id, cancelEntry);
+
+    // Phase 121: Write-through cancel request to DB
+    persistEntry(cancelEntry);
 
     return {
       ok: true,
@@ -433,6 +546,18 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
 /* ------------------------------------------------------------------ */
 
 export function getRequestStore(): Map<string, WaitListEntry> {
+  // Phase 121: If cache is empty but DB has data, rehydrate
+  if (requestStore.size === 0 && dbRepo) {
+    try {
+      const active = dbRepo.findAllActiveRequests();
+      for (const row of active) {
+        const entry = dbRowToEntry(row);
+        requestStore.set(entry.id, entry);
+      }
+    } catch (err) {
+      dbWarn("getRequestStore-rehydrate", err);
+    }
+  }
   return requestStore;
 }
 

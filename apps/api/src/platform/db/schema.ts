@@ -806,3 +806,151 @@ export const idempotencyKey = sqliteTable("idempotency_key", {
   createdAt: integer("created_at").notNull(),                    // epoch ms
   expiresAt: integer("expires_at").notNull(),                    // epoch ms
 });
+
+/* ── AP) rcm_claim — Phase 121: Durable RCM claims ────────────────────────── */
+
+export const rcmClaim = sqliteTable("rcm_claim", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  claimType: text("claim_type").notNull().default("professional"), // professional | institutional | dental | pharmacy
+  status: text("status").notNull().default("draft"),             // draft | validated | ready_to_submit | submitted | accepted | rejected | paid | denied | appealed | closed
+  patientDfn: text("patient_dfn").notNull(),
+  patientName: text("patient_name"),
+  patientDob: text("patient_dob"),
+  patientFirstName: text("patient_first_name"),
+  patientLastName: text("patient_last_name"),
+  patientGender: text("patient_gender"),
+  subscriberId: text("subscriber_id"),
+  billingProviderNpi: text("billing_provider_npi"),
+  renderingProviderNpi: text("rendering_provider_npi"),
+  facilityNpi: text("facility_npi"),
+  facilityName: text("facility_name"),
+  facilityTaxId: text("facility_tax_id"),
+  payerId: text("payer_id").notNull(),
+  payerName: text("payer_name"),
+  payerClaimId: text("payer_claim_id"),
+  dateOfService: text("date_of_service").notNull(),
+  diagnosesJson: text("diagnoses_json").notNull().default("[]"), // DiagnosisCode[] as JSON
+  linesJson: text("lines_json").notNull().default("[]"),         // ClaimLine[] as JSON
+  totalCharge: integer("total_charge").notNull().default(0),     // in cents
+  ediTransactionId: text("edi_transaction_id"),
+  connectorId: text("connector_id"),
+  submittedAt: text("submitted_at"),
+  responseReceivedAt: text("response_received_at"),
+  paidAmount: integer("paid_amount"),
+  adjustmentAmount: integer("adjustment_amount"),
+  patientResponsibility: integer("patient_responsibility"),
+  remitDate: text("remit_date"),
+  vistaChargeIen: text("vista_charge_ien"),
+  vistaArIen: text("vista_ar_ien"),
+  validationResultJson: text("validation_result_json"),
+  pipelineEntryId: text("pipeline_entry_id"),
+  exportArtifactPath: text("export_artifact_path"),
+  isDemo: integer("is_demo", { mode: "boolean" }).notNull().default(false),
+  submissionSafetyMode: text("submission_safety_mode").notNull().default("export_only"),
+  isMock: integer("is_mock", { mode: "boolean" }).notNull().default(false),
+  auditTrailJson: text("audit_trail_json").notNull().default("[]"), // ClaimAuditEntry[] as JSON
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/* ── AQ) rcm_remittance — Phase 121: Durable remittances ──────────────────── */
+
+export const rcmRemittance = sqliteTable("rcm_remittance", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  status: text("status").notNull().default("received"),          // received | matched | posted | disputed | voided
+  ediTransactionId: text("edi_transaction_id"),
+  checkNumber: text("check_number"),
+  checkDate: text("check_date"),
+  eftTraceNumber: text("eft_trace_number"),
+  payerId: text("payer_id").notNull(),
+  payerName: text("payer_name"),
+  claimId: text("claim_id"),
+  payerClaimId: text("payer_claim_id"),
+  patientDfn: text("patient_dfn"),
+  totalCharged: integer("total_charged").notNull().default(0),
+  totalPaid: integer("total_paid").notNull().default(0),
+  totalAdjusted: integer("total_adjusted").notNull().default(0),
+  totalPatientResponsibility: integer("total_patient_responsibility").notNull().default(0),
+  serviceLinesJson: text("service_lines_json").notNull().default("[]"), // RemitServiceLine[] as JSON
+  isMock: integer("is_mock", { mode: "boolean" }).notNull().default(false),
+  importedAt: text("imported_at").notNull(),
+  matchedAt: text("matched_at"),
+  postedAt: text("posted_at"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/* ── AR) rcm_claim_case — Phase 121: Durable claim lifecycle cases ─────────── */
+
+export const rcmClaimCase = sqliteTable("rcm_claim_case", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  lifecycleStatus: text("lifecycle_status").notNull().default("draft"),
+  baseClaimId: text("base_claim_id"),
+  philhealthDraftId: text("philhealth_draft_id"),
+  loaCaseId: text("loa_case_id"),
+  patientDfn: text("patient_dfn").notNull(),
+  patientName: text("patient_name"),
+  patientDob: text("patient_dob"),
+  patientGender: text("patient_gender"),
+  subscriberId: text("subscriber_id"),
+  memberPin: text("member_pin"),
+  billingProviderNpi: text("billing_provider_npi"),
+  renderingProviderNpi: text("rendering_provider_npi"),
+  facilityCode: text("facility_code"),
+  facilityName: text("facility_name"),
+  payerId: text("payer_id").notNull(),
+  payerName: text("payer_name"),
+  payerType: text("payer_type"),
+  claimType: text("claim_type").notNull().default("professional"),
+  dateOfService: text("date_of_service").notNull(),
+  dateOfDischarge: text("date_of_discharge"),
+  diagnosesJson: text("diagnoses_json").notNull().default("[]"),
+  proceduresJson: text("procedures_json").notNull().default("[]"),
+  totalCharge: integer("total_charge").notNull().default(0),
+  scrubHistoryJson: text("scrub_history_json").notNull().default("[]"),
+  lastScrubResultJson: text("last_scrub_result_json"),
+  attachmentsJson: text("attachments_json").notNull().default("[]"),
+  eventsJson: text("events_json").notNull().default("[]"),
+  denialsJson: text("denials_json").notNull().default("[]"),
+  isDemo: integer("is_demo", { mode: "boolean" }).notNull().default(false),
+  isMock: integer("is_mock", { mode: "boolean" }).notNull().default(false),
+  priority: text("priority").notNull().default("medium"),
+  vistaEncounterIen: text("vista_encounter_ien"),
+  vistaChargeIen: text("vista_charge_ien"),
+  vistaArIen: text("vista_ar_ien"),
+  createdBy: text("created_by"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/* ── AS) portal_access_log — Phase 121: Durable portal access logs ────────── */
+
+export const portalAccessLog = sqliteTable("portal_access_log", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  actorName: text("actor_name").notNull(),
+  isProxy: integer("is_proxy", { mode: "boolean" }).notNull().default(false),
+  targetPatientDfn: text("target_patient_dfn"),
+  eventType: text("event_type").notNull(),
+  description: text("description").notNull(),
+  metadataJson: text("metadata_json").notNull().default("{}"),   // Record<string,string> as JSON
+  createdAt: text("created_at").notNull(),                       // serves as timestamp
+});
+
+/* ── AT) scheduling_request — Phase 121: Durable scheduling requests ────────── */
+
+export const schedulingRequest = sqliteTable("scheduling_request", {
+  id: text("id").primaryKey(),
+  patientDfn: text("patient_dfn").notNull(),
+  clinicName: text("clinic_name").notNull(),
+  preferredDate: text("preferred_date").notNull(),
+  priority: text("priority").notNull().default("routine"),
+  status: text("status").notNull().default("pending"),           // pending | booked | cancelled
+  reason: text("reason"),
+  requestType: text("request_type").notNull().default("new_appointment"), // new_appointment | reschedule | cancel_request
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});

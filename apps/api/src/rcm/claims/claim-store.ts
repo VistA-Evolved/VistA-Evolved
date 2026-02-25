@@ -1,10 +1,12 @@
 /**
- * Claims Lifecycle v1 — In-Memory Store (Phase 91)
+ * Claims Lifecycle v1 — Hybrid Store (Phase 91 + Phase 121)
  *
  * In-memory ClaimCase store with lifecycle state machine enforcement,
  * event tracking, attachment management, and denial record indexing.
  *
- * Resets on API restart — matches imaging-worklist pattern (Phase 23).
+ * Phase 121: Durability Wave 1 — hybrid cache + DB persistence.
+ * Write-through: every mutation writes to both cache and DB.
+ * Read: cache-first, DB fallback on cache miss.
  * Migration path: VistA IB/PRCA files when available.
  */
 
@@ -18,6 +20,112 @@ import type {
   DenialRecord,
 } from './claim-types.js';
 import { isValidLifecycleTransition } from './claim-types.js';
+
+/* ── DB repo interface (lazy-wired at startup) ──────────────── */
+
+interface ClaimCaseRepo {
+  insertClaimCase(data: any): any;
+  findClaimCaseById(id: string): any;
+  findClaimCasesByTenant(tenantId: string, opts?: any): any[];
+  updateClaimCase(id: string, updates: any): any;
+  countClaimCasesByTenant(tenantId: string): number;
+  countAllClaimCases(): number;
+}
+
+let dbRepo: ClaimCaseRepo | null = null;
+
+/** Called from index.ts after initPlatformDb() */
+export function initClaimCaseRepo(repo: ClaimCaseRepo): void {
+  dbRepo = repo;
+}
+
+function dbWarn(op: string, err: any): void {
+  if (process.env.NODE_ENV !== "test") {
+    // eslint-disable-next-line no-console
+    console.warn(`[claim-case-store] DB ${op} failed (cache-only fallback):`, err?.message ?? err);
+  }
+}
+
+/* ── Helper: ClaimCase → DB row conversion ──────────────────── */
+
+function caseToDbRow(cc: ClaimCase): Record<string, unknown> {
+  return {
+    id: cc.id,
+    tenantId: cc.tenantId,
+    lifecycleStatus: cc.lifecycleStatus,
+    baseClaimId: cc.baseClaimId,
+    philhealthDraftId: cc.philhealthDraftId,
+    loaCaseId: cc.loaCaseId,
+    patientDfn: cc.patientDfn,
+    patientName: cc.patientName,
+    patientDob: cc.patientDob,
+    patientGender: cc.patientGender,
+    subscriberId: cc.subscriberId,
+    memberPin: cc.memberPin,
+    billingProviderNpi: cc.billingProviderNpi,
+    renderingProviderNpi: cc.renderingProviderNpi,
+    facilityCode: cc.facilityCode,
+    facilityName: cc.facilityName,
+    payerId: cc.payerId,
+    payerName: cc.payerName,
+    payerType: cc.payerType,
+    claimType: cc.claimType,
+    dateOfService: cc.dateOfService,
+    dateOfDischarge: cc.dateOfDischarge,
+    diagnosesJson: JSON.stringify(cc.diagnoses ?? []),
+    proceduresJson: JSON.stringify(cc.procedures ?? []),
+    totalCharge: cc.totalCharge,
+    scrubHistoryJson: JSON.stringify(cc.scrubHistory ?? []),
+    lastScrubResultJson: cc.lastScrubResult ? JSON.stringify(cc.lastScrubResult) : undefined,
+    attachmentsJson: JSON.stringify(cc.attachments ?? []),
+    eventsJson: JSON.stringify(cc.events ?? []),
+    denialsJson: JSON.stringify(cc.denials ?? []),
+    isDemo: cc.isDemo,
+    isMock: cc.isMock,
+    priority: cc.priority,
+    vistaEncounterIen: cc.vistaEncounterIen,
+    vistaChargeIen: cc.vistaChargeIen,
+    vistaArIen: cc.vistaArIen,
+    createdBy: cc.createdBy,
+    createdAt: cc.createdAt,
+    updatedAt: cc.updatedAt,
+  };
+}
+
+function dbRowToCase(row: any): ClaimCase {
+  return {
+    ...row,
+    diagnoses: JSON.parse(row.diagnosesJson ?? "[]"),
+    procedures: JSON.parse(row.proceduresJson ?? "[]"),
+    scrubHistory: JSON.parse(row.scrubHistoryJson ?? "[]"),
+    lastScrubResult: row.lastScrubResultJson ? JSON.parse(row.lastScrubResultJson) : undefined,
+    attachments: JSON.parse(row.attachmentsJson ?? "[]"),
+    events: JSON.parse(row.eventsJson ?? "[]"),
+    denials: JSON.parse(row.denialsJson ?? "[]"),
+    isDemo: Boolean(row.isDemo),
+    isMock: Boolean(row.isMock),
+    totalCharge: Number(row.totalCharge ?? 0),
+  } as ClaimCase;
+}
+
+/** Persist the current state of a case to DB */
+function persistCaseToDb(cc: ClaimCase): void {
+  if (!dbRepo) return;
+  try {
+    dbRepo.updateClaimCase(cc.id, {
+      lifecycleStatus: cc.lifecycleStatus,
+      totalCharge: cc.totalCharge,
+      scrubHistoryJson: JSON.stringify(cc.scrubHistory ?? []),
+      lastScrubResultJson: cc.lastScrubResult ? JSON.stringify(cc.lastScrubResult) : undefined,
+      attachmentsJson: JSON.stringify(cc.attachments ?? []),
+      eventsJson: JSON.stringify(cc.events ?? []),
+      denialsJson: JSON.stringify(cc.denials ?? []),
+      diagnosesJson: JSON.stringify(cc.diagnoses ?? []),
+      proceduresJson: JSON.stringify(cc.procedures ?? []),
+      priority: cc.priority,
+    });
+  } catch (e) { dbWarn("updateClaimCase", e); }
+}
 
 /* ── In-Memory Stores ──────────────────────────────────────── */
 
@@ -124,13 +232,41 @@ export function createClaimCase(params: CreateClaimCaseParams): ClaimCase {
   }
   tenantIndex.get(cc.tenantId)!.add(id);
 
+  // Write-through to DB
+  if (dbRepo) {
+    try { dbRepo.insertClaimCase(caseToDbRow(cc)); } catch (e) { dbWarn("insertClaimCase", e); }
+  }
+
   return cc;
 }
 
 /* ── CRUD ──────────────────────────────────────────────────── */
 
 export function getClaimCase(id: string): ClaimCase | undefined {
-  return cases.get(id);
+  // Cache-first
+  const cached = cases.get(id);
+  if (cached) return cached;
+
+  // DB fallback
+  if (dbRepo) {
+    try {
+      const row = dbRepo.findClaimCaseById(id);
+      if (row) {
+        const cc = dbRowToCase(row);
+        cases.set(cc.id, cc);
+        if (!tenantIndex.has(cc.tenantId)) tenantIndex.set(cc.tenantId, new Set());
+        tenantIndex.get(cc.tenantId)!.add(cc.id);
+        // Rebuild denial index
+        for (const d of cc.denials) {
+          allDenials.set(d.id, d);
+          if (!denialIndex.has(cc.id)) denialIndex.set(cc.id, new Set());
+          denialIndex.get(cc.id)!.add(d.id);
+        }
+        return cc;
+      }
+    } catch (e) { dbWarn("findClaimCaseById", e); }
+  }
+  return undefined;
 }
 
 export function updateClaimCase(id: string, updates: Partial<ClaimCase>): ClaimCase | undefined {
@@ -146,6 +282,10 @@ export function updateClaimCase(id: string, updates: Partial<ClaimCase>): ClaimC
     updatedAt: new Date().toISOString(),
   };
   cases.set(id, updated);
+
+  // Write-through to DB
+  persistCaseToDb(updated);
+
   return updated;
 }
 
@@ -234,6 +374,10 @@ export function transitionClaimCase(
   }
 
   cases.set(id, updated);
+
+  // Write-through to DB
+  persistCaseToDb(updated);
+
   return { ok: true, claimCase: updated };
 }
 
@@ -268,6 +412,7 @@ export function recordScrubResult(
     updatedAt: new Date().toISOString(),
   };
   cases.set(claimCaseId, updated);
+  persistCaseToDb(updated);
   return updated;
 }
 
@@ -303,6 +448,7 @@ export function addAttachment(
     updatedAt: new Date().toISOString(),
   };
   cases.set(claimCaseId, updated);
+  persistCaseToDb(updated);
   return updated;
 }
 
@@ -343,6 +489,7 @@ export function addDenial(
     updatedAt: new Date().toISOString(),
   };
   cases.set(claimCaseId, updated);
+  persistCaseToDb(updated);
   return dr;
 }
 
@@ -366,7 +513,9 @@ export function resolveDenial(
   const cc = cases.get(dr.claimCaseId);
   if (cc) {
     const updatedDenials = cc.denials.map(d => d.id === denialId ? updated : d);
-    cases.set(cc.id, { ...cc, denials: updatedDenials, updatedAt: new Date().toISOString() });
+    const updatedCase = { ...cc, denials: updatedDenials, updatedAt: new Date().toISOString() };
+    cases.set(cc.id, updatedCase);
+    persistCaseToDb(updatedCase);
   }
 
   return updated;
@@ -390,7 +539,30 @@ export function listClaimCases(filters: ListClaimCasesFilters): {
   total: number;
 } {
   const tenantSet = tenantIndex.get(filters.tenantId);
-  if (!tenantSet) return { items: [], total: 0 };
+  if (!tenantSet || tenantSet.size === 0) {
+    // Try DB if cache is empty for this tenant
+    if (dbRepo) {
+      try {
+        const rows = dbRepo.findClaimCasesByTenant(filters.tenantId, {
+          status: filters.status,
+          patientDfn: filters.patientDfn,
+          payerId: filters.payerId,
+          limit: filters.limit ?? 50,
+          offset: filters.offset ?? 0,
+        });
+        const total = dbRepo.countClaimCasesByTenant(filters.tenantId);
+        const items = rows.map(dbRowToCase);
+        // Rehydrate cache
+        for (const cc of items) {
+          cases.set(cc.id, cc);
+          if (!tenantIndex.has(cc.tenantId)) tenantIndex.set(cc.tenantId, new Set());
+          tenantIndex.get(cc.tenantId)!.add(cc.id);
+        }
+        return { items, total };
+      } catch (e) { dbWarn("findClaimCasesByTenant", e); }
+    }
+    return { items: [], total: 0 };
+  }
 
   let items = Array.from(tenantSet)
     .map(id => cases.get(id)!)

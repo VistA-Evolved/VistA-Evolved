@@ -391,13 +391,25 @@ function buildPersistenceInventory() {
   const highRiskKeywords = ["claim", "audit", "denial", "eligibility", "payment", "remittance", "accreditation", "credential", "loa", "scheduling", "note", "order"];
   const medRiskKeywords = ["session", "handoff", "message", "portal", "appointment", "refill", "task", "worklist"];
 
+  // Phase 121: Detect hybrid-backed stores (have dbRepo or initXxxRepo in same file)
+  const hybridFiles = new Set();
+  for (const file of allTs) {
+    try {
+      const content = readFileSync(file, "utf8");
+      if (/\bdbRepo\b/.test(content) && /\binit\w+Repo\b/.test(content) && mapPattern.test(content)) {
+        hybridFiles.add(rel(file));
+      }
+    } catch { /* skip */ }
+  }
+
   const classifiedStores = mapStores.map(s => {
     const lower = (s.variable + " " + s.dataType + " " + s.file).toLowerCase();
+    const isHybrid = hybridFiles.has(s.file);
     let risk = "low";
-    if (highRiskKeywords.some(k => lower.includes(k))) risk = "high";
-    else if (medRiskKeywords.some(k => lower.includes(k))) risk = "med";
+    if (highRiskKeywords.some(k => lower.includes(k))) risk = isHybrid ? "low" : "high";
+    else if (medRiskKeywords.some(k => lower.includes(k))) risk = isHybrid ? "low" : "med";
 
-    return { ...s, durability: "in_memory_map", risk };
+    return { ...s, durability: isHybrid ? "hybrid_db_backed" : "in_memory_map", risk };
   });
 
   return {

@@ -1,0 +1,1 @@
+{"type":"999","disposition":"rejected","originalControlNumber":"CLM001","ackControlNumber":"ACK001","idempotencyKey":"test-ack-001","claimId":"8f8d49aa-24fd-4f21-b642-429d937eca46","errors":[{"code":"A7:77","description":"Invalid procedure code"}]}

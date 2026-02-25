@@ -1,8 +1,54 @@
-# Phase 116 VERIFY -- Postgres Job Queue (Graphile Worker)
+# Phase 121 Summary — Durability Wave 1
 
 ## What Changed
 
-### Bug Fixes (4 bugs found during VERIFY)
+Migrated 4 highest-risk pure in-memory store groups to DB-backed hybrid
+persistence using the established write-through + cache-first pattern.
+
+### New DB Tables (5)
+- `rcm_claim` (AP) — claim entities
+- `rcm_remittance` (AQ) — remittance records
+- `rcm_claim_case` (AR) — claims lifecycle FSM
+- `portal_access_log` (AS) — patient-visible activity log
+- `scheduling_request` (AT) — wait list / appointment requests
+
+### Modified Stores (4)
+- `rcm/domain/claim-store.ts` — hybrid
+- `rcm/claims/claim-store.ts` — hybrid
+- `portal-iam/access-log-store.ts` — hybrid
+- `adapters/scheduling/vista-adapter.ts` — hybrid (requestStore only; booking locks remain ephemeral)
+
+### New Repos (4)
+- `platform/db/repo/rcm-claim-repo.ts`
+- `platform/db/repo/rcm-claim-case-repo.ts`
+- `platform/db/repo/access-log-repo.ts`
+- `platform/db/repo/scheduling-request-repo.ts`
+
+### Wiring
+- 4 init blocks added to index.ts after initPlatformDb()
+
+### Audit Enhancement
+- `system-audit.mjs` now detects hybrid-backed stores and downgrades risk
+
+## Metrics
+- SQLite tables: 41 → 46 (+5)
+- High-risk stores: 49 → 40 (-9)
+- TypeScript: 0 errors
+
+## How to Test
+1. Start API with `npx tsx --env-file=.env.local src/index.ts`
+2. Check startup logs for "wired to DB" messages
+3. Create claim, restart, verify claim persists
+4. Run `pnpm audit:system` — verify 46 tables, ≤40 high-risk
+
+## Verify Script
+```powershell
+pnpm audit:system
+```
+
+## Follow-ups
+- Wave 2: remaining 40 high-risk stores
+- PG store-resolver support for new tables
 1. **BUG-069** -- `registry.ts`: Made `payerId` optional in eligibility schema (cron sends minimal payload)
 2. **BUG-070** -- `governance.ts`: Moved PHI check before zod parsing (zod strips unknown keys)
 3. **BUG-071** -- `governance.ts`: Fixed JSONB parsing in `getRecentJobRuns` (PG driver returns object)

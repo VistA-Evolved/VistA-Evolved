@@ -5,6 +5,7 @@
  * Phase 109: Module Entitlements
  * Phase 114: Durability Wave 1 (sessions + workqueues)
  * Phase 115: Durability Wave 2 (portal/telehealth/imaging/idempotency)
+ * Phase 121: Durability Wave 3 (claims/access-log/scheduling)
  */
 
 export * as payerRepo from "./payer-repo.js";
@@ -22,3 +23,7 @@ export * as telehealthRoomRepo from "./telehealth-room-repo.js";
 export * as imagingWorklistRepo from "./imaging-worklist-repo.js";
 export * as imagingIngestRepo from "./imaging-ingest-repo.js";
 export * as idempotencyRepo from "./idempotency-repo.js";
+export * as rcmClaimRepo from "./rcm-claim-repo.js";
+export * as rcmClaimCaseRepo from "./rcm-claim-case-repo.js";
+export * as accessLogRepo from "./access-log-repo.js";
+export * as schedulingRequestRepo from "./scheduling-request-repo.js";
