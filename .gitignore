@@ -88,3 +88,6 @@ docs/verify/
 data/platform.db
 data/platform.db-wal
 data/platform.db-shm
+
+# Phase 134: DR backup artifacts
+/backups/

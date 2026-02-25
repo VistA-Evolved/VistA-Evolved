@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-25T14:58:29.215Z",
+  "generatedAt": "2026-02-25T16:24:56.006Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 144,
+  "phaseCount": 145,
   "phases": [
     {
       "phaseNumber": "1",
@@ -1877,6 +1877,35 @@
         "qa/gauntlet/gates/g15-observability.mjs",
         "qa/gauntlet/cli.mjs",
         "docs/runbooks/observability.md"
+      ]
+    },
+    {
+      "phaseNumber": "134",
+      "title": "IMPLEMENT: Disaster Recovery & Resilience",
+      "folder": "139-PHASE-134-DISASTER-RECOVERY",
+      "files": [
+        "134-01-IMPLEMENT.md",
+        "134-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "134-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "134-99-VERIFY.md"
+      ],
+      "routes": [
+        "/backups/"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/dr/backup.mjs",
+        "scripts/dr/restore-verify.mjs",
+        "scripts/qa-gates/restart-chaos-gate.mjs",
+        "qa/gauntlet/gates/g16-dr-chaos.mjs",
+        "qa/gauntlet/cli.mjs",
+        ".github/workflows/dr-nightly.yml",
+        "docs/runbooks/disaster-recovery.md"
       ]
     },
     {

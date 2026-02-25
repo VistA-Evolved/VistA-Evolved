@@ -1,0 +1,83 @@
+name: DR Nightly
+on:
+  schedule:
+    - cron: "0 3 * * *"   # 03:00 UTC daily
+  workflow_dispatch:       # Manual trigger for ad-hoc drills
+
+permissions:
+  contents: read
+
+jobs:
+  dr-drill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: ve_platform
+          POSTGRES_USER: ve_api
+          POSTGRES_PASSWORD: ve_dev_only_change_in_prod
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd="pg_isready -U ve_api -d ve_platform"
+          --health-interval=5s
+          --health-timeout=3s
+          --health-retries=10
+
+    env:
+      PLATFORM_PG_URL: postgresql://ve_api:ve_dev_only_change_in_prod@localhost:5433/ve_platform
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.29.2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.13.0"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Run PG migrations to seed schema
+      - name: Run PG Migrations
+        run: |
+          node -e "
+            import('file://' + process.cwd() + '/apps/api/src/platform/pg/pg-pool.ts')
+              .catch(() => process.exit(0));
+          " || true
+          # Use the API startup to run migrations:
+          timeout 15 npx tsx apps/api/src/platform/pg/pg-migrate.ts 2>&1 || true
+
+      # Step 1: Create backup
+      - name: Create Backup
+        run: node scripts/dr/backup.mjs --output ./backups/ci-drill
+
+      # Step 2: Verify backup manifest
+      - name: Verify Manifest
+        run: |
+          test -f ./backups/ci-drill/manifest.json
+          test -f ./backups/ci-drill/platform-pg.sql
+          echo "Backup files present"
+          cat ./backups/ci-drill/manifest.json | head -20
+
+      # Step 3: Restore verification
+      - name: Restore Verification
+        run: node scripts/dr/restore-verify.mjs --from ./backups/ci-drill
+
+      # Step 4: Upload results (never contains PHI)
+      - name: Upload DR Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dr-drill-results
+          path: |
+            ./backups/ci-drill/manifest.json
+            ./artifacts/dr-restore-verify.json
+          retention-days: 7

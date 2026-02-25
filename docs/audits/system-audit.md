@@ -1,7 +1,7 @@
 # VistA-Evolved System Audit
 
-> Generated: 2026-02-25T15:58:23.937Z  
-> HEAD: cf63928  
+> Generated: 2026-02-25T16:28:10.442Z  
+> HEAD: 5d62599  
 > Node: v24.13.0 | pnpm: 10.29.2
 
 ## What Is Truly Wired End-to-End
@@ -77,11 +77,12 @@
 
 ## CI Enforcement Posture
 
-- **Workflow files:** 7
+- **Workflow files:** 8
 - **ci-security.yml:** triggers=[push,schedule] gates=[secret-scan]
 - **ci-verify.yml:** triggers=[push] gates=[evidence-gate,secret-scan,phi-leak-scan,unit-tests]
 - **ci.yml:** triggers=[push] gates=[build]
 - **codeql.yml:** triggers=[push,schedule] gates=[]
+- **dr-nightly.yml:** triggers=[schedule,workflow_dispatch] gates=[]
 - **qa-gauntlet.yml:** triggers=[pull_request,schedule,workflow_dispatch] gates=[gauntlet:fast,gauntlet:rc,evidence-gate]
 - **quality-gates.yml:** triggers=[push,workflow_dispatch] gates=[evidence-gate,secret-scan,phi-leak-scan,typecheck,build]
 - **verify.yml:** triggers=[push] gates=[secret-scan,typecheck,build]
