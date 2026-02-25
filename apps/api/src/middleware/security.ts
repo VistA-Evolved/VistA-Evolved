@@ -105,6 +105,9 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/handoff\//, auth: "session" }, // Phase 86: Shift handoff + signout (session required)
   { pattern: /^\/qa\//, auth: "none" }, // Phase 96B: QA routes (own NODE_ENV/QA_ROUTES_ENABLED guard)
   { pattern: /^\/__test__\//, auth: "none" }, // Phase 96B: test-only trace endpoint (own guard)
+  { pattern: /^\/i18n\/locales$/, auth: "none" }, // Phase 132: supported locales (public)
+  { pattern: /^\/i18n\//, auth: "session" }, // Phase 132: locale preference (session required)
+  { pattern: /^\/intake\/question-schema$/, auth: "none" }, // Phase 132: intake questions (public, for portal)
   { pattern: /^\/posture\//, auth: "admin" }, // Phase 107: production posture (admin only)
   { pattern: /^\/posture$/, auth: "admin" }, // Phase 107: unified posture endpoint
   { pattern: /^\/hardening\//, auth: "admin" }, // Phase 118: go-live hardening (admin only)

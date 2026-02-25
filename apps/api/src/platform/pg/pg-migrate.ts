@@ -1164,6 +1164,48 @@ CREATE INDEX IF NOT EXISTS idx_sched_lc_clinic ON scheduling_lifecycle(clinic_na
 CREATE INDEX IF NOT EXISTS idx_sched_lc_created ON scheduling_lifecycle(created_at);
 `,
   },
+  {
+    version: 15,
+    name: "i18n_foundation",
+    sql: `
+-- Phase 132: I18N foundation — user locale preferences + intake question schema.
+
+-- Clinician locale preference (per user per tenant)
+CREATE TABLE IF NOT EXISTS user_locale_preference (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  user_duz TEXT NOT NULL,
+  locale TEXT NOT NULL DEFAULT 'en',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_ulp_tenant_duz ON user_locale_preference(tenant_id, user_duz);
+CREATE INDEX IF NOT EXISTS idx_ulp_tenant ON user_locale_preference(tenant_id);
+
+-- Intake question schema — locale-aware question definitions for intake forms
+CREATE TABLE IF NOT EXISTS intake_question_schema (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  question_key TEXT NOT NULL,
+  locale TEXT NOT NULL DEFAULT 'en',
+  category TEXT NOT NULL DEFAULT 'general',
+  question_text TEXT NOT NULL,
+  question_type TEXT NOT NULL DEFAULT 'text',
+  options_json TEXT,
+  display_order INTEGER NOT NULL DEFAULT 0,
+  required BOOLEAN NOT NULL DEFAULT false,
+  active BOOLEAN NOT NULL DEFAULT true,
+  vista_field_target TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_iqs_key_locale ON intake_question_schema(tenant_id, question_key, locale);
+CREATE INDEX IF NOT EXISTS idx_iqs_tenant ON intake_question_schema(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_iqs_locale ON intake_question_schema(locale);
+CREATE INDEX IF NOT EXISTS idx_iqs_category ON intake_question_schema(category);
+CREATE INDEX IF NOT EXISTS idx_iqs_active ON intake_question_schema(active);
+`,
+  },
 ];
 
 /**
@@ -1288,6 +1330,8 @@ export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: s
     "scheduling_waitlist_request",
     "scheduling_booking_lock",
     "scheduling_lifecycle",
+    "user_locale_preference",
+    "intake_question_schema",
   ];
 
   const applied: string[] = [];

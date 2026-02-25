@@ -66,7 +66,7 @@ function settingsToDbFields(s: PortalSettings): {
 /* Types                                                                */
 /* ------------------------------------------------------------------ */
 
-export type PortalLanguage = "en" | "es" | "fr" | "vi" | "zh" | "ko" | "tl";
+export type PortalLanguage = "en" | "es" | "fr" | "vi" | "zh" | "ko" | "tl" | "fil";
 
 export interface NotificationPrefs {
   emailEnabled: boolean;
@@ -147,7 +147,7 @@ export function getSettings(patientDfn: string): PortalSettings {
   return settings;
 }
 
-const VALID_LANGUAGES: PortalLanguage[] = ["en", "es", "fr", "vi", "zh", "ko", "tl"];
+const VALID_LANGUAGES: PortalLanguage[] = ["en", "es", "fr", "vi", "zh", "ko", "tl", "fil"];
 const VALID_FONT_SIZES = ["small", "medium", "large"];
 
 export function updateSettings(
@@ -232,4 +232,5 @@ export const LANGUAGE_OPTIONS: { code: PortalLanguage; label: string }[] = [
   { code: "zh", label: "中文" },
   { code: "ko", label: "한국어" },
   { code: "tl", label: "Tagalog" },
+  { code: "fil", label: "Filipino" },
 ];

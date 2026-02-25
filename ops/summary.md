@@ -1,58 +1,29 @@
-# Phase 131 VERIFY (Scheduling Depth) -- Summary
+# Phase 132: I18N Foundation -- Summary
 
 ## What Changed
+- next-intl installed in both apps/web and apps/portal
+- PG Migration v15: user_locale_preference + intake_question_schema tables with RLS
+- 6 API endpoints: /i18n/locales (public), /i18n/locale (GET/PUT session), /intake/question-schema (public locale-aware), /admin/intake/question-schema (GET/POST admin)
+- Locale message files: en.json, fil.json, es.json in both web and portal public/messages/
+- I18nProvider + LanguageSwitcher components in both apps
+- Intake page rewritten for locale-aware rendering with question preview from schema API
+- Portal nav: added Pre-Visit Intake link + LanguageSwitcher in footer
+- Web menu bar: LanguageSwitcher globe icon on the right side
+- Portal settings: added fil (Filipino) to valid languages
+- AUTH_RULES: /i18n/locales and /intake/question-schema are public; /i18n/* requires session
 
-### 1. safeCallRpc auto-connect (Critical fix)
-`safeCallRpc` and `safeCallRpcWithList` in `rpc-resilience.ts` did not call
-`connect()` before `callRpc()`. This meant any route using the resilient RPC
-wrappers (scheduling adapter, etc.) would fail with "Not connected" unless a
-legacy route had already established the broker connection. Fixed by adding
-`await connect()` inside `withBrokerLock()` before each RPC call. `connect()`
-is idempotent -- returns immediately if already connected.
+## How to Test Manually
+1. Public locale list: curl http://127.0.0.1:3001/i18n/locales
+2. Intake questions in Filipino: curl http://127.0.0.1:3001/intake/question-schema?locale=fil
+3. Authenticate and test locale preference: GET/PUT /i18n/locale with session cookie
 
-### 2. Lifecycle transition tenant_id (Medium fix)
-`POST /scheduling/lifecycle/transition` was not passing `request.session.tenantId`
-to `insertLifecycleEntry()`, always defaulting to `"default"`. Now passes the
-session's tenant_id.
+## Verifier Output
+- Gauntlet FAST: 4 PASS, 0 FAIL, 1 WARN
+- Gauntlet RC: 12 PASS, 0 FAIL, 1 WARN
+- TypeScript: 0 errors in all 3 apps (api, web, portal)
 
-### 3. Scheduling in CPRS navigation (Medium fix)
-The scheduling page at `/cprs/scheduling` was unreachable from the CPRS UI --
-no menu item, no tab strip entry, no sidebar link. Added "Scheduling" to the
-Tools menu in `CPRSMenuBar.tsx`.
-
-### 4. Phase 131 capabilities registered
-Added 6 missing scheduling capabilities to `config/capabilities.json`:
-`scheduling.lifecycle.read`, `scheduling.lifecycle.transition`,
-`scheduling.appointments.cprs`, `scheduling.referenceData`, `scheduling.posture`.
-
-### 5. Phase-index gate fix
-Phase 131 was listed as a duplicate in the phase-index-gate. Added to KNOWN_DUPES
-(99-PHASE-131-132-VERIFY folder also extracts phase ID 131).
-
-## Scheduling Endpoint Verification (VistA UP)
-
-| Endpoint | Result |
-|----------|--------|
-| GET /scheduling/health | ok:true, adapter=vista-rpc-sdoe-phase131 |
-| GET /scheduling/clinics | ok:true, data:[] (sandbox empty) |
-| GET /scheduling/providers | ok:true, data:[] (sandbox empty) |
-| GET /scheduling/appointments?dfn=3 | ok:true, data:[] |
-| GET /scheduling/appointments/cprs?dfn=3 | ok:true, data:[] |
-| GET /scheduling/slots | ok:false, pending (SDEC not installed) |
-| GET /scheduling/reference-data | ok:true, pending (M FUNCTIONs empty) |
-| GET /scheduling/posture | ok:true, 18 RPCs: 10 avail, 5 callable, 3 not installed |
-| GET /scheduling/lifecycle | ok:true, PG-backed |
-| POST /scheduling/lifecycle/transition | ok:true, persists to PG |
-| GET /scheduling/waitlist | ok:true, 0 entries |
-
-## Postgres Persistence Verified
-- Created lifecycle entry (PERSIST-TEST-131A)
-- Restarted API server
-- Read back entry -- persisted across restart
-
-## Gauntlet RC
-12 PASS, 0 FAIL, 1 WARN (pre-existing secret scan)
-
-## Regression Check
-All existing endpoints verified: health, allergies, problems, meds, vitals,
-notes, labs, RCM, imaging audit, capabilities -- no regressions.
+## Follow-ups
+- Convert more hardcoded strings to useTranslations() hooks
+- Add more locales (zh, vi, ko, fr)
+- Translate select options in intake questions
+- Implement intake questionnaire fill page with question schema rendering

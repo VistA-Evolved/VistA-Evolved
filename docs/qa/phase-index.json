@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-25T10:33:14.552Z",
+  "generatedAt": "2026-02-25T13:16:48.863Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 142,
+  "phaseCount": 143,
   "phases": [
     {
       "phaseNumber": "1",
@@ -1804,6 +1804,48 @@
         "docs/security/portal-iam.md",
         "docs/runbooks/auth-troubleshooting.md",
         "docs/runbooks/security-triage.md"
+      ]
+    },
+    {
+      "phaseNumber": "132",
+      "title": "I18N FOUNDATION (MULTILINGUAL UI + INTAKE SCHEMA)",
+      "folder": "137-PHASE-132-I18N",
+      "files": [
+        "132-01-IMPLEMENT.md",
+        "132-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "132-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "132-99-VERIFY.md"
+      ],
+      "routes": [
+        "/admin/intake/question-schema",
+        "/auth/locale",
+        "/intake/question-schema?locale=en"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "LanguageSwitcher.tsx",
+        "layout.tsx",
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/web/package.json",
+        "apps/portal/package.json",
+        "apps/web/messages/{en,fil,es}.json",
+        "apps/portal/messages/{en,fil,es}.json",
+        "apps/web/src/app/layout.tsx",
+        "apps/portal/src/app/layout.tsx",
+        "apps/web/src/components/cprs/LanguageSwitcher.tsx",
+        "apps/portal/src/components/LanguageSwitcher.tsx",
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/routes/i18n-routes.ts",
+        "apps/api/src/services/portal-settings.ts",
+        "apps/api/src/intake/intake-question-schema.ts",
+        "apps/portal/src/app/dashboard/intake/page.tsx",
+        "config/capabilities.json"
       ]
     },
     {

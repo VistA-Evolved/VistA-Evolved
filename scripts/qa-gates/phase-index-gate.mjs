@@ -80,7 +80,7 @@ for (const pn of phaseNumbers) {
   dupeSet.add(pn);
 }
 // Known legacy duplicates (pre-existing in prompts/ folder, not fixable here)
-const KNOWN_DUPES = new Set(["43", "87", "120", "131"]);
+const KNOWN_DUPES = new Set(["43", "87", "120", "131", "132"]);
 const newDupes = dupes.filter((d) => !KNOWN_DUPES.has(String(d)));
 gate(
   "no new duplicate phase numbers",

@@ -6,6 +6,7 @@ import { cleanCaption, sanitizeLabel } from '@/lib/contracts/loader';
 import { useCPRSUI } from '@/stores/cprs-ui-state';
 import { usePatient } from '@/stores/patient-context';
 import { useSession } from '@/stores/session-context';
+import { LanguageSwitcher } from './LanguageSwitcher';
 import styles from './cprs.module.css';
 
 /* ------------------------------------------------------------------ */
@@ -222,23 +223,28 @@ export default function CPRSMenuBar({ dfn }: { dfn?: string }) {
   const menuNames = Object.keys(menus);
 
   return (
-    <div className={styles.menuBar} ref={barRef}>
-      {menuNames.map((name) => (
-        <div key={name} style={{ position: 'relative' }}>
-          <button
-            className={`${styles.menuTrigger} ${openMenu === name ? styles.open : ''}`}
-            onClick={() => setOpenMenu(openMenu === name ? null : name)}
-            onMouseEnter={() => { if (openMenu) setOpenMenu(name); }}
-          >
-            {name}
-          </button>
-          {openMenu === name && (
-            <div className={styles.menuDropdown}>
-              {renderItems(menus[name])}
-            </div>
-          )}
-        </div>
-      ))}
+    <div className={styles.menuBar} ref={barRef} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ display: 'flex' }}>
+        {menuNames.map((name) => (
+          <div key={name} style={{ position: 'relative' }}>
+            <button
+              className={`${styles.menuTrigger} ${openMenu === name ? styles.open : ''}`}
+              onClick={() => setOpenMenu(openMenu === name ? null : name)}
+              onMouseEnter={() => { if (openMenu) setOpenMenu(name); }}
+            >
+              {name}
+            </button>
+            {openMenu === name && (
+              <div className={styles.menuDropdown}>
+                {renderItems(menus[name])}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      <div style={{ paddingRight: '8px' }}>
+        <LanguageSwitcher />
+      </div>
     </div>
   );
 }

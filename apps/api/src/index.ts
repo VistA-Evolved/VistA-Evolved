@@ -170,6 +170,8 @@ import hardeningRoutes from "./routes/hardening-routes.js";
 import { safeErr } from "./lib/safe-error.js";
 // Phase 125: Runtime mode contract (Postgres-only data plane)
 import { validateRuntimeMode, getRuntimeMode } from "./platform/runtime-mode.js";
+// Phase 132: I18N Foundation — locale preference + intake question schema
+import i18nRoutes from "./routes/i18n-routes.js";
 
 /* ================================================================== */
 /* Phase 125: Validate runtime mode contract BEFORE anything else       */
@@ -468,6 +470,9 @@ server.register(jobAdminRoutes);
 
 // Register go-live hardening routes -- audit verify, security posture, backup status, RC checklist (Phase 118)
 server.register(hardeningRoutes);
+
+// Register i18n routes -- locale preference, supported locales, intake question schema (Phase 132)
+server.register(i18nRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

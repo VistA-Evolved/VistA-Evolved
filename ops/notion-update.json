@@ -1,18 +1,1 @@
-{
-    "commitSHA": "pending",
-    "stage": "implement",
-    "verifyScript": "scripts/verify-phase130-mailman-bridge.ps1",
-    "runbook": "ops/summary.md",
-    "promptRef": "prompts/134-PHASE-130-MAILMAN-BRIDGE/130-01-IMPLEMENT.md",
-    "status": "implemented",
-    "feature": "Phase 130: VistA MailMan Bridge -- clinician /vista/mailman/* routes + portal VistA-first inbox with PG fallback + HIPAA audit",
-    "filesChanged": [
-        "apps/api/src/routes/vista-mailman.ts",
-        "apps/api/src/routes/portal-mailman.ts",
-        "apps/api/src/index.ts",
-        "apps/portal/src/lib/api.ts",
-        "apps/portal/src/app/dashboard/messages/page.tsx",
-        "prompts/134-PHASE-130-MAILMAN-BRIDGE/130-01-IMPLEMENT.md",
-        "prompts/134-PHASE-130-MAILMAN-BRIDGE/130-99-VERIFY.md"
-    ]
-}
+{"feature":"Phase 132: I18N Foundation (Multilingual UI + Intake Schema)","stage":"implemented","status":"verified","promptRef":"prompts/137-PHASE-132-I18N/","runbookPath":"docs/runbooks/phase132-i18n-foundation.md","verifyScript":"qa/gauntlet/cli.mjs --suite rc","gauntletResult":"12 PASS, 0 FAIL, 1 WARN"}

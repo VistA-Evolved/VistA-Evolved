@@ -999,3 +999,47 @@ export const pgSchedulingLifecycle = pgTable("scheduling_lifecycle", {
   index("idx_sched_lc_clinic").on(table.clinicName),
   index("idx_sched_lc_created").on(table.createdAt),
 ]);
+
+/**
+ * Phase 132: User Locale Preference
+ * Clinician language preference, persisted per user per tenant.
+ */
+export const pgUserLocalePreference = pgTable("user_locale_preference", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  userDuz: text("user_duz").notNull(),
+  locale: text("locale").notNull().default("en"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_ulp_tenant_duz").on(table.tenantId, table.userDuz),
+  index("idx_ulp_tenant").on(table.tenantId),
+]);
+
+/**
+ * Phase 132: Intake Question Schema
+ * Locale-aware question definitions for intake forms.
+ * Each question_key can have multiple locale variants.
+ */
+export const pgIntakeQuestionSchema = pgTable("intake_question_schema", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  questionKey: text("question_key").notNull(),
+  locale: text("locale").notNull().default("en"),
+  category: text("category").notNull().default("general"),
+  questionText: text("question_text").notNull(),
+  questionType: text("question_type").notNull().default("text"),
+  optionsJson: text("options_json"),
+  displayOrder: integer("display_order").notNull().default(0),
+  required: boolean("required").notNull().default(false),
+  active: boolean("active").notNull().default(true),
+  vistaFieldTarget: text("vista_field_target"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_iqs_key_locale").on(table.tenantId, table.questionKey, table.locale),
+  index("idx_iqs_tenant").on(table.tenantId),
+  index("idx_iqs_locale").on(table.locale),
+  index("idx_iqs_category").on(table.category),
+  index("idx_iqs_active").on(table.active),
+]);

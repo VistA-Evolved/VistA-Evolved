@@ -11,10 +11,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Home", icon: "🏠" },
   { href: "/dashboard/tasks", label: "Tasks", icon: "📋" },
+  { href: "/dashboard/intake", label: "Pre-Visit Intake", icon: "📝" },
   { href: "/dashboard/health", label: "Health Records", icon: "🏥" },
   { href: "/dashboard/medications", label: "Medications", icon: "💊" },
   { href: "/dashboard/refills", label: "Refill Requests", icon: "🔄" },
@@ -63,6 +65,9 @@ export function PortalNav() {
         })}
       </ul>
       <div style={styles.footer}>
+        <div style={{ marginBottom: "0.5rem" }}>
+          <LanguageSwitcher />
+        </div>
         <form action="/api/logout" method="POST">
           <button type="submit" style={styles.logoutBtn}>
             Sign Out
