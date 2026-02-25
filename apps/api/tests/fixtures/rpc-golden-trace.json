@@ -1,0 +1,97 @@
+{
+  "_meta": {
+    "description": "Phase 129 — VistA RPC Golden Trace Baseline",
+    "generatedAt": "2025-01-01T00:00:00Z",
+    "note": "RPC names only — NO PHI, NO parameters, NO response bodies",
+    "purpose": "Sequence stability: ensure the same RPCs are called in the same order for standard clinical workflows"
+  },
+  "workflows": {
+    "login": {
+      "description": "Standard broker sign-on sequence",
+      "rpcSequence": [
+        "XUS SIGNON SETUP",
+        "XUS AV CODE",
+        "XWB CREATE CONTEXT",
+        "XUS GET USER INFO"
+      ]
+    },
+    "patientSearch": {
+      "description": "Search for patients by name",
+      "rpcSequence": [
+        "ORWPT LIST ALL"
+      ]
+    },
+    "defaultPatientList": {
+      "description": "Fetch default patient list for clinic",
+      "rpcSequence": [
+        "ORQPT DEFAULT LIST SOURCE",
+        "ORWPT LIST ALL"
+      ]
+    },
+    "coverSheet": {
+      "description": "Load cover sheet clinical data for a patient (DFN=3)",
+      "rpcSequence": [
+        "ORQQAL LIST",
+        "GMV V/M ALLDATA",
+        "ORQQPL PROBLEM LIST",
+        "ORWPS ACTIVE",
+        "TIU DOCUMENTS BY CONTEXT"
+      ]
+    },
+    "allergies": {
+      "description": "Fetch allergy list for patient",
+      "rpcSequence": [
+        "ORQQAL LIST"
+      ]
+    },
+    "vitals": {
+      "description": "Fetch vitals/measurements for patient",
+      "rpcSequence": [
+        "GMV V/M ALLDATA"
+      ]
+    },
+    "problems": {
+      "description": "Fetch active problem list",
+      "rpcSequence": [
+        "ORQQPL PROBLEM LIST"
+      ]
+    },
+    "medications": {
+      "description": "Fetch active medications",
+      "rpcSequence": [
+        "ORWPS ACTIVE"
+      ]
+    },
+    "notes": {
+      "description": "Fetch TIU notes for patient",
+      "rpcSequence": [
+        "TIU DOCUMENTS BY CONTEXT"
+      ]
+    },
+    "orders": {
+      "description": "Fetch orders for patient",
+      "rpcSequence": [
+        "ORWORB FASTUSER",
+        "ORWDX WRLST"
+      ]
+    }
+  },
+  "registrySnapshot": {
+    "description": "RPC names from rpcRegistry.ts that must remain registered",
+    "criticalRpcs": [
+      "XUS SIGNON SETUP",
+      "XUS AV CODE",
+      "XWB CREATE CONTEXT",
+      "XUS GET USER INFO",
+      "ORQQAL LIST",
+      "ORWDAL32 ALLERGY MATCH",
+      "ORQPT DEFAULT LIST SOURCE",
+      "ORWPT LIST ALL",
+      "GMV V/M ALLDATA",
+      "ORQQPL PROBLEM LIST",
+      "ORWPS ACTIVE",
+      "TIU DOCUMENTS BY CONTEXT",
+      "ORWORB FASTUSER"
+    ]
+  }
+}

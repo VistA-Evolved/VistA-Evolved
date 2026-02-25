@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-25T05:51:06.190Z",
+  "generatedAt": "2026-02-25T06:41:21.495Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 137,
+  "phaseCount": 138,
   "phases": [
     {
       "phaseNumber": "1",
@@ -1626,12 +1626,15 @@
       "title": "Imaging + Scheduling Durability (Postgres Repos + Restart Gate)",
       "folder": "132-PHASE-128-IMAGING-SCHEDULING-PG",
       "files": [
-        "128-01-IMPLEMENT.md"
+        "128-01-IMPLEMENT.md",
+        "128-99-VERIFY.md"
       ],
       "implementFiles": [
         "128-01-IMPLEMENT.md"
       ],
-      "verifyFiles": [],
+      "verifyFiles": [
+        "128-99-VERIFY.md"
+      ],
       "routes": [],
       "rpcs": [],
       "uiComponents": [],
@@ -1650,6 +1653,36 @@
         "scripts/qa-gates/imaging-scheduling-restart.mjs",
         "qa/gauntlet/gates/g13-imaging-scheduling-restart.mjs",
         "qa/gauntlet/cli.mjs"
+      ]
+    },
+    {
+      "phaseNumber": "129",
+      "title": "QA LADDER (PLAYWRIGHT + CONTRACTS + VISTA TRACE REPLAY + VISUAL REGRESSION)",
+      "folder": "133-PHASE-129-QA-LADDER",
+      "files": [
+        "129-01-IMPLEMENT.md",
+        "129-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "129-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "129-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "prompts/133-PHASE-129-QA-LADDER/129-01-IMPLEMENT.md",
+        "apps/web/e2e/qa-ladder-journeys.spec.ts",
+        "apps/web/e2e/visual-regression.spec.ts",
+        "apps/api/tests/qa-ladder-contracts.test.ts",
+        "apps/api/tests/rpc-trace-replay.test.ts",
+        "apps/api/tests/chaos-restart.test.ts",
+        "apps/api/tests/fixtures/rpc-golden-trace.json",
+        "qa/gauntlet/gates/g14-qa-ladder.mjs",
+        "qa/gauntlet/cli.mjs",
+        "docs/runbooks/phase129-qa-ladder.md"
       ]
     },
     {
