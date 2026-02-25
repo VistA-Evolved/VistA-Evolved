@@ -194,7 +194,7 @@ export default async function hardeningRoutes(server: FastifyInstance): Promise<
     checks.push({ name: "rate_limiter", status: "pass", detail: `general=${Number(process.env.RATE_LIMIT_GENERAL_MAX) || 200}/min` });
 
     // 5. CSRF protection
-    checks.push({ name: "csrf_protection", status: "pass", detail: "Double-submit cookie" });
+    checks.push({ name: "csrf_protection", status: "pass", detail: "Session-bound synchronizer token (Phase 132)" });
 
     // 6. Session cookie posture
     const secureCookies = process.env.NODE_ENV === "production";

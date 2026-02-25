@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-25T08:05:04.515Z",
+  "generatedAt": "2026-02-25T09:58:47.670Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 139,
+  "phaseCount": 141,
   "phases": [
     {
       "phaseNumber": "1",
@@ -1723,6 +1723,87 @@
         "apps/portal/src/lib/api.ts",
         "ops/summary.md",
         "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "131",
+      "title": "IMPLEMENT: Scheduling SD Depth (VistA-First Lifecycle)",
+      "folder": "135-PHASE-131-SCHEDULING-DEPTH",
+      "files": [
+        "131-01-IMPLEMENT.md"
+      ],
+      "implementFiles": [
+        "131-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [],
+      "routes": [
+        "/scheduling/appointments/cprs",
+        "/scheduling/lifecycle/transition",
+        "/scheduling/lifecycle?patientDfn=X",
+        "/scheduling/posture",
+        "/scheduling/reference-data"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/platform/pg/repo/pg-scheduling-lifecycle-repo.ts",
+        "apps/api/src/adapters/scheduling/interface.ts",
+        "apps/api/src/adapters/scheduling/vista-adapter.ts",
+        "apps/api/src/routes/scheduling/index.ts",
+        "apps/web/src/app/cprs/scheduling/page.tsx",
+        "services/vista/ZVESCHD.m",
+        "prompts/135-PHASE-131-SCHEDULING-DEPTH/131-01-IMPLEMENT.md"
+      ]
+    },
+    {
+      "phaseNumber": "132",
+      "title": "CSRF Synchronizer Token Migration",
+      "folder": "136-PHASE-132-CSRF-SYNC-TOKEN",
+      "files": [
+        "132-01-IMPLEMENT.md"
+      ],
+      "implementFiles": [
+        "132-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [],
+      "routes": [
+        "/auth/csrf-token",
+        "/scheduling/lifecycle/transition"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx",
+        "session-context.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/auth/session-store.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/auth/auth-routes.ts",
+        "apps/api/src/auth/idp/idp-routes.ts",
+        "apps/api/src/config/server-config.ts",
+        "apps/api/src/portal-iam/csrf.ts",
+        "apps/api/src/portal-iam/portal-iam-routes.ts",
+        "apps/api/src/qa/flow-catalog.ts",
+        "apps/api/src/routes/hardening-routes.ts",
+        "apps/web/src/lib/csrf.ts",
+        "apps/web/src/stores/session-context.tsx",
+        "apps/web/src/app/cprs/admin/rcm/page.tsx",
+        "apps/web/src/app/cprs/admin/modules/page.tsx",
+        "apps/web/src/app/cprs/admin/contracting-hub/page.tsx",
+        "apps/api/tests/qa-api-routes.test.ts",
+        "apps/api/tests/contract.test.ts",
+        "tests/k6/db-load.js",
+        "scripts/verify-phase49-auth-rbac.ps",
+        "scripts/verify-phase43-claim-quality.ps",
+        "scripts/verify-phase99-reconciliation.ps",
+        "scripts/verify-phase100-eligibility-claimstatus.ps",
+        "docs/security/auth-and-rbac.md",
+        "docs/security/portal-iam.md",
+        "docs/runbooks/auth-troubleshooting.md",
+        "docs/runbooks/security-triage.md"
       ]
     },
     {

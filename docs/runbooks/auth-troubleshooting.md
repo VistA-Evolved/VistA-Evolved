@@ -108,33 +108,29 @@ curl.exe -b cookies.txt http://127.0.0.1:3001/auth/permissions
 - Frontend not sending `X-CSRF-Token` header on mutation requests
 - CSRF cookie expired or not set
 
-**Fix for curl testing:**
+**Fix for curl testing (Phase 132: synchronizer token):**
 ```powershell
-# Login to get cookies (CSRF token is set automatically)
-curl.exe -c cookies.txt -d "@login-body.json" -H "Content-Type: application/json" http://127.0.0.1:3001/auth/login
-
-# Extract CSRF token from cookie file
-$csrf = (Get-Content cookies.txt | Select-String "ehr_csrf" | ForEach-Object { ($_ -split "`t")[-1] }).Trim()
+# Login -- CSRF token is in the JSON response body
+$login = curl.exe -s -c cookies.txt -d "@login-body.json" -H "Content-Type: application/json" http://127.0.0.1:3001/auth/login
+$csrf = ($login | ConvertFrom-Json).csrfToken
 
 # Use CSRF token on subsequent requests
 curl.exe -b cookies.txt -H "X-CSRF-Token: $csrf" -H "Content-Type: application/json" -d '{}' http://127.0.0.1:3001/rcm/claims/draft
 ```
 
-**Fix for frontend:**
+**Fix for frontend (Phase 132: shared CSRF module):**
 ```typescript
-// Read CSRF token from cookie
-function getCsrfToken(): string {
-  const match = document.cookie.match(/ehr_csrf=([^;]+)/);
-  return match ? match[1] : '';
-}
+// Import shared CSRF manager
+import { getCsrfToken } from '@/lib/csrf';
 
 // Include in fetch calls
+const csrfToken = await getCsrfToken();
 fetch('/api/endpoint', {
   method: 'POST',
   credentials: 'include',
   headers: {
     'Content-Type': 'application/json',
-    'X-CSRF-Token': getCsrfToken(),
+    'X-CSRF-Token': csrfToken,
   },
   body: JSON.stringify(data),
 });

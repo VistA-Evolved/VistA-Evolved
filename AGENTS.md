@@ -1104,6 +1104,15 @@ docs/runbooks/
      `edi_claim_status`, `edi_pipeline_entry`. All have `tenant_id` columns
      and are included in `applyRlsPolicies()`. The edi_acknowledgement and
      edi_claim_status tables have UNIQUE indexes on `(tenant_id, idempotency_key)`.
+131. **CSRF uses session-bound synchronizer token, NOT double-submit cookie
+     (Phase 132).** The `ehr_csrf` cookie is no longer set. CSRF secrets are
+     generated at session creation, stored in the DB `csrf_secret` column,
+     and delivered to clients via JSON response body (`csrfToken` field on
+     login response and `GET /auth/csrf-token`). Clients must store the token
+     in memory and send it as `X-CSRF-Token` header. Never read CSRF from
+     cookies. Portal uses the same pattern via `validateCsrf(req, reply,
+     session.csrfSecret)`. See `apps/web/src/lib/csrf.ts` for the shared
+     frontend CSRF manager.
 
 ## 8. Bug Tracker & Lessons Learned
 

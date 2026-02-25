@@ -464,8 +464,9 @@ if ($SkipRuntime -or (-not $apiUp)) {
   $session = Invoke-WebRequest -Uri "$apiBase/auth/login" -Method POST `
     -ContentType "application/json" -Body $loginBody `
     -SessionVariable wsess -UseBasicParsing -ErrorAction Stop
-  $csrfCookie = $wsess.Cookies.GetCookies("$apiBase") | Where-Object { $_.Name -eq "ehr_csrf" }
-  $csrf = if ($csrfCookie) { $csrfCookie.Value } else { "" }
+  # Phase 132: Extract CSRF from JSON response body (synchronizer token pattern)
+  $loginResp = $session.Content | ConvertFrom-Json
+  $csrf = if ($loginResp.csrfToken) { $loginResp.csrfToken } else { "" }
   $hdrs = @{ "x-csrf-token" = $csrf }
 
   Gate "P100-079" "POST /rcm/eligibility/check MANUAL returns 201" {

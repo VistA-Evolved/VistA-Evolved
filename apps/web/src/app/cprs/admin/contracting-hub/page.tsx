@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { getCsrfTokenSync } from "@/lib/csrf";
 
 /* ── Helpers ────────────────────────────────────────────────── */
 
 function getCsrfToken(): string {
-  const match = document.cookie.match(/ehr_csrf=([^;]+)/);
-  return match?.[1] ?? "";
+  return getCsrfTokenSync();
 }
 
 /* ── Types ──────────────────────────────────────────────────── */

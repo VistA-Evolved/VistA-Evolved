@@ -8,7 +8,6 @@
  */
 
 import type { FastifyInstance } from "fastify";
-import { randomBytes } from "crypto";
 import { authenticateUser } from "../vista/rpcBrokerClient.js";
 import {
   createSession,
@@ -18,7 +17,7 @@ import {
   mapUserRole,
   type SessionData,
 } from "./session-store.js";
-import { SESSION_CONFIG, CSRF_CONFIG, LOCKOUT_CONFIG } from "../config/server-config.js";
+import { SESSION_CONFIG, LOCKOUT_CONFIG } from "../config/server-config.js";
 import { resolveTenantId } from "../config/tenant-config.js";
 import { log } from "../lib/logger.js";
 import { audit } from "../lib/audit.js";
@@ -222,15 +221,10 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
       // Set cookie (httpOnly — no JS access)
       reply.setCookie(COOKIE_NAME, finalToken, COOKIE_OPTS);
 
-      // Phase 49: Issue CSRF token on login
-      const csrfToken = randomBytes(CSRF_CONFIG.tokenBytes).toString("hex");
-      reply.setCookie(CSRF_CONFIG.cookieName, csrfToken, {
-        path: "/",
-        httpOnly: false, // JS must read this to send as header
-        sameSite: "lax" as const,
-        secure: process.env.NODE_ENV === "production",
-        maxAge: Math.floor(SESSION_CONFIG.absoluteTtlMs / 1000),
-      });
+      // Phase 132: CSRF token is now session-bound (synchronizer token pattern).
+      // Delivered via JSON response body — no more double-submit cookie.
+      // Client stores this in JS memory and sends as x-csrf-token header.
+      const loggedInSession = await getSession(finalToken);
 
       // Phase 15C: Audit successful login
       audit("auth.login", "success", {
@@ -247,6 +241,7 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
       // Phase 15B: Do NOT expose token in response body — cookie-only transport
       return {
         ok: true,
+        csrfToken: loggedInSession?.csrfSecret || "",
         session: {
           duz: userInfo.duz,
           userName: userInfo.userName,
@@ -328,6 +323,7 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
     return {
       ok: true,
       authenticated: true,
+      csrfToken: session.csrfSecret || "",
       session: {
         duz: session.duz,
         userName: session.userName,
@@ -339,6 +335,21 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
         permissions: getPermissionsForRole(session.role),
       },
     };
+  });
+
+  // GET /auth/csrf-token — Phase 132: Dedicated CSRF token endpoint
+  // Returns the session-bound CSRF secret for clients that need it after page refresh.
+  // Requires a valid session (cookie sent automatically). Safe method (GET).
+  server.get("/auth/csrf-token", async (request, reply) => {
+    const token = extractToken(request);
+    if (!token) {
+      return reply.code(401).send({ ok: false, error: "Not authenticated" });
+    }
+    const session = await getSession(token);
+    if (!session) {
+      return reply.code(401).send({ ok: false, error: "Session expired or invalid" });
+    }
+    return { ok: true, csrfToken: session.csrfSecret || "" };
   });
 
   // GET /auth/permissions (Phase 49: RBAC introspection)

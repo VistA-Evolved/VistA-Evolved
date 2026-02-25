@@ -55,7 +55,7 @@ async function getSessionCookie(): Promise<string> {
   });
 
   const setCookie = res.headers.get("set-cookie") ?? "";
-  // Extract ALL cookies (ehr_session + ehr_csrf) from comma-separated Set-Cookie header
+  // Extract session cookie from comma-separated Set-Cookie header
   const cookies = setCookie.split(",").map((c) => {
     const m = c.trim().match(/^([^=]+=[^;]+)/);
     return m?.[1] ?? "";

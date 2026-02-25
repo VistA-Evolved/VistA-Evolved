@@ -91,6 +91,8 @@ export type ImmutableAuditAction =
   | "scheduling.request"
   | "scheduling.cancel"
   | "scheduling.reschedule"
+  | "scheduling.cprs_apptlist"
+  | "scheduling.lifecycle_transition"
   // Secure messaging events (Phase 70)
   | "messaging.send"
   | "messaging.read"

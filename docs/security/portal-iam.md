@@ -57,17 +57,14 @@ Auth endpoints (`/portal/iam/login`, `/portal/iam/register`) are rate-limited:
 
 ## CSRF Protection
 
-All write endpoints require CSRF validation using the **double-submit cookie** pattern:
+All write endpoints require CSRF validation using the **session-bound synchronizer token** pattern (Phase 132):
 
-1. Client calls `GET /portal/iam/csrf-token` → receives `csrf_token` cookie
-2. Client reads cookie value, includes as `x-csrf-token` header on POST/PUT/DELETE
-3. Server compares cookie value vs header value (timing-safe)
+1. Server generates CSRF secret at session creation, stored in the session object
+2. Client calls `GET /portal/iam/csrf-token` -- receives token in JSON response body
+3. Client stores token in memory, includes as `x-csrf-token` header on POST/PUT/DELETE
+4. Server compares header value against session's stored `csrfSecret` (timing-safe)
 
-Cookie settings:
-- `httpOnly: false` (client JS must read it)
-- `sameSite: strict`
-- `secure: true` in production
-- `maxAge: 30 minutes`
+No CSRF cookies are used. The token is never stored in cookies.
 
 ## Session Model
 

@@ -497,9 +497,8 @@ function Get-TestSession {
     Write-Host "    [WARN] Login failed -- skipping runtime tests" -ForegroundColor DarkYellow
     return $null
   }
-  # Extract CSRF token from cookie jar
-  $csrfLine = Get-Content $cookieJar | Where-Object { $_ -match 'ehr_csrf' }
-  $csrf = if ($csrfLine) { ($csrfLine -split "`t")[-1].Trim() } else { "" }
+  # Phase 132: Extract CSRF from JSON response body (synchronizer token)
+  $csrf = if ($loginParsed.csrfToken) { $loginParsed.csrfToken } else { "" }
   Remove-Item $loginJson -Force -ErrorAction SilentlyContinue
   return @{ CookieJar = $cookieJar; Csrf = $csrf }
 }

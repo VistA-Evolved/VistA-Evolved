@@ -1133,6 +1133,37 @@ DO $$ BEGIN
 END $$;
 `,
   },
+  {
+    version: 14,
+    name: "scheduling_lifecycle",
+    sql: `
+-- Phase 131: Scheduling lifecycle — operational state machine tracking.
+-- VistA is source of truth; this table tracks transitions for audit/UI.
+-- States: requested, waitlisted, booked, checked_in, completed, cancelled, no_show
+CREATE TABLE IF NOT EXISTS scheduling_lifecycle (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  appointment_ref TEXT NOT NULL,
+  patient_dfn TEXT NOT NULL,
+  clinic_ien TEXT,
+  clinic_name TEXT NOT NULL,
+  state TEXT NOT NULL DEFAULT 'requested',
+  previous_state TEXT,
+  vista_ien TEXT,
+  rpc_used TEXT,
+  transition_note TEXT,
+  created_by_duz TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_sched_lc_tenant ON scheduling_lifecycle(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_sched_lc_patient ON scheduling_lifecycle(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_sched_lc_ref ON scheduling_lifecycle(appointment_ref);
+CREATE INDEX IF NOT EXISTS idx_sched_lc_state ON scheduling_lifecycle(state);
+CREATE INDEX IF NOT EXISTS idx_sched_lc_clinic ON scheduling_lifecycle(clinic_name);
+CREATE INDEX IF NOT EXISTS idx_sched_lc_created ON scheduling_lifecycle(created_at);
+`,
+  },
 ];
 
 /**
@@ -1256,6 +1287,7 @@ export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: s
     "imaging_ingest_event",
     "scheduling_waitlist_request",
     "scheduling_booking_lock",
+    "scheduling_lifecycle",
   ];
 
   const applied: string[] = [];

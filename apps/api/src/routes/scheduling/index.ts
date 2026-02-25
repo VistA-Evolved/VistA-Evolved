@@ -1,5 +1,6 @@
 /**
- * Scheduling Routes -- Phase 63, enhanced Phase 123: SD* integration pack.
+ * Scheduling Routes -- Phase 63, enhanced Phase 123: SD* integration pack,
+ * Phase 131: lifecycle depth + CPRS appointments + reference data + posture.
  *
  * Endpoints:
  *   GET  /scheduling/appointments          -- patient appointments (SDOE)
@@ -17,6 +18,12 @@
  *   GET  /scheduling/encounters/:ien/providers -- encounter providers (SDOE GET PROVIDERS)
  *   GET  /scheduling/encounters/:ien/diagnoses -- encounter diagnoses (SDOE GET DIAGNOSES)
  *   GET  /scheduling/waitlist                  -- wait-list entries (SD W/L RETRIVE FULL DATA)
+ *   --- Phase 131 additions ---
+ *   GET  /scheduling/appointments/cprs         -- CPRS appointment list (ORWPT APPTLST)
+ *   GET  /scheduling/reference-data            -- SD W/L PRIORITY/TYPE/STATUS
+ *   GET  /scheduling/posture                   -- RPC inventory posture
+ *   GET  /scheduling/lifecycle                 -- lifecycle tracking entries
+ *   POST /scheduling/lifecycle/transition      -- record lifecycle state change
  *
  * Auth: session-based (default AUTH_RULES catch-all).
  * Audit: all writes logged to immutable-audit (no PHI).
@@ -382,5 +389,196 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
     };
   });
 
-  log.info("Scheduling routes registered (Phase 123: 14 endpoints, 9 RPCs wired)");
+  /* ================================================================== */
+  /* Phase 131: Lifecycle depth, CPRS appointments, reference, posture   */
+  /* ================================================================== */
+
+  /* ---- GET /scheduling/appointments/cprs?dfn=X ---- */
+  server.get("/scheduling/appointments/cprs", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    const { dfn } = request.query as { dfn?: string };
+    if (!dfn) {
+      return reply.code(400).send({ ok: false, error: "dfn query parameter required" });
+    }
+
+    const result = await adapter.getAppointmentsCprs(dfn);
+
+    immutableAudit("scheduling.cprs_apptlist", result.ok ? "success" : "failure", auditActor(request), {
+      requestId: (request as any).id,
+      sourceIp: request.ip,
+      tenantId: request.session?.tenantId,
+      detail: { dfn: "[REDACTED]", count: result.data?.length ?? 0 },
+    });
+
+    return {
+      ok: result.ok,
+      data: result.data || [],
+      count: (result.data || []).length,
+      pending: result.pending,
+      target: result.target,
+      error: result.error,
+      vistaGrounding: result.vistaGrounding,
+    };
+  });
+
+  /* ---- GET /scheduling/reference-data ---- */
+  server.get("/scheduling/reference-data", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+
+    const result = await adapter.getReferenceData();
+    return {
+      ok: result.ok,
+      data: result.data || { priorities: [], types: [], statuses: [] },
+      pending: result.pending,
+      target: result.target,
+      vistaGrounding: result.vistaGrounding,
+    };
+  });
+
+  /* ---- GET /scheduling/posture ---- */
+  server.get("/scheduling/posture", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+
+    const result = await adapter.getRpcPosture();
+    const entries = result.data || [];
+    const summary = {
+      available: entries.filter((e) => e.status === "available").length,
+      callableNoData: entries.filter((e) => e.status === "callable_no_data").length,
+      notInstalled: entries.filter((e) => e.status === "not_installed").length,
+      total: entries.length,
+    };
+
+    return {
+      ok: result.ok,
+      data: entries,
+      summary,
+      vistaGrounding: result.vistaGrounding,
+    };
+  });
+
+  /* ---- GET /scheduling/lifecycle?patientDfn=X&appointmentRef=Y&state=Z ---- */
+  server.get("/scheduling/lifecycle", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    const { patientDfn, appointmentRef, state, limit } = request.query as {
+      patientDfn?: string;
+      appointmentRef?: string;
+      state?: string;
+      limit?: string;
+    };
+
+    try {
+      const pgLifecycleRepo = await import("../../platform/pg/repo/pg-scheduling-lifecycle-repo.js");
+
+      let entries;
+      if (appointmentRef) {
+        entries = await pgLifecycleRepo.findLifecycleByAppointmentRef(appointmentRef);
+      } else if (patientDfn) {
+        entries = await pgLifecycleRepo.findLifecycleByPatient(patientDfn, parseInt(limit || "50", 10));
+      } else if (state) {
+        entries = await pgLifecycleRepo.findLifecycleByState(state, parseInt(limit || "100", 10));
+      } else {
+        // Return stats summary when no filter
+        const counts = await pgLifecycleRepo.countByState();
+        const total = await pgLifecycleRepo.countTotal();
+        return { ok: true, data: [], stats: { total, byState: counts } };
+      }
+
+      return {
+        ok: true,
+        data: entries || [],
+        count: (entries || []).length,
+      };
+    } catch (err: any) {
+      log.warn("Lifecycle query failed", { error: err.message });
+      return {
+        ok: false,
+        data: [],
+        error: `Lifecycle query failed: ${err.message}`,
+        pending: true,
+        target: "PG scheduling_lifecycle table (requires PLATFORM_PG_URL)",
+      };
+    }
+  });
+
+  /* ---- POST /scheduling/lifecycle/transition ---- */
+  server.post("/scheduling/lifecycle/transition", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    const body = (request.body as any) || {};
+    const { appointmentRef, patientDfn, clinicName, clinicIen, state, vistaIen, rpcUsed, note } = body;
+
+    if (!appointmentRef || !patientDfn || !clinicName || !state) {
+      return reply.code(400).send({
+        ok: false,
+        error: "appointmentRef, patientDfn, clinicName, and state are required",
+      });
+    }
+
+    try {
+      const pgLifecycleRepo = await import("../../platform/pg/repo/pg-scheduling-lifecycle-repo.js");
+      const { randomUUID } = await import("node:crypto");
+
+      // Validate state
+      if (!pgLifecycleRepo.LIFECYCLE_STATES.includes(state)) {
+        return reply.code(400).send({
+          ok: false,
+          error: `Invalid state: ${state}. Valid states: ${pgLifecycleRepo.LIFECYCLE_STATES.join(", ")}`,
+        });
+      }
+
+      // Check previous state for transition validation
+      const latest = await pgLifecycleRepo.findLatestByAppointmentRef(appointmentRef);
+      const previousState = latest?.state;
+
+      if (previousState && !pgLifecycleRepo.isValidTransition(previousState, state)) {
+        return reply.code(409).send({
+          ok: false,
+          error: `Invalid transition: ${previousState} -> ${state}`,
+          currentState: previousState,
+          validTransitions: ["requested", "waitlisted", "booked", "checked_in", "completed", "cancelled", "no_show"]
+            .filter((s) => pgLifecycleRepo.isValidTransition(previousState, s)),
+        });
+      }
+
+      const entry = await pgLifecycleRepo.insertLifecycleEntry({
+        id: randomUUID(),
+        appointmentRef,
+        patientDfn,
+        clinicIen: clinicIen || undefined,
+        clinicName,
+        state,
+        previousState: previousState || undefined,
+        vistaIen: vistaIen || undefined,
+        rpcUsed: rpcUsed || undefined,
+        transitionNote: note || undefined,
+        createdByDuz: request.session?.duz,
+      });
+
+      immutableAudit("scheduling.lifecycle_transition", "success", auditActor(request), {
+        requestId: (request as any).id,
+        sourceIp: request.ip,
+        tenantId: request.session?.tenantId,
+        detail: {
+          appointmentRef,
+          state,
+          previousState: previousState || "initial",
+        },
+      });
+
+      return reply.code(201).send({
+        ok: true,
+        data: entry,
+        transition: previousState ? `${previousState} -> ${state}` : `initial -> ${state}`,
+      });
+    } catch (err: any) {
+      log.warn("Lifecycle transition failed", { error: err.message });
+      return reply.code(500).send({
+        ok: false,
+        error: `Lifecycle transition failed: ${err.message}`,
+        pending: true,
+        target: "PG scheduling_lifecycle table (requires PLATFORM_PG_URL)",
+      });
+    }
+  });
+
+  log.info("Scheduling routes registered (Phase 131: 19 endpoints, 12+ RPCs wired)");
 }

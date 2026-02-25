@@ -969,3 +969,33 @@ export const pgSchedulingBookingLock = pgTable("scheduling_booking_lock", {
   uniqueIndex("idx_sched_bl_key").on(table.tenantId, table.lockKey),
   index("idx_sched_bl_expires").on(table.expiresAt),
 ]);
+
+/**
+ * Scheduling Lifecycle — operational state machine (Phase 131).
+ * Tracks appointment lifecycle transitions for audit and UI.
+ * States: requested, waitlisted, booked, checked_in, completed, cancelled, no_show
+ * VistA remains source of truth. This tracks operational transitions only.
+ */
+export const pgSchedulingLifecycle = pgTable("scheduling_lifecycle", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  appointmentRef: text("appointment_ref").notNull(),
+  patientDfn: text("patient_dfn").notNull(),
+  clinicIen: text("clinic_ien"),
+  clinicName: text("clinic_name").notNull(),
+  state: text("state").notNull().default("requested"),
+  previousState: text("previous_state"),
+  vistaIen: text("vista_ien"),
+  rpcUsed: text("rpc_used"),
+  transitionNote: text("transition_note"),
+  createdByDuz: text("created_by_duz"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_sched_lc_tenant").on(table.tenantId),
+  index("idx_sched_lc_patient").on(table.patientDfn),
+  index("idx_sched_lc_ref").on(table.appointmentRef),
+  index("idx_sched_lc_state").on(table.state),
+  index("idx_sched_lc_clinic").on(table.clinicName),
+  index("idx_sched_lc_created").on(table.createdAt),
+]);

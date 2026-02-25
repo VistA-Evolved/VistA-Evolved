@@ -47,6 +47,14 @@ export interface SessionData {
   createdAt: number;
   /** Last activity timestamp */
   lastActivity: number;
+  /**
+   * CSRF synchronizer secret — generated at session creation, stored in DB.
+   * Delivered to the client via JSON response (login body or GET /auth/csrf-token).
+   * Client sends it back as X-CSRF-Token header on mutations.
+   * Server validates header === this value (NOT a cookie comparison).
+   * Phase 132: Migrated from double-submit cookie to synchronizer token.
+   */
+  csrfSecret: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -138,11 +146,12 @@ setInterval(() => {
 /* ------------------------------------------------------------------ */
 
 /** Create a new session and return its token. */
-export async function createSession(data: Omit<SessionData, "token" | "createdAt" | "lastActivity">): Promise<string> {
+export async function createSession(data: Omit<SessionData, "token" | "createdAt" | "lastActivity" | "csrfSecret">): Promise<string> {
   const token = randomBytes(32).toString("hex");
+  const csrfSecret = randomBytes(32).toString("hex");
   const now = Date.now();
   const tokenH = hashToken(token);
-  const sessionData: SessionData = { ...data, token, createdAt: now, lastActivity: now };
+  const sessionData: SessionData = { ...data, token, csrfSecret, createdAt: now, lastActivity: now };
 
   if (_repo) {
     try {
@@ -156,6 +165,7 @@ export async function createSession(data: Omit<SessionData, "token" | "createdAt
         facilityName: data.facilityName,
         divisionIen: data.divisionIen,
         tokenHash: tokenH,
+        csrfSecret,
         expiresAt,
       });
       sessionCache.set(tokenH, { data: sessionData, dbId: row.id, cachedAt: now });
@@ -221,6 +231,7 @@ export async function getSession(token: string): Promise<SessionData | null> {
         tenantId: row.tenantId,
         createdAt: new Date(row.createdAt).getTime(),
         lastActivity: now,
+        csrfSecret: (row as any).csrfSecret || "",
       };
       sessionCache.set(tokenH, { data: sessionData, dbId: row.id, cachedAt: now });
       await _repo.touchSession(row.id);
@@ -276,6 +287,7 @@ export async function listSessions(): Promise<SessionData[]> {
         tenantId: row.tenantId,
         createdAt: new Date(row.createdAt).getTime(),
         lastActivity: new Date(row.lastSeenAt).getTime(),
+        csrfSecret: "",  // Never expose in session lists
       }));
     } catch { /* fall through */ }
   }

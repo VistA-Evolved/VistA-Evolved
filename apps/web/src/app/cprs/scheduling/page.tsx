@@ -1,10 +1,11 @@
 'use client';
 
 /**
- * Clinician Scheduling Dashboard — Phase 63
+ * Clinician Scheduling Dashboard -- Phase 63, enhanced Phase 131.
  *
- * Tabs: Schedule (clinic/date view), Patient Appointments, Requests Queue
- * Data: VistA SDOE encounters + SD W/L wait list RPCs
+ * Tabs: Schedule (clinic/date view), Patient Appointments, Requests Queue,
+ *       Clinics & Providers, Lifecycle (Phase 131), VistA Posture (Phase 131)
+ * Data: VistA SDOE encounters + SD W/L wait list RPCs + ORWPT + SDVW
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -17,13 +18,15 @@ async function apiFetch(path: string, opts?: RequestInit) {
   return res.json();
 }
 
-type Tab = 'schedule' | 'patient' | 'requests' | 'clinics';
+type Tab = 'schedule' | 'patient' | 'requests' | 'clinics' | 'lifecycle' | 'posture';
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'schedule', label: 'Clinic Schedule' },
   { id: 'patient', label: 'Patient Appointments' },
   { id: 'requests', label: 'Request Queue' },
   { id: 'clinics', label: 'Clinics & Providers' },
+  { id: 'lifecycle', label: 'Lifecycle' },
+  { id: 'posture', label: 'VistA Posture' },
 ];
 
 export default function SchedulingPage() {
@@ -53,6 +56,16 @@ export default function SchedulingPage() {
   // Clinics tab state
   const [clinics, setClinics] = useState<any[]>([]);
   const [providers, setProviders] = useState<any[]>([]);
+
+  // Phase 131: Lifecycle tab state
+  const [lifecycleEntries, setLifecycleEntries] = useState<any[]>([]);
+  const [lifecycleStats, setLifecycleStats] = useState<any>(null);
+  const [lifecycleDfn, setLifecycleDfn] = useState('');
+
+  // Phase 131: VistA Posture tab state
+  const [postureEntries, setPostureEntries] = useState<any[]>([]);
+  const [postureSummary, setPostureSummary] = useState<any>(null);
+  const [referenceData, setReferenceData] = useState<any>(null);
 
   const loadSchedule = useCallback(async () => {
     setLoading(true);
@@ -109,6 +122,39 @@ export default function SchedulingPage() {
     setLoading(false);
   }, []);
 
+  const loadLifecycle = useCallback(async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const url = lifecycleDfn
+        ? `/scheduling/lifecycle?patientDfn=${lifecycleDfn}`
+        : '/scheduling/lifecycle';
+      const data = await apiFetch(url);
+      setLifecycleEntries(data.data || []);
+      if (data.stats) setLifecycleStats(data.stats);
+    } catch (err: any) {
+      setError(err.message);
+    }
+    setLoading(false);
+  }, [lifecycleDfn]);
+
+  const loadPosture = useCallback(async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const [postureData, refData] = await Promise.all([
+        apiFetch('/scheduling/posture'),
+        apiFetch('/scheduling/reference-data'),
+      ]);
+      setPostureEntries(postureData.data || []);
+      setPostureSummary(postureData.summary || null);
+      setReferenceData(refData.data || null);
+    } catch (err: any) {
+      setError(err.message);
+    }
+    setLoading(false);
+  }, []);
+
   const submitRequest = useCallback(async () => {
     if (!patientDfn || !reqClinic || !reqDate || !reqReason) {
       setError('Patient DFN, clinic, date, and reason are required.');
@@ -142,7 +188,9 @@ export default function SchedulingPage() {
     if (tab === 'schedule') loadSchedule();
     else if (tab === 'requests') loadRequests();
     else if (tab === 'clinics') loadClinics();
-  }, [tab, loadSchedule, loadRequests, loadClinics]);
+    else if (tab === 'lifecycle') loadLifecycle();
+    else if (tab === 'posture') loadPosture();
+  }, [tab, loadSchedule, loadRequests, loadClinics, loadLifecycle, loadPosture]);
 
   const tabStyle = (t: Tab) => ({
     padding: '0.5rem 1rem',
@@ -443,6 +491,183 @@ export default function SchedulingPage() {
               </div>
             )}
           </div>
+        </div>
+      )}
+
+      {/* ---- Lifecycle Tab (Phase 131) ---- */}
+      {tab === 'lifecycle' && !loading && (
+        <div>
+          <p style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '1rem' }}>
+            Appointment lifecycle state transitions tracked in Postgres.
+            States: requested &rarr; waitlisted &rarr; booked &rarr; checked_in &rarr; completed | cancelled | no_show
+          </p>
+
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '1rem' }}>
+            <label style={{ fontSize: '0.875rem', fontWeight: 500 }}>Filter by DFN:</label>
+            <input
+              type="text"
+              value={lifecycleDfn}
+              onChange={(e) => setLifecycleDfn(e.target.value)}
+              placeholder="(blank = summary)"
+              style={{ padding: '0.375rem 0.5rem', border: '1px solid #ced4da', borderRadius: 4, fontSize: '0.875rem', width: 140 }}
+            />
+            <button
+              onClick={loadLifecycle}
+              style={{ padding: '0.375rem 0.75rem', background: '#0d6efd', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', fontSize: '0.875rem' }}
+            >
+              Load
+            </button>
+          </div>
+
+          {lifecycleStats && (
+            <div style={{ padding: '0.75rem', background: '#e8f4fd', borderRadius: 6, marginBottom: '1rem', fontSize: '0.875rem' }}>
+              <strong>Stats:</strong> Total entries: {lifecycleStats.total}
+              {lifecycleStats.byState && Object.keys(lifecycleStats.byState).length > 0 && (
+                <span> | {Object.entries(lifecycleStats.byState).map(([s, c]) => `${s}: ${c}`).join(', ')}</span>
+              )}
+            </div>
+          )}
+
+          {lifecycleEntries.length === 0 ? (
+            <p style={{ fontStyle: 'italic', color: '#6c757d' }}>
+              {lifecycleDfn ? 'No lifecycle entries for this patient.' : 'No lifecycle entries recorded yet. Use POST /scheduling/lifecycle/transition to record state changes.'}
+            </p>
+          ) : (
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
+              <thead>
+                <tr style={{ borderBottom: '2px solid #dee2e6', textAlign: 'left' }}>
+                  <th style={{ padding: '0.375rem' }}>Time</th>
+                  <th style={{ padding: '0.375rem' }}>Appt Ref</th>
+                  <th style={{ padding: '0.375rem' }}>Clinic</th>
+                  <th style={{ padding: '0.375rem' }}>Transition</th>
+                  <th style={{ padding: '0.375rem' }}>RPC Used</th>
+                  <th style={{ padding: '0.375rem' }}>Note</th>
+                </tr>
+              </thead>
+              <tbody>
+                {lifecycleEntries.map((e: any) => (
+                  <tr key={e.id} style={{ borderBottom: '1px solid #e9ecef' }}>
+                    <td style={{ padding: '0.375rem', fontSize: '0.75rem' }}>{e.createdAt ? new Date(e.createdAt).toLocaleString() : '-'}</td>
+                    <td style={{ padding: '0.375rem', fontFamily: 'monospace', fontSize: '0.7rem' }}>{e.appointmentRef?.slice(0, 12) || '-'}</td>
+                    <td style={{ padding: '0.375rem' }}>{e.clinicName || '-'}</td>
+                    <td style={{ padding: '0.375rem' }}>
+                      {e.previousState && <span style={{ color: '#6c757d' }}>{e.previousState} &rarr; </span>}
+                      <span style={{
+                        padding: '0.125rem 0.375rem',
+                        borderRadius: 8,
+                        fontSize: '0.7rem',
+                        background: e.state === 'completed' ? '#d1e7dd' : e.state === 'cancelled' ? '#f8d7da' : e.state === 'booked' ? '#cfe2ff' : '#fff3cd',
+                        color: e.state === 'completed' ? '#0f5132' : e.state === 'cancelled' ? '#842029' : e.state === 'booked' ? '#084298' : '#664d03',
+                      }}>
+                        {e.state}
+                      </span>
+                    </td>
+                    <td style={{ padding: '0.375rem', fontSize: '0.7rem', color: '#6c757d' }}>{e.rpcUsed || '-'}</td>
+                    <td style={{ padding: '0.375rem', fontSize: '0.75rem' }}>{e.transitionNote || '-'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      )}
+
+      {/* ---- VistA Posture Tab (Phase 131) ---- */}
+      {tab === 'posture' && !loading && (
+        <div>
+          <p style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '1rem' }}>
+            VistA scheduling RPC availability matrix -- which RPCs exist and are callable in this sandbox.
+          </p>
+
+          {postureSummary && (
+            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+              <div style={{ padding: '0.5rem 1rem', background: '#d1e7dd', borderRadius: 6, fontSize: '0.875rem' }}>
+                <strong>{postureSummary.available}</strong> Available
+              </div>
+              <div style={{ padding: '0.5rem 1rem', background: '#fff3cd', borderRadius: 6, fontSize: '0.875rem' }}>
+                <strong>{postureSummary.callableNoData}</strong> Callable (no data)
+              </div>
+              <div style={{ padding: '0.5rem 1rem', background: '#f8d7da', borderRadius: 6, fontSize: '0.875rem' }}>
+                <strong>{postureSummary.notInstalled}</strong> Not installed
+              </div>
+            </div>
+          )}
+
+          {postureEntries.length > 0 && (
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem', marginBottom: '1.5rem' }}>
+              <thead>
+                <tr style={{ borderBottom: '2px solid #dee2e6', textAlign: 'left' }}>
+                  <th style={{ padding: '0.375rem' }}>RPC Name</th>
+                  <th style={{ padding: '0.375rem' }}>IEN</th>
+                  <th style={{ padding: '0.375rem' }}>Package</th>
+                  <th style={{ padding: '0.375rem' }}>Status</th>
+                  <th style={{ padding: '0.375rem' }}>Sandbox Note</th>
+                </tr>
+              </thead>
+              <tbody>
+                {postureEntries.map((p: any, i: number) => (
+                  <tr key={i} style={{ borderBottom: '1px solid #e9ecef' }}>
+                    <td style={{ padding: '0.375rem', fontFamily: 'monospace', fontSize: '0.75rem' }}>{p.rpc}</td>
+                    <td style={{ padding: '0.375rem', fontFamily: 'monospace' }}>{p.ien || '-'}</td>
+                    <td style={{ padding: '0.375rem' }}>{p.vistaPackage}</td>
+                    <td style={{ padding: '0.375rem' }}>
+                      <span style={{
+                        padding: '0.125rem 0.375rem',
+                        borderRadius: 8,
+                        fontSize: '0.7rem',
+                        background: p.status === 'available' ? '#d1e7dd' : p.status === 'callable_no_data' ? '#fff3cd' : '#f8d7da',
+                        color: p.status === 'available' ? '#0f5132' : p.status === 'callable_no_data' ? '#664d03' : '#842029',
+                      }}>
+                        {p.status === 'callable_no_data' ? 'no data' : p.status}
+                      </span>
+                    </td>
+                    <td style={{ padding: '0.375rem', fontSize: '0.75rem', color: '#6c757d' }}>{p.sandboxNote}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+
+          {referenceData && (
+            <div>
+              <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>Reference Data (SD W/L)</h3>
+              <p style={{ fontSize: '0.75rem', color: '#6c757d', marginBottom: '0.5rem' }}>
+                From SD W/L PRIORITY, SD W/L TYPE, SD W/L CURRENT STATUS RPCs
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+                <div>
+                  <h4 style={{ fontSize: '0.875rem', marginBottom: '0.25rem' }}>Priorities ({referenceData.priorities?.length || 0})</h4>
+                  {(referenceData.priorities || []).length === 0 ? (
+                    <p style={{ fontStyle: 'italic', color: '#6c757d', fontSize: '0.8rem' }}>Empty (sandbox)</p>
+                  ) : (
+                    <ul style={{ margin: 0, padding: '0 0 0 1rem', fontSize: '0.8rem' }}>
+                      {referenceData.priorities.map((p: any) => <li key={p.ien}>{p.ien}: {p.name}</li>)}
+                    </ul>
+                  )}
+                </div>
+                <div>
+                  <h4 style={{ fontSize: '0.875rem', marginBottom: '0.25rem' }}>Types ({referenceData.types?.length || 0})</h4>
+                  {(referenceData.types || []).length === 0 ? (
+                    <p style={{ fontStyle: 'italic', color: '#6c757d', fontSize: '0.8rem' }}>Empty (sandbox)</p>
+                  ) : (
+                    <ul style={{ margin: 0, padding: '0 0 0 1rem', fontSize: '0.8rem' }}>
+                      {referenceData.types.map((t: any) => <li key={t.ien}>{t.ien}: {t.name}</li>)}
+                    </ul>
+                  )}
+                </div>
+                <div>
+                  <h4 style={{ fontSize: '0.875rem', marginBottom: '0.25rem' }}>Statuses ({referenceData.statuses?.length || 0})</h4>
+                  {(referenceData.statuses || []).length === 0 ? (
+                    <p style={{ fontStyle: 'italic', color: '#6c757d', fontSize: '0.8rem' }}>Empty (sandbox)</p>
+                  ) : (
+                    <ul style={{ margin: 0, padding: '0 0 0 1rem', fontSize: '0.8rem' }}>
+                      {referenceData.statuses.map((s: any) => <li key={s.ien}>{s.ien}: {s.name}</li>)}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -15,23 +15,24 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import styles from '@/components/cprs/cprs.module.css';
+import { getCsrfTokenSync, getCsrfToken as fetchCsrfToken } from '@/lib/csrf';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions' | 'gateways' | 'adapters' | 'jobs' | 'eligibility' | 'claim-status' | 'ops-dashboard' | 'credential-vault' | 'accreditation' | 'claim-lifecycle' | 'evidence';
 
 function getCsrfToken(): string {
-  if (typeof document === 'undefined') return '';
-  const match = document.cookie.match(/ehr_csrf=([^;]+)/);
-  return match ? match[1] : '';
+  return getCsrfTokenSync();
 }
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const headers: Record<string, string> = { ...((opts?.headers as Record<string, string>) ?? {}) };
-  // Inject CSRF token for non-safe methods
+  // Inject CSRF token for non-safe methods (Phase 132: from session, not cookie)
   const method = (opts?.method ?? 'GET').toUpperCase();
   if (!['GET', 'HEAD', 'OPTIONS'].includes(method)) {
-    headers['x-csrf-token'] = getCsrfToken();
+    let token = getCsrfTokenSync();
+    if (!token) token = await fetchCsrfToken();
+    headers['x-csrf-token'] = token;
   }
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts, headers });
   return res.json();

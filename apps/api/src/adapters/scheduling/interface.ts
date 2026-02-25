@@ -1,10 +1,12 @@
 /**
- * Scheduling Adapter Interface -- Phase 37C, enhanced Phase 63, Phase 123.
+ * Scheduling Adapter Interface -- Phase 37C, enhanced Phase 63, Phase 123, Phase 131.
  *
  * Phase 63 additions: WaitListEntry, ClinicInfo, encounter-based types,
  * request/cancel/reschedule flows, clinic lookup, provider lookup.
  * Phase 123 additions: EncounterDetail, EncounterProvider, EncounterDiagnosis,
  * encounter detail/providers/diagnoses methods, wait-list read, VistA posture.
+ * Phase 131 additions: LifecycleEntry, RpcPosture, ReferenceDataSet,
+ * CprsAppointment, getReferenceData, getAppointmentsCprs, getRpcPosture.
  */
 
 import type { BaseAdapter, AdapterResult } from "../types.js";
@@ -119,6 +121,48 @@ export interface AppointmentRequest {
   providerDuz?: string;
 }
 
+/** Phase 131: CPRS-style appointment (from ORWPT APPTLST) */
+export interface CprsAppointment {
+  dateTime: string;
+  clinicIen: string;
+  clinicName: string;
+  status: string;
+  raw: string;
+}
+
+/** Phase 131: Wait-list reference data (SD W/L PRIORITY/TYPE/STATUS) */
+export interface ReferenceDataSet {
+  priorities: { ien: string; name: string }[];
+  types: { ien: string; name: string }[];
+  statuses: { ien: string; name: string }[];
+}
+
+/** Phase 131: Lifecycle state transition record */
+export interface LifecycleEntry {
+  id: string;
+  appointmentRef: string;
+  patientDfn: string;
+  clinicIen?: string;
+  clinicName: string;
+  state: string;
+  previousState?: string;
+  vistaIen?: string;
+  rpcUsed?: string;
+  transitionNote?: string;
+  createdByDuz?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/** Phase 131: RPC availability posture for scheduling subsystem */
+export interface RpcPostureEntry {
+  rpc: string;
+  ien?: string;
+  status: "available" | "callable_no_data" | "not_installed";
+  vistaPackage: string;
+  sandboxNote: string;
+}
+
 export interface SchedulingAdapter extends BaseAdapter {
   readonly adapterType: "scheduling";
   /** List appointments for a patient (SDOE encounter-based) */
@@ -143,4 +187,10 @@ export interface SchedulingAdapter extends BaseAdapter {
   getEncounterDiagnoses(encounterIen: string): Promise<AdapterResult<EncounterDiagnosis[]>>;
   /** Phase 123: Read wait-list entries (SD W/L RETRIVE FULL DATA) */
   getWaitList(clinicIen?: string): Promise<AdapterResult<WaitListEntry[]>>;
+  /** Phase 131: Get CPRS-style appointment list (ORWPT APPTLST) */
+  getAppointmentsCprs(patientDfn: string): Promise<AdapterResult<CprsAppointment[]>>;
+  /** Phase 131: Get wait-list reference data (SD W/L PRIORITY/TYPE/STATUS) */
+  getReferenceData(): Promise<AdapterResult<ReferenceDataSet>>;
+  /** Phase 131: Get RPC availability posture for scheduling subsystem */
+  getRpcPosture(): Promise<AdapterResult<RpcPostureEntry[]>>;
 }

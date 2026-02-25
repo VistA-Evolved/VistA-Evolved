@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
+import { setCsrfToken, clearCsrfToken } from '@/lib/csrf';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -61,6 +62,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         if (data.ok && data.authenticated && data.session) {
           setUser(data.session);
           setAuthenticated(true);
+          // Phase 132: Capture session-bound CSRF token
+          if (data.csrfToken) setCsrfToken(data.csrfToken);
         }
       })
       .catch(() => {
@@ -81,6 +84,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       if (data.ok && data.session) {
         setUser(data.session);
         setAuthenticated(true);
+        // Phase 132: Capture session-bound CSRF token from login response
+        if (data.csrfToken) setCsrfToken(data.csrfToken);
         return { ok: true };
       }
       return { ok: false, error: data.error || 'Login failed' };
@@ -100,6 +105,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     } catch { /* best-effort */ }
     setUser(null);
     setAuthenticated(false);
+    clearCsrfToken();
   }, []);
 
   const hasRole = useCallback((...roles: UserRole[]) => {

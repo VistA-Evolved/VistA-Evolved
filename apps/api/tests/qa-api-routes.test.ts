@@ -55,9 +55,22 @@ async function login(): Promise<{ cookie: string; csrf: string }> {
     return match?.[1] ?? "";
   }).filter(Boolean);
   const cookieStr = cookies.join("; ");
-  // Extract CSRF token
-  const csrfMatch = setCookie.match(/ehr_csrf=([^;]+)/);
-  const csrf = csrfMatch?.[1] ?? "";
+  // Phase 132: Extract CSRF token from JSON response body (synchronizer token)
+  let csrf = "";
+  try {
+    const body = await res.json();
+    if (body?.csrfToken) csrf = body.csrfToken;
+  } catch { /* not JSON */ }
+  // Fallback: fetch from dedicated endpoint if not in login body
+  if (!csrf) {
+    try {
+      const csrfRes = await fetch(`${API}/auth/csrf-token`, {
+        headers: { Cookie: cookieStr },
+      });
+      const csrfBody = await csrfRes.json();
+      if (csrfBody?.csrfToken) csrf = csrfBody.csrfToken;
+    } catch { /* no CSRF available */ }
+  }
   return { cookie: cookieStr, csrf };
 }
 

@@ -147,13 +147,17 @@ export const RATE_LIMIT_CONFIG = {
 } as const;
 
 /* ------------------------------------------------------------------ */
-/* CSRF (Phase 49)                                                     */
+/* CSRF (Phase 49, migrated to synchronizer token Phase 132)           */
 /* ------------------------------------------------------------------ */
 
 export const CSRF_CONFIG = {
-  /** CSRF double-submit cookie name */
+  /**
+   * CSRF cookie name — DEPRECATED (Phase 132).
+   * Kept for backward compatibility with portal double-submit pattern.
+   * EHR routes now use session-bound synchronizer token.
+   */
   cookieName: "ehr_csrf",
-  /** CSRF header name that must match the cookie value */
+  /** CSRF header name sent by the client on mutation requests */
   headerName: "x-csrf-token",
   /** Token length in bytes (hex-encoded = 2x this) */
   tokenBytes: 32,

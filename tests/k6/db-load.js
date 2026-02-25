@@ -61,11 +61,20 @@ export function setup() {
     throw new Error(`Login failed: ${loginRes.status} ${loginRes.body}`);
   }
 
-  // Extract CSRF token from cookies
+  // Phase 132: Extract CSRF token from JSON response body (synchronizer token)
   let csrfToken = "";
-  const cookies = loginRes.cookies;
-  if (cookies && cookies["ehr_csrf"]) {
-    csrfToken = cookies["ehr_csrf"][0].value;
+  try {
+    const body = loginRes.json();
+    if (body && body.csrfToken) {
+      csrfToken = body.csrfToken;
+    }
+  } catch {
+    // Fallback: try fetching from dedicated endpoint
+    const csrfRes = http.get(`${BASE_URL}/auth/csrf-token`);
+    try {
+      const csrfBody = csrfRes.json();
+      if (csrfBody && csrfBody.csrfToken) csrfToken = csrfBody.csrfToken;
+    } catch { /* no CSRF available */ }
   }
 
   return { csrfToken };

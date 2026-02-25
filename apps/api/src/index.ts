@@ -2591,6 +2591,13 @@ try {
         } catch (slErr: any) {
           log.warn("PG scheduling lock repo wire failed (in-memory fallback)", { error: slErr.message });
         }
+        // Phase 131: Scheduling lifecycle repo → PG (verified via migration v14)
+        try {
+          await import("./platform/pg/repo/pg-scheduling-lifecycle-repo.js");
+          log.info("Scheduling lifecycle repo available (Phase 131)");
+        } catch (lcErr: any) {
+          log.warn("PG scheduling lifecycle repo not available (non-fatal)", { error: lcErr.message });
+        }
       }
     } else {
       log.warn("Platform PG init failed (SQLite fallback active)", {

@@ -1,5 +1,5 @@
 /**
- * Stub Scheduling Adapter -- Phase 37C, updated Phase 63, Phase 123.
+ * Stub Scheduling Adapter -- Phase 37C, updated Phase 63, Phase 123, Phase 131.
  */
 
 import type {
@@ -13,6 +13,9 @@ import type {
   EncounterDetail,
   EncounterProvider,
   EncounterDiagnosis,
+  CprsAppointment,
+  ReferenceDataSet,
+  RpcPostureEntry,
 } from "./interface.js";
 import type { AdapterResult } from "../types.js";
 
@@ -36,4 +39,8 @@ export class StubSchedulingAdapter implements SchedulingAdapter {
   async getEncounterProviders(): Promise<AdapterResult<EncounterProvider[]>> { return STUB; }
   async getEncounterDiagnoses(): Promise<AdapterResult<EncounterDiagnosis[]>> { return STUB; }
   async getWaitList(): Promise<AdapterResult<WaitListEntry[]>> { return STUB; }
+  // Phase 131: new methods
+  async getAppointmentsCprs(): Promise<AdapterResult<CprsAppointment[]>> { return STUB; }
+  async getReferenceData(): Promise<AdapterResult<ReferenceDataSet>> { return STUB; }
+  async getRpcPosture(): Promise<AdapterResult<RpcPostureEntry[]>> { return STUB; }
 }

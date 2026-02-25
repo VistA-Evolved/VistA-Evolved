@@ -41,16 +41,18 @@ cross-referenced against the Vivian index (3,754 RPCs).
 | `maxAge` | 8 hours (matches session TTL) |
 | Token in body | **Never** -- cookie-only transport |
 
-### CSRF Protection (Phase 49)
+### CSRF Protection (Phase 49, upgraded Phase 132)
 
-Double-submit cookie pattern:
+Session-bound synchronizer token pattern (OWASP recommended):
 
-1. Server sets a **non-httpOnly** cookie `ehr_csrf` with a random 64-hex-char token
-2. JavaScript reads this cookie and sends it as `X-CSRF-Token` header on state-changing requests
-3. Server validates header matches cookie on POST/PUT/PATCH/DELETE
-4. Exempt: `GET`, `HEAD`, `OPTIONS`, `/auth/*`, health checks, service callbacks
+1. Server generates a random 64-hex-char CSRF secret at session creation, stored server-side in the `csrf_secret` DB column
+2. Token is delivered to the client via the login JSON response body (`csrfToken` field) and via `GET /auth/csrf-token`
+3. Client stores token in memory (not cookies) and sends it as `X-CSRF-Token` header on state-changing requests
+4. Server validates header against the session's stored `csrfSecret` on POST/PUT/PATCH/DELETE
+5. Exempt: `GET`, `HEAD`, `OPTIONS`, `/auth/*`, health checks, service callbacks
 
-Combined with `SameSite=lax` and origin-check, this provides defense-in-depth.
+This eliminates the cookie injection attack surface of the previous double-submit cookie pattern.
+Combined with `SameSite=lax` session cookie and origin-check, this provides defense-in-depth.
 
 ### Account Lockout (Phase 49)
 
@@ -168,7 +170,7 @@ See `AUTH_RULES` in `apps/api/src/middleware/security.ts` for the full route map
 
 - [ ] **No credentials in localStorage** -- session token is httpOnly cookie only
 - [ ] **No token in response body** -- only session metadata returned on login
-- [ ] **CSRF token double-submit** -- `ehr_csrf` cookie + `X-CSRF-Token` header
+- [ ] **CSRF synchronizer token** -- session-bound secret + `X-CSRF-Token` header (Phase 132)
 - [ ] **Session rotation on login** -- new token on every authentication
 - [ ] **Idle timeout** -- 30-minute inactive session expiry
 - [ ] **Absolute TTL** -- 8-hour maximum session lifetime

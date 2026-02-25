@@ -128,9 +128,24 @@ export async function executeFlow(
       const headers: Record<string, string> = { "Content-Type": "application/json" };
       if (cookie) {
         headers["Cookie"] = cookie;
-        // Extract CSRF token from cookie string for double-submit pattern
-        const csrfMatch = cookie.match(/ehr_csrf=([^;]+)/);
-        if (csrfMatch) headers["x-csrf-token"] = csrfMatch[1];
+      }
+      // Phase 132: Use session-bound CSRF token if available in vars
+      // (extracted from login response body's csrfToken field),
+      // otherwise fall back to fetching from /auth/csrf-token endpoint.
+      if (vars["csrfToken"]) {
+        headers["x-csrf-token"] = vars["csrfToken"];
+      } else if (cookie && step.method !== "GET") {
+        // Last resort: try to get CSRF token from the dedicated endpoint
+        try {
+          const csrfRes = await fetch(`${baseUrl}/auth/csrf-token`, {
+            headers: { Cookie: cookie },
+          });
+          const csrfBody = await csrfRes.json().catch(() => ({}));
+          if ((csrfBody as any).csrfToken) {
+            vars["csrfToken"] = (csrfBody as any).csrfToken;
+            headers["x-csrf-token"] = vars["csrfToken"];
+          }
+        } catch { /* CSRF fetch failed — continue without it */ }
       }
 
       const res = await fetch(url, {

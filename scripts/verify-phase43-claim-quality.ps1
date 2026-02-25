@@ -88,15 +88,10 @@ if ($authed) {
 
 $bodyFile = Join-Path $root "verify-body-tmp.json"
 
-# Extract CSRF token from cookie jar (Phase 49 -- double-submit cookie)
+# Phase 132: Extract CSRF from login JSON response body (synchronizer token)
+$script:cachedCsrf = if ($loginJson -and $loginJson.csrfToken) { $loginJson.csrfToken } else { "" }
 function GetCsrfToken() {
-  if (Test-Path -LiteralPath $cookieFile) {
-    $line = Get-Content $cookieFile | Where-Object { $_ -match "ehr_csrf" } | Select-Object -Last 1
-    if ($line) {
-      return ($line -split "`t")[-1]
-    }
-  }
-  return ""
+  return $script:cachedCsrf
 }
 
 function ApiGet([string]$path) {

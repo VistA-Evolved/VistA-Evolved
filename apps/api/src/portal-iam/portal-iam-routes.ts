@@ -62,7 +62,7 @@ import {
   getProxyInvitationStats,
 } from "./proxy-store.js";
 import { getAccessLog, logSignIn, logSignOut, getAccessLogStats } from "./access-log-store.js";
-import { generateCsrfToken, validateCsrf, CSRF_COOKIE_OPTS } from "./csrf.js";
+import { generateCsrfToken, validateCsrf } from "./csrf.js";
 import { portalAudit } from "../services/portal-audit.js";
 import { log } from "../lib/logger.js";
 import type { PortalUser } from "./types.js";
@@ -80,6 +80,8 @@ interface IamSession {
   patientName: string | null;
   /** Currently active profile (for proxy switching) */
   activeProfileId: string | null;
+  /** Phase 132: session-bound CSRF secret (synchronizer token pattern) */
+  csrfSecret: string;
   createdAt: number;
   lastActivity: number;
 }
@@ -117,6 +119,7 @@ function createIamSession(user: PortalUser): string {
     patientDfn: selfProfile?.patientDfn ?? null,
     patientName: selfProfile?.patientName ?? null,
     activeProfileId: selfProfile?.id ?? null,
+    csrfSecret: generateCsrfToken(),
     createdAt: nowMs,
     lastActivity: nowMs,
   });
@@ -197,9 +200,12 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
   /* ================================================================ */
 
   server.get("/portal/iam/csrf-token", async (request, reply) => {
-    const token = generateCsrfToken();
-    reply.setCookie("csrf_token", token, CSRF_COOKIE_OPTS);
-    return { ok: true, csrfToken: token };
+    // Phase 132: Return session-bound CSRF secret (no more cookie)
+    const session = getIamSession(request);
+    if (!session) {
+      return reply.code(401).send({ ok: false, error: "Not authenticated" });
+    }
+    return { ok: true, csrfToken: session.csrfSecret };
   });
 
   /* ================================================================ */
@@ -390,7 +396,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
 
   server.post("/portal/iam/password/change", async (request, reply) => {
     const session = requireIamSession(request, reply);
-    if (!validateCsrf(request, reply)) return;
+    if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
     const body = (request.body as any) || {};
     const { currentPassword, newPassword } = body;
@@ -481,7 +487,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
 
   server.post("/portal/iam/mfa/setup", async (request, reply) => {
     const session = requireIamSession(request, reply);
-    if (!validateCsrf(request, reply)) return;
+    if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
     if (!isMfaEnabled()) {
       reply.code(400).send({ ok: false, error: "MFA is not enabled on this instance" });
@@ -505,7 +511,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
 
   server.post("/portal/iam/mfa/confirm", async (request, reply) => {
     const session = requireIamSession(request, reply);
-    if (!validateCsrf(request, reply)) return;
+    if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
     const body = (request.body as any) || {};
     const { code } = body;
@@ -526,7 +532,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
 
   server.post("/portal/iam/mfa/disable", async (request, reply) => {
     const session = requireIamSession(request, reply);
-    if (!validateCsrf(request, reply)) return;
+    if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
     disableMfa(session.userId);
     return { ok: true, message: "MFA disabled" };
@@ -561,7 +567,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
 
   server.delete("/portal/iam/profiles/:id", async (request, reply) => {
     const session = requireIamSession(request, reply);
-    if (!validateCsrf(request, reply)) return;
+    if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
     const { id } = request.params as { id: string };
     const user = getUserById(session.userId);
@@ -611,7 +617,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
 
   server.post("/portal/iam/devices/:id/revoke", async (request, reply) => {
     const session = requireIamSession(request, reply);
-    if (!validateCsrf(request, reply)) return;
+    if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
     const { id } = request.params as { id: string };
     const ok = revokeDeviceSession(session.userId, id);
@@ -625,7 +631,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
 
   server.post("/portal/iam/devices/revoke-all", async (request, reply) => {
     const session = requireIamSession(request, reply);
-    if (!validateCsrf(request, reply)) return;
+    if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
     const count = revokeAllDeviceSessions(session.userId);
     return { ok: true, revokedCount: count };
@@ -637,7 +643,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
 
   server.post("/portal/iam/proxy/invite", async (request, reply) => {
     const session = requireIamSession(request, reply);
-    if (!validateCsrf(request, reply)) return;
+    if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
     const body = (request.body as any) || {};
     const { patientDfn, patientName, relationship, accessLevel, reason, verificationDocRef, patientAge } = body;
@@ -684,7 +690,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
 
   server.post("/portal/iam/proxy/invitations/:id/respond", async (request, reply) => {
     const session = requireIamSession(request, reply);
-    if (!validateCsrf(request, reply)) return;
+    if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
@@ -706,7 +712,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
 
   server.post("/portal/iam/proxy/invitations/:id/cancel", async (request, reply) => {
     const session = requireIamSession(request, reply);
-    if (!validateCsrf(request, reply)) return;
+    if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
     const { id } = request.params as { id: string };
     const ok = cancelInvitation(id, session.userId);

@@ -11,7 +11,7 @@
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { randomUUID, randomBytes } from "crypto";
+import { randomUUID } from "crypto";
 import { log, setRequestId, clearRequestId, runWithRequestId } from "../lib/logger.js";
 import { audit } from "../lib/audit.js";
 import { RATE_LIMIT_CONFIG, CSRF_CONFIG } from "../config/server-config.js";
@@ -335,48 +335,58 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
     reply.code(403).send({ ok: false, error: "Origin not allowed" });
   });
 
-  /* ---- CSRF double-submit cookie (Phase 49) ---- */
+  /* ---- CSRF synchronizer token (Phase 132 — migrated from double-submit cookie) ---- */
+  /*
+   * The CSRF secret is stored server-side in the session (session-store.ts):
+   *   - Generated at session creation (randomBytes(32).toString("hex"))
+   *   - Stored in DB column csrf_secret on auth_session table
+   *   - Delivered to the client via JSON body (login response, GET /auth/csrf-token)
+   *   - Client sends it back as x-csrf-token header on every mutation
+   *   - Server validates: header value === session.csrfSecret
+   *
+   * This is the OWASP "Synchronizer Token" pattern — strictly stronger than
+   * double-submit cookie because the CSRF token is never stored in a cookie,
+   * so it's immune to cookie injection attacks (subdomain, HTTP MitM).
+   */
   server.addHook("onRequest", async (request: FastifyRequest, reply: FastifyReply) => {
     if ((request as any)._rejected || reply.sent) return;
-    const CSRF_COOKIE = CSRF_CONFIG.cookieName;
-    const CSRF_HEADER = CSRF_CONFIG.headerName;
-
-    // Always ensure CSRF token cookie exists (set on every response)
-    let csrfToken = (request as any).cookies?.[CSRF_COOKIE];
-    if (!csrfToken) {
-      csrfToken = randomBytes(CSRF_CONFIG.tokenBytes).toString("hex");
-      reply.setCookie(CSRF_COOKIE, csrfToken, {
-        path: "/",
-        httpOnly: false, // JS must be able to read this to send as header
-        sameSite: "lax",
-        secure: process.env.NODE_ENV === "production",
-        maxAge: 28800, // 8 hours
-      });
-    }
 
     // Safe methods don't need CSRF validation
     if ((CSRF_CONFIG.safeMethods as readonly string[]).includes(request.method)) return;
 
-    // Auth endpoints are exempt (login doesn't have a CSRF token yet)
+    // Auth endpoints are exempt (login doesn't have a session yet)
     const url = request.url.split("?")[0];
     if (url.startsWith("/auth/")) return;
     // Service-to-service callbacks are exempt
     if (url === "/imaging/ingest/callback") return;
     // Health/metrics/version are exempt
     if (/^\/(health|ready|vista\/ping|metrics|version)/.test(url)) return;
+    // Portal routes use their own CSRF validation (portal-iam/csrf.ts)
+    if (url.startsWith("/portal/")) return;
+    // QA routes are test-only and gated by NODE_ENV
+    if (url.startsWith("/qa/") || url.startsWith("/__test__/")) return;
 
-    // Validate: header must match cookie
-    const headerToken = request.headers[CSRF_HEADER] as string | undefined;
-    if (!headerToken || headerToken !== csrfToken) {
-      log.warn("CSRF validation failed", {
+    // The session must already be loaded by the auth gateway hook above
+    const session = request.session;
+    if (!session || !session.csrfSecret) {
+      // No session = route has auth: "none" and shouldn't get here,
+      // but if it does, let it through (the route doesn't need CSRF without a session)
+      return;
+    }
+
+    // Validate: header must match session-bound secret
+    const headerToken = request.headers[CSRF_CONFIG.headerName] as string | undefined;
+    if (!headerToken || headerToken !== session.csrfSecret) {
+      log.warn("CSRF validation failed (synchronizer token)", {
         url,
         ip: request.ip,
-        hasCookie: !!csrfToken,
+        hasSession: true,
         hasHeader: !!headerToken,
       });
       audit("security.csrf-failed", "denied", {
-        duz: (request as any).session?.duz || "anonymous",
+        duz: session.duz || "anonymous",
       }, { sourceIp: request.ip, detail: { url } });
+      (request as any)._rejected = true;
       reply.code(403).send({ ok: false, error: "CSRF token mismatch" });
       return;
     }

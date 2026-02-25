@@ -14,15 +14,14 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import styles from '@/components/cprs/cprs.module.css';
+import { getCsrfTokenSync, getCsrfToken as fetchCsrfToken } from '@/lib/csrf';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 type Tab = 'modules' | 'connectors' | 'jurisdiction' | 'status' | 'entitlements' | 'flags' | 'audit';
 
 function getCsrfToken(): string {
-  if (typeof document === 'undefined') return '';
-  const match = document.cookie.match(/ehr_csrf=([^;]+)/);
-  return match?.[1] ?? '';
+  return getCsrfTokenSync();
 }
 
 async function apiFetch(path: string, opts?: RequestInit) {
@@ -34,25 +33,28 @@ async function apiFetch(path: string, opts?: RequestInit) {
 }
 
 async function apiPut(path: string, body?: unknown) {
+  const token = getCsrfTokenSync() || await fetchCsrfToken();
   return apiFetch(path, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json', 'x-csrf-token': getCsrfToken() },
+    headers: { 'Content-Type': 'application/json', 'x-csrf-token': token },
     body: body ? JSON.stringify(body) : undefined,
   });
 }
 
 async function apiPatch(path: string, body?: unknown) {
+  const token = getCsrfTokenSync() || await fetchCsrfToken();
   return apiFetch(path, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', 'x-csrf-token': getCsrfToken() },
+    headers: { 'Content-Type': 'application/json', 'x-csrf-token': token },
     body: body ? JSON.stringify(body) : undefined,
   });
 }
 
 async function apiPost(path: string, body?: unknown) {
+  const token = getCsrfTokenSync() || await fetchCsrfToken();
   return apiFetch(path, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-csrf-token': getCsrfToken() },
+    headers: { 'Content-Type': 'application/json', 'x-csrf-token': token },
     body: body ? JSON.stringify(body) : undefined,
   });
 }

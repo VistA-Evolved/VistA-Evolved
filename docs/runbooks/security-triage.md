@@ -124,7 +124,7 @@ VistA-Evolved sets these security headers via `security.ts`:
 | Layer | Mechanism | Config |
 |-------|-----------|--------|
 | Session | httpOnly cookie (`ehr_session`) | 8h absolute, 30m idle |
-| CSRF | Double-submit cookie + header | `ehr_csrf` + `X-CSRF-Token` |
+| CSRF | Session-bound synchronizer token | `csrfSecret` + `X-CSRF-Token` header |
 | Rate limit | Per-IP sliding window | 200 req/min general, 10 login/min |
 | Account lockout | Per-access-code counter | 5 attempts, 15m lockout |
 | OIDC (opt-in) | JWT validation + JWKS | `OIDC_ENABLED=true` |

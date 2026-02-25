@@ -70,13 +70,14 @@ $cookieFile2 = Join-Path $root "verify49-cookies2.txt"
 $loginFile   = Join-Path $root "verify49-login.json"
 $bodyFile    = Join-Path $root "verify49-body.json"
 
-# Helper to extract CSRF token from cookie jar
+# Phase 132: CSRF token extracted from login JSON response body (synchronizer token)
+# Each login captures csrfToken; GetCsrfToken returns the cached value.
+$script:provCsrf = ""
+$script:nurseCsrf = ""
 function GetCsrfToken([string]$jar) {
-  if (Test-Path -LiteralPath $jar) {
-    $line = Get-Content $jar | Where-Object { $_ -match "ehr_csrf" } | Select-Object -Last 1
-    if ($line) { return ($line -split "`t")[-1] }
-  }
-  return ""
+  # jar param kept for backward compat but ignored; return cached value
+  if ($jar -eq $cookieFile2) { return $script:nurseCsrf }
+  return $script:provCsrf
 }
 
 # ====================================================================
@@ -91,6 +92,8 @@ $loginOut = & curl.exe -s -c $cookieFile -X POST "$API/auth/login" `
   -H "Content-Type: application/json" -d "@$loginFile" 2>&1 | Out-String
 $loginJson = $null
 try { $loginJson = $loginOut | ConvertFrom-Json } catch { }
+# Phase 132: Capture CSRF from login response body
+if ($loginJson -and $loginJson.csrfToken) { $script:provCsrf = $loginJson.csrfToken }
 
 Gate "G49-1a: Login with valid creds returns ok=true + role=admin" {
   $loginJson -and $loginJson.ok -eq $true -and $loginJson.session.role -eq "admin"
@@ -107,10 +110,9 @@ Gate "G49-1c: Session cookie is httpOnly" {
   $content -match "#HttpOnly.*ehr_session"
 }
 
-# G49-1d: CSRF cookie is NOT httpOnly (JS-readable)
-Gate "G49-1d: CSRF cookie is not httpOnly (JS-readable)" {
-  $content = Get-Content $cookieFile -Raw
-  $content -match "ehr_csrf" -and $content -notmatch "#HttpOnly.*ehr_csrf"
+# G49-1d: CSRF token is in login response body (Phase 132 synchronizer token)
+Gate "G49-1d: CSRF token returned in login response body" {
+  $loginJson -and $loginJson.csrfToken -and $loginJson.csrfToken.Length -ge 32
 }
 
 # G49-1e: Token NOT in response body
@@ -157,6 +159,8 @@ $nurseOut = & curl.exe -s -c $cookieFile2 -X POST "$API/auth/login" `
   -H "Content-Type: application/json" -d "@$nurseLoginFile" 2>&1 | Out-String
 $nurseJson = $null
 try { $nurseJson = $nurseOut | ConvertFrom-Json } catch { }
+# Phase 132: Capture nurse CSRF from login response body
+if ($nurseJson -and $nurseJson.csrfToken) { $script:nurseCsrf = $nurseJson.csrfToken }
 
 Gate "G49-1i: Nurse login returns ok + role=nurse" {
   $nurseJson -and $nurseJson.ok -eq $true -and $nurseJson.session.role -eq "nurse"
@@ -223,11 +227,14 @@ Gate "G49-2g: Session check without cookie returns authenticated=false" {
 }
 
 # G49-2h: Logout destroys session
-$logoutCsrf = GetCsrfToken $cookieFile
 Remove-Item $cookieFile -ErrorAction SilentlyContinue
 [System.IO.File]::WriteAllText($loginFile, '{"accessCode":"PROV123","verifyCode":"PROV123!!"}')
 $reloginOut = & curl.exe -s -c $cookieFile -X POST "$API/auth/login" `
   -H "Content-Type: application/json" -d "@$loginFile" 2>&1 | Out-String
+$reloginJson = $null
+try { $reloginJson = $reloginOut | ConvertFrom-Json } catch { }
+# Phase 132: Capture CSRF from re-login response
+if ($reloginJson -and $reloginJson.csrfToken) { $script:provCsrf = $reloginJson.csrfToken }
 # Now logout
 $logoutCsrf = GetCsrfToken $cookieFile
 $logoutOut = & curl.exe -s -b $cookieFile -c $cookieFile -X POST "$API/auth/logout" `
@@ -256,6 +263,8 @@ $reAdminLogin = & curl.exe -s -c $cookieFile -X POST "$API/auth/login" `
   -H "Content-Type: application/json" -d "@$adminLoginFile" 2>&1 | Out-String
 $reAdminJson = $null
 try { $reAdminJson = $reAdminLogin | ConvertFrom-Json } catch { }
+# Phase 132: Capture CSRF from admin re-login response
+if ($reAdminJson -and $reAdminJson.csrfToken) { $script:provCsrf = $reAdminJson.csrfToken }
 if (-not ($reAdminJson -and $reAdminJson.ok)) {
   Write-Host "  WARN  Admin re-login failed: $reAdminLogin" -ForegroundColor Yellow
 }

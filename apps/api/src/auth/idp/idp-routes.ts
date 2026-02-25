@@ -39,7 +39,7 @@ import {
   getSession,
   rotateSession,
 } from "../session-store.js";
-import { SESSION_CONFIG, CSRF_CONFIG } from "../../config/server-config.js";
+import { SESSION_CONFIG } from "../../config/server-config.js";
 import { log } from "../../lib/logger.js";
 import { audit } from "../../lib/audit.js";
 import { immutableAudit } from "../../lib/immutable-audit.js";
@@ -277,15 +277,9 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
     // Set session cookie (httpOnly -- no JS access)
     reply.setCookie(COOKIE_NAME, finalToken, COOKIE_OPTS);
 
-    // Set CSRF token
-    const csrfToken = randomBytes(CSRF_CONFIG.tokenBytes).toString("hex");
-    reply.setCookie(CSRF_CONFIG.cookieName, csrfToken, {
-      path: "/",
-      httpOnly: false,
-      sameSite: "lax" as const,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: Math.floor(SESSION_CONFIG.absoluteTtlMs / 1000),
-    });
+    // Phase 132: CSRF token is now session-bound (synchronizer pattern).
+    // Delivered via GET /auth/session or GET /auth/csrf-token after redirect.
+    // No more double-submit cookie for IDP callback.
 
     // Audit successful IdP login
     audit("auth.idp.login", "success", {
