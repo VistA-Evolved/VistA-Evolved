@@ -2424,7 +2424,7 @@ try {
     try {
       const srRepo = await import("./platform/db/repo/scheduling-request-repo.js");
       const { initSchedulingRepo } = await import("./adapters/scheduling/vista-adapter.js");
-      initSchedulingRepo(srRepo);
+      await initSchedulingRepo(srRepo);
       log.info("Scheduling request store wired to DB");
     } catch (srErr: any) {
       log.warn("Scheduling request repo wire failed (non-fatal)", { error: srErr.message });
@@ -2546,6 +2546,42 @@ try {
           log.info("Telehealth room store re-wired to PG");
         } catch (trErr: any) {
           log.warn("PG telehealth room repo wire failed (SQLite fallback)", { error: trErr.message });
+        }
+        // Phase 128: Imaging worklist store → PG (overrides SQLite wiring above)
+        try {
+          const pgIwRepo = await import("./platform/pg/repo/pg-imaging-worklist-repo.js");
+          const { initWorklistRepo } = await import("./services/imaging-worklist.js");
+          initWorklistRepo(pgIwRepo);
+          log.info("Imaging worklist store re-wired to PG");
+        } catch (iwErr: any) {
+          log.warn("PG imaging worklist repo wire failed (SQLite fallback)", { error: iwErr.message });
+        }
+        // Phase 128: Imaging ingest store → PG (overrides SQLite wiring above)
+        try {
+          const pgIiRepo = await import("./platform/pg/repo/pg-imaging-ingest-repo.js");
+          const { initIngestRepo } = await import("./services/imaging-ingest.js");
+          initIngestRepo(pgIiRepo);
+          log.info("Imaging ingest store re-wired to PG");
+        } catch (iiErr: any) {
+          log.warn("PG imaging ingest repo wire failed (SQLite fallback)", { error: iiErr.message });
+        }
+        // Phase 128: Scheduling request store → PG (overrides SQLite wiring above)
+        try {
+          const pgSrRepo = await import("./platform/pg/repo/pg-scheduling-request-repo.js");
+          const { initSchedulingRepo: initSchedPgRepo } = await import("./adapters/scheduling/vista-adapter.js");
+          await initSchedPgRepo(pgSrRepo);
+          log.info("Scheduling request store re-wired to PG");
+        } catch (srErr: any) {
+          log.warn("PG scheduling request repo wire failed (SQLite fallback)", { error: srErr.message });
+        }
+        // Phase 128: Scheduling booking lock store → PG (new — no SQLite predecessor)
+        try {
+          const pgSlRepo = await import("./platform/pg/repo/pg-scheduling-lock-repo.js");
+          const { initSchedulingLockRepo } = await import("./adapters/scheduling/vista-adapter.js");
+          initSchedulingLockRepo(pgSlRepo);
+          log.info("Scheduling lock store wired to PG");
+        } catch (slErr: any) {
+          log.warn("PG scheduling lock repo wire failed (in-memory fallback)", { error: slErr.message });
         }
       }
     } else {

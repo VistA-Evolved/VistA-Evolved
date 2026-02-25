@@ -857,3 +857,114 @@ export const pgTelehealthRoomEvent = pgTable("telehealth_room_event", {
   index("idx_th_event_type").on(table.eventType),
   index("idx_th_event_created").on(table.createdAt),
 ]);
+
+/**
+ * Imaging Work Item — durable imaging worklist order (Phase 128).
+ * Mirrors the in-memory WorklistItem from imaging-worklist.ts.
+ */
+export const pgImagingWorkItem = pgTable("imaging_work_item", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  vistaOrderId: text("vista_order_id"),
+  patientDfn: text("patient_dfn").notNull(),
+  patientName: text("patient_name").notNull().default(""),
+  accessionNumber: text("accession_number").notNull(),
+  scheduledProcedure: text("scheduled_procedure").notNull().default(""),
+  procedureCode: text("procedure_code"),
+  modality: text("modality").notNull(),
+  scheduledTime: text("scheduled_time").notNull().default(""),
+  facility: text("facility").notNull().default("DEFAULT"),
+  location: text("location").notNull().default("Radiology"),
+  orderingProviderDuz: text("ordering_provider_duz").notNull().default(""),
+  orderingProviderName: text("ordering_provider_name").notNull().default(""),
+  clinicalIndication: text("clinical_indication").notNull().default(""),
+  priority: text("priority").notNull().default("routine"),
+  status: text("status").notNull().default("ordered"),
+  linkedStudyUid: text("linked_study_uid"),
+  linkedOrthancStudyId: text("linked_orthanc_study_id"),
+  source: text("source").notNull().default("prototype-sidecar"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_img_wi_tenant").on(table.tenantId),
+  index("idx_img_wi_patient").on(table.patientDfn),
+  index("idx_img_wi_accession").on(table.accessionNumber),
+  index("idx_img_wi_modality").on(table.modality),
+  index("idx_img_wi_status").on(table.status),
+  index("idx_img_wi_scheduled").on(table.scheduledTime),
+]);
+
+/**
+ * Imaging Ingest Event — study linkage + unmatched quarantine (Phase 128).
+ * Unified table for both linkages and unmatched studies (event_type discriminator).
+ */
+export const pgImagingIngestEvent = pgTable("imaging_ingest_event", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  eventType: text("event_type").notNull(), // 'linkage' | 'unmatched'
+  orderId: text("order_id"),
+  patientDfn: text("patient_dfn").notNull().default(""),
+  studyInstanceUid: text("study_instance_uid").notNull(),
+  orthancStudyId: text("orthanc_study_id").notNull(),
+  accessionNumber: text("accession_number").notNull().default(""),
+  modality: text("modality").notNull().default(""),
+  studyDate: text("study_date").notNull().default(""),
+  studyDescription: text("study_description").notNull().default(""),
+  seriesCount: integer("series_count").notNull().default(0),
+  instanceCount: integer("instance_count").notNull().default(0),
+  reconciliationType: text("reconciliation_type"),
+  source: text("source").notNull().default("prototype-sidecar"),
+  reason: text("reason"),
+  resolved: boolean("resolved").notNull().default(false),
+  createdAt: text("created_at").notNull(),
+}, (table) => [
+  index("idx_img_ie_tenant").on(table.tenantId),
+  index("idx_img_ie_type").on(table.eventType),
+  index("idx_img_ie_patient").on(table.patientDfn),
+  index("idx_img_ie_study_uid").on(table.studyInstanceUid),
+  index("idx_img_ie_order").on(table.orderId),
+  index("idx_img_ie_accession").on(table.accessionNumber),
+]);
+
+/**
+ * Scheduling Waitlist Request — operational tracking (Phase 128).
+ * NOT appointment truth (VistA is source). Tracks waitlist requests,
+ * scheduling intents, and operational state.
+ */
+export const pgSchedulingWaitlistRequest = pgTable("scheduling_waitlist_request", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  patientDfn: text("patient_dfn").notNull(),
+  clinicName: text("clinic_name").notNull(),
+  preferredDate: text("preferred_date").notNull(),
+  priority: text("priority").notNull().default("routine"),
+  status: text("status").notNull().default("pending"),
+  reason: text("reason"),
+  requestType: text("request_type").notNull().default("new_appointment"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_sched_wr_tenant").on(table.tenantId),
+  index("idx_sched_wr_patient").on(table.patientDfn),
+  index("idx_sched_wr_clinic").on(table.clinicName),
+  index("idx_sched_wr_status").on(table.status),
+  index("idx_sched_wr_date").on(table.preferredDate),
+]);
+
+/**
+ * Scheduling Booking Lock — TTL-based concurrency locks (Phase 128).
+ * Prevents double-booking. Lock key = "dfn:date:clinic".
+ * expires_at enforces TTL; safe concurrency via unique constraint.
+ */
+export const pgSchedulingBookingLock = pgTable("scheduling_booking_lock", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  lockKey: text("lock_key").notNull(),
+  holderDuz: text("holder_duz").notNull(),
+  expiresAt: text("expires_at").notNull(),
+  acquiredAt: text("acquired_at").notNull(),
+}, (table) => [
+  index("idx_sched_bl_tenant").on(table.tenantId),
+  uniqueIndex("idx_sched_bl_key").on(table.tenantId, table.lockKey),
+  index("idx_sched_bl_expires").on(table.expiresAt),
+]);

@@ -194,11 +194,11 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
     }
 
     // 3. Enrich with order linkage (Phase 23)
-    const linkages = getLinkagesForPatient(dfn);
-    const orders = findOrdersByPatient(dfn);
+    const linkages = await getLinkagesForPatient(dfn);
+    const orders = await findOrdersByPatient(dfn);
     for (const study of studies) {
       const uid = study.studyInstanceUid || study.studyId;
-      const linkage = uid ? getLinkageByStudyUid(uid) : undefined;
+      const linkage = uid ? await getLinkageByStudyUid(uid) : undefined;
       if (linkage) {
         study.linkedOrderId = linkage.orderId;
         study.accessionNumber = linkage.accessionNumber;

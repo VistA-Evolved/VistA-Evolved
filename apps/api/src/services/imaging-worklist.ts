@@ -100,7 +100,15 @@ export interface CreateImagingOrderInput {
 /* DB repo -- lazy-wired after initPlatformDb() (Phase 115)            */
 /* ================================================================== */
 
-type WorklistRepo = typeof import("../platform/db/repo/imaging-worklist-repo.js");
+/** Repo interface -- accepts both SQLite (sync) and PG (async) repos. */
+export interface WorklistRepo {
+  insertWorkOrder(data: any): any;
+  findWorkOrderById(id: string): any;
+  findByAccessionNumber(acc: string): any;
+  findByPatientDfn(dfn: string): any;
+  findAllWorkOrders(): any;
+  updateWorkOrder(id: string, updates: any): any;
+}
 let _repo: WorklistRepo | null = null;
 
 /** Wire the imaging worklist repo. Called from index.ts. */
@@ -166,68 +174,70 @@ function rowToItem(row: any): WorklistItem {
 /* Store operations                                                    */
 /* ================================================================== */
 
-export function getWorklistItem(id: string): WorklistItem | undefined {
+export async function getWorklistItem(id: string): Promise<WorklistItem | undefined> {
   const cached = worklistCache.get(id);
   if (cached) return cached;
   if (_repo) {
     try {
-      const row = _repo.findWorkOrderById(id);
+      const row = await Promise.resolve(_repo.findWorkOrderById(id));
       if (row) { const item = rowToItem(row); worklistCache.set(id, item); return item; }
     } catch (e) { dbWarn("persist", e); }
   }
   return undefined;
 }
 
-export function findByAccession(accessionNumber: string): WorklistItem | undefined {
+export async function findByAccession(accessionNumber: string): Promise<WorklistItem | undefined> {
   for (const item of worklistCache.values()) {
     if (item.accessionNumber === accessionNumber) return item;
   }
   if (_repo) {
     try {
-      const row = _repo.findByAccessionNumber(accessionNumber);
+      const row = await Promise.resolve(_repo.findByAccessionNumber(accessionNumber));
       if (row) { const item = rowToItem(row); worklistCache.set(item.id, item); return item; }
     } catch (e) { dbWarn("persist", e); }
   }
   return undefined;
 }
 
-export function findByPatientDfn(dfn: string): WorklistItem[] {
+export async function findByPatientDfn(dfn: string): Promise<WorklistItem[]> {
   if (_repo) {
     try {
-      const rows = _repo.findByPatientDfn(dfn);
-      const items = rows.map(rowToItem);
-      for (const it of items) worklistCache.set(it.id, it);
-      return items;
+      const rows = await Promise.resolve(_repo.findByPatientDfn(dfn));
+      if (Array.isArray(rows)) {
+        const items = rows.map(rowToItem);
+        for (const it of items) worklistCache.set(it.id, it);
+        return items;
+      }
     } catch (e) { dbWarn("persist", e); }
   }
   return [...worklistCache.values()].filter((w) => w.patientDfn === dfn);
 }
 
-export function updateWorklistItem(id: string, updates: Partial<WorklistItem>): WorklistItem | undefined {
-  const item = getWorklistItem(id);
+export async function updateWorklistItem(id: string, updates: Partial<WorklistItem>): Promise<WorklistItem | undefined> {
+  const item = await getWorklistItem(id);
   if (!item) return undefined;
   const updated = { ...item, ...updates, updatedAt: new Date().toISOString() };
   worklistCache.set(id, updated);
   if (_repo) {
-    try {
-      _repo.updateWorkOrder(id, {
-        status: updated.status,
-        linkedStudyUid: updated.linkedStudyUid ?? undefined,
-        linkedOrthancStudyId: updated.linkedOrthancStudyId ?? undefined,
-        priority: updated.priority,
-      });
-    } catch (e) { dbWarn("persist", e); }
+    Promise.resolve(_repo.updateWorkOrder(id, {
+      status: updated.status,
+      linkedStudyUid: updated.linkedStudyUid ?? undefined,
+      linkedOrthancStudyId: updated.linkedOrthancStudyId ?? undefined,
+      priority: updated.priority,
+    })).catch((e) => dbWarn("persist", e));
   }
   return updated;
 }
 
-export function getAllWorklistItems(): WorklistItem[] {
+export async function getAllWorklistItems(): Promise<WorklistItem[]> {
   if (_repo) {
     try {
-      const rows = _repo.findAllWorkOrders();
-      const items = rows.map(rowToItem);
-      for (const it of items) worklistCache.set(it.id, it);
-      return items;
+      const rows = await Promise.resolve(_repo.findAllWorkOrders());
+      if (Array.isArray(rows)) {
+        const items = rows.map(rowToItem);
+        for (const it of items) worklistCache.set(it.id, it);
+        return items;
+      }
     } catch (e) { dbWarn("persist", e); }
   }
   return [...worklistCache.values()];
@@ -270,7 +280,7 @@ export default async function imagingWorklistRoutes(server: FastifyInstance): Pr
     if (!session) { reply.code(401).send({ ok: false, error: "Authentication required" }); return; }
 
     const q = request.query as Record<string, string>;
-    let items = getAllWorklistItems();
+    let items = await getAllWorklistItems();
 
     // Filters
     if (q.facility) items = items.filter((i) => i.facility === q.facility);
@@ -361,26 +371,24 @@ export default async function imagingWorklistRoutes(server: FastifyInstance): Pr
 
     worklistCache.set(item.id, item);
     if (_repo) {
-      try {
-        _repo.insertWorkOrder({
-          id: item.id,
-          patientDfn: item.patientDfn,
-          patientName: item.patientName,
-          accessionNumber: item.accessionNumber,
-          scheduledProcedure: item.scheduledProcedure,
-          procedureCode: item.procedureCode ?? undefined,
-          modality: item.modality,
-          scheduledTime: item.scheduledTime,
-          facility: item.facility,
-          location: item.location,
-          orderingProviderDuz: item.orderingProviderDuz,
-          orderingProviderName: item.orderingProviderName,
-          clinicalIndication: item.clinicalIndication,
-          priority: item.priority,
-          status: item.status,
-          source: item.source,
-        });
-      } catch (e) { dbWarn("persist", e); }
+      Promise.resolve(_repo.insertWorkOrder({
+        id: item.id,
+        patientDfn: item.patientDfn,
+        patientName: item.patientName,
+        accessionNumber: item.accessionNumber,
+        scheduledProcedure: item.scheduledProcedure,
+        procedureCode: item.procedureCode ?? undefined,
+        modality: item.modality,
+        scheduledTime: item.scheduledTime,
+        facility: item.facility,
+        location: item.location,
+        orderingProviderDuz: item.orderingProviderDuz,
+        orderingProviderName: item.orderingProviderName,
+        clinicalIndication: item.clinicalIndication,
+        priority: item.priority,
+        status: item.status,
+        source: item.source,
+      })).catch((e) => dbWarn("persist", e));
     }
 
     log.info("Imaging order created", {
@@ -418,7 +426,7 @@ export default async function imagingWorklistRoutes(server: FastifyInstance): Pr
     if (!session) { reply.code(401).send({ ok: false, error: "Authentication required" }); return; }
 
     const { id } = request.params as { id: string };
-    const item = getWorklistItem(id);
+    const item = await getWorklistItem(id);
     if (!item) {
       reply.code(404).send({ ok: false, error: "Worklist item not found" });
       return;
@@ -449,7 +457,7 @@ export default async function imagingWorklistRoutes(server: FastifyInstance): Pr
       return;
     }
 
-    const item = updateWorklistItem(id, { status: body.status as WorklistItemStatus });
+    const item = await updateWorklistItem(id, { status: body.status as WorklistItemStatus });
     if (!item) {
       reply.code(404).send({ ok: false, error: "Worklist item not found" });
       return;
@@ -478,7 +486,7 @@ export default async function imagingWorklistRoutes(server: FastifyInstance): Pr
     const session = (request as any).session;
     if (!session) { reply.code(401).send({ ok: false, error: "Authentication required" }); return; }
 
-    const items = getAllWorklistItems();
+    const items = await getAllWorklistItems();
     const byStatus: Record<string, number> = {};
     const byModality: Record<string, number> = {};
     const byPriority: Record<string, number> = {};

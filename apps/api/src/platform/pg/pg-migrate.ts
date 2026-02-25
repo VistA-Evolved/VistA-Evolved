@@ -1004,6 +1004,110 @@ CREATE INDEX IF NOT EXISTS idx_th_event_type ON telehealth_room_event(event_type
 CREATE INDEX IF NOT EXISTS idx_th_event_created ON telehealth_room_event(created_at);
 `,
   },
+  {
+    version: 12,
+    name: "imaging_scheduling_durability_pg",
+    sql: `
+-- ============================================================
+-- Phase 128: Imaging + Scheduling Durability (Map stores -> PG)
+-- imaging_work_item, imaging_ingest_event,
+-- scheduling_waitlist_request, scheduling_booking_lock
+-- ============================================================
+
+-- Imaging Work Item (worklist orders)
+CREATE TABLE IF NOT EXISTS imaging_work_item (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  vista_order_id TEXT,
+  patient_dfn TEXT NOT NULL,
+  patient_name TEXT NOT NULL DEFAULT '',
+  accession_number TEXT NOT NULL,
+  scheduled_procedure TEXT NOT NULL DEFAULT '',
+  procedure_code TEXT,
+  modality TEXT NOT NULL,
+  scheduled_time TEXT NOT NULL DEFAULT '',
+  facility TEXT NOT NULL DEFAULT 'DEFAULT',
+  location TEXT NOT NULL DEFAULT 'Radiology',
+  ordering_provider_duz TEXT NOT NULL DEFAULT '',
+  ordering_provider_name TEXT NOT NULL DEFAULT '',
+  clinical_indication TEXT NOT NULL DEFAULT '',
+  priority TEXT NOT NULL DEFAULT 'routine',
+  status TEXT NOT NULL DEFAULT 'ordered',
+  linked_study_uid TEXT,
+  linked_orthanc_study_id TEXT,
+  source TEXT NOT NULL DEFAULT 'prototype-sidecar',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_img_wi_tenant ON imaging_work_item(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_img_wi_patient ON imaging_work_item(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_img_wi_accession ON imaging_work_item(accession_number);
+CREATE INDEX IF NOT EXISTS idx_img_wi_modality ON imaging_work_item(modality);
+CREATE INDEX IF NOT EXISTS idx_img_wi_status ON imaging_work_item(status);
+CREATE INDEX IF NOT EXISTS idx_img_wi_scheduled ON imaging_work_item(scheduled_time);
+
+-- Imaging Ingest Event (study linkages + unmatched quarantine)
+CREATE TABLE IF NOT EXISTS imaging_ingest_event (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  event_type TEXT NOT NULL,
+  order_id TEXT,
+  patient_dfn TEXT NOT NULL DEFAULT '',
+  study_instance_uid TEXT NOT NULL,
+  orthanc_study_id TEXT NOT NULL,
+  accession_number TEXT NOT NULL DEFAULT '',
+  modality TEXT NOT NULL DEFAULT '',
+  study_date TEXT NOT NULL DEFAULT '',
+  study_description TEXT NOT NULL DEFAULT '',
+  series_count INTEGER NOT NULL DEFAULT 0,
+  instance_count INTEGER NOT NULL DEFAULT 0,
+  reconciliation_type TEXT,
+  source TEXT NOT NULL DEFAULT 'prototype-sidecar',
+  reason TEXT,
+  resolved BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_img_ie_tenant ON imaging_ingest_event(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_img_ie_type ON imaging_ingest_event(event_type);
+CREATE INDEX IF NOT EXISTS idx_img_ie_patient ON imaging_ingest_event(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_img_ie_study_uid ON imaging_ingest_event(study_instance_uid);
+CREATE INDEX IF NOT EXISTS idx_img_ie_order ON imaging_ingest_event(order_id);
+CREATE INDEX IF NOT EXISTS idx_img_ie_accession ON imaging_ingest_event(accession_number);
+
+-- Scheduling Waitlist Request (operational tracking -- NOT appointment truth)
+CREATE TABLE IF NOT EXISTS scheduling_waitlist_request (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  clinic_name TEXT NOT NULL,
+  preferred_date TEXT NOT NULL,
+  priority TEXT NOT NULL DEFAULT 'routine',
+  status TEXT NOT NULL DEFAULT 'pending',
+  reason TEXT,
+  request_type TEXT NOT NULL DEFAULT 'new_appointment',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_sched_wr_tenant ON scheduling_waitlist_request(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_sched_wr_patient ON scheduling_waitlist_request(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_sched_wr_clinic ON scheduling_waitlist_request(clinic_name);
+CREATE INDEX IF NOT EXISTS idx_sched_wr_status ON scheduling_waitlist_request(status);
+CREATE INDEX IF NOT EXISTS idx_sched_wr_date ON scheduling_waitlist_request(preferred_date);
+
+-- Scheduling Booking Lock (TTL-based concurrency locks)
+CREATE TABLE IF NOT EXISTS scheduling_booking_lock (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  lock_key TEXT NOT NULL,
+  holder_duz TEXT NOT NULL,
+  expires_at TEXT NOT NULL,
+  acquired_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_sched_bl_tenant ON scheduling_booking_lock(tenant_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_sched_bl_key ON scheduling_booking_lock(tenant_id, lock_key);
+CREATE INDEX IF NOT EXISTS idx_sched_bl_expires ON scheduling_booking_lock(expires_at);
+`,
+  },
 ];
 
 /**
@@ -1123,6 +1227,10 @@ export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: s
     "portal_patient_setting",
     "telehealth_room",
     "telehealth_room_event",
+    "imaging_work_item",
+    "imaging_ingest_event",
+    "scheduling_waitlist_request",
+    "scheduling_booking_lock",
   ];
 
   const applied: string[] = [];

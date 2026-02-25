@@ -388,11 +388,11 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
     });
 
     // Phase 23: Enrich studies with order linkage data
-    const linkages = getLinkagesForPatient(String(dfn));
-    const orders = findOrdersByPatient(String(dfn));
+    const linkages = await getLinkagesForPatient(String(dfn));
+    const orders = await findOrdersByPatient(String(dfn));
     for (const study of studies) {
       const uid = study.studyInstanceUid || study.studyId;
-      const linkage = uid ? getLinkageByStudyUid(uid) : undefined;
+      const linkage = uid ? await getLinkageByStudyUid(uid) : undefined;
       if (linkage) {
         study.linkedOrderId = linkage.orderId;
         study.accessionNumber = linkage.accessionNumber;

@@ -37,6 +37,7 @@ import type {
 import type { AdapterResult } from "../types.js";
 import { safeCallRpc } from "../../lib/rpc-resilience.js";
 import { log } from "../../lib/logger.js";
+import { randomUUID } from "node:crypto";
 
 /* ------------------------------------------------------------------ */
 /* DB-backed hybrid (Phase 121)                                          */
@@ -55,28 +56,41 @@ export interface SchedulingRepo {
     createdAt: string;
     updatedAt: string;
   }): any;
-  findSchedulingRequestById(id: string): any | undefined;
-  findSchedulingRequestsByPatient(patientDfn: string): any[];
-  findAllActiveRequests(): any[];
+  findSchedulingRequestById(id: string): any;
+  findSchedulingRequestsByPatient(patientDfn: string): any;
+  findAllActiveRequests(): any;
   findPendingByPatientClinicDate(
     patientDfn: string,
     clinicName: string,
     preferredDate: string,
-  ): any | undefined;
+  ): any;
   updateSchedulingRequest(id: string, updates: Partial<{
     status: string;
     reason: string;
-  }>): any | undefined;
+  }>): any;
 }
 
 let dbRepo: SchedulingRepo | null = null;
 
+/** Lock repo for PG-backed booking locks (Phase 128) */
+export interface SchedulingLockRepo {
+  acquireLock(data: { id: string; tenantId?: string; lockKey: string; holderDuz: string; expiresAt: string }): any;
+  releaseLock(lockKey: string): any;
+  findLockByKey(lockKey: string): any;
+  findActiveLocks(): any;
+  cleanupExpiredLocks(): any;
+  countLocks(): any;
+}
+
+let lockRepo: SchedulingLockRepo | null = null;
+
 /** Called from index.ts after initPlatformDb() */
-export function initSchedulingRepo(repo: SchedulingRepo): void {
+export async function initSchedulingRepo(repo: SchedulingRepo): Promise<void> {
   dbRepo = repo;
   // Rehydrate cache from DB
   try {
-    const active = repo.findAllActiveRequests();
+    const raw = await Promise.resolve(repo.findAllActiveRequests());
+    const active = Array.isArray(raw) ? raw : [];
     for (const row of active) {
       const entry = dbRowToEntry(row);
       requestStore.set(entry.id, entry);
@@ -88,6 +102,12 @@ export function initSchedulingRepo(repo: SchedulingRepo): void {
     dbWarn("rehydrate", err);
   }
   log.info("Scheduling request store wired to DB (Phase 121)");
+}
+
+/** Called from index.ts for PG-backed booking locks (Phase 128) */
+export function initSchedulingLockRepo(repo: SchedulingLockRepo): void {
+  lockRepo = repo;
+  log.info("Scheduling lock store wired to PG (Phase 128)");
 }
 
 function dbWarn(op: string, err: unknown): void {
@@ -112,15 +132,15 @@ function dbRowToEntry(row: any): WaitListEntry {
 
 function persistEntry(entry: WaitListEntry): void {
   if (!dbRepo) return;
-  try {
-    const existing = dbRepo.findSchedulingRequestById(entry.id);
+  Promise.resolve((async () => {
+    const existing = await Promise.resolve(dbRepo!.findSchedulingRequestById(entry.id));
     if (existing) {
-      dbRepo.updateSchedulingRequest(entry.id, {
+      await Promise.resolve(dbRepo!.updateSchedulingRequest(entry.id, {
         status: entry.status,
         reason: entry.reason,
-      });
+      }));
     } else {
-      dbRepo.insertSchedulingRequest({
+      await Promise.resolve(dbRepo!.insertSchedulingRequest({
         id: entry.id,
         patientDfn: entry.patientDfn,
         clinicName: entry.clinicName,
@@ -131,11 +151,9 @@ function persistEntry(entry: WaitListEntry): void {
         requestType: entry.type,
         createdAt: entry.createdAt,
         updatedAt: new Date().toISOString(),
-      });
+      }));
     }
-  } catch (err) {
-    dbWarn("persist", err);
-  }
+  })()).catch((err) => dbWarn("persist", err));
 }
 
 /* ------------------------------------------------------------------ */
@@ -385,11 +403,23 @@ function acquireBookingLock(key: string): boolean {
     return false; // already locked
   }
   bookingLocks.set(key, now);
+  // Write-through to PG lock repo (fire-and-forget)
+  if (lockRepo) {
+    Promise.resolve(lockRepo.acquireLock({
+      id: randomUUID(),
+      lockKey: key,
+      holderDuz: "scheduler",
+      expiresAt: new Date(now + LOCK_TTL_MS).toISOString(),
+    })).catch((e) => dbWarn("acquireLock", e));
+  }
   return true;
 }
 
 function releaseBookingLock(key: string): void {
   bookingLocks.delete(key);
+  if (lockRepo) {
+    Promise.resolve(lockRepo.releaseLock(key)).catch((e) => dbWarn("releaseLock", e));
+  }
 }
 
 // Periodic cleanup of stale locks
@@ -397,6 +427,10 @@ setInterval(() => {
   const now = Date.now();
   for (const [k, ts] of bookingLocks) {
     if (now - ts > LOCK_TTL_MS) bookingLocks.delete(k);
+  }
+  // Also cleanup expired PG locks
+  if (lockRepo) {
+    Promise.resolve(lockRepo.cleanupExpiredLocks()).catch((e) => dbWarn("lockCleanup", e));
   }
 }, 60_000).unref();
 
@@ -920,11 +954,12 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
 /* Exports for route-level access to request store                      */
 /* ------------------------------------------------------------------ */
 
-export function getRequestStore(): Map<string, WaitListEntry> {
+export async function getRequestStore(): Promise<Map<string, WaitListEntry>> {
   // Phase 121: If cache is empty but DB has data, rehydrate
   if (requestStore.size === 0 && dbRepo) {
     try {
-      const active = dbRepo.findAllActiveRequests();
+      const raw = await Promise.resolve(dbRepo.findAllActiveRequests());
+      const active = Array.isArray(raw) ? raw : [];
       for (const row of active) {
         const entry = dbRowToEntry(row);
         requestStore.set(entry.id, entry);

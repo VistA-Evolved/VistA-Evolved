@@ -25,3 +25,7 @@ export * as pgPortalAccessLogRepo from "./pg-portal-access-log-repo.js";
 export * as pgPortalPatientSettingRepo from "./pg-portal-patient-setting-repo.js";
 export * as pgTelehealthRoomRepo from "./pg-telehealth-room-repo.js";
 export * as pgTelehealthRoomEventRepo from "./pg-telehealth-room-event-repo.js";
+export * as pgImagingWorklistRepo from "./pg-imaging-worklist-repo.js";
+export * as pgImagingIngestRepo from "./pg-imaging-ingest-repo.js";
+export * as pgSchedulingRequestRepo from "./pg-scheduling-request-repo.js";
+export * as pgSchedulingLockRepo from "./pg-scheduling-lock-repo.js";

@@ -330,6 +330,49 @@ gate("PG barrel exports pgPortalPatientSettingRepo", pgBarrel.includes("pgPortal
 gate("PG barrel exports pgTelehealthRoomRepo", pgBarrel.includes("pgTelehealthRoomRepo"));
 gate("PG barrel exports pgTelehealthRoomEventRepo", pgBarrel.includes("pgTelehealthRoomEventRepo"));
 
+// ── 10. Phase 128: Imaging + Scheduling PG Durability ────────
+console.log("\nPhase 128 PG schema tables:");
+gate('pgImagingWorkItem table in pg-schema', pgSchema.includes('pgTable("imaging_work_item"'));
+gate('pgImagingIngestEvent table in pg-schema', pgSchema.includes('pgTable("imaging_ingest_event"'));
+gate('pgSchedulingWaitlistRequest table in pg-schema', pgSchema.includes('pgTable("scheduling_waitlist_request"'));
+gate('pgSchedulingBookingLock table in pg-schema', pgSchema.includes('pgTable("scheduling_booking_lock"'));
+
+console.log("\nPhase 128 PG migration DDL:");
+gate("imaging_work_item CREATE TABLE in pg-migrate", pgMigrate.includes("CREATE TABLE IF NOT EXISTS imaging_work_item"));
+gate("imaging_ingest_event CREATE TABLE in pg-migrate", pgMigrate.includes("CREATE TABLE IF NOT EXISTS imaging_ingest_event"));
+gate("scheduling_waitlist_request CREATE TABLE in pg-migrate", pgMigrate.includes("CREATE TABLE IF NOT EXISTS scheduling_waitlist_request"));
+gate("scheduling_booking_lock CREATE TABLE in pg-migrate", pgMigrate.includes("CREATE TABLE IF NOT EXISTS scheduling_booking_lock"));
+
+console.log("\nPhase 128 PG repos:");
+const pgIwRepoFile = readSrc("apps/api/src/platform/pg/repo/pg-imaging-worklist-repo.ts");
+gate("pg-imaging-worklist-repo.ts exists", pgIwRepoFile !== null);
+const pgIiRepoFile = readSrc("apps/api/src/platform/pg/repo/pg-imaging-ingest-repo.ts");
+gate("pg-imaging-ingest-repo.ts exists", pgIiRepoFile !== null);
+const pgSrRepoFile = readSrc("apps/api/src/platform/pg/repo/pg-scheduling-request-repo.ts");
+gate("pg-scheduling-request-repo.ts exists", pgSrRepoFile !== null);
+const pgSlRepoFile = readSrc("apps/api/src/platform/pg/repo/pg-scheduling-lock-repo.ts");
+gate("pg-scheduling-lock-repo.ts exists", pgSlRepoFile !== null);
+gate("pg-scheduling-lock-repo has expires_at TTL", pgSlRepoFile?.includes("expires_at") ?? false);
+
+console.log("\nPhase 128 startup wiring:");
+gate("index.ts wires pg-imaging-worklist-repo (PG)", index.includes("pg-imaging-worklist-repo"));
+gate("index.ts wires pg-imaging-ingest-repo (PG)", index.includes("pg-imaging-ingest-repo"));
+gate("index.ts wires pg-scheduling-request-repo (PG)", index.includes("pg-scheduling-request-repo"));
+gate("index.ts wires pg-scheduling-lock-repo (PG)", index.includes("pg-scheduling-lock-repo"));
+gate("index.ts wires initSchedulingLockRepo", index.includes("initSchedulingLockRepo"));
+
+console.log("\nPhase 128 RLS tenant list:");
+gate("imaging_work_item in RLS tenant list", pgMigrate.includes('"imaging_work_item"'));
+gate("imaging_ingest_event in RLS tenant list", pgMigrate.includes('"imaging_ingest_event"'));
+gate("scheduling_waitlist_request in RLS tenant list", pgMigrate.includes('"scheduling_waitlist_request"'));
+gate("scheduling_booking_lock in RLS tenant list", pgMigrate.includes('"scheduling_booking_lock"'));
+
+console.log("\nPhase 128 PG barrel exports:");
+gate("PG barrel exports pgImagingWorklistRepo", pgBarrel.includes("pgImagingWorklistRepo"));
+gate("PG barrel exports pgImagingIngestRepo", pgBarrel.includes("pgImagingIngestRepo"));
+gate("PG barrel exports pgSchedulingRequestRepo", pgBarrel.includes("pgSchedulingRequestRepo"));
+gate("PG barrel exports pgSchedulingLockRepo", pgBarrel.includes("pgSchedulingLockRepo"));
+
 // ── Summary ─────────────────────────────────────────────────
 console.log(`\n${"=".repeat(50)}`);
 console.log(`Restart-Durability Gate: ${pass} PASS / ${fail} FAIL`);

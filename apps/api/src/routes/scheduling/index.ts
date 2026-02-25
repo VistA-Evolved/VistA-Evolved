@@ -296,7 +296,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
   /* ---- GET /scheduling/requests ---- */
   server.get("/scheduling/requests", async (request: FastifyRequest, reply: FastifyReply) => {
     if (!requireSession(request, reply)) return;
-    const store = getRequestStore();
+    const store = await getRequestStore();
     const requests = [...store.values()]
       .filter((r) => r.status === "pending")
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt));

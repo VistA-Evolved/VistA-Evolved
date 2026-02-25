@@ -67,6 +67,7 @@ const SUITE_GATES = {
     "G10_system_audit",
     "G11_tenant_isolation",
     "G12_data_plane",
+    "G13_imaging_scheduling_restart",
   ],
   full: [
     "G0_prompts_integrity",
@@ -82,6 +83,7 @@ const SUITE_GATES = {
     "G10_system_audit",
     "G11_tenant_isolation",
     "G12_data_plane",
+    "G13_imaging_scheduling_restart",
   ],
 };
 
@@ -106,6 +108,7 @@ const GATE_MODULES = {
   G10_system_audit: "gates/g10-system-audit.mjs",
   G11_tenant_isolation: "gates/g11-tenant-isolation.mjs",
   G12_data_plane: "gates/g12-data-plane.mjs",
+  G13_imaging_scheduling_restart: "gates/g13-imaging-scheduling-restart.mjs",
 };
 
 // ── Resolve which gates to run ──────────────────────────────
