@@ -6,6 +6,7 @@
  * Phase 114: Durability Wave 1 (sessions + workqueues)
  * Phase 115: Durability Wave 2 (portal/telehealth/imaging/idempotency)
  * Phase 121: Durability Wave 3 (claims/access-log/scheduling)
+ * Phase 122: Tenant isolation guards
  */
 
 export * as payerRepo from "./payer-repo.js";
@@ -27,3 +28,5 @@ export * as rcmClaimRepo from "./rcm-claim-repo.js";
 export * as rcmClaimCaseRepo from "./rcm-claim-case-repo.js";
 export * as accessLogRepo from "./access-log-repo.js";
 export * as schedulingRequestRepo from "./scheduling-request-repo.js";
+export * as tenantScopedQueries from "./tenant-scoped-queries.js";
+export { requireTenantId, assertTenantMatch, TenantIsolationError, TENANT_SCOPED_TABLES, GLOBAL_TABLES } from "./tenant-guard.js";

@@ -1,9 +1,9 @@
 {
     "commitSHA": "pending",
     "stage": "implemented",
-    "verifyScript": "pnpm audit:system",
-    "runbook": "docs/runbooks/durability-wave-1.md",
-    "promptRef": "prompts/125-PHASE-121-DURABILITY-WAVE-1/121-01-IMPLEMENT.md",
+    "verifyScript": "node qa/gauntlet/cli.mjs --suite rc",
+    "runbook": "docs/runbooks/phase122-tenant-isolation.md",
+    "promptRef": "prompts/126-PHASE-122-TENANT-ISOLATION/122-01-IMPLEMENT.md",
     "status": "implemented",
-    "feature": "Phase 121: Durability Wave 1 -- 5 new tables, 4 hybrid stores, 9 high-risk stores eliminated"
+    "feature": "Phase 122: Multi-Tenancy Isolation -- PG RLS auto-enable, SQLite tenant guards, G11 CI gate"
 }

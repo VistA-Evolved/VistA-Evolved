@@ -60,6 +60,21 @@ export default async function postureRoutes(server: FastifyInstance) {
     return { ok: true, ...(await checkTenantIsolationPosture()) };
   });
 
+  // Phase 122: Dedicated admin tenant posture endpoint
+  server.get("/admin/tenant-posture", async () => {
+    const posture = await checkTenantIsolationPosture();
+    return {
+      ok: true,
+      pgEnabled: posture.pgActive,
+      rlsEnabled: posture.rlsEnabled,
+      enforcementMode: posture.enforcementMode,
+      score: posture.score,
+      gates: posture.gates,
+      rlsTables: posture.rlsTables,
+      timestamp: new Date().toISOString(),
+    };
+  });
+
   server.get("/posture/performance", async () => {
     return { ok: true, ...checkPerfPosture() };
   });

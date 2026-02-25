@@ -755,10 +755,20 @@ export async function runPgMigrations(): Promise<{
 
 /**
  * Apply optional RLS policies to all tenant-scoped tables.
- * Only runs if PLATFORM_PG_RLS_ENABLED=true.
+ * Phase 122: Defaults to TRUE when PLATFORM_PG_URL is set AND NODE_ENV=production.
+ * Override with PLATFORM_PG_RLS_ENABLED=false to disable.
  */
 export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: string[] }> {
-  if (process.env.PLATFORM_PG_RLS_ENABLED !== "true") {
+  const pgConfigured = !!process.env.PLATFORM_PG_URL;
+  const isProduction = process.env.NODE_ENV === "production";
+  const explicit = process.env.PLATFORM_PG_RLS_ENABLED;
+
+  // Phase 122: Auto-enable in production when PG is configured
+  const rlsEnabled = explicit !== undefined
+    ? explicit === "true"
+    : (pgConfigured && isProduction);
+
+  if (!rlsEnabled) {
     return { applied: [], errors: [] };
   }
 

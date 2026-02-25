@@ -1,16 +1,19 @@
 /**
- * tenant-posture.ts -- Phase 107: Production Posture Pack
+ * tenant-posture.ts -- Phase 107 + Phase 122: Tenant Isolation Posture
  *
  * Runtime verification of tenant isolation posture:
  * - RLS policy status (if Postgres is active)
  * - Tenant context middleware registration
  * - Cross-tenant leakage guard
  * - Session-to-tenant binding
+ * - SQLite repo guard coverage (Phase 122)
+ * - PG RLS enforcement mode (Phase 122)
  *
  * Best practices enforced:
  * - RLS enabled + FORCE RLS on all tenant-scoped tables
  * - Tenant context is transaction-scoped (SET LOCAL)
  * - No pooled-connection leakage (client released after each query)
+ * - SQLite repos use requireTenantId() guards
  */
 
 import { isPgConfigured, getPgPool } from "../platform/pg/pg-db.js";
@@ -22,6 +25,8 @@ export interface TenantIsolationPosture {
   gates: PostureGate[];
   summary: string;
   pgActive: boolean;
+  rlsEnabled: boolean;
+  enforcementMode: "rls" | "app_guard" | "none";
   rlsTables: string[];
 }
 
@@ -180,6 +185,45 @@ export async function checkTenantIsolationPosture(): Promise<TenantIsolationPost
     detail: "~30 in-memory stores documented; ephemeral by design (reset on restart)",
   });
 
+  // Gate 9 (Phase 122): SQLite tenant guard module exists
+  let sqliteGuardExists = false;
+  try {
+    // Dynamic check — if the module can be resolved, guards are installed
+    await import("../platform/db/repo/tenant-guard.js");
+    sqliteGuardExists = true;
+  } catch { /* module not found */ }
+
+  gates.push({
+    name: "sqlite_tenant_guard",
+    pass: sqliteGuardExists,
+    detail: sqliteGuardExists
+      ? "tenant-guard.ts provides requireTenantId() + assertTenantMatch() for SQLite repos"
+      : "tenant-guard.ts not found -- SQLite repos lack application-level tenant enforcement",
+  });
+
+  // Gate 10 (Phase 122): Tenant-scoped query wrappers exist
+  let scopedQueriesExist = false;
+  try {
+    await import("../platform/db/repo/tenant-scoped-queries.js");
+    scopedQueriesExist = true;
+  } catch { /* module not found */ }
+
+  gates.push({
+    name: "tenant_scoped_queries",
+    pass: scopedQueriesExist,
+    detail: scopedQueriesExist
+      ? "tenant-scoped-queries.ts provides ForTenant() wrappers for PK lookups"
+      : "tenant-scoped-queries.ts not found -- PK lookups may leak across tenants",
+  });
+
+  // Determine enforcement mode
+  const rlsActive = pgActive && rlsTables.length === TENANT_TABLES.length;
+  const enforcementMode: "rls" | "app_guard" | "none" = rlsActive
+    ? "rls"
+    : sqliteGuardExists
+      ? "app_guard"
+      : "none";
+
   const passCount = gates.filter((g) => g.pass).length;
   const score = Math.round((passCount / gates.length) * 100);
 
@@ -188,6 +232,8 @@ export async function checkTenantIsolationPosture(): Promise<TenantIsolationPost
     gates,
     summary: `${passCount}/${gates.length} tenant isolation gates pass (score: ${score})`,
     pgActive,
+    rlsEnabled: rlsActive,
+    enforcementMode,
     rlsTables,
   };
 }

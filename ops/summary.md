@@ -1,54 +1,42 @@
-# Phase 121 Summary — Durability Wave 1
+# Phase 122 Summary — Multi-Tenancy Isolation (PG RLS + SQLite Guards)
 
 ## What Changed
 
-Migrated 4 highest-risk pure in-memory store groups to DB-backed hybrid
-persistence using the established write-through + cache-first pattern.
+### New Files
+- `apps/api/src/platform/db/repo/tenant-guard.ts` — Tenant isolation enforcement:
+  `requireTenantId()`, `assertTenantMatch()`, `tenantEq()`, `TenantIsolationError`,
+  `TENANT_SCOPED_TABLES` (30+ tables), `GLOBAL_TABLES`
+- `apps/api/src/platform/db/repo/tenant-scoped-queries.ts` — ForTenant wrappers for
+  PK lookups (claims, remittances, cases, work items) with cross-tenant blocking
+- `apps/api/tests/tenant-isolation.test.ts` — 20 tests covering all guard functions
+- `qa/gauntlet/gates/g11-tenant-isolation.mjs` — CI gate (8 checks + strict mode)
+- `prompts/126-PHASE-122-TENANT-ISOLATION/122-01-IMPLEMENT.md`
+- `prompts/126-PHASE-122-TENANT-ISOLATION/122-99-VERIFY.md`
 
-### New DB Tables (5)
-- `rcm_claim` (AP) — claim entities
-- `rcm_remittance` (AQ) — remittance records
-- `rcm_claim_case` (AR) — claims lifecycle FSM
-- `portal_access_log` (AS) — patient-visible activity log
-- `scheduling_request` (AT) — wait list / appointment requests
+### Modified Files
+- `apps/api/src/platform/db/repo/index.ts` — barrel exports for tenant-guard + scoped queries
+- `apps/api/src/platform/pg/pg-migrate.ts` — RLS auto-enables in production
+- `apps/api/src/posture/tenant-posture.ts` — Gates 9-10, enforcementMode field
+- `apps/api/src/posture/index.ts` — GET /admin/tenant-posture endpoint
+- `apps/api/.env.example` — documented RLS auto-enable behavior
+- `qa/gauntlet/cli.mjs` — G11_tenant_isolation in rc + full suites
 
-### Modified Stores (4)
-- `rcm/domain/claim-store.ts` — hybrid
-- `rcm/claims/claim-store.ts` — hybrid
-- `portal-iam/access-log-store.ts` — hybrid
-- `adapters/scheduling/vista-adapter.ts` — hybrid (requestStore only; booking locks remain ephemeral)
+## Verifier Output
+- TypeScript: 0 errors (api / web / portal)
+- Vitest: 20/20 passed
+- System audit: 1197 endpoints, 19 domains
 
-### New Repos (4)
-- `platform/db/repo/rcm-claim-repo.ts`
-- `platform/db/repo/rcm-claim-case-repo.ts`
-- `platform/db/repo/access-log-repo.ts`
-- `platform/db/repo/scheduling-request-repo.ts`
-
-### Wiring
-- 4 init blocks added to index.ts after initPlatformDb()
-
-### Audit Enhancement
-- `system-audit.mjs` now detects hybrid-backed stores and downgrades risk
-
-## Metrics
-- SQLite tables: 41 → 46 (+5)
-- High-risk stores: 49 → 40 (-9)
-- TypeScript: 0 errors
-
-## How to Test
-1. Start API with `npx tsx --env-file=.env.local src/index.ts`
-2. Check startup logs for "wired to DB" messages
-3. Create claim, restart, verify claim persists
-4. Run `pnpm audit:system` — verify 46 tables, ≤40 high-risk
-
-## Verify Script
-```powershell
-pnpm audit:system
+## How to Test Manually
+```bash
+cd apps/api && pnpm exec vitest run tests/tenant-isolation.test.ts
+node qa/gauntlet/cli.mjs --suite rc
 ```
 
 ## Follow-ups
-- Wave 2: remaining 40 high-risk stores
-- PG store-resolver support for new tables
+1. Adopt requireTenantId() + assertTenantMatch() incrementally in existing repos
+2. Add tenant_id column to 8 tables that lack it
+3. Expand PG RLS to Phase 115+ tables
+4. Enable G11 strict mode after full repo adoption
 1. **BUG-069** -- `registry.ts`: Made `payerId` optional in eligibility schema (cron sends minimal payload)
 2. **BUG-070** -- `governance.ts`: Moved PHI check before zod parsing (zod strips unknown keys)
 3. **BUG-071** -- `governance.ts`: Fixed JSONB parsing in `getRecentJobRuns` (PG driver returns object)
