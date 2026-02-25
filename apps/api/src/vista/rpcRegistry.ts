@@ -121,9 +121,11 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "ORWDXC ACCEPT",            domain: "orders",     tag: "read",  description: "Accept/get order check results" },
   { name: "ORWDXC DISPLAY",           domain: "orders",     tag: "read",  description: "Display order check text" },
   { name: "ORWDXC SAVECHK",           domain: "orders",     tag: "write", description: "Save/acknowledge order checks" },
+  { name: "ORWDX WRLST",              domain: "orders",     tag: "read",  description: "Write/order list for patient" },
 
   // --- Patients ---
   { name: "ORQPT DEFAULT PATIENT LIST", domain: "patients", tag: "read", description: "Default patient list" },
+  { name: "ORQPT DEFAULT LIST SOURCE",  domain: "patients", tag: "read", description: "Default patient list source configuration" },
   { name: "ORWPT LIST ALL",           domain: "patients",   tag: "read",  description: "Search all patients" },
   { name: "ORWPT SELECT",             domain: "patients",   tag: "read",  description: "Select patient demographics" },
   { name: "ORWPT ID INFO",            domain: "patients",   tag: "read",  description: "Patient ID info (SSN, DOB, etc.)" },
@@ -148,6 +150,7 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "ORWSR RPTLIST",            domain: "surgery",    tag: "read",  description: "Surgery report list" },
 
   // --- Vitals ---
+  { name: "GMV V/M ALLDATA",           domain: "vitals",     tag: "read",  description: "All vitals/measurements data" },
   { name: "GMV ADD VM",               domain: "vitals",     tag: "write", description: "Add vital measurement" },
   { name: "ORQQVI VITALS",            domain: "vitals",     tag: "read",  description: "Get patient vitals" },
   { name: "ORQQVI VITALS FOR DATE RANGE", domain: "vitals", tag: "read",  description: "Vitals for date range (shift-based nursing view)" },

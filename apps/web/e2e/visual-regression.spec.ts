@@ -20,7 +20,7 @@
  */
 
 import { test, expect } from "@playwright/test";
-import { loginViaUI, selectPatient } from "./helpers/auth";
+import { selectPatient } from "./helpers/auth";
 
 const DFN = "3";
 
