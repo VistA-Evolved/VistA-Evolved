@@ -20,14 +20,29 @@
 ### New: Migration Script
 - `scripts/migrations/sqlite-to-pg.mjs` -- one-shot SQLite to PG transfer
 
-## Verifier Output
+## Verifier Output (IMPLEMENT)
 - TypeScript: 3/3 clean
 - Gauntlet FAST: 4 PASS / 0 FAIL / 1 WARN
 - G12 Data Plane: PASS (6/6)
 
+## Verifier Output (VERIFY)
+- Prompt folder: PASS (125-01-IMPLEMENT.md + 125-99-VERIFY.md)
+- Anti-sprawl: PASS (no reports/ from Phase 125)
+- Startup fail test (rc without PG): PASS -- throws at runtime-mode.ts:82
+- TypeScript: 3/3 clean (api, web, portal)
+- Build: 3/3 clean (api, web, portal)
+- Gauntlet FAST: 4 PASS / 0 FAIL / 1 WARN
+- Docker PG: healthy (latency 2ms)
+- Data-plane posture: 100% score, 6/6 gates PASS
+- Multi-domain smoke: telehealth room created + session persisted
+- Durability (restart): session + telehealth room survived API restart
+- Tenant isolation: 25/26 tables have tenant_id (only _platform_migrations exempt)
+- Gauntlet RC: 10 PASS / 0 FAIL / 1 WARN (all 11 gates including G12)
+- Pre-existing errors: 0
+
 ## Follow-ups
-- Phase 125 VERIFY: Full RC gauntlet with PG
 - Add PLATFORM_RUNTIME_MODE to .env.example
+- Future: conditional skip of initPlatformDb() in rc/prod (optimisation, not bug)
 - `apps/api/src/platform/db/repo/tenant-guard.ts` — Tenant isolation enforcement:
   `requireTenantId()`, `assertTenantMatch()`, `tenantEq()`, `TenantIsolationError`,
   `TENANT_SCOPED_TABLES` (30+ tables), `GLOBAL_TABLES`
