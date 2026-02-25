@@ -1,8 +1,10 @@
 /**
- * Scheduling Adapter Interface -- Phase 37C, enhanced Phase 63.
+ * Scheduling Adapter Interface -- Phase 37C, enhanced Phase 63, Phase 123.
  *
  * Phase 63 additions: WaitListEntry, ClinicInfo, encounter-based types,
  * request/cancel/reschedule flows, clinic lookup, provider lookup.
+ * Phase 123 additions: EncounterDetail, EncounterProvider, EncounterDiagnosis,
+ * encounter detail/providers/diagnoses methods, wait-list read, VistA posture.
  */
 
 import type { BaseAdapter, AdapterResult } from "../types.js";
@@ -52,6 +54,47 @@ export interface ProviderInfo {
   service?: string;
 }
 
+/** Phase 123: Encounter detail from SDOE GET GENERAL DATA */
+export interface EncounterDetail {
+  encounterIen: string;
+  dateTime: string;
+  clinic: string;
+  clinicIen?: string;
+  type?: string;
+  status?: string;
+  visitCategory?: string;
+  serviceCategory?: string;
+  patientDfn?: string;
+  raw?: Record<string, string>;
+}
+
+/** Phase 123: Provider assigned to an encounter (SDOE GET PROVIDERS) */
+export interface EncounterProvider {
+  encounterIen: string;
+  duz: string;
+  name: string;
+  role?: string;
+  isPrimary?: boolean;
+}
+
+/** Phase 123: Diagnosis from encounter (SDOE GET DIAGNOSES) */
+export interface EncounterDiagnosis {
+  encounterIen: string;
+  icd: string;
+  description: string;
+  isPrimary?: boolean;
+  dateRecorded?: string;
+}
+
+/** Phase 123: VistA posture metadata — shows exactly which RPC/file was used */
+export interface VistaGrounding {
+  rpc: string;
+  vistaPackage: string;
+  vistaFiles?: string[];
+  sandboxNote?: string;
+  migrationPath?: string;
+}
+
 export interface WaitListEntry {
   id: string;
   patientDfn: string;
@@ -62,6 +105,8 @@ export interface WaitListEntry {
   createdAt: string;
   reason?: string;
   type?: "new_appointment" | "reschedule" | "cancel_request";
+  /** Phase 123: VistA wait-list IEN if created via SD W/L CREATE FILE */
+  vistaWaitListIen?: string;
 }
 
 export interface AppointmentRequest {
@@ -78,7 +123,7 @@ export interface SchedulingAdapter extends BaseAdapter {
   readonly adapterType: "scheduling";
   /** List appointments for a patient (SDOE encounter-based) */
   listAppointments(patientDfn: string, startDate?: string, endDate?: string): Promise<AdapterResult<Appointment[]>>;
-  /** Create/book an appointment (SDEC when available, else wait list request) */
+  /** Create/book an appointment (SD W/L CREATE FILE -> SDEC when available, else request store) */
   createAppointment(request: AppointmentRequest): Promise<AdapterResult<Appointment | WaitListEntry>>;
   /** Cancel an appointment or submit cancel request */
   cancelAppointment(appointmentId: string, reason: string, patientDfn?: string): Promise<AdapterResult<void>>;
@@ -90,4 +135,12 @@ export interface SchedulingAdapter extends BaseAdapter {
   listProviders(): Promise<AdapterResult<ProviderInfo[]>>;
   /** List encounters by date range (provider/clinic view) */
   listEncountersByDate(startDate: string, endDate: string): Promise<AdapterResult<Appointment[]>>;
+  /** Phase 123: Get encounter detail fields (SDOE GET GENERAL DATA) */
+  getEncounterDetail(encounterIen: string): Promise<AdapterResult<EncounterDetail>>;
+  /** Phase 123: Get providers assigned to encounter (SDOE GET PROVIDERS) */
+  getEncounterProviders(encounterIen: string): Promise<AdapterResult<EncounterProvider[]>>;
+  /** Phase 123: Get diagnoses for encounter (SDOE GET DIAGNOSES) */
+  getEncounterDiagnoses(encounterIen: string): Promise<AdapterResult<EncounterDiagnosis[]>>;
+  /** Phase 123: Read wait-list entries (SD W/L RETRIVE FULL DATA) */
+  getWaitList(clinicIen?: string): Promise<AdapterResult<WaitListEntry[]>>;
 }

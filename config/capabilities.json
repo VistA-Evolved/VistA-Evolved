@@ -580,20 +580,60 @@
       "description": "View claim status poll results (Phase 69)"
     },
     "scheduling.appointments.create": {
-      "status": "pending",
+      "status": "configured",
       "module": "scheduling",
       "adapter": "scheduling",
-      "targetRpc": "SD MAKE APPOINTMENT",
+      "targetRpc": "SD W/L CREATE FILE",
       "targetPackage": "SD",
-      "description": "Create appointment"
+      "description": "Create appointment (Phase 123: attempts SD W/L CREATE FILE, falls back to local store)"
     },
     "scheduling.slots.available": {
       "status": "pending",
       "module": "scheduling",
       "adapter": "scheduling",
-      "targetRpc": null,
+      "targetRpc": "SDEC APPSLOTS",
       "targetPackage": "SD",
-      "description": "Get available appointment slots"
+      "description": "Get available appointment slots (SDEC APPSLOTS not in sandbox)"
+    },
+    "scheduling.encounter.detail": {
+      "status": "configured",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SDOE GET GENERAL DATA",
+      "targetPackage": "SD",
+      "description": "Get encounter detail fields (Phase 123)"
+    },
+    "scheduling.encounter.providers": {
+      "status": "configured",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SDOE GET PROVIDERS",
+      "targetPackage": "SD",
+      "description": "Get providers assigned to encounter (Phase 123)"
+    },
+    "scheduling.encounter.diagnoses": {
+      "status": "configured",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SDOE GET DIAGNOSES",
+      "targetPackage": "SD",
+      "description": "Get diagnoses for encounter (Phase 123)"
+    },
+    "scheduling.waitlist.read": {
+      "status": "configured",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SD W/L RETRIVE FULL DATA",
+      "targetPackage": "SD",
+      "description": "Read VistA wait-list entries (Phase 123)"
+    },
+    "scheduling.waitlist.create": {
+      "status": "configured",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SD W/L CREATE FILE",
+      "targetPackage": "SD",
+      "description": "Create VistA wait-list entry (Phase 123)"
     },
     "migration.import.csv": {
       "status": "live",

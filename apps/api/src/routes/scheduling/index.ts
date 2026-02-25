@@ -1,17 +1,22 @@
 /**
- * Scheduling Routes -- Phase 63: VistA-first SD* scheduling.
+ * Scheduling Routes -- Phase 63, enhanced Phase 123: SD* integration pack.
  *
  * Endpoints:
- *   GET  /scheduling/appointments       — patient appointments (SDOE)
- *   GET  /scheduling/appointments/range  — date-range encounters (provider/clinic view)
- *   GET  /scheduling/clinics            — clinic list (SD W/L RETRIVE HOSP LOC)
- *   GET  /scheduling/providers          — provider list (SD W/L RETRIVE PERSON)
- *   GET  /scheduling/slots              — availability (SDEC APPSLOTS when live)
- *   POST /scheduling/appointments/request — request appointment
- *   POST /scheduling/appointments/:id/cancel — cancel / request cancel
- *   POST /scheduling/appointments/:id/reschedule — reschedule request
- *   GET  /scheduling/requests           — pending request queue (clinician)
- *   GET  /scheduling/health             — scheduling module health
+ *   GET  /scheduling/appointments          -- patient appointments (SDOE)
+ *   GET  /scheduling/appointments/range    -- date-range encounters (provider/clinic view)
+ *   GET  /scheduling/clinics              -- clinic list (SD W/L RETRIVE HOSP LOC)
+ *   GET  /scheduling/providers            -- provider list (SD W/L RETRIVE PERSON)
+ *   GET  /scheduling/slots                -- availability (SDEC APPSLOTS when live)
+ *   POST /scheduling/appointments/request -- request appointment (SD W/L CREATE FILE + fallback)
+ *   POST /scheduling/appointments/:id/cancel    -- cancel / request cancel
+ *   POST /scheduling/appointments/:id/reschedule -- reschedule request
+ *   GET  /scheduling/requests             -- pending request queue (clinician)
+ *   GET  /scheduling/health               -- scheduling module health
+ *   --- Phase 123 additions ---
+ *   GET  /scheduling/encounters/:ien/detail    -- encounter detail (SDOE GET GENERAL DATA)
+ *   GET  /scheduling/encounters/:ien/providers -- encounter providers (SDOE GET PROVIDERS)
+ *   GET  /scheduling/encounters/:ien/diagnoses -- encounter diagnoses (SDOE GET DIAGNOSES)
+ *   GET  /scheduling/waitlist                  -- wait-list entries (SD W/L RETRIVE FULL DATA)
  *
  * Auth: session-based (default AUTH_RULES catch-all).
  * Audit: all writes logged to immutable-audit (no PHI).
@@ -89,6 +94,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       pending: result.pending,
       target: result.target,
       error: result.error,
+      vistaGrounding: (result as any).vistaGrounding,
     };
   });
 
@@ -106,6 +112,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       data: result.data || [],
       pending: result.pending,
       target: result.target,
+      vistaGrounding: (result as any).vistaGrounding,
     };
   });
 
@@ -118,6 +125,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       data: result.data || [],
       pending: result.pending,
       target: result.target,
+      vistaGrounding: (result as any).vistaGrounding,
     };
   });
 
@@ -130,6 +138,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       data: result.data || [],
       pending: result.pending,
       target: result.target,
+      vistaGrounding: (result as any).vistaGrounding,
     };
   });
 
@@ -148,6 +157,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       pending: result.pending,
       target: result.target,
       error: result.error,
+      vistaGrounding: (result as any).vistaGrounding,
     };
   });
 
@@ -194,6 +204,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       data: result.data,
       pending: result.pending,
       target: result.target,
+      vistaGrounding: (result as any).vistaGrounding,
       notice: result.pending
         ? "Appointment request submitted. Clinic will confirm scheduling."
         : "Appointment booked successfully.",
@@ -287,5 +298,83 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
     return { ok: true, data: requests, count: requests.length };
   });
 
-  log.info("Scheduling routes registered (Phase 63)");
+  /* ================================================================== */
+  /* Phase 123: New SD* endpoints                                        */
+  /* ================================================================== */
+
+  /* ---- GET /scheduling/encounters/:ien/detail ---- */
+  server.get("/scheduling/encounters/:ien/detail", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    const { ien } = request.params as { ien: string };
+    if (!ien) {
+      return reply.code(400).send({ ok: false, error: "Encounter IEN required" });
+    }
+
+    const result = await adapter.getEncounterDetail(ien);
+    return {
+      ok: result.ok,
+      data: result.data || null,
+      pending: result.pending,
+      target: result.target,
+      error: result.error,
+      vistaGrounding: (result as any).vistaGrounding,
+    };
+  });
+
+  /* ---- GET /scheduling/encounters/:ien/providers ---- */
+  server.get("/scheduling/encounters/:ien/providers", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    const { ien } = request.params as { ien: string };
+    if (!ien) {
+      return reply.code(400).send({ ok: false, error: "Encounter IEN required" });
+    }
+
+    const result = await adapter.getEncounterProviders(ien);
+    return {
+      ok: result.ok,
+      data: result.data || [],
+      pending: result.pending,
+      target: result.target,
+      error: result.error,
+      vistaGrounding: (result as any).vistaGrounding,
+    };
+  });
+
+  /* ---- GET /scheduling/encounters/:ien/diagnoses ---- */
+  server.get("/scheduling/encounters/:ien/diagnoses", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    const { ien } = request.params as { ien: string };
+    if (!ien) {
+      return reply.code(400).send({ ok: false, error: "Encounter IEN required" });
+    }
+
+    const result = await adapter.getEncounterDiagnoses(ien);
+    return {
+      ok: result.ok,
+      data: result.data || [],
+      pending: result.pending,
+      target: result.target,
+      error: result.error,
+      vistaGrounding: (result as any).vistaGrounding,
+    };
+  });
+
+  /* ---- GET /scheduling/waitlist?clinicIen=X ---- */
+  server.get("/scheduling/waitlist", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    const { clinicIen } = request.query as { clinicIen?: string };
+
+    const result = await adapter.getWaitList(clinicIen);
+    return {
+      ok: result.ok,
+      data: result.data || [],
+      count: (result.data || []).length,
+      pending: result.pending,
+      target: result.target,
+      error: result.error,
+      vistaGrounding: (result as any).vistaGrounding,
+    };
+  });
+
+  log.info("Scheduling routes registered (Phase 123: 14 endpoints, 9 RPCs wired)");
 }

@@ -179,11 +179,17 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "ZVE MAIL SEND",            domain: "messaging",  tag: "write", description: "Send MailMan message via XMXSEND with inline delivery (ZVEMSGR.m)" },
   { name: "ZVE MAIL MANAGE",          domain: "messaging",  tag: "write", description: "Mark read/delete/move MailMan message (ZVEMSGR.m)" },
 
-  // --- Scheduling (Phase 37C: VistA scheduling adapter) ---
+  // --- Scheduling (Phase 37C: VistA scheduling adapter, enhanced Phase 123) ---
   { name: "SDOE LIST ENCOUNTERS FOR PAT",   domain: "scheduling",  tag: "read",  description: "List encounters/appointments for patient" },
   { name: "SD W/L RETRIVE HOSP LOC(#44)",   domain: "scheduling",  tag: "read",  description: "Retrieve hospital locations for scheduling" },
   { name: "SD W/L RETRIVE PERSON(200)",      domain: "scheduling",  tag: "read",  description: "Retrieve person file entries for scheduling" },
   { name: "SDOE LIST ENCOUNTERS FOR DATES",  domain: "scheduling",  tag: "read",  description: "List encounters for date range" },
+  // Phase 123: SD* integration pack — new RPCs
+  { name: "SDOE GET GENERAL DATA",           domain: "scheduling",  tag: "read",  description: "Get encounter general data fields (date, clinic, type)" },
+  { name: "SDOE GET PROVIDERS",              domain: "scheduling",  tag: "read",  description: "Get providers assigned to an encounter" },
+  { name: "SDOE GET DIAGNOSES",              domain: "scheduling",  tag: "read",  description: "Get diagnoses associated with an encounter" },
+  { name: "SD W/L CREATE FILE",              domain: "scheduling",  tag: "write", description: "Create wait-list entry in VistA SD package" },
+  { name: "SD W/L RETRIVE FULL DATA",        domain: "scheduling",  tag: "read",  description: "Retrieve full wait-list data" },
 ];
 
 /**
@@ -220,6 +226,12 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
   { name: "SD W/L RETRIVE HOSP LOC(#44)", reason: "Scheduling hospital location lookup; SD package RPCs underrepresented in Vivian" },
   { name: "SD W/L RETRIVE PERSON(200)", reason: "Scheduling person lookup; SD package RPCs underrepresented in Vivian" },
   { name: "SDOE LIST ENCOUNTERS FOR DATES", reason: "Scheduling encounter date range list; SD package RPCs underrepresented in Vivian" },
+  // Phase 123: SD* integration pack — new exception entries
+  { name: "SDOE GET GENERAL DATA", reason: "SDOE encounter detail; SD package RPCs underrepresented in Vivian" },
+  { name: "SDOE GET PROVIDERS", reason: "SDOE encounter providers; SD package RPCs underrepresented in Vivian" },
+  { name: "SDOE GET DIAGNOSES", reason: "SDOE encounter diagnoses; SD package RPCs underrepresented in Vivian" },
+  { name: "SD W/L CREATE FILE", reason: "SD wait-list write; SD package RPCs underrepresented in Vivian" },
+  { name: "SD W/L RETRIVE FULL DATA", reason: "SD wait-list full data retrieval; SD package RPCs underrepresented in Vivian" },
 ];
 
 /* ------------------------------------------------------------------ */

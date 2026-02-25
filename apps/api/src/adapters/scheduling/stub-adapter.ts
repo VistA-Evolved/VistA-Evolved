@@ -1,5 +1,5 @@
 /**
- * Stub Scheduling Adapter -- Phase 37C, updated Phase 63.
+ * Stub Scheduling Adapter -- Phase 37C, updated Phase 63, Phase 123.
  */
 
 import type {
@@ -10,6 +10,9 @@ import type {
   ProviderInfo,
   WaitListEntry,
   AppointmentRequest,
+  EncounterDetail,
+  EncounterProvider,
+  EncounterDiagnosis,
 } from "./interface.js";
 import type { AdapterResult } from "../types.js";
 
@@ -28,4 +31,9 @@ export class StubSchedulingAdapter implements SchedulingAdapter {
   async listClinics(): Promise<AdapterResult<ClinicInfo[]>> { return STUB; }
   async listProviders(): Promise<AdapterResult<ProviderInfo[]>> { return STUB; }
   async listEncountersByDate(): Promise<AdapterResult<Appointment[]>> { return STUB; }
+  // Phase 123: new methods
+  async getEncounterDetail(): Promise<AdapterResult<EncounterDetail>> { return STUB; }
+  async getEncounterProviders(): Promise<AdapterResult<EncounterProvider[]>> { return STUB; }
+  async getEncounterDiagnoses(): Promise<AdapterResult<EncounterDiagnosis[]>> { return STUB; }
+  async getWaitList(): Promise<AdapterResult<WaitListEntry[]>> { return STUB; }
 }

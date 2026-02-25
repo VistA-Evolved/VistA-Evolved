@@ -1,15 +1,22 @@
 /**
- * VistA Scheduling Adapter -- Phase 63 (DB-hybrid Phase 121).
+ * VistA Scheduling Adapter -- Phase 63 (DB-hybrid Phase 121, SD* pack Phase 123).
  *
  * Real RPC integration using SDOE (encounters), SD W/L (wait list),
  * and DVBAB (appointment list) RPCs available in WorldVistA sandbox.
  *
- * Reads: SDOE LIST ENCOUNTERS FOR PAT, SDOE GET GENERAL DATA,
- *        SD W/L RETRIVE HOSP LOC(#44), SD W/L RETRIVE PERSON(200)
- * Writes: SD W/L CREATE FILE (wait list request)
- * Pending: SDEC APPADD (direct booking), SDEC APPDEL (cancel)
+ * Phase 123 read RPCs:
+ *   SDOE LIST ENCOUNTERS FOR PAT, SDOE LIST ENCOUNTERS FOR DATES,
+ *   SDOE GET GENERAL DATA, SDOE GET PROVIDERS, SDOE GET DIAGNOSES,
+ *   SD W/L RETRIVE HOSP LOC(#44), SD W/L RETRIVE PERSON(200),
+ *   SD W/L RETRIVE FULL DATA
  *
- * Phase 121: requestStore is DB-backed hybrid — writes go to both
+ * Phase 123 write RPCs:
+ *   SD W/L CREATE FILE -- real VistA wait-list entry creation
+ *
+ * Pending (not in sandbox):
+ *   SDEC APPADD (direct booking), SDEC APPDEL (cancel), SDEC APPSLOTS (slots)
+ *
+ * Phase 121: requestStore is DB-backed hybrid -- writes go to both
  * cache + DB, reads try cache first then fall back to DB.
  * Booking locks remain in-memory (intentionally ephemeral, TTL-based).
  */
@@ -22,6 +29,10 @@ import type {
   ProviderInfo,
   WaitListEntry,
   AppointmentRequest,
+  EncounterDetail,
+  EncounterProvider,
+  EncounterDiagnosis,
+  VistaGrounding,
 } from "./interface.js";
 import type { AdapterResult } from "../types.js";
 import { safeCallRpc } from "../../lib/rpc-resilience.js";
@@ -240,6 +251,122 @@ function parseProviderList(raw: string): ProviderInfo[] {
 }
 
 /* ------------------------------------------------------------------ */
+/* Phase 123: New parsers for SDOE GET and SD W/L rpcs                  */
+/* ------------------------------------------------------------------ */
+
+/** Parse SDOE GET GENERAL DATA response (^-delimited fields) */
+function parseEncounterDetail(raw: string, encounterIen: string): EncounterDetail | null {
+  const lines = raw.split("\n").filter((l) => l.trim() && !l.startsWith("-1"));
+  if (lines.length === 0) return null;
+
+  // SDOE GET GENERAL DATA returns: date^clinic^clinicIen^type^status^visitCat^serviceCat^patDfn
+  const pieces = lines[0].split("^");
+  return {
+    encounterIen,
+    dateTime: vistaDateToIso(pieces[0]?.trim() || ""),
+    clinic: pieces[1]?.trim() || "Unknown",
+    clinicIen: pieces[2]?.trim() || undefined,
+    type: pieces[3]?.trim() || undefined,
+    status: pieces[4]?.trim() || undefined,
+    visitCategory: pieces[5]?.trim() || undefined,
+    serviceCategory: pieces[6]?.trim() || undefined,
+    patientDfn: pieces[7]?.trim() || undefined,
+    raw: lines.length > 1
+      ? Object.fromEntries(lines.slice(1).map((l) => {
+          const [k, ...v] = l.split("^");
+          return [k?.trim() || "", v.join("^").trim()];
+        }).filter(([k]) => k))
+      : undefined,
+  };
+}
+
+/** Parse SDOE GET PROVIDERS response (^-delimited) */
+function parseEncounterProviders(raw: string, encounterIen: string): EncounterProvider[] {
+  const lines = raw.split("\n").filter((l) => l.trim() && !l.startsWith("-1"));
+  const providers: EncounterProvider[] = [];
+
+  for (const line of lines) {
+    const pieces = line.split("^");
+    if (pieces.length < 2) continue;
+    const duz = pieces[0]?.trim();
+    const name = pieces[1]?.trim();
+    if (!duz || !name) continue;
+
+    providers.push({
+      encounterIen,
+      duz,
+      name,
+      role: pieces[2]?.trim() || undefined,
+      isPrimary: pieces[3]?.trim() === "1" || pieces[3]?.trim()?.toLowerCase() === "primary",
+    });
+  }
+
+  return providers;
+}
+
+/** Parse SDOE GET DIAGNOSES response (^-delimited) */
+function parseEncounterDiagnoses(raw: string, encounterIen: string): EncounterDiagnosis[] {
+  const lines = raw.split("\n").filter((l) => l.trim() && !l.startsWith("-1"));
+  const diagnoses: EncounterDiagnosis[] = [];
+
+  for (const line of lines) {
+    const pieces = line.split("^");
+    if (pieces.length < 2) continue;
+    const icd = pieces[0]?.trim();
+    const desc = pieces[1]?.trim();
+    if (!icd || !desc) continue;
+
+    diagnoses.push({
+      encounterIen,
+      icd,
+      description: desc,
+      isPrimary: pieces[2]?.trim() === "1" || pieces[2]?.trim()?.toLowerCase() === "primary",
+      dateRecorded: pieces[3]?.trim() ? vistaDateToIso(pieces[3].trim()) : undefined,
+    });
+  }
+
+  return diagnoses;
+}
+
+/** Parse SD W/L RETRIVE FULL DATA response */
+function parseWaitListEntries(raw: string): WaitListEntry[] {
+  const lines = raw.split("\n").filter((l) => l.trim() && !l.startsWith("-1"));
+  const entries: WaitListEntry[] = [];
+
+  for (const line of lines) {
+    const pieces = line.split("^");
+    if (pieces.length < 3) continue;
+    const ien = pieces[0]?.trim();
+    const patDfn = pieces[1]?.trim();
+    const clinicName = pieces[2]?.trim();
+    if (!ien) continue;
+
+    entries.push({
+      id: `wl-${ien}`,
+      patientDfn: patDfn || "",
+      clinicName: clinicName || "",
+      preferredDate: pieces[3]?.trim() ? vistaDateToIso(pieces[3].trim()) : "",
+      priority: pieces[4]?.trim() || "routine",
+      status: pieces[5]?.trim() || "pending",
+      createdAt: pieces[6]?.trim() ? vistaDateToIso(pieces[6].trim()) : new Date().toISOString(),
+      reason: pieces[7]?.trim() || undefined,
+      vistaWaitListIen: ien,
+    });
+  }
+
+  return entries;
+}
+
+/** Build vistaGrounding metadata for responses */
+function grounding(rpc: string, vistaPackage: string, extras?: Partial<VistaGrounding>): VistaGrounding {
+  return {
+    rpc,
+    vistaPackage,
+    ...extras,
+  };
+}
+
+/* ------------------------------------------------------------------ */
 /* In-memory request store (wait list / appointment requests)            */
 /* Mirrors Phase 23 imaging worklist pattern — in-memory until VistA     */
 /* SDEC RPCs available for direct booking.                              */
@@ -280,11 +407,15 @@ setInterval(() => {
 
 export class VistaSchedulingAdapter implements SchedulingAdapter {
   readonly adapterType = "scheduling" as const;
-  readonly implementationName = "vista-rpc-sdoe";
+  readonly implementationName = "vista-rpc-sdoe-phase123";
   readonly _isStub = false;
 
   async healthCheck() {
-    return { ok: true, latencyMs: 0, detail: "VistA scheduling adapter (SDOE + SD W/L live RPCs)" };
+    return {
+      ok: true,
+      latencyMs: 0,
+      detail: "VistA scheduling adapter (Phase 123: 9 RPCs wired -- SDOE reads + SD W/L reads/writes)",
+    };
   }
 
   /**
@@ -323,7 +454,16 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
           source: "request",
         }));
 
-      return { ok: true, data: [...appointments, ...pendingRequests] };
+      return {
+        ok: true,
+        data: [...appointments, ...pendingRequests],
+        vistaGrounding: grounding("SDOE LIST ENCOUNTERS FOR PAT", "SD", {
+          vistaFiles: ["SDOE (File 409.68)"],
+          sandboxNote: appointments.length > 0
+            ? `${appointments.length} encounter(s) from VistA`
+            : "RPC returned empty -- no encounters in sandbox for this patient",
+        }),
+      } as any;
     } catch (err: any) {
       log.warn("SDOE LIST ENCOUNTERS FOR PAT failed", { error: err.message });
       // Return just pending requests if VistA call fails
@@ -351,8 +491,9 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
 
   /**
    * Create appointment request.
-   * Since SDEC APPADD is not in the sandbox, stores as a wait-list request.
-   * When SDEC is available, this will call SDEC APPADD directly.
+   * Phase 123: Attempts SD W/L CREATE FILE for real VistA wait-list entry.
+   * Falls back to in-memory + DB request store if RPC unavailable.
+   * When SDEC APPADD becomes available, this will attempt direct booking first.
    */
   async createAppointment(
     request: AppointmentRequest,
@@ -362,7 +503,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
     if (!acquireBookingLock(lockKey)) {
       return {
         ok: false,
-        error: "Duplicate booking attempt — another request for this patient/date/clinic is in progress",
+        error: "Duplicate booking attempt -- another request for this patient/date/clinic is in progress",
       };
     }
 
@@ -382,7 +523,34 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         }
       }
 
-      const id = `req-${++requestSeq}-${Date.now().toString(36)}`;
+      // Phase 123: Attempt real VistA wait-list entry via SD W/L CREATE FILE
+      let vistaWaitListIen: string | undefined;
+      let writePath: "vista" | "local" = "local";
+      try {
+        const vistaDate = isoToVistaDate(request.preferredDate);
+        // SD W/L CREATE FILE params: DFN^ClinicIEN^DesiredDate^Priority^Comment
+        const clinicIen = request.clinicIen || "";
+        const param = `${request.patientDfn}^${clinicIen}^${vistaDate}^R^${(request.reason || "").slice(0, 200)}`;
+        const rawResult = await safeCallRpc("SD W/L CREATE FILE", [param]);
+        const resultStr = rawResult.join("\n").trim();
+
+        // Parse result: if we got back an IEN (positive number), it succeeded
+        if (resultStr && !resultStr.startsWith("-1") && !resultStr.startsWith("0^")) {
+          const ien = resultStr.split("^")[0]?.trim();
+          if (ien && /^\d+$/.test(ien)) {
+            vistaWaitListIen = ien;
+            writePath = "vista";
+            log.info("SD W/L CREATE FILE succeeded", { ien, patientDfn: "[REDACTED]" });
+          }
+        }
+      } catch (err: any) {
+        log.warn("SD W/L CREATE FILE unavailable, falling back to local store", { error: err.message });
+      }
+
+      const id = vistaWaitListIen
+        ? `wl-${vistaWaitListIen}`
+        : `req-${++requestSeq}-${Date.now().toString(36)}`;
+
       const entry: WaitListEntry = {
         id,
         patientDfn: request.patientDfn,
@@ -393,6 +561,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         createdAt: new Date().toISOString(),
         reason: request.reason,
         type: "new_appointment",
+        vistaWaitListIen,
       };
 
       requestStore.set(id, entry);
@@ -403,9 +572,22 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       return {
         ok: true,
         data: entry,
-        pending: true,
-        target: "SDEC APPADD (not in sandbox — stored as request)",
-      };
+        pending: writePath === "local",
+        target: writePath === "vista"
+          ? "SD W/L CREATE FILE (real VistA wait-list entry created)"
+          : "SDEC APPADD (not in sandbox -- stored as local request, SD W/L CREATE FILE also attempted)",
+        vistaGrounding: grounding(
+          writePath === "vista" ? "SD W/L CREATE FILE" : "SD W/L CREATE FILE (fallback to local store)",
+          "SD",
+          {
+            vistaFiles: ["SD WAIT LIST (File 409.3)"],
+            sandboxNote: writePath === "vista"
+              ? `Wait-list entry created with IEN ${vistaWaitListIen}`
+              : "SD W/L CREATE FILE not available in sandbox -- using local request store",
+            migrationPath: "Wire SDEC APPADD for direct appointment booking when available",
+          },
+        ),
+      } as any;
     } finally {
       releaseBookingLock(lockKey);
     }
@@ -459,7 +641,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
   }
 
   /**
-   * Get available slots. SDEC APPSLOTS is not in sandbox — returns pending.
+   * Get available slots. SDEC APPSLOTS is not in sandbox -- returns pending with grounding.
    */
   async getAvailableSlots(
     clinicIen: string,
@@ -472,7 +654,12 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       pending: true,
       target: "SDEC APPSLOTS",
       error: "Slot availability requires SDEC APPSLOTS (not in WorldVistA sandbox). Request-based booking available.",
-    };
+      vistaGrounding: grounding("SDEC APPSLOTS", "SD", {
+        vistaFiles: ["SDEC APPOINTMENT SLOT (File 409.832)"],
+        sandboxNote: "SDEC APPSLOTS is not installed in WorldVistA Docker sandbox",
+        migrationPath: "Install SDEC package or use VA-SDEC patch to enable slot-based scheduling",
+      }),
+    } as any;
   }
 
   /**
@@ -482,7 +669,16 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
     try {
       const rawLines = await safeCallRpc("SD W/L RETRIVE HOSP LOC(#44)", [""]);
       const clinics = parseClinicList(rawLines.join("\n"));
-      return { ok: true, data: clinics };
+      return {
+        ok: true,
+        data: clinics,
+        vistaGrounding: grounding("SD W/L RETRIVE HOSP LOC(#44)", "SD", {
+          vistaFiles: ["HOSPITAL LOCATION (File 44)"],
+          sandboxNote: clinics.length > 0
+            ? `${clinics.length} clinic(s) returned`
+            : "RPC returned empty -- no clinics configured in sandbox File 44",
+        }),
+      } as any;
     } catch (err: any) {
       log.warn("SD W/L RETRIVE HOSP LOC(#44) failed", { error: err.message });
       return {
@@ -502,7 +698,16 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
     try {
       const rawLines = await safeCallRpc("SD W/L RETRIVE PERSON(200)", [""]);
       const providers = parseProviderList(rawLines.join("\n"));
-      return { ok: true, data: providers };
+      return {
+        ok: true,
+        data: providers,
+        vistaGrounding: grounding("SD W/L RETRIVE PERSON(200)", "SD", {
+          vistaFiles: ["NEW PERSON (File 200)"],
+          sandboxNote: providers.length > 0
+            ? `${providers.length} provider(s) returned`
+            : "RPC returned empty -- no providers in sandbox File 200",
+        }),
+      } as any;
     } catch (err: any) {
       log.warn("SD W/L RETRIVE PERSON(200) failed", { error: err.message });
       return {
@@ -527,7 +732,16 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       const param = `${isoToVistaDate(startDate)}^${isoToVistaDate(endDate)}`;
       const rawLines = await safeCallRpc("SDOE LIST ENCOUNTERS FOR DATES", [param]);
       const appointments = parseEncounterList(rawLines.join("\n"));
-      return { ok: true, data: appointments };
+      return {
+        ok: true,
+        data: appointments,
+        vistaGrounding: grounding("SDOE LIST ENCOUNTERS FOR DATES", "SD", {
+          vistaFiles: ["SDOE (File 409.68)"],
+          sandboxNote: appointments.length > 0
+            ? `${appointments.length} encounter(s) in date range`
+            : "No encounters found for date range in sandbox",
+        }),
+      } as any;
     } catch (err: any) {
       log.warn("SDOE LIST ENCOUNTERS FOR DATES failed", { error: err.message });
       return {
@@ -538,6 +752,157 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         target: "SDOE LIST ENCOUNTERS FOR DATES",
       };
     }
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Phase 123: New methods                                               */
+  /* ------------------------------------------------------------------ */
+
+  /**
+   * Get encounter detail via SDOE GET GENERAL DATA.
+   */
+  async getEncounterDetail(encounterIen: string): Promise<AdapterResult<EncounterDetail>> {
+    try {
+      const rawLines = await safeCallRpc("SDOE GET GENERAL DATA", [encounterIen]);
+      const detail = parseEncounterDetail(rawLines.join("\n"), encounterIen);
+      if (!detail) {
+        return {
+          ok: false,
+          data: undefined as any,
+          error: `No encounter data returned for IEN ${encounterIen}`,
+          vistaGrounding: grounding("SDOE GET GENERAL DATA", "SD", {
+            vistaFiles: ["SDOE (File 409.68)"],
+            sandboxNote: "RPC returned empty -- encounter IEN may not exist or no data in sandbox",
+          }),
+        } as any;
+      }
+      return {
+        ok: true,
+        data: detail,
+        vistaGrounding: grounding("SDOE GET GENERAL DATA", "SD", {
+          vistaFiles: ["SDOE (File 409.68)"],
+          sandboxNote: `Encounter ${encounterIen} detail retrieved`,
+        }),
+      } as any;
+    } catch (err: any) {
+      log.warn("SDOE GET GENERAL DATA failed", { error: err.message, encounterIen });
+      return {
+        ok: false,
+        data: undefined as any,
+        error: `Encounter detail lookup failed: ${err.message}`,
+        pending: true,
+        target: "SDOE GET GENERAL DATA",
+        vistaGrounding: grounding("SDOE GET GENERAL DATA", "SD", {
+          vistaFiles: ["SDOE (File 409.68)"],
+          sandboxNote: "RPC may not be available in sandbox",
+          migrationPath: "SDOE GET GENERAL DATA should be present in standard VistA installations",
+        }),
+      } as any;
+    }
+  }
+
+  /**
+   * Get providers assigned to encounter via SDOE GET PROVIDERS.
+   */
+  async getEncounterProviders(encounterIen: string): Promise<AdapterResult<EncounterProvider[]>> {
+    try {
+      const rawLines = await safeCallRpc("SDOE GET PROVIDERS", [encounterIen]);
+      const providers = parseEncounterProviders(rawLines.join("\n"), encounterIen);
+      return {
+        ok: true,
+        data: providers,
+        vistaGrounding: grounding("SDOE GET PROVIDERS", "SD", {
+          vistaFiles: ["SDOE (File 409.68)"],
+          sandboxNote: providers.length > 0
+            ? `${providers.length} provider(s) for encounter ${encounterIen}`
+            : "No providers assigned to this encounter in sandbox",
+        }),
+      } as any;
+    } catch (err: any) {
+      log.warn("SDOE GET PROVIDERS failed", { error: err.message, encounterIen });
+      return {
+        ok: false,
+        data: [],
+        error: `Encounter provider lookup failed: ${err.message}`,
+        pending: true,
+        target: "SDOE GET PROVIDERS",
+        vistaGrounding: grounding("SDOE GET PROVIDERS", "SD", {
+          vistaFiles: ["SDOE (File 409.68)"],
+          sandboxNote: "RPC may not be available in sandbox",
+        }),
+      } as any;
+    }
+  }
+
+  /**
+   * Get diagnoses for encounter via SDOE GET DIAGNOSES.
+   */
+  async getEncounterDiagnoses(encounterIen: string): Promise<AdapterResult<EncounterDiagnosis[]>> {
+    try {
+      const rawLines = await safeCallRpc("SDOE GET DIAGNOSES", [encounterIen]);
+      const diagnoses = parseEncounterDiagnoses(rawLines.join("\n"), encounterIen);
+      return {
+        ok: true,
+        data: diagnoses,
+        vistaGrounding: grounding("SDOE GET DIAGNOSES", "SD", {
+          vistaFiles: ["SDOE (File 409.68)"],
+          sandboxNote: diagnoses.length > 0
+            ? `${diagnoses.length} diagnosis/diagnoses for encounter ${encounterIen}`
+            : "No diagnoses recorded for this encounter in sandbox",
+        }),
+      } as any;
+    } catch (err: any) {
+      log.warn("SDOE GET DIAGNOSES failed", { error: err.message, encounterIen });
+      return {
+        ok: false,
+        data: [],
+        error: `Encounter diagnosis lookup failed: ${err.message}`,
+        pending: true,
+        target: "SDOE GET DIAGNOSES",
+        vistaGrounding: grounding("SDOE GET DIAGNOSES", "SD", {
+          vistaFiles: ["SDOE (File 409.68)"],
+          sandboxNote: "RPC may not be available in sandbox",
+        }),
+      } as any;
+    }
+  }
+
+  /**
+   * Read wait-list entries via SD W/L RETRIVE FULL DATA.
+   * Merges VistA wait-list with local request store.
+   */
+  async getWaitList(clinicIen?: string): Promise<AdapterResult<WaitListEntry[]>> {
+    let vistaEntries: WaitListEntry[] = [];
+    let rpcOk = false;
+
+    try {
+      const rawLines = await safeCallRpc("SD W/L RETRIVE FULL DATA", [clinicIen || ""]);
+      vistaEntries = parseWaitListEntries(rawLines.join("\n"));
+      rpcOk = true;
+    } catch (err: any) {
+      log.warn("SD W/L RETRIVE FULL DATA failed", { error: err.message });
+    }
+
+    // Merge local request store entries
+    const localEntries = [...requestStore.values()]
+      .filter((r) => r.status !== "cancelled")
+      .filter((r) => !clinicIen || !r.clinicName || r.clinicName === clinicIen);
+
+    const merged = [...vistaEntries, ...localEntries];
+
+    return {
+      ok: rpcOk || localEntries.length > 0,
+      data: merged,
+      pending: !rpcOk,
+      target: !rpcOk ? "SD W/L RETRIVE FULL DATA" : undefined,
+      vistaGrounding: grounding("SD W/L RETRIVE FULL DATA", "SD", {
+        vistaFiles: ["SD WAIT LIST (File 409.3)"],
+        sandboxNote: rpcOk
+          ? `${vistaEntries.length} VistA wait-list entries + ${localEntries.length} local requests`
+          : `SD W/L RETRIVE FULL DATA unavailable -- showing ${localEntries.length} local requests only`,
+        migrationPath: "SD W/L RETRIVE FULL DATA reads File 409.3 (SD WAIT LIST)",
+      }),
+    } as any;
   }
 }
 
