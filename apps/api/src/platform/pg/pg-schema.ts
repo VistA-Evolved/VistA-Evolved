@@ -916,6 +916,7 @@ export const pgImagingIngestEvent = pgTable("imaging_ingest_event", {
   source: text("source").notNull().default("prototype-sidecar"),
   reason: text("reason"),
   resolved: boolean("resolved").notNull().default(false),
+  dicomPatientName: text("dicom_patient_name").notNull().default(""),
   createdAt: text("created_at").notNull(),
 }, (table) => [
   index("idx_img_ie_tenant").on(table.tenantId),

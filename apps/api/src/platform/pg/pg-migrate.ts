@@ -1065,6 +1065,7 @@ CREATE TABLE IF NOT EXISTS imaging_ingest_event (
   source TEXT NOT NULL DEFAULT 'prototype-sidecar',
   reason TEXT,
   resolved BOOLEAN NOT NULL DEFAULT FALSE,
+  dicom_patient_name TEXT NOT NULL DEFAULT '',
   created_at TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_img_ie_tenant ON imaging_ingest_event(tenant_id);
@@ -1073,6 +1074,15 @@ CREATE INDEX IF NOT EXISTS idx_img_ie_patient ON imaging_ingest_event(patient_df
 CREATE INDEX IF NOT EXISTS idx_img_ie_study_uid ON imaging_ingest_event(study_instance_uid);
 CREATE INDEX IF NOT EXISTS idx_img_ie_order ON imaging_ingest_event(order_id);
 CREATE INDEX IF NOT EXISTS idx_img_ie_accession ON imaging_ingest_event(accession_number);
+
+-- Add dicom_patient_name column if missing (Phase 128 fix)
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns
+    WHERE table_name='imaging_ingest_event' AND column_name='dicom_patient_name')
+  THEN
+    ALTER TABLE imaging_ingest_event ADD COLUMN dicom_patient_name TEXT NOT NULL DEFAULT '';
+  END IF;
+END $$;
 
 -- Scheduling Waitlist Request (operational tracking -- NOT appointment truth)
 CREATE TABLE IF NOT EXISTS scheduling_waitlist_request (
@@ -1106,6 +1116,21 @@ CREATE TABLE IF NOT EXISTS scheduling_booking_lock (
 CREATE INDEX IF NOT EXISTS idx_sched_bl_tenant ON scheduling_booking_lock(tenant_id);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_sched_bl_key ON scheduling_booking_lock(tenant_id, lock_key);
 CREATE INDEX IF NOT EXISTS idx_sched_bl_expires ON scheduling_booking_lock(expires_at);
+`,
+  },
+  {
+    version: 13,
+    name: "imaging_ingest_dicom_patient_name",
+    sql: `
+-- Phase 128 fix: Add dicom_patient_name column to imaging_ingest_event
+-- For fresh installs this is already in v12 DDL; this covers upgrades
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns
+    WHERE table_name='imaging_ingest_event' AND column_name='dicom_patient_name')
+  THEN
+    ALTER TABLE imaging_ingest_event ADD COLUMN dicom_patient_name TEXT NOT NULL DEFAULT '';
+  END IF;
+END $$;
 `,
   },
 ];

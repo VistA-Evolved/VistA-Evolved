@@ -2368,7 +2368,7 @@ try {
     try {
       const iwRepo = await import("./platform/db/repo/imaging-worklist-repo.js");
       const { initWorklistRepo } = await import("./services/imaging-worklist.js");
-      initWorklistRepo(iwRepo);
+      await initWorklistRepo(iwRepo);
       log.info("Imaging worklist store wired to DB");
     } catch (iwErr: any) {
       log.warn("Imaging worklist repo wire failed (non-fatal)", { error: iwErr.message });
@@ -2377,7 +2377,7 @@ try {
     try {
       const iiRepo = await import("./platform/db/repo/imaging-ingest-repo.js");
       const { initIngestRepo } = await import("./services/imaging-ingest.js");
-      initIngestRepo(iiRepo);
+      await initIngestRepo(iiRepo);
       log.info("Imaging ingest store wired to DB");
     } catch (iiErr: any) {
       log.warn("Imaging ingest repo wire failed (non-fatal)", { error: iiErr.message });
@@ -2551,7 +2551,7 @@ try {
         try {
           const pgIwRepo = await import("./platform/pg/repo/pg-imaging-worklist-repo.js");
           const { initWorklistRepo } = await import("./services/imaging-worklist.js");
-          initWorklistRepo(pgIwRepo);
+          await initWorklistRepo(pgIwRepo);
           log.info("Imaging worklist store re-wired to PG");
         } catch (iwErr: any) {
           log.warn("PG imaging worklist repo wire failed (SQLite fallback)", { error: iwErr.message });
@@ -2560,7 +2560,7 @@ try {
         try {
           const pgIiRepo = await import("./platform/pg/repo/pg-imaging-ingest-repo.js");
           const { initIngestRepo } = await import("./services/imaging-ingest.js");
-          initIngestRepo(pgIiRepo);
+          await initIngestRepo(pgIiRepo);
           log.info("Imaging ingest store re-wired to PG");
         } catch (iiErr: any) {
           log.warn("PG imaging ingest repo wire failed (SQLite fallback)", { error: iiErr.message });

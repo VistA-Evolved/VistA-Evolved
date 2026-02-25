@@ -37,9 +37,10 @@ export async function acquireLock(data: {
   const now = new Date().toISOString();
 
   try {
-    // First, try to clean up any expired lock for this key
+    // First, try to clean up any expired lock for this key+tenant
     await db.delete(pgSchedulingBookingLock)
       .where(and(
+        eq(pgSchedulingBookingLock.tenantId, data.tenantId ?? "default"),
         eq(pgSchedulingBookingLock.lockKey, data.lockKey),
         lt(pgSchedulingBookingLock.expiresAt, now),
       ));
@@ -65,20 +66,24 @@ export async function acquireLock(data: {
 
 /* ── Release ───────────────────────────────────────────────── */
 
-export async function releaseLock(lockKey: string): Promise<boolean> {
+export async function releaseLock(lockKey: string, tenantId = "default"): Promise<boolean> {
   const db = getPgDb();
   const result = await db.delete(pgSchedulingBookingLock)
-    .where(eq(pgSchedulingBookingLock.lockKey, lockKey));
+    .where(and(
+      eq(pgSchedulingBookingLock.tenantId, tenantId),
+      eq(pgSchedulingBookingLock.lockKey, lockKey),
+    ));
   return (result as any)?.rowCount > 0;
 }
 
 /* ── Lookup ────────────────────────────────────────────────── */
 
-export async function findLockByKey(lockKey: string): Promise<BookingLockRow | undefined> {
+export async function findLockByKey(lockKey: string, tenantId = "default"): Promise<BookingLockRow | undefined> {
   const db = getPgDb();
   const now = new Date().toISOString();
   const rows = await db.select().from(pgSchedulingBookingLock)
     .where(and(
+      eq(pgSchedulingBookingLock.tenantId, tenantId),
       eq(pgSchedulingBookingLock.lockKey, lockKey),
       sql`${pgSchedulingBookingLock.expiresAt} > ${now}`,
     ));

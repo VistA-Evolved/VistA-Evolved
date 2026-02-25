@@ -98,6 +98,7 @@ export async function insertUnmatched(data: {
     source: "prototype-sidecar",
     reason: data.reason,
     resolved: false,
+    dicomPatientName: data.dicomPatientName ?? "",
     createdAt: now,
   });
 

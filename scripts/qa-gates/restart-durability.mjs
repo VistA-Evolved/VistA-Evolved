@@ -145,12 +145,12 @@ gate("room-store has initTelehealthRoomRepo", roomStore.includes("export functio
 gate("room-store has _repo wiring", roomStore.includes("let _repo:"));
 
 const imgWl = readSrc("apps/api/src/services/imaging-worklist.ts") ?? "";
-gate("imaging-worklist has initWorklistRepo", imgWl.includes("export function initWorklistRepo"));
+gate("imaging-worklist has initWorklistRepo", imgWl.includes("function initWorklistRepo"));
 gate("imaging-worklist uses worklistCache", imgWl.includes("worklistCache"));
 gate("imaging-worklist no raw worklistStore", !imgWl.includes("worklistStore = new Map"));
 
 const imgIng = readSrc("apps/api/src/services/imaging-ingest.ts") ?? "";
-gate("imaging-ingest has initIngestRepo", imgIng.includes("export function initIngestRepo"));
+gate("imaging-ingest has initIngestRepo", imgIng.includes("function initIngestRepo"));
 gate("imaging-ingest uses linkageCache", imgIng.includes("linkageCache"));
 gate("imaging-ingest no raw linkageStore", !imgIng.includes("linkageStore = new Map"));
 

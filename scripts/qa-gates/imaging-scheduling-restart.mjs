@@ -158,6 +158,33 @@ gate("pg-scheduling-lock-repo unique constraint on lock_key",
   pgSlRepo?.includes("23505") || pgSlRepo?.includes("unique") ? true : false);
 gate("vista-adapter LOCK_TTL_MS defined", schedAdapter.includes("LOCK_TTL_MS"));
 
+// ── 9. Phase 128 VERIFY fixes ───────────────────────────────
+console.log("\nPhase 128 VERIFY fixes:");
+gate("rowToLinkage falls back to createdAt for linkedAt",
+  imgIng.includes("row.linkedAt ?? row.createdAt"));
+gate("rowToUnmatched falls back to createdAt for quarantinedAt",
+  imgIng.includes("row.quarantinedAt ?? row.createdAt"));
+gate("rowToUnmatched falls back to patientDfn for dicomPatientId",
+  imgIng.includes("row.dicomPatientId ?? row.patientDfn"));
+gate("PG schema has dicomPatientName column",
+  pgSchema.includes("dicom_patient_name"));
+gate("v13 migration adds dicom_patient_name (ALTER TABLE)",
+  pgMigrate.includes("dicom_patient_name") && pgMigrate.includes("ALTER TABLE"));
+gate("initWorklistRepo rehydrates from DB on startup",
+  imgWl.includes("rehydrat") && imgWl.includes("findAllWorkOrders"));
+gate("initIngestRepo rehydrates from DB on startup",
+  imgIng.includes("rehydrat") && imgIng.includes("findAllStudyLinks"));
+gate("initWorklistRepo is async",
+  imgWl.includes("async function initWorklistRepo"));
+gate("initIngestRepo is async",
+  imgIng.includes("async function initIngestRepo"));
+gate("index.ts awaits initWorklistRepo",
+  index.includes("await initWorklistRepo"));
+gate("index.ts awaits initIngestRepo",
+  index.includes("await initIngestRepo"));
+gate("Lock tenant scoping in releaseLock",
+  pgSlRepo?.includes("tenantId") && pgSlRepo?.includes("releaseLock") ? true : false);
+
 // ── Summary ─────────────────────────────────────────────────
 console.log(`\n${"=".repeat(50)}`);
 console.log(`Phase 128 Imaging+Scheduling Restart Gate: ${pass} PASS / ${fail} FAIL`);

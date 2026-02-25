@@ -141,8 +141,29 @@ export interface IngestRepo {
 let _repo: IngestRepo | null = null;
 
 /** Wire the imaging ingest repo. Called from index.ts. */
-export function initIngestRepo(repo: IngestRepo): void {
+export async function initIngestRepo(repo: IngestRepo): Promise<void> {
   _repo = repo;
+  // Rehydrate caches from DB on startup (Phase 128)
+  try {
+    const rawLinks = await Promise.resolve(repo.findAllStudyLinks());
+    const links = Array.isArray(rawLinks) ? rawLinks : [];
+    for (const row of links) {
+      const lnk = rowToLinkage(row);
+      linkageCache.set(lnk.studyInstanceUid, lnk);
+    }
+    const rawUnmatched = await Promise.resolve(repo.findAllUnresolved());
+    const unmatched = Array.isArray(rawUnmatched) ? rawUnmatched : [];
+    for (const row of unmatched) {
+      const um = rowToUnmatched(row);
+      unmatchedCache.set(um.id, um);
+    }
+    const total = links.length + unmatched.length;
+    if (total > 0) {
+      log.info(`Imaging ingest rehydrated ${links.length} linkages + ${unmatched.length} unmatched from DB`);
+    }
+  } catch (err) {
+    dbWarn("rehydrate", err);
+  }
 }
 
 /* ================================================================== */
@@ -178,7 +199,8 @@ function rowToLinkage(row: any): StudyLinkage {
     instanceCount: row.instanceCount ?? 0,
     reconciliationType: (row.reconciliationType ?? "manual") as StudyLinkage["reconciliationType"],
     source: (row.source ?? "prototype-sidecar") as StudyLinkage["source"],
-    linkedAt: row.linkedAt ?? "",
+    // PG rows use createdAt (no linkedAt column); SQLite/Map rows use linkedAt
+    linkedAt: row.linkedAt ?? row.createdAt ?? "",
   };
 }
 
@@ -187,7 +209,9 @@ function rowToUnmatched(row: any): UnmatchedStudy {
     id: row.id,
     orthancStudyId: row.orthancStudyId ?? "",
     studyInstanceUid: row.studyInstanceUid ?? "",
-    dicomPatientId: row.dicomPatientId ?? "",
+    // PG stores dicomPatientId in patientDfn column; SQLite/Map rows use dicomPatientId
+    dicomPatientId: row.dicomPatientId ?? row.patientDfn ?? "",
+    // PG stores dicomPatientName in its own column (v12+); fall back for older rows
     dicomPatientName: row.dicomPatientName ?? "",
     accessionNumber: row.accessionNumber ?? "",
     modality: row.modality ?? "",
@@ -196,7 +220,8 @@ function rowToUnmatched(row: any): UnmatchedStudy {
     seriesCount: row.seriesCount ?? 0,
     instanceCount: row.instanceCount ?? 0,
     reason: row.reason ?? "",
-    quarantinedAt: row.quarantinedAt ?? "",
+    // PG rows use createdAt (no quarantinedAt column); SQLite/Map rows use quarantinedAt
+    quarantinedAt: row.quarantinedAt ?? row.createdAt ?? "",
     resolved: row.resolved === 1 || row.resolved === true,
   };
 }

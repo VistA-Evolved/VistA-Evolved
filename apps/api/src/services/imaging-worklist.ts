@@ -112,8 +112,22 @@ export interface WorklistRepo {
 let _repo: WorklistRepo | null = null;
 
 /** Wire the imaging worklist repo. Called from index.ts. */
-export function initWorklistRepo(repo: WorklistRepo): void {
+export async function initWorklistRepo(repo: WorklistRepo): Promise<void> {
   _repo = repo;
+  // Rehydrate cache from DB on startup (Phase 128)
+  try {
+    const raw = await Promise.resolve(repo.findAllWorkOrders());
+    const rows = Array.isArray(raw) ? raw : [];
+    for (const row of rows) {
+      const item = rowToItem(row);
+      worklistCache.set(item.id, item);
+    }
+    if (rows.length > 0) {
+      log.info(`Imaging worklist rehydrated ${rows.length} items from DB`);
+    }
+  } catch (err) {
+    dbWarn("rehydrate", err);
+  }
 }
 
 /* ================================================================== */
