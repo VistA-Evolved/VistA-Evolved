@@ -58,6 +58,7 @@
         "^/vista/meds/",
         "^/vista/orders/",
         "^/vista/inbox",
+        "^/vista/mailman",
         "^/vista/adt",
         "^/vista/nursing"
       ],

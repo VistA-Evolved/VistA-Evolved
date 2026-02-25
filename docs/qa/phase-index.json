@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-25T06:41:21.495Z",
+  "generatedAt": "2026-02-25T08:05:04.515Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 138,
+  "phaseCount": 139,
   "phases": [
     {
       "phaseNumber": "1",
@@ -1683,6 +1683,46 @@
         "qa/gauntlet/gates/g14-qa-ladder.mjs",
         "qa/gauntlet/cli.mjs",
         "docs/runbooks/phase129-qa-ladder.md"
+      ]
+    },
+    {
+      "phaseNumber": "130",
+      "title": "IMPLEMENT: VistA MailMan Bridge (ZVEMSGR RPC + Portal VistA-first Inbox)",
+      "folder": "134-PHASE-130-MAILMAN-BRIDGE",
+      "files": [
+        "130-01-IMPLEMENT.md",
+        "130-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "130-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "130-99-VERIFY.md"
+      ],
+      "routes": [
+        "/portal/mailman/",
+        "/portal/mailman/*",
+        "/portal/mailman/inbox",
+        "/vista/mailman/",
+        "/vista/mailman/*",
+        "/vista/mailman/inbox",
+        "/vista/mailman/message/:ien",
+        "/vista/mailman/send"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "prompts/134-PHASE-130-MAILMAN-BRIDGE/130-01-IMPLEMENT.md",
+        "prompts/134-PHASE-130-MAILMAN-BRIDGE/130-99-VERIFY.md",
+        "apps/api/src/routes/vista-mailman.ts",
+        "apps/api/src/routes/portal-mailman.ts",
+        "apps/api/src/index.ts",
+        "apps/portal/src/app/dashboard/messages/page.tsx",
+        "apps/portal/src/lib/api.ts",
+        "ops/summary.md",
+        "ops/notion-update.json"
       ]
     },
     {

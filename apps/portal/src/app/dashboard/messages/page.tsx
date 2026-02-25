@@ -202,15 +202,16 @@ export default function MessagesPage() {
         <p style={{ color: "#94a3b8" }}>Loading messages...</p>
       ) : (
         <>
-          {tab === "inbox" && <MessageList messages={inbox} emptyText="No messages in your inbox." />}
+          {tab === "inbox" && <MessageList messages={inbox} emptyText="No messages in your inbox." dataSource={inboxSource || "local"} />}
           {tab === "drafts" && (
             <MessageList
               messages={drafts}
               emptyText="No drafts."
               onDelete={handleDeleteDraft}
+              dataSource="local"
             />
           )}
-          {tab === "sent" && <MessageList messages={sent} emptyText="No sent messages." />}
+          {tab === "sent" && <MessageList messages={sent} emptyText="No sent messages." dataSource="local" />}
           {tab === "compose" && (
             <div className="card">
               <h3 style={{ margin: "0 0 0.75rem" }}>New Message</h3>
@@ -299,10 +300,12 @@ function MessageList({
   messages,
   emptyText,
   onDelete,
+  dataSource = "local",
 }: {
   messages: any[];
   emptyText: string;
   onDelete?: (id: string) => void;
+  dataSource?: "vista" | "local";
 }) {
   if (!messages.length) {
     return (
@@ -317,14 +320,15 @@ function MessageList({
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
       {messages.map((msg: any) => (
-        <div key={msg.id} className="card" style={{ padding: "0.75rem 1rem" }}>
+        <div key={msg.id || msg.ien || msg.subject} className="card" style={{ padding: "0.75rem 1rem" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
             <div>
               <div style={{ fontWeight: 600, fontSize: "0.875rem" }}>{msg.subject || "(No subject)"}</div>
               <div style={{ fontSize: "0.75rem", color: "#64748b", marginTop: "0.125rem" }}>
                 {msg.category && <span style={{ textTransform: "capitalize" }}>{msg.category.replace("_", " ")} · </span>}
-                {msg.status === "sent" ? "Sent" : msg.status === "draft" ? "Draft" : "Received"}{" "}
-                {msg.sentAt ? new Date(msg.sentAt).toLocaleDateString() : msg.createdAt ? new Date(msg.createdAt).toLocaleDateString() : ""}
+                {msg.fromName && <span>{msg.fromName} · </span>}
+                {msg.status === "sent" ? "Sent" : msg.status === "draft" ? "Draft" : msg.isNew ? "New" : "Received"}{" "}
+                {msg.date ? new Date(msg.date).toLocaleDateString() : msg.sentAt ? new Date(msg.sentAt).toLocaleDateString() : msg.createdAt ? new Date(msg.createdAt).toLocaleDateString() : ""}
               </div>
             </div>
             <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
@@ -336,7 +340,7 @@ function MessageList({
                   Delete
                 </button>
               )}
-              <DataSourceBadge source="ehr" />
+              <DataSourceBadge source={dataSource === "vista" ? "ehr" : "local"} />
             </div>
           </div>
           {msg.body && (

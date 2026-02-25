@@ -15,7 +15,6 @@ import {
   listMessages,
   getVistaMessage,
   portalSendToClinic,
-  getPortalMessages,
 } from "../services/secure-messaging.js";
 import {
   getInbox as getLocalInbox,
