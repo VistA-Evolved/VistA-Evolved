@@ -731,3 +731,129 @@ export const pgEdiPipelineEntry = pgTable("edi_pipeline_entry", {
   index("idx_edi_pipeline_stage").on(table.stage),
   index("idx_edi_pipeline_payer").on(table.payerId),
 ]);
+
+/* ================================================================== */
+/* Phase 127: Portal + Telehealth Durability (Map stores -> Postgres) */
+/* ================================================================== */
+
+/**
+ * Portal Message — durable portal messaging (Phase 127).
+ * Mirrors SQLite portal_message from Phase 115.
+ */
+export const pgPortalMessage = pgTable("portal_message", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  threadId: text("thread_id").notNull(),
+  fromDfn: text("from_dfn").notNull(),
+  fromName: text("from_name").notNull(),
+  toDfn: text("to_dfn").notNull(),
+  toName: text("to_name").notNull(),
+  subject: text("subject").notNull(),
+  category: text("category").notNull().default("general"),
+  body: text("body").notNull(),
+  status: text("status").notNull().default("draft"),
+  attachmentsJson: text("attachments_json").default("[]"),
+  replyToId: text("reply_to_id"),
+  vistaSync: boolean("vista_sync").default(false),
+  vistaRef: text("vista_ref"),
+  readAt: text("read_at"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_portal_msg_tenant").on(table.tenantId),
+  index("idx_portal_msg_thread").on(table.threadId),
+  index("idx_portal_msg_from").on(table.fromDfn),
+  index("idx_portal_msg_to").on(table.toDfn),
+  index("idx_portal_msg_status").on(table.status),
+  index("idx_portal_msg_created").on(table.createdAt),
+]);
+
+/**
+ * Portal Access Log — durable portal access audit (Phase 127).
+ * Mirrors SQLite portal_access_log from Phase 121.
+ */
+export const pgPortalAccessLog = pgTable("portal_access_log", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  userId: text("user_id").notNull(),
+  actorName: text("actor_name").notNull(),
+  isProxy: boolean("is_proxy").notNull().default(false),
+  targetPatientDfn: text("target_patient_dfn"),
+  eventType: text("event_type").notNull(),
+  description: text("description").notNull(),
+  metadataJson: text("metadata_json").notNull().default("{}"),
+  createdAt: text("created_at").notNull(),
+}, (table) => [
+  index("idx_portal_alog_tenant").on(table.tenantId),
+  index("idx_portal_alog_user").on(table.userId),
+  index("idx_portal_alog_event").on(table.eventType),
+  index("idx_portal_alog_created").on(table.createdAt),
+]);
+
+/**
+ * Portal Patient Setting — durable patient preferences (Phase 127).
+ * NEW table (no SQLite predecessor). Persists portal-settings.ts Map.
+ */
+export const pgPortalPatientSetting = pgTable("portal_patient_setting", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  patientDfn: text("patient_dfn").notNull(),
+  language: text("language").notNull().default("en"),
+  notificationsJson: text("notifications_json").notNull().default("{}"),
+  displayJson: text("display_json").notNull().default("{}"),
+  mfaJson: text("mfa_json").notNull().default("{}"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_portal_setting_tenant").on(table.tenantId),
+  uniqueIndex("idx_portal_setting_patient").on(table.tenantId, table.patientDfn),
+]);
+
+/**
+ * Telehealth Room — durable telehealth room state (Phase 127).
+ * Mirrors SQLite telehealth_room from Phase 115.
+ */
+export const pgTelehealthRoom = pgTable("telehealth_room", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  appointmentId: text("appointment_id"),
+  patientDfn: text("patient_dfn").notNull(),
+  providerDuz: text("provider_duz").notNull(),
+  providerName: text("provider_name"),
+  roomStatus: text("room_status").notNull().default("scheduled"),
+  meetingUrl: text("meeting_url"),
+  accessToken: text("access_token"),
+  participantsJson: text("participants_json").default("{}"),
+  scheduledStart: text("scheduled_start"),
+  actualStart: text("actual_start"),
+  actualEnd: text("actual_end"),
+  expiresAt: text("expires_at").notNull(),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_th_room_tenant").on(table.tenantId),
+  index("idx_th_room_patient").on(table.patientDfn),
+  index("idx_th_room_provider").on(table.providerDuz),
+  index("idx_th_room_status").on(table.roomStatus),
+  index("idx_th_room_expires").on(table.expiresAt),
+]);
+
+/**
+ * Telehealth Room Event — room lifecycle event log (Phase 127).
+ * NEW table — tracks join/leave/start/end events for auditing.
+ */
+export const pgTelehealthRoomEvent = pgTable("telehealth_room_event", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  roomId: text("room_id").notNull(),
+  eventType: text("event_type").notNull(),
+  actorId: text("actor_id"),
+  actorRole: text("actor_role"),
+  detail: text("detail"),
+  createdAt: text("created_at").notNull(),
+}, (table) => [
+  index("idx_th_event_tenant").on(table.tenantId),
+  index("idx_th_event_room").on(table.roomId),
+  index("idx_th_event_type").on(table.eventType),
+  index("idx_th_event_created").on(table.createdAt),
+]);

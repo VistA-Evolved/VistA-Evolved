@@ -891,6 +891,119 @@ CREATE INDEX IF NOT EXISTS idx_edi_pipeline_stage ON edi_pipeline_entry(stage);
 CREATE INDEX IF NOT EXISTS idx_edi_pipeline_payer ON edi_pipeline_entry(payer_id);
 `,
   },
+  {
+    version: 11,
+    name: "portal_telehealth_durability_pg",
+    sql: `
+-- ============================================================
+-- Phase 127: Portal + Telehealth Durability (Map stores -> PG)
+-- portal_message, portal_access_log, portal_patient_setting,
+-- telehealth_room, telehealth_room_event
+-- ============================================================
+
+-- Portal Message (mirrors SQLite portal_message from Phase 115)
+CREATE TABLE IF NOT EXISTS portal_message (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  thread_id TEXT NOT NULL,
+  from_dfn TEXT NOT NULL,
+  from_name TEXT NOT NULL,
+  to_dfn TEXT NOT NULL,
+  to_name TEXT NOT NULL,
+  subject TEXT NOT NULL,
+  category TEXT NOT NULL DEFAULT 'general',
+  body TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'draft',
+  attachments_json TEXT DEFAULT '[]',
+  reply_to_id TEXT,
+  vista_sync BOOLEAN DEFAULT FALSE,
+  vista_ref TEXT,
+  read_at TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_portal_msg_tenant ON portal_message(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_portal_msg_thread ON portal_message(thread_id);
+CREATE INDEX IF NOT EXISTS idx_portal_msg_from ON portal_message(from_dfn);
+CREATE INDEX IF NOT EXISTS idx_portal_msg_to ON portal_message(to_dfn);
+CREATE INDEX IF NOT EXISTS idx_portal_msg_status ON portal_message(status);
+CREATE INDEX IF NOT EXISTS idx_portal_msg_created ON portal_message(created_at);
+
+-- Portal Access Log (mirrors SQLite portal_access_log from Phase 121)
+CREATE TABLE IF NOT EXISTS portal_access_log (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  user_id TEXT NOT NULL,
+  actor_name TEXT NOT NULL,
+  is_proxy BOOLEAN NOT NULL DEFAULT FALSE,
+  target_patient_dfn TEXT,
+  event_type TEXT NOT NULL,
+  description TEXT NOT NULL,
+  metadata_json TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_portal_alog_tenant ON portal_access_log(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_portal_alog_user ON portal_access_log(user_id);
+CREATE INDEX IF NOT EXISTS idx_portal_alog_event ON portal_access_log(event_type);
+CREATE INDEX IF NOT EXISTS idx_portal_alog_created ON portal_access_log(created_at);
+
+-- Portal Patient Setting (NEW -- no SQLite predecessor)
+CREATE TABLE IF NOT EXISTS portal_patient_setting (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  language TEXT NOT NULL DEFAULT 'en',
+  notifications_json TEXT NOT NULL DEFAULT '{}',
+  display_json TEXT NOT NULL DEFAULT '{}',
+  mfa_json TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_portal_setting_tenant ON portal_patient_setting(tenant_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_portal_setting_patient ON portal_patient_setting(tenant_id, patient_dfn);
+
+-- Telehealth Room (mirrors SQLite telehealth_room from Phase 115)
+CREATE TABLE IF NOT EXISTS telehealth_room (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  appointment_id TEXT,
+  patient_dfn TEXT NOT NULL,
+  provider_duz TEXT NOT NULL,
+  provider_name TEXT,
+  room_status TEXT NOT NULL DEFAULT 'scheduled',
+  meeting_url TEXT,
+  access_token TEXT,
+  participants_json TEXT DEFAULT '{}',
+  scheduled_start TEXT,
+  actual_start TEXT,
+  actual_end TEXT,
+  expires_at TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_th_room_tenant ON telehealth_room(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_th_room_patient ON telehealth_room(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_th_room_provider ON telehealth_room(provider_duz);
+CREATE INDEX IF NOT EXISTS idx_th_room_status ON telehealth_room(room_status);
+CREATE INDEX IF NOT EXISTS idx_th_room_expires ON telehealth_room(expires_at);
+
+-- Telehealth Room Event (NEW -- lifecycle event log)
+CREATE TABLE IF NOT EXISTS telehealth_room_event (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  room_id TEXT NOT NULL,
+  event_type TEXT NOT NULL,
+  actor_id TEXT,
+  actor_role TEXT,
+  detail TEXT,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_th_event_tenant ON telehealth_room_event(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_th_event_room ON telehealth_room_event(room_id);
+CREATE INDEX IF NOT EXISTS idx_th_event_type ON telehealth_room_event(event_type);
+CREATE INDEX IF NOT EXISTS idx_th_event_created ON telehealth_room_event(created_at);
+`,
+  },
 ];
 
 /**
@@ -1005,6 +1118,11 @@ export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: s
     "edi_acknowledgement",
     "edi_claim_status",
     "edi_pipeline_entry",
+    "portal_message",
+    "portal_access_log",
+    "portal_patient_setting",
+    "telehealth_room",
+    "telehealth_room_event",
   ];
 
   const applied: string[] = [];

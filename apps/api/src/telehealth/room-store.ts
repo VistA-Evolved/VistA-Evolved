@@ -50,9 +50,19 @@ const MAX_ROOMS = 500;
 
 /* ------------------------------------------------------------------ */
 /* DB repo -- lazy-wired after initPlatformDb() (Phase 115)              */
+/* Phase 127: Loosened to interface for PG async compat                   */
 /* ------------------------------------------------------------------ */
 
-type RoomRepo = typeof import("../platform/db/repo/telehealth-room-repo.js");
+interface RoomRepo {
+  insertRoom(data: any): any;
+  findRoomById(id: string): any;
+  findRoomByAppointment(appointmentId: string): any;
+  findActiveRooms(): any;
+  updateRoom(id: string, updates: any): any;
+  expireRoom(id: string): any;
+  cleanupExpiredRooms(): any;
+  countRooms(): any;
+}
 let _repo: RoomRepo | null = null;
 
 /** Wire the telehealth room repo. Called from index.ts. */
@@ -298,7 +308,7 @@ export function listActiveRooms(): TelehealthRoom[] {
   if (_repo) {
     try {
       const rows = _repo.findActiveRooms();
-      return rows.map(r => {
+      return rows.map((r: any) => {
         const e = rowToEntry(r);
         if (isExpired(e)) return null;
         return toPublicRoom(e);

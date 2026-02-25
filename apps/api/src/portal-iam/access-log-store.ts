@@ -32,18 +32,18 @@ export interface AccessLogRepo {
     description: string;
     metadataJson?: string;
     createdAt: string;
-  }): void;
+  }): any;
   findAccessLogsByUser(
     userId: string,
     opts?: { eventType?: string; since?: string; limit?: number; offset?: number },
-  ): any[];
-  countAccessLogsByUser(userId: string): number;
-  /** Filtered count — supports eventType + since filters (Phase 121 BUG #11 fix) */
-  countAccessLogsByUserFiltered?(userId: string, opts?: { eventType?: string; since?: string }): number;
-  countAllAccessLogs(): number;
-  getAccessLogStats(): { total: number; users: number };
+  ): any;
+  countAccessLogsByUser(userId: string): any;
+  /** Filtered count -- supports eventType + since filters (Phase 121 BUG #11 fix) */
+  countAccessLogsByUserFiltered?(userId: string, opts?: { eventType?: string; since?: string }): any;
+  countAllAccessLogs(): any;
+  getAccessLogStats(): any;
   /** Breakdown by event_type for cold-cache stats (Phase 121 BUG #12 fix) */
-  getAccessLogStatsByEventType?(): Record<string, number>;
+  getAccessLogStatsByEventType?(): any;
 }
 
 let dbRepo: AccessLogRepo | null = null;
@@ -429,7 +429,7 @@ export function getAccessLogStats(): {
       if (dbRepo.getAccessLogStatsByEventType) {
         const dbByType = dbRepo.getAccessLogStatsByEventType();
         for (const [k, v] of Object.entries(dbByType)) {
-          byEventType[k] = (byEventType[k] || 0) + v;
+          byEventType[k] = (byEventType[k] || 0) + (v as number);
         }
       }
     } catch (err) {

@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-25T03:52:45.261Z",
+  "generatedAt": "2026-02-25T04:25:16.152Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 135,
+  "phaseCount": 136,
   "phases": [
     {
       "phaseNumber": "1",
@@ -1587,6 +1587,38 @@
         "apps/api/src/index.ts",
         "scripts/qa-gates/restart-durability.mjs",
         "qa/gauntlet/phase-manifest.json"
+      ]
+    },
+    {
+      "phaseNumber": "127",
+      "title": "IMPLEMENT: Portal + Telehealth Durability (Postgres Repos + Restart Gate)",
+      "folder": "131-PHASE-127-PORTAL-TELEHEALTH-PG",
+      "files": [
+        "127-01-IMPLEMENT.md"
+      ],
+      "implementFiles": [
+        "127-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "prompts/131-PHASE-127-PORTAL-TELEHEALTH-PG/127-01-IMPLEMENT.md",
+        "apps/api/src/platform/pg/pg-schema.ts",
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/platform/pg/repo/pg-portal-message-repo.ts",
+        "apps/api/src/platform/pg/repo/pg-portal-access-log-repo.ts",
+        "apps/api/src/platform/pg/repo/pg-portal-patient-setting-repo.ts",
+        "apps/api/src/platform/pg/repo/pg-telehealth-room-repo.ts",
+        "apps/api/src/platform/pg/repo/pg-telehealth-room-event-repo.ts",
+        "apps/api/src/platform/pg/repo/index.ts",
+        "apps/api/src/services/portal-messaging.ts",
+        "apps/api/src/services/portal-settings.ts",
+        "apps/api/src/telehealth/room-store.ts",
+        "apps/api/src/portal-iam/access-log-store.ts",
+        "apps/api/src/index.ts",
+        "scripts/qa-gates/restart-durability.mjs"
       ]
     },
     {

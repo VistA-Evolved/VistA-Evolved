@@ -13,6 +13,54 @@
  */
 
 import { portalAudit } from "./portal-audit.js";
+import { log } from "../lib/logger.js";
+
+/* ------------------------------------------------------------------ */
+/* DB repo -- lazy-wired (Phase 127: PG durability)                      */
+/* ------------------------------------------------------------------ */
+
+export interface SettingsRepo {
+  upsertSetting(data: {
+    tenantId?: string;
+    patientDfn: string;
+    language: string;
+    notificationsJson: string;
+    displayJson: string;
+    mfaJson: string;
+  }): any;
+  findSettingByDfn(tenantId: string, patientDfn: string): any;
+  countSettings(): any;
+}
+
+let _settingsRepo: SettingsRepo | null = null;
+
+/** Wire the portal settings repo after DB init. Called from index.ts. */
+export function initSettingsRepo(repo: SettingsRepo): void {
+  _settingsRepo = repo;
+  log.info("Portal settings store wired to PG (Phase 127)");
+}
+
+function settingsDbWarn(op: string, err: unknown): void {
+  log.warn(`Portal settings DB ${op} failed (cache-only)`, {
+    error: err instanceof Error ? err.message : String(err),
+  });
+}
+
+function settingsToDbFields(s: PortalSettings): {
+  patientDfn: string;
+  language: string;
+  notificationsJson: string;
+  displayJson: string;
+  mfaJson: string;
+} {
+  return {
+    patientDfn: s.patientDfn,
+    language: s.language,
+    notificationsJson: JSON.stringify(s.notifications),
+    displayJson: JSON.stringify(s.display),
+    mfaJson: JSON.stringify(s.mfa),
+  };
+}
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
@@ -157,6 +205,14 @@ export function updateSettings(
 
   settings.updatedAt = new Date().toISOString();
   settingsStore.set(patientDfn, settings);
+
+  // Phase 127: Write-through to PG (fire-and-forget)
+  if (_settingsRepo) {
+    try {
+      void Promise.resolve(_settingsRepo.upsertSetting(settingsToDbFields(settings)))
+        .catch((e: unknown) => settingsDbWarn("upsert", e));
+    } catch (e) { settingsDbWarn("upsert", e); }
+  }
 
   if (changes.length > 0) {
     portalAudit("portal.settings.update", "success", patientDfn, {

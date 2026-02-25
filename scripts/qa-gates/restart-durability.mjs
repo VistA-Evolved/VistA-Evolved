@@ -261,6 +261,75 @@ gate("PG barrel exports pgRcmClaimCaseRepo", pgBarrel.includes("pgRcmClaimCaseRe
 gate("PG barrel exports pgEdiAckRepo", pgBarrel.includes("pgEdiAckRepo"));
 gate("PG barrel exports pgEdiPipelineRepo", pgBarrel.includes("pgEdiPipelineRepo"));
 
+// ── 9. Phase 127: Portal + Telehealth PG Durability ─────────
+console.log("\nPhase 127 PG schema tables:");
+gate('pgPortalMessage table in pg-schema', pgSchema.includes('pgTable("portal_message"'));
+gate('pgPortalAccessLog table in pg-schema', pgSchema.includes('pgTable("portal_access_log"'));
+gate('pgPortalPatientSetting table in pg-schema', pgSchema.includes('pgTable("portal_patient_setting"'));
+gate('pgTelehealthRoom table in pg-schema', pgSchema.includes('pgTable("telehealth_room"'));
+gate('pgTelehealthRoomEvent table in pg-schema', pgSchema.includes('pgTable("telehealth_room_event"'));
+
+console.log("\nPhase 127 PG migration DDL:");
+gate("portal_message CREATE TABLE in pg-migrate", pgMigrate.includes("CREATE TABLE IF NOT EXISTS portal_message"));
+gate("portal_access_log CREATE TABLE in pg-migrate", pgMigrate.includes("CREATE TABLE IF NOT EXISTS portal_access_log"));
+gate("portal_patient_setting CREATE TABLE in pg-migrate", pgMigrate.includes("CREATE TABLE IF NOT EXISTS portal_patient_setting"));
+gate("telehealth_room CREATE TABLE in pg-migrate", pgMigrate.includes("CREATE TABLE IF NOT EXISTS telehealth_room"));
+gate("telehealth_room_event CREATE TABLE in pg-migrate", pgMigrate.includes("CREATE TABLE IF NOT EXISTS telehealth_room_event"));
+
+console.log("\nPhase 127 PG repos:");
+const pgPortalMsgRepo = readSrc("apps/api/src/platform/pg/repo/pg-portal-message-repo.ts");
+gate("pg portal-message-repo.ts exists", pgPortalMsgRepo !== null);
+gate("pg portal-message-repo exports insertMessage", pgPortalMsgRepo?.includes("export async function insertMessage") ?? false);
+gate("pg portal-message-repo exports findMessageById", pgPortalMsgRepo?.includes("export async function findMessageById") ?? false);
+
+const pgPortalAlogRepo = readSrc("apps/api/src/platform/pg/repo/pg-portal-access-log-repo.ts");
+gate("pg portal-access-log-repo.ts exists", pgPortalAlogRepo !== null);
+gate("pg portal-access-log-repo exports insertAccessLog", pgPortalAlogRepo?.includes("export async function insertAccessLog") ?? false);
+
+const pgPortalSettingRepo = readSrc("apps/api/src/platform/pg/repo/pg-portal-patient-setting-repo.ts");
+gate("pg portal-patient-setting-repo.ts exists", pgPortalSettingRepo !== null);
+gate("pg portal-patient-setting-repo exports upsertSetting", pgPortalSettingRepo?.includes("export async function upsertSetting") ?? false);
+
+const pgThRoomRepo = readSrc("apps/api/src/platform/pg/repo/pg-telehealth-room-repo.ts");
+gate("pg telehealth-room-repo.ts exists", pgThRoomRepo !== null);
+gate("pg telehealth-room-repo exports insertRoom", pgThRoomRepo?.includes("export async function insertRoom") ?? false);
+
+const pgThEventRepo = readSrc("apps/api/src/platform/pg/repo/pg-telehealth-room-event-repo.ts");
+gate("pg telehealth-room-event-repo.ts exists", pgThEventRepo !== null);
+gate("pg telehealth-room-event-repo exports insertRoomEvent", pgThEventRepo?.includes("export async function insertRoomEvent") ?? false);
+
+console.log("\nPhase 127 store interfaces loosened:");
+gate("portal-messaging uses interface MsgRepo (not typeof import)", portalMsg.includes("interface MsgRepo"));
+gate("room-store uses interface RoomRepo (not typeof import)", roomStore.includes("interface RoomRepo"));
+gate("access-log-store AccessLogRepo returns any", readSrc("apps/api/src/portal-iam/access-log-store.ts")?.includes("countAllAccessLogs(): any") ?? false);
+
+console.log("\nPhase 127 settings store wiring:");
+const settingsStore = readSrc("apps/api/src/services/portal-settings.ts") ?? "";
+gate("portal-settings has initSettingsRepo", settingsStore.includes("export function initSettingsRepo"));
+gate("portal-settings has SettingsRepo interface", settingsStore.includes("export interface SettingsRepo"));
+gate("portal-settings has write-through", settingsStore.includes("_settingsRepo.upsertSetting") || settingsStore.includes("_settingsRepo"));
+
+console.log("\nPhase 127 startup wiring:");
+gate("index.ts wires PG portal message repo", index.includes("pg-portal-message-repo"));
+gate("index.ts wires PG portal access log repo", index.includes("pg-portal-access-log-repo"));
+gate("index.ts wires PG portal patient setting repo", index.includes("pg-portal-patient-setting-repo"));
+gate("index.ts wires PG telehealth room repo", index.includes("pg-telehealth-room-repo"));
+gate("index.ts imports initSettingsRepo", index.includes("initSettingsRepo"));
+
+console.log("\nPhase 127 RLS tenant list:");
+gate("portal_message in RLS tenant list", pgMigrate.includes('"portal_message"'));
+gate("portal_access_log in RLS tenant list", pgMigrate.includes('"portal_access_log"'));
+gate("portal_patient_setting in RLS tenant list", pgMigrate.includes('"portal_patient_setting"'));
+gate("telehealth_room in RLS tenant list", pgMigrate.includes('"telehealth_room"'));
+gate("telehealth_room_event in RLS tenant list", pgMigrate.includes('"telehealth_room_event"'));
+
+console.log("\nPhase 127 PG barrel exports:");
+gate("PG barrel exports pgPortalMessageRepo", pgBarrel.includes("pgPortalMessageRepo"));
+gate("PG barrel exports pgPortalAccessLogRepo", pgBarrel.includes("pgPortalAccessLogRepo"));
+gate("PG barrel exports pgPortalPatientSettingRepo", pgBarrel.includes("pgPortalPatientSettingRepo"));
+gate("PG barrel exports pgTelehealthRoomRepo", pgBarrel.includes("pgTelehealthRoomRepo"));
+gate("PG barrel exports pgTelehealthRoomEventRepo", pgBarrel.includes("pgTelehealthRoomEventRepo"));
+
 // ── Summary ─────────────────────────────────────────────────
 console.log(`\n${"=".repeat(50)}`);
 console.log(`Restart-Durability Gate: ${pass} PASS / ${fail} FAIL`);

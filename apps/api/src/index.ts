@@ -2511,6 +2511,42 @@ try {
         } catch (pipeErr: any) {
           log.warn("PG EDI pipeline repo wire failed (cache-only fallback)", { error: pipeErr.message });
         }
+        // Phase 127: Portal message store → PG (overrides SQLite wiring above)
+        try {
+          const pgMsgRepoMod = await import("./platform/pg/repo/pg-portal-message-repo.js");
+          const { initMessageRepo } = await import("./services/portal-messaging.js");
+          initMessageRepo(pgMsgRepoMod);
+          log.info("Portal messaging store re-wired to PG");
+        } catch (pmErr: any) {
+          log.warn("PG portal message repo wire failed (SQLite fallback)", { error: pmErr.message });
+        }
+        // Phase 127: Portal access log store → PG (overrides SQLite wiring above)
+        try {
+          const pgAlogRepoMod = await import("./platform/pg/repo/pg-portal-access-log-repo.js");
+          const { initAccessLogRepo } = await import("./portal-iam/access-log-store.js");
+          initAccessLogRepo(pgAlogRepoMod);
+          log.info("Portal access log store re-wired to PG");
+        } catch (alErr: any) {
+          log.warn("PG portal access log repo wire failed (SQLite fallback)", { error: alErr.message });
+        }
+        // Phase 127: Portal patient settings store → PG (new — no SQLite predecessor)
+        try {
+          const pgSettingsRepoMod = await import("./platform/pg/repo/pg-portal-patient-setting-repo.js");
+          const { initSettingsRepo } = await import("./services/portal-settings.js");
+          initSettingsRepo(pgSettingsRepoMod);
+          log.info("Portal settings store wired to PG");
+        } catch (psErr: any) {
+          log.warn("PG portal settings repo wire failed (cache-only fallback)", { error: psErr.message });
+        }
+        // Phase 127: Telehealth room store → PG (overrides SQLite wiring above)
+        try {
+          const pgRoomRepoMod = await import("./platform/pg/repo/pg-telehealth-room-repo.js");
+          const { initTelehealthRoomRepo } = await import("./telehealth/room-store.js");
+          initTelehealthRoomRepo(pgRoomRepoMod);
+          log.info("Telehealth room store re-wired to PG");
+        } catch (trErr: any) {
+          log.warn("PG telehealth room repo wire failed (SQLite fallback)", { error: trErr.message });
+        }
       }
     } else {
       log.warn("Platform PG init failed (SQLite fallback active)", {

@@ -92,10 +92,22 @@ export const SLA_DISCLAIMER =
   "Response times may vary based on clinic staffing.";
 
 /* ------------------------------------------------------------------ */
-/* DB repo — lazy-wired after initPlatformDb() (Phase 115)              */
+/* DB repo -- lazy-wired after initPlatformDb() (Phase 115)              */
+/* Phase 127: Loosened to interface for PG async compat                   */
 /* ------------------------------------------------------------------ */
 
-type MsgRepo = typeof import("../platform/db/repo/portal-message-repo.js");
+interface MsgRepo {
+  insertMessage(data: any): any;
+  findMessageById(id: string): any;
+  findThread(threadId: string): any;
+  findInbox(dfn: string): any;
+  findDrafts(dfn: string): any;
+  findSent(dfn: string): any;
+  findStaffQueue(): any;
+  updateMessage(id: string, updates: any): any;
+  deleteMessage(id: string): any;
+  countMessages(): any;
+}
 let _repo: MsgRepo | null = null;
 
 /** Wire the portal message repo after DB init. Called from index.ts. */
