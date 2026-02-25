@@ -1087,6 +1087,23 @@ docs/runbooks/
      One-shot idempotent SQLite-to-PG data transfer. Uses `ON CONFLICT DO NOTHING`.
      Supports `--dry-run` and `--table TABLE` flags. Requires `PLATFORM_PG_URL`
      and an existing `data/platform.db`.
+128. **RCM store repo interfaces use `any`, not typed arrays (Phase 126).**
+     `ClaimRepo`, `ClaimCaseRepo`, `AckRepo`, and `PipelineRepo` declare all
+     methods as returning `any`. This is intentional — SQLite repos return
+     synchronous values while PG repos return `Promise<T[]>`. Using `any`
+     lets both be assignable to the same interface. Do not "fix" these to
+     typed return signatures without also making callers await-safe.
+129. **EDI ack + pipeline stores use write-through, not full DB-first reads
+     (Phase 126).** `ack-status-processor.ts` and `pipeline.ts` still serve
+     reads from in-memory Maps (cache-first). DB writes are fire-and-forget
+     (`void dbRepo.insertXxx(...)`). This is intentional for latency — the
+     Maps are the hot path. The PG tables provide restart durability and
+     audit queryability. Full DB-first reads can be added later when needed.
+130. **PG migration v10 covers 6 RCM/EDI tables (Phase 126).** Tables:
+     `rcm_claim`, `rcm_remittance`, `rcm_claim_case`, `edi_acknowledgement`,
+     `edi_claim_status`, `edi_pipeline_entry`. All have `tenant_id` columns
+     and are included in `applyRlsPolicies()`. The edi_acknowledgement and
+     edi_claim_status tables have UNIQUE indexes on `(tenant_id, idempotency_key)`.
 
 ## 8. Bug Tracker & Lessons Learned
 

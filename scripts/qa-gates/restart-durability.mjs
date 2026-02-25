@@ -189,6 +189,78 @@ gate("barrel exports idempotencyRepo", barrel.includes('idempotencyRepo'));
 console.log("\nStore policy:");
 gate("store-policy.md exists", existsSync(resolve(ROOT, "docs/architecture/store-policy.md")));
 
+// ── 8. Phase 126: RCM Durability PG tables ──────────────────
+console.log("\nPhase 126 PG schema tables:");
+const pgSchema = readSrc("apps/api/src/platform/pg/pg-schema.ts") ?? "";
+gate('pgRcmClaim table in pg-schema', pgSchema.includes('pgTable("rcm_claim"'));
+gate('pgRcmRemittance table in pg-schema', pgSchema.includes('pgTable("rcm_remittance"'));
+gate('pgRcmClaimCase table in pg-schema', pgSchema.includes('pgTable("rcm_claim_case"'));
+gate('pgEdiAck table in pg-schema', pgSchema.includes('pgTable("edi_acknowledgement"'));
+gate('pgEdiClaimStatus table in pg-schema', pgSchema.includes('pgTable("edi_claim_status"'));
+gate('pgEdiPipelineEntry table in pg-schema', pgSchema.includes('pgTable("edi_pipeline_entry"'));
+
+console.log("\nPhase 126 PG migration DDL:");
+const pgMigrate = readSrc("apps/api/src/platform/pg/pg-migrate.ts") ?? "";
+gate("rcm_claim CREATE TABLE in pg-migrate", pgMigrate.includes("CREATE TABLE IF NOT EXISTS rcm_claim"));
+gate("rcm_remittance CREATE TABLE in pg-migrate", pgMigrate.includes("CREATE TABLE IF NOT EXISTS rcm_remittance"));
+gate("rcm_claim_case CREATE TABLE in pg-migrate", pgMigrate.includes("CREATE TABLE IF NOT EXISTS rcm_claim_case"));
+gate("edi_acknowledgement CREATE TABLE in pg-migrate", pgMigrate.includes("CREATE TABLE IF NOT EXISTS edi_acknowledgement"));
+gate("edi_claim_status CREATE TABLE in pg-migrate", pgMigrate.includes("CREATE TABLE IF NOT EXISTS edi_claim_status"));
+gate("edi_pipeline_entry CREATE TABLE in pg-migrate", pgMigrate.includes("CREATE TABLE IF NOT EXISTS edi_pipeline_entry"));
+
+console.log("\nPhase 126 PG repos:");
+const pgRcmClaimRepo = readSrc("apps/api/src/platform/pg/repo/rcm-claim-repo.ts");
+gate("pg rcm-claim-repo.ts exists", pgRcmClaimRepo !== null);
+gate("pg rcm-claim-repo exports insertClaim", pgRcmClaimRepo?.includes("export async function insertClaim") ?? false);
+gate("pg rcm-claim-repo exports findClaimById", pgRcmClaimRepo?.includes("export async function findClaimById") ?? false);
+
+const pgRcmCaseRepo = readSrc("apps/api/src/platform/pg/repo/rcm-claim-case-repo.ts");
+gate("pg rcm-claim-case-repo.ts exists", pgRcmCaseRepo !== null);
+gate("pg rcm-claim-case-repo exports insertClaimCase", pgRcmCaseRepo?.includes("export async function insertClaimCase") ?? false);
+
+const pgEdiAckRepo = readSrc("apps/api/src/platform/pg/repo/edi-ack-repo.ts");
+gate("pg edi-ack-repo.ts exists", pgEdiAckRepo !== null);
+gate("pg edi-ack-repo exports insertAck", pgEdiAckRepo?.includes("export async function insertAck") ?? false);
+gate("pg edi-ack-repo exports insertStatusUpdate", pgEdiAckRepo?.includes("export async function insertStatusUpdate") ?? false);
+gate("pg edi-ack-repo exports findAckByIdempotencyKey", pgEdiAckRepo?.includes("export async function findAckByIdempotencyKey") ?? false);
+
+const pgEdiPipeRepo = readSrc("apps/api/src/platform/pg/repo/edi-pipeline-repo.ts");
+gate("pg edi-pipeline-repo.ts exists", pgEdiPipeRepo !== null);
+gate("pg edi-pipeline-repo exports insertPipelineEntry", pgEdiPipeRepo?.includes("export async function insertPipelineEntry") ?? false);
+gate("pg edi-pipeline-repo exports updateEntry", pgEdiPipeRepo?.includes("export async function updateEntry") ?? false);
+
+console.log("\nPhase 126 store delegation:");
+const ackProc = readSrc("apps/api/src/rcm/edi/ack-status-processor.ts") ?? "";
+gate("ack-status-processor has initAckStatusRepo", ackProc.includes("export function initAckStatusRepo"));
+gate("ack-status-processor has dbRepo write-through", ackProc.includes("dbRepo.insertAck"));
+
+const pipeline = readSrc("apps/api/src/rcm/edi/pipeline.ts") ?? "";
+gate("pipeline has initPipelineRepo", pipeline.includes("export function initPipelineRepo"));
+gate("pipeline has dbRepo write-through", pipeline.includes("dbRepo.insertPipelineEntry"));
+
+console.log("\nPhase 126 startup wiring:");
+gate("index.ts wires initAckStatusRepo (PG)", index.includes("initAckStatusRepo"));
+gate("index.ts wires initPipelineRepo (PG)", index.includes("initPipelineRepo"));
+gate("index.ts imports pg edi-ack-repo", index.includes("edi-ack-repo"));
+gate("index.ts imports pg edi-pipeline-repo", index.includes("edi-pipeline-repo"));
+gate("index.ts imports pg rcm-claim-repo (PG)", index.includes("platform/pg/repo/rcm-claim-repo"));
+gate("index.ts imports pg rcm-claim-case-repo (PG)", index.includes("platform/pg/repo/rcm-claim-case-repo"));
+
+console.log("\nPhase 126 RLS tenant list:");
+gate("rcm_claim in RLS tenant list", pgMigrate.includes('"rcm_claim"'));
+gate("rcm_remittance in RLS tenant list", pgMigrate.includes('"rcm_remittance"'));
+gate("rcm_claim_case in RLS tenant list", pgMigrate.includes('"rcm_claim_case"'));
+gate("edi_acknowledgement in RLS tenant list", pgMigrate.includes('"edi_acknowledgement"'));
+gate("edi_claim_status in RLS tenant list", pgMigrate.includes('"edi_claim_status"'));
+gate("edi_pipeline_entry in RLS tenant list", pgMigrate.includes('"edi_pipeline_entry"'));
+
+console.log("\nPhase 126 PG barrel exports:");
+const pgBarrel = readSrc("apps/api/src/platform/pg/repo/index.ts") ?? "";
+gate("PG barrel exports pgRcmClaimRepo", pgBarrel.includes("pgRcmClaimRepo"));
+gate("PG barrel exports pgRcmClaimCaseRepo", pgBarrel.includes("pgRcmClaimCaseRepo"));
+gate("PG barrel exports pgEdiAckRepo", pgBarrel.includes("pgEdiAckRepo"));
+gate("PG barrel exports pgEdiPipelineRepo", pgBarrel.includes("pgEdiPipelineRepo"));
+
 // ── Summary ─────────────────────────────────────────────────
 console.log(`\n${"=".repeat(50)}`);
 console.log(`Restart-Durability Gate: ${pass} PASS / ${fail} FAIL`);

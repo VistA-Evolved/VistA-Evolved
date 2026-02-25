@@ -24,16 +24,16 @@ import type { Remittance } from "./remit.js";
 interface ClaimRepo {
   insertClaim(data: any): any;
   findClaimById(id: string): any;
-  findClaimsByTenant(tenantId: string, opts?: any): any[];
+  findClaimsByTenant(tenantId: string, opts?: any): any;
   updateClaim(id: string, updates: any): any;
-  countClaimsByTenant(tenantId: string): number;
-  countAllClaims(): number;
+  countClaimsByTenant(tenantId: string): any;
+  countAllClaims(): any;
   insertRemittance(data: any): any;
   findRemittanceById(id: string): any;
-  findRemittancesByTenant(tenantId: string, limit?: number, offset?: number): any[];
+  findRemittancesByTenant(tenantId: string, limit?: number, offset?: number): any;
   updateRemittance(id: string, updates: any): any;
-  countAllRemittances(): number;
-  countRemittancesByTenant?(tenantId: string): number;
+  countAllRemittances(): any;
+  countRemittancesByTenant?(tenantId: string): any;
 }
 
 let dbRepo: ClaimRepo | null = null;

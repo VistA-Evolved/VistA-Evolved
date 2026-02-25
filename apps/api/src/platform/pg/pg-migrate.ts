@@ -697,6 +697,200 @@ CREATE INDEX IF NOT EXISTS idx_work_event_item ON rcm_work_item_event(work_item_
 CREATE INDEX IF NOT EXISTS idx_work_event_tenant ON rcm_work_item_event(tenant_id);
 `,
   },
+  {
+    version: 10,
+    name: "rcm_durability_pg",
+    sql: `
+-- ============================================================
+-- Phase 126: RCM Durability Wave (Map stores -> Postgres)
+-- rcm_claim, rcm_remittance, rcm_claim_case,
+-- edi_acknowledgement, edi_claim_status, edi_pipeline_entry
+-- ============================================================
+
+-- RCM Claim (mirrors SQLite rcm_claim from Phase 121)
+CREATE TABLE IF NOT EXISTS rcm_claim (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  claim_type TEXT NOT NULL DEFAULT 'professional',
+  status TEXT NOT NULL DEFAULT 'draft',
+  patient_dfn TEXT NOT NULL,
+  patient_name TEXT,
+  patient_dob TEXT,
+  patient_first_name TEXT,
+  patient_last_name TEXT,
+  patient_gender TEXT,
+  subscriber_id TEXT,
+  billing_provider_npi TEXT,
+  rendering_provider_npi TEXT,
+  facility_npi TEXT,
+  facility_name TEXT,
+  facility_tax_id TEXT,
+  payer_id TEXT NOT NULL,
+  payer_name TEXT,
+  payer_claim_id TEXT,
+  date_of_service TEXT NOT NULL,
+  diagnoses_json TEXT NOT NULL DEFAULT '[]',
+  lines_json TEXT NOT NULL DEFAULT '[]',
+  total_charge INTEGER NOT NULL DEFAULT 0,
+  edi_transaction_id TEXT,
+  connector_id TEXT,
+  submitted_at TEXT,
+  response_received_at TEXT,
+  paid_amount INTEGER,
+  adjustment_amount INTEGER,
+  patient_responsibility INTEGER,
+  remit_date TEXT,
+  vista_charge_ien TEXT,
+  vista_ar_ien TEXT,
+  validation_result_json TEXT,
+  pipeline_entry_id TEXT,
+  export_artifact_path TEXT,
+  is_demo BOOLEAN NOT NULL DEFAULT FALSE,
+  submission_safety_mode TEXT NOT NULL DEFAULT 'export_only',
+  is_mock BOOLEAN NOT NULL DEFAULT FALSE,
+  audit_trail_json TEXT NOT NULL DEFAULT '[]',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rcm_claim_tenant ON rcm_claim(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rcm_claim_status ON rcm_claim(status);
+CREATE INDEX IF NOT EXISTS idx_rcm_claim_patient ON rcm_claim(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_rcm_claim_payer ON rcm_claim(payer_id);
+CREATE INDEX IF NOT EXISTS idx_rcm_claim_updated ON rcm_claim(updated_at);
+
+-- RCM Remittance (mirrors SQLite rcm_remittance from Phase 121)
+CREATE TABLE IF NOT EXISTS rcm_remittance (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  status TEXT NOT NULL DEFAULT 'received',
+  edi_transaction_id TEXT,
+  check_number TEXT,
+  check_date TEXT,
+  eft_trace_number TEXT,
+  payer_id TEXT NOT NULL,
+  payer_name TEXT,
+  claim_id TEXT,
+  payer_claim_id TEXT,
+  patient_dfn TEXT,
+  total_charged INTEGER NOT NULL,
+  total_paid INTEGER NOT NULL,
+  total_adjusted INTEGER NOT NULL,
+  total_patient_responsibility INTEGER NOT NULL,
+  service_lines_json TEXT NOT NULL DEFAULT '[]',
+  is_mock BOOLEAN NOT NULL DEFAULT FALSE,
+  imported_at TEXT NOT NULL,
+  matched_at TEXT,
+  posted_at TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rcm_remit_tenant ON rcm_remittance(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rcm_remit_claim ON rcm_remittance(claim_id);
+CREATE INDEX IF NOT EXISTS idx_rcm_remit_payer ON rcm_remittance(payer_id);
+
+-- RCM Claim Case (mirrors SQLite rcm_claim_case from Phase 121)
+CREATE TABLE IF NOT EXISTS rcm_claim_case (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  lifecycle_status TEXT NOT NULL DEFAULT 'intake',
+  base_claim_id TEXT,
+  philhealth_draft_id TEXT,
+  loa_case_id TEXT,
+  patient_dfn TEXT NOT NULL,
+  patient_name TEXT,
+  payer_id TEXT,
+  payer_name TEXT,
+  provider_duz TEXT,
+  provider_name TEXT,
+  encounter_date TEXT,
+  diagnoses_json TEXT NOT NULL DEFAULT '[]',
+  procedures_json TEXT NOT NULL DEFAULT '[]',
+  scrub_result_json TEXT,
+  scrub_score INTEGER,
+  events_json TEXT NOT NULL DEFAULT '[]',
+  attachments_json TEXT NOT NULL DEFAULT '[]',
+  denials_json TEXT NOT NULL DEFAULT '[]',
+  notes_json TEXT NOT NULL DEFAULT '[]',
+  metadata_json TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rcm_case_tenant ON rcm_claim_case(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rcm_case_status ON rcm_claim_case(lifecycle_status);
+CREATE INDEX IF NOT EXISTS idx_rcm_case_patient ON rcm_claim_case(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_rcm_case_base_claim ON rcm_claim_case(base_claim_id);
+
+-- EDI Acknowledgement (NEW: Phase 126 -- replaces in-memory ack store)
+CREATE TABLE IF NOT EXISTS edi_acknowledgement (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  type TEXT NOT NULL,
+  disposition TEXT NOT NULL,
+  claim_id TEXT,
+  original_control_number TEXT NOT NULL,
+  ack_control_number TEXT NOT NULL,
+  payer_id TEXT,
+  payer_name TEXT,
+  errors_json TEXT NOT NULL DEFAULT '[]',
+  raw_payload TEXT,
+  idempotency_key TEXT NOT NULL,
+  received_at TEXT NOT NULL,
+  processed_at TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_edi_ack_tenant ON edi_acknowledgement(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_edi_ack_claim ON edi_acknowledgement(claim_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_edi_ack_idempotency ON edi_acknowledgement(tenant_id, idempotency_key);
+CREATE INDEX IF NOT EXISTS idx_edi_ack_received ON edi_acknowledgement(received_at);
+
+-- EDI Claim Status (NEW: Phase 126 -- replaces in-memory status store)
+CREATE TABLE IF NOT EXISTS edi_claim_status (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  claim_id TEXT,
+  payer_claim_id TEXT,
+  category_code TEXT NOT NULL,
+  status_code TEXT NOT NULL,
+  status_description TEXT NOT NULL,
+  effective_date TEXT,
+  check_date TEXT,
+  total_charged INTEGER,
+  total_paid INTEGER,
+  payer_id TEXT,
+  payer_name TEXT,
+  raw_payload TEXT,
+  idempotency_key TEXT NOT NULL,
+  received_at TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_edi_status_tenant ON edi_claim_status(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_edi_status_claim ON edi_claim_status(claim_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_edi_status_idempotency ON edi_claim_status(tenant_id, idempotency_key);
+CREATE INDEX IF NOT EXISTS idx_edi_status_received ON edi_claim_status(received_at);
+
+-- EDI Pipeline Entry (NEW: Phase 126 -- replaces in-memory pipeline store)
+CREATE TABLE IF NOT EXISTS edi_pipeline_entry (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  claim_id TEXT NOT NULL,
+  transaction_set TEXT NOT NULL,
+  stage TEXT NOT NULL DEFAULT 'build',
+  connector_id TEXT NOT NULL,
+  payer_id TEXT NOT NULL,
+  outbound_payload TEXT,
+  inbound_payload TEXT,
+  errors_json TEXT NOT NULL DEFAULT '[]',
+  attempts INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  completed_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_edi_pipeline_tenant ON edi_pipeline_entry(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_edi_pipeline_claim ON edi_pipeline_entry(claim_id);
+CREATE INDEX IF NOT EXISTS idx_edi_pipeline_stage ON edi_pipeline_entry(stage);
+CREATE INDEX IF NOT EXISTS idx_edi_pipeline_payer ON edi_pipeline_entry(payer_id);
+`,
+  },
 ];
 
 /**
@@ -805,6 +999,12 @@ export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: s
     "auth_session",
     "rcm_work_item",
     "rcm_work_item_event",
+    "rcm_claim",
+    "rcm_remittance",
+    "rcm_claim_case",
+    "edi_acknowledgement",
+    "edi_claim_status",
+    "edi_pipeline_entry",
   ];
 
   const applied: string[] = [];

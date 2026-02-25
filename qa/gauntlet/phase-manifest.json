@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-02-24T20:50:36.718Z",
   "generator": "qa/gauntlet/build-manifest.mjs",
-  "phaseCount": 127,
+  "phaseCount": 128,
   "phases": [
     {
       "phaseId": "1",
@@ -6387,6 +6387,59 @@
         "vistaProbes": []
       },
       "notes": ""
+    },
+    {
+      "phaseId": "126",
+      "title": "RCM DURABILITY PG",
+      "folder": "130-PHASE-126-RCM-DURABILITY-PG",
+      "tags": [
+        "rcm",
+        "durability",
+        "postgres"
+      ],
+      "suites": {
+        "fast": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment"
+        ],
+        "rc": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G10_system_audit",
+          "G11_tenant_isolation",
+          "G12_data_plane"
+        ],
+        "full": [
+          "G0_prompts_integrity",
+          "G1_build_typecheck",
+          "G2_unit_tests",
+          "G3_security_scans",
+          "G4_contract_alignment",
+          "G5_api_smoke",
+          "G7_restart_durability",
+          "G8_ui_dead_click",
+          "G6_vista_probe",
+          "G9_performance_budget",
+          "G10_system_audit",
+          "G11_tenant_isolation",
+          "G12_data_plane"
+        ]
+      },
+      "smoke": {
+        "uiRoutes": [],
+        "apiEndpoints": ["/rcm/claims", "/rcm/edi/pipeline"],
+        "vistaProbes": []
+      },
+      "notes": "Phase 126: Map stores replaced with PG repos + restart durability gate"
     }
   ]
 }

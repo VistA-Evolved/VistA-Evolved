@@ -2418,6 +2418,8 @@ try {
     } catch (alErr: any) {
       log.warn("Portal access log repo wire failed (non-fatal)", { error: alErr.message });
     }
+    // Phase 126: Wire DB-backed EDI ack/status + pipeline stores (PG-only repos)
+    // These new stores have no SQLite predecessor; wiring only happens in PG block below.
     // Phase 121: Wire DB-backed scheduling request store
     try {
       const srRepo = await import("./platform/db/repo/scheduling-request-repo.js");
@@ -2472,6 +2474,42 @@ try {
           log.info("Workqueue store re-wired to PG (multi-instance safe)");
         } catch (pwqErr: any) {
           log.warn("PG workqueue repo wire failed (SQLite fallback)", { error: pwqErr.message });
+        }
+        // Phase 126: RCM claim store → PG (overrides SQLite wiring above)
+        try {
+          const pgClaimRepoMod = await import("./platform/pg/repo/rcm-claim-repo.js");
+          const { initClaimStoreRepo } = await import("./rcm/domain/claim-store.js");
+          initClaimStoreRepo(pgClaimRepoMod);
+          log.info("RCM claim store re-wired to PG");
+        } catch (rcErr: any) {
+          log.warn("PG RCM claim repo wire failed (SQLite fallback)", { error: rcErr.message });
+        }
+        // Phase 126: RCM claim case store → PG (overrides SQLite wiring above)
+        try {
+          const pgCaseRepoMod = await import("./platform/pg/repo/rcm-claim-case-repo.js");
+          const { initClaimCaseRepo } = await import("./rcm/claims/claim-store.js");
+          initClaimCaseRepo(pgCaseRepoMod);
+          log.info("RCM claim case store re-wired to PG");
+        } catch (ccErr: any) {
+          log.warn("PG RCM claim case repo wire failed (SQLite fallback)", { error: ccErr.message });
+        }
+        // Phase 126: EDI ack/status store → PG (new — no SQLite predecessor)
+        try {
+          const pgAckRepoMod = await import("./platform/pg/repo/edi-ack-repo.js");
+          const { initAckStatusRepo } = await import("./rcm/edi/ack-status-processor.js");
+          initAckStatusRepo(pgAckRepoMod);
+          log.info("EDI ack/status store wired to PG");
+        } catch (ackErr: any) {
+          log.warn("PG EDI ack repo wire failed (cache-only fallback)", { error: ackErr.message });
+        }
+        // Phase 126: EDI pipeline store → PG (new — no SQLite predecessor)
+        try {
+          const pgPipeRepoMod = await import("./platform/pg/repo/edi-pipeline-repo.js");
+          const { initPipelineRepo } = await import("./rcm/edi/pipeline.js");
+          initPipelineRepo(pgPipeRepoMod);
+          log.info("EDI pipeline store wired to PG");
+        } catch (pipeErr: any) {
+          log.warn("PG EDI pipeline repo wire failed (cache-only fallback)", { error: pipeErr.message });
         }
       }
     } else {

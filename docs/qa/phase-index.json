@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-25T03:13:00.932Z",
+  "generatedAt": "2026-02-25T03:52:45.261Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 134,
+  "phaseCount": 135,
   "phases": [
     {
       "phaseNumber": "1",
@@ -1555,6 +1555,38 @@
         "scripts/verify-phase1-to-phase11-cprs.ps",
         "scripts/verify-latest.ps",
         "docs/runbooks/cprs-web-replica-v1.md"
+      ]
+    },
+    {
+      "phaseNumber": "126",
+      "title": "RCM DURABILITY PG",
+      "folder": "130-PHASE-126-RCM-DURABILITY-PG",
+      "files": [
+        "126-01-IMPLEMENT.md",
+        "126-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "126-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "126-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/platform/pg/pg-schema.ts",
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/platform/pg/repo/rcm-claim-repo.ts",
+        "apps/api/src/platform/pg/repo/rcm-claim-case-repo.ts",
+        "apps/api/src/platform/pg/repo/edi-ack-repo.ts",
+        "apps/api/src/platform/pg/repo/edi-pipeline-repo.ts",
+        "apps/api/src/platform/pg/repo/index.ts",
+        "apps/api/src/rcm/edi/ack-status-processor.ts",
+        "apps/api/src/rcm/edi/pipeline.ts",
+        "apps/api/src/index.ts",
+        "scripts/qa-gates/restart-durability.mjs",
+        "qa/gauntlet/phase-manifest.json"
       ]
     },
     {

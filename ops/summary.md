@@ -1,3 +1,39 @@
+# Phase 126 Summary -- RCM Durability Wave (Map Stores -> Postgres)
+
+## What Changed
+
+Replaced high-risk in-memory Maps in RCM operational state with Postgres-backed
+durable storage. 6 new PG tables, 4 new PG repos, 2 modified stores with
+write-through pattern, PG re-wiring in index.ts, and 50+ new restart-durability
+gate checks.
+
+### New PG Tables (migration v10)
+- rcm_claim, rcm_remittance, rcm_claim_case (mirrors of SQLite Phase 121)
+- edi_acknowledgement, edi_claim_status, edi_pipeline_entry (NEW)
+
+### New PG Repos
+- rcm-claim-repo.ts, rcm-claim-case-repo.ts, edi-ack-repo.ts, edi-pipeline-repo.ts
+
+### Modified Stores
+- ack-status-processor.ts: initAckStatusRepo() + write-through
+- pipeline.ts: initPipelineRepo() + write-through
+
+## How to Test Manually
+```bash
+node scripts/qa-gates/restart-durability.mjs
+node qa/gauntlet/cli.mjs --suite fast
+```
+
+## Verifier Output
+Run: `node scripts/qa-gates/restart-durability.mjs`
+
+## Follow-ups
+- Hydrate cache from PG on startup
+- Cache-miss -> PG fallback for sync reads
+- Migrate remaining in-memory stores in future phases
+
+---
+
 # Phase 125 Summary -- Postgres-Only Production Data Plane
 
 ## What Changed

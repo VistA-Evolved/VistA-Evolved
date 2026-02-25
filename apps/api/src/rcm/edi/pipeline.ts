@@ -1,11 +1,12 @@
 /**
- * EDI Pipeline — Build → Validate → Send → Track → Receive
+ * EDI Pipeline — Build -> Validate -> Send -> Track -> Receive
  *
  * Orchestrates the lifecycle of an EDI transaction from internal claim
  * representation through X12 generation, validation, transmission via
  * the appropriate connector, and response reconciliation.
  *
- * Phase 38 — RCM + Payer Connectivity
+ * Phase 38 -- RCM + Payer Connectivity
+ * Phase 126 -- Hybrid in-memory cache + DB write-through.
  */
 
 import type {
@@ -23,10 +24,35 @@ import type { Claim } from '../domain/claim.js';
 import { getPayer } from '../payer-registry/registry.js';
 import { randomBytes } from 'node:crypto';
 
-/* ─── Pipeline store (in-memory) ──────────────────────────────────── */
+/* ── DB repo interface (lazy-wired at startup) ──────────────── */
+
+interface PipelineRepo {
+  insertPipelineEntry(data: any): any;
+  findEntryById(id: string): any;
+  findEntriesByClaimId(claimId: string): any;
+  listEntries(tenantId: string, opts?: any): any;
+  updateEntry(id: string, updates: any): any;
+  countEntries(tenantId: string): any;
+}
+
+let dbRepo: PipelineRepo | null = null;
+
+/** Called from index.ts after DB init */
+export function initPipelineRepo(repo: PipelineRepo): void {
+  dbRepo = repo;
+}
+
+function dbWarn(op: string, err: any): void {
+  if (process.env.NODE_ENV !== "test") {
+    // eslint-disable-next-line no-console
+    console.warn(`[edi-pipeline] DB ${op} failed (cache-only fallback):`, err?.message ?? err);
+  }
+}
+
+/* ─── Pipeline store (in-memory cache) ────────────────────────────── */
 
 const pipelineEntries = new Map<string, PipelineEntry>();
-const claimIndex = new Map<string, string[]>(); // claimId → entryIds
+const claimIndex = new Map<string, string[]>(); // claimId -> entryIds
 
 function genId(): string {
   return `edi-${Date.now()}-${randomBytes(4).toString('hex')}`;
@@ -53,10 +79,36 @@ export function createPipelineEntry(
     createdAt: now,
     updatedAt: now,
   };
+  // Cache
   pipelineEntries.set(entry.id, entry);
   const existing = claimIndex.get(claimId) ?? [];
   existing.push(entry.id);
   claimIndex.set(claimId, existing);
+
+  // Write-through to DB (Phase 126)
+  if (dbRepo) {
+    try {
+      void dbRepo.insertPipelineEntry({
+        id: entry.id,
+        tenantId: 'default',
+        claimId: entry.claimId,
+        transactionSet: entry.transactionSet,
+        stage: entry.stage,
+        connectorId: entry.connectorId,
+        payerId: entry.payerId,
+        outboundPayload: entry.outboundPayload ?? null,
+        inboundPayload: entry.inboundPayload ?? null,
+        errorsJson: JSON.stringify(entry.errors),
+        attempts: entry.attempts,
+        createdAt: entry.createdAt,
+        updatedAt: entry.updatedAt,
+        completedAt: entry.completedAt ?? null,
+      });
+    } catch (err) {
+      dbWarn('insertPipelineEntry', err);
+    }
+  }
+
   return entry;
 }
 
@@ -85,6 +137,23 @@ export function advancePipelineStage(
   if (newStage === 'transmit') entry.attempts += 1;
   if (newStage === 'reconciled' || newStage === 'error' || newStage === 'cancelled') {
     entry.completedAt = new Date().toISOString();
+  }
+
+  // Write-through to DB (Phase 126)
+  if (dbRepo) {
+    try {
+      const updates: Record<string, unknown> = {
+        stage: entry.stage,
+        attempts: entry.attempts,
+      };
+      if (entry.outboundPayload) updates.outboundPayload = entry.outboundPayload;
+      if (entry.inboundPayload) updates.inboundPayload = entry.inboundPayload;
+      updates.errorsJson = JSON.stringify(entry.errors);
+      if (entry.completedAt) updates.completedAt = entry.completedAt;
+      void dbRepo.updateEntry(entryId, updates);
+    } catch (err) {
+      dbWarn('updateEntry', err);
+    }
   }
 
   return entry;
@@ -269,6 +338,11 @@ export function getPipelineStats(): {
 }
 
 /* ─── Reset (for testing) ────────────────────────────────────────── */
+
+/** Returns the backing repo (if wired) for external inspection (e.g. restart gate) */
+export function getPipelineRepo(): PipelineRepo | null {
+  return dbRepo;
+}
 
 export function resetPipeline(): void {
   pipelineEntries.clear();

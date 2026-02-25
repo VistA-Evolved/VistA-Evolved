@@ -1,16 +1,10 @@
 {
-    "commitSHA": "pending-verify",
-    "stage": "verified",
-    "verifyScript": "node qa/gauntlet/cli.mjs --suite rc",
-    "runbook": "docs/runbooks/postgres-only-dataplane.md",
-    "promptRef": "prompts/129-PHASE-125-POSTGRES-ONLY-DATAPLANE/125-99-VERIFY.md",
-    "status": "verified",
-    "feature": "Phase 125: Postgres-only data plane -- runtime mode contract, SQLite/JSON blocked in rc/prod, G12 gate",
-    "verifyResults": {
-        "gauntletRc": "10 PASS / 0 FAIL / 1 WARN",
-        "startupFailTest": "PASS",
-        "durabilityTest": "PASS",
-        "tenantIsolation": "25/26 tables tenant-scoped",
-        "dataPlanePosture": "100% (6/6 gates)"
-    }
+    "commitSHA": "pending",
+    "stage": "implement",
+    "verifyScript": "node scripts/qa-gates/restart-durability.mjs",
+    "runbook": "ops/summary.md",
+    "promptRef": "prompts/130-PHASE-126-RCM-DURABILITY-PG/126-01-IMPLEMENT.md",
+    "status": "implemented",
+    "feature": "Phase 126: RCM durability wave -- 6 PG tables, 4 PG repos, write-through for ack/status/pipeline stores",
+    "verifyResults": {}
 }

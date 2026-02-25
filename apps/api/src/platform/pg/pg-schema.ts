@@ -520,3 +520,214 @@ export const pgRcmWorkItemEvent = pgTable("rcm_work_item_event", {
   index("idx_work_event_item").on(table.workItemId),
   index("idx_work_event_tenant").on(table.tenantId),
 ]);
+
+/* ================================================================
+ *  RCM DURABILITY TABLES (Phase 126: Map stores → Postgres)
+ * ================================================================ */
+
+/**
+ * RCM Claim — durable claim lifecycle store.
+ * Mirrors SQLite rcm_claim (Phase 121).
+ */
+export const pgRcmClaim = pgTable("rcm_claim", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  claimType: text("claim_type").notNull().default("professional"),
+  status: text("status").notNull().default("draft"),
+  patientDfn: text("patient_dfn").notNull(),
+  patientName: text("patient_name"),
+  patientDob: text("patient_dob"),
+  patientFirstName: text("patient_first_name"),
+  patientLastName: text("patient_last_name"),
+  patientGender: text("patient_gender"),
+  subscriberId: text("subscriber_id"),
+  billingProviderNpi: text("billing_provider_npi"),
+  renderingProviderNpi: text("rendering_provider_npi"),
+  facilityNpi: text("facility_npi"),
+  facilityName: text("facility_name"),
+  facilityTaxId: text("facility_tax_id"),
+  payerId: text("payer_id").notNull(),
+  payerName: text("payer_name"),
+  payerClaimId: text("payer_claim_id"),
+  dateOfService: text("date_of_service").notNull(),
+  diagnosesJson: text("diagnoses_json").notNull().default("[]"),
+  linesJson: text("lines_json").notNull().default("[]"),
+  totalCharge: integer("total_charge").notNull().default(0),
+  ediTransactionId: text("edi_transaction_id"),
+  connectorId: text("connector_id"),
+  submittedAt: text("submitted_at"),
+  responseReceivedAt: text("response_received_at"),
+  paidAmount: integer("paid_amount"),
+  adjustmentAmount: integer("adjustment_amount"),
+  patientResponsibility: integer("patient_responsibility"),
+  remitDate: text("remit_date"),
+  vistaChargeIen: text("vista_charge_ien"),
+  vistaArIen: text("vista_ar_ien"),
+  validationResultJson: text("validation_result_json"),
+  pipelineEntryId: text("pipeline_entry_id"),
+  exportArtifactPath: text("export_artifact_path"),
+  isDemo: boolean("is_demo").notNull().default(false),
+  submissionSafetyMode: text("submission_safety_mode").notNull().default("export_only"),
+  isMock: boolean("is_mock").notNull().default(false),
+  auditTrailJson: text("audit_trail_json").notNull().default("[]"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_rcm_claim_tenant").on(table.tenantId),
+  index("idx_rcm_claim_status").on(table.status),
+  index("idx_rcm_claim_patient").on(table.patientDfn),
+  index("idx_rcm_claim_payer").on(table.payerId),
+  index("idx_rcm_claim_updated").on(table.updatedAt),
+]);
+
+/**
+ * RCM Remittance — durable remittance/ERA store.
+ * Mirrors SQLite rcm_remittance (Phase 121).
+ */
+export const pgRcmRemittance = pgTable("rcm_remittance", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  status: text("status").notNull().default("received"),
+  ediTransactionId: text("edi_transaction_id"),
+  checkNumber: text("check_number"),
+  checkDate: text("check_date"),
+  eftTraceNumber: text("eft_trace_number"),
+  payerId: text("payer_id").notNull(),
+  payerName: text("payer_name"),
+  claimId: text("claim_id"),
+  payerClaimId: text("payer_claim_id"),
+  patientDfn: text("patient_dfn"),
+  totalCharged: integer("total_charged").notNull(),
+  totalPaid: integer("total_paid").notNull(),
+  totalAdjusted: integer("total_adjusted").notNull(),
+  totalPatientResponsibility: integer("total_patient_responsibility").notNull(),
+  serviceLinesJson: text("service_lines_json").notNull().default("[]"),
+  isMock: boolean("is_mock").notNull().default(false),
+  importedAt: text("imported_at").notNull(),
+  matchedAt: text("matched_at"),
+  postedAt: text("posted_at"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_rcm_remit_tenant").on(table.tenantId),
+  index("idx_rcm_remit_claim").on(table.claimId),
+  index("idx_rcm_remit_payer").on(table.payerId),
+]);
+
+/**
+ * RCM Claim Case — durable claim lifecycle case store.
+ * Mirrors SQLite rcm_claim_case (Phase 121).
+ */
+export const pgRcmClaimCase = pgTable("rcm_claim_case", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  lifecycleStatus: text("lifecycle_status").notNull().default("intake"),
+  baseClaimId: text("base_claim_id"),
+  philhealthDraftId: text("philhealth_draft_id"),
+  loaCaseId: text("loa_case_id"),
+  patientDfn: text("patient_dfn").notNull(),
+  patientName: text("patient_name"),
+  payerId: text("payer_id"),
+  payerName: text("payer_name"),
+  providerDuz: text("provider_duz"),
+  providerName: text("provider_name"),
+  encounterDate: text("encounter_date"),
+  diagnosesJson: text("diagnoses_json").notNull().default("[]"),
+  proceduresJson: text("procedures_json").notNull().default("[]"),
+  scrubResultJson: text("scrub_result_json"),
+  scrubScore: integer("scrub_score"),
+  eventsJson: text("events_json").notNull().default("[]"),
+  attachmentsJson: text("attachments_json").notNull().default("[]"),
+  denialsJson: text("denials_json").notNull().default("[]"),
+  notesJson: text("notes_json").notNull().default("[]"),
+  metadataJson: text("metadata_json").notNull().default("{}"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_rcm_case_tenant").on(table.tenantId),
+  index("idx_rcm_case_status").on(table.lifecycleStatus),
+  index("idx_rcm_case_patient").on(table.patientDfn),
+  index("idx_rcm_case_base_claim").on(table.baseClaimId),
+]);
+
+/**
+ * EDI Acknowledgement — durable 999/277CA/TA1 ack store (Phase 126).
+ * Replaces in-memory Map in ack-status-processor.ts.
+ */
+export const pgEdiAck = pgTable("edi_acknowledgement", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  type: text("type").notNull(),
+  disposition: text("disposition").notNull(),
+  claimId: text("claim_id"),
+  originalControlNumber: text("original_control_number").notNull(),
+  ackControlNumber: text("ack_control_number").notNull(),
+  payerId: text("payer_id"),
+  payerName: text("payer_name"),
+  errorsJson: text("errors_json").notNull().default("[]"),
+  rawPayload: text("raw_payload"),
+  idempotencyKey: text("idempotency_key").notNull(),
+  receivedAt: text("received_at").notNull(),
+  processedAt: text("processed_at").notNull(),
+  createdAt: text("created_at").notNull(),
+}, (table) => [
+  index("idx_edi_ack_tenant").on(table.tenantId),
+  index("idx_edi_ack_claim").on(table.claimId),
+  uniqueIndex("idx_edi_ack_idempotency").on(table.tenantId, table.idempotencyKey),
+  index("idx_edi_ack_received").on(table.receivedAt),
+]);
+
+/**
+ * EDI Claim Status — durable 276/277 status update store (Phase 126).
+ * Replaces in-memory Map in ack-status-processor.ts.
+ */
+export const pgEdiClaimStatus = pgTable("edi_claim_status", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  claimId: text("claim_id"),
+  payerClaimId: text("payer_claim_id"),
+  categoryCode: text("category_code").notNull(),
+  statusCode: text("status_code").notNull(),
+  statusDescription: text("status_description").notNull(),
+  effectiveDate: text("effective_date"),
+  checkDate: text("check_date"),
+  totalCharged: integer("total_charged"),
+  totalPaid: integer("total_paid"),
+  payerId: text("payer_id"),
+  payerName: text("payer_name"),
+  rawPayload: text("raw_payload"),
+  idempotencyKey: text("idempotency_key").notNull(),
+  receivedAt: text("received_at").notNull(),
+  createdAt: text("created_at").notNull(),
+}, (table) => [
+  index("idx_edi_status_tenant").on(table.tenantId),
+  index("idx_edi_status_claim").on(table.claimId),
+  uniqueIndex("idx_edi_status_idempotency").on(table.tenantId, table.idempotencyKey),
+  index("idx_edi_status_received").on(table.receivedAt),
+]);
+
+/**
+ * EDI Pipeline Entry — durable EDI pipeline tracking (Phase 126).
+ * Replaces in-memory Map in pipeline.ts.
+ */
+export const pgEdiPipelineEntry = pgTable("edi_pipeline_entry", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  claimId: text("claim_id").notNull(),
+  transactionSet: text("transaction_set").notNull(),
+  stage: text("stage").notNull().default("build"),
+  connectorId: text("connector_id").notNull(),
+  payerId: text("payer_id").notNull(),
+  outboundPayload: text("outbound_payload"),
+  inboundPayload: text("inbound_payload"),
+  errorsJson: text("errors_json").notNull().default("[]"),
+  attempts: integer("attempts").notNull().default(0),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+  completedAt: text("completed_at"),
+}, (table) => [
+  index("idx_edi_pipeline_tenant").on(table.tenantId),
+  index("idx_edi_pipeline_claim").on(table.claimId),
+  index("idx_edi_pipeline_stage").on(table.stage),
+  index("idx_edi_pipeline_payer").on(table.payerId),
+]);

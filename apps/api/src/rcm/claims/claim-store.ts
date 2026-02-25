@@ -26,10 +26,10 @@ import { isValidLifecycleTransition } from './claim-types.js';
 interface ClaimCaseRepo {
   insertClaimCase(data: any): any;
   findClaimCaseById(id: string): any;
-  findClaimCasesByTenant(tenantId: string, opts?: any): any[];
+  findClaimCasesByTenant(tenantId: string, opts?: any): any;
   updateClaimCase(id: string, updates: any): any;
-  countClaimCasesByTenant(tenantId: string): number;
-  countAllClaimCases(): number;
+  countClaimCasesByTenant(tenantId: string): any;
+  countAllClaimCases(): any;
 }
 
 let dbRepo: ClaimCaseRepo | null = null;

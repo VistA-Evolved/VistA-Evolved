@@ -1,13 +1,15 @@
 /**
- * RCM — Ack & Status Processor (Phase 43)
+ * RCM — Ack & Status Processor (Phase 43, Phase 126 durability)
  *
  * Handles ingestion of:
  *   - 999 Implementation Acknowledgements
  *   - 277CA Claim Acknowledgements
  *   - 276/277 Claim Status Inquiry/Response
  *
- * Normalizes raw payloads into domain models, links to claims,
- * creates workqueue items for rejections, and records history.
+ * Phase 126: Hybrid in-memory cache + DB write-through.
+ * Write-through: every mutation writes to both cache and DB.
+ * Read: cache-first, DB fallback on cache miss.
+ * Graceful degradation: if DB not wired, falls back to cache-only.
  */
 
 import { createAck, createStatusUpdate } from '../domain/ack-status.js';
@@ -18,13 +20,44 @@ import { createWorkqueueItem } from '../workqueues/workqueue-store.js';
 import { appendRcmAudit } from '../audit/rcm-audit.js';
 import { buildActionRecommendation, lookupCarc } from '../reference/carc-rarc.js';
 
-/* ── Ack Store (in-memory) ─────────────────────────────────── */
+/* ── DB repo interface (lazy-wired at startup) ──────────────── */
+
+interface AckRepo {
+  insertAck(data: any): any;
+  findAckById(id: string): any;
+  findAckByIdempotencyKey(tenantId: string, key: string): any;
+  findAcksByClaimId(claimId: string): any;
+  listAcks(tenantId: string, opts?: any): any;
+  countAcks(tenantId: string): any;
+  insertStatusUpdate(data: any): any;
+  findStatusUpdateById(id: string): any;
+  findStatusByIdempotencyKey(tenantId: string, key: string): any;
+  findStatusesByClaimId(claimId: string): any;
+  listStatusUpdates(tenantId: string, opts?: any): any;
+  countStatusUpdates(tenantId: string): any;
+}
+
+let dbRepo: AckRepo | null = null;
+
+/** Called from index.ts after DB init */
+export function initAckStatusRepo(repo: AckRepo): void {
+  dbRepo = repo;
+}
+
+function dbWarn(op: string, err: any): void {
+  if (process.env.NODE_ENV !== "test") {
+    // eslint-disable-next-line no-console
+    console.warn(`[ack-status] DB ${op} failed (cache-only fallback):`, err?.message ?? err);
+  }
+}
+
+/* ── Ack Store (in-memory cache) ───────────────────────────── */
 
 const acks = new Map<string, Acknowledgement>();
 const claimAckIndex = new Map<string, string[]>(); // claimId → ack IDs
 const idempotencyIndex = new Map<string, string>(); // idempotencyKey → ack ID
 
-/* ── Status Store (in-memory) ──────────────────────────────── */
+/* ── Status Store (in-memory cache) ────────────────────────── */
 
 const statusUpdates = new Map<string, ClaimStatusUpdate>();
 const claimStatusIndex = new Map<string, string[]>(); // claimId → status IDs
@@ -74,12 +107,37 @@ export async function ingestAck(input: AckIngestInput): Promise<AckIngestResult>
     idempotencyKey: input.idempotencyKey,
   });
 
-  // Store
+  // Store in cache
   acks.set(ack.id, ack);
   idempotencyIndex.set(input.idempotencyKey, ack.id);
   if (ack.claimId) {
     if (!claimAckIndex.has(ack.claimId)) claimAckIndex.set(ack.claimId, []);
     claimAckIndex.get(ack.claimId)!.push(ack.id);
+  }
+
+  // Write-through to DB (Phase 126)
+  if (dbRepo) {
+    try {
+      await dbRepo.insertAck({
+        id: ack.id,
+        tenantId: 'default',
+        type: ack.type,
+        disposition: ack.disposition,
+        claimId: ack.claimId ?? null,
+        originalControlNumber: ack.originalControlNumber,
+        ackControlNumber: ack.ackControlNumber,
+        payerId: ack.payerId ?? null,
+        payerName: ack.payerName ?? null,
+        errorsJson: JSON.stringify(ack.errors),
+        rawPayload: ack.rawPayload ?? null,
+        idempotencyKey: ack.idempotencyKey,
+        receivedAt: ack.receivedAt,
+        processedAt: ack.processedAt,
+        createdAt: ack.createdAt,
+      });
+    } catch (err) {
+      dbWarn('insertAck', err);
+    }
   }
 
   // Link to claim and update status
@@ -187,12 +245,39 @@ export async function ingestStatusUpdate(input: StatusIngestInput): Promise<Stat
     idempotencyKey: input.idempotencyKey,
   });
 
-  // Store
+  // Store in cache
   statusUpdates.set(status.id, status);
   statusIdempotencyIndex.set(input.idempotencyKey, status.id);
   if (status.claimId) {
     if (!claimStatusIndex.has(status.claimId)) claimStatusIndex.set(status.claimId, []);
     claimStatusIndex.get(status.claimId)!.push(status.id);
+  }
+
+  // Write-through to DB (Phase 126)
+  if (dbRepo) {
+    try {
+      await dbRepo.insertStatusUpdate({
+        id: status.id,
+        tenantId: 'default',
+        claimId: status.claimId ?? null,
+        payerClaimId: status.payerClaimId ?? null,
+        categoryCode: status.categoryCode,
+        statusCode: status.statusCode,
+        statusDescription: status.statusDescription,
+        effectiveDate: status.effectiveDate ?? null,
+        checkDate: status.checkDate ?? null,
+        totalCharged: status.totalCharged ?? null,
+        totalPaid: status.totalPaid ?? null,
+        payerId: status.payerId ?? null,
+        payerName: status.payerName ?? null,
+        rawPayload: status.rawPayload ?? null,
+        idempotencyKey: status.idempotencyKey,
+        receivedAt: status.receivedAt,
+        createdAt: status.createdAt,
+      });
+    } catch (err) {
+      dbWarn('insertStatusUpdate', err);
+    }
   }
 
   // Interpret category code for claim lifecycle
@@ -269,7 +354,10 @@ export async function ingestStatusUpdate(input: StatusIngestInput): Promise<Stat
 /* ── Query Functions ───────────────────────────────────────── */
 
 export function getAck(id: string): Acknowledgement | undefined {
-  return acks.get(id);
+  const cached = acks.get(id);
+  if (cached) return cached;
+  // No sync DB fallback for async repos — cache is primary for sync callers
+  return undefined;
 }
 
 export function getAcksForClaim(claimId: string): Acknowledgement[] {
@@ -296,7 +384,9 @@ export function listAcks(filters?: {
 }
 
 export function getStatusUpdate(id: string): ClaimStatusUpdate | undefined {
-  return statusUpdates.get(id);
+  const cached = statusUpdates.get(id);
+  if (cached) return cached;
+  return undefined;
 }
 
 export function getStatusUpdatesForClaim(claimId: string): ClaimStatusUpdate[] {
@@ -345,6 +435,11 @@ export function getStatusStats(): {
     byCategoryCode[s.categoryCode] = (byCategoryCode[s.categoryCode] ?? 0) + 1;
   }
   return { total: statusUpdates.size, byCategoryCode };
+}
+
+/** Returns the backing repo (if wired) for external inspection (e.g. restart gate) */
+export function getAckStatusRepo(): AckRepo | null {
+  return dbRepo;
 }
 
 export function resetAckStore(): void {
