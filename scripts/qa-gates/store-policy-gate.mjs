@@ -83,19 +83,18 @@ if (totalRegistered < 80) {
 
 // ─── 3. Check critical + in_memory_only stores ──────────────
 
-// Extract critical + in_memory_only entries
+// Extract critical + in_memory_only entries using block-by-block parsing
+// (regex spanning across blocks is unreliable)
 const criticalInMemory = [];
-const entryRegex = /\{\s*\n\s*id:\s*"([^"]+)"[\s\S]*?classification:\s*"critical"[\s\S]*?durability:\s*"in_memory_only"[\s\S]*?\}/g;
-let entry;
-while ((entry = entryRegex.exec(policySrc)) !== null) {
-  criticalInMemory.push(entry[1]);
-}
-
-// Also check reversed order (durability before classification)
-const entryRegex2 = /\{\s*\n\s*id:\s*"([^"]+)"[\s\S]*?durability:\s*"in_memory_only"[\s\S]*?classification:\s*"critical"[\s\S]*?\}/g;
-while ((entry = entryRegex2.exec(policySrc)) !== null) {
-  if (!criticalInMemory.includes(entry[1])) {
-    criticalInMemory.push(entry[1]);
+const allEntryBlocks = policySrc.split(/\n  \{/).slice(1);
+for (const rawBlock of allEntryBlocks) {
+  const block = "{" + rawBlock.split(/\n  \},/)[0] + "}";
+  const idMatch = block.match(/id:\s*"([^"]+)"/);
+  if (!idMatch) continue;
+  const classMatch = block.match(/classification:\s*"([^"]+)"/);
+  const durMatch = block.match(/durability:\s*"([^"]+)"/);
+  if (classMatch && classMatch[1] === "critical" && durMatch && durMatch[1] === "in_memory_only") {
+    criticalInMemory.push(idMatch[1]);
   }
 }
 
@@ -232,13 +231,18 @@ if (missingExports.length > 0) {
 
 // ─── 7. Verify migrationTarget on all critical+in_memory ───
 
+// Reuse the block-by-block approach for accurate matching
 const criticalNoMigration = [];
-const critInMemRegex = /\{\s*\n\s*id:\s*"([^"]+)"[\s\S]*?classification:\s*"critical"[\s\S]*?durability:\s*"in_memory_only"([\s\S]*?)\}/g;
-let cim;
-while ((cim = critInMemRegex.exec(policySrc)) !== null) {
-  const block = cim[0];
-  if (!block.includes("migrationTarget")) {
-    criticalNoMigration.push(cim[1]);
+for (const rawBlock of allEntryBlocks) {
+  const block = "{" + rawBlock.split(/\n  \},/)[0] + "}";
+  const idMatch = block.match(/id:\s*"([^"]+)"/);
+  if (!idMatch) continue;
+  const classMatch = block.match(/classification:\s*"([^"]+)"/);
+  const durMatch = block.match(/durability:\s*"([^"]+)"/);
+  if (classMatch && classMatch[1] === "critical" && durMatch && durMatch[1] === "in_memory_only") {
+    if (!block.includes("migrationTarget")) {
+      criticalNoMigration.push(idMatch[1]);
+    }
   }
 }
 

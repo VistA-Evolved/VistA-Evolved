@@ -45,12 +45,13 @@ import {
 /* ── Registry Smoke ────────────────────────────────────────── */
 
 describe("Job Registry (smoke)", () => {
-  it("exports exactly 4 job names", () => {
-    expect(ALL_JOB_NAMES).toHaveLength(4);
+  it("exports exactly 5 job names", () => {
+    expect(ALL_JOB_NAMES).toHaveLength(5);
     expect(ALL_JOB_NAMES).toContain("eligibility_check_poll");
     expect(ALL_JOB_NAMES).toContain("claim_status_poll");
     expect(ALL_JOB_NAMES).toContain("evidence_staleness_scan");
     expect(ALL_JOB_NAMES).toContain("retention_cleanup");
+    expect(ALL_JOB_NAMES).toContain("pg_backup");
   });
 
   it("has payload schemas for every job name", () => {
@@ -72,7 +73,7 @@ describe("Job Registry (smoke)", () => {
     }
   });
 
-  it("has default cron schedules for all 4 jobs", () => {
+  it("has default cron schedules for all 5 jobs", () => {
     for (const name of ALL_JOB_NAMES) {
       const schedule = getJobCronSchedule(name);
       expect(schedule).toBeTruthy();
@@ -80,7 +81,7 @@ describe("Job Registry (smoke)", () => {
     }
   });
 
-  it("has default concurrency for all 4 jobs", () => {
+  it("has default concurrency for all 5 jobs", () => {
     for (const name of ALL_JOB_NAMES) {
       const c = getJobConcurrency(name);
       expect(c).toBeGreaterThanOrEqual(1);

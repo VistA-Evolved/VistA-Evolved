@@ -35,8 +35,9 @@ import {
 import {
   createWorkqueueItem, getWorkqueueItem, updateWorkqueueItem,
   listWorkqueueItems, getWorkqueueItemsForClaim, getWorkqueueStats,
-  resetWorkqueueStore,
+  resetWorkqueueStore, initWorkqueueRepo,
 } from '../src/rcm/workqueues/workqueue-store.js';
+import type { WorkqueueRepoLike } from '../src/rcm/workqueues/workqueue-store.js';
 
 // Payer rules
 import {
@@ -78,22 +79,105 @@ function makeSubmittedClaim() {
   return submitted;
 }
 
+/* ─── In-memory mock WorkqueueRepo for test isolation ────────── */
+
+function createMockWorkqueueRepo(): WorkqueueRepoLike {
+  const items = new Map<string, any>();
+  let counter = 0;
+
+  return {
+    createWorkItem(params: any) {
+      const id = `wq-${++counter}`;
+      const now = new Date().toISOString();
+      const row = {
+        id,
+        type: params.type,
+        status: 'open',
+        claimId: params.claimId,
+        payerId: params.payerId ?? null,
+        payerName: params.payerName ?? null,
+        patientDfn: params.patientDfn ?? null,
+        reasonCode: params.reasonCode,
+        reasonDescription: params.reasonDescription,
+        reasonCategory: params.reasonCategory ?? null,
+        recommendedAction: params.recommendedAction,
+        fieldToFix: params.fieldToFix ?? null,
+        triggeringRule: params.triggeringRule ?? null,
+        sourceType: params.sourceType,
+        sourceId: params.sourceId ?? null,
+        sourceTimestamp: params.sourceTimestamp ?? null,
+        assignedTo: null,
+        priority: params.priority ?? 'medium',
+        dueDate: null,
+        resolvedAt: null,
+        resolvedBy: null,
+        resolutionNote: null,
+        tenantId: params.tenantId ?? 'default',
+        createdAt: now,
+        updatedAt: now,
+      };
+      items.set(id, row);
+      return row;
+    },
+    findWorkItemById(id: string) {
+      return items.get(id) ?? null;
+    },
+    findWorkItemsForClaim(claimId: string) {
+      return [...items.values()].filter((i: any) => i.claimId === claimId);
+    },
+    updateWorkItem(id: string, updates: any) {
+      const row = items.get(id);
+      if (!row) return null;
+      const updated = { ...row, ...updates, updatedAt: new Date().toISOString() };
+      items.set(id, updated);
+      return updated;
+    },
+    listWorkItems(filters?: any) {
+      let result = [...items.values()];
+      if (filters?.type) result = result.filter((i: any) => i.type === filters.type);
+      if (filters?.status) result = result.filter((i: any) => i.status === filters.status);
+      if (filters?.claimId) result = result.filter((i: any) => i.claimId === filters.claimId);
+      if (filters?.payerId) result = result.filter((i: any) => i.payerId === filters.payerId);
+      if (filters?.priority) result = result.filter((i: any) => i.priority === filters.priority);
+      return { items: result, total: result.length };
+    },
+    getWorkItemStats(tenantId?: string) {
+      let all = [...items.values()];
+      if (tenantId) all = all.filter((i: any) => i.tenantId === tenantId);
+      const byType: Record<string, number> = { rejection: 0, denial: 0, missing_info: 0 };
+      const byStatus: Record<string, number> = { open: 0, in_progress: 0, resolved: 0, escalated: 0, dismissed: 0 };
+      const byPriority: Record<string, number> = { critical: 0, high: 0, medium: 0, low: 0 };
+      for (const item of all) {
+        byType[item.type] = (byType[item.type] ?? 0) + 1;
+        byStatus[item.status] = (byStatus[item.status] ?? 0) + 1;
+        byPriority[item.priority] = (byPriority[item.priority] ?? 0) + 1;
+      }
+      return { total: all.length, byType, byStatus, byPriority };
+    },
+    resetWorkItems() {
+      items.clear();
+      counter = 0;
+    },
+  };
+}
+
 /* ─── Test Suites ────────────────────────────────────────────── */
 
 describe('Phase 43 — RCM Claim Quality Loop', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     resetClaimStore();
     resetAckStore();
     resetStatusStore();
     resetRemitProcessor();
-    resetWorkqueueStore();
+    initWorkqueueRepo(createMockWorkqueueRepo());
+    await resetWorkqueueStore();
     resetRules();
     resetRcmAudit();
   });
 
   describe('Ack Ingestion', () => {
-    it('ingests a 999 accepted ack', () => {
-      const result = ingestAck({
+    it('ingests a 999 accepted ack', async () => {
+      const result = await ingestAck({
         type: '999',
         disposition: 'accepted',
         originalControlNumber: 'CTL001',
@@ -106,15 +190,15 @@ describe('Phase 43 — RCM Claim Quality Loop', () => {
       expect(result.idempotent).toBe(false);
     });
 
-    it('prevents duplicate ingestion via idempotency', () => {
-      const first = ingestAck({
+    it('prevents duplicate ingestion via idempotency', async () => {
+      const first = await ingestAck({
         type: '999',
         disposition: 'accepted',
         originalControlNumber: 'CTL001',
         ackControlNumber: 'ACK001',
         idempotencyKey: 'idem-dup',
       });
-      const second = ingestAck({
+      const second = await ingestAck({
         type: '999',
         disposition: 'accepted',
         originalControlNumber: 'CTL001',
@@ -125,9 +209,9 @@ describe('Phase 43 — RCM Claim Quality Loop', () => {
       expect(second.ack.id).toBe(first.ack.id);
     });
 
-    it('transitions submitted claim to accepted on accepted ack', () => {
+    it('transitions submitted claim to accepted on accepted ack', async () => {
       const claim = makeSubmittedClaim();
-      ingestAck({
+      await ingestAck({
         type: '999',
         disposition: 'accepted',
         originalControlNumber: 'CTL001',
@@ -139,9 +223,9 @@ describe('Phase 43 — RCM Claim Quality Loop', () => {
       expect(updated?.status).toBe('accepted');
     });
 
-    it('transitions submitted claim to rejected and creates workqueue item', () => {
+    it('transitions submitted claim to rejected and creates workqueue item', async () => {
       const claim = makeSubmittedClaim();
-      ingestAck({
+      await ingestAck({
         type: '999',
         disposition: 'rejected',
         originalControlNumber: 'CTL001',
@@ -153,15 +237,15 @@ describe('Phase 43 — RCM Claim Quality Loop', () => {
       const updated = getClaim(claim.id);
       expect(updated?.status).toBe('rejected');
 
-      const wqItems = getWorkqueueItemsForClaim(claim.id);
+      const wqItems = await getWorkqueueItemsForClaim(claim.id);
       expect(wqItems.length).toBeGreaterThanOrEqual(1);
       expect(wqItems[0].type).toBe('rejection');
       expect(wqItems[0].reasonCode).toBe('4');
     });
 
-    it('lists and retrieves acks', () => {
-      ingestAck({ type: '999', disposition: 'accepted', originalControlNumber: 'C1', ackControlNumber: 'A1', idempotencyKey: 'k1' });
-      ingestAck({ type: '277CA', disposition: 'rejected', originalControlNumber: 'C2', ackControlNumber: 'A2', idempotencyKey: 'k2' });
+    it('lists and retrieves acks', async () => {
+      await ingestAck({ type: '999', disposition: 'accepted', originalControlNumber: 'C1', ackControlNumber: 'A1', idempotencyKey: 'k1' });
+      await ingestAck({ type: '277CA', disposition: 'rejected', originalControlNumber: 'C2', ackControlNumber: 'A2', idempotencyKey: 'k2' });
 
       const all = listAcks();
       expect(all.total).toBe(2);
@@ -177,8 +261,8 @@ describe('Phase 43 — RCM Claim Quality Loop', () => {
   });
 
   describe('Status Ingestion', () => {
-    it('ingests a 277 status update', () => {
-      const result = ingestStatusUpdate({
+    it('ingests a 277 status update', async () => {
+      const result = await ingestStatusUpdate({
         categoryCode: 'A2',
         statusCode: 'in-adjudication',
         statusDescription: 'Claim is being reviewed',
@@ -189,12 +273,12 @@ describe('Phase 43 — RCM Claim Quality Loop', () => {
       expect(result.idempotent).toBe(false);
     });
 
-    it('prevents duplicate status ingestion', () => {
-      const first = ingestStatusUpdate({
+    it('prevents duplicate status ingestion', async () => {
+      const first = await ingestStatusUpdate({
         categoryCode: 'A2', statusCode: 'review', statusDescription: 'In review',
         idempotencyKey: 'stat-dup',
       });
-      const second = ingestStatusUpdate({
+      const second = await ingestStatusUpdate({
         categoryCode: 'A2', statusCode: 'review', statusDescription: 'In review',
         idempotencyKey: 'stat-dup',
       });
@@ -202,13 +286,13 @@ describe('Phase 43 — RCM Claim Quality Loop', () => {
       expect(second.statusUpdate.id).toBe(first.statusUpdate.id);
     });
 
-    it('transitions claim to denied on F2 category', () => {
+    it('transitions claim to denied on F2 category', async () => {
       const claim = makeSubmittedClaim();
       // First accept it
       const accepted = transitionClaim(getClaim(claim.id)!, 'accepted', 'test');
       updateClaim(accepted);
 
-      ingestStatusUpdate({
+      await ingestStatusUpdate({
         claimId: claim.id,
         categoryCode: 'F2',
         statusCode: 'denied',
@@ -220,9 +304,9 @@ describe('Phase 43 — RCM Claim Quality Loop', () => {
       expect(updated?.status).toBe('denied');
     });
 
-    it('creates missing_info workqueue item on P1 category', () => {
+    it('creates missing_info workqueue item on P1 category', async () => {
       const claim = makeSubmittedClaim();
-      ingestStatusUpdate({
+      await ingestStatusUpdate({
         claimId: claim.id,
         categoryCode: 'P1',
         statusCode: 'pending',
@@ -230,15 +314,15 @@ describe('Phase 43 — RCM Claim Quality Loop', () => {
         idempotencyKey: 'stat-p1',
       });
 
-      const wqItems = getWorkqueueItemsForClaim(claim.id);
+      const wqItems = await getWorkqueueItemsForClaim(claim.id);
       expect(wqItems.length).toBeGreaterThanOrEqual(1);
       expect(wqItems[0].type).toBe('missing_info');
     });
   });
 
   describe('Remittance Processing', () => {
-    it('ingests a remittance with service lines', () => {
-      const result = ingestRemittance({
+    it('ingests a remittance with service lines', async () => {
+      const result = await ingestRemittance({
         payerId: 'BCBS',
         totalCharged: 15000,
         totalPaid: 12000,
@@ -256,23 +340,23 @@ describe('Phase 43 — RCM Claim Quality Loop', () => {
       expect(result.idempotent).toBe(false);
     });
 
-    it('prevents duplicate remittance processing', () => {
-      const first = ingestRemittance({
+    it('prevents duplicate remittance processing', async () => {
+      const first = await ingestRemittance({
         payerId: 'BCBS', totalCharged: 15000, totalPaid: 12000, idempotencyKey: 'remit-dup',
       });
-      const second = ingestRemittance({
+      const second = await ingestRemittance({
         payerId: 'BCBS', totalCharged: 15000, totalPaid: 12000, idempotencyKey: 'remit-dup',
       });
       expect(second.idempotent).toBe(true);
     });
 
-    it('creates denial workqueue items for CARC denial codes', () => {
+    it('creates denial workqueue items for CARC denial codes', async () => {
       const claim = makeSubmittedClaim();
       // Accept the claim first
       const accepted = transitionClaim(getClaim(claim.id)!, 'accepted', 'test');
       updateClaim(accepted);
 
-      ingestRemittance({
+      await ingestRemittance({
         payerId: 'BCBS',
         totalCharged: 15000,
         totalPaid: 0,
@@ -290,7 +374,7 @@ describe('Phase 43 — RCM Claim Quality Loop', () => {
       const updated = getClaim(claim.id);
       expect(updated?.status).toBe('denied');
 
-      const wqItems = getWorkqueueItemsForClaim(claim.id);
+      const wqItems = await getWorkqueueItemsForClaim(claim.id);
       expect(wqItems.length).toBeGreaterThanOrEqual(1);
       expect(wqItems[0].type).toBe('denial');
       expect(wqItems[0].reasonCode).toBe('50');
@@ -299,8 +383,8 @@ describe('Phase 43 — RCM Claim Quality Loop', () => {
   });
 
   describe('Workqueue Store', () => {
-    it('creates and retrieves workqueue items', () => {
-      const item = createWorkqueueItem({
+    it('creates and retrieves workqueue items', async () => {
+      const item = await createWorkqueueItem({
         type: 'denial',
         claimId: 'claim-1',
         reasonCode: '45',
@@ -311,33 +395,33 @@ describe('Phase 43 — RCM Claim Quality Loop', () => {
       });
       expect(item.status).toBe('open');
 
-      const retrieved = getWorkqueueItem(item.id);
+      const retrieved = await getWorkqueueItem(item.id);
       expect(retrieved?.reasonCode).toBe('45');
     });
 
-    it('filters by type and status', () => {
-      createWorkqueueItem({ type: 'denial', claimId: '1', reasonCode: '50', reasonDescription: 'Not covered', recommendedAction: 'Appeal', sourceType: 'remit_835' });
-      createWorkqueueItem({ type: 'rejection', claimId: '2', reasonCode: '4', reasonDescription: 'Modifier error', recommendedAction: 'Fix modifier', sourceType: 'ack_999' });
-      createWorkqueueItem({ type: 'missing_info', claimId: '3', reasonCode: 'P1', reasonDescription: 'Need docs', recommendedAction: 'Submit docs', sourceType: 'status_277' });
+    it('filters by type and status', async () => {
+      await createWorkqueueItem({ type: 'denial', claimId: '1', reasonCode: '50', reasonDescription: 'Not covered', recommendedAction: 'Appeal', sourceType: 'remit_835' });
+      await createWorkqueueItem({ type: 'rejection', claimId: '2', reasonCode: '4', reasonDescription: 'Modifier error', recommendedAction: 'Fix modifier', sourceType: 'ack_999' });
+      await createWorkqueueItem({ type: 'missing_info', claimId: '3', reasonCode: 'P1', reasonDescription: 'Need docs', recommendedAction: 'Submit docs', sourceType: 'status_277' });
 
-      const denials = listWorkqueueItems({ type: 'denial' });
+      const denials = await listWorkqueueItems({ type: 'denial' });
       expect(denials.total).toBe(1);
 
-      const all = listWorkqueueItems();
+      const all = await listWorkqueueItems();
       expect(all.total).toBe(3);
     });
 
-    it('updates status and tracks resolution', () => {
-      const item = createWorkqueueItem({ type: 'denial', claimId: '1', reasonCode: '50', reasonDescription: 'Not covered', recommendedAction: 'Appeal', sourceType: 'remit_835' });
-      const updated = updateWorkqueueItem(item.id, { status: 'resolved', resolutionNote: 'Resubmitted with modifier 59' });
+    it('updates status and tracks resolution', async () => {
+      const item = await createWorkqueueItem({ type: 'denial', claimId: '1', reasonCode: '50', reasonDescription: 'Not covered', recommendedAction: 'Appeal', sourceType: 'remit_835' });
+      const updated = await updateWorkqueueItem(item.id, { status: 'resolved', resolutionNote: 'Resubmitted with modifier 59' });
       expect(updated?.status).toBe('resolved');
     });
 
-    it('returns stats by type, status, and priority', () => {
-      createWorkqueueItem({ type: 'denial', claimId: '1', reasonCode: '50', reasonDescription: '', recommendedAction: '', sourceType: 'remit_835', priority: 'critical' });
-      createWorkqueueItem({ type: 'rejection', claimId: '2', reasonCode: '4', reasonDescription: '', recommendedAction: '', sourceType: 'ack_999', priority: 'high' });
+    it('returns stats by type, status, and priority', async () => {
+      await createWorkqueueItem({ type: 'denial', claimId: '1', reasonCode: '50', reasonDescription: '', recommendedAction: '', sourceType: 'remit_835', priority: 'critical' });
+      await createWorkqueueItem({ type: 'rejection', claimId: '2', reasonCode: '4', reasonDescription: '', recommendedAction: '', sourceType: 'ack_999', priority: 'high' });
 
-      const stats = getWorkqueueStats();
+      const stats = await getWorkqueueStats();
       expect(stats.total).toBe(2);
       expect(stats.byType.denial).toBe(1);
       expect(stats.byType.rejection).toBe(1);

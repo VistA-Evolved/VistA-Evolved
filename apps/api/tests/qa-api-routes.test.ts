@@ -77,6 +77,12 @@ async function login(): Promise<{ cookie: string; csrf: string }> {
 let authed: { cookie: string; csrf: string };
 
 beforeAll(async () => {
+  try {
+    const probe = await fetch(`${API}/health`, { signal: AbortSignal.timeout(3000) });
+    if (!probe.ok) throw new Error("API not healthy");
+  } catch {
+    console.warn("⚠ API not reachable at " + API + " — integration tests will fail");
+  }
   authed = await login();
 });
 
