@@ -85,28 +85,24 @@ export function createPipelineEntry(
   existing.push(entry.id);
   claimIndex.set(claimId, existing);
 
-  // Write-through to DB (Phase 126)
+  // Write-through to DB (Phase 126) — fire-and-forget with .catch
   if (dbRepo) {
-    try {
-      void dbRepo.insertPipelineEntry({
-        id: entry.id,
-        tenantId: 'default',
-        claimId: entry.claimId,
-        transactionSet: entry.transactionSet,
-        stage: entry.stage,
-        connectorId: entry.connectorId,
-        payerId: entry.payerId,
-        outboundPayload: entry.outboundPayload ?? null,
-        inboundPayload: entry.inboundPayload ?? null,
-        errorsJson: JSON.stringify(entry.errors),
-        attempts: entry.attempts,
-        createdAt: entry.createdAt,
-        updatedAt: entry.updatedAt,
-        completedAt: entry.completedAt ?? null,
-      });
-    } catch (err) {
-      dbWarn('insertPipelineEntry', err);
-    }
+    dbRepo.insertPipelineEntry({
+      id: entry.id,
+      tenantId: 'default',
+      claimId: entry.claimId,
+      transactionSet: entry.transactionSet,
+      stage: entry.stage,
+      connectorId: entry.connectorId,
+      payerId: entry.payerId,
+      outboundPayload: entry.outboundPayload ?? null,
+      inboundPayload: entry.inboundPayload ?? null,
+      errorsJson: JSON.stringify(entry.errors),
+      attempts: entry.attempts,
+      createdAt: entry.createdAt,
+      updatedAt: entry.updatedAt,
+      completedAt: entry.completedAt ?? null,
+    }).catch((err: unknown) => dbWarn('insertPipelineEntry', err));
   }
 
   return entry;
@@ -139,21 +135,18 @@ export function advancePipelineStage(
     entry.completedAt = new Date().toISOString();
   }
 
-  // Write-through to DB (Phase 126)
+  // Write-through to DB (Phase 126) — fire-and-forget with .catch
   if (dbRepo) {
-    try {
-      const updates: Record<string, unknown> = {
-        stage: entry.stage,
-        attempts: entry.attempts,
-      };
-      if (entry.outboundPayload) updates.outboundPayload = entry.outboundPayload;
-      if (entry.inboundPayload) updates.inboundPayload = entry.inboundPayload;
-      updates.errorsJson = JSON.stringify(entry.errors);
-      if (entry.completedAt) updates.completedAt = entry.completedAt;
-      void dbRepo.updateEntry(entryId, updates);
-    } catch (err) {
-      dbWarn('updateEntry', err);
-    }
+    const updates: Record<string, unknown> = {
+      stage: entry.stage,
+      attempts: entry.attempts,
+    };
+    if (entry.outboundPayload) updates.outboundPayload = entry.outboundPayload;
+    if (entry.inboundPayload) updates.inboundPayload = entry.inboundPayload;
+    updates.errorsJson = JSON.stringify(entry.errors);
+    if (entry.completedAt) updates.completedAt = entry.completedAt;
+    dbRepo.updateEntry(entryId, updates)
+      .catch((err: unknown) => dbWarn('updateEntry', err));
   }
 
   return entry;
