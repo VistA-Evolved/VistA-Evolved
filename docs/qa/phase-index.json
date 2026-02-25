@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-25T00:59:27.443Z",
+  "generatedAt": "2026-02-25T01:32:01.059Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 131,
+  "phaseCount": 132,
   "phases": [
     {
       "phaseNumber": "1",
@@ -1402,6 +1402,39 @@
         "apps/api/src/platform/pg/pg-migrate.ts",
         "qa/gauntlet/gates/g11-tenant-isolation.mjs",
         "qa/gauntlet/cli.mjs"
+      ]
+    },
+    {
+      "phaseNumber": "123",
+      "title": "SCHEDULING SD* INTEGRATION PACK (VISTA-FIRST, TESTABLE)",
+      "folder": "127-PHASE-123-SCHEDULING-SD",
+      "files": [
+        "123-01-IMPLEMENT.md",
+        "123-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "123-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "123-99-VERIFY.md"
+      ],
+      "routes": [
+        "/scheduling/appointments/request",
+        "/scheduling/encounters/:ien/detail",
+        "/scheduling/encounters/:ien/providers",
+        "/scheduling/waitlist"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/vista/rpcRegistry.ts",
+        "apps/api/src/adapters/scheduling/vista-adapter.ts",
+        "apps/api/src/adapters/scheduling/interface.ts",
+        "apps/api/src/routes/scheduling/index.ts",
+        "config/capabilities.json",
+        "apps/api/tests/scheduling-sd.test.ts",
+        "prompts/127-PHASE-123-SCHEDULING-SD/123-01-IMPLEMENT.md",
+        "prompts/127-PHASE-123-SCHEDULING-SD/123-99-VERIFY.md"
       ]
     },
     {

@@ -579,6 +579,38 @@
       "targetPackage": "IB",
       "description": "View claim status poll results (Phase 69)"
     },
+    "scheduling.appointments.list": {
+      "status": "configured",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SDOE LIST ENCOUNTERS FOR PAT",
+      "targetPackage": "SD",
+      "description": "List patient appointments/encounters (SDOE LIST ENCOUNTERS FOR PAT)"
+    },
+    "scheduling.encounters.byDate": {
+      "status": "configured",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SDOE LIST ENCOUNTERS FOR DATES",
+      "targetPackage": "SD",
+      "description": "List encounters by date range (SDOE LIST ENCOUNTERS FOR DATES)"
+    },
+    "scheduling.clinics.list": {
+      "status": "configured",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SD W/L RETRIVE HOSP LOC(#44)",
+      "targetPackage": "SD",
+      "description": "List scheduling clinics (SD W/L RETRIVE HOSP LOC)"
+    },
+    "scheduling.providers.list": {
+      "status": "configured",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SD W/L RETRIVE PERSON(200)",
+      "targetPackage": "SD",
+      "description": "List scheduling providers (SD W/L RETRIVE PERSON)"
+    },
     "scheduling.appointments.create": {
       "status": "configured",
       "module": "scheduling",

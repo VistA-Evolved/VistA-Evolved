@@ -36,7 +36,6 @@ import type {
 } from "./interface.js";
 import type { AdapterResult } from "../types.js";
 import { safeCallRpc } from "../../lib/rpc-resilience.js";
-import { getDuz } from "../../vista/rpcBrokerClient.js";
 import { log } from "../../lib/logger.js";
 
 /* ------------------------------------------------------------------ */
@@ -368,7 +367,7 @@ function grounding(rpc: string, vistaPackage: string, extras?: Partial<VistaGrou
 
 /* ------------------------------------------------------------------ */
 /* In-memory request store (wait list / appointment requests)            */
-/* Mirrors Phase 23 imaging worklist pattern — in-memory until VistA     */
+/* Mirrors Phase 23 imaging worklist pattern -- in-memory until VistA     */
 /* SDEC RPCs available for direct booking.                              */
 /* ------------------------------------------------------------------ */
 
@@ -463,7 +462,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
             ? `${appointments.length} encounter(s) from VistA`
             : "RPC returned empty -- no encounters in sandbox for this patient",
         }),
-      } as any;
+      };
     } catch (err: any) {
       log.warn("SDOE LIST ENCOUNTERS FOR PAT failed", { error: err.message });
       // Return just pending requests if VistA call fails
@@ -587,7 +586,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
             migrationPath: "Wire SDEC APPADD for direct appointment booking when available",
           },
         ),
-      } as any;
+      };
     } finally {
       releaseBookingLock(lockKey);
     }
@@ -595,7 +594,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
 
   /**
    * Cancel appointment or submit cancel request.
-   * SDEC APPDEL is not in sandbox — stores cancel request.
+   * SDEC APPDEL is not in sandbox -- stores cancel request.
    */
   async cancelAppointment(
     appointmentId: string,
@@ -611,10 +610,17 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       existing.status = "cancelled";
       // Phase 121: Write-through cancel to DB
       persistEntry(existing);
-      return { ok: true, data: undefined };
+      return {
+        ok: true,
+        data: undefined,
+        vistaGrounding: grounding("SDEC APPDEL", "SD", {
+          sandboxNote: "Local request cancelled (SDEC APPDEL not in sandbox)",
+          migrationPath: "Wire SDEC APPDEL for real appointment cancellation",
+        }),
+      };
     }
 
-    // For VistA encounters — store a cancel request
+    // For VistA encounters -- store a cancel request
     const id = `cancel-${++requestSeq}-${Date.now().toString(36)}`;
     const cancelEntry: WaitListEntry = {
       id,
@@ -636,7 +642,11 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       ok: true,
       data: undefined,
       pending: true,
-      target: "SDEC APPDEL (not in sandbox — stored as cancel request)",
+      target: "SDEC APPDEL (not in sandbox -- stored as cancel request)",
+      vistaGrounding: grounding("SDEC APPDEL", "SD", {
+        sandboxNote: "SDEC APPDEL not in sandbox -- cancel request stored locally",
+        migrationPath: "Wire SDEC APPDEL for real appointment cancellation",
+      }),
     };
   }
 
@@ -659,7 +669,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         sandboxNote: "SDEC APPSLOTS is not installed in WorldVistA Docker sandbox",
         migrationPath: "Install SDEC package or use VA-SDEC patch to enable slot-based scheduling",
       }),
-    } as any;
+    };
   }
 
   /**
@@ -678,7 +688,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
             ? `${clinics.length} clinic(s) returned`
             : "RPC returned empty -- no clinics configured in sandbox File 44",
         }),
-      } as any;
+      };
     } catch (err: any) {
       log.warn("SD W/L RETRIVE HOSP LOC(#44) failed", { error: err.message });
       return {
@@ -707,7 +717,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
             ? `${providers.length} provider(s) returned`
             : "RPC returned empty -- no providers in sandbox File 200",
         }),
-      } as any;
+      };
     } catch (err: any) {
       log.warn("SD W/L RETRIVE PERSON(200) failed", { error: err.message });
       return {
@@ -741,7 +751,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
             ? `${appointments.length} encounter(s) in date range`
             : "No encounters found for date range in sandbox",
         }),
-      } as any;
+      };
     } catch (err: any) {
       log.warn("SDOE LIST ENCOUNTERS FOR DATES failed", { error: err.message });
       return {
@@ -768,13 +778,13 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       if (!detail) {
         return {
           ok: false,
-          data: undefined as any,
+          data: undefined,
           error: `No encounter data returned for IEN ${encounterIen}`,
           vistaGrounding: grounding("SDOE GET GENERAL DATA", "SD", {
             vistaFiles: ["SDOE (File 409.68)"],
             sandboxNote: "RPC returned empty -- encounter IEN may not exist or no data in sandbox",
           }),
-        } as any;
+        };
       }
       return {
         ok: true,
@@ -783,12 +793,12 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
           vistaFiles: ["SDOE (File 409.68)"],
           sandboxNote: `Encounter ${encounterIen} detail retrieved`,
         }),
-      } as any;
+      };
     } catch (err: any) {
       log.warn("SDOE GET GENERAL DATA failed", { error: err.message, encounterIen });
       return {
         ok: false,
-        data: undefined as any,
+        data: undefined,
         error: `Encounter detail lookup failed: ${err.message}`,
         pending: true,
         target: "SDOE GET GENERAL DATA",
@@ -797,7 +807,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
           sandboxNote: "RPC may not be available in sandbox",
           migrationPath: "SDOE GET GENERAL DATA should be present in standard VistA installations",
         }),
-      } as any;
+      };
     }
   }
 
@@ -817,7 +827,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
             ? `${providers.length} provider(s) for encounter ${encounterIen}`
             : "No providers assigned to this encounter in sandbox",
         }),
-      } as any;
+      };
     } catch (err: any) {
       log.warn("SDOE GET PROVIDERS failed", { error: err.message, encounterIen });
       return {
@@ -830,7 +840,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
           vistaFiles: ["SDOE (File 409.68)"],
           sandboxNote: "RPC may not be available in sandbox",
         }),
-      } as any;
+      };
     }
   }
 
@@ -850,7 +860,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
             ? `${diagnoses.length} diagnosis/diagnoses for encounter ${encounterIen}`
             : "No diagnoses recorded for this encounter in sandbox",
         }),
-      } as any;
+      };
     } catch (err: any) {
       log.warn("SDOE GET DIAGNOSES failed", { error: err.message, encounterIen });
       return {
@@ -863,7 +873,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
           vistaFiles: ["SDOE (File 409.68)"],
           sandboxNote: "RPC may not be available in sandbox",
         }),
-      } as any;
+      };
     }
   }
 
@@ -902,7 +912,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
           : `SD W/L RETRIVE FULL DATA unavailable -- showing ${localEntries.length} local requests only`,
         migrationPath: "SD W/L RETRIVE FULL DATA reads File 409.3 (SD WAIT LIST)",
       }),
-    } as any;
+    };
   }
 }
 

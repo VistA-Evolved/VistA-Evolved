@@ -86,7 +86,7 @@ export interface EncounterDiagnosis {
   dateRecorded?: string;
 }
 
-/** Phase 123: VistA posture metadata — shows exactly which RPC/file was used */
+/** Phase 123: VistA posture metadata -- shows exactly which RPC/file was used */
 export interface VistaGrounding {
   rpc: string;
   vistaPackage: string;

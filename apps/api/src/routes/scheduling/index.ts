@@ -36,7 +36,7 @@ import { log } from "../../lib/logger.js";
 function getSchedulingAdapter(): SchedulingAdapter {
   const adapter = getAdapter("scheduling");
   if (!adapter) {
-    throw new Error("Scheduling adapter not loaded — check ADAPTER_SCHEDULING env var and initAdapters() order");
+    throw new Error("Scheduling adapter not loaded -- check ADAPTER_SCHEDULING env var and initAdapters() order");
   }
   return adapter as unknown as SchedulingAdapter;
 }
@@ -94,7 +94,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       pending: result.pending,
       target: result.target,
       error: result.error,
-      vistaGrounding: (result as any).vistaGrounding,
+      vistaGrounding: result.vistaGrounding,
     };
   });
 
@@ -112,7 +112,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       data: result.data || [],
       pending: result.pending,
       target: result.target,
-      vistaGrounding: (result as any).vistaGrounding,
+      vistaGrounding: result.vistaGrounding,
     };
   });
 
@@ -125,7 +125,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       data: result.data || [],
       pending: result.pending,
       target: result.target,
-      vistaGrounding: (result as any).vistaGrounding,
+      vistaGrounding: result.vistaGrounding,
     };
   });
 
@@ -138,7 +138,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       data: result.data || [],
       pending: result.pending,
       target: result.target,
-      vistaGrounding: (result as any).vistaGrounding,
+      vistaGrounding: result.vistaGrounding,
     };
   });
 
@@ -157,7 +157,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       pending: result.pending,
       target: result.target,
       error: result.error,
-      vistaGrounding: (result as any).vistaGrounding,
+      vistaGrounding: result.vistaGrounding,
     };
   });
 
@@ -204,7 +204,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       data: result.data,
       pending: result.pending,
       target: result.target,
-      vistaGrounding: (result as any).vistaGrounding,
+      vistaGrounding: result.vistaGrounding,
       notice: result.pending
         ? "Appointment request submitted. Clinic will confirm scheduling."
         : "Appointment booked successfully.",
@@ -235,6 +235,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       ok: result.ok,
       pending: result.pending,
       target: result.target,
+      vistaGrounding: result.vistaGrounding,
       notice: result.pending
         ? "Cancellation request submitted. Clinic will process."
         : "Appointment cancelled.",
@@ -247,6 +248,10 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
     const { preferredDate, reason, patientDfn } = body;
+
+    if (!patientDfn) {
+      return reply.code(400).send({ ok: false, error: "patientDfn is required for reschedule" });
+    }
 
     // Cancel original + create new request
     await adapter.cancelAppointment(id, reason || "Reschedule requested", patientDfn);
@@ -275,6 +280,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
         data: newResult.data,
         pending: newResult.pending,
         target: newResult.target,
+        vistaGrounding: newResult.vistaGrounding,
         notice: "Reschedule request submitted. Clinic will confirm new date.",
       };
     }
@@ -317,7 +323,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       pending: result.pending,
       target: result.target,
       error: result.error,
-      vistaGrounding: (result as any).vistaGrounding,
+      vistaGrounding: result.vistaGrounding,
     };
   });
 
@@ -336,7 +342,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       pending: result.pending,
       target: result.target,
       error: result.error,
-      vistaGrounding: (result as any).vistaGrounding,
+      vistaGrounding: result.vistaGrounding,
     };
   });
 
@@ -355,7 +361,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       pending: result.pending,
       target: result.target,
       error: result.error,
-      vistaGrounding: (result as any).vistaGrounding,
+      vistaGrounding: result.vistaGrounding,
     };
   });
 
@@ -372,7 +378,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       pending: result.pending,
       target: result.target,
       error: result.error,
-      vistaGrounding: (result as any).vistaGrounding,
+      vistaGrounding: result.vistaGrounding,
     };
   });
 

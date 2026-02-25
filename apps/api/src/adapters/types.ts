@@ -25,6 +25,14 @@ export interface AdapterResult<T = unknown> {
   pending?: boolean;
   /** Target RPC or endpoint that would provide this data */
   target?: string;
+  /** VistA posture metadata -- which RPC/file was used (Phase 123) */
+  vistaGrounding?: {
+    rpc: string;
+    vistaPackage: string;
+    vistaFiles?: string[];
+    sandboxNote?: string;
+    migrationPath?: string;
+  };
 }
 
 /** Patient demographics shape (cross-adapter). */
