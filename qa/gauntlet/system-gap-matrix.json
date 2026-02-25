@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-02-25T03:30:41.495Z",
-  "headSha": "38fe46f",
+  "generatedAt": "2026-02-25T05:26:40.044Z",
+  "headSha": "78e23b6",
   "domains": [
     {
       "domain": "AUTH_IAM",
@@ -779,7 +779,7 @@
         },
         {
           "metric": "highRiskMaps",
-          "value": 40
+          "value": 36
         },
         {
           "metric": "medRiskMaps",
@@ -788,14 +788,14 @@
       ],
       "topGaps": [
         {
-          "gap": "40 high-risk in-memory stores lose data on restart",
+          "gap": "36 high-risk in-memory stores lose data on restart",
           "severity": "high",
           "evidenceFiles": [
             "apps/api/src/adapters/adapter-loader.ts",
             "apps/api/src/rcm/claim-lifecycle/scrubber.ts",
-            "apps/api/src/rcm/edi/ack-status-processor.ts",
-            "apps/api/src/rcm/edi/ack-status-processor.ts",
-            "apps/api/src/rcm/edi/ack-status-processor.ts"
+            "apps/api/src/rcm/edi/remit-processor.ts",
+            "apps/api/src/rcm/hmo-portal/hmo-portal-routes.ts",
+            "apps/api/src/rcm/hmo-portal/hmo-portal-routes.ts"
           ]
         }
       ],
@@ -844,24 +844,24 @@
       ]
     },
     {
-      "risk": "In-memory store claimAckIndex in apps/api/src/rcm/edi/ack-status-processor.ts loses string data on restart",
+      "risk": "In-memory store processedRemittances in apps/api/src/rcm/edi/remit-processor.ts loses Remittance data on restart",
       "severity": "high",
       "evidence": [
-        "apps/api/src/rcm/edi/ack-status-processor.ts:24"
+        "apps/api/src/rcm/edi/remit-processor.ts:88"
       ]
     },
     {
-      "risk": "In-memory store statusUpdates in apps/api/src/rcm/edi/ack-status-processor.ts loses ClaimStatusUpdate data on restart",
+      "risk": "In-memory store loaPacketCache in apps/api/src/rcm/hmo-portal/hmo-portal-routes.ts loses LoaPacket data on restart",
       "severity": "high",
       "evidence": [
-        "apps/api/src/rcm/edi/ack-status-processor.ts:29"
+        "apps/api/src/rcm/hmo-portal/hmo-portal-routes.ts:66"
       ]
     },
     {
-      "risk": "In-memory store claimStatusIndex in apps/api/src/rcm/edi/ack-status-processor.ts loses string data on restart",
+      "risk": "In-memory store claimPacketCache in apps/api/src/rcm/hmo-portal/hmo-portal-routes.ts loses HmoClaimPacket data on restart",
       "severity": "high",
       "evidence": [
-        "apps/api/src/rcm/edi/ack-status-processor.ts:30"
+        "apps/api/src/rcm/hmo-portal/hmo-portal-routes.ts:67"
       ]
     },
     {

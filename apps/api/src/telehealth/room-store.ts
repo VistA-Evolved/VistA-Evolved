@@ -119,12 +119,12 @@ function rowToEntry(row: any): RoomEntry {
   };
 }
 
-function getEntry(roomId: string): RoomEntry | null {
+async function getEntry(roomId: string): Promise<RoomEntry | null> {
   const cached = rooms.get(roomId);
   if (cached) return cached;
   if (_repo) {
     try {
-      const row = _repo.findRoomById(roomId);
+      const row = await Promise.resolve(_repo.findRoomById(roomId));
       if (row) { const e = rowToEntry(row); rooms.set(roomId, e); return e; }
     } catch (e) { dbWarn("persist", e); }
   }
@@ -134,14 +134,12 @@ function getEntry(roomId: string): RoomEntry | null {
 function persistEntry(entry: RoomEntry): void {
   rooms.set(entry.roomId, entry);
   if (_repo) {
-    try {
-      _repo.updateRoom(entry.roomId, {
-        roomStatus: entry.status,
-        participantsJson: participantsToJson(entry.participants),
-        actualStart: entry.status === "active" ? new Date().toISOString() : undefined,
-        actualEnd: entry.status === "ended" ? new Date().toISOString() : undefined,
-      });
-    } catch (e) { dbWarn("persist", e); }
+    Promise.resolve(_repo.updateRoom(entry.roomId, {
+      roomStatus: entry.status,
+      participantsJson: participantsToJson(entry.participants),
+      actualStart: entry.status === "active" ? new Date().toISOString() : undefined,
+      actualEnd: entry.status === "ended" ? new Date().toISOString() : undefined,
+    })).catch(e => dbWarn("persist", e));
   }
 }
 
@@ -176,25 +174,23 @@ export function createRoom(appointmentId: string, roomId: string): TelehealthRoo
 
   rooms.set(roomId, entry);
   if (_repo) {
-    try {
-      _repo.insertRoom({
-        id: roomId,
-        appointmentId,
-        patientDfn: "",
-        providerDuz: "",
-        roomStatus: "created",
-        accessToken: entry.accessToken,
-        expiresAt: entry.expiresAt,
-        scheduledStart: now,
-      });
-    } catch (e) { dbWarn("persist", e); }
+    Promise.resolve(_repo.insertRoom({
+      id: roomId,
+      appointmentId,
+      patientDfn: "",
+      providerDuz: "",
+      roomStatus: "created",
+      accessToken: entry.accessToken,
+      expiresAt: entry.expiresAt,
+      scheduledStart: now,
+    })).catch(e => dbWarn("persist", e));
   }
   log.info("Telehealth room created", { roomId, appointmentId });
   return toPublicRoom(entry);
 }
 
-export function getRoom(roomId: string): TelehealthRoom | null {
-  const entry = getEntry(roomId);
+export async function getRoom(roomId: string): Promise<TelehealthRoom | null> {
+  const entry = await getEntry(roomId);
   if (!entry) return null;
   if (isExpired(entry)) {
     expireRoom(entry);
@@ -203,7 +199,7 @@ export function getRoom(roomId: string): TelehealthRoom | null {
   return toPublicRoom(entry);
 }
 
-export function getRoomByAppointment(appointmentId: string): TelehealthRoom | null {
+export async function getRoomByAppointment(appointmentId: string): Promise<TelehealthRoom | null> {
   // Check cache first
   for (const entry of rooms.values()) {
     if (entry.appointmentId === appointmentId && entry.status !== "ended") {
@@ -214,7 +210,7 @@ export function getRoomByAppointment(appointmentId: string): TelehealthRoom | nu
   // Check DB
   if (_repo) {
     try {
-      const row = _repo.findRoomByAppointment(appointmentId);
+      const row = await Promise.resolve(_repo.findRoomByAppointment(appointmentId));
       if (row) {
         const e = rowToEntry(row);
         if (!isExpired(e)) {
@@ -227,8 +223,8 @@ export function getRoomByAppointment(appointmentId: string): TelehealthRoom | nu
   return null;
 }
 
-export function updateRoomStatus(roomId: string, status: RoomStatus): TelehealthRoom | null {
-  const entry = getEntry(roomId);
+export async function updateRoomStatus(roomId: string, status: RoomStatus): Promise<TelehealthRoom | null> {
+  const entry = await getEntry(roomId);
   if (!entry) return null;
   if (isExpired(entry)) { expireRoom(entry); return null; }
 
@@ -239,12 +235,12 @@ export function updateRoomStatus(roomId: string, status: RoomStatus): Telehealth
   return toPublicRoom(entry);
 }
 
-export function joinRoom(
+export async function joinRoom(
   roomId: string,
   participantId: string,
   role: ParticipantRole
-): WaitingRoomState | null {
-  const entry = getEntry(roomId);
+): Promise<WaitingRoomState | null> {
+  const entry = await getEntry(roomId);
   if (!entry || isExpired(entry)) return null;
 
   const now = new Date().toISOString();
@@ -265,8 +261,8 @@ export function joinRoom(
   return toWaitingState(entry);
 }
 
-export function endRoom(roomId: string): TelehealthRoom | null {
-  const entry = getEntry(roomId);
+export async function endRoom(roomId: string): Promise<TelehealthRoom | null> {
+  const entry = await getEntry(roomId);
   if (!entry) return null;
   entry.status = "ended";
   entry.updatedAt = new Date().toISOString();
@@ -275,20 +271,20 @@ export function endRoom(roomId: string): TelehealthRoom | null {
   return toPublicRoom(entry);
 }
 
-export function getWaitingRoomState(roomId: string): WaitingRoomState | null {
-  const entry = getEntry(roomId);
+export async function getWaitingRoomState(roomId: string): Promise<WaitingRoomState | null> {
+  const entry = await getEntry(roomId);
   if (!entry || isExpired(entry)) return null;
   return toWaitingState(entry);
 }
 
-export function getRoomAccessToken(roomId: string): string | null {
-  const entry = getEntry(roomId);
+export async function getRoomAccessToken(roomId: string): Promise<string | null> {
+  const entry = await getEntry(roomId);
   if (!entry || isExpired(entry)) return null;
   return entry.accessToken;
 }
 
-export function verifyRoomAccess(roomId: string, token: string): boolean {
-  const entry = getEntry(roomId);
+export async function verifyRoomAccess(roomId: string, token: string): Promise<boolean> {
+  const entry = await getEntry(roomId);
   if (!entry || isExpired(entry)) return false;
   // Constant-time comparison
   if (entry.accessToken.length !== token.length) return false;
@@ -303,12 +299,12 @@ export function verifyRoomAccess(roomId: string, token: string): boolean {
 /* Query helpers                                                        */
 /* ------------------------------------------------------------------ */
 
-export function listActiveRooms(): TelehealthRoom[] {
+export async function listActiveRooms(): Promise<TelehealthRoom[]> {
   // Load from DB if available
   if (_repo) {
     try {
-      const rows = _repo.findActiveRooms();
-      return rows.map((r: any) => {
+      const rows = await Promise.resolve(_repo.findActiveRooms());
+      return (Array.isArray(rows) ? rows : []).map((r: any) => {
         const e = rowToEntry(r);
         if (isExpired(e)) return null;
         return toPublicRoom(e);
@@ -356,7 +352,7 @@ function expireRoom(entry: RoomEntry): void {
     entry.updatedAt = new Date().toISOString();
     rooms.set(entry.roomId, entry);
     if (_repo) {
-      try { _repo.expireRoom(entry.roomId); } catch (e) { dbWarn("persist", e); }
+      Promise.resolve(_repo.expireRoom(entry.roomId)).catch(e => dbWarn("persist", e));
     }
     log.info("Telehealth room expired", { roomId: entry.roomId });
   }
@@ -402,7 +398,7 @@ export function startRoomCleanup(): void {
   cleanupTimer = setInterval(() => {
     // DB-side cleanup
     if (_repo) {
-      try { _repo.cleanupExpiredRooms(); } catch (e) { dbWarn("persist", e); }
+      Promise.resolve(_repo.cleanupExpiredRooms()).catch(e => dbWarn("persist", e));
     }
     // Cache-side cleanup
     let expired = 0;

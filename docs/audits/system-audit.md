@@ -1,7 +1,7 @@
 # VistA-Evolved System Audit
 
-> Generated: 2026-02-25T03:30:40.420Z  
-> HEAD: 38fe46f  
+> Generated: 2026-02-25T05:26:38.580Z  
+> HEAD: 78e23b6  
 > Node: v24.13.0 | pnpm: 10.29.2
 
 ## What Is Truly Wired End-to-End
@@ -33,7 +33,7 @@
 
 - **SQLite tables:** 46
 - **In-memory Map stores:** 171
-- **High-risk (data loss on restart):** 40
+- **High-risk (data loss on restart):** 36
 - **Medium-risk:** 27
 - **JSON seed/mutable stores:** 16
 
@@ -43,10 +43,6 @@
 |-------|------|-----------|
 | adapters | apps/api/src/adapters/adapter-loader.ts | BaseAdapter |
 | ruleMap | apps/api/src/rcm/claim-lifecycle/scrubber.ts | ScrubRuleRow |
-| claimAckIndex | apps/api/src/rcm/edi/ack-status-processor.ts | string |
-| statusUpdates | apps/api/src/rcm/edi/ack-status-processor.ts | ClaimStatusUpdate |
-| claimStatusIndex | apps/api/src/rcm/edi/ack-status-processor.ts | string |
-| claimIndex | apps/api/src/rcm/edi/pipeline.ts | string |
 | processedRemittances | apps/api/src/rcm/edi/remit-processor.ts | Remittance |
 | loaPacketCache | apps/api/src/rcm/hmo-portal/hmo-portal-routes.ts | LoaPacket |
 | claimPacketCache | apps/api/src/rcm/hmo-portal/hmo-portal-routes.ts | HmoClaimPacket |
@@ -56,6 +52,10 @@
 | claimDrafts | apps/api/src/rcm/payerOps/philhealth-store.ts | PhilHealthClaimDraft |
 | loaCases | apps/api/src/rcm/payerOps/store.ts | LOACase |
 | credentials | apps/api/src/rcm/payerOps/store.ts | CredentialVaultEntry |
+| payerGroups | apps/api/src/rcm/payments/aging-intelligence.ts | ClaimCase |
+| underpaymentsByPayer | apps/api/src/rcm/payments/aging-intelligence.ts | number |
+| bridges | apps/api/src/rcm/payments/export-bridge.ts | unknown |
+| uploadCache | apps/api/src/rcm/payments/payment-routes.ts | string |
 
 ## VistA RPC Coverage
 
@@ -112,7 +112,7 @@
 | 7 | high | PAYER_INTEGRATIONS_US | Clearinghouse connector scaffold, no live integration | apps/api/src/rcm/connectors/clearinghouse-connector.ts |
 | 8 | high | MULTI_TENANCY | RLS policies gated by PLATFORM_PG_RLS_ENABLED | apps/api/src/posture/tenant-posture.ts |
 | 9 | high | MULTI_TENANCY | SQLite tables lack tenant isolation | apps/api/src/platform/db/schema.ts |
-| 10 | high | DATABASE_POSTURE | 40 high-risk in-memory stores lose data on restart | apps/api/src/adapters/adapter-loader.ts |
+| 10 | high | DATABASE_POSTURE | 36 high-risk in-memory stores lose data on restart | apps/api/src/adapters/adapter-loader.ts |
 | 11 | med | AUTH_IAM | OIDC is opt-in, not default | apps/api/src/auth/oidc-provider.ts |
 | 12 | med | CPRS_UI | Multiple admin pages may have placeholder content |  |
 | 13 | med | ORDERS_CPOE | Order signing workflow may be incomplete in sandbox | apps/api/src/routes/cprs/orders-cpoe.ts |

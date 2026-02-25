@@ -81,8 +81,8 @@ export async function findInbox(dfn: string): Promise<PortalMessageRow[]> {
   const db = getPgDb();
   return db.select().from(pgPortalMessage)
     .where(and(
-      eq(pgPortalMessage.toDfn, dfn),
-      eq(pgPortalMessage.status, "sent"),
+      or(eq(pgPortalMessage.toDfn, dfn), eq(pgPortalMessage.fromDfn, dfn)),
+      sql`${pgPortalMessage.status} != 'draft'`,
     ))
     .orderBy(desc(pgPortalMessage.createdAt));
 }
@@ -112,7 +112,7 @@ export async function findStaffQueue(): Promise<PortalMessageRow[]> {
   return db.select().from(pgPortalMessage)
     .where(and(
       eq(pgPortalMessage.status, "sent"),
-      eq(pgPortalMessage.toDfn, "STAFF"),
+      eq(pgPortalMessage.toDfn, "clinic"),
     ))
     .orderBy(desc(pgPortalMessage.createdAt));
 }

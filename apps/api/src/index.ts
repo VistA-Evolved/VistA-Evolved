@@ -2341,7 +2341,7 @@ try {
     try {
       const pmRepo = await import("./platform/db/repo/portal-message-repo.js");
       const { initMessageRepo } = await import("./services/portal-messaging.js");
-      initMessageRepo(pmRepo);
+      await initMessageRepo(pmRepo);
       log.info("Portal messaging store wired to DB");
     } catch (pmErr: any) {
       log.warn("Portal message repo wire failed (non-fatal)", { error: pmErr.message });
@@ -2515,7 +2515,7 @@ try {
         try {
           const pgMsgRepoMod = await import("./platform/pg/repo/pg-portal-message-repo.js");
           const { initMessageRepo } = await import("./services/portal-messaging.js");
-          initMessageRepo(pgMsgRepoMod);
+          await initMessageRepo(pgMsgRepoMod);
           log.info("Portal messaging store re-wired to PG");
         } catch (pmErr: any) {
           log.warn("PG portal message repo wire failed (SQLite fallback)", { error: pmErr.message });

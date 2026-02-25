@@ -111,10 +111,10 @@ interface MsgRepo {
 let _repo: MsgRepo | null = null;
 
 /** Wire the portal message repo after DB init. Called from index.ts. */
-export function initMessageRepo(repo: MsgRepo): void {
+export async function initMessageRepo(repo: MsgRepo): Promise<void> {
   _repo = repo;
   // Seed msgSeq from DB row count to avoid ID collisions after restart
-  try { msgSeq = repo.countMessages(); } catch (e) { dbWarn("persist", e); }
+  try { msgSeq = await Promise.resolve(repo.countMessages()) || 0; } catch (e) { dbWarn("persist", e); }
 }
 
 /* ------------------------------------------------------------------ */
@@ -214,17 +214,17 @@ export function checkBlocklist(text: string): { blocked: boolean; term?: string 
 /* CRUD                                                                 */
 /* ------------------------------------------------------------------ */
 
-export function createDraft(opts: {
+export async function createDraft(opts: {
   fromDfn: string;
   fromName: string;
   subject: string;
   category: MessageCategory;
   body: string;
   replyToId?: string;
-}): PortalMessage {
+}): Promise<PortalMessage> {
   const id = `msg-${++msgSeq}-${randomBytes(4).toString("hex")}`;
   const threadId = opts.replyToId
-    ? (getMessage_internal(opts.replyToId)?.threadId || id)
+    ? ((await getMessage_internal(opts.replyToId))?.threadId || id)
     : id;
 
   const msg: PortalMessage = {
@@ -260,20 +260,20 @@ export function createDraft(opts: {
 }
 
 /** Internal lookup — no access-control, used for thread resolution. */
-function getMessage_internal(messageId: string): PortalMessage | null {
+async function getMessage_internal(messageId: string): Promise<PortalMessage | null> {
   const cached = messageCache.get(messageId);
   if (cached) return cached;
   if (_repo) {
     try {
-      const row = _repo.findMessageById(messageId);
+      const row = await Promise.resolve(_repo.findMessageById(messageId));
       if (row) { const m = rowToMsg(row); cacheMsg(m); return m; }
     } catch (e) { dbWarn("persist", e); }
   }
   return null;
 }
 
-export function sendMessage(messageId: string, senderDfn: string): PortalMessage | null {
-  const msg = getMessage_internal(messageId);
+export async function sendMessage(messageId: string, senderDfn: string): Promise<PortalMessage | null> {
+  const msg = await getMessage_internal(messageId);
   if (!msg || msg.fromDfn !== senderDfn) return null;
   if (msg.status !== "draft") return null;
 
@@ -291,12 +291,12 @@ export function sendMessage(messageId: string, senderDfn: string): PortalMessage
   return msg;
 }
 
-export function addAttachment(
+export async function addAttachment(
   messageId: string,
   senderDfn: string,
   attachment: { filename: string; mimeType: string; data: string }
-): { ok: boolean; error?: string; attachment?: MessageAttachment } {
-  const msg = getMessage_internal(messageId);
+): Promise<{ ok: boolean; error?: string; attachment?: MessageAttachment }> {
+  const msg = await getMessage_internal(messageId);
   if (!msg || msg.fromDfn !== senderDfn) return { ok: false, error: "Message not found" };
   if (msg.status !== "draft") return { ok: false, error: "Can only add attachments to drafts" };
   if (msg.attachments.length >= MAX_ATTACHMENTS_PER_MSG) {
@@ -333,11 +333,11 @@ export function addAttachment(
   return { ok: true, attachment: { ...att, data: "(stored)" } };
 }
 
-export function getInbox(patientDfn: string): PortalMessage[] {
+export async function getInbox(patientDfn: string): Promise<PortalMessage[]> {
   if (_repo) {
     try {
-      const rows = _repo.findInbox(patientDfn);
-      return rows.map(rowToMsg);
+      const rows = await Promise.resolve(_repo.findInbox(patientDfn));
+      return (Array.isArray(rows) ? rows : []).map(rowToMsg);
     } catch (e) { dbWarn("persist", e); }
   }
   return [...messageCache.values()]
@@ -345,11 +345,11 @@ export function getInbox(patientDfn: string): PortalMessage[] {
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
-export function getDrafts(patientDfn: string): PortalMessage[] {
+export async function getDrafts(patientDfn: string): Promise<PortalMessage[]> {
   if (_repo) {
     try {
-      const rows = _repo.findDrafts(patientDfn);
-      return rows.map(rowToMsg);
+      const rows = await Promise.resolve(_repo.findDrafts(patientDfn));
+      return (Array.isArray(rows) ? rows : []).map(rowToMsg);
     } catch (e) { dbWarn("persist", e); }
   }
   return [...messageCache.values()]
@@ -357,11 +357,11 @@ export function getDrafts(patientDfn: string): PortalMessage[] {
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
-export function getSent(patientDfn: string): PortalMessage[] {
+export async function getSent(patientDfn: string): Promise<PortalMessage[]> {
   if (_repo) {
     try {
-      const rows = _repo.findSent(patientDfn);
-      return rows.map(rowToMsg);
+      const rows = await Promise.resolve(_repo.findSent(patientDfn));
+      return (Array.isArray(rows) ? rows : []).map(rowToMsg);
     } catch (e) { dbWarn("persist", e); }
   }
   return [...messageCache.values()]
@@ -369,11 +369,11 @@ export function getSent(patientDfn: string): PortalMessage[] {
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
-export function getThread(threadId: string): PortalMessage[] {
+export async function getThread(threadId: string): Promise<PortalMessage[]> {
   if (_repo) {
     try {
-      const rows = _repo.findThread(threadId);
-      return rows.map(rowToMsg);
+      const rows = await Promise.resolve(_repo.findThread(threadId));
+      return (Array.isArray(rows) ? rows : []).map(rowToMsg);
     } catch (e) { dbWarn("persist", e); }
   }
   return [...messageCache.values()]
@@ -381,8 +381,8 @@ export function getThread(threadId: string): PortalMessage[] {
     .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 }
 
-export function getMessage(messageId: string, viewerDfn: string): PortalMessage | null {
-  const msg = getMessage_internal(messageId);
+export async function getMessage(messageId: string, viewerDfn: string): Promise<PortalMessage | null> {
+  const msg = await getMessage_internal(messageId);
   if (!msg) return null;
   if (msg.fromDfn !== viewerDfn && msg.toDfn !== viewerDfn) return null;
 
@@ -402,12 +402,12 @@ export function getMessage(messageId: string, viewerDfn: string): PortalMessage 
   return { ...msg, attachments: msg.attachments.map(a => ({ ...a, data: "(stored)" })) };
 }
 
-export function updateDraft(
+export async function updateDraft(
   messageId: string,
   senderDfn: string,
   updates: Partial<Pick<PortalMessage, "subject" | "category" | "body">>
-): PortalMessage | null {
-  const msg = getMessage_internal(messageId);
+): Promise<PortalMessage | null> {
+  const msg = await getMessage_internal(messageId);
   if (!msg || msg.fromDfn !== senderDfn || msg.status !== "draft") return null;
 
   if (updates.subject) msg.subject = updates.subject.slice(0, 200);
@@ -427,8 +427,8 @@ export function updateDraft(
   return msg;
 }
 
-export function deleteDraft(messageId: string, senderDfn: string): boolean {
-  const msg = getMessage_internal(messageId);
+export async function deleteDraft(messageId: string, senderDfn: string): Promise<boolean> {
+  const msg = await getMessage_internal(messageId);
   if (!msg || msg.fromDfn !== senderDfn || msg.status !== "draft") return false;
   messageCache.delete(messageId);
   if (_repo) {
@@ -509,13 +509,13 @@ export function sendOnBehalf(opts: {
  * Clinician creates a reply to a patient message.
  * Called from the CPRS messaging panel, not the patient portal.
  */
-export function clinicianReply(opts: {
+export async function clinicianReply(opts: {
   clinicianDuz: string;
   clinicianName: string;
   replyToId: string;
   body: string;
-}): PortalMessage | { error: string } {
-  const original = getMessage_internal(opts.replyToId);
+}): Promise<PortalMessage | { error: string }> {
+  const original = await getMessage_internal(opts.replyToId);
   if (!original) return { error: "Original message not found." };
 
   const id = `msg-${++msgSeq}-${randomBytes(4).toString("hex")}`;
@@ -558,11 +558,11 @@ export function clinicianReply(opts: {
 /**
  * Get all unread patient messages for staff queue (CPRS shell).
  */
-export function getStaffMessageQueue(): PortalMessage[] {
+export async function getStaffMessageQueue(): Promise<PortalMessage[]> {
   if (_repo) {
     try {
-      const rows = _repo.findStaffQueue();
-      return rows.map(rowToMsg);
+      const rows = await Promise.resolve(_repo.findStaffQueue());
+      return (Array.isArray(rows) ? rows : []).map(rowToMsg);
     } catch (e) { dbWarn("persist", e); }
   }
   return [...messageCache.values()]

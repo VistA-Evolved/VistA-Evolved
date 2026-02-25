@@ -131,7 +131,7 @@ gate("capability-matrix calls auditMutation", capMatrix.includes("auditMutation(
 
 console.log("\nStore delegation (Phase 115):");
 const portalMsg = readSrc("apps/api/src/services/portal-messaging.ts") ?? "";
-gate("portal-messaging has initMessageRepo", portalMsg.includes("export function initMessageRepo"));
+gate("portal-messaging has initMessageRepo", portalMsg.includes("export async function initMessageRepo") || portalMsg.includes("export function initMessageRepo"));
 gate("portal-messaging uses messageCache", portalMsg.includes("messageCache"));
 gate("portal-messaging no raw messageStore", !portalMsg.includes("messageStore = new Map"));
 

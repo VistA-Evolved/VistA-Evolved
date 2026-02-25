@@ -157,21 +157,17 @@ export function appendAccessLog(
 
   // Phase 121: Write-through to DB
   if (dbRepo) {
-    try {
-      dbRepo.insertAccessLog({
-        id: logEntry.id,
-        userId,
-        actorName: logEntry.actorName,
-        isProxy: logEntry.isProxy,
-        targetPatientDfn: logEntry.targetPatientDfn,
-        eventType: logEntry.eventType,
-        description: logEntry.description,
-        metadataJson: JSON.stringify(logEntry.metadata ?? {}),
-        createdAt: logEntry.timestamp,
-      });
-    } catch (err) {
-      dbWarn("insert", err);
-    }
+    Promise.resolve(dbRepo.insertAccessLog({
+      id: logEntry.id,
+      userId,
+      actorName: logEntry.actorName,
+      isProxy: logEntry.isProxy,
+      targetPatientDfn: logEntry.targetPatientDfn,
+      eventType: logEntry.eventType,
+      description: logEntry.description,
+      metadataJson: JSON.stringify(logEntry.metadata ?? {}),
+      createdAt: logEntry.timestamp,
+    })).catch(err => dbWarn("insert", err));
   }
 
   return logEntry;
@@ -204,7 +200,7 @@ function evictOldest(): void {
 /* Query                                                                */
 /* ------------------------------------------------------------------ */
 
-export function getAccessLog(
+export async function getAccessLog(
   userId: string,
   opts?: {
     limit?: number;
@@ -212,7 +208,7 @@ export function getAccessLog(
     eventType?: AccessLogEventType;
     since?: string;
   }
-): { entries: AccessLogEntry[]; total: number } {
+): Promise<{ entries: AccessLogEntry[]; total: number }> {
   const userLog = accessLogs.get(userId) ?? [];
 
   // Phase 121: If cache is empty for this user, try DB
@@ -220,8 +216,8 @@ export function getAccessLog(
     try {
       // BUG #13 fix: Single DB round-trip for rehydration — fetch up to MAX
       // entries (newest-first) and extract the requested page from that set.
-      const all = dbRepo.findAccessLogsByUser(userId, { limit: MAX_ENTRIES_PER_USER });
-      if (all.length > 0) {
+      const all = await Promise.resolve(dbRepo.findAccessLogsByUser(userId, { limit: MAX_ENTRIES_PER_USER }));
+      if (Array.isArray(all) && all.length > 0) {
         const mapRow = (r: any): AccessLogEntry => ({
           id: r.id,
           timestamp: r.createdAt,
@@ -250,7 +246,7 @@ export function getAccessLog(
         // BUG #11 fix: total reflects filtered count, not unfiltered
         const total = (opts?.eventType || opts?.since)
           ? dbRepo.countAccessLogsByUserFiltered
-            ? dbRepo.countAccessLogsByUserFiltered(userId, { eventType: opts?.eventType, since: opts?.since })
+            ? await Promise.resolve(dbRepo.countAccessLogsByUserFiltered(userId, { eventType: opts?.eventType, since: opts?.since }))
             : filtered.length
           : all.length;
         const offset = opts?.offset ?? 0;
@@ -405,11 +401,11 @@ export function logRefillRequest(
 /* Stats                                                                */
 /* ------------------------------------------------------------------ */
 
-export function getAccessLogStats(): {
+export async function getAccessLogStats(): Promise<{
   totalEntries: number;
   usersWithLogs: number;
   byEventType: Record<string, number>;
-} {
+}> {
   const byEventType: Record<string, number> = {};
   for (const entries of accessLogs.values()) {
     for (const e of entries) {
@@ -422,14 +418,16 @@ export function getAccessLogStats(): {
   let effectiveUsers = accessLogs.size;
   if (dbRepo && totalEntries === 0) {
     try {
-      const dbStats = dbRepo.getAccessLogStats();
-      effectiveTotal = dbStats.total;
-      effectiveUsers = dbStats.users;
+      const dbStats = await Promise.resolve(dbRepo.getAccessLogStats());
+      effectiveTotal = dbStats?.total ?? 0;
+      effectiveUsers = dbStats?.users ?? 0;
       // BUG #12 fix: Also populate byEventType from DB when cache is cold
       if (dbRepo.getAccessLogStatsByEventType) {
-        const dbByType = dbRepo.getAccessLogStatsByEventType();
-        for (const [k, v] of Object.entries(dbByType)) {
-          byEventType[k] = (byEventType[k] || 0) + (v as number);
+        const dbByType = await Promise.resolve(dbRepo.getAccessLogStatsByEventType());
+        if (dbByType && typeof dbByType === "object") {
+          for (const [k, v] of Object.entries(dbByType)) {
+            byEventType[k] = (byEventType[k] || 0) + (v as number);
+          }
         }
       }
     } catch (err) {

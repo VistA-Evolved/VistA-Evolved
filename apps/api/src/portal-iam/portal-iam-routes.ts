@@ -314,7 +314,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
       detail: { userId: result.user.id },
     });
 
-    reply
+    return reply
       .setCookie(IAM_COOKIE, token, IAM_COOKIE_OPTS)
       .send({
         ok: true,
@@ -726,7 +726,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
     const session = requireIamSession(request, reply);
     const query = request.query as any;
 
-    const result = getAccessLog(session.userId, {
+    const result = await getAccessLog(session.userId, {
       limit: query.limit ? Number(query.limit) : undefined,
       offset: query.offset ? Number(query.offset) : undefined,
       eventType: query.eventType || undefined,
@@ -746,7 +746,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
       ok: true,
       iam: getIamStats(),
       proxy: getProxyInvitationStats(),
-      accessLog: getAccessLogStats(),
+      accessLog: await getAccessLogStats(),
     };
   });
 }

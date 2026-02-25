@@ -108,7 +108,7 @@ export async function expireRoom(id: string): Promise<boolean> {
   const db = getPgDb();
   const now = new Date().toISOString();
   const result = await db.update(pgTelehealthRoom)
-    .set({ roomStatus: "expired", actualEnd: now, updatedAt: now })
+    .set({ roomStatus: "ended", actualEnd: now, updatedAt: now })
     .where(eq(pgTelehealthRoom.id, id));
   return (result as any)?.rowCount > 0;
 }
@@ -117,7 +117,7 @@ export async function cleanupExpiredRooms(): Promise<number> {
   const db = getPgDb();
   const now = new Date().toISOString();
   const result = await db.update(pgTelehealthRoom)
-    .set({ roomStatus: "expired", updatedAt: now })
+    .set({ roomStatus: "ended", updatedAt: now })
     .where(and(
       sql`${pgTelehealthRoom.expiresAt} < ${now}`,
       or(

@@ -369,24 +369,24 @@ export default async function portalCoreRoutes(
 
   server.get("/portal/messages", async (request, reply) => {
     const session = requirePortalSession(request, reply);
-    const inbox = getInbox(session.patientDfn);
+    const inbox = await getInbox(session.patientDfn);
     return reply.send({ ok: true, messages: inbox, slaDisclaimer: SLA_DISCLAIMER });
   });
 
   server.get("/portal/messages/drafts", async (request, reply) => {
     const session = requirePortalSession(request, reply);
-    return reply.send({ ok: true, messages: getDrafts(session.patientDfn) });
+    return reply.send({ ok: true, messages: await getDrafts(session.patientDfn) });
   });
 
   server.get("/portal/messages/sent", async (request, reply) => {
     const session = requirePortalSession(request, reply);
-    return reply.send({ ok: true, messages: getSent(session.patientDfn) });
+    return reply.send({ ok: true, messages: await getSent(session.patientDfn) });
   });
 
   server.get("/portal/messages/:id", async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
-    const msg = getMessage(id, session.patientDfn);
+    const msg = await getMessage(id, session.patientDfn);
     if (!msg) return reply.code(404).send({ ok: false, error: "Message not found" });
 
     portalAudit("portal.message.read", "success", session.patientDfn, {
@@ -398,16 +398,16 @@ export default async function portalCoreRoutes(
   server.get("/portal/messages/:id/thread", async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
-    const msg = getMessage(id, session.patientDfn);
+    const msg = await getMessage(id, session.patientDfn);
     if (!msg) return reply.code(404).send({ ok: false, error: "Message not found" });
-    const thread = getThread(msg.threadId);
+    const thread = await getThread(msg.threadId);
     return reply.send({ ok: true, messages: thread });
   });
 
   server.post("/portal/messages", async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const body = (request.body as any) || {};
-    const draft = createDraft({
+    const draft = await createDraft({
       fromDfn: session.patientDfn,
       fromName: session.patientName,
       subject: body.subject || "",
@@ -427,7 +427,7 @@ export default async function portalCoreRoutes(
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const result = updateDraft(id, session.patientDfn, body);
+    const result = await updateDraft(id, session.patientDfn, body);
     if (!result) return reply.code(404).send({ ok: false, error: "Draft not found or already sent" });
     return reply.send({ ok: true, message: result });
   });
@@ -435,7 +435,7 @@ export default async function portalCoreRoutes(
   server.delete("/portal/messages/:id", async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
-    if (!deleteDraft(id, session.patientDfn)) {
+    if (!(await deleteDraft(id, session.patientDfn))) {
       return reply.code(404).send({ ok: false, error: "Draft not found" });
     }
     return reply.send({ ok: true, deleted: id });
@@ -444,7 +444,7 @@ export default async function portalCoreRoutes(
   server.post("/portal/messages/:id/send", async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
-    const result = sendMessage(id, session.patientDfn);
+    const result = await sendMessage(id, session.patientDfn);
     if (!result) return reply.code(400).send({ ok: false, error: "Draft not found or already sent" });
 
     portalAudit("portal.message.send", "success", session.patientDfn, {
@@ -457,7 +457,7 @@ export default async function portalCoreRoutes(
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const result = addAttachment(id, session.patientDfn, {
+    const result = await addAttachment(id, session.patientDfn, {
       filename: body.filename || "untitled",
       mimeType: body.mimeType || "application/pdf",
       data: body.data || "",
@@ -1009,7 +1009,7 @@ export default async function portalCoreRoutes(
 
   server.get("/portal/staff/messages", async (request, reply) => {
     const session = requirePortalSession(request, reply);
-    const queue = getStaffMessageQueue();
+    const queue = await getStaffMessageQueue();
     return reply.send({ ok: true, messages: queue });
   });
 
@@ -1022,7 +1022,7 @@ export default async function portalCoreRoutes(
       return reply.code(400).send({ ok: false, error: "body is required" });
     }
 
-    const result = clinicianReply({
+    const result = await clinicianReply({
       replyToId: id,
       clinicianDuz: session.patientDfn,   // clinician DUZ in sandbox
       clinicianName: session.patientName,  // clinician name

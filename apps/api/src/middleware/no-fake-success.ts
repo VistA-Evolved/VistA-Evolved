@@ -33,8 +33,7 @@ const STRICT_MODE = process.env.NO_FAKE_SUCCESS_STRICT === "true";
 const EXEMPT_PATTERNS: RegExp[] = [
   /^\/(health|ready|vista\/ping|version)/,
   /^\/auth\//,
-  /^\/portal\/auth\//,  // Portal auth (own session handling)
-  /^\/metrics/,
+  /^\/portal\/auth\//,  // Portal auth (own session handling)  /^\/portal\/iam\//, // Portal IAM (login/register/session)  /^\/metrics/,
   /^\/__/,       // Next.js internals
   /^\/ws\//,     // WebSocket routes
   /^\/favicon/,
@@ -113,6 +112,7 @@ const EFFECT_PROOF_FIELDS = new Set([
   "languages",
 
   // Singular object proofs (single record returned)
+  "user",
   "message",
   "appointment",
   "result",
