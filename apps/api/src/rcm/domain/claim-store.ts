@@ -18,6 +18,7 @@
 
 import type { Claim, ClaimStatus } from "./claim.js";
 import type { Remittance } from "./remit.js";
+import { log } from '../../lib/logger.js';
 
 /* ── DB repo interface (lazy-wired at startup) ──────────────── */
 
@@ -50,10 +51,8 @@ export function initClaimStoreRepo(repo: ClaimRepo): void {
 }
 
 function dbWarn(op: string, err: any): void {
-  // Structured log would be ideal, but we avoid importing logger to keep this module lean
   if (process.env.NODE_ENV !== "test") {
-    // eslint-disable-next-line no-console
-    console.warn(`[claim-store] DB ${op} failed (cache-only fallback):`, err?.message ?? err);
+    log.warn(`[claim-store] DB ${op} failed (cache-only fallback)`, { err: err?.message ?? err });
   }
 }
 

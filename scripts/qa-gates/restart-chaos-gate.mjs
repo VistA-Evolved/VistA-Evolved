@@ -78,7 +78,8 @@ gate("DR CI workflow exists", existsSync(ciWorkflow));
 
 // ---- Gate 5: Backups directory is gitignored ----
 
-const gitignore = readFileSync(resolve(ROOT, ".gitignore"), "utf-8");
+const gitignorePath = resolve(ROOT, ".gitignore");
+const gitignore = existsSync(gitignorePath) ? readFileSync(gitignorePath, "utf-8") : "";
 gate("Backups directory gitignored", gitignore.includes("/backups") || gitignore.includes("backups/"));
 
 // ---- Gate 6: Runbook exists ----
@@ -96,7 +97,7 @@ if (existsSync(envExample)) {
 
 // ---- Gate 8: No PHI in DR scripts ----
 
-const phiPatterns = [/\bSSN\b/i, /\bDOB\b/i, /\bpatient.*name/i, /\bDFN\b/];
+const phiPatterns = [/\bSSN\b/i, /\bDOB\b/i, /\bpatient.*name/i, /\bDFN\b/i];
 let phiFound = false;
 for (const scriptPath of [backupScript, restoreScript]) {
   if (!existsSync(scriptPath)) continue;

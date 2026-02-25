@@ -45,15 +45,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Run PG migrations to seed schema
+      # Run PG migrations to seed schema (failure = hard stop)
       - name: Run PG Migrations
         run: |
-          node -e "
-            import('file://' + process.cwd() + '/apps/api/src/platform/pg/pg-pool.ts')
-              .catch(() => process.exit(0));
-          " || true
-          # Use the API startup to run migrations:
-          timeout 15 npx tsx apps/api/src/platform/pg/pg-migrate.ts 2>&1 || true
+          timeout 60 npx tsx apps/api/src/platform/pg/pg-migrate.ts 2>&1
 
       # Step 1: Create backup
       - name: Create Backup

@@ -19,6 +19,7 @@ import { transitionClaim } from '../domain/claim.js';
 import { createWorkqueueItem } from '../workqueues/workqueue-store.js';
 import { appendRcmAudit } from '../audit/rcm-audit.js';
 import { buildActionRecommendation, lookupCarc } from '../reference/carc-rarc.js';
+import { log } from '../../lib/logger.js';
 
 /* ── DB repo interface (lazy-wired at startup) ──────────────── */
 
@@ -46,8 +47,7 @@ export function initAckStatusRepo(repo: AckRepo): void {
 
 function dbWarn(op: string, err: any): void {
   if (process.env.NODE_ENV !== "test") {
-    // eslint-disable-next-line no-console
-    console.warn(`[ack-status] DB ${op} failed (cache-only fallback):`, err?.message ?? err);
+    log.warn(`[ack-status] DB ${op} failed (cache-only fallback)`, { err: err?.message ?? err });
   }
 }
 

@@ -11,7 +11,7 @@
  * Wraps scripts/qa-gates/restart-chaos-gate.mjs.
  */
 
-import { execSync } from "node:child_process";
+import { execFileSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -33,7 +33,7 @@ export async function run() {
   }
 
   try {
-    const out = execSync("node scripts/qa-gates/restart-chaos-gate.mjs", {
+    const out = execFileSync("node", ["scripts/qa-gates/restart-chaos-gate.mjs"], {
       cwd: ROOT,
       stdio: "pipe",
       timeout: 30_000,

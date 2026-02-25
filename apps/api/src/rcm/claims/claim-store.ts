@@ -20,6 +20,7 @@ import type {
   DenialRecord,
 } from './claim-types.js';
 import { isValidLifecycleTransition } from './claim-types.js';
+import { log } from '../../lib/logger.js';
 
 /* ── DB repo interface (lazy-wired at startup) ──────────────── */
 
@@ -41,8 +42,7 @@ export function initClaimCaseRepo(repo: ClaimCaseRepo): void {
 
 function dbWarn(op: string, err: any): void {
   if (process.env.NODE_ENV !== "test") {
-    // eslint-disable-next-line no-console
-    console.warn(`[claim-case-store] DB ${op} failed (cache-only fallback):`, err?.message ?? err);
+    log.warn(`[claim-case-store] DB ${op} failed (cache-only fallback)`, { err: err?.message ?? err });
   }
 }
 

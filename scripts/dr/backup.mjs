@@ -231,7 +231,12 @@ try {
   }
 
   writeFileSync(dumpFile, dump);
-  const sizeMB = (statSync(dumpFile).size / 1024 / 1024).toFixed(2);
+  const dumpSize = statSync(dumpFile).size;
+  if (dumpSize === 0) {
+    console.error("  FATAL: pg_dump produced an empty file. Check PG connectivity.");
+    process.exit(2);
+  }
+  const sizeMB = (dumpSize / 1024 / 1024).toFixed(2);
   console.log(`         pg_dump complete: ${sizeMB} MB`);
 } catch (err) {
   console.error(`  FATAL: pg_dump failed: ${err.message?.split("\n")[0]}`);
@@ -254,7 +259,7 @@ const manifest = {
   version: 1,
   createdAt: new Date().toISOString(),
   backupType: "pg_dump_logical",
-  pgUrl: pgUrl.replace(/\/\/[^@]+@/, "//***@"), // redact credentials
+  pgUrl: pgUrl.replace(/\/\/[^@]+@/, "//***@").replace(/[?&]password=[^&]*/gi, ""), // redact credentials
   files: [
     {
       name: "platform-pg.sql",

@@ -182,7 +182,13 @@ if (!existsSync(dumpPath)) {
 }
 
 // Verify checksum
-const manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
+let manifest;
+try {
+  manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
+} catch (err) {
+  console.error(`  FATAL: manifest.json is malformed: ${err.message}`);
+  process.exit(1);
+}
 const expectedHash = manifest.files?.[0]?.sha256;
 if (expectedHash) {
   const actualHash = createHash("sha256").update(readFileSync(dumpPath)).digest("hex");

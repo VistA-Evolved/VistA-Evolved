@@ -23,6 +23,7 @@ import type {
 import type { Claim } from '../domain/claim.js';
 import { getPayer } from '../payer-registry/registry.js';
 import { randomBytes } from 'node:crypto';
+import { log } from '../../lib/logger.js';
 
 /* ── DB repo interface (lazy-wired at startup) ──────────────── */
 
@@ -44,8 +45,7 @@ export function initPipelineRepo(repo: PipelineRepo): void {
 
 function dbWarn(op: string, err: any): void {
   if (process.env.NODE_ENV !== "test") {
-    // eslint-disable-next-line no-console
-    console.warn(`[edi-pipeline] DB ${op} failed (cache-only fallback):`, err?.message ?? err);
+    log.warn(`[edi-pipeline] DB ${op} failed (cache-only fallback)`, { err: err?.message ?? err });
   }
 }
 
