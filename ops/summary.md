@@ -37,11 +37,22 @@ curl -s -b cookies.txt -H "X-CSRF-Token: <token>" http://127.0.0.1:3001/vista/in
 ```
 
 ## Verifier Output
-- TypeScript: API clean (tsc --noEmit)
+- TypeScript: API + Web clean (tsc --noEmit)
 - Vitest: 20/20 files, 413/413 tests PASS
-- Gauntlet FAST: 5P/0F/0W
-- Gauntlet RC: 16P/0F/0W
-- All 4 new endpoints return correct responses (tested via curl)
+- Gauntlet FAST: 4P/0F/1W (pre-existing secret scan WARN)
+- Gauntlet RC: 15P/0F/1W (pre-existing secret scan WARN)
+- All 8 endpoints return correct responses (tested via curl)
+
+## VERIFY Fixes Applied
+1. **MUMPS error filtering (critical)**: Added `NUMERIC_RE = /^\d+$/` guard to all
+   7 parsers across `adt/index.ts` (4) and `inpatient/index.ts` (3) — prevents
+   MUMPS error text from being parsed as patient records
+2. **Response shape (room→roomBed)**: Unified ADT routes to use `roomBed` field
+   matching inpatient routes and frontend expectations
+3. **pendingFallback consistency**: Changed ADT `pendingFallback` from `ok:true`
+   to `ok:false` to match inpatient behavior on RPC failure
+4. **CSRF headers**: Added `csrfHeaders()` to `ADTPanel.tsx` fetch calls
+5. **Bedboard legend**: Made Empty/OOS legend items conditional on data presence
 
 ## Follow-ups
 - Phase 137B: Install ZVEADT.m in VistA Docker, register RPCs, wire live data

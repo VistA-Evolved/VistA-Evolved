@@ -81,6 +81,9 @@ interface MovementEvent {
 /* Helpers                                                              */
 /* ------------------------------------------------------------------ */
 
+/** Numeric IEN/DFN guard -- filters out MUMPS error text lines. */
+const NUMERIC_RE = /^\d+$/;
+
 /** Parse IEN^NAME lines from ORQPT WARDS */
 function parseWardList(lines: string[]): Array<{ ien: string; name: string }> {
   const results: Array<{ ien: string; name: string }> = [];
@@ -88,7 +91,7 @@ function parseWardList(lines: string[]): Array<{ ien: string; name: string }> {
     if (!line?.trim()) continue;
     const parts = line.split("^");
     const ien = parts[0]?.trim() || "";
-    if (!ien) continue;
+    if (!NUMERIC_RE.test(ien)) continue;
     results.push({ ien, name: parts[1]?.trim() || "" });
   }
   return results;
@@ -101,7 +104,7 @@ function parsePatientList(lines: string[]): Array<{ dfn: string; name: string }>
     if (!line?.trim()) continue;
     const parts = line.split("^");
     const dfn = parts[0]?.trim() || "";
-    if (!dfn) continue;
+    if (!NUMERIC_RE.test(dfn)) continue;
     results.push({ dfn, name: parts[1]?.trim() || "" });
   }
   return results;
@@ -114,7 +117,7 @@ function parseAdmissionList(lines: string[]): CensusPatient[] {
     if (!line?.trim()) continue;
     const parts = line.split("^");
     const dfn = parts[0]?.trim() || "";
-    if (!dfn) continue;
+    if (!NUMERIC_RE.test(dfn)) continue;
     results.push({
       dfn,
       name: parts[1]?.trim() || "",

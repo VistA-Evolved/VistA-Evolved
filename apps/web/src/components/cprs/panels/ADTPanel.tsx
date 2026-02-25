@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { csrfHeaders } from '@/lib/csrf';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
@@ -10,7 +11,7 @@ interface Ward { ien: string; name: string }
 interface Team { ien: string; name: string }
 interface Specialty { ien: string; name: string }
 interface PatientEntry { dfn: string; name: string }
-interface AdmissionEntry { dfn: string; name: string; admitDate: string; ward: string; room: string }
+interface AdmissionEntry { dfn: string; name: string; admitDate: string; ward: string; roomBed: string }
 interface ApiResponse<T> {
   ok: boolean;
   source?: string;
@@ -30,7 +31,7 @@ const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 async function apiFetch<T>(path: string): Promise<ApiResponse<T>> {
   try {
-    const res = await fetch(`${API}${path}`, { credentials: 'include' });
+    const res = await fetch(`${API}${path}`, { credentials: 'include', headers: { ...csrfHeaders() } });
     if (!res.ok) {
       return { ok: false, count: 0, results: [], rpcUsed: [], pendingTargets: [], _error: `HTTP ${res.status}` };
     }
@@ -359,7 +360,7 @@ function AdmissionHistoryTab({ dfn }: { dfn: string }) {
               <tr key={`${a.dfn}-${i}`} style={{ borderBottom: '1px solid #f3f4f6' }}>
                 <td style={{ padding: '4px 8px' }}>{a.admitDate}</td>
                 <td style={{ padding: '4px 8px' }}>{a.ward}</td>
-                <td style={{ padding: '4px 8px' }}>{a.room || '--'}</td>
+                <td style={{ padding: '4px 8px' }}>{a.roomBed || '--'}</td>
                 <td style={{ padding: '4px 8px' }}>{a.name}</td>
               </tr>
             ))

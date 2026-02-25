@@ -320,7 +320,7 @@ export default function InpatientBedboardPage() {
                   {wardName}
                 </h2>
                 <span style={{ fontSize: '13px', color: '#718096' }}>
-                  {occupiedCount} occupied | {emptyCount} empty
+                  {occupiedCount} occupied{emptyCount > 0 ? ` | ${emptyCount} empty` : ''}
                 </span>
               </div>
 
@@ -337,12 +337,16 @@ export default function InpatientBedboardPage() {
                 <span>
                   <span style={S.legendDot('#2b6cb0')} /> Occupied
                 </span>
-                <span>
-                  <span style={S.legendDot('#cbd5e0')} /> Empty
-                </span>
-                <span>
-                  <span style={S.legendDot('#e53e3e')} /> Out of Service
-                </span>
+                {emptyCount > 0 && (
+                  <span>
+                    <span style={S.legendDot('#cbd5e0')} /> Empty
+                  </span>
+                )}
+                {beds.some((b) => b.status === 'oos') && (
+                  <span>
+                    <span style={S.legendDot('#e53e3e')} /> Out of Service
+                  </span>
+                )}
               </div>
 
               {bedLoading ? (

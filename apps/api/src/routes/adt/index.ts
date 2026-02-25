@@ -45,6 +45,9 @@ function auditActor(request: FastifyRequest): { sub: string; name: string; roles
 /* Helpers                                                              */
 /* ------------------------------------------------------------------ */
 
+/** Numeric IEN/DFN guard -- filters out MUMPS error text lines. */
+const NUMERIC_RE = /^\d+$/;
+
 /** Parse IEN^NAME lines (wards, teams, specialties). */
 function parseIenNameList(lines: string[]): Array<{ ien: string; name: string }> {
   const results: Array<{ ien: string; name: string }> = [];
@@ -52,7 +55,7 @@ function parseIenNameList(lines: string[]): Array<{ ien: string; name: string }>
     if (!line?.trim()) continue;
     const parts = line.split("^");
     const ien = parts[0]?.trim() || "";
-    if (!ien) continue;
+    if (!NUMERIC_RE.test(ien)) continue;
     results.push({ ien, name: parts[1]?.trim() || "" });
   }
   return results;
@@ -65,7 +68,7 @@ function parsePatientList(lines: string[]): Array<{ dfn: string; name: string }>
     if (!line?.trim()) continue;
     const parts = line.split("^");
     const dfn = parts[0]?.trim() || "";
-    if (!dfn) continue;
+    if (!NUMERIC_RE.test(dfn)) continue;
     results.push({ dfn, name: parts[1]?.trim() || "" });
   }
   return results;
@@ -78,7 +81,7 @@ function parseLocations(lines: string[]): Array<{ ien: string; name: string; typ
     if (!line?.trim()) continue;
     const parts = line.split("^");
     const ien = parts[0]?.trim() || "";
-    if (!ien) continue;
+    if (!NUMERIC_RE.test(ien)) continue;
     results.push({
       ien,
       name: parts[1]?.trim() || "",
@@ -94,26 +97,26 @@ function parseAdmissionList(lines: string[]): Array<{
   name: string;
   admitDate: string;
   ward: string;
-  room: string;
+  roomBed: string;
 }> {
   const results: Array<{
     dfn: string;
     name: string;
     admitDate: string;
     ward: string;
-    room: string;
+    roomBed: string;
   }> = [];
   for (const line of lines) {
     if (!line?.trim()) continue;
     const parts = line.split("^");
     const dfn = parts[0]?.trim() || "";
-    if (!dfn) continue;
+    if (!NUMERIC_RE.test(dfn)) continue;
     results.push({
       dfn,
       name: parts[1]?.trim() || "",
       admitDate: parts[2]?.trim() || "",
       ward: parts[3]?.trim() || "",
-      room: parts[4]?.trim() || "",
+      roomBed: parts[4]?.trim() || "",
     });
   }
   return results;
@@ -128,7 +131,7 @@ function pendingFallback(
   const errMsg = err?.message || String(err);
   log.warn(`${rpcName} failed -- returning integration-pending`, { err: errMsg });
   return reply.send({
-    ok: true,
+    ok: false,
     source: "vista",
     count: 0,
     results: [],
@@ -348,19 +351,19 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
     try {
       const patientLines = await safeCallRpc("ORQPT WARD PATIENTS", [String(wardIen)]);
       const patients = parsePatientList(patientLines);
-      const census: Array<{ dfn: string; name: string; admitDate: string; ward: string; room: string }> = [];
+      const census: Array<{ dfn: string; name: string; admitDate: string; ward: string; roomBed: string }> = [];
       for (const pat of patients) {
-        let admitDate = "", ward = "", room = "";
+        let admitDate = "", ward = "", roomBed = "";
         try {
           const admitLines = await safeCallRpc("ORWPT16 ADMITLST", [pat.dfn]);
           const adms = parseAdmissionList(admitLines);
           if (adms.length > 0) {
             admitDate = adms[0].admitDate;
             ward = adms[0].ward;
-            room = adms[0].room;
+            roomBed = adms[0].roomBed;
           }
         } catch { /* details unavailable */ }
-        census.push({ dfn: pat.dfn, name: pat.name, admitDate, ward, room });
+        census.push({ dfn: pat.dfn, name: pat.name, admitDate, ward, roomBed });
       }
       immutableAudit("inpatient.census", "success", auditActor(request), {
         detail: { wardIen: String(wardIen), patientCount: census.length },
@@ -398,7 +401,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
         fromLocation: "",
         toLocation: a.ward,
         ward: a.ward,
-        roomBed: a.room,
+        roomBed: a.roomBed,
         provider: "",
       }));
       immutableAudit("inpatient.movements", "success", auditActor(request), {
