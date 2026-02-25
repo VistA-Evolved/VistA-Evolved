@@ -16,6 +16,7 @@ import {
   getVistaMessage,
   portalSendToClinic,
 } from "../services/secure-messaging.js";
+import { connect, disconnect } from "../vista/rpcBrokerClient.js";
 import {
   getInbox as getLocalInbox,
   getMessage as getLocalMessage,
@@ -75,7 +76,9 @@ export default async function portalMailmanRoutes(server: FastifyInstance) {
 
     // 1) Try VistA MailMan inbox (basket "1" = IN)
     try {
+      await connect();
       const vistaResult = await listMessages("1", limit);
+      disconnect();
       if (vistaResult.ok && vistaResult.source === "vista") {
         immutableAudit("messaging.read", "success", portalAuditActor(session), {
           detail: { route: "/portal/mailman/inbox", source: "vista", count: vistaResult.messages.length },
@@ -88,6 +91,7 @@ export default async function portalMailmanRoutes(server: FastifyInstance) {
         };
       }
     } catch (err: any) {
+      disconnect();
       log.warn(`Portal MailMan VistA inbox fallback: ${err.message}`);
     }
 
@@ -113,7 +117,9 @@ export default async function portalMailmanRoutes(server: FastifyInstance) {
     // If numeric, try VistA IEN first
     if (/^\d+$/.test(id)) {
       try {
+        await connect();
         const vistaResult = await getVistaMessage(id);
+        disconnect();
         if (vistaResult.ok && vistaResult.source === "vista") {
           // Audit metadata only — NEVER log message body
           immutableAudit("messaging.read", "success", portalAuditActor(session), {
@@ -122,6 +128,7 @@ export default async function portalMailmanRoutes(server: FastifyInstance) {
           return { ok: true, source: "vista" as const, message: vistaResult.message };
         }
       } catch (err: any) {
+        disconnect();
         log.warn(`Portal MailMan VistA message fallback: ${err.message}`);
       }
     }
@@ -151,6 +158,7 @@ export default async function portalMailmanRoutes(server: FastifyInstance) {
     // Try VistA MailMan first
     if (clinicGroup) {
       try {
+        await connect();
         const result = await portalSendToClinic({
           patientDfn: session.patientDfn,
           patientName: session.patientName,
@@ -159,6 +167,7 @@ export default async function portalMailmanRoutes(server: FastifyInstance) {
           body: body.body,
           category: body.category || "portal",
         });
+        disconnect();
 
         // Audit: metadata only — NEVER log message body
         immutableAudit("messaging.portal-send", "success", portalAuditActor(session), {
@@ -177,6 +186,7 @@ export default async function portalMailmanRoutes(server: FastifyInstance) {
           vistaSync: result.message?.vistaSync || "pending",
         };
       } catch (err: any) {
+        disconnect();
         log.warn(`Portal MailMan VistA send fallback: ${err.message}`);
       }
     }

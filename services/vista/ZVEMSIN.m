@@ -35,7 +35,7 @@ EN ;
  . S FDA(8994,"+1,",.01)=NM
  . S FDA(8994,"+1,",.02)=TAG
  . S FDA(8994,"+1,",.03)=RTN
- . S FDA(8994,"+1,",.04)="B"  ; Return value type: ARRAY
+ . S FDA(8994,"+1,",.04)=2  ; Return value type: 2=ARRAY
  . D UPDATE^DIE("","FDA","IEN")
  . I $D(DIERR) D  Q
  . . W "  ERROR registering "_NM_": "_$G(^TMP("DIERR",$J,1,"TEXT",1)),!

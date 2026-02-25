@@ -178,8 +178,10 @@ export async function listMessages(folderId: string, limit = 50): Promise<{
   ok: boolean; source: "vista" | "local"; messages: MailMessageSummary[]; error?: string;
 }> {
   try {
-    const { safeCallRpc } = await import("../lib/rpc-resilience.js");
-    const lines = await safeCallRpc("ZVE MAIL LIST", [folderId, String(limit)]);
+    const { safeCallRpcWithList } = await import("../lib/rpc-resilience.js");
+    const lines = await safeCallRpcWithList("ZVE MAIL LIST", [
+      { type: "list" as const, value: { "0": folderId, "1": String(limit) } },
+    ]);
     if (!lines || lines.length === 0 || !lines[0]?.startsWith("ok")) {
       const err = lines?.[0] || "Empty response";
       return { ok: false, source: "vista", messages: [], error: err };
@@ -225,8 +227,10 @@ export async function getVistaMessage(messageIen: string): Promise<{
   ok: boolean; source: "vista" | "local"; message?: MailMessageDetail; error?: string;
 }> {
   try {
-    const { safeCallRpc } = await import("../lib/rpc-resilience.js");
-    const lines = await safeCallRpc("ZVE MAIL GET", [messageIen]);
+    const { safeCallRpcWithList } = await import("../lib/rpc-resilience.js");
+    const lines = await safeCallRpcWithList("ZVE MAIL GET", [
+      { type: "list" as const, value: { "0": messageIen } },
+    ]);
     if (!lines || lines.length === 0 || !lines[0]?.startsWith("ok")) {
       const err = lines?.[0] || "Empty response";
       return { ok: false, source: "vista", error: err };
@@ -298,12 +302,12 @@ export async function sendViaMailMan(
     const { safeCallRpcWithList } = await import("../lib/rpc-resilience.js");
 
     const listParams: Record<string, string> = {};
-    listParams['"SUBJ"'] = subject;
+    listParams['SUBJ'] = subject;
 
     // Text lines
     const textLines = body.split("\n");
     for (let i = 0; i < textLines.length; i++) {
-      listParams[`"TEXT",${i + 1}`] = textLines[i] || " ";
+      listParams[`TEXT,${i + 1}`] = textLines[i] || " ";
     }
 
     // Recipients
@@ -315,13 +319,13 @@ export async function sendViaMailMan(
       } else {
         recValue = r.informational ? `I:${r.id}` : r.cc ? `C:${r.id}` : r.id;
       }
-      listParams[`"REC",${recIdx}`] = recValue;
+      listParams[`REC,${recIdx}`] = recValue;
       recIdx++;
     }
 
     // Priority
     if (priority === "priority" || priority === "urgent") {
-      listParams['"PRI"'] = "P";
+      listParams['PRI'] = "P";
     }
 
     const result = await safeCallRpcWithList("ZVE MAIL SEND", [
@@ -351,10 +355,10 @@ export async function manageMessage(
   try {
     const { safeCallRpcWithList } = await import("../lib/rpc-resilience.js");
     const listParams: Record<string, string> = {};
-    listParams['"ACTION"'] = action;
-    listParams['"XMZ"'] = messageIen;
-    if (basket) listParams['"BASKET"'] = basket;
-    if (toBasket) listParams['"TOBASKET"'] = toBasket;
+    listParams['ACTION'] = action;
+    listParams['XMZ'] = messageIen;
+    if (basket) listParams['BASKET'] = basket;
+    if (toBasket) listParams['TOBASKET'] = toBasket;
 
     const result = await safeCallRpcWithList("ZVE MAIL MANAGE", [
       { type: "list" as const, value: listParams },

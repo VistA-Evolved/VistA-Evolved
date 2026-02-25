@@ -1,4 +1,4 @@
-ZVEMSGR ; VistA-Evolved MailMan RPC Bridge ;2026-02-21
+﻿ZVEMSGR ; VistA-Evolved MailMan RPC Bridge ;2026-02-21
  ;;1.0;VistA-Evolved;**70**;2026-02-21;
  ;
  ; Phase 70 - MailMan RPC Bridge
@@ -29,7 +29,7 @@ INIT ; Set up environment variables MailMan expects
  Q
  ;
 ERR(RES,CODE,MSG) ; Return error
- S @RES@(0)="-1"_U_CODE_U_MSG
+ S RES(0)="-1"_U_CODE_U_MSG
  Q
  ;
 ENSMBX(XDUZ) ; Ensure mailbox exists for a DUZ, create if needed
@@ -60,9 +60,9 @@ FOLDERS(RES) ;
  . S TOT=$$BCOUNT(XDUZ,BK)
  . S NW=$$BNCOUNT(XDUZ,BK)
  . S CT=CT+1
- . S @RES@(CT)=BK_U_NM_U_TOT_U_NW
+ . S RES(CT)=BK_U_NM_U_TOT_U_NW
  ;
- S @RES@(0)="ok"_U_CT
+ S RES(0)="ok"_U_CT
  Q
  ;
 BCOUNT(XDUZ,BK) ; Count messages in a basket by traversal
@@ -127,9 +127,9 @@ LIST(RES,PARAM) ;
  . ; New status
  . S ISNEW=$$ISNEW(XDUZ,BK,MN)
  . S CT=CT+1
- . S @RES@(CT)=MN_U_SUBJ_U_FDUZ_U_FNAME_U_MDT_U_DIR_U_ISNEW
+ . S RES(CT)=MN_U_SUBJ_U_FDUZ_U_FNAME_U_MDT_U_DIR_U_ISNEW
  ;
- S @RES@(0)="ok"_U_CT
+ S RES(0)="ok"_U_CT
  Q
  ;
 ISNEW(XDUZ,BK,XMZ) ; Is message "new" for this user?
@@ -179,14 +179,14 @@ GETMSG(RES,PARAM) ;
  S MDT=$P(HDR,U,3)
  S DIR=$S(FDUZ=XDUZ:"outbound",1:"inbound")
  ;
- S @RES@(0)="ok"_U_XMZ
- S @RES@(1)="HDR"_U_SUBJ_U_FDUZ_U_FNAME_U_MDT_U_DIR
+ S RES(0)="ok"_U_XMZ
+ S RES(1)="HDR"_U_SUBJ_U_FDUZ_U_FNAME_U_MDT_U_DIR
  ;
  ; Body lines
  S CT=1,BL=0
  F  S BL=$O(^XMB(3.9,XMZ,2,BL)) Q:BL=""  D
  . S CT=CT+1
- . S @RES@(CT)="BODY"_U_$G(^XMB(3.9,XMZ,2,BL,0))
+ . S RES(CT)="BODY"_U_$G(^XMB(3.9,XMZ,2,BL,0))
  ;
  ; Recipients
  N RN,RVAL,RDUZ,RNAME,RDATE
@@ -197,7 +197,7 @@ GETMSG(RES,PARAM) ;
  . S RNAME="" I RDUZ>0 S RNAME=$P($G(^VA(200,RDUZ,0)),U,1)
  . S RDATE=$P(RVAL,U,3)
  . S CT=CT+1
- . S @RES@(CT)="RECIP"_U_RDUZ_U_RNAME_U_RDATE
+ . S RES(CT)="RECIP"_U_RDUZ_U_RNAME_U_RDATE
  ;
  ; Mark as read
  D MARKREAD(XDUZ,XMZ)
@@ -249,23 +249,22 @@ SEND(RES,PARAM) ;
  I $L(XMSUBJ)<3 D ERR(.RES,"PARAM","Subject too short (min 3 chars)") Q
  I $L(XMSUBJ)>65 D ERR(.RES,"PARAM","Subject too long (max 65 chars)") Q
  ;
- ; Build body array (use global temp so XMXSEND MOVEBODY can see it)
- N I,BLINES S BLINES=0,I=""
+ ; Body lines arrive as flat "TEXT,n" keys from XWB LIST protocol
+ N K,LNUM,BLINES S BLINES=0,K=""
  K ^TMP("ZVEMSGB",$J)
- F  S I=$O(PARAM("TEXT",I)) Q:I=""  D
- . S BLINES=BLINES+1
- . S ^TMP("ZVEMSGB",$J,BLINES)=$G(PARAM("TEXT",I))
+ F  S K=$O(PARAM(K)) Q:K=""  D
+ . I $E(K,1,5)="TEXT," S LNUM=+$E(K,6,99) I LNUM>0 S ^TMP("ZVEMSGB",$J,LNUM)=$G(PARAM(K)),BLINES=BLINES+1
  I BLINES=0 D ERR(.RES,"PARAM","Message body required") Q
  ;
- ; Build recipient array
- N RI,RCOUNT S RI="",RCOUNT=0
- F  S RI=$O(PARAM("REC",RI)) Q:RI=""  D
- . N RSPEC S RSPEC=$G(PARAM("REC",RI))
- . Q:RSPEC=""
- . S RCOUNT=RCOUNT+1
- . ; Recipients: DUZ for users, G.name for mail groups
- . I RSPEC?1.N S XMTO(+RSPEC)=""
- . E  S XMTO(RSPEC)=""
+ ; Recipients arrive as flat "REC,n" keys from XWB LIST protocol
+ N K,RCOUNT S K="",RCOUNT=0
+ F  S K=$O(PARAM(K)) Q:K=""  D
+ . I $E(K,1,4)="REC," D
+ . . N RSPEC S RSPEC=$G(PARAM(K))
+ . . Q:RSPEC=""
+ . . S RCOUNT=RCOUNT+1
+ . . I RSPEC?1.N S XMTO(+RSPEC)=""
+ . . E  S XMTO(RSPEC)=""
  I RCOUNT=0 D ERR(.RES,"PARAM","At least one recipient required") Q
  ;
  ; Priority
@@ -284,7 +283,7 @@ SEND(RES,PARAM) ;
  ; Inline delivery since TaskMan is not running
  D DELIVER(XDUZ,XMZ)
  ;
- S @RES@(0)="ok"_U_XMZ
+ S RES(0)="ok"_U_XMZ
  Q
  ;
 DELIVER(SDUZ,XMZ) ; Manually deliver message to all recipient baskets
@@ -338,14 +337,14 @@ MANAGE(RES,PARAM) ;
  ;
  I ACTION="markread" D  Q
  . D MARKREAD(XDUZ,XMZ)
- . S @RES@(0)="ok"_U_"markread"
+ . S RES(0)="ok"_U_"markread"
  ;
  I ACTION="delete" D  Q
  . ; Move to WASTE basket (.5)
  . I $D(^XMB(3.7,XDUZ,2,BK,1,XMZ)) D
  . . K ^XMB(3.7,XDUZ,2,BK,1,XMZ)
  . . S ^XMB(3.7,XDUZ,2,.5,1,XMZ,0)=$$NOW^XLFDT
- . S @RES@(0)="ok"_U_"delete"
+ . S RES(0)="ok"_U_"delete"
  ;
  I ACTION="move" D  Q
  . S TBK=$G(PARAM("TOBASKET"))
@@ -354,7 +353,7 @@ MANAGE(RES,PARAM) ;
  . I $D(^XMB(3.7,XDUZ,2,BK,1,XMZ)) D
  . . K ^XMB(3.7,XDUZ,2,BK,1,XMZ)
  . . S ^XMB(3.7,XDUZ,2,TBK,1,XMZ,0)=$$NOW^XLFDT
- . S @RES@(0)="ok"_U_"move"
+ . S RES(0)="ok"_U_"move"
  ;
  D ERR(.RES,"PARAM","Unknown action: "_ACTION)
  Q
