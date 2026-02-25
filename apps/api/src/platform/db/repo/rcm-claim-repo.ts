@@ -8,7 +8,6 @@
  * for complex nested structures (diagnoses, lines, audit trail).
  */
 
-import { randomUUID } from "node:crypto";
 import { eq, and, desc, sql } from "drizzle-orm";
 import { getDb } from "../db.js";
 import { rcmClaim, rcmRemittance } from "../schema.js";
@@ -161,6 +160,9 @@ export function updateClaim(id: string, updates: Partial<{
   exportArtifactPath: string;
   submissionSafetyMode: string;
   auditTrailJson: string;
+  diagnosesJson: string;
+  linesJson: string;
+  totalCharge: number;
 }>): RcmClaimRow | undefined {
   const db = getDb();
   const now = new Date().toISOString();
@@ -272,5 +274,14 @@ export function updateRemittance(id: string, updates: Partial<{
 export function countAllRemittances(): number {
   const db = getDb();
   const result = db.select({ count: sql<number>`count(*)` }).from(rcmRemittance).get();
+  return result?.count ?? 0;
+}
+
+export function countRemittancesByTenant(tenantId: string): number {
+  const db = getDb();
+  const result = db.select({ count: sql<number>`count(*)` })
+    .from(rcmRemittance)
+    .where(eq(rcmRemittance.tenantId, tenantId))
+    .get();
   return result?.count ?? 0;
 }

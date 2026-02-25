@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-24T23:16:17.419Z",
+  "generatedAt": "2026-02-25T00:35:37.774Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 129,
+  "phaseCount": 130,
   "phases": [
     {
       "phaseNumber": "1",
@@ -1342,6 +1342,41 @@
         "qa/gauntlet/system-gap-matrix.json",
         "docs/audits/system-audit.md",
         "package.json"
+      ]
+    },
+    {
+      "phaseNumber": "121",
+      "title": "DURABILITY WAVE 1 (ENTERPRISE RESTART SAFETY) — IMPLEMENT",
+      "folder": "125-PHASE-121-DURABILITY-WAVE-1",
+      "files": [
+        "121-01-IMPLEMENT.md",
+        "121-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "121-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "121-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [
+        "CREATE TABLE IF NOT EXISTS"
+      ],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/platform/db/schema.ts",
+        "apps/api/src/platform/db/migrate.ts",
+        "apps/api/src/platform/db/repo/rcm-claim-repo.ts",
+        "apps/api/src/platform/db/repo/rcm-claim-case-repo.ts",
+        "apps/api/src/platform/db/repo/access-log-repo.ts",
+        "apps/api/src/platform/db/repo/scheduling-request-repo.ts",
+        "apps/api/src/platform/db/repo/index.ts",
+        "apps/api/src/rcm/domain/claim-store.ts",
+        "apps/api/src/rcm/claims/claim-store.ts",
+        "apps/api/src/portal-iam/access-log-store.ts",
+        "apps/api/src/adapters/scheduling/vista-adapter.ts",
+        "apps/api/src/index.ts",
+        "docs/runbooks/durability-wave-1.md"
       ]
     },
     {

@@ -38,8 +38,12 @@ export interface AccessLogRepo {
     opts?: { eventType?: string; since?: string; limit?: number; offset?: number },
   ): any[];
   countAccessLogsByUser(userId: string): number;
+  /** Filtered count — supports eventType + since filters (Phase 121 BUG #11 fix) */
+  countAccessLogsByUserFiltered?(userId: string, opts?: { eventType?: string; since?: string }): number;
   countAllAccessLogs(): number;
   getAccessLogStats(): { total: number; users: number };
+  /** Breakdown by event_type for cold-cache stats (Phase 121 BUG #12 fix) */
+  getAccessLogStatsByEventType?(): Record<string, number>;
 }
 
 let dbRepo: AccessLogRepo | null = null;
@@ -214,15 +218,11 @@ export function getAccessLog(
   // Phase 121: If cache is empty for this user, try DB
   if (userLog.length === 0 && dbRepo) {
     try {
-      const dbRows = dbRepo.findAccessLogsByUser(userId, {
-        eventType: opts?.eventType,
-        since: opts?.since,
-        limit: opts?.limit ?? 50,
-        offset: opts?.offset ?? 0,
-      });
-      if (dbRows.length > 0) {
-        const total = dbRepo.countAccessLogsByUser(userId);
-        const entries: AccessLogEntry[] = dbRows.map((r: any) => ({
+      // BUG #13 fix: Single DB round-trip for rehydration — fetch up to MAX
+      // entries (newest-first) and extract the requested page from that set.
+      const all = dbRepo.findAccessLogsByUser(userId, { limit: MAX_ENTRIES_PER_USER });
+      if (all.length > 0) {
+        const mapRow = (r: any): AccessLogEntry => ({
           id: r.id,
           timestamp: r.createdAt,
           userId: r.userId,
@@ -232,25 +232,31 @@ export function getAccessLog(
           eventType: r.eventType as AccessLogEventType,
           description: r.description,
           metadata: r.metadataJson ? JSON.parse(r.metadataJson) : {},
-        }));
-        // Rehydrate cache
-        const all = dbRepo.findAccessLogsByUser(userId, { limit: MAX_ENTRIES_PER_USER });
-        const rehydrated: AccessLogEntry[] = all.map((r: any) => ({
-          id: r.id,
-          timestamp: r.createdAt,
-          userId: r.userId,
-          actorName: r.actorName,
-          isProxy: Boolean(r.isProxy),
-          targetPatientDfn: r.targetPatientDfn,
-          eventType: r.eventType as AccessLogEventType,
-          description: r.description,
-          metadata: r.metadataJson ? JSON.parse(r.metadataJson) : {},
-        }));
-        // DB returns newest-first, cache stores oldest-first
-        rehydrated.reverse();
+        });
+        // Rehydrate cache (oldest-first)
+        const rehydrated = all.map(mapRow).reverse();
         accessLogs.set(userId, rehydrated);
         totalEntries += rehydrated.length;
-        return { entries, total };
+
+        // Apply filters on rehydrated data for the response
+        let filtered = rehydrated as AccessLogEntry[];
+        if (opts?.eventType) {
+          filtered = filtered.filter((e) => e.eventType === opts.eventType);
+        }
+        if (opts?.since) {
+          const sinceTime = new Date(opts.since).getTime();
+          filtered = filtered.filter((e) => new Date(e.timestamp).getTime() >= sinceTime);
+        }
+        // BUG #11 fix: total reflects filtered count, not unfiltered
+        const total = (opts?.eventType || opts?.since)
+          ? dbRepo.countAccessLogsByUserFiltered
+            ? dbRepo.countAccessLogsByUserFiltered(userId, { eventType: opts?.eventType, since: opts?.since })
+            : filtered.length
+          : all.length;
+        const offset = opts?.offset ?? 0;
+        const limit = opts?.limit ?? 50;
+        const page = filtered.slice().reverse().slice(offset, offset + limit);
+        return { entries: page, total };
       }
     } catch (err) {
       dbWarn("fallback-read", err);
@@ -419,6 +425,13 @@ export function getAccessLogStats(): {
       const dbStats = dbRepo.getAccessLogStats();
       effectiveTotal = dbStats.total;
       effectiveUsers = dbStats.users;
+      // BUG #12 fix: Also populate byEventType from DB when cache is cold
+      if (dbRepo.getAccessLogStatsByEventType) {
+        const dbByType = dbRepo.getAccessLogStatsByEventType();
+        for (const [k, v] of Object.entries(dbByType)) {
+          byEventType[k] = (byEventType[k] || 0) + v;
+        }
+      }
     } catch (err) {
       dbWarn("stats", err);
     }

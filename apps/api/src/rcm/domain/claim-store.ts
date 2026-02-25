@@ -33,6 +33,7 @@ interface ClaimRepo {
   findRemittancesByTenant(tenantId: string, limit?: number, offset?: number): any[];
   updateRemittance(id: string, updates: any): any;
   countAllRemittances(): number;
+  countRemittancesByTenant?(tenantId: string): number;
 }
 
 let dbRepo: ClaimRepo | null = null;
@@ -114,14 +115,15 @@ function claimToDbRow(claim: Claim): Record<string, unknown> {
 }
 
 function dbRowToClaim(row: any): Claim {
+  const { diagnosesJson, linesJson, auditTrailJson, validationResultJson, ...rest } = row;
   return {
-    ...row,
-    diagnoses: JSON.parse(row.diagnosesJson ?? "[]"),
-    lines: JSON.parse(row.linesJson ?? "[]"),
-    auditTrail: JSON.parse(row.auditTrailJson ?? "[]"),
-    validationResult: row.validationResultJson ? JSON.parse(row.validationResultJson) : undefined,
-    isDemo: Boolean(row.isDemo),
-    isMock: Boolean(row.isMock),
+    ...rest,
+    diagnoses: JSON.parse(diagnosesJson ?? "[]"),
+    lines: JSON.parse(linesJson ?? "[]"),
+    auditTrail: JSON.parse(auditTrailJson ?? "[]"),
+    validationResult: validationResultJson ? JSON.parse(validationResultJson) : undefined,
+    isDemo: Boolean(rest.isDemo),
+    isMock: Boolean(rest.isMock),
   } as Claim;
 }
 
@@ -186,6 +188,9 @@ export function updateClaim(claim: Claim): void {
         exportArtifactPath: claim.exportArtifactPath,
         submissionSafetyMode: claim.submissionSafetyMode,
         auditTrailJson: JSON.stringify(claim.auditTrail ?? []),
+        diagnosesJson: JSON.stringify(claim.diagnoses ?? []),
+        linesJson: JSON.stringify(claim.lines ?? []),
+        totalCharge: claim.totalCharge,
       });
     } catch (e) { dbWarn("updateClaim", e); }
   }
@@ -301,10 +306,11 @@ export function getRemittance(id: string): Remittance | undefined {
     try {
       const row = dbRepo.findRemittanceById(id);
       if (row) {
+        const { serviceLinesJson, ...rest } = row;
         const remit = {
-          ...row,
-          serviceLines: JSON.parse(row.serviceLinesJson ?? "[]"),
-          isMock: Boolean(row.isMock),
+          ...rest,
+          serviceLines: JSON.parse(serviceLinesJson ?? "[]"),
+          isMock: Boolean(rest.isMock),
         } as Remittance;
         remittances.set(remit.id, remit);
         return remit;
@@ -326,13 +332,21 @@ export function listRemittances(
   if (all.length === 0 && dbRepo) {
     try {
       const rows = dbRepo.findRemittancesByTenant(tenantId, limit, offset);
-      const result = rows.map((r: any) => ({
-        ...r,
-        serviceLines: JSON.parse(r.serviceLinesJson ?? "[]"),
-        isMock: Boolean(r.isMock),
-      })) as Remittance[];
+      const result = rows.map((r: any) => {
+        const { serviceLinesJson, ...rest } = r;
+        return {
+          ...rest,
+          serviceLines: JSON.parse(serviceLinesJson ?? "[]"),
+          isMock: Boolean(rest.isMock),
+        } as Remittance;
+      });
       for (const rem of result) remittances.set(rem.id, rem);
-      return { remittances: result, total: result.length };
+      // Count total from DB (not paginated length)
+      let dbTotal = result.length;
+      if (dbRepo) {
+        try { dbTotal = dbRepo.countRemittancesByTenant ? dbRepo.countRemittancesByTenant(tenantId) : result.length; } catch (_) { /* fallback to result.length */ }
+      }
+      return { remittances: result, total: dbTotal };
     } catch (e) { dbWarn("findRemittancesByTenant", e); }
   }
 
@@ -347,8 +361,8 @@ export function matchRemittanceToClaim(
   remitId: string,
   claimId: string,
 ): boolean {
-  const remit = remittances.get(remitId);
-  const claim = claims.get(claimId);
+  const remit = getRemittance(remitId);
+  const claim = getClaim(claimId);
   if (!remit || !claim) return false;
 
   remit.claimId = claimId;

@@ -93,18 +93,23 @@ function caseToDbRow(cc: ClaimCase): Record<string, unknown> {
 }
 
 function dbRowToCase(row: any): ClaimCase {
+  const {
+    diagnosesJson, proceduresJson, scrubHistoryJson, lastScrubResultJson,
+    attachmentsJson, eventsJson, denialsJson, ...rest
+  } = row;
   return {
-    ...row,
-    diagnoses: JSON.parse(row.diagnosesJson ?? "[]"),
-    procedures: JSON.parse(row.proceduresJson ?? "[]"),
-    scrubHistory: JSON.parse(row.scrubHistoryJson ?? "[]"),
-    lastScrubResult: row.lastScrubResultJson ? JSON.parse(row.lastScrubResultJson) : undefined,
-    attachments: JSON.parse(row.attachmentsJson ?? "[]"),
-    events: JSON.parse(row.eventsJson ?? "[]"),
-    denials: JSON.parse(row.denialsJson ?? "[]"),
-    isDemo: Boolean(row.isDemo),
-    isMock: Boolean(row.isMock),
-    totalCharge: Number(row.totalCharge ?? 0),
+    ...rest,
+    diagnoses: JSON.parse(diagnosesJson ?? "[]"),
+    procedures: JSON.parse(proceduresJson ?? "[]"),
+    scrubHistory: JSON.parse(scrubHistoryJson ?? "[]"),
+    lastScrubResult: lastScrubResultJson ? JSON.parse(lastScrubResultJson) : undefined,
+    attachments: JSON.parse(attachmentsJson ?? "[]"),
+    events: JSON.parse(eventsJson ?? "[]"),
+    denials: JSON.parse(denialsJson ?? "[]"),
+    isDemo: Boolean(rest.isDemo),
+    isMock: Boolean(rest.isMock),
+    totalCharge: Number(rest.totalCharge ?? 0),
+    createdBy: rest.createdBy ?? "unknown",
   } as ClaimCase;
 }
 
@@ -123,6 +128,13 @@ function persistCaseToDb(cc: ClaimCase): void {
       diagnosesJson: JSON.stringify(cc.diagnoses ?? []),
       proceduresJson: JSON.stringify(cc.procedures ?? []),
       priority: cc.priority,
+      // VistA grounding + clinical fields
+      vistaEncounterIen: cc.vistaEncounterIen,
+      vistaChargeIen: cc.vistaChargeIen,
+      vistaArIen: cc.vistaArIen,
+      payerName: cc.payerName,
+      patientName: cc.patientName,
+      baseClaimId: cc.baseClaimId,
     });
   } catch (e) { dbWarn("updateClaimCase", e); }
 }
@@ -270,7 +282,7 @@ export function getClaimCase(id: string): ClaimCase | undefined {
 }
 
 export function updateClaimCase(id: string, updates: Partial<ClaimCase>): ClaimCase | undefined {
-  const existing = cases.get(id);
+  const existing = getClaimCase(id);
   if (!existing) return undefined;
 
   const updated: ClaimCase = {
@@ -303,7 +315,7 @@ export function transitionClaimCase(
   actor: string,
   detail?: Record<string, unknown>,
 ): TransitionResult {
-  const cc = cases.get(id);
+  const cc = getClaimCase(id);
   if (!cc) return { ok: false, error: 'Claim case not found' };
 
   if (!isValidLifecycleTransition(cc.lifecycleStatus, toStatus)) {
@@ -387,7 +399,7 @@ export function recordScrubResult(
   claimCaseId: string,
   result: ClaimScrubResult,
 ): ClaimCase | undefined {
-  const cc = cases.get(claimCaseId);
+  const cc = getClaimCase(claimCaseId);
   if (!cc) return undefined;
 
   const event: ClaimEvent = {
@@ -423,7 +435,7 @@ export function addAttachment(
   attachment: Omit<ClaimAttachment, 'id' | 'claimCaseId'>,
   actor: string,
 ): ClaimCase | undefined {
-  const cc = cases.get(claimCaseId);
+  const cc = getClaimCase(claimCaseId);
   if (!cc) return undefined;
 
   const att: ClaimAttachment = {
@@ -458,7 +470,7 @@ export function addDenial(
   claimCaseId: string,
   denial: Omit<DenialRecord, 'id' | 'claimCaseId'>,
 ): DenialRecord | undefined {
-  const cc = cases.get(claimCaseId);
+  const cc = getClaimCase(claimCaseId);
   if (!cc) return undefined;
 
   const dr: DenialRecord = {
@@ -510,7 +522,7 @@ export function resolveDenial(
   allDenials.set(denialId, updated);
 
   // Update in the claim case too
-  const cc = cases.get(dr.claimCaseId);
+  const cc = getClaimCase(dr.claimCaseId);
   if (cc) {
     const updatedDenials = cc.denials.map(d => d.id === denialId ? updated : d);
     const updatedCase = { ...cc, denials: updatedDenials, updatedAt: new Date().toISOString() };
