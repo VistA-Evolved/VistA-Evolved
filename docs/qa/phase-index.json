@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-26T05:58:35.080Z",
+  "generatedAt": "2026-02-26T12:30:20.468Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 155,
+  "phaseCount": 159,
   "phases": [
     {
       "phaseNumber": "1",
@@ -2410,6 +2410,88 @@
         "apps/web/src/app/cprs/chart/[dfn]/[tab]/page.tsx",
         "apps/web/src/app/cprs/settings/preferences/page.tsx"
       ]
+    },
+    {
+      "phaseNumber": "145",
+      "title": "State-of-the-Union Convergence + Gap Burn-Down Plan",
+      "folder": "150-PHASE-145-CONVERGENCE",
+      "files": [
+        "145-01-IMPLEMENT.md",
+        "145-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "145-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "145-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "docs/audits/phase145-priority-backlog.md",
+        "qa/gauntlet/gates/g19-system-audit-snapshot.mjs",
+        "qa/gauntlet/gates/g20-no-new-stub-growth.mjs",
+        "qa/gauntlet/gates/g21-no-new-critical-map-store.mjs",
+        "qa/gauntlet/cli.mjs"
+      ]
+    },
+    {
+      "phaseNumber": "146",
+      "title": "Durability Wave 3: Store Elimination",
+      "folder": "151-PHASE-146-DURABILITY-WAVE3",
+      "files": [
+        "146-01-IMPLEMENT.md",
+        "146-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "146-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "146-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "147",
+      "title": "Scheduling Depth V2: SD Realism + Seeding",
+      "folder": "152-PHASE-147-SCHEDULING-DEPTH-V2",
+      "files": [
+        "147-01-IMPLEMENT.md",
+        "147-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "147-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "147-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "148",
+      "title": "Production VistA Distribution Lane",
+      "folder": "153-PHASE-148-PROD-VISTA-DISTRO",
+      "files": [
+        "148-01-IMPLEMENT.md",
+        "148-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "148-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "148-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
     },
     {
       "phaseNumber": "14",

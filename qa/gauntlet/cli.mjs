@@ -73,6 +73,9 @@ const SUITE_GATES = {
     "G16_dr_chaos",
     "G17_store_policy",
     "G18_qa_ladder_v2",
+    "G19_system_audit_snapshot",
+    "G20_no_new_stub_growth",
+    "G21_no_new_critical_map_store",
   ],
   full: [
     "G0_prompts_integrity",
@@ -94,6 +97,9 @@ const SUITE_GATES = {
     "G16_dr_chaos",
     "G17_store_policy",
     "G18_qa_ladder_v2",
+    "G19_system_audit_snapshot",
+    "G20_no_new_stub_growth",
+    "G21_no_new_critical_map_store",
   ],
 };
 
@@ -124,6 +130,9 @@ const GATE_MODULES = {
   G16_dr_chaos: "gates/g16-dr-chaos.mjs",
   G17_store_policy: "gates/g17-store-policy.mjs",
   G18_qa_ladder_v2: "gates/g18-qa-ladder-v2.mjs",
+  G19_system_audit_snapshot: "gates/g19-system-audit-snapshot.mjs",
+  G20_no_new_stub_growth: "gates/g20-no-new-stub-growth.mjs",
+  G21_no_new_critical_map_store: "gates/g21-no-new-critical-map-store.mjs",
 };
 
 // ── Resolve which gates to run ──────────────────────────────
