@@ -98,6 +98,7 @@ export type ImmutableAuditAction =
   | "scheduling.approve"
   | "scheduling.reject"
   | "scheduling.clinic_preferences"
+  | "scheduling.truth_gate"
   // Secure messaging events (Phase 70)
   | "messaging.send"
   | "messaging.read"

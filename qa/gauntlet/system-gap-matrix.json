@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-02-26T13:59:12.298Z",
-  "headSha": "26eaec9",
+  "generatedAt": "2026-02-26T14:20:07.185Z",
+  "headSha": "659563a",
   "domains": [
     {
       "domain": "AUTH_IAM",
@@ -159,30 +159,20 @@
       "evidence": [
         {
           "metric": "uniqueRpcsUsed",
-          "value": 85
+          "value": 91
         },
         {
           "metric": "registeredRpcs",
-          "value": 162
+          "value": 196
         },
         {
           "metric": "totalCallSites",
-          "value": 172
+          "value": 182
         }
       ],
       "topGaps": [
         {
-          "gap": "4 RPCs used but not in registry",
-          "severity": "med",
-          "evidenceFiles": [
-            "ORWPT APPTLST",
-            "SD W/L CURRENT STATUS",
-            "SD W/L PRIORITY",
-            "SD W/L TYPE"
-          ]
-        },
-        {
-          "gap": "56 registered RPCs not called in code",
+          "gap": "70 registered RPCs not called in code",
           "severity": "low",
           "evidenceFiles": []
         }
@@ -235,6 +225,10 @@
       "status": "integration_pending",
       "evidence": [
         {
+          "route": "GET /scheduling/appointment-types",
+          "file": "apps/api/src/routes/scheduling/index.ts"
+        },
+        {
           "route": "GET /scheduling/appointments",
           "file": "apps/api/src/routes/scheduling/index.ts"
         },
@@ -248,10 +242,6 @@
         },
         {
           "route": "POST /scheduling/appointments/:id/checkout",
-          "file": "apps/api/src/routes/scheduling/index.ts"
-        },
-        {
-          "route": "POST /scheduling/appointments/:id/reschedule",
           "file": "apps/api/src/routes/scheduling/index.ts"
         }
       ],

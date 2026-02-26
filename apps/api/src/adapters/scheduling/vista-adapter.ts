@@ -1,8 +1,9 @@
 /**
- * VistA Scheduling Adapter -- Phase 63 (DB-hybrid Phase 121, SD* pack Phase 123, lifecycle Phase 131).
+ * VistA Scheduling Adapter -- Phase 63 (DB-hybrid Phase 121, SD* pack Phase 123,
+ * lifecycle Phase 131, SDES depth Phase 147).
  *
  * Real RPC integration using SDOE (encounters), SD W/L (wait list),
- * and DVBAB (appointment list) RPCs available in WorldVistA sandbox.
+ * SDVW (appointment API), and SDES (scheduling depth) RPCs.
  *
  * Phase 123 read RPCs:
  *   SDOE LIST ENCOUNTERS FOR PAT, SDOE LIST ENCOUNTERS FOR DATES,
@@ -17,6 +18,11 @@
  *   ORWPT APPTLST -- CPRS-style appointment list (30-day window)
  *   SD W/L PRIORITY, SD W/L TYPE, SD W/L CURRENT STATUS -- reference data
  *   SDVW MAKE APPT API APP -- real appointment creation via HL7 messaging
+ *
+ * Phase 147 additions (SDES depth):
+ *   SDES GET APPT TYPES, SDES GET CANCEL REASONS, SDES GET RESOURCE BY CLINIC,
+ *   SDES GET CLIN AVAILABILITY, SDES GET APPT BY APPT IEN (truth gate),
+ *   SDES CREATE APPOINTMENTS, SDES CANCEL APPOINTMENT 2, SDES CHECKIN, SDES CHECKOUT
  *
  * Pending (not in sandbox):
  *   SDEC APPADD (direct booking), SDEC APPDEL (cancel), SDEC APPSLOTS (slots)
@@ -37,6 +43,12 @@ import type {
   CprsAppointment,
   ReferenceDataSet,
   RpcPostureEntry,
+  AppointmentType,
+  CancelReason,
+  ClinicResource,
+  SdesAvailSlot,
+  TruthGateResult,
+  SchedulingMode,
 } from "./interface.js";
 import type { AdapterResult } from "../types.js";
 import { safeCallRpc, safeCallRpcWithList } from "../../lib/rpc-resilience.js";
@@ -1117,6 +1129,17 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       // --- SDVW real appointment creation (Phase 131) ---
       { rpc: "SDVW MAKE APPT API APP", ien: "2206", status: "available", vistaPackage: "SD", sandboxNote: "Real appointment creation via HL7 messaging -- LIST params: PATIENTN, SSN, SD1, SC, DUZ" },
       { rpc: "SDVW SDAPI APP", ien: "2207", status: "available", vistaPackage: "SD", sandboxNote: "Appointment list API -- LIST params with date range, clinic, SSN" },
+      // --- SDES RPCs (Phase 147: installed in sandbox, may need seeded data) ---
+      { rpc: "SDES GET APPTS BY PATIENT DFN3", status: "callable_no_data", vistaPackage: "SDES", sandboxNote: "Patient appointments via SDES API -- needs seeded ^SC data (run ZVESDSEED.m)" },
+      { rpc: "SDES GET CLIN AVAILABILITY", status: "callable_no_data", vistaPackage: "SDES", sandboxNote: "Clinic availability slots -- needs clinic configuration" },
+      { rpc: "SDES GET APPT TYPES", status: "callable_no_data", vistaPackage: "SDES", sandboxNote: "Appointment types from File 409.1" },
+      { rpc: "SDES GET CANCEL REASONS", status: "callable_no_data", vistaPackage: "SDES", sandboxNote: "Cancel reasons from SD files" },
+      { rpc: "SDES GET RESOURCE BY CLINIC", status: "callable_no_data", vistaPackage: "SDES", sandboxNote: "Resource/hours for a clinic" },
+      { rpc: "SDES GET CLINIC INFO2", status: "callable_no_data", vistaPackage: "SDES", sandboxNote: "Detailed clinic info from File 44" },
+      { rpc: "SDES CREATE APPOINTMENTS", status: "callable_no_data", vistaPackage: "SDES", sandboxNote: "Direct appointment booking via SDES -- needs clinic+slot setup" },
+      { rpc: "SDES CANCEL APPOINTMENT 2", status: "callable_no_data", vistaPackage: "SDES", sandboxNote: "Appointment cancellation via SDES" },
+      { rpc: "SDES CHECKIN", status: "callable_no_data", vistaPackage: "SDES", sandboxNote: "SDES check-in workflow" },
+      { rpc: "SDES CHECKOUT", status: "callable_no_data", vistaPackage: "SDES", sandboxNote: "SDES checkout workflow" },
       // --- Not installed ---
       { rpc: "SDEC APPADD", status: "not_installed", vistaPackage: "SDEC", sandboxNote: "Direct appointment booking -- SDEC package not installed in WorldVistA Docker" },
       { rpc: "SDEC APPDEL", status: "not_installed", vistaPackage: "SDEC", sandboxNote: "Direct appointment cancellation -- SDEC package not installed" },
@@ -1129,6 +1152,360 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       vistaGrounding: grounding("VistA scheduling RPC inventory", "SD", {
         vistaFiles: ["XWB REMOTE PROCEDURE (File 8994)"],
         sandboxNote: `${posture.filter((p) => p.status === "available").length} available, ${posture.filter((p) => p.status === "callable_no_data").length} callable (no data), ${posture.filter((p) => p.status === "not_installed").length} not installed`,
+      }),
+    };
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Phase 147: SDES depth methods                                        */
+  /* ------------------------------------------------------------------ */
+
+  /**
+   * Get appointment types from SDES GET APPT TYPES.
+   * Falls back to empty list if RPC unavailable or no data seeded.
+   */
+  async getAppointmentTypes(): Promise<AdapterResult<AppointmentType[]>> {
+    try {
+      const rawLines = await safeCallRpc("SDES GET APPT TYPES", [""]);
+      const raw = rawLines.join("\n").trim();
+      if (!raw || raw.startsWith("-1") || raw.startsWith("0")) {
+        return {
+          ok: true,
+          data: [],
+          pending: true,
+          target: "SDES GET APPT TYPES",
+          vistaGrounding: grounding("SDES GET APPT TYPES", "SDES", {
+            vistaFiles: ["SD APPOINTMENT TYPE (File 409.1)"],
+            sandboxNote: "RPC callable but returned no data -- run ZVESDSEED.m to seed appointment types",
+          }),
+        };
+      }
+      // Parse: each line typically "IEN^NAME^INACTIVE" or similar ^-delimited
+      const types: AppointmentType[] = [];
+      for (const line of rawLines) {
+        if (!line.trim()) continue;
+        const pieces = line.split("^");
+        if (pieces.length >= 2) {
+          types.push({
+            ien: pieces[0] || "",
+            name: pieces[1] || "",
+            inactive: pieces[2] === "1",
+          });
+        }
+      }
+      return {
+        ok: true,
+        data: types,
+        vistaGrounding: grounding("SDES GET APPT TYPES", "SDES", {
+          vistaFiles: ["SD APPOINTMENT TYPE (File 409.1)"],
+          sandboxNote: `${types.length} appointment type(s) returned`,
+        }),
+      };
+    } catch (err: any) {
+      log.warn("SDES GET APPT TYPES failed", { error: err.message });
+      return {
+        ok: false,
+        data: [],
+        error: `SDES GET APPT TYPES unavailable: ${err.message}`,
+        pending: true,
+        target: "SDES GET APPT TYPES",
+      };
+    }
+  }
+
+  /**
+   * Get cancel reasons from SDES GET CANCEL REASONS.
+   */
+  async getCancelReasons(): Promise<AdapterResult<CancelReason[]>> {
+    try {
+      const rawLines = await safeCallRpc("SDES GET CANCEL REASONS", [""]);
+      const raw = rawLines.join("\n").trim();
+      if (!raw || raw.startsWith("-1") || raw.startsWith("0")) {
+        return {
+          ok: true,
+          data: [],
+          pending: true,
+          target: "SDES GET CANCEL REASONS",
+          vistaGrounding: grounding("SDES GET CANCEL REASONS", "SDES", {
+            vistaFiles: ["CANCELLATION REASON (File 409.2)"],
+            sandboxNote: "RPC callable but returned no data",
+          }),
+        };
+      }
+      const reasons: CancelReason[] = [];
+      for (const line of rawLines) {
+        if (!line.trim()) continue;
+        const pieces = line.split("^");
+        if (pieces.length >= 2) {
+          reasons.push({
+            ien: pieces[0] || "",
+            name: pieces[1] || "",
+            type: pieces[2] || "",
+          });
+        }
+      }
+      return {
+        ok: true,
+        data: reasons,
+        vistaGrounding: grounding("SDES GET CANCEL REASONS", "SDES", {
+          vistaFiles: ["CANCELLATION REASON (File 409.2)"],
+          sandboxNote: `${reasons.length} cancel reason(s) returned`,
+        }),
+      };
+    } catch (err: any) {
+      log.warn("SDES GET CANCEL REASONS failed", { error: err.message });
+      return {
+        ok: false,
+        data: [],
+        error: `SDES GET CANCEL REASONS unavailable: ${err.message}`,
+        pending: true,
+        target: "SDES GET CANCEL REASONS",
+      };
+    }
+  }
+
+  /**
+   * Get resource/schedule info for a clinic via SDES GET RESOURCE BY CLINIC.
+   */
+  async getClinicResource(clinicIen: string): Promise<AdapterResult<ClinicResource>> {
+    try {
+      const rawLines = await safeCallRpc("SDES GET RESOURCE BY CLINIC", [clinicIen]);
+      const raw = rawLines.join("\n").trim();
+      if (!raw || raw.startsWith("-1") || raw.startsWith("0")) {
+        return {
+          ok: true,
+          data: { clinicIen, clinicName: "" },
+          pending: true,
+          target: "SDES GET RESOURCE BY CLINIC",
+          vistaGrounding: grounding("SDES GET RESOURCE BY CLINIC", "SDES", {
+            vistaFiles: ["HOSPITAL LOCATION (File 44)"],
+            sandboxNote: `No resource data for clinic IEN ${clinicIen}`,
+          }),
+        };
+      }
+      // Parse first line: typically IEN^NAME^ABBREV^RESOURCEIEN
+      const pieces = rawLines[0].split("^");
+      const resource: ClinicResource = {
+        clinicIen: pieces[0] || clinicIen,
+        clinicName: pieces[1] || "",
+        resourceIen: pieces[3] || "",
+        abbreviation: pieces[2] || "",
+        raw: rawLines,
+      };
+      return {
+        ok: true,
+        data: resource,
+        vistaGrounding: grounding("SDES GET RESOURCE BY CLINIC", "SDES", {
+          vistaFiles: ["HOSPITAL LOCATION (File 44)"],
+          sandboxNote: `Resource data returned for clinic ${resource.clinicName}`,
+        }),
+      };
+    } catch (err: any) {
+      log.warn("SDES GET RESOURCE BY CLINIC failed", { error: err.message });
+      return {
+        ok: false,
+        data: { clinicIen, clinicName: "" },
+        error: `SDES GET RESOURCE BY CLINIC unavailable: ${err.message}`,
+        pending: true,
+        target: "SDES GET RESOURCE BY CLINIC",
+      };
+    }
+  }
+
+  /**
+   * Get clinic availability slots via SDES GET CLIN AVAILABILITY.
+   * @param clinicIen  - clinic File 44 IEN
+   * @param startDate  - ISO date string (YYYY-MM-DD)
+   * @param endDate    - ISO date string (YYYY-MM-DD)
+   */
+  async getSdesAvailability(
+    clinicIen: string,
+    startDate: string,
+    endDate: string,
+  ): Promise<AdapterResult<SdesAvailSlot[]>> {
+    try {
+      // SDES expects: clinicIen^startDate^endDate (internal VistA dates)
+      const param = `${clinicIen}^${isoToVistaDate(startDate)}^${isoToVistaDate(endDate)}`;
+      const rawLines = await safeCallRpc("SDES GET CLIN AVAILABILITY", [param]);
+      const raw = rawLines.join("\n").trim();
+      if (!raw || raw.startsWith("-1") || raw.startsWith("0")) {
+        return {
+          ok: true,
+          data: [],
+          pending: true,
+          target: "SDES GET CLIN AVAILABILITY",
+          vistaGrounding: grounding("SDES GET CLIN AVAILABILITY", "SDES", {
+            vistaFiles: ["HOSPITAL LOCATION (File 44)"],
+            sandboxNote: `No availability data for clinic IEN ${clinicIen} -- schedule may not be configured`,
+          }),
+        };
+      }
+      // Parse: each line typically DATE^TIME^SLOTS_AVAILABLE^RESOURCE_IEN
+      const slots: SdesAvailSlot[] = [];
+      for (const line of rawLines) {
+        if (!line.trim()) continue;
+        const pieces = line.split("^");
+        if (pieces.length >= 2) {
+          slots.push({
+            date: pieces[0] || "",
+            time: pieces[1] || "",
+            slotsAvailable: parseInt(pieces[2] || "0", 10) || 0,
+            resourceIen: pieces[3] || "",
+            raw: line,
+          });
+        }
+      }
+      return {
+        ok: true,
+        data: slots,
+        vistaGrounding: grounding("SDES GET CLIN AVAILABILITY", "SDES", {
+          vistaFiles: ["HOSPITAL LOCATION (File 44)"],
+          sandboxNote: `${slots.length} availability slot(s) for clinic IEN ${clinicIen}`,
+        }),
+      };
+    } catch (err: any) {
+      log.warn("SDES GET CLIN AVAILABILITY failed", { error: err.message });
+      return {
+        ok: false,
+        data: [],
+        error: `SDES GET CLIN AVAILABILITY unavailable: ${err.message}`,
+        pending: true,
+        target: "SDES GET CLIN AVAILABILITY",
+      };
+    }
+  }
+
+  /**
+   * Truth gate: verify that an appointment reference actually exists in VistA.
+   * Uses SDES GET APPT BY APPT IEN if available, falls back to SDOE LIST ENCOUNTERS FOR PAT.
+   */
+  async verifyAppointment(
+    appointmentRef: string,
+    patientDfn: string,
+  ): Promise<AdapterResult<TruthGateResult>> {
+    try {
+      // Try SDES first -- most direct verification
+      try {
+        const sdesLines = await safeCallRpc("SDES GET APPT BY APPT IEN", [appointmentRef]);
+        const sdesRaw = sdesLines.join("\n").trim();
+        if (sdesRaw && !sdesRaw.startsWith("-1") && !sdesRaw.startsWith("0")) {
+          return {
+            ok: true,
+            data: {
+              gate: "vista_verify",
+              passed: true,
+              vistaVerified: true,
+              verificationMethod: "SDES GET APPT BY APPT IEN",
+              appointmentRef,
+              patientDfn,
+              vistaData: sdesRaw.substring(0, 500), // Truncate for safety
+              timestamp: new Date().toISOString(),
+            },
+            vistaGrounding: grounding("SDES GET APPT BY APPT IEN", "SDES", {
+              sandboxNote: "Appointment verified directly via SDES",
+            }),
+          };
+        }
+      } catch {
+        // SDES not available, fall through to SDOE
+      }
+
+      // Fallback: check via SDOE encounter list for this patient
+      const encLines = await safeCallRpc("SDOE LIST ENCOUNTERS FOR PAT", [patientDfn]);
+      const encRaw = encLines.join("\n");
+      // Search for the appointment reference in encounter data
+      const found = encRaw.includes(appointmentRef) || encRaw.includes(`^${appointmentRef}^`);
+
+      return {
+        ok: true,
+        data: {
+          gate: "vista_verify",
+          passed: found,
+          vistaVerified: found,
+          verificationMethod: "SDOE LIST ENCOUNTERS FOR PAT (fallback)",
+          appointmentRef,
+          patientDfn,
+          vistaData: found ? `Found in SDOE encounter list` : `Not found in ${encLines.length} encounter lines`,
+          timestamp: new Date().toISOString(),
+        },
+        vistaGrounding: grounding("SDOE LIST ENCOUNTERS FOR PAT", "SD", {
+          sandboxNote: found
+            ? "Appointment verified via SDOE encounter scan"
+            : "Appointment reference not found in VistA encounter data",
+        }),
+      };
+    } catch (err: any) {
+      log.warn("verifyAppointment failed", { error: err.message, appointmentRef, patientDfn });
+      return {
+        ok: true,
+        data: {
+          gate: "vista_verify",
+          passed: false,
+          vistaVerified: false,
+          verificationMethod: "none -- RPC unavailable",
+          appointmentRef,
+          patientDfn,
+          error: err.message,
+          timestamp: new Date().toISOString(),
+        },
+      };
+    }
+  }
+
+  /**
+   * Report the current scheduling writeback mode.
+   * Probes SDES and SDOE RPCs to determine what capabilities are available.
+   */
+  async getSchedulingMode(): Promise<AdapterResult<SchedulingMode>> {
+    let sdesInstalled = false;
+    let sdoeInstalled = false;
+    let sdwlInstalled = false;
+    let sdvwInstalled = false;
+
+    // Probe SDES
+    try {
+      await safeCallRpc("SDES GET APPT TYPES", [""]);
+      sdesInstalled = true;
+    } catch { /* not available */ }
+
+    // Probe SDOE (known working)
+    try {
+      await safeCallRpc("SDOE LIST ENCOUNTERS FOR PAT", ["1"]);
+      sdoeInstalled = true;
+    } catch { /* not available */ }
+
+    // Probe SD W/L
+    try {
+      await safeCallRpc("SD W/L RETRIVE HOSP LOC(#44)", [""]);
+      sdwlInstalled = true;
+    } catch { /* not available */ }
+
+    // Check SDVW existence
+    try {
+      await safeCallRpc("SDVW SDAPI APP", [""]);
+      sdvwInstalled = true;
+    } catch { /* not available */ }
+
+    // Determine mode: full_writeback > sdes_partial > request_only
+    const writebackEnabled = sdesInstalled;
+    let mode: SchedulingMode["mode"] = "request_only";
+    if (sdesInstalled) {
+      mode = "sdes_partial";
+    }
+
+    return {
+      ok: true,
+      data: {
+        writebackEnabled,
+        sdesInstalled,
+        sdoeInstalled,
+        sdwlInstalled,
+        sdvwInstalled,
+        mode,
+        detail: `SDES: ${sdesInstalled ? "yes" : "no"}, SDOE: ${sdoeInstalled ? "yes" : "no"}, SD W/L: ${sdwlInstalled ? "yes" : "no"}, SDVW: ${sdvwInstalled ? "yes" : "no"}`,
+      },
+      vistaGrounding: grounding("Scheduling mode probe", "SD", {
+        sandboxNote: `Mode: ${mode} -- ${sdesInstalled ? "SDES RPCs installed" : "SDES not available"}, ${sdoeInstalled ? "SDOE working" : "SDOE unavailable"}`,
       }),
     };
   }

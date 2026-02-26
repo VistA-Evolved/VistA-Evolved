@@ -198,6 +198,26 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "SDOE GET DIAGNOSES",              domain: "scheduling",  tag: "read",  description: "Get diagnoses associated with an encounter" },
   { name: "SD W/L CREATE FILE",              domain: "scheduling",  tag: "write", description: "Create wait-list entry in VistA SD package" },
   { name: "SD W/L RETRIVE FULL DATA",        domain: "scheduling",  tag: "read",  description: "Retrieve full wait-list data" },
+  // Phase 131: CPRS + SDVW RPCs
+  { name: "ORWPT APPTLST",                   domain: "scheduling",  tag: "read",  description: "CPRS cover sheet appointment list" },
+  { name: "SDVW MAKE APPT API APP",           domain: "scheduling",  tag: "write", description: "Real appointment creation via SDVW HL7 messaging" },
+  { name: "SDVW SDAPI APP",                   domain: "scheduling",  tag: "read",  description: "SDVW appointment list API" },
+  // Phase 131: SD W/L reference data RPCs
+  { name: "SD W/L PRIORITY",                  domain: "scheduling",  tag: "read",  description: "Wait-list priority reference data" },
+  { name: "SD W/L TYPE",                      domain: "scheduling",  tag: "read",  description: "Wait-list type reference data" },
+  { name: "SD W/L CURRENT STATUS",            domain: "scheduling",  tag: "read",  description: "Wait-list current status reference data" },
+  // Phase 147: SDES scheduling depth RPCs
+  { name: "SDES GET APPTS BY PATIENT DFN3",   domain: "scheduling",  tag: "read",  description: "SDES patient appointment list by DFN" },
+  { name: "SDES GET CLIN AVAILABILITY",       domain: "scheduling",  tag: "read",  description: "SDES clinic availability slots" },
+  { name: "SDES GET APPT TYPES",              domain: "scheduling",  tag: "read",  description: "SDES appointment types from File 409.1" },
+  { name: "SDES GET CANCEL REASONS",          domain: "scheduling",  tag: "read",  description: "SDES cancellation reasons" },
+  { name: "SDES GET RESOURCE BY CLINIC",      domain: "scheduling",  tag: "read",  description: "SDES clinic resource/schedule info" },
+  { name: "SDES GET CLINIC INFO2",            domain: "scheduling",  tag: "read",  description: "SDES detailed clinic info from File 44" },
+  { name: "SDES GET APPT BY APPT IEN",        domain: "scheduling",  tag: "read",  description: "SDES single appointment detail by IEN (truth gate)" },
+  { name: "SDES CREATE APPOINTMENTS",         domain: "scheduling",  tag: "write", description: "SDES direct appointment booking" },
+  { name: "SDES CANCEL APPOINTMENT 2",        domain: "scheduling",  tag: "write", description: "SDES appointment cancellation" },
+  { name: "SDES CHECKIN",                     domain: "scheduling",  tag: "write", description: "SDES patient check-in" },
+  { name: "SDES CHECKOUT",                    domain: "scheduling",  tag: "write", description: "SDES patient checkout" },
 ];
 
 /**
@@ -240,6 +260,25 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
   { name: "SDOE GET DIAGNOSES", reason: "SDOE encounter diagnoses; SD package RPCs underrepresented in Vivian" },
   { name: "SD W/L CREATE FILE", reason: "SD wait-list write; SD package RPCs underrepresented in Vivian" },
   { name: "SD W/L RETRIVE FULL DATA", reason: "SD wait-list full data retrieval; SD package RPCs underrepresented in Vivian" },
+  // Phase 131: CPRS + SDVW RPCs
+  { name: "ORWPT APPTLST", reason: "CPRS cover sheet apt list; present in CPRS but may be absent from some Vivian snapshots" },
+  { name: "SDVW MAKE APPT API APP", reason: "SDVW appointment creation; SD package RPCs underrepresented in Vivian" },
+  { name: "SDVW SDAPI APP", reason: "SDVW appointment API; SD package RPCs underrepresented in Vivian" },
+  { name: "SD W/L PRIORITY", reason: "SD wait-list priority ref; SD package RPCs underrepresented in Vivian" },
+  { name: "SD W/L TYPE", reason: "SD wait-list type ref; SD package RPCs underrepresented in Vivian" },
+  { name: "SD W/L CURRENT STATUS", reason: "SD wait-list status ref; SD package RPCs underrepresented in Vivian" },
+  // Phase 147: SDES scheduling depth RPCs
+  { name: "SDES GET APPTS BY PATIENT DFN3", reason: "SDES patient appointments; SDES package not in Vivian index" },
+  { name: "SDES GET CLIN AVAILABILITY", reason: "SDES clinic availability; SDES package not in Vivian index" },
+  { name: "SDES GET APPT TYPES", reason: "SDES appointment types; SDES package not in Vivian index" },
+  { name: "SDES GET CANCEL REASONS", reason: "SDES cancel reasons; SDES package not in Vivian index" },
+  { name: "SDES GET RESOURCE BY CLINIC", reason: "SDES clinic resource; SDES package not in Vivian index" },
+  { name: "SDES GET CLINIC INFO2", reason: "SDES clinic info v2; SDES package not in Vivian index" },
+  { name: "SDES GET APPT BY APPT IEN", reason: "SDES single appointment; SDES package not in Vivian index" },
+  { name: "SDES CREATE APPOINTMENTS", reason: "SDES appointment booking; SDES package not in Vivian index" },
+  { name: "SDES CANCEL APPOINTMENT 2", reason: "SDES appointment cancel; SDES package not in Vivian index" },
+  { name: "SDES CHECKIN", reason: "SDES check-in; SDES package not in Vivian index" },
+  { name: "SDES CHECKOUT", reason: "SDES checkout; SDES package not in Vivian index" },
   // Phase 137: ZVEADT custom RPCs — expected missing until ZVEADT.m installed
   { name: "ZVEADT WARDS", reason: "Custom RPC installed by VistA-Evolved (ZVEADT.m) for ward census with bed counts (Phase 137)" },
   { name: "ZVEADT BEDS", reason: "Custom RPC installed by VistA-Evolved (ZVEADT.m) for bed-level occupancy (Phase 137)" },

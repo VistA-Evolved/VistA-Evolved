@@ -2,6 +2,7 @@
  * Scheduling Routes -- Phase 63, enhanced Phase 123: SD* integration pack,
  * Phase 131: lifecycle depth + CPRS appointments + reference data + posture.
  * Phase 139: Check-in/out, request triage, clinic preferences.
+ * Phase 147: SDES depth + truth gates + writeback mode indicator.
  *
  * Endpoints:
  *   GET  /scheduling/appointments          -- patient appointments (SDOE)
@@ -32,6 +33,13 @@
  *   POST /scheduling/requests/:id/reject       -- reject scheduling request
  *   GET  /scheduling/clinic/:ien/preferences   -- clinic scheduling preferences
  *   PUT  /scheduling/clinic/:ien/preferences   -- update clinic preferences
+ *   --- Phase 147 additions ---
+ *   GET  /scheduling/appointment-types          -- SDES appointment types (File 409.1)
+ *   GET  /scheduling/cancel-reasons             -- SDES cancellation reasons
+ *   GET  /scheduling/clinic/:ien/resource       -- SDES clinic resource/schedule info
+ *   GET  /scheduling/sdes-availability          -- SDES clinic availability slots
+ *   GET  /scheduling/verify/:ref                -- Truth gate: verify appointment in VistA
+ *   GET  /scheduling/mode                       -- Scheduling writeback mode indicator
  *
  * Auth: session-based (default AUTH_RULES catch-all).
  * Audit: all writes logged to immutable-audit (no PHI).
@@ -919,5 +927,120 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
     }
   });
 
-  log.info("Scheduling routes registered (Phase 139: 25 endpoints, 12+ RPCs wired)");
+  /* ================================================================== */
+  /* Phase 147: SDES depth + truth gate endpoints                        */
+  /* ================================================================== */
+
+  /* ---- GET /scheduling/appointment-types ---- */
+  server.get("/scheduling/appointment-types", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    try {
+      const adapter = getSchedulingAdapter();
+      const result = await adapter.getAppointmentTypes();
+      return result;
+    } catch (err: any) {
+      log.warn("GET /scheduling/appointment-types failed", { error: err.message });
+      return reply.code(500).send({ ok: false, error: err.message });
+    }
+  });
+
+  /* ---- GET /scheduling/cancel-reasons ---- */
+  server.get("/scheduling/cancel-reasons", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    try {
+      const adapter = getSchedulingAdapter();
+      const result = await adapter.getCancelReasons();
+      return result;
+    } catch (err: any) {
+      log.warn("GET /scheduling/cancel-reasons failed", { error: err.message });
+      return reply.code(500).send({ ok: false, error: err.message });
+    }
+  });
+
+  /* ---- GET /scheduling/clinic/:ien/resource ---- */
+  server.get("/scheduling/clinic/:ien/resource", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    const { ien } = request.params as { ien: string };
+    if (!ien) {
+      return reply.code(400).send({ ok: false, error: "ien is required" });
+    }
+    try {
+      const adapter = getSchedulingAdapter();
+      const result = await adapter.getClinicResource(ien);
+      return result;
+    } catch (err: any) {
+      log.warn("GET /scheduling/clinic/:ien/resource failed", { error: err.message });
+      return reply.code(500).send({ ok: false, error: err.message });
+    }
+  });
+
+  /* ---- GET /scheduling/sdes-availability ---- */
+  server.get("/scheduling/sdes-availability", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    const { clinicIen, startDate, endDate } = request.query as {
+      clinicIen?: string;
+      startDate?: string;
+      endDate?: string;
+    };
+    if (!clinicIen || !startDate || !endDate) {
+      return reply.code(400).send({
+        ok: false,
+        error: "clinicIen, startDate, and endDate query params are required",
+      });
+    }
+    try {
+      const adapter = getSchedulingAdapter();
+      const result = await adapter.getSdesAvailability(clinicIen, startDate, endDate);
+      return result;
+    } catch (err: any) {
+      log.warn("GET /scheduling/sdes-availability failed", { error: err.message });
+      return reply.code(500).send({ ok: false, error: err.message });
+    }
+  });
+
+  /* ---- GET /scheduling/verify/:ref ---- */
+  server.get("/scheduling/verify/:ref", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    const { ref } = request.params as { ref: string };
+    const { dfn } = request.query as { dfn?: string };
+    if (!ref || !dfn) {
+      return reply.code(400).send({ ok: false, error: "ref param and dfn query param are required" });
+    }
+    try {
+      const adapter = getSchedulingAdapter();
+      const result = await adapter.verifyAppointment(ref, dfn);
+
+      immutableAudit("scheduling.truth_gate", result.data?.passed ? "success" : "failure", auditActor(request), {
+        requestId: (request as any).id,
+        sourceIp: request.ip,
+        detail: {
+          gate: "vista_verify",
+          appointmentRef: ref,
+          patientDfn: dfn,
+          passed: result.data?.passed ?? false,
+          method: result.data?.verificationMethod ?? "unknown",
+        },
+      });
+
+      return result;
+    } catch (err: any) {
+      log.warn("GET /scheduling/verify/:ref failed", { error: err.message });
+      return reply.code(500).send({ ok: false, error: err.message });
+    }
+  });
+
+  /* ---- GET /scheduling/mode ---- */
+  server.get("/scheduling/mode", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    try {
+      const adapter = getSchedulingAdapter();
+      const result = await adapter.getSchedulingMode();
+      return result;
+    } catch (err: any) {
+      log.warn("GET /scheduling/mode failed", { error: err.message });
+      return reply.code(500).send({ ok: false, error: err.message });
+    }
+  });
+
+  log.info("Scheduling routes registered (Phase 147: 31 endpoints, 28+ RPCs wired -- SDES depth + truth gates)");
 }

@@ -163,6 +163,78 @@ export interface RpcPostureEntry {
   sandboxNote: string;
 }
 
+/** Phase 147: Appointment type reference data (from SDES GET APPT TYPES) */
+export interface AppointmentType {
+  ien: string;
+  name: string;
+  code?: string;
+  inactive?: boolean;
+}
+
+/** Phase 147: Cancel reason reference data (from SDES GET CANCEL REASONS) */
+export interface CancelReason {
+  ien: string;
+  name: string;
+  code?: string;
+  type?: string;
+}
+
+/** Phase 147: Resource/clinic hours (from SDES GET RESOURCE BY CLINIC) */
+export interface ClinicResource {
+  clinicIen: string;
+  clinicName: string;
+  resourceIen?: string;
+  resourceName?: string;
+  abbreviation?: string;
+  slotLength?: number;
+  maxOverbooksPerDay?: number;
+  startTime?: string;
+  endTime?: string;
+  daysOfWeek?: string[];
+  raw?: string[];
+}
+
+/** Phase 147: SDES clinic availability slot */
+export interface SdesAvailSlot {
+  clinicIen?: string;
+  date?: string;
+  time?: string;
+  dateTime?: string;
+  slotCount?: number;
+  slotsAvailable: number;
+  slotLength?: number;
+  resourceIen?: string;
+  raw?: string;
+}
+
+/** Phase 147: Truth gate result for scheduling verification */
+export interface TruthGateResult {
+  gate: string;
+  passed: boolean;
+  vistaVerified: boolean;
+  vistaIen?: string;
+  rpcUsed?: string;
+  verificationMethod?: string;
+  appointmentRef?: string;
+  patientDfn?: string;
+  vistaData?: string;
+  detail?: string;
+  error?: string;
+  checkedAt?: string;
+  timestamp?: string;
+}
+
+/** Phase 147: Scheduling mode indicator */
+export interface SchedulingMode {
+  writebackEnabled: boolean;
+  sdesInstalled: boolean;
+  sdoeInstalled: boolean;
+  sdwlInstalled: boolean;
+  sdvwInstalled?: boolean;
+  mode: "vista_direct" | "vista_waitlist" | "sdes_partial" | "request_only";
+  detail: string;
+}
+
 export interface SchedulingAdapter extends BaseAdapter {
   readonly adapterType: "scheduling";
   /** List appointments for a patient (SDOE encounter-based) */
@@ -193,4 +265,16 @@ export interface SchedulingAdapter extends BaseAdapter {
   getReferenceData(): Promise<AdapterResult<ReferenceDataSet>>;
   /** Phase 131: Get RPC availability posture for scheduling subsystem */
   getRpcPosture(): Promise<AdapterResult<RpcPostureEntry[]>>;
+  /** Phase 147: Get appointment types (SDES GET APPT TYPES) */
+  getAppointmentTypes(): Promise<AdapterResult<AppointmentType[]>>;
+  /** Phase 147: Get cancel reasons (SDES GET CANCEL REASONS) */
+  getCancelReasons(): Promise<AdapterResult<CancelReason[]>>;
+  /** Phase 147: Get resource/hours for a clinic (SDES GET RESOURCE BY CLINIC) */
+  getClinicResource(clinicIen: string): Promise<AdapterResult<ClinicResource>>;
+  /** Phase 147: Get SDES clinic availability (SDES GET CLIN AVAILABILITY) */
+  getSdesAvailability(clinicIen: string, startDate: string, endDate: string): Promise<AdapterResult<SdesAvailSlot[]>>;
+  /** Phase 147: Verify an appointment exists in VistA (truth gate) */
+  verifyAppointment(appointmentRef: string, patientDfn: string): Promise<AdapterResult<TruthGateResult>>;
+  /** Phase 147: Get scheduling mode for this tenant */
+  getSchedulingMode(): Promise<AdapterResult<SchedulingMode>>;
 }

@@ -3,6 +3,7 @@
  * VistA scheduling RPCs not available in sandbox — uses demo data with
  * request flows that show "clinic will confirm" messaging.
  * Phase 139: check-in status visibility + lifecycle indicator.
+ * Phase 147: writeback mode indicator + honest scheduling badge.
  */
 
 "use client";
@@ -18,12 +19,22 @@ import {
 
 type View = "list" | "request";
 
+/** Phase 147: writeback mode shapes */
+interface SchedulingMode {
+  writebackEnabled: boolean;
+  sdesInstalled: boolean;
+  sdoeInstalled: boolean;
+  mode: "full_writeback" | "sdes_partial" | "request_only";
+  detail: string;
+}
+
 export default function AppointmentsPage() {
   const [view, setView] = useState<View>("list");
   const [upcoming, setUpcoming] = useState<any[]>([]);
   const [past, setPast] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [notice, setNotice] = useState("");
+  const [schedulingMode, setSchedulingMode] = useState<SchedulingMode | null>(null);
 
   // Request form
   const [reqClinic, setReqClinic] = useState("");
@@ -32,7 +43,7 @@ export default function AppointmentsPage() {
   const [reqType, setReqType] = useState("in_person");
   const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => { loadData(); }, []);
+  useEffect(() => { loadData(); loadSchedulingMode(); }, []);
 
   async function loadData() {
     setLoading(true);
@@ -41,6 +52,16 @@ export default function AppointmentsPage() {
     setUpcoming(d?.upcoming || []);
     setPast(d?.past || []);
     setLoading(false);
+  }
+
+  async function loadSchedulingMode() {
+    try {
+      const res = await fetch("/api/scheduling/mode", { credentials: "include" });
+      if (res.ok) {
+        const json = await res.json();
+        if (json.ok && json.data) setSchedulingMode(json.data);
+      }
+    } catch { /* non-critical -- badge just won't show */ }
   }
 
   async function handleRequest() {
@@ -95,6 +116,27 @@ export default function AppointmentsPage() {
           <p style={{ color: "var(--portal-text-muted)", fontSize: "0.875rem" }}>
             Upcoming and past appointments
           </p>
+          {schedulingMode && (
+            <span
+              title={schedulingMode.detail}
+              style={{
+                display: "inline-block",
+                marginTop: "0.25rem",
+                padding: "0.125rem 0.5rem",
+                background: schedulingMode.writebackEnabled ? "#dcfce7" : "#fef3c7",
+                color: schedulingMode.writebackEnabled ? "#166534" : "#92400e",
+                borderRadius: 4,
+                fontSize: "0.6875rem",
+                fontWeight: 600,
+              }}
+            >
+              {schedulingMode.mode === "full_writeback"
+                ? "VistA Direct Scheduling"
+                : schedulingMode.mode === "sdes_partial"
+                  ? "SDES Scheduling (Partial)"
+                  : "Request Only (Clinic Confirms)"}
+            </span>
+          )}
         </div>
         <button
           onClick={() => setView(view === "list" ? "request" : "list")}

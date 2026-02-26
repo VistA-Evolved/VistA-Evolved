@@ -16,6 +16,12 @@ import type {
   CprsAppointment,
   ReferenceDataSet,
   RpcPostureEntry,
+  AppointmentType,
+  CancelReason,
+  ClinicResource,
+  SdesAvailSlot,
+  TruthGateResult,
+  SchedulingMode,
 } from "./interface.js";
 import type { AdapterResult } from "../types.js";
 
@@ -43,4 +49,15 @@ export class StubSchedulingAdapter implements SchedulingAdapter {
   async getAppointmentsCprs(): Promise<AdapterResult<CprsAppointment[]>> { return STUB; }
   async getReferenceData(): Promise<AdapterResult<ReferenceDataSet>> { return STUB; }
   async getRpcPosture(): Promise<AdapterResult<RpcPostureEntry[]>> { return STUB; }
+  // Phase 147: new methods
+  async getAppointmentTypes(): Promise<AdapterResult<AppointmentType[]>> { return STUB; }
+  async getCancelReasons(): Promise<AdapterResult<CancelReason[]>> { return STUB; }
+  async getClinicResource(): Promise<AdapterResult<ClinicResource>> { return STUB; }
+  async getSdesAvailability(): Promise<AdapterResult<SdesAvailSlot[]>> { return STUB; }
+  async verifyAppointment(): Promise<AdapterResult<TruthGateResult>> {
+    return { ok: false, pending: true, data: { gate: "vista_verify", passed: false, vistaVerified: false, detail: "Stub adapter -- no VistA", checkedAt: new Date().toISOString() } };
+  }
+  async getSchedulingMode(): Promise<AdapterResult<SchedulingMode>> {
+    return { ok: true, data: { writebackEnabled: false, sdesInstalled: false, sdoeInstalled: false, sdwlInstalled: false, mode: "request_only" as const, detail: "Stub adapter" } };
+  }
 }
