@@ -1,28 +1,10 @@
 {
-  "featureTitle": "Phase 143 VERIFY: AI Intake Engine",
-  "stage": "verified",
-  "status": "complete",
-  "promptRefPath": "prompts/148-PHASE-143-AI-INTAKE-ENGINE/143-99-VERIFY.md",
-  "runbookPath": "ops/summary.md",
-  "verifyScriptUsed": "qa/gauntlet/cli.mjs --suite fast + --suite rc",
-  "commitSHA": "edd37e3",
-  "gauntletFast": "4 PASS / 0 FAIL / 1 WARN",
-  "gauntletRc": "15 PASS / 0 FAIL / 1 WARN",
-  "filesModified": [
-    "apps/api/src/intake/brain-routes.ts",
-    "apps/api/src/intake/intake-routes.ts",
-    "apps/api/src/middleware/security.ts",
-    "apps/portal/src/app/dashboard/intake/page.tsx"
-  ]
-}
-    "apps/portal/src/components/portal-nav.tsx",
-    "apps/portal/src/lib/api.ts",
-    "apps/portal/public/messages/en.json",
-    "apps/portal/public/messages/fil.json",
-    "apps/portal/public/messages/es.json",
-    "docs/runbooks/portal-parity.md"
-  ],
-  "newEndpoints": 5,
-  "newAuditActions": 5,
-  "pgMigrationVersion": 17
+    "runbookPath":  "ops/summary.md",
+    "stage":  "verified",
+    "commitSHA":  "5467c51",
+    "featureTitle":  "Phase 144: QA Ladder V2",
+    "gauntletResult":  "16P/0F/1W",
+    "verifyScript":  "qa/gauntlet/cli.mjs --suite rc",
+    "status":  "complete",
+    "promptRefPath":  "prompts/149-PHASE-144-QA-LADDER-V2/144-01-IMPLEMENT.md"
 }

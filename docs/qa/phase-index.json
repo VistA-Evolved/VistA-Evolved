@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-26T05:21:36.591Z",
+  "generatedAt": "2026-02-26T05:58:35.080Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 154,
+  "phaseCount": 155,
   "phases": [
     {
       "phaseNumber": "1",
@@ -2319,6 +2319,34 @@
         "apps/portal/src/app/dashboard/intake/page.tsx",
         "apps/portal/public/messages/{en,fil,es}.json",
         "docs/runbooks/phase143-ai-intake-engine.md"
+      ]
+    },
+    {
+      "phaseNumber": "144",
+      "title": "QA Ladder V2 (Phase-by-Phase Human QA Replacement) -- IMPLEMENT",
+      "folder": "149-PHASE-144-QA-LADDER-V2",
+      "files": [
+        "144-01-IMPLEMENT.md",
+        "144-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "144-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "144-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/qa/phase-registry.mjs",
+        "scripts/qa/generate-phase-tests.mjs",
+        "scripts/qa/rpc-trace-manager.mjs",
+        "qa/gauntlet/gates/g18-qa-ladder-v2.mjs",
+        "qa/gauntlet/cli.mjs",
+        "qa/gauntlet/phase-manifest.json",
+        ".github/workflows/qa-gauntlet.yml",
+        "package.json"
       ]
     },
     {

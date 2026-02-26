@@ -43,6 +43,10 @@
     "qa:gauntlet:rc": "node qa/gauntlet/cli.mjs --suite rc",
     "qa:gauntlet:full": "node qa/gauntlet/cli.mjs --suite full",
     "qa:gauntlet:manifest": "node qa/gauntlet/build-manifest.mjs",
+    "qa:phase-registry": "node scripts/qa/phase-registry.mjs",
+    "qa:generate-tests": "node scripts/qa/generate-phase-tests.mjs",
+    "qa:rpc-trace:verify": "node scripts/qa/rpc-trace-manager.mjs verify",
+    "qa:rpc-trace:record": "node scripts/qa/rpc-trace-manager.mjs record",
     "audit:system": "node scripts/audit/system-audit.mjs"
   }
 }

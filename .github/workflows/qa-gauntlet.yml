@@ -94,6 +94,12 @@ jobs:
       - name: Run QA Gauntlet (RC + Strict)
         run: node qa/gauntlet/cli.mjs --suite ${{ github.event.inputs.suite || 'rc' }} --strict --ci
 
+      - name: Regenerate phase tests (Phase 144 V2)
+        run: |
+          node scripts/build-phase-index.mjs
+          node scripts/qa/generate-phase-tests.mjs
+          node scripts/qa/rpc-trace-manager.mjs verify
+
       - name: Evidence gate (strict - nightly)
         run: node scripts/qa-gates/evidence-gate.mjs --strict
 
