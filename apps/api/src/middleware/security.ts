@@ -76,7 +76,7 @@ interface AuthRule {
  * Routes are matched top-to-bottom; first match wins.
  */
 const AUTH_RULES: AuthRule[] = [
-  { pattern: /^\/(health|ready|vista\/ping|metrics(\/prometheus)?|version)$/, auth: "none" },
+  { pattern: /^\/(health|ready|vista\/ping|vista\/swap-boundary|metrics(\/prometheus)?|version)$/, auth: "none" },
   { pattern: /^\/auth\//, auth: "none" },
   { pattern: /^\/imaging\/ingest\/callback$/, auth: "service" }, // Phase 23: Orthanc webhook (X-Service-Key)
   { pattern: /^\/imaging\/health$/, auth: "session" }, // Phase 24: imaging health check
@@ -367,7 +367,7 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
     // Service-to-service callbacks are exempt
     if (url === "/imaging/ingest/callback") return;
     // Health/metrics/version are exempt
-    if (/^\/(health|ready|vista\/ping|metrics|version)/.test(url)) return;
+    if (/^\/(health|ready|vista\/ping|vista\/swap-boundary|metrics|version)/.test(url)) return;
     // Portal routes use their own CSRF validation (portal-iam/csrf.ts)
     if (url.startsWith("/portal/")) return;
     // QA routes are test-only and gated by NODE_ENV

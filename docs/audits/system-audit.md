@@ -1,7 +1,7 @@
 # VistA-Evolved System Audit
 
-> Generated: 2026-02-26T14:41:43.052Z  
-> HEAD: 7619cef  
+> Generated: 2026-02-26T14:59:13.970Z  
+> HEAD: 68819e3  
 > Node: v24.13.0 | pnpm: 10.29.2
 
 ## What Is Truly Wired End-to-End
@@ -35,7 +35,7 @@
 - **In-memory Map stores:** 177
 - **High-risk (data loss on restart):** 33
 - **Medium-risk:** 30
-- **JSON seed/mutable stores:** 16
+- **JSON seed/mutable stores:** 17
 
 ### High-Risk In-Memory Stores
 
@@ -67,8 +67,8 @@
 
 ## API Inventory
 
-- **Total endpoints:** 1254
-- **By tag:** vista(546), rcm(353), other(96), admin(92), portal(87), infra(60), scheduling(31), imaging(20), analytics(14), telehealth(13), iam(10), interop(10), posture(6), auth(3)
+- **Total endpoints:** 1255
+- **By tag:** vista(547), rcm(353), other(96), admin(92), portal(87), infra(60), scheduling(31), imaging(20), analytics(14), telehealth(13), iam(10), interop(10), posture(6), auth(3)
 
 ## UI Inventory
 

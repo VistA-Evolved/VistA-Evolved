@@ -1,0 +1,10 @@
+# VistA Distro Lane -- .dockerignore
+# Prevent unnecessary files from entering the build context
+
+.git
+*.md
+!routines/README.md
+build.env
+docker-compose.yml
+.env
+.env.*

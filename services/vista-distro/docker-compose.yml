@@ -1,0 +1,57 @@
+# =============================================================================
+# VistA Distro Lane -- Docker Compose (development profile)
+# =============================================================================
+# Phase 148: Alternative VistA container from reproducible build.
+#
+# Usage:
+#   docker compose --profile distro up -d
+#
+# This runs alongside (NOT replacing) the dev sandbox in services/vista/.
+# To switch your API to this instance, set:
+#   VISTA_HOST=127.0.0.1
+#   VISTA_PORT=9431  (note: different port to avoid conflict with dev sandbox)
+#
+# SECURITY:
+#   - Credentials are NOT in this file (use .env or Docker secrets)
+#   - Only RPC Broker port is exposed
+# =============================================================================
+
+services:
+  vista-distro:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUILD_SHA: ${BUILD_SHA:-dev}
+        BUILD_DATE: ${BUILD_DATE:-unknown}
+    image: vista-evolved/vista-distro:latest
+    container_name: vista-distro
+    profiles: ["distro"]
+    ports:
+      # Port 9431 to avoid conflict with dev sandbox on 9430
+      - "${VISTA_DISTRO_PORT:-9431}:${VISTA_BROKER_PORT:-9430}"
+    environment:
+      # REQUIRED: Set these via .env file or docker compose --env-file
+      - VISTA_ADMIN_ACCESS=${VISTA_DISTRO_ACCESS:-}
+      - VISTA_ADMIN_VERIFY=${VISTA_DISTRO_VERIFY:-}
+      - VISTA_BROKER_PORT=${VISTA_BROKER_PORT:-9430}
+    # Security: read-only root filesystem where possible
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "2.0"
+        reservations:
+          memory: 512M
+    restart: unless-stopped
+    # Health check defined in Dockerfile, but can override here
+    healthcheck:
+      test: ["/opt/vista/health-check.sh"]
+      interval: 30s
+      timeout: 5s
+      start_period: 60s
+      retries: 3

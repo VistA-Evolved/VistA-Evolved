@@ -684,6 +684,13 @@ server.get("/vista/ping", async () => {
   }
 });
 
+// Phase 148: Swap boundary introspection (no auth -- infrastructure probe)
+server.get("/vista/swap-boundary", async () => {
+  const { activeSwapBoundary } = await import("./vista/swap-boundary.js");
+  const boundary = activeSwapBoundary();
+  return { ok: true, boundary };
+});
+
 // Phase 37B: RPC Catalog — list all registered RPCs from File 8994
 // Uses VE LIST RPCS custom RPC (installed via scripts/install-rpc-catalog.ps1)
 // Falls back to empty if RPC not available (sandbox may not have it installed)

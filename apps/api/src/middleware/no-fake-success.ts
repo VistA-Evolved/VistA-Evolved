@@ -31,7 +31,7 @@ const STRICT_MODE = process.env.NO_FAKE_SUCCESS_STRICT === "true";
 
 /** URL patterns exempt from the no-fake-success check */
 const EXEMPT_PATTERNS: RegExp[] = [
-  /^\/(health|ready|vista\/ping|version)/,
+  /^\/(health|ready|vista\/ping|vista\/swap-boundary|version)/,
   /^\/auth\//,
   /^\/portal\/auth\//,  // Portal auth (own session handling)  /^\/portal\/iam\//, // Portal IAM (login/register/session)  /^\/metrics/,
   /^\/__/,       // Next.js internals

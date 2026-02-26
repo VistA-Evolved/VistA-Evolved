@@ -1220,6 +1220,53 @@ docs/runbooks/
      `portalFetch("/scheduling/mode")` with `API_BASE`. A bare `fetch("/api/...")`
      would hit Next.js (no proxy) and silently fail. BUG-069/070 fixed in VERIFY.
 
+## 7q. Architecture Quick Map (Phase 148 additions)
+
+```
+services/vista-distro/
+  Dockerfile                      -- Multi-stage reproducible VistA build (Phase 148)
+  docker-compose.yml              -- Distro lane compose (profile: distro, port 9431) (Phase 148)
+  entrypoint.sh                   -- Runtime: YottaDB init + xinetd broker (Phase 148)
+  health-check.sh                 -- TCP probe for Docker HEALTHCHECK (Phase 148)
+  build.env                       -- Version pinning (YottaDB, VistA-M ref) (Phase 148)
+  .dockerignore                   -- Build context exclusions (Phase 148)
+  routines/                       -- Custom ZVE* MUMPS routines for distro (Phase 148)
+
+apps/api/src/vista/
+  swap-boundary.ts                -- Typed swap boundary contract + validators (Phase 148)
+
+data/vista/
+  rpc-catalog-snapshot.json       -- Versioned RPC catalog (137 RPCs + 59 exceptions) (Phase 148)
+
+scripts/
+  verify-vista-compat.ps1         -- Compatibility test (13 gates) (Phase 148)
+
+docs/runbooks/
+  vista-distro-lane.md            -- Build, run, swap, cutover runbook (Phase 148)
+```
+
+141. **Distro lane runs on port 9431 to avoid conflict with dev sandbox (Phase 148).**
+     The dev sandbox uses port 9430. Both can run simultaneously. Switch the
+     API by changing `VISTA_HOST`/`VISTA_PORT` in `.env.local`. The
+     `VISTA_INSTANCE_ID` env var disambiguates in logs and swap boundary.
+142. **No credentials baked into the distro Dockerfile (Phase 148).**
+     `entrypoint.sh` fails fast if `VISTA_ADMIN_ACCESS`/`VISTA_ADMIN_VERIFY`
+     are not set. Credentials must be injected via `-e` flags, `.env` file,
+     or Docker/K8s secrets. This is enforced by the compatibility test
+     (Gate 8: no baked creds in Dockerfile, Gate 9: no baked creds in entrypoint).
+143. **`/vista/swap-boundary` is an unauthenticated infrastructure probe (Phase 148).**
+     Added to AUTH_RULES bypass (`"none"`) alongside `/vista/ping`. Returns
+     the active `VistaSwapBoundary` descriptor showing instance ID, connection
+     params, capabilities, and security posture. Does not expose credentials.
+144. **RPC catalog snapshot is generated, not hand-maintained (Phase 148).**
+     Run `node -e "..."` to regenerate from `rpcRegistry.ts`. The snapshot
+     includes all 137 registered RPCs and 59 exceptions with domains and tags.
+     Used by the compatibility test and for cross-referencing during cutover.
+145. **`validateSwapBoundary()` returns a failure list (Phase 148).** Pass
+     probe results and the boundary descriptor to get a list of unmet
+     contract requirements. Empty list = swap is safe. Used in the
+     compatibility test and available for runtime health checks.
+
 ## 8. Bug Tracker & Lessons Learned
 
 A comprehensive log of every bug, challenge, and fix from Phase 1 through
