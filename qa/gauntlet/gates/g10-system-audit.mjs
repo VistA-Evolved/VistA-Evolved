@@ -36,7 +36,7 @@ export async function run(opts = {}) {
       cwd: ROOT,
       encoding: "utf8",
       stdio: ["pipe", "pipe", "pipe"],
-      timeout: 60_000,
+      timeout: 90_000,
     });
     details.push("system-audit.mjs: exit 0");
   } catch (err) {

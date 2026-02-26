@@ -14,7 +14,7 @@
  */
 
 import { execSync } from "node:child_process";
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, statSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -30,18 +30,25 @@ export async function run(opts = {}) {
   const details = [];
   let status = "pass";
 
-  // 1. Run the audit script
-  try {
-    execSync("node scripts/audit/system-audit.mjs", {
-      cwd: ROOT,
-      encoding: "utf8",
-      stdio: ["pipe", "pipe", "pipe"],
-      timeout: 90_000,
-    });
-    details.push("PASS: system-audit.mjs exit 0");
-  } catch (err) {
-    details.push(`FAIL: system-audit.mjs crashed -- ${(err.message || "").slice(0, 200)}`);
-    return { id, name, status: "fail", details, durationMs: Date.now() - start };
+  // 1. Run the audit script (skip if matrix was generated <30s ago by G10)
+  const matrixFresh = existsSync(MATRIX_PATH) &&
+    (Date.now() - statSync(MATRIX_PATH).mtimeMs < 30_000);
+
+  if (matrixFresh) {
+    details.push("PASS: system-gap-matrix.json is fresh (generated <30s ago, skipping re-run)");
+  } else {
+    try {
+      execSync("node scripts/audit/system-audit.mjs", {
+        cwd: ROOT,
+        encoding: "utf8",
+        stdio: ["pipe", "pipe", "pipe"],
+        timeout: 90_000,
+      });
+      details.push("PASS: system-audit.mjs exit 0");
+    } catch (err) {
+      details.push(`FAIL: system-audit.mjs crashed -- ${(err.message || "").slice(0, 200)}`);
+      return { id, name, status: "fail", details, durationMs: Date.now() - start };
+    }
   }
 
   // 2. Validate JSON parse

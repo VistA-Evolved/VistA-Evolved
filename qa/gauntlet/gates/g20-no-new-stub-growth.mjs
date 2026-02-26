@@ -15,7 +15,7 @@
  *   3. WARN if any count increases; PASS if stable or decreasing
  */
 
-import { readFileSync, writeFileSync, existsSync, readdirSync, statSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, readdirSync } from "node:fs";
 import { resolve, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -95,15 +95,8 @@ export async function run(opts = {}) {
   }
 
   if (!baseline) {
-    // First run: create baseline
-    const baselineData = {
-      generatedAt: new Date().toISOString(),
-      note: "Baseline for stub growth detection. Update with: node qa/gauntlet/gates/g20-no-new-stub-growth.mjs --update-baseline",
-      counts: current,
-    };
-    writeFileSync(BASELINE_PATH, JSON.stringify(baselineData, null, 2) + "\n");
-    details.push("Created initial baseline (no comparison possible)");
-    return { id, name, status: "pass", details, durationMs: Date.now() - start };
+    details.push("FAIL: stub-baseline.json missing. Run: node qa/gauntlet/gates/g20-no-new-stub-growth.mjs --update-baseline");
+    return { id, name, status: "fail", details, durationMs: Date.now() - start };
   }
 
   details.push(`Baseline: stub=${baseline.counts.stub} not_implemented=${baseline.counts.not_implemented} integration_pending=${baseline.counts.integration_pending}`);

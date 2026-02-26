@@ -92,4 +92,4 @@
 | Immediate | Register 4 unregistered RPCs | 8 |
 
 ---
-*Auto-generated from system audit. Source: `scripts/audit/gap-diff.mjs`*
+*Curated from system audit output at `qa/gauntlet/system-gap-matrix.json`*

@@ -75,12 +75,12 @@ function diffGaps(beforeDomains, afterDomains) {
   const aGaps = new Map();
 
   for (const d of beforeDomains) {
-    for (const g of d.topGaps) {
+    for (const g of d.topGaps || []) {
       bGaps.set(gapKey(d.domain, g.gap), { domain: d.domain, ...g });
     }
   }
   for (const d of afterDomains) {
-    for (const g of d.topGaps) {
+    for (const g of d.topGaps || []) {
       aGaps.set(gapKey(d.domain, g.gap), { domain: d.domain, ...g });
     }
   }
@@ -169,7 +169,7 @@ function main() {
   function severityCounts(domains) {
     const counts = { high: 0, med: 0, low: 0 };
     for (const d of domains) {
-      for (const g of d.topGaps) {
+      for (const g of d.topGaps || []) {
         counts[g.severity] = (counts[g.severity] || 0) + 1;
       }
     }

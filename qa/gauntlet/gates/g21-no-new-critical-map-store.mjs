@@ -102,16 +102,8 @@ export async function run(opts = {}) {
   }
 
   if (!baseline) {
-    // First run: create baseline
-    const baselineData = {
-      generatedAt: new Date().toISOString(),
-      note: "Baseline for critical Map store detection. Update with: node qa/gauntlet/gates/g21-no-new-critical-map-store.mjs --update-baseline",
-      count: currentCount,
-      stores: currentStores.map(s => `${s.file}:${s.line}:${s.variable}`),
-    };
-    writeFileSync(BASELINE_PATH, JSON.stringify(baselineData, null, 2) + "\n");
-    details.push("Created initial baseline (no comparison possible)");
-    return { id, name, status: "pass", details, durationMs: Date.now() - start };
+    details.push("FAIL: critical-map-baseline.json missing. Run: node qa/gauntlet/gates/g21-no-new-critical-map-store.mjs --update-baseline");
+    return { id, name, status: "fail", details, durationMs: Date.now() - start };
   }
 
   const delta = currentCount - baseline.count;
@@ -119,9 +111,13 @@ export async function run(opts = {}) {
 
   if (delta > 0) {
     // Find which stores are new
-    const baselineSet = new Set(baseline.stores || []);
+    // Use file:variable as identity key (line numbers shift on refactor)
+    const baselineSet = new Set((baseline.stores || []).map(s => {
+      const parts = s.split(":");
+      return parts.length >= 3 ? `${parts[0]}:${parts.slice(2).join(":")}` : s;
+    }));
     const newStores = currentStores.filter(
-      s => !baselineSet.has(`${s.file}:${s.line}:${s.variable}`)
+      s => !baselineSet.has(`${s.file}:${s.variable}`)
     );
 
     details.push(`FAIL: ${delta} new critical-module Map store(s) detected`);
