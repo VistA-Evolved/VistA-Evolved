@@ -1140,6 +1140,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       { rpc: "SDES CANCEL APPOINTMENT 2", status: "callable_no_data", vistaPackage: "SDES", sandboxNote: "Appointment cancellation via SDES" },
       { rpc: "SDES CHECKIN", status: "callable_no_data", vistaPackage: "SDES", sandboxNote: "SDES check-in workflow" },
       { rpc: "SDES CHECKOUT", status: "callable_no_data", vistaPackage: "SDES", sandboxNote: "SDES checkout workflow" },
+      { rpc: "SDES GET APPT BY APPT IEN", status: "callable_no_data", vistaPackage: "SDES", sandboxNote: "SDES truth gate -- verify single appt by IEN" },
       // --- Not installed ---
       { rpc: "SDEC APPADD", status: "not_installed", vistaPackage: "SDEC", sandboxNote: "Direct appointment booking -- SDEC package not installed in WorldVistA Docker" },
       { rpc: "SDEC APPDEL", status: "not_installed", vistaPackage: "SDEC", sandboxNote: "Direct appointment cancellation -- SDEC package not installed" },
@@ -1413,8 +1414,10 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       // Fallback: check via SDOE encounter list for this patient
       const encLines = await safeCallRpc("SDOE LIST ENCOUNTERS FOR PAT", [patientDfn]);
       const encRaw = encLines.join("\n");
-      // Search for the appointment reference in encounter data
-      const found = encRaw.includes(appointmentRef) || encRaw.includes(`^${appointmentRef}^`);
+      // Search for the appointment reference in encounter data using caret-delimited match
+      // to avoid false positives with short numeric IENs (e.g. "3" matching "13" or dates)
+      const refPattern = new RegExp(`(?:^|\\^)${appointmentRef.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?:\\^|$)`, "m");
+      const found = refPattern.test(encRaw);
 
       return {
         ok: true,

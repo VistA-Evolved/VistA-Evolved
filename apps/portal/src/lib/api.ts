@@ -225,6 +225,11 @@ export async function requestAppointmentReschedule(id: string, preference: strin
   });
 }
 
+/** Phase 147: Scheduling mode probe (uses admin API, not portal prefix) */
+export async function fetchSchedulingMode() {
+  return portalFetch("/scheduling/mode");
+}
+
 // ─── Record Sharing (Phase 27) ───
 
 export async function fetchShares() {

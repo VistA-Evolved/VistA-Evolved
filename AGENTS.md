@@ -1161,6 +1161,65 @@ docs/runbooks/
      Both registered in store-policy.ts. Loss on restart = session re-init
      recreates brain state.
 
+## 7p. Architecture Quick Map (Phase 147 additions)
+
+```
+services/vista/
+  ZVESDSEED.m                     -- Optional sandbox seeder (clinic/appt-type/appt data) (Phase 147)
+
+apps/api/src/adapters/scheduling/
+  interface.ts                    -- +6 types: AppointmentType, CancelReason, ClinicResource,
+                                     SdesAvailSlot, TruthGateResult, SchedulingMode (Phase 147)
+                                  -- +6 methods: getAppointmentTypes, getCancelReasons,
+                                     getClinicResource, getSdesAvailability, verifyAppointment,
+                                     getSchedulingMode (Phase 147)
+  stub-adapter.ts                 -- +6 stub method implementations (Phase 147)
+  vista-adapter.ts                -- +6 SDES depth methods, +11 SDES posture entries (Phase 147)
+
+apps/api/src/routes/scheduling/
+  index.ts                        -- +6 endpoints: appointment-types, cancel-reasons,
+                                     clinic/:ien/resource, sdes-availability, verify/:ref,
+                                     mode (Phase 147)
+
+apps/api/src/lib/
+  immutable-audit.ts              -- +scheduling.truth_gate action (Phase 147)
+
+apps/api/src/vista/
+  rpcRegistry.ts                  -- +19 RPCs (SDES x11, SDVW x2, SD W/L x3, ORWPT x1, SD x2) (Phase 147)
+
+apps/portal/src/app/dashboard/appointments/
+  page.tsx                        -- +scheduling mode badge (aligned with API SchedulingMode) (Phase 147)
+
+apps/portal/src/lib/
+  api.ts                          -- +fetchSchedulingMode() via portalFetch (Phase 147)
+
+config/
+  capabilities.json               -- +7 scheduling capabilities (Phase 147)
+
+docs/runbooks/
+  phase147-scheduling-depth-v2.md -- Scheduling depth runbook (Phase 147)
+```
+
+137. **SDES RPCs are callable but return no data without `ZVESDSEED.m` (Phase 147).**
+     The WorldVistA Docker sandbox has 80+ SDES RPCs installed, but many
+     return empty results because File 44 clinics lack SDES resource/slot
+     configuration. Run `ZVESDSEED.m` (optional, DEV/DEMO labeled) to seed
+     basic clinic + appointment type + demo appointment data.
+138. **Truth gate pattern: verify local state against VistA (Phase 147).**
+     `verifyAppointment()` calls `SDES GET APPT BY APPT IEN` with the local
+     appointment ref. If the RPC confirms the appointment exists in VistA,
+     `passed: true, vistaVerified: true`. Falls back to `SDOE LIST ENCOUNTERS
+     FOR PAT` and scans for a matching IEN. The result is logged to the
+     immutable audit trail as `scheduling.truth_gate`.
+139. **`getSchedulingMode()` probes SDES/SDOE/SDWL/SDVW RPCs at runtime (Phase 147).**
+     Each probe is wrapped in try/catch. `sdesInstalled` means SDES GET APPT
+     TYPES succeeded. Mode is `sdes_partial` if SDES installed, otherwise
+     `request_only`. Future: `vista_direct` when full SDES writeback is confirmed.
+140. **Portal scheduling mode badge uses `portalFetch`, not bare `fetch` (Phase 147).**
+     The badge calls `fetchSchedulingMode()` from `api.ts` which routes through
+     `portalFetch("/scheduling/mode")` with `API_BASE`. A bare `fetch("/api/...")`
+     would hit Next.js (no proxy) and silently fail. BUG-069/070 fixed in VERIFY.
+
 ## 8. Bug Tracker & Lessons Learned
 
 A comprehensive log of every bug, challenge, and fix from Phase 1 through

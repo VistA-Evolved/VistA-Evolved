@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { DataSourceBadge } from "@/components/data-source-badge";
 import {
   fetchAppointments,
+  fetchSchedulingMode,
   requestNewAppointment,
   requestAppointmentCancellation,
   requestAppointmentReschedule,
@@ -19,12 +20,14 @@ import {
 
 type View = "list" | "request";
 
-/** Phase 147: writeback mode shapes */
+/** Phase 147: writeback mode shapes — aligned with API SchedulingMode */
 interface SchedulingMode {
   writebackEnabled: boolean;
   sdesInstalled: boolean;
   sdoeInstalled: boolean;
-  mode: "full_writeback" | "sdes_partial" | "request_only";
+  sdwlInstalled: boolean;
+  sdvwInstalled?: boolean;
+  mode: "vista_direct" | "vista_waitlist" | "sdes_partial" | "request_only";
   detail: string;
 }
 
@@ -56,11 +59,8 @@ export default function AppointmentsPage() {
 
   async function loadSchedulingMode() {
     try {
-      const res = await fetch("/api/scheduling/mode", { credentials: "include" });
-      if (res.ok) {
-        const json = await res.json();
-        if (json.ok && json.data) setSchedulingMode(json.data);
-      }
+      const res = await fetchSchedulingMode();
+      if (res.ok && res.data) setSchedulingMode(res.data as SchedulingMode);
     } catch { /* non-critical -- badge just won't show */ }
   }
 
@@ -130,11 +130,13 @@ export default function AppointmentsPage() {
                 fontWeight: 600,
               }}
             >
-              {schedulingMode.mode === "full_writeback"
+              {schedulingMode.mode === "vista_direct"
                 ? "VistA Direct Scheduling"
-                : schedulingMode.mode === "sdes_partial"
-                  ? "SDES Scheduling (Partial)"
-                  : "Request Only (Clinic Confirms)"}
+                : schedulingMode.mode === "vista_waitlist"
+                  ? "VistA Waitlist Scheduling"
+                  : schedulingMode.mode === "sdes_partial"
+                    ? "SDES Scheduling (Partial)"
+                    : "Request Only (Clinic Confirms)"}
             </span>
           )}
         </div>

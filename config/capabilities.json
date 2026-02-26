@@ -843,6 +843,54 @@
       "targetPackage": "SD",
       "description": "Clinic scheduling preferences overlay (Phase 139)"
     },
+    "scheduling.appointmentTypes": {
+      "status": "live",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SDES GET APPT TYPES",
+      "targetPackage": "SDES",
+      "description": "Appointment type catalog from VistA File 409.1 (Phase 147)"
+    },
+    "scheduling.cancelReasons": {
+      "status": "live",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SDES GET CANCEL REASONS",
+      "targetPackage": "SDES",
+      "description": "Cancel reason catalog from SD files (Phase 147)"
+    },
+    "scheduling.clinicResource": {
+      "status": "live",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SDES GET RESOURCE BY CLINIC",
+      "targetPackage": "SDES",
+      "description": "Resource/hours for a clinic via SDES (Phase 147)"
+    },
+    "scheduling.sdesAvailability": {
+      "status": "live",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SDES GET CLIN AVAILABILITY",
+      "targetPackage": "SDES",
+      "description": "SDES clinic availability slots (Phase 147)"
+    },
+    "scheduling.verify": {
+      "status": "live",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SDES GET APPT BY APPT IEN",
+      "targetPackage": "SDES",
+      "description": "Truth gate: verify appointment against VistA (Phase 147)"
+    },
+    "scheduling.mode": {
+      "status": "live",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": null,
+      "targetPackage": "SD",
+      "description": "Runtime scheduling mode detection -- SDES/SDOE/SDVW probes (Phase 147)"
+    },
     "migration.import.csv": {
       "status": "live",
       "module": "migration",
