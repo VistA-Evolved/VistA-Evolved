@@ -86,13 +86,18 @@ export type ImmutableAuditAction =
   | "migration.template.create"
   | "migration.template.delete"
   | "migration.job.delete"
-  // Scheduling events (Phase 63)
+  // Scheduling events (Phase 63 + Phase 139)
   | "scheduling.list"
   | "scheduling.request"
   | "scheduling.cancel"
   | "scheduling.reschedule"
   | "scheduling.cprs_apptlist"
   | "scheduling.lifecycle_transition"
+  | "scheduling.checkin"
+  | "scheduling.checkout"
+  | "scheduling.approve"
+  | "scheduling.reject"
+  | "scheduling.clinic_preferences"
   // Secure messaging events (Phase 70)
   | "messaging.send"
   | "messaging.read"

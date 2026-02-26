@@ -1,6 +1,7 @@
 /**
  * Scheduling Routes -- Phase 63, enhanced Phase 123: SD* integration pack,
  * Phase 131: lifecycle depth + CPRS appointments + reference data + posture.
+ * Phase 139: Check-in/out, request triage, clinic preferences.
  *
  * Endpoints:
  *   GET  /scheduling/appointments          -- patient appointments (SDOE)
@@ -24,6 +25,13 @@
  *   GET  /scheduling/posture                   -- RPC inventory posture
  *   GET  /scheduling/lifecycle                 -- lifecycle tracking entries
  *   POST /scheduling/lifecycle/transition      -- record lifecycle state change
+ *   --- Phase 139 additions ---
+ *   POST /scheduling/appointments/:id/checkin  -- patient check-in lifecycle
+ *   POST /scheduling/appointments/:id/checkout -- patient check-out lifecycle
+ *   POST /scheduling/requests/:id/approve      -- approve scheduling request
+ *   POST /scheduling/requests/:id/reject       -- reject scheduling request
+ *   GET  /scheduling/clinic/:ien/preferences   -- clinic scheduling preferences
+ *   PUT  /scheduling/clinic/:ien/preferences   -- update clinic preferences
  *
  * Auth: session-based (default AUTH_RULES catch-all).
  * Audit: all writes logged to immutable-audit (no PHI).
@@ -581,5 +589,310 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
     }
   });
 
-  log.info("Scheduling routes registered (Phase 131: 19 endpoints, 12+ RPCs wired)");
+  /* ================================================================== */
+  /* Phase 139: Check-in/out, Request triage, Clinic preferences         */
+  /* ================================================================== */
+
+  /* ---- POST /scheduling/appointments/:id/checkin ---- */
+  server.post("/scheduling/appointments/:id/checkin", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    const { id } = request.params as { id: string };
+    const body = (request.body as any) || {};
+    const { patientDfn, clinicName, clinicIen } = body;
+
+    if (!patientDfn || !clinicName) {
+      return reply.code(400).send({ ok: false, error: "patientDfn and clinicName are required" });
+    }
+
+    try {
+      const pgLifecycleRepo = await import("../../platform/pg/repo/pg-scheduling-lifecycle-repo.js");
+      const { randomUUID } = await import("node:crypto");
+
+      const latest = await pgLifecycleRepo.findLatestByAppointmentRef(id);
+      const previousState = latest?.state;
+      const targetState = "checked_in";
+
+      if (previousState && !pgLifecycleRepo.isValidTransition(previousState, targetState)) {
+        return reply.code(409).send({
+          ok: false,
+          error: `Cannot check in: current state is ${previousState}`,
+          currentState: previousState,
+        });
+      }
+
+      const entry = await pgLifecycleRepo.insertLifecycleEntry({
+        id: randomUUID(),
+        tenantId: request.session?.tenantId || "default",
+        appointmentRef: id,
+        patientDfn,
+        clinicIen: clinicIen || undefined,
+        clinicName,
+        state: targetState,
+        previousState: previousState || undefined,
+        vistaIen: undefined,
+        rpcUsed: "SDOE UPDATE ENCOUNTER",
+        transitionNote: "Patient checked in",
+        createdByDuz: request.session?.duz,
+      });
+
+      immutableAudit("scheduling.checkin", "success", auditActor(request), {
+        requestId: (request as any).id,
+        sourceIp: request.ip,
+        tenantId: request.session?.tenantId,
+        detail: { appointmentRef: id, previousState: previousState || "initial" },
+      });
+
+      return reply.code(200).send({
+        ok: true,
+        data: entry,
+        transition: `${previousState || "initial"} -> checked_in`,
+        vistaGrounding: {
+          targetRpc: "SDOE UPDATE ENCOUNTER",
+          status: "integration_pending",
+          sandboxNote: "Check-in lifecycle recorded. VistA writeback requires SDOE UPDATE ENCOUNTER.",
+        },
+      });
+    } catch (err: any) {
+      log.warn("Check-in failed", { error: err.message });
+      return reply.code(500).send({ ok: false, error: `Check-in failed: ${err.message}` });
+    }
+  });
+
+  /* ---- POST /scheduling/appointments/:id/checkout ---- */
+  server.post("/scheduling/appointments/:id/checkout", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    const { id } = request.params as { id: string };
+    const body = (request.body as any) || {};
+    const { patientDfn, clinicName, clinicIen, disposition } = body;
+
+    if (!patientDfn || !clinicName) {
+      return reply.code(400).send({ ok: false, error: "patientDfn and clinicName are required" });
+    }
+
+    try {
+      const pgLifecycleRepo = await import("../../platform/pg/repo/pg-scheduling-lifecycle-repo.js");
+      const { randomUUID } = await import("node:crypto");
+
+      const latest = await pgLifecycleRepo.findLatestByAppointmentRef(id);
+      const previousState = latest?.state;
+      const targetState = "completed";
+
+      if (previousState && !pgLifecycleRepo.isValidTransition(previousState, targetState)) {
+        return reply.code(409).send({
+          ok: false,
+          error: `Cannot check out: current state is ${previousState}`,
+          currentState: previousState,
+        });
+      }
+
+      const entry = await pgLifecycleRepo.insertLifecycleEntry({
+        id: randomUUID(),
+        tenantId: request.session?.tenantId || "default",
+        appointmentRef: id,
+        patientDfn,
+        clinicIen: clinicIen || undefined,
+        clinicName,
+        state: targetState,
+        previousState: previousState || undefined,
+        vistaIen: undefined,
+        rpcUsed: "SDOE UPDATE ENCOUNTER",
+        transitionNote: disposition ? `Checkout: ${disposition}` : "Patient checked out",
+        createdByDuz: request.session?.duz,
+      });
+
+      immutableAudit("scheduling.checkout", "success", auditActor(request), {
+        requestId: (request as any).id,
+        sourceIp: request.ip,
+        tenantId: request.session?.tenantId,
+        detail: { appointmentRef: id, previousState: previousState || "initial", disposition },
+      });
+
+      return reply.code(200).send({
+        ok: true,
+        data: entry,
+        transition: `${previousState || "initial"} -> completed`,
+        vistaGrounding: {
+          targetRpc: "SDOE UPDATE ENCOUNTER",
+          status: "integration_pending",
+          sandboxNote: "Checkout lifecycle recorded. VistA writeback requires SDOE UPDATE ENCOUNTER.",
+        },
+      });
+    } catch (err: any) {
+      log.warn("Checkout failed", { error: err.message });
+      return reply.code(500).send({ ok: false, error: `Checkout failed: ${err.message}` });
+    }
+  });
+
+  /* ---- POST /scheduling/requests/:id/approve ---- */
+  server.post("/scheduling/requests/:id/approve", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    const { id } = request.params as { id: string };
+    const body = (request.body as any) || {};
+
+    try {
+      const pgRequestRepo = await import("../../platform/pg/repo/pg-scheduling-request-repo.js");
+
+      const existing = await pgRequestRepo.findSchedulingRequestById(id);
+      if (!existing) {
+        // Fallback: try in-memory store
+        const store = await getRequestStore();
+        const memReq = store.get(id);
+        if (!memReq) {
+          return reply.code(404).send({ ok: false, error: "Request not found" });
+        }
+        memReq.status = "approved";
+        (memReq as any).updatedAt = new Date().toISOString();
+
+        immutableAudit("scheduling.approve", "success", auditActor(request), {
+          requestId: (request as any).id,
+          sourceIp: request.ip,
+          tenantId: request.session?.tenantId,
+          detail: { schedulingRequestId: id, source: "in-memory" },
+        });
+
+        return { ok: true, data: memReq, notice: "Request approved (in-memory store)." };
+      }
+
+      const updated = await pgRequestRepo.updateSchedulingRequest(id, { status: "approved" });
+
+      immutableAudit("scheduling.approve", "success", auditActor(request), {
+        requestId: (request as any).id,
+        sourceIp: request.ip,
+        tenantId: request.session?.tenantId,
+        detail: { schedulingRequestId: id, source: "pg" },
+      });
+
+      return {
+        ok: true,
+        data: updated,
+        notice: "Request approved. Clinic scheduling will proceed.",
+      };
+    } catch (err: any) {
+      log.warn("Request approve failed", { error: err.message });
+      return reply.code(500).send({ ok: false, error: `Approve failed: ${err.message}` });
+    }
+  });
+
+  /* ---- POST /scheduling/requests/:id/reject ---- */
+  server.post("/scheduling/requests/:id/reject", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    const { id } = request.params as { id: string };
+    const body = (request.body as any) || {};
+    const reason = body.reason || "Rejected by scheduling staff";
+
+    try {
+      const pgRequestRepo = await import("../../platform/pg/repo/pg-scheduling-request-repo.js");
+
+      const existing = await pgRequestRepo.findSchedulingRequestById(id);
+      if (!existing) {
+        const store = await getRequestStore();
+        const memReq = store.get(id);
+        if (!memReq) {
+          return reply.code(404).send({ ok: false, error: "Request not found" });
+        }
+        memReq.status = "rejected";
+        (memReq as any).updatedAt = new Date().toISOString();
+
+        immutableAudit("scheduling.reject", "success", auditActor(request), {
+          requestId: (request as any).id,
+          sourceIp: request.ip,
+          tenantId: request.session?.tenantId,
+          detail: { schedulingRequestId: id, reason, source: "in-memory" },
+        });
+
+        return { ok: true, data: memReq, notice: `Request rejected: ${reason}` };
+      }
+
+      const updated = await pgRequestRepo.updateSchedulingRequest(id, { status: "rejected" });
+
+      immutableAudit("scheduling.reject", "success", auditActor(request), {
+        requestId: (request as any).id,
+        sourceIp: request.ip,
+        tenantId: request.session?.tenantId,
+        detail: { schedulingRequestId: id, reason, source: "pg" },
+      });
+
+      return {
+        ok: true,
+        data: updated,
+        notice: `Request rejected: ${reason}`,
+      };
+    } catch (err: any) {
+      log.warn("Request reject failed", { error: err.message });
+      return reply.code(500).send({ ok: false, error: `Reject failed: ${err.message}` });
+    }
+  });
+
+  /* ---- GET /scheduling/clinic/:ien/preferences ---- */
+  server.get("/scheduling/clinic/:ien/preferences", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    const { ien } = request.params as { ien: string };
+
+    try {
+      const cpRepo = await import("../../platform/pg/repo/pg-clinic-preferences-repo.js");
+      const tenantId = request.session?.tenantId || "default";
+      const prefs = await cpRepo.findByClinicIen(ien, tenantId);
+
+      if (!prefs) {
+        return {
+          ok: true,
+          data: null,
+          defaults: {
+            timezone: "America/New_York",
+            slotDurationMinutes: 30,
+            maxDailySlots: 20,
+          },
+          notice: "No preferences configured for this clinic. Defaults shown.",
+        };
+      }
+
+      return { ok: true, data: prefs };
+    } catch (err: any) {
+      log.warn("Clinic preferences read failed", { error: err.message });
+      return reply.code(500).send({ ok: false, error: `Preferences read failed: ${err.message}` });
+    }
+  });
+
+  /* ---- PUT /scheduling/clinic/:ien/preferences ---- */
+  server.put("/scheduling/clinic/:ien/preferences", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    const { ien } = request.params as { ien: string };
+    const body = (request.body as any) || {};
+
+    if (!body.clinicName) {
+      return reply.code(400).send({ ok: false, error: "clinicName is required" });
+    }
+
+    try {
+      const cpRepo = await import("../../platform/pg/repo/pg-clinic-preferences-repo.js");
+      const { randomUUID } = await import("node:crypto");
+      const tenantId = request.session?.tenantId || "default";
+
+      const prefs = await cpRepo.upsertClinicPreferences({
+        id: randomUUID(),
+        tenantId,
+        clinicIen: ien,
+        clinicName: body.clinicName,
+        timezone: body.timezone,
+        slotDurationMinutes: body.slotDurationMinutes,
+        maxDailySlots: body.maxDailySlots,
+        displayConfig: body.displayConfig ? JSON.stringify(body.displayConfig) : undefined,
+        operatingHours: body.operatingHours ? JSON.stringify(body.operatingHours) : undefined,
+      });
+
+      immutableAudit("scheduling.clinic_preferences", "success", auditActor(request), {
+        requestId: (request as any).id,
+        sourceIp: request.ip,
+        tenantId,
+        detail: { clinicIen: ien, clinicName: body.clinicName },
+      });
+
+      return { ok: true, data: prefs };
+    } catch (err: any) {
+      log.warn("Clinic preferences update failed", { error: err.message });
+      return reply.code(500).send({ ok: false, error: `Preferences update failed: ${err.message}` });
+    }
+  });
+
+  log.info("Scheduling routes registered (Phase 139: 25 endpoints, 12+ RPCs wired)");
 }

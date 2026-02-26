@@ -2,6 +2,7 @@
  * Appointments Page — Upcoming/past appointments with cancel/reschedule request.
  * VistA scheduling RPCs not available in sandbox — uses demo data with
  * request flows that show "clinic will confirm" messaging.
+ * Phase 139: check-in status visibility + lifecycle indicator.
  */
 
 "use client";
@@ -221,11 +222,15 @@ function AppointmentCard({
   const statusColors: Record<string, { bg: string; color: string }> = {
     confirmed: { bg: "#dcfce7", color: "#166534" },
     pending_confirmation: { bg: "#fef3c7", color: "#92400e" },
+    booked: { bg: "#dbeafe", color: "#1e40af" },
+    checked_in: { bg: "#c7d2fe", color: "#3730a3" },
     completed: { bg: "#e0f2fe", color: "#0c4a6e" },
     cancelled: { bg: "#fef2f2", color: "#dc2626" },
     cancel_requested: { bg: "#fef2f2", color: "#c2410c" },
     reschedule_requested: { bg: "#fef3c7", color: "#92400e" },
     no_show: { bg: "#f1f5f9", color: "#64748b" },
+    approved: { bg: "#dcfce7", color: "#166534" },
+    rejected: { bg: "#fef2f2", color: "#dc2626" },
   };
   const sc = statusColors[appt.status] || { bg: "#f1f5f9", color: "#64748b" };
 
@@ -247,7 +252,12 @@ function AppointmentCard({
       <div style={{ fontSize: "0.75rem", color: "#64748b", marginTop: "0.125rem" }}>
         {appt.providerName} — {appt.reason}
       </div>
-      {!isPast && onCancel && onReschedule && !["cancelled", "cancel_requested"].includes(appt.status) && (
+      {appt.status === "checked_in" && (
+        <div style={{ fontSize: "0.6875rem", color: "#3730a3", marginTop: "0.25rem", fontWeight: 600 }}>
+          You are checked in. Please wait to be called.
+        </div>
+      )}
+      {!isPast && onCancel && onReschedule && !["cancelled", "cancel_requested", "checked_in", "completed"].includes(appt.status) && (
         <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.375rem" }}>
           <button onClick={onReschedule} style={{ fontSize: "0.75rem", color: "#2563eb", background: "transparent", border: "none", cursor: "pointer", textDecoration: "underline" }}>
             Request Reschedule

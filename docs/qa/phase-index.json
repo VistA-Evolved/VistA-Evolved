@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-26T00:14:28.216Z",
+  "generatedAt": "2026-02-26T01:31:27.104Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 149,
+  "phaseCount": 150,
   "phases": [
     {
       "phaseNumber": "1",
@@ -2103,10 +2103,15 @@
       ],
       "routes": [
         "/emar/",
+        "/emar/administer",
+        "/emar/barcode-scan",
         "/handoff/",
-        "/handoff/reports"
+        "/handoff/reports",
+        "/vista/nursing/note-text"
       ],
-      "rpcs": [],
+      "rpcs": [
+        "ORQQVI VITALS"
+      ],
       "uiComponents": [
         "NursingPanel.tsx"
       ],
@@ -2119,6 +2124,44 @@
         "apps/api/src/routes/emar/index.ts",
         "apps/api/src/routes/handoff/index.ts",
         "apps/web/src/components/cprs/panels/NursingPanel.tsx"
+      ]
+    },
+    {
+      "phaseNumber": "139",
+      "title": "IMPLEMENT: Scheduling Lifecycle + Clinic Resources + Portal Integration",
+      "folder": "144-PHASE-139-SCHEDULING-LIFECYCLE",
+      "files": [
+        "139-01-IMPLEMENT.md",
+        "139-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "139-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "139-99-VERIFY.md"
+      ],
+      "routes": [
+        "/scheduling/appointments/:id/checkin",
+        "/scheduling/appointments/:id/checkout",
+        "/scheduling/clinic/:ien/preferences",
+        "/scheduling/requests/:id/approve",
+        "/scheduling/requests/:id/reject"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/platform/pg/pg-schema.ts",
+        "apps/api/src/platform/pg/repo/pg-clinic-preferences-repo.ts",
+        "apps/api/src/routes/scheduling/index.ts",
+        "apps/api/src/lib/immutable-audit.ts",
+        "config/capabilities.json",
+        "apps/web/src/app/cprs/scheduling/page.tsx",
+        "apps/portal/src/app/dashboard/appointments/page.tsx",
+        "scripts/vista/inventory-scheduling.mjs",
+        "docs/runbooks/scheduling-lifecycle.md"
       ]
     },
     {

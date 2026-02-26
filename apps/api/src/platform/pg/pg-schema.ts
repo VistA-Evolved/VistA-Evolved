@@ -1043,3 +1043,26 @@ export const pgIntakeQuestionSchema = pgTable("intake_question_schema", {
   index("idx_iqs_category").on(table.category),
   index("idx_iqs_active").on(table.active),
 ]);
+
+/**
+ * Phase 139: Clinic Preferences
+ * Tenant-scoped scheduling display preferences per clinic.
+ * VistA remains the master clinic record; preferences are overlay config.
+ */
+export const pgClinicPreferences = pgTable("clinic_preferences", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  clinicIen: text("clinic_ien").notNull(),
+  clinicName: text("clinic_name").notNull(),
+  timezone: text("timezone").notNull().default("America/New_York"),
+  slotDurationMinutes: integer("slot_duration_minutes").notNull().default(30),
+  maxDailySlots: integer("max_daily_slots").notNull().default(20),
+  displayConfig: text("display_config"),
+  operatingHours: text("operating_hours"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_cp_tenant").on(table.tenantId),
+  index("idx_cp_clinic").on(table.clinicIen),
+  index("idx_cp_tenant_clinic").on(table.tenantId, table.clinicIen),
+]);

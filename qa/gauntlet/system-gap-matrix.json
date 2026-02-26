@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-02-26T00:35:59.758Z",
-  "headSha": "219c949",
+  "generatedAt": "2026-02-26T01:31:25.089Z",
+  "headSha": "fb0d40e",
   "domains": [
     {
       "domain": "AUTH_IAM",
@@ -243,15 +243,15 @@
           "file": "apps/api/src/routes/scheduling/index.ts"
         },
         {
+          "route": "POST /scheduling/appointments/:id/checkin",
+          "file": "apps/api/src/routes/scheduling/index.ts"
+        },
+        {
+          "route": "POST /scheduling/appointments/:id/checkout",
+          "file": "apps/api/src/routes/scheduling/index.ts"
+        },
+        {
           "route": "POST /scheduling/appointments/:id/reschedule",
-          "file": "apps/api/src/routes/scheduling/index.ts"
-        },
-        {
-          "route": "GET /scheduling/appointments/cprs",
-          "file": "apps/api/src/routes/scheduling/index.ts"
-        },
-        {
-          "route": "GET /scheduling/appointments/range",
           "file": "apps/api/src/routes/scheduling/index.ts"
         }
       ],

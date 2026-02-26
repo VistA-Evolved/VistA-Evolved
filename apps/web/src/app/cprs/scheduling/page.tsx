@@ -1,10 +1,11 @@
 'use client';
 
 /**
- * Clinician Scheduling Dashboard -- Phase 63, enhanced Phase 131.
+ * Clinician Scheduling Dashboard -- Phase 63, enhanced Phase 131, Phase 139.
  *
  * Tabs: Schedule (clinic/date view), Patient Appointments, Requests Queue,
  *       Clinics & Providers, Lifecycle (Phase 131), VistA Posture (Phase 131)
+ * Phase 139: Approve/reject buttons in Request Queue, check-in/out in Lifecycle.
  * Data: VistA SDOE encounters + SD W/L wait list RPCs + ORWPT + SDVW
  */
 
@@ -188,6 +189,50 @@ export default function SchedulingPage() {
     }
     setSubmitting(false);
   }, [patientDfn, reqClinic, reqDate, reqReason, reqType, loadPatientAppts]);
+
+  // Phase 139: Approve / Reject request actions
+  const triageRequest = useCallback(async (id: string, action: 'approve' | 'reject') => {
+    setError('');
+    try {
+      await apiFetch(`/scheduling/requests/${id}/${action}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason: action === 'reject' ? 'Rejected by scheduling staff' : undefined }),
+      });
+      await loadRequests();
+    } catch (err: any) {
+      setError(err.message);
+    }
+  }, [loadRequests]);
+
+  // Phase 139: Quick check-in from lifecycle tab
+  const quickCheckin = useCallback(async (apptRef: string, dfn: string, clinic: string, clinicIen?: string) => {
+    setError('');
+    try {
+      await apiFetch(`/scheduling/appointments/${apptRef}/checkin`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ patientDfn: dfn, clinicName: clinic, clinicIen }),
+      });
+      await loadLifecycle();
+    } catch (err: any) {
+      setError(err.message);
+    }
+  }, [loadLifecycle]);
+
+  const quickCheckout = useCallback(async (apptRef: string, dfn: string, clinic: string, clinicIen?: string) => {
+    setError('');
+    try {
+      await apiFetch(`/scheduling/appointments/${apptRef}/checkout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ patientDfn: dfn, clinicName: clinic, clinicIen }),
+      });
+      await loadLifecycle();
+    } catch (err: any) {
+      setError(err.message);
+    }
+  }, [loadLifecycle]);
 
   useEffect(() => {
     if (tab === 'schedule') loadSchedule();
@@ -412,6 +457,7 @@ export default function SchedulingPage() {
                   <th style={{ padding: '0.5rem' }}>Type</th>
                   <th style={{ padding: '0.5rem' }}>Status</th>
                   <th style={{ padding: '0.5rem' }}>Created</th>
+                  <th style={{ padding: '0.5rem' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -428,6 +474,23 @@ export default function SchedulingPage() {
                       </span>
                     </td>
                     <td style={{ padding: '0.5rem', fontSize: '0.75rem' }}>{r.createdAt ? new Date(r.createdAt).toLocaleString() : '-'}</td>
+                    <td style={{ padding: '0.5rem' }}>
+                      {r.status === 'pending' && (
+                        <span style={{ display: 'flex', gap: '0.25rem' }}>
+                          <button onClick={() => triageRequest(r.id, 'approve')}
+                            style={{ padding: '0.2rem 0.5rem', background: '#198754', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', fontSize: '0.7rem' }}>
+                            Approve
+                          </button>
+                          <button onClick={() => triageRequest(r.id, 'reject')}
+                            style={{ padding: '0.2rem 0.5rem', background: '#dc3545', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', fontSize: '0.7rem' }}>
+                            Reject
+                          </button>
+                        </span>
+                      )}
+                      {r.status !== 'pending' && (
+                        <span style={{ fontSize: '0.75rem', color: '#6c757d' }}>{r.status}</span>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -547,6 +610,7 @@ export default function SchedulingPage() {
                   <th style={{ padding: '0.375rem' }}>Transition</th>
                   <th style={{ padding: '0.375rem' }}>RPC Used</th>
                   <th style={{ padding: '0.375rem' }}>Note</th>
+                  <th style={{ padding: '0.375rem' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -561,14 +625,28 @@ export default function SchedulingPage() {
                         padding: '0.125rem 0.375rem',
                         borderRadius: 8,
                         fontSize: '0.7rem',
-                        background: e.state === 'completed' ? '#d1e7dd' : e.state === 'cancelled' ? '#f8d7da' : e.state === 'booked' ? '#cfe2ff' : '#fff3cd',
-                        color: e.state === 'completed' ? '#0f5132' : e.state === 'cancelled' ? '#842029' : e.state === 'booked' ? '#084298' : '#664d03',
+                        background: e.state === 'completed' ? '#d1e7dd' : e.state === 'cancelled' ? '#f8d7da' : e.state === 'booked' ? '#cfe2ff' : e.state === 'checked_in' ? '#cfe2ff' : '#fff3cd',
+                        color: e.state === 'completed' ? '#0f5132' : e.state === 'cancelled' ? '#842029' : e.state === 'booked' ? '#084298' : e.state === 'checked_in' ? '#084298' : '#664d03',
                       }}>
                         {e.state}
                       </span>
                     </td>
                     <td style={{ padding: '0.375rem', fontSize: '0.7rem', color: '#6c757d' }}>{e.rpcUsed || '-'}</td>
                     <td style={{ padding: '0.375rem', fontSize: '0.75rem' }}>{e.transitionNote || '-'}</td>
+                    <td style={{ padding: '0.375rem' }}>
+                      {e.state === 'booked' && (
+                        <button onClick={() => quickCheckin(e.appointmentRef, e.patientDfn, e.clinicName, e.clinicIen)}
+                          style={{ padding: '0.15rem 0.4rem', background: '#0d6efd', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', fontSize: '0.65rem' }}>
+                          Check In
+                        </button>
+                      )}
+                      {e.state === 'checked_in' && (
+                        <button onClick={() => quickCheckout(e.appointmentRef, e.patientDfn, e.clinicName, e.clinicIen)}
+                          style={{ padding: '0.15rem 0.4rem', background: '#198754', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', fontSize: '0.65rem' }}>
+                          Check Out
+                        </button>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>

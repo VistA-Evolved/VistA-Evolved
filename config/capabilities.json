@@ -707,6 +707,46 @@
       "targetPackage": "SD",
       "description": "Scheduling RPC posture report (Phase 131)"
     },
+    "scheduling.checkin": {
+      "status": "configured",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SDOE UPDATE ENCOUNTER",
+      "targetPackage": "SD",
+      "description": "Patient check-in lifecycle transition (Phase 139)"
+    },
+    "scheduling.checkout": {
+      "status": "configured",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SDOE UPDATE ENCOUNTER",
+      "targetPackage": "SD",
+      "description": "Patient check-out lifecycle transition (Phase 139)"
+    },
+    "scheduling.request.approve": {
+      "status": "live",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": null,
+      "targetPackage": "SD",
+      "description": "Approve scheduling request from queue (Phase 139)"
+    },
+    "scheduling.request.reject": {
+      "status": "live",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": null,
+      "targetPackage": "SD",
+      "description": "Reject scheduling request from queue (Phase 139)"
+    },
+    "scheduling.clinic.preferences": {
+      "status": "live",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": null,
+      "targetPackage": "SD",
+      "description": "Clinic scheduling preferences overlay (Phase 139)"
+    },
     "migration.import.csv": {
       "status": "live",
       "module": "migration",

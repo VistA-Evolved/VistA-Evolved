@@ -1,25 +1,28 @@
 {
-  "featureTitle": "Phase 138: Nursing DOC + MAR + Handoff (VistA-first)",
+  "featureTitle": "Phase 139: Scheduling lifecycle + clinic resources + portal appointment integration (VistA-first)",
   "stage": "verified",
   "status": "complete",
-  "promptRefPath": "prompts/143-PHASE-138-NURSING-DOC-MAR-HANDOFF/138-01-IMPLEMENT.md",
-  "runbookPath": "ops/summary.md",
+  "promptRefPath": "prompts/144-PHASE-139-SCHEDULING-LIFECYCLE/139-01-IMPLEMENT.md",
+  "runbookPath": "docs/runbooks/scheduling-lifecycle.md",
   "verifyScriptUsed": "qa/gauntlet/cli.mjs --suite fast + --suite rc",
-  "commitSHA": "pending",
+  "commitSHA": "c3b5204",
   "gauntletFast": "4 PASS / 0 FAIL / 1 WARN",
   "gauntletRc": "15 PASS / 0 FAIL / 1 WARN",
-  "vitest": "17/20 files pass (3 integration test files need running API)",
+  "vitest": "16/20 files pass (4 integration test files need running API)",
   "filesModified": [
+    "apps/api/src/routes/scheduling/index.ts",
+    "apps/api/src/platform/pg/pg-schema.ts",
+    "apps/api/src/platform/pg/pg-migrate.ts",
+    "apps/api/src/platform/pg/repo/pg-clinic-preferences-repo.ts",
     "apps/api/src/lib/immutable-audit.ts",
-    "apps/api/src/vista/rpcRegistry.ts",
     "config/capabilities.json",
-    "config/modules.json",
-    "apps/api/src/routes/nursing/index.ts",
-    "apps/api/src/routes/emar/index.ts",
-    "apps/api/src/routes/handoff/index.ts",
-    "apps/web/src/components/cprs/panels/NursingPanel.tsx"
+    "apps/web/src/app/cprs/scheduling/page.tsx",
+    "apps/portal/src/app/dashboard/appointments/page.tsx",
+    "scripts/vista/inventory-scheduling.mjs",
+    "docs/runbooks/scheduling-lifecycle.md"
   ],
-  "newCapabilities": 14,
-  "newAuditActions": 23,
-  "newRpcExceptions": 5
+  "newEndpoints": 6,
+  "newCapabilities": 5,
+  "newAuditActions": 5,
+  "pgMigrationVersion": 16
 }

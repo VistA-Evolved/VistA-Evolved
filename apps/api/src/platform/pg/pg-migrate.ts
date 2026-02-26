@@ -1206,6 +1206,31 @@ CREATE INDEX IF NOT EXISTS idx_iqs_category ON intake_question_schema(category);
 CREATE INDEX IF NOT EXISTS idx_iqs_active ON intake_question_schema(active);
 `,
   },
+  {
+    version: 16,
+    name: "clinic_preferences",
+    sql: `
+-- Phase 139: Clinic scheduling preferences -- tenant-scoped overlay on VistA clinic data.
+-- VistA remains the master clinic record (SD W/L RETRIVE HOSP LOC).
+-- Preferences control display config, slot duration, timezone.
+CREATE TABLE IF NOT EXISTS clinic_preferences (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  clinic_ien TEXT NOT NULL,
+  clinic_name TEXT NOT NULL,
+  timezone TEXT NOT NULL DEFAULT 'America/New_York',
+  slot_duration_minutes INTEGER NOT NULL DEFAULT 30,
+  max_daily_slots INTEGER NOT NULL DEFAULT 20,
+  display_config TEXT,
+  operating_hours TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_cp_tenant ON clinic_preferences(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_cp_clinic ON clinic_preferences(clinic_ien);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_cp_tenant_clinic ON clinic_preferences(tenant_id, clinic_ien);
+`,
+  },
 ];
 
 /**
@@ -1332,6 +1357,7 @@ export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: s
     "scheduling_lifecycle",
     "user_locale_preference",
     "intake_question_schema",
+    "clinic_preferences",
   ];
 
   const applied: string[] = [];

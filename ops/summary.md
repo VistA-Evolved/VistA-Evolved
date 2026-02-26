@@ -1,37 +1,43 @@
-# Phase 138 — Nursing DOC + MAR + Handoff (VistA-first)
+# Phase 139 — Scheduling Lifecycle + Clinic Resources + Portal Integration
 
 ## What Changed
 
-### Infrastructure Wiring
-- **immutable-audit.ts**: Added 25 audit actions (23 original + 2 from VERIFY: nursing.ward-patients, nursing.note-text)
-- **rpcRegistry.ts**: Added 5 RPC exceptions (PSB MED LOG, PSB ALLERGY, PSJBCMA, GMRIO RESULTS, GMRIO ADD)
-- **capabilities.json**: Added 14 new capabilities (8 live, 6 pending)
-- **modules.json**: Added `/emar/` and `/handoff/` route patterns to clinical module
+### New API Endpoints (6)
+- POST `/scheduling/appointments/:id/checkin` -- lifecycle transition to checked_in
+- POST `/scheduling/appointments/:id/checkout` -- lifecycle transition to completed
+- POST `/scheduling/requests/:id/approve` -- admin approve scheduling request
+- POST `/scheduling/requests/:id/reject` -- admin reject scheduling request
+- GET `/scheduling/clinic/:ien/preferences` -- read clinic scheduling config
+- PUT `/scheduling/clinic/:ien/preferences` -- upsert clinic scheduling config
 
-### API Route Hardening
-- **nursing/index.ts**: All 14 endpoints hardened with immutableAudit, session, pendingFallback ok:false
-- **emar/index.ts**: All 6 endpoints hardened with immutableAudit, session, pendingFallback ok:false
-- **handoff/index.ts**: All 8 endpoints switched from audit() to immutableAudit()
+### Data Model
+- **PG migration v16**: `clinic_preferences` table (tenant_id, clinic_ien, timezone, slot_duration, etc.)
+- **RLS**: `clinic_preferences` added to `applyRlsPolicies()` tenant tables
+- **pg-clinic-preferences-repo.ts**: New CRUD repo for clinic preferences
+
+### Audit + Capabilities
+- **immutable-audit.ts**: +5 actions (scheduling.checkin/checkout/approve/reject/clinic_preferences)
+- **capabilities.json**: +5 capabilities (scheduling.checkin/checkout/request.approve/reject/clinic.preferences)
 
 ### UI Enhancement
-- **NursingPanel.tsx**: CSRF headers, Flowsheet tab, Handoff tab (6 sub-tabs total)
+- **Admin scheduling page**: Approve/Reject buttons in Request Queue, Check In/Out in Lifecycle
+- **Portal appointments**: New status colors (booked, checked_in, approved, rejected), check-in notification
 
-## VERIFY Fixes Applied (6)
-1. **Wrong audit action**: ward-patients endpoint used `nursing.vitals` -- fixed to `nursing.ward-patients`
-2. **Fake writeback (eMAR administer)**: POST /emar/administer returned `ok:true` with integration-pending -- fixed to `ok:false`
-3. **Fake writeback (eMAR barcode)**: POST /emar/barcode-scan returned `ok:true` with integration-pending -- fixed to `ok:false`
-4. **Missing audit (note-text)**: GET /vista/nursing/note-text had no immutableAudit calls -- added success + error path audit
-5. **FlowsheetEntry type mismatch**: UI expected {category, label} but API returns {type, critical} -- fixed interface + table columns
-6. **pendingTargets shape**: Flowsheet error used string array instead of {rpc, package, reason} objects -- fixed
+### Tooling
+- **scripts/vista/inventory-scheduling.mjs**: Read-only scheduling RPC/capability inventory
 
-## Verifier Output
-- TSC: clean (0 errors)
-- Next.js build: compiled successfully, 52/52 pages
-- Vitest: 79 passed (4 pending in RPC replay -- infrastructure)
-- Gauntlet FAST: 4P/0F/1W
-- Gauntlet RC: 15P/0F/1W
+## How to Test Manually
+
+```bash
+curl -X POST http://localhost:3001/scheduling/appointments/test-1/checkin \
+  -H 'Content-Type: application/json' -b cookies.txt \
+  -d '{"patientDfn":"3","clinicName":"Primary Care"}'
+
+curl http://localhost:3001/scheduling/clinic/44/preferences -b cookies.txt
+```
 
 ## Follow-ups
-- Wire PSB MED LOG / PSB ALLERGY when BCMA package is available
-- Wire GMRIO ADD/RESULTS when Nursing I/O package is installed
-- Handoff CRHD migration when SBAR M routines are written
+- Wire SDOE UPDATE ENCOUNTER for real VistA check-in/check-out writeback
+- Migrate in-memory request store to full PG-backed request queue
+- Add scheduling notification hooks (email/SMS on approve/reject)
+- Clinic preferences: operating hours builder UI
