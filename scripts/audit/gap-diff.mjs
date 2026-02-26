@@ -157,11 +157,11 @@ function main() {
 
   // Aggregate gap counts
   const bGapCount = (bMatrix.domains || []).reduce(
-    (s, d) => s + d.topGaps.length,
+    (s, d) => s + (d.topGaps || []).length,
     0
   );
   const aGapCount = (aMatrix.domains || []).reduce(
-    (s, d) => s + d.topGaps.length,
+    (s, d) => s + (d.topGaps || []).length,
     0
   );
 
