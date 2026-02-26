@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-26T23:14:40.944Z",
+  "generatedAt": "2026-02-26T23:35:11.553Z",
   "generator": "scripts/build-phase-index.mjs",
   "phaseCount": 160,
   "phases": [
@@ -2544,7 +2544,13 @@
       "filesTouched": [
         "docs/audits/system-audit.md",
         "qa/gauntlet/system-gap-matrix.json",
-        "docs/audits/phase149-burndown.md"
+        "docs/audits/phase149-burndown.md",
+        "scripts/audit/system-audit.mjs",
+        "qa/gauntlet/gates/g10-system-audit.mjs",
+        "docs/audits/system-audit.md",
+        "qa/gauntlet/system-gap-matrix.json",
+        "docs/audits/phase149-burndown.md",
+        "docs/qa/phase-index.json"
       ]
     },
     {
