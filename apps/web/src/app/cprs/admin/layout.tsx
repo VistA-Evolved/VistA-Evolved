@@ -49,6 +49,7 @@ const ADMIN_NAV: AdminNavItem[] = [
   { label: 'PH Market',     href: '/cprs/admin/ph-market',           moduleId: 'rcm' },
   { label: 'Contracting',   href: '/cprs/admin/contracting-hub',     moduleId: 'rcm' },
   { label: 'Audit Viewer',  href: '/cprs/admin/audit-viewer',  moduleId: 'iam' },
+  { label: 'Break-Glass',   href: '/cprs/admin/break-glass',   moduleId: 'iam' },
   { label: 'RPC Debug',     href: '/cprs/admin/rpc-debug' },
   { label: 'Reports',       href: '/cprs/admin/reports' },
   { label: 'Migration',     href: '/cprs/admin/migration' },

@@ -58,7 +58,10 @@ export interface EnterpriseBreakGlassSession {
   /** Approver info (null until approved) */
   approverDuz: string | null;
   approverName: string | null;
-  /** Revoker info (null until revoked) */
+  /** Revoker/denier info (null until revoked or denied).
+   *  For "denied" status, these fields store the denier's identity.
+   *  Field names are reused to keep the model flat — use `status` to
+   *  distinguish revoke vs deny. */
   revokerDuz: string | null;
   revokerName: string | null;
   /** Request source IP */
@@ -149,7 +152,7 @@ export function requestBreakGlass(params: {
   breakGlassStore.set(session.id, session);
 
   // Immutable audit
-  immutableAudit("iam.break-glass.request" as any, "success", {
+  immutableAudit("iam.break-glass.request", "success", {
     sub: params.requesterDuz,
     name: params.requesterName,
     roles: [params.requesterRole],
@@ -217,7 +220,7 @@ export function approveBreakGlass(params: {
   expiryTimers.set(session.id, timer);
 
   // Immutable audit
-  immutableAudit("iam.break-glass.approve" as any, "success", {
+  immutableAudit("iam.break-glass.approve", "success", {
     sub: params.approverDuz,
     name: params.approverName,
     roles: ["admin"],
@@ -272,7 +275,7 @@ export function revokeBreakGlass(params: {
   }
 
   // Immutable audit
-  immutableAudit("iam.break-glass.revoke" as any, "success", {
+  immutableAudit("iam.break-glass.revoke", "success", {
     sub: params.revokerDuz,
     name: params.revokerName,
     roles: ["admin"],
@@ -318,7 +321,7 @@ export function denyBreakGlass(params: {
   session.revokerName = params.denierName;
 
   // Immutable audit
-  immutableAudit("iam.break-glass.deny" as any, "success", {
+  immutableAudit("iam.break-glass.deny", "success", {
     sub: params.denierDuz,
     name: params.denierName,
     roles: ["admin"],
@@ -352,6 +355,7 @@ export function getBreakGlassSession(id: string): EnterpriseBreakGlassSession | 
 
 /**
  * Check if a user has an active break-glass grant for a specific module/permission.
+ * Intended for middleware integration — not yet wired into route guards.
  */
 export function hasActiveBreakGlass(
   duz: string,
@@ -452,7 +456,7 @@ function expireSession(id: string): void {
   session.status = "expired";
   expiryTimers.delete(id);
 
-  immutableAudit("iam.break-glass.expire" as any, "success", {
+  immutableAudit("iam.break-glass.expire", "success", {
     sub: "system",
     name: "Break-glass auto-expire",
     roles: [],
@@ -505,7 +509,7 @@ export function stopBreakGlassCleanup(): void {
   }
 }
 
-/** Get store size (for posture checks). */
+/** Get store size (for posture checks — intended for data-plane-posture.ts). */
 export function getBreakGlassStoreSize(): number {
   return breakGlassStore.size;
 }
