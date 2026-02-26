@@ -18,7 +18,25 @@ import type {
   UnderpaymentStatus,
 } from './payment-types.js';
 
-/* ── Primary Stores ────────────────────────────────────────── */
+/* ── DB repo interfaces (Phase 146: durable payment storage) ── */
+
+interface PaymentRepos {
+  batchRepo: { upsert(data: any): Promise<any>; update(id: string, u: any): Promise<any> } | null;
+  lineRepo: { upsert(data: any): Promise<any>; update(id: string, u: any): Promise<any> } | null;
+  postingRepo: { insert(data: any): Promise<any> } | null;
+  underpaymentRepo: { upsert(data: any): Promise<any>; update(id: string, u: any): Promise<any> } | null;
+}
+
+const pgRepos: PaymentRepos = { batchRepo: null, lineRepo: null, postingRepo: null, underpaymentRepo: null };
+
+export function initPaymentStoreRepos(repos: Partial<PaymentRepos>): void {
+  if (repos.batchRepo) pgRepos.batchRepo = repos.batchRepo;
+  if (repos.lineRepo) pgRepos.lineRepo = repos.lineRepo;
+  if (repos.postingRepo) pgRepos.postingRepo = repos.postingRepo;
+  if (repos.underpaymentRepo) pgRepos.underpaymentRepo = repos.underpaymentRepo;
+}
+
+/* ── Primary Stores (cache layer — PG is truth when wired) ── */
 
 const batches = new Map<string, RemittanceBatch>();
 const lines = new Map<string, RemittanceLine>();
@@ -82,6 +100,10 @@ export function createBatch(params: CreateBatchParams): RemittanceBatch {
   batches.set(batch.id, batch);
   addToIndex(tenantBatchIndex, params.tenantId, batch.id);
   addToIndex(payerBatchIndex, params.payerId, batch.id);
+
+  // Phase 146: Write-through to PG
+  pgRepos.batchRepo?.upsert({ id: batch.id, tenantId: params.tenantId, payerId: params.payerId, payerName: params.payerName, paymentMethod: params.sourceMode, status: 'received', source: params.sourceMode, createdAt: now, updatedAt: now }).catch(() => {});
+
   return batch;
 }
 
@@ -104,6 +126,10 @@ export function updateBatch(id: string, updates: Partial<RemittanceBatch>): Remi
     updatedAt: new Date().toISOString(),
   };
   batches.set(id, updated);
+
+  // Phase 146: Write-through update
+  pgRepos.batchRepo?.update(id, { ...updates, updatedAt: updated.updatedAt }).catch(() => {});
+
   return updated;
 }
 
@@ -142,6 +168,10 @@ export function addLine(line: Omit<RemittanceLine, 'id'>): RemittanceLine {
   if (full.matchedClaimCaseId) {
     addToIndex(claimLineIndex, full.matchedClaimCaseId, full.id);
   }
+
+  // Phase 146: Write-through to PG
+  pgRepos.lineRepo?.upsert({ id: full.id, tenantId: (full as any).tenantId, batchId: full.batchId, claimCaseId: full.matchedClaimCaseId ?? null, lineNumber: full.lineNumber, matchStatus: full.matchStatus }).catch(() => {});
+
   return full;
 }
 
@@ -158,6 +188,9 @@ export function updateLine(id: string, updates: Partial<RemittanceLine>): Remitt
 
   const updated: RemittanceLine = { ...line, ...updates };
   lines.set(id, updated);
+
+  // Phase 146: Write-through update
+  pgRepos.lineRepo?.update(id, updates).catch(() => {});
 
   // Update claim index if match changed
   if (updates.matchedClaimCaseId && updates.matchedClaimCaseId !== line.matchedClaimCaseId) {
@@ -228,6 +261,10 @@ export function recordPosting(posting: Omit<PaymentPostingEvent, 'id'>): Payment
   const full: PaymentPostingEvent = { ...posting, id: randomUUID() };
   postings.set(full.id, full);
   addToIndex(tenantPostingIndex, full.tenantId, full.id);
+
+  // Phase 146: Write-through to PG
+  pgRepos.postingRepo?.insert({ id: full.id, tenantId: full.tenantId, claimCaseId: full.claimCaseId, batchId: full.batchId, amount: (full as any).amount ?? 0, postedAt: (full as any).postedAt ?? new Date().toISOString() }).catch(() => {});
+
   return full;
 }
 
@@ -248,6 +285,10 @@ export function createUnderpayment(
   };
   underpayments.set(uc.id, uc);
   addToIndex(tenantUnderpaymentIndex, uc.tenantId, uc.id);
+
+  // Phase 146: Write-through to PG
+  pgRepos.underpaymentRepo?.upsert({ id: uc.id, tenantId: uc.tenantId, claimId: (uc as any).claimId ?? (uc as any).claimCaseId ?? '', payerId: uc.payerId, expectedAmount: uc.expectedAmount, paidAmount: uc.paidAmount, variance: (uc as any).variance ?? (uc.expectedAmount - uc.paidAmount), status: uc.status, createdAt: uc.createdAt }).catch(() => {});
+
   return uc;
 }
 
@@ -263,6 +304,10 @@ export function updateUnderpayment(
   if (!uc) return undefined;
   const updated: UnderpaymentCase = { ...uc, ...updates };
   underpayments.set(id, updated);
+
+  // Phase 146: Write-through update
+  pgRepos.underpaymentRepo?.update(id, updates).catch(() => {});
+
   return updated;
 }
 

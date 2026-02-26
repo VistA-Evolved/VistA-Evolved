@@ -57,6 +57,10 @@ export interface ServerDraft {
 
 /** In-memory server-side draft store (production: use Redis/DB) */
 const drafts: Map<string, ServerDraft> = new Map();
+
+/* Phase 146: DB repo wiring */
+let draftDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
+export function initDraftStoreRepo(repo: typeof draftDbRepo): void { draftDbRepo = repo; }
 let draftSeq = 0;
 
 export function createDraft(type: ServerDraft['type'], dfn: string, requiredRpc: string, payload: Record<string, unknown>): ServerDraft {
@@ -76,6 +80,10 @@ export function createDraft(type: ServerDraft['type'], dfn: string, requiredRpc:
     syncAttempts: 0,
   };
   drafts.set(id, draft);
+
+  // Phase 146: Write-through to PG
+  draftDbRepo?.upsert({ id, tenantId: 'default', patientDfn: dfn, draftType: type, content: JSON.stringify(payload), createdAt: draft.createdAt, updatedAt: draft.createdAt }).catch(() => {});
+
   log.info("Draft created", { type, draftId: id, dfn, requiredRpc });
   // Phase 15C: centralized audit for draft creation
   centralAudit("clinical.draft-create", "success", { duz: "system" }, {

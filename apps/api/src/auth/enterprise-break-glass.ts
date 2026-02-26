@@ -92,6 +92,10 @@ const breakGlassStore = new Map<string, EnterpriseBreakGlassSession>();
 /** Auto-expire timers keyed by session ID */
 const expiryTimers = new Map<string, ReturnType<typeof setTimeout>>();
 
+/* Phase 146: DB repo wiring */
+let bgDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
+export function initBreakGlassStoreRepo(repo: typeof bgDbRepo): void { bgDbRepo = repo; }
+
 /* ================================================================== */
 /* Core operations                                                     */
 /* ================================================================== */
@@ -150,6 +154,9 @@ export function requestBreakGlass(params: {
   };
 
   breakGlassStore.set(session.id, session);
+
+  // Phase 146: Write-through to PG
+  bgDbRepo?.upsert({ id: session.id, tenantId: session.tenantId ?? 'default', userId: params.requesterDuz, patientDfn: params.patientDfn, reason: params.reason, expiresAt: session.expiresAt, createdAt: session.requestedAt }).catch(() => {});
 
   // Immutable audit
   immutableAudit("iam.break-glass.request", "success", {

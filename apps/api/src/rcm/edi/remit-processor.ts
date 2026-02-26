@@ -87,6 +87,10 @@ export interface RemitIngestResult {
 const remitIdempotencyIndex = new Map<string, string>(); // key → remitId
 const processedRemittances = new Map<string, Remittance>();
 
+/* Phase 146: DB repo wiring */
+let remitProcDbRepo: { upsert(d: any): Promise<any> } | null = null;
+export function initRemitProcessorRepo(repo: typeof remitProcDbRepo): void { remitProcDbRepo = repo; }
+
 /* ── Ingestion ─────────────────────────────────────────────── */
 
 export async function ingestRemittance(input: RemitIngestInput): Promise<RemitIngestResult> {
@@ -151,6 +155,9 @@ export async function ingestRemittance(input: RemitIngestInput): Promise<RemitIn
   storeRemittance(remittance);
   processedRemittances.set(remittance.id, remittance);
   remitIdempotencyIndex.set(input.idempotencyKey, remittance.id);
+
+  // Phase 146: Write-through to PG
+  remitProcDbRepo?.upsert({ id: remittance.id, tenantId: (remittance as any).tenantId ?? 'default', source: input.idempotencyKey, status: 'processed', createdAt: new Date().toISOString() }).catch(() => {});
 
   // Auto-match to claim
   let claimMatched = false;

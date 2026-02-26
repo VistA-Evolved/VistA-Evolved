@@ -27,6 +27,10 @@ const jobStore = new Map<string, MigrationJob>();
 const templateStore = new Map<string, MappingTemplate>();
 const rollbackStore = new Map<string, RollbackPlan>();
 
+/* Phase 146: DB repo wiring */
+let migrationDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
+export function initMigrationStoreRepo(repo: typeof migrationDbRepo): void { migrationDbRepo = repo; }
+
 /** Max jobs retained in memory */
 const MAX_JOBS = 500;
 
@@ -74,6 +78,10 @@ export function createJob(params: {
   };
 
   jobStore.set(job.id, job);
+
+  // Phase 146: Write-through to PG
+  migrationDbRepo?.upsert({ id: job.id, tenantId: 'default', jobType: job.direction ?? 'unknown', status: job.status, createdAt: job.createdAt }).catch(() => {});
+
   log.info("Migration job created", { jobId: job.id, direction: job.direction, entityType: job.entityType });
   return job;
 }

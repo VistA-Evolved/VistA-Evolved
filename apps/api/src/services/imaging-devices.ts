@@ -140,6 +140,10 @@ const deviceStore = new Map<string, DicomDevice>();
 /** AE Title → device ID index for uniqueness. */
 const aeTitleIndex = new Map<string, string>();
 
+/* Phase 146: DB repo wiring */
+let deviceDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
+export function initImagingDeviceStoreRepo(repo: typeof deviceDbRepo): void { deviceDbRepo = repo; }
+
 export function getDevice(id: string): DicomDevice | undefined {
   return deviceStore.get(id);
 }
@@ -275,6 +279,9 @@ export async function imagingDeviceRoutes(server: FastifyInstance): Promise<void
 
     deviceStore.set(device.id, device);
     aeTitleIndex.set(normalizedAe, device.id);
+
+    // Phase 146: Write-through to PG
+    deviceDbRepo?.upsert({ id: device.id, tenantId: device.tenantId, aeTitle: device.aeTitle, name: device.description, type: device.modalityType, status: device.status, facilityId: device.facilityId, host: device.ipAllowlist?.[0] ?? '', port: device.dicomPort, createdAt: device.createdAt, updatedAt: device.updatedAt }).catch(() => {});
 
     log.info("DICOM device registered", {
       deviceId: device.id, aeTitle: device.aeTitle, modality: device.modalityType,

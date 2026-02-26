@@ -89,6 +89,10 @@ export interface RegistrySnapshot {
 const sources = new Map<string, PayerRegistrySource>();
 const payers = new Map<string, RegistryPayer>();
 const relationships = new Map<string, PayerRelationship>();
+
+/* Phase 146: DB repo wiring */
+let registryDbRepo: { upsert(d: any): Promise<any> } | null = null;
+export function initRegistryStoreRepo(repo: typeof registryDbRepo): void { registryDbRepo = repo; }
 const snapshots: RegistrySnapshot[] = [];
 
 /* ── Source CRUD ─────────────────────────────────────────────── */
@@ -130,6 +134,10 @@ export function createSource(data: {
     rawArtifactPath: data.rawArtifactPath,
   };
   sources.set(source.id, source);
+
+  // Phase 146: Write-through to PG
+  registryDbRepo?.upsert({ id: source.id, tenantId: 'default', field: 'source', value: JSON.stringify(source), source: (source as any).type ?? 'manual', createdAt: (source as any).createdAt ?? new Date().toISOString() }).catch(() => {});
+
   return source;
 }
 

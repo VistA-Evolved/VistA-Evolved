@@ -17,6 +17,7 @@
 
 import { getPhHmo, initPhHmoRegistry } from "../payers/ph-hmo-registry.js";
 import { createClaimPacket } from "../payers/ph-hmo-adapter.js";
+import { randomUUID } from "node:crypto";
 import {
   getClaim,
   listClaims,
@@ -206,6 +207,19 @@ export interface DenialRecord {
   recordedBy: string;
 }
 
+/* ── Denial DB repo (Phase 146: durable denial storage) ──── */
+
+interface DenialDbRepo {
+  insert(data: any): Promise<any>;
+  findByField(field: string, value: unknown, tenantId?: string): Promise<any[]>;
+}
+
+let denialDbRepo: DenialDbRepo | null = null;
+
+export function initDenialStoreRepo(repo: DenialDbRepo): void {
+  denialDbRepo = repo;
+}
+
 const denialStore = new Map<string, DenialRecord[]>();
 
 export function recordDenial(params: {
@@ -225,6 +239,9 @@ export function recordDenial(params: {
   const existing = denialStore.get(params.claimId) ?? [];
   existing.push(record);
   denialStore.set(params.claimId, existing);
+
+  // Phase 146: Write-through to PG
+  denialDbRepo?.insert({ id: randomUUID(), tenantId: 'default', claimId: params.claimId, reasonCode: params.reasonCode, reasonDescription: params.reasonText, denialDate: record.deniedAt, status: 'open', createdAt: record.deniedAt, updatedAt: record.deniedAt }).catch(() => {});
 
   return record;
 }

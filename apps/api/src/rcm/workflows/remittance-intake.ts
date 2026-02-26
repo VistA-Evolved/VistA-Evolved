@@ -90,7 +90,22 @@ export interface RemittanceDocument {
   updatedAt: string;
 }
 
-/* ── Store ──────────────────────────────────────────────────── */
+/* ── DB repo interface (Phase 146: durable remit doc storage) ── */
+
+interface RemitDocRepo {
+  insert(data: any): Promise<any>;
+  upsert(data: any): Promise<any>;
+  findById(id: string): Promise<any>;
+  update(id: string, updates: any): Promise<any>;
+}
+
+let dbRepo: RemitDocRepo | null = null;
+
+export function initRemitIntakeRepo(repo: RemitDocRepo): void {
+  dbRepo = repo;
+}
+
+/* ── Store (cache — PG is truth when wired) ─────────────── */
 
 const remitDocStore = new Map<string, RemittanceDocument>();
 const tenantRemitIndex = new Map<string, Set<string>>();
@@ -142,6 +157,9 @@ export function createRemittanceDocument(params: {
     tenantRemitIndex.set(params.tenantId, new Set());
   }
   tenantRemitIndex.get(params.tenantId)!.add(id);
+
+  // Phase 146: Write-through to PG
+  dbRepo?.upsert({ id, tenantId: params.tenantId, source: params.uploadedBy, fileName: params.filename, contentType: params.mimeType, status: 'received', createdAt: now }).catch(() => {});
 
   return doc;
 }

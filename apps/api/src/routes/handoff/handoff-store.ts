@@ -87,6 +87,10 @@ export interface HandoffReport {
 
 const handoffStore = new Map<string, HandoffReport>();
 
+/* Phase 146: DB repo wiring */
+let handoffDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
+export function initHandoffStoreRepo(repo: typeof handoffDbRepo): void { handoffDbRepo = repo; }
+
 /** Generate a unique handoff ID */
 function generateId(): string {
   return `hoff-${Date.now()}-${randomBytes(4).toString("hex")}`;
@@ -129,6 +133,10 @@ export function createHandoffReport(input: {
     shiftNotes: input.shiftNotes || "",
   };
   handoffStore.set(report.id, report);
+
+  // Phase 146: Write-through to PG
+  handoffDbRepo?.upsert({ id: report.id, tenantId: 'default', patientDfn: (report as any).patients?.[0]?.dfn ?? '', fromProvider: (report as any).author ?? '', toProvider: (report as any).assignee ?? '', content: JSON.stringify(report), status: report.status, createdAt: report.createdAt }).catch(() => {});
+
   return report;
 }
 

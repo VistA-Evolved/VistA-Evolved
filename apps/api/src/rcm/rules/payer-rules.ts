@@ -82,10 +82,18 @@ export interface RuleEvalResult {
 const rules = new Map<string, PayerRule>();
 const payerIndex = new Map<string, Set<string>>(); // payerId → rule IDs
 
+/* Phase 146: DB repo wiring */
+let ruleDbRepo: { upsert(d: any): Promise<any> } | null = null;
+export function initPayerRuleStoreRepo(repo: typeof ruleDbRepo): void { ruleDbRepo = repo; }
+
 /* ── CRUD ──────────────────────────────────────────────────── */
 
 export function addRule(rule: PayerRule): void {
   rules.set(rule.id, rule);
+
+  // Phase 146: Write-through to PG
+  ruleDbRepo?.upsert({ id: rule.id, tenantId: (rule as any).tenantId ?? 'default', payerId: rule.payerId, ruleType: (rule as any).type ?? 'generic', active: true, createdAt: new Date().toISOString() }).catch(() => {});
+
   if (!payerIndex.has(rule.payerId)) {
     payerIndex.set(rule.payerId, new Set());
   }

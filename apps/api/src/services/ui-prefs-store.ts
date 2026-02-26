@@ -202,6 +202,10 @@ export function validateCoverSheetLayout(
 
 const store = new Map<string, UIPrefsDocument>();
 
+/* Phase 146: DB repo wiring */
+let prefsDbRepo: { upsert(d: any): Promise<any> } | null = null;
+export function initUiPrefsStoreRepo(repo: typeof prefsDbRepo): void { prefsDbRepo = repo; }
+
 function makeKey(tenantId: string, duz: string): string {
   return `${tenantId}:${duz}`;
 }
@@ -224,6 +228,10 @@ export function saveUIPrefs(
     updatedBy,
   };
   store.set(makeKey(tenantId, duz), doc);
+
+  // Phase 146: Write-through to PG
+  prefsDbRepo?.upsert({ id: makeKey(tenantId, duz), tenantId, userDuz: duz, key: 'layout', value: JSON.stringify(layout), createdAt: (doc as any).createdAt ?? new Date().toISOString(), updatedAt: doc.updatedAt }).catch(() => {});
+
   log.debug("UI prefs saved", { tenantId, duz });
   return doc;
 }

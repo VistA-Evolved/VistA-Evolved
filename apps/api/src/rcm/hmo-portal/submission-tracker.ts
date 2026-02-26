@@ -20,6 +20,10 @@ import { isValidHmoTransition } from "./types.js";
 
 const submissions = new Map<string, HmoSubmissionRecord>();
 
+/* Phase 146: DB repo wiring */
+let hmoSubDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
+export function initHmoSubmissionStoreRepo(repo: typeof hmoSubDbRepo): void { hmoSubDbRepo = repo; }
+
 /* ── ID Generation ──────────────────────────────────────────── */
 
 function newSubmissionId(): string {
@@ -50,6 +54,10 @@ export function createSubmission(params: {
     updatedAt: now,
   };
   submissions.set(record.id, record);
+
+  // Phase 146: Write-through to PG
+  hmoSubDbRepo?.upsert({ id: record.id, tenantId: (record as any).tenantId ?? 'default', claimId: (record as any).claimId ?? '', payerId: (record as any).payerId ?? '', status: record.status, submittedAt: record.createdAt }).catch(() => {});
+
   return record;
 }
 

@@ -82,6 +82,10 @@ export interface ShareAccessLog {
 
 const shareStore = new Map<string, ShareLink>();
 const tokenIndex = new Map<string, string>(); // token → shareId
+
+/* Phase 146: DB repo wiring */
+let shareDbRepo: { upsert(d: any): Promise<any> } | null = null;
+export function initShareStoreRepo(repo: typeof shareDbRepo): void { shareDbRepo = repo; }
 const accessLog: ShareAccessLog[] = [];
 
 /* ------------------------------------------------------------------ */
@@ -175,6 +179,9 @@ export function createShareLink(opts: {
 
   shareStore.set(id, share);
   tokenIndex.set(token, id);
+
+  // Phase 146: Write-through to PG
+  shareDbRepo?.upsert({ id, tenantId: 'default', patientDfn: opts.patientDfn, token, resourceType: opts.sections?.join(',') ?? '', expiresAt: share.expiresAt, createdAt: share.createdAt }).catch(() => {});
 
   portalAudit("portal.share.create", "success", opts.patientDfn, {
     detail: { shareId: id, sections: opts.sections, expiresAt: share.expiresAt },

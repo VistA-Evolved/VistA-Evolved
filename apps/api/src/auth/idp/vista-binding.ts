@@ -40,6 +40,10 @@ interface VistaBinding {
 
 const vistaBindings = new Map<string, VistaBinding>();
 
+/* Phase 146: DB repo wiring */
+let vistaBindDbRepo: { upsert(d: any): Promise<any> } | null = null;
+export function initVistaBindingStoreRepo(repo: typeof vistaBindDbRepo): void { vistaBindDbRepo = repo; }
+
 /** TTL for VistA bindings (matches session TTL: 8h) */
 const BINDING_TTL_MS = 8 * 60 * 60 * 1000;
 
@@ -78,6 +82,9 @@ export async function bindVistaSession(
       divisionIen: userInfo.divisionIen,
       boundAt: Date.now(),
     });
+
+    // Phase 146: Write-through to PG
+    vistaBindDbRepo?.upsert({ id: sessionToken, tenantId: 'default', idpUserId: sessionToken, vistaDuz: userInfo.duz, provider: 'vista', createdAt: new Date().toISOString() }).catch(() => {});
 
     log.info("VistA session bound", { duz: userInfo.duz });
 

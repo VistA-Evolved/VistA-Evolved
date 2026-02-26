@@ -64,6 +64,10 @@ export interface PortalTask {
 const taskStore = new Map<string, PortalTask>();
 let taskSeq = 0;
 
+/* Phase 146: DB repo wiring */
+let taskDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
+export function initTaskStoreRepo(repo: typeof taskDbRepo): void { taskDbRepo = repo; }
+
 function generateId(): string {
   return `task-${++taskSeq}-${randomBytes(4).toString("hex")}`;
 }
@@ -267,6 +271,9 @@ export function createTask(opts: {
   };
 
   taskStore.set(id, task);
+
+  // Phase 146: Write-through to PG
+  taskDbRepo?.upsert({ id, tenantId: 'default', patientDfn: task.patientDfn, category: task.category, priority: task.priority, status: task.status, title: task.title, body: task.body, createdAt: task.createdAt, updatedAt: task.updatedAt }).catch(() => {});
 
   portalAudit("portal.task.create" as any, "success", opts.patientDfn, {
     detail: { taskId: id, category: opts.category, title: opts.title },

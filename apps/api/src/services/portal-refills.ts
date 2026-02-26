@@ -79,6 +79,10 @@ let refillSeq = 0;
 /** Rate limiter timestamps per patient */
 const refillTimestamps = new Map<string, number[]>();
 
+/* Phase 146: DB repo wiring */
+let refillDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
+export function initRefillStoreRepo(repo: typeof refillDbRepo): void { refillDbRepo = repo; }
+
 function checkRefillRateLimit(dfn: string): { allowed: boolean; retryAfterMs?: number } {
   const now = Date.now();
   const hourAgo = now - 3600000;
@@ -214,6 +218,9 @@ export function requestRefill(opts: {
   };
 
   refillStore.set(id, req);
+
+  // Phase 146: Write-through to PG
+  refillDbRepo?.upsert({ id, tenantId: 'default', patientDfn: req.patientDfn, medicationName: req.medicationName, medicationId: req.medicationId, status: req.status, requestedAt: req.requestedAt, updatedAt: req.updatedAt }).catch(() => {});
 
   // Record rate limit
   const timestamps = refillTimestamps.get(opts.patientDfn) || [];

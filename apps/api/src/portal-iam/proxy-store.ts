@@ -36,6 +36,10 @@ const MAX_PROXIES_PER_PATIENT = 10;
 
 const invitations = new Map<string, ProxyInvitation>();
 
+/* Phase 146: DB repo wiring */
+let proxyDbRepo: { upsert(d: any): Promise<any> } | null = null;
+export function initProxyStoreRepo(repo: typeof proxyDbRepo): void { proxyDbRepo = repo; }
+
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
 /* ------------------------------------------------------------------ */
@@ -159,6 +163,9 @@ export function createProxyInvitation(opts: {
   };
 
   invitations.set(invitation.id, invitation);
+
+  // Phase 146: Write-through to PG
+  proxyDbRepo?.upsert({ id: invitation.id, tenantId: 'default', fromUserId: opts.requestorUserId ?? '', toEmail: '', status: invitation.status, createdAt: invitation.createdAt }).catch(() => {});
 
   portalAudit("portal.proxy.grant", policyResult.allowed ? "success" : "failure", opts.patientDfn, {
     detail: {

@@ -63,6 +63,10 @@ export interface ExportPolicyResult {
 /* ------------------------------------------------------------------ */
 
 const exportJobs = new Map<string, ExportJob>();
+
+/* Phase 146: DB repo wiring */
+let exportDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
+export function initExportStoreRepo(repo: typeof exportDbRepo): void { exportDbRepo = repo; }
 let exportSeq = 0;
 
 /** Purge expired jobs (older than retention window). */
@@ -177,6 +181,9 @@ export function createExportJob(
   };
 
   exportJobs.set(job.id, job);
+
+  // Phase 146: Write-through to PG
+  exportDbRepo?.upsert({ id: job.id, tenantId: 'default', userId: (actor as any).sub ?? (actor as any).duz ?? '', format, status: job.status, createdAt: job.requestedAt }).catch(() => {});
 
   // Audit the request
   audit("export.request" as AuditAction, "success", actor, {

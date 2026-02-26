@@ -78,6 +78,10 @@ const DEFAULT_POLICY: SensitivityPolicy = {
 const proxyStore = new Map<string, ProxyRelationship>();
 const policyStore = new Map<string, SensitivityPolicy>();
 
+/* Phase 146: DB repo wiring */
+let sensitivityDbRepo: { upsert(d: any): Promise<any> } | null = null;
+export function initSensitivityStoreRepo(repo: typeof sensitivityDbRepo): void { sensitivityDbRepo = repo; }
+
 // Initialize default policy
 policyStore.set("default", DEFAULT_POLICY);
 
@@ -108,6 +112,9 @@ export function grantProxy(
     active: true,
   };
   proxyStore.set(id, proxy);
+
+  // Phase 146: Write-through to PG
+  sensitivityDbRepo?.upsert({ id, tenantId: 'default', entityId: patientDfn, entityType: 'proxy', policy: JSON.stringify(proxy) }).catch(() => {});
 
   portalAudit("portal.proxy.grant", "success", patientDfn, {
     detail: { proxyName, relationship, accessLevel },

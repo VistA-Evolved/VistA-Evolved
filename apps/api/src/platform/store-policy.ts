@@ -1,26 +1,26 @@
 /**
- * Store Policy — Phase 136: Store Policy Gate + Durability Sweep
+ * Store Policy â€” Phase 136: Store Policy Gate + Durability Sweep
  *
  * Machine-readable registry of ALL in-memory stores in the API.
  * Covers Map stores, array buffers, and ring buffers.
  * Each store is classified by risk level and durability status.
  *
  * Classifications:
- *   critical   — Domain data that MUST survive restart in rc/prod (claims, sessions, etc.)
- *   cache      — TTL/size-limited read cache; loss = performance hit only
- *   rate_limiter — Security rate-limit buckets; loss = briefly unprotected
- *   registry   — Loaded from config/files at startup; auto-repopulated
- *   audit      — Append-only audit chains (typically also have JSONL file sink)
- *   dev_only   — QA/debug stores gated by env vars
+ *   critical   â€” Domain data that MUST survive restart in rc/prod (claims, sessions, etc.)
+ *   cache      â€” TTL/size-limited read cache; loss = performance hit only
+ *   rate_limiter â€” Security rate-limit buckets; loss = briefly unprotected
+ *   registry   â€” Loaded from config/files at startup; auto-repopulated
+ *   audit      â€” Append-only audit chains (typically also have JSONL file sink)
+ *   dev_only   â€” QA/debug stores gated by env vars
  *
  * Durability status:
- *   pg_backed       — Has a PG repo via store-resolver; Map is write-through cache
- *   sqlite_backed   — Has a SQLite repo; Map is write-through cache
- *   jsonl_backed    — Append-only with JSONL file sink (audit trails)
- *   file_seeded     — Loaded from JSON seed files at startup
- *   vista_passthrough — Data comes from VistA RPC calls; not locally persisted
- *   in_memory_only  — No durable backing; lost on restart
- *   env_gated       — Only active when specific env var is set
+ *   pg_backed       â€” Has a PG repo via store-resolver; Map is write-through cache
+ *   sqlite_backed   â€” Has a SQLite repo; Map is write-through cache
+ *   jsonl_backed    â€” Append-only with JSONL file sink (audit trails)
+ *   file_seeded     â€” Loaded from JSON seed files at startup
+ *   vista_passthrough â€” Data comes from VistA RPC calls; not locally persisted
+ *   in_memory_only  â€” No durable backing; lost on restart
+ *   env_gated       â€” Only active when specific env var is set
  *
  * In rc/prod mode, any `critical` + `in_memory_only` store is a policy violation.
  */
@@ -75,9 +75,9 @@ export interface StoreEntry {
  * in source files that are not in this inventory.
  */
 export const STORE_INVENTORY: StoreEntry[] = [
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // AUTH / SESSIONS
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: "session-cache",
     file: "auth/session-store.ts",
@@ -96,7 +96,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "portalSessions",
     description: "Portal session data",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "portal",
     migrationTarget: "pg: portal_sessions table",
     notes: "Phase 136: classified as critical. Portal auth sessions lost on restart.",
@@ -107,7 +107,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "iamSessions",
     description: "IAM portal session data",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "portal",
     migrationTarget: "pg: portal_sessions table",
     notes: "Phase 136: classified as critical. IAM sessions lost on restart.",
@@ -118,7 +118,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "users",
     description: "Portal user accounts + username/email indexes",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "portal",
     migrationTarget: "pg: portal_users table",
     notes: "Includes usersByUsername and usersByEmail index Maps",
@@ -163,15 +163,15 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "vistaBindings",
     description: "IDP to VistA user DUZ bindings",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "auth",
     migrationTarget: "pg: idp_vista_bindings table",
     notes: "Phase 136: classified as critical. User mappings lost on restart.",
   },
 
-  // ═══════════════════════════════════════════════════════════
-  // RCM — CLAIMS & BILLING
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // RCM â€” CLAIMS & BILLING
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: "rcm-claims",
     file: "rcm/domain/claim-store.ts",
@@ -198,7 +198,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "denialStore",
     description: "claimId to DenialRecord[] mapping",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "rcm",
     migrationTarget: "pg: rcm_claim_case denials column",
     notes: "Phase 136: duplicate denial tracking. Cases have denials in PG already.",
@@ -239,7 +239,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "processedRemittances",
     description: "Processed remittance records + idempotency index",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "rcm",
     migrationTarget: "pg: rcm_remittance table",
     notes: "Phase 136: should use rcm_remittance PG table via store-resolver.",
@@ -250,7 +250,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "batches",
     description: "Remittance batches, lines, postings, underpayments + indexes",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "rcm",
     migrationTarget: "pg: rcm_payment_* tables",
     notes: "Phase 136: 11 Maps in payment-store.ts. All critical financial data.",
@@ -261,7 +261,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "loaStore",
     description: "LOA requests + tenant index",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "rcm",
     migrationTarget: "pg: rcm_loa_request table",
     notes: "Phase 136: Letter of Authorization requests lost on restart.",
@@ -272,7 +272,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "remitDocStore",
     description: "Remittance documents + tenant index",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "rcm",
     migrationTarget: "pg: rcm_remittance_document table",
     notes: "Phase 136: document intake records lost on restart.",
@@ -283,7 +283,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "transactionStore",
     description: "EDI transactions + correlation/source indexes + control counters",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "rcm",
     migrationTarget: "pg: rcm_transaction table",
     notes: "Phase 136: control number counters reset on restart (dangerous for EDI).",
@@ -294,7 +294,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "submissions",
     description: "PhilHealth submission tracking + draft/packet indexes",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "rcm",
     migrationTarget: "pg: rcm_ph_submissions table",
     notes: "Phase 136: PhilHealth submission records lost on restart.",
@@ -305,7 +305,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "submissions",
     description: "HMO submission tracking",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "rcm",
     migrationTarget: "pg: rcm_hmo_submissions table",
     notes: "Phase 136: HMO submission records lost on restart.",
@@ -316,7 +316,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "enrollments",
     description: "FacilityPayerEnrollment records",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "rcm",
     migrationTarget: "pg: rcm_payer_enrollment table",
     notes: "Phase 136: enrollment records lost on restart.",
@@ -327,7 +327,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "loaCases",
     description: "LOACase records",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "rcm",
     migrationTarget: "pg: rcm_loa_case table",
     notes: "Phase 136: LOA case records lost on restart.",
@@ -338,7 +338,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "credentials",
     description: "CredentialVaultEntry records (SENSITIVE)",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "rcm",
     migrationTarget: "pg: rcm_credential_vault (encrypted)",
     notes: "Phase 136: SENSITIVE credential data lost on restart. Must encrypt at rest.",
@@ -349,7 +349,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "claimDrafts",
     description: "PhilHealth claim drafts",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "rcm",
     migrationTarget: "pg: rcm_ph_claim_draft table",
     notes: "Phase 136: PhilHealth claim drafts lost on restart.",
@@ -360,7 +360,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "facilitySetups",
     description: "PhilHealth facility configurations",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "rcm",
     migrationTarget: "pg: rcm_ph_facility_setup table",
     notes: "Phase 136: facility configuration lost on restart.",
@@ -371,7 +371,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "sources",
     description: "PayerRegistrySource + payers + relationships",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "rcm",
     migrationTarget: "pg: existing payer PG tables",
     notes: "Phase 136: payer registry data lost on restart.",
@@ -382,7 +382,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "directoryStore",
     description: "DirectoryPayer + enrollment packets",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "rcm",
     migrationTarget: "pg: payer directory PG tables",
     notes: "Phase 136: payer directory records lost on restart.",
@@ -405,7 +405,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "rules",
     description: "PayerRule definitions + payer index",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "rcm",
     migrationTarget: "pg: rcm_payer_rule table",
     notes: "Phase 136: payer rules lost on restart.",
@@ -416,22 +416,22 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "rulepackStore",
     description: "PayerRulepack records",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "rcm",
     migrationTarget: "pg: rcm_payer_rulepack table",
     notes: "Phase 136: rulepack records lost on restart.",
   },
 
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // PORTAL
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: "portal-refills",
     file: "services/portal-refills.ts",
     variable: "refillStore",
     description: "Portal refill requests",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "portal",
     migrationTarget: "pg: portal_refills table",
     notes: "Phase 136: patient refill requests lost on restart.",
@@ -442,7 +442,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "taskStore",
     description: "Portal tasks",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "portal",
     migrationTarget: "pg: portal_tasks table",
     notes: "Phase 136: patient tasks lost on restart.",
@@ -453,7 +453,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "settingsStore",
     description: "Portal user settings",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "portal",
     migrationTarget: "pg: portal_settings table",
     notes: "Phase 136: user settings lost on restart.",
@@ -464,7 +464,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "proxyStore",
     description: "ProxyRelationship + SensitivityPolicy records",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "portal",
     migrationTarget: "pg: portal_sensitivity table",
     notes: "Phase 136: proxy/sensitivity data lost on restart.",
@@ -475,7 +475,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "shareStore",
     description: "ShareLink records + token index",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "portal",
     migrationTarget: "pg: portal_share_links table",
     notes: "Phase 136: share links broken after restart.",
@@ -486,7 +486,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "exportStore",
     description: "Export artifacts + share links + token index",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "portal",
     migrationTarget: "pg: portal_exports table",
     notes: "Phase 136: export artifacts and share tokens lost on restart.",
@@ -497,7 +497,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "invitations",
     description: "Proxy invitations",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "portal",
     migrationTarget: "pg: portal_proxy_invitations table",
     notes: "Phase 136: pending proxy invitations lost on restart.",
@@ -519,7 +519,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "messageCache",
     description: "Portal messages",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "portal",
     migrationTarget: "pg: portal_messages table or VistA MailMan",
     notes: "Phase 136: patient messages lost on restart.",
@@ -537,16 +537,16 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: "Read-through cache from VistA scheduling RPCs. Loss = refetch from VistA.",
   },
 
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // IMAGING
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: "imaging-worklist",
     file: "services/imaging-worklist.ts",
     variable: "worklistCache",
     description: "Imaging worklist items",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "imaging",
     migrationTarget: "pg: imaging_worklist table or VistA Rad/Nuc Med",
     notes: "Phase 23 explicitly documents this as in-memory with migration plan.",
@@ -557,7 +557,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "linkageCache",
     description: "Study linkage + unmatched (quarantined) studies",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "imaging",
     migrationTarget: "pg: imaging_ingest table",
     notes: "Quarantined studies lost on restart.",
@@ -568,7 +568,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "deviceStore",
     description: "DICOM device registry + AE title index",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "imaging",
     migrationTarget: "pg: imaging_devices table",
     notes: "Device registry lost on restart.",
@@ -586,31 +586,31 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: "Time-limited break-glass sessions. Loss = users re-request. Acceptable as cache.",
   },
 
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // TELEHEALTH
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: "telehealth-rooms",
     file: "telehealth/room-store.ts",
     variable: "rooms",
     description: "Telehealth room lifecycle",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "telehealth",
     migrationTarget: "pg: telehealth_rooms table",
     notes: "Phase 30: explicitly in-memory with 4h TTL. Active sessions lost on restart.",
   },
 
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // SCHEDULING
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: "scheduling-requests",
     file: "adapters/scheduling/vista-adapter.ts",
     variable: "requestStore",
     description: "WaitListEntry scheduling requests",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "scheduling",
     migrationTarget: "pg: scheduling_requests table or VistA SD files",
     notes: "Phase 136: scheduling wait list entries lost on restart.",
@@ -628,16 +628,16 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: "Short-lived locks; stale locks auto-expire. Loss = double-booking risk for 5min.",
   },
 
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // CLINICAL / ORDERS / NOTES
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: "write-back-drafts",
     file: "routes/write-backs.ts",
     variable: "drafts",
     description: "ServerDraft write-back drafts",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "clinical",
     migrationTarget: "pg: clinical_drafts table",
     notes: "Phase 136: unsaved clinical drafts lost on restart.",
@@ -703,16 +703,16 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: "Fallback when VistA MailMan unavailable. Loss = refetch from VistA.",
   },
 
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // INTAKE
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: "intake-sessions",
     file: "intake/intake-store.ts",
     variable: "sessions",
     description: "Intake sessions + QR snapshots + kiosk tokens",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "intake",
     migrationTarget: "pg: intake_sessions table",
     notes: "Phase 136: active intake forms lost on restart.",
@@ -741,69 +741,69 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: "Phase 143: governance audit trail for brain decisions.",
   },
 
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // MIGRATION
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: "migration-jobs",
     file: "migration/migration-store.ts",
     variable: "jobStore",
     description: "Migration jobs + templates + rollback plans",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "migration",
     migrationTarget: "pg: migration_jobs table",
     notes: "Phase 136: migration state lost on restart.",
   },
 
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // UI PREFS
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: "ui-prefs",
     file: "services/ui-prefs-store.ts",
     variable: "store",
     description: "UIPrefsDocument per user",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "clinical",
     migrationTarget: "pg: ui_prefs table",
     notes: "Phase 136: user UI preferences lost on restart.",
   },
 
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // HANDOFF
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: "handoff-reports",
     file: "routes/handoff/handoff-store.ts",
     variable: "handoffStore",
     description: "Handoff report records",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "clinical",
     migrationTarget: "pg: handoff_reports table",
     notes: "Phase 136: clinical handoff reports lost on restart.",
   },
 
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // EXPORT GOVERNANCE
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: "export-jobs",
     file: "lib/export-governance.ts",
     variable: "exportJobs",
     description: "Data export job tracking",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "infrastructure",
     migrationTarget: "pg: export_jobs table",
     notes: "Phase 136: export job state lost on restart.",
   },
 
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // CACHES (TTL/size-limited, loss = perf hit only)
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: "rpc-cache",
     file: "lib/rpc-resilience.ts",
@@ -959,9 +959,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: "SLO sliding window metrics. Size-limited.",
   },
 
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // RATE LIMITERS (loss = briefly unprotected, acceptable)
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: "global-rate-buckets",
     file: "middleware/security.ts",
@@ -1053,9 +1053,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     domain: "rcm",
   },
 
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // REGISTRIES (loaded from config files, not user data)
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: "tenant-config",
     file: "config/tenant-config.ts",
@@ -1266,7 +1266,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "jobs",
     description: "RCM job queue + idempotency index",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "rcm",
     migrationTarget: "pg: rcm_job_queue table",
     notes: "Phase 136: job queue state lost on restart. Jobs may be re-enqueued.",
@@ -1335,9 +1335,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     domain: "intake",
   },
 
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // AUDIT TRAILS (array-based, append-only, often with JSONL file sink)
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: "iam-audit-ring",
     file: "lib/immutable-audit.ts",
@@ -1380,7 +1380,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     domain: "portal",
     maxSize: 5_000,
     migrationTarget: "jsonl or pg: portal_audit table",
-    notes: "Phase 136: portal audit has no file sink — only in-memory.",
+    notes: "Phase 136: portal audit has no file sink â€” only in-memory.",
   },
   {
     id: "portal-pending-docs",
@@ -1405,9 +1405,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: "Phase 25: configurable ring buffer with JSONL file sink.",
   },
 
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // DEV/QA ONLY
-  // ═══════════════════════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: "dead-click-tracker",
     file: "routes/qa-routes.ts",
@@ -1445,14 +1445,14 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "breakGlassStore",
     description: "Enterprise break-glass sessions (pending/active/revoked)",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_backed",
     domain: "iam",
     maxSize: 1_000,
     migrationTarget: "pg: iam_break_glass_session table",
   },
 ];
 
-// ─── Query helpers ──────────────────────────────────────────
+// â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /** Get all stores matching a classification */
 export function getStoresByClassification(

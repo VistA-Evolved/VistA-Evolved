@@ -1,7 +1,7 @@
 # VistA-Evolved System Audit
 
-> Generated: 2026-02-26T12:41:00.481Z  
-> HEAD: 81d9969  
+> Generated: 2026-02-26T13:38:06.358Z  
+> HEAD: f14f9eb  
 > Node: v24.13.0 | pnpm: 10.29.2
 
 ## What Is Truly Wired End-to-End
@@ -33,7 +33,7 @@
 
 - **SQLite tables:** 47
 - **In-memory Map stores:** 177
-- **High-risk (data loss on restart):** 37
+- **High-risk (data loss on restart):** 33
 - **Medium-risk:** 30
 - **JSON seed/mutable stores:** 16
 
@@ -47,8 +47,6 @@
 | loaPacketCache | apps/api/src/rcm/hmo-portal/hmo-portal-routes.ts | LoaPacket |
 | claimPacketCache | apps/api/src/rcm/hmo-portal/hmo-portal-routes.ts | HmoClaimPacket |
 | adapterRegistry | apps/api/src/rcm/loa/loa-adapter.ts | LoaAdapter |
-| loaStore | apps/api/src/rcm/loa/loa-store.ts | LoaRequest |
-| tenantLoaIndex | apps/api/src/rcm/loa/loa-store.ts | Set |
 | claimDrafts | apps/api/src/rcm/payerOps/philhealth-store.ts | PhilHealthClaimDraft |
 | loaCases | apps/api/src/rcm/payerOps/store.ts | LOACase |
 | credentials | apps/api/src/rcm/payerOps/store.ts | CredentialVaultEntry |
@@ -56,6 +54,8 @@
 | underpaymentsByPayer | apps/api/src/rcm/payments/aging-intelligence.ts | number |
 | bridges | apps/api/src/rcm/payments/export-bridge.ts | unknown |
 | uploadCache | apps/api/src/rcm/payments/payment-routes.ts | string |
+| batches | apps/api/src/rcm/payments/payment-store.ts | RemittanceBatch |
+| lines | apps/api/src/rcm/payments/payment-store.ts | RemittanceLine |
 
 ## VistA RPC Coverage
 
@@ -113,7 +113,7 @@
 | 7 | high | PAYER_INTEGRATIONS_US | Clearinghouse connector scaffold, no live integration | apps/api/src/rcm/connectors/clearinghouse-connector.ts |
 | 8 | high | MULTI_TENANCY | RLS policies gated by PLATFORM_PG_RLS_ENABLED | apps/api/src/posture/tenant-posture.ts |
 | 9 | high | MULTI_TENANCY | SQLite tables lack tenant isolation | apps/api/src/platform/db/schema.ts |
-| 10 | high | DATABASE_POSTURE | 37 high-risk in-memory stores lose data on restart | apps/api/src/adapters/adapter-loader.ts |
+| 10 | high | DATABASE_POSTURE | 33 high-risk in-memory stores lose data on restart | apps/api/src/adapters/adapter-loader.ts |
 | 11 | med | AUTH_IAM | OIDC is opt-in, not default | apps/api/src/auth/oidc-provider.ts |
 | 12 | med | CPRS_UI | Multiple admin pages may have placeholder content |  |
 | 13 | med | VISTA_RPC_COVERAGE | 4 RPCs used but not in registry | ORWPT APPTLST |

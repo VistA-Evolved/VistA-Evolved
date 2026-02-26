@@ -35,6 +35,10 @@ const events: IntakeEvent[] = [];
 const snapshots = new Map<string, QRSnapshot[]>(); // sessionId -> snapshots
 const kioskTokens = new Map<string, KioskResumeToken>();
 
+/* Phase 146: DB repo wiring */
+let intakeDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
+export function initIntakeStoreRepo(repo: typeof intakeDbRepo): void { intakeDbRepo = repo; }
+
 const MAX_SESSIONS = 10_000;
 const SESSION_TTL_MS = 24 * 60 * 60 * 1000; // 24h default
 const KIOSK_TOKEN_TTL_MS = 30 * 60 * 1000; // 30 min
@@ -114,6 +118,9 @@ export function createSession(opts: {
   };
 
   sessions.set(session.id, session);
+
+  // Phase 146: Write-through to PG
+  intakeDbRepo?.upsert({ id: session.id, tenantId: (session as any).tenantId ?? 'default', patientDfn: (session as any).patientDfn ?? '', status: session.status, data: JSON.stringify(session), createdAt: session.createdAt, updatedAt: (session as any).updatedAt ?? session.createdAt }).catch(() => {});
 
   appendEvent({
     sessionId: session.id,

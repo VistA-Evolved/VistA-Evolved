@@ -69,6 +69,10 @@ export interface PayerRulepacksData {
 /* ── Store ──────────────────────────────────────────────────── */
 
 const rulepackStore = new Map<string, PayerRulepack>();
+
+/* Phase 146: DB repo wiring */
+let rulepackDbRepo: { upsert(d: any): Promise<any> } | null = null;
+export function initRulepackStoreRepo(repo: typeof rulepackDbRepo): void { rulepackDbRepo = repo; }
 let loaded = false;
 
 /* ── Loading ────────────────────────────────────────────────── */
@@ -91,6 +95,10 @@ export function loadPayerRulepacks(): { ok: boolean; count: number; error?: stri
 
     for (const rp of data.rulepacks) {
       rulepackStore.set(rp.payerId, rp);
+
+      // Phase 146: Write-through to PG
+      rulepackDbRepo?.upsert({ id: rp.payerId, tenantId: 'default', payerId: rp.payerId, name: (rp as any).name ?? rp.payerId, rulesJson: JSON.stringify((rp as any).rules ?? []), active: true, createdAt: new Date().toISOString() }).catch(() => {});
+
     }
 
     loaded = true;

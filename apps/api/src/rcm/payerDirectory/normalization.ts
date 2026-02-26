@@ -26,6 +26,10 @@ import { appendRcmAudit } from '../audit/rcm-audit.js';
 
 const directoryStore = new Map<string, DirectoryPayer>();
 const enrollmentStore = new Map<string, EnrollmentPacket>();
+
+/* Phase 146: DB repo wiring */
+let directoryDbRepo: { upsert(d: any): Promise<any> } | null = null;
+export function initDirectoryStoreRepo(repo: typeof directoryDbRepo): void { directoryDbRepo = repo; }
 const refreshHistory: Array<{
   importerId: string;
   timestamp: string;
@@ -148,6 +152,10 @@ export function applyDirectoryToRegistry(payers: DirectoryPayer[]): number {
     const payer: Payer = directoryPayerToRegistryPayer(dp);
     upsertPayer(payer);
     directoryStore.set(dp.payerId, dp);
+
+    // Phase 146: Write-through to PG
+    directoryDbRepo?.upsert({ id: dp.payerId, tenantId: 'default', payerId: dp.payerId, field: 'directory', value: JSON.stringify(dp), source: 'import', createdAt: new Date().toISOString() }).catch(() => {});
+
     count++;
   }
   return count;

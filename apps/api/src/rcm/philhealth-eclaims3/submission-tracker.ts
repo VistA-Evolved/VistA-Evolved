@@ -38,6 +38,10 @@ const byDraft = new Map<string, string>();
 /** Index: packetId → submissionId */
 const byPacket = new Map<string, string>();
 
+/* Phase 146: DB repo wiring */
+let phSubDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
+export function initPhSubmissionStoreRepo(repo: typeof phSubDbRepo): void { phSubDbRepo = repo; }
+
 /* ── CRUD ───────────────────────────────────────────────────── */
 
 /**
@@ -64,6 +68,10 @@ export function createSubmission(
   submissions.set(record.id, record);
   byDraft.set(record.sourceClaimDraftId, record.id);
   byPacket.set(record.packetId, record.id);
+
+  // Phase 146: Write-through to PG
+  phSubDbRepo?.upsert({ id: record.id, tenantId: (record as any).tenantId ?? 'default', claimId: record.sourceClaimDraftId, packetId: record.packetId, status: record.status, submittedAt: record.createdAt }).catch(() => {});
+
   return record;
 }
 

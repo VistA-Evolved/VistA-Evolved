@@ -111,6 +111,10 @@ export interface RcmJobQueue {
 const DEFAULT_MAX_ATTEMPTS = 3;
 const RETRY_BACKOFF_BASE_MS = 5000; // 5s, 10s, 20s exponential
 
+/* Phase 146: DB repo wiring */
+let jobQueueDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
+export function initJobQueueStoreRepo(repo: typeof jobQueueDbRepo): void { jobQueueDbRepo = repo; }
+
 export class InMemoryJobQueue implements RcmJobQueue {
   private jobs = new Map<string, RcmJob>();
   private idempotencyIndex = new Map<string, string>(); // key → jobId
@@ -151,6 +155,10 @@ export class InMemoryJobQueue implements RcmJobQueue {
     if (params.idempotencyKey) {
       this.idempotencyIndex.set(params.idempotencyKey, job.id);
     }
+
+    // Phase 146: Write-through to PG
+    jobQueueDbRepo?.upsert({ id: job.id, tenantId: 'default', jobType: job.type, payload: JSON.stringify(job.payload), status: job.status, scheduledAt: job.scheduledAt }).catch(() => {});
+
     return job.id;
   }
 

@@ -61,6 +61,10 @@ const users = new Map<string, PortalUser>();
 const usersByUsername = new Map<string, string>(); // username -> userId
 const usersByEmail = new Map<string, string>(); // email -> userId
 
+/* Phase 146: DB repo wiring */
+let userDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
+export function initPortalUserStoreRepo(repo: typeof userDbRepo): void { userDbRepo = repo; }
+
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
 /* ------------------------------------------------------------------ */
@@ -191,6 +195,9 @@ export async function createUser(
   users.set(id, user);
   usersByUsername.set(user.username, id);
   usersByEmail.set(user.email, id);
+
+  // Phase 146: Write-through to PG
+  userDbRepo?.upsert({ id, tenantId: 'default', username: user.username, email: user.email, displayName: user.displayName, passwordHash: user.passwordHash, status: user.status, createdAt: user.createdAt, updatedAt: user.updatedAt }).catch(() => {});
 
   log.info(`Portal user created: ${id}`);
   return user;

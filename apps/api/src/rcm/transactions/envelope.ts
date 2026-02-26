@@ -129,11 +129,24 @@ function formatISATime(d: Date): string {
   return d.toISOString().slice(11, 16).replace(':', '');
 }
 
-/* ── Transaction Store (in-memory) ───────────────────────────── */
+/* ── Transaction DB repo (Phase 146: durable envelope storage) ── */
+
+interface TransactionDbRepo {
+  upsert(data: any): Promise<any>;
+  update(id: string, updates: any): Promise<any>;
+}
+
+let txnDbRepo: TransactionDbRepo | null = null;
+
+export function initTransactionEnvelopeRepo(repo: TransactionDbRepo): void {
+  txnDbRepo = repo;
+}
+
+/* ── Transaction Store (cache — PG is truth when wired) ───── */
 
 const transactionStore = new Map<string, TransactionRecord>();
-const correlationIndex = new Map<string, string[]>(); // correlationId → txnIds
-const sourceIndex = new Map<string, string[]>(); // sourceId → txnIds
+const correlationIndex = new Map<string, string[]>();
+const sourceIndex = new Map<string, string[]>();
 
 export function storeTransaction(envelope: TransactionEnvelope, x12Payload?: string): TransactionRecord {
   const now = new Date().toISOString();
@@ -148,6 +161,9 @@ export function storeTransaction(envelope: TransactionEnvelope, x12Payload?: str
     updatedAt: now,
   };
   transactionStore.set(record.id, record);
+
+  // Phase 146: Write-through to PG
+  txnDbRepo?.upsert({ id: record.id, tenantId: 'default', sourceId: envelope.sourceId || '', sourceType: envelope.sourceType || '', controlNumber: envelope.controlNumber || '', envelopeType: 'outbound', status: 'created', correlationId: envelope.correlationId, createdAt: now, updatedAt: now }).catch(() => {});
 
   // Index by correlation
   const corr = correlationIndex.get(envelope.correlationId) ?? [];

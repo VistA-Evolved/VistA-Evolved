@@ -25,7 +25,24 @@ import type {
   LoaAuditEntry,
 } from "./loa-types.js";
 
-/* ── Store ──────────────────────────────────────────────────── */
+/* ── DB repo interface (lazy-wired at startup) ─────────────── */
+
+interface LoaRepo {
+  insert(data: any): Promise<any>;
+  upsert(data: any): Promise<any>;
+  findById(id: string): Promise<any>;
+  findByTenant(tenantId: string, opts?: any): Promise<any[]>;
+  update(id: string, updates: any): Promise<any>;
+}
+
+let dbRepo: LoaRepo | null = null;
+
+/** Phase 146: Wire PG repo for durable LOA storage */
+export function initLoaStoreRepo(repo: LoaRepo): void {
+  dbRepo = repo;
+}
+
+/* ── Store (cache layer — PG is truth when wired) ──────────── */
 
 const loaStore = new Map<string, LoaRequest>();
 const tenantLoaIndex = new Map<string, Set<string>>();
@@ -107,6 +124,9 @@ export function createLoaRequest(params: {
     tenantLoaIndex.set(params.tenantId, new Set());
   }
   tenantLoaIndex.get(params.tenantId)!.add(id);
+
+  // Phase 146: Write-through to PG
+  dbRepo?.upsert({ id, tenantId: params.tenantId, payerId: params.payerId, patientDfn: params.patientDfn, patientName: params.patientName, status: 'draft', submittedAt: null, metadataJson: JSON.stringify(loa), createdAt: now, updatedAt: now }).catch(() => {});
 
   return loa;
 }

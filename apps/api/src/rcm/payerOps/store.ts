@@ -40,6 +40,16 @@ function newId(prefix: string): string {
 
 const enrollments = new Map<string, FacilityPayerEnrollment>();
 
+/* Phase 146: DB repo wiring (payer ops) */
+let enrollDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
+let loaCaseDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
+let credDbRepo: { upsert(d: any): Promise<any> } | null = null;
+export function initPayerOpsRepos(repos: { enrollments?: typeof enrollDbRepo; loaCases?: typeof loaCaseDbRepo; credentials?: typeof credDbRepo }): void {
+  if (repos.enrollments) enrollDbRepo = repos.enrollments;
+  if (repos.loaCases) loaCaseDbRepo = repos.loaCases;
+  if (repos.credentials) credDbRepo = repos.credentials;
+}
+
 export function createEnrollment(data: {
   facilityId: string;
   facilityName: string;
@@ -75,6 +85,10 @@ export function createEnrollment(data: {
     updatedAt: now,
   };
   enrollments.set(id, enrollment);
+
+  // Phase 146: Write-through to PG
+  enrollDbRepo?.upsert({ id, tenantId: (enrollment as any).tenantId ?? 'default', payerId: enrollment.payerId, status: enrollment.status, createdAt: enrollment.createdAt }).catch(() => {});
+
   return enrollment;
 }
 
@@ -189,6 +203,10 @@ export function createLOACase(data: {
   // Compute initial SLA risk
   loaCase.slaRiskLevel = computeSLARisk(loaCase);
   loaCases.set(id, loaCase);
+
+  // Phase 146: Write-through to PG
+  loaCaseDbRepo?.upsert({ id, tenantId: (loaCase as any).tenantId ?? 'default', payerId: loaCase.payerId, status: loaCase.status, createdAt: loaCase.createdAt }).catch(() => {});
+
   return loaCase;
 }
 
@@ -508,6 +526,10 @@ export function createCredentialEntry(data: {
     updatedAt: now,
   };
   credentials.set(id, entry);
+
+  // Phase 146: Write-through to PG
+  credDbRepo?.upsert({ id, tenantId: (entry as any).tenantId ?? 'default', payerId: (entry as any).payerId ?? '', credentialType: (entry as any).type ?? 'generic', createdAt: (entry as any).createdAt ?? new Date().toISOString() }).catch(() => {});
+
   return entry;
 }
 

@@ -34,6 +34,10 @@ function newId(prefix: string): string {
 
 const claimDrafts = new Map<string, PhilHealthClaimDraft>();
 
+/* Phase 146: DB repo wiring */
+let phDraftDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
+export function initPhilHealthStoreRepo(repo: typeof phDraftDbRepo): void { phDraftDbRepo = repo; }
+
 export function createPhilHealthClaimDraft(data: {
   facilityId: string;
   patientDfn: string;
@@ -91,6 +95,10 @@ export function createPhilHealthClaimDraft(data: {
     updatedAt: now,
   };
   claimDrafts.set(id, draft);
+
+  // Phase 146: Write-through to PG
+  phDraftDbRepo?.upsert({ id, tenantId: (draft as any).tenantId ?? 'default', patientDfn: (draft as any).patientDfn ?? '', status: draft.status, createdAt: draft.createdAt }).catch(() => {});
+
   return draft;
 }
 

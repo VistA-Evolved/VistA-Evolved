@@ -2642,6 +2642,112 @@ try {
         } catch (lcErr: any) {
           log.warn("PG scheduling lifecycle repo not available (non-fatal)", { error: lcErr.message });
         }
+
+        // ═══════════════════════════════════════════════════════════
+        // Phase 146: Durability Wave — wire all critical Map stores to PG
+        // ═══════════════════════════════════════════════════════════
+        try {
+          const DR = await import("./platform/pg/repo/durability-repos.js");
+
+          // Portal domain
+          const { initPortalUserStoreRepo } = await import("./portal-iam/portal-user-store.js");
+          initPortalUserStoreRepo(DR.createPortalUserRepo());
+          const { initRefillStoreRepo } = await import("./services/portal-refills.js");
+          initRefillStoreRepo(DR.createPortalRefillRepo());
+          const { initTaskStoreRepo } = await import("./services/portal-tasks.js");
+          initTaskStoreRepo(DR.createPortalTaskRepo());
+          const { initSensitivityStoreRepo } = await import("./services/portal-sensitivity.js");
+          initSensitivityStoreRepo(DR.createPortalSensitivityRepo());
+          const { initShareStoreRepo } = await import("./services/portal-sharing.js");
+          initShareStoreRepo(DR.createPortalShareLinkRepo());
+          const { initProxyStoreRepo } = await import("./portal-iam/proxy-store.js");
+          initProxyStoreRepo(DR.createPortalProxyInvitationRepo());
+
+          // Imaging domain
+          const { initImagingDeviceStoreRepo } = await import("./services/imaging-devices.js");
+          initImagingDeviceStoreRepo(DR.createImagingDeviceRepo());
+
+          // Auth / IAM domain
+          const { initVistaBindingStoreRepo } = await import("./auth/idp/vista-binding.js");
+          initVistaBindingStoreRepo(DR.createVistaBindingRepo());
+          const { initBreakGlassStoreRepo } = await import("./auth/enterprise-break-glass.js");
+          initBreakGlassStoreRepo(DR.createBreakGlassSessionRepo());
+
+          // RCM domain — payments
+          const { initPaymentStoreRepos } = await import("./rcm/payments/payment-store.js");
+          initPaymentStoreRepos({
+            batchRepo: DR.createPaymentBatchRepo(),
+            lineRepo: DR.createPaymentLineRepo(),
+            postingRepo: DR.createPaymentPostingRepo(),
+            underpaymentRepo: DR.createUnderpaymentCaseRepo(),
+          });
+
+          // RCM domain — LOA
+          const { initLoaStoreRepo } = await import("./rcm/loa/loa-store.js");
+          initLoaStoreRepo(DR.createLoaRequestRepo());
+
+          // RCM domain — workflows
+          const { initRemitIntakeRepo } = await import("./rcm/workflows/remittance-intake.js");
+          initRemitIntakeRepo(DR.createRemitDocumentRepo());
+          const { initDenialStoreRepo } = await import("./rcm/workflows/claims-workflow.js");
+          initDenialStoreRepo(DR.createDenialRepo());
+          const { initTransactionEnvelopeRepo } = await import("./rcm/transactions/envelope.js");
+          initTransactionEnvelopeRepo(DR.createTransactionEnvelopeRepo());
+
+          // RCM domain — EDI
+          const { initRemitProcessorRepo } = await import("./rcm/edi/remit-processor.js");
+          initRemitProcessorRepo(DR.createRemitDocumentRepo());
+
+          // RCM domain — payer ops
+          const { initPayerOpsRepos } = await import("./rcm/payerOps/store.js");
+          initPayerOpsRepos({
+            enrollments: DR.createPayerEnrollmentRepo(),
+            loaCases: DR.createLoaCaseRepo(),
+            credentials: DR.createCredentialVaultRepo(),
+          });
+          const { initPhilHealthStoreRepo } = await import("./rcm/payerOps/philhealth-store.js");
+          initPhilHealthStoreRepo(DR.createPhClaimDraftRepo());
+          const { initRegistryStoreRepo } = await import("./rcm/payerOps/registry-store.js");
+          initRegistryStoreRepo(DR.createPayerDirectoryEntryRepo());
+          const { initDirectoryStoreRepo } = await import("./rcm/payerDirectory/normalization.js");
+          initDirectoryStoreRepo(DR.createPayerDirectoryEntryRepo());
+
+          // RCM domain — rules
+          const { initPayerRuleStoreRepo } = await import("./rcm/rules/payer-rules.js");
+          initPayerRuleStoreRepo(DR.createPayerRuleRepo());
+          const { initRulepackStoreRepo } = await import("./rcm/payers/payer-rulepacks.js");
+          initRulepackStoreRepo(DR.createPayerRulepackRepo());
+
+          // RCM domain — submissions
+          const { initPhSubmissionStoreRepo } = await import("./rcm/philhealth-eclaims3/submission-tracker.js");
+          initPhSubmissionStoreRepo(DR.createPhSubmissionRepo());
+          const { initHmoSubmissionStoreRepo } = await import("./rcm/hmo-portal/submission-tracker.js");
+          initHmoSubmissionStoreRepo(DR.createHmoSubmissionRepo());
+
+          // RCM domain — jobs
+          const { initJobQueueStoreRepo } = await import("./rcm/jobs/queue.js");
+          initJobQueueStoreRepo(DR.createJobQueueEntryRepo());
+
+          // Clinical domain
+          const { initDraftStoreRepo } = await import("./routes/write-backs.js");
+          initDraftStoreRepo(DR.createClinicalDraftRepo());
+          const { initUiPrefsStoreRepo } = await import("./services/ui-prefs-store.js");
+          initUiPrefsStoreRepo(DR.createUiPreferenceRepo());
+          const { initHandoffStoreRepo } = await import("./routes/handoff/handoff-store.js");
+          initHandoffStoreRepo(DR.createHandoffReportRepo());
+
+          // Other domains
+          const { initIntakeStoreRepo } = await import("./intake/intake-store.js");
+          initIntakeStoreRepo(DR.createIntakeSessionRepo());
+          const { initMigrationStoreRepo } = await import("./migration/migration-store.js");
+          initMigrationStoreRepo(DR.createMigrationJobRepo());
+          const { initExportStoreRepo } = await import("./lib/export-governance.js");
+          initExportStoreRepo(DR.createExportJobRepo());
+
+          log.info("Phase 146: All critical Map stores wired to PG (30+ repos)");
+        } catch (d146Err: any) {
+          log.warn("Phase 146 durability wire partially failed (Map cache fallback)", { error: d146Err.message });
+        }
       }
     } else {
       log.warn("Platform PG init failed (SQLite fallback active)", {

@@ -1271,6 +1271,665 @@ CREATE INDEX IF NOT EXISTS idx_ppp_patient ON patient_portal_pref(patient_dfn);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_ppp_tenant_patient ON patient_portal_pref(tenant_id, patient_dfn);
 `,
   },
+  {
+    version: 18,
+    name: "durability_wave3_critical_stores",
+    sql: `
+-- ============================================================
+-- Phase 146: Durability Wave 3 — Critical Map Stores to PG
+-- Covers portal, RCM, imaging, auth, clinical, intake, infra
+-- ============================================================
+
+-- Portal: User accounts (portal_user_store.ts)
+CREATE TABLE IF NOT EXISTS portal_user (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  username TEXT NOT NULL,
+  email TEXT NOT NULL,
+  password_hash TEXT NOT NULL,
+  role TEXT NOT NULL DEFAULT 'patient',
+  status TEXT NOT NULL DEFAULT 'active',
+  mfa_enabled BOOLEAN NOT NULL DEFAULT FALSE,
+  mfa_secret TEXT,
+  mfa_backup_codes TEXT,
+  patient_profiles_json TEXT DEFAULT '[]',
+  failed_login_count INTEGER NOT NULL DEFAULT 0,
+  locked_until TEXT,
+  password_reset_token TEXT,
+  password_reset_expires TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_pu_tenant ON portal_user(tenant_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_pu_username ON portal_user(tenant_id, username);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_pu_email ON portal_user(tenant_id, email);
+
+-- Portal: Sessions (portal-auth.ts + portal-iam-routes.ts)
+CREATE TABLE IF NOT EXISTS portal_session (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  token TEXT NOT NULL,
+  user_id TEXT NOT NULL,
+  data_json TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL,
+  expires_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_ps_tenant ON portal_session(tenant_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_ps_token ON portal_session(token);
+CREATE INDEX IF NOT EXISTS idx_ps_user ON portal_session(user_id);
+CREATE INDEX IF NOT EXISTS idx_ps_expires ON portal_session(expires_at);
+
+-- Portal: Refill requests (portal-refills.ts)
+CREATE TABLE IF NOT EXISTS portal_refill (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  medication_name TEXT NOT NULL,
+  rx_number TEXT,
+  pharmacy TEXT,
+  status TEXT NOT NULL DEFAULT 'pending',
+  requested_at TEXT NOT NULL,
+  completed_at TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_pr_tenant ON portal_refill(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_pr_patient ON portal_refill(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_pr_status ON portal_refill(status);
+
+-- Portal: Tasks (portal-tasks.ts)
+CREATE TABLE IF NOT EXISTS portal_task (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT,
+  task_type TEXT NOT NULL DEFAULT 'general',
+  status TEXT NOT NULL DEFAULT 'pending',
+  priority TEXT NOT NULL DEFAULT 'normal',
+  due_date TEXT,
+  assigned_to TEXT,
+  completed_at TEXT,
+  metadata_json TEXT DEFAULT '{}',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_pt_tenant ON portal_task(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_pt_patient ON portal_task(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_pt_status ON portal_task(status);
+
+-- Portal: Sensitivity/proxy config (portal-sensitivity.ts)
+CREATE TABLE IF NOT EXISTS portal_sensitivity_config (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  entity_type TEXT NOT NULL,
+  entity_id TEXT NOT NULL,
+  config_json TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_psc_tenant ON portal_sensitivity_config(tenant_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_psc_entity ON portal_sensitivity_config(tenant_id, entity_type, entity_id);
+
+-- Portal: Share links (portal-sharing.ts)
+CREATE TABLE IF NOT EXISTS portal_share_link (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  token TEXT NOT NULL,
+  resource_type TEXT NOT NULL,
+  resource_id TEXT,
+  permissions_json TEXT DEFAULT '[]',
+  expires_at TEXT NOT NULL,
+  accessed_count INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_psl_tenant ON portal_share_link(tenant_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_psl_token ON portal_share_link(token);
+CREATE INDEX IF NOT EXISTS idx_psl_patient ON portal_share_link(patient_dfn);
+
+-- Portal: Exports (record-portability-store.ts)
+CREATE TABLE IF NOT EXISTS portal_export (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  format TEXT NOT NULL DEFAULT 'fhir_bundle',
+  status TEXT NOT NULL DEFAULT 'pending',
+  resource_types_json TEXT DEFAULT '[]',
+  output_path TEXT,
+  error TEXT,
+  created_at TEXT NOT NULL,
+  completed_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_pe_tenant ON portal_export(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_pe_patient ON portal_export(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_pe_status ON portal_export(status);
+
+-- Portal: Proxy invitations (proxy-store.ts)
+CREATE TABLE IF NOT EXISTS portal_proxy_invitation (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  from_user_id TEXT NOT NULL,
+  to_email TEXT NOT NULL,
+  relationship TEXT NOT NULL DEFAULT 'caregiver',
+  status TEXT NOT NULL DEFAULT 'pending',
+  token TEXT,
+  permissions_json TEXT DEFAULT '[]',
+  created_at TEXT NOT NULL,
+  expires_at TEXT NOT NULL,
+  accepted_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_ppi_tenant ON portal_proxy_invitation(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_ppi_from ON portal_proxy_invitation(from_user_id);
+CREATE INDEX IF NOT EXISTS idx_ppi_status ON portal_proxy_invitation(status);
+
+-- Imaging: Device registry (imaging-devices.ts)
+CREATE TABLE IF NOT EXISTS imaging_device (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  ae_title TEXT NOT NULL,
+  device_name TEXT NOT NULL,
+  device_type TEXT NOT NULL DEFAULT 'workstation',
+  manufacturer TEXT,
+  model TEXT,
+  host TEXT,
+  port INTEGER,
+  tls_enabled BOOLEAN NOT NULL DEFAULT FALSE,
+  facility_id TEXT NOT NULL DEFAULT 'DEFAULT',
+  location TEXT,
+  status TEXT NOT NULL DEFAULT 'active',
+  last_echo_at TEXT,
+  config_json TEXT DEFAULT '{}',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_id_tenant ON imaging_device(tenant_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_id_ae_title ON imaging_device(tenant_id, ae_title);
+CREATE INDEX IF NOT EXISTS idx_id_facility ON imaging_device(facility_id);
+CREATE INDEX IF NOT EXISTS idx_id_status ON imaging_device(status);
+
+-- Auth: IDP VistA bindings (vista-binding.ts)
+CREATE TABLE IF NOT EXISTS idp_vista_binding (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  idp_user_id TEXT NOT NULL,
+  vista_duz TEXT NOT NULL,
+  provider TEXT NOT NULL,
+  display_name TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_ivb_tenant ON idp_vista_binding(tenant_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_ivb_idp_user ON idp_vista_binding(tenant_id, provider, idp_user_id);
+CREATE INDEX IF NOT EXISTS idx_ivb_duz ON idp_vista_binding(vista_duz);
+
+-- Auth: Break-glass sessions (enterprise-break-glass.ts)
+CREATE TABLE IF NOT EXISTS iam_break_glass_session (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  user_id TEXT NOT NULL,
+  user_name TEXT,
+  patient_dfn TEXT NOT NULL,
+  reason TEXT NOT NULL,
+  approved_by TEXT,
+  justification TEXT,
+  status TEXT NOT NULL DEFAULT 'active',
+  expires_at TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  revoked_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_ibgs_tenant ON iam_break_glass_session(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_ibgs_user ON iam_break_glass_session(user_id);
+CREATE INDEX IF NOT EXISTS idx_ibgs_patient ON iam_break_glass_session(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_ibgs_status ON iam_break_glass_session(status);
+
+-- RCM: Payment batches (payment-store.ts)
+CREATE TABLE IF NOT EXISTS rcm_payment_batch (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  payer_id TEXT,
+  payer_name TEXT,
+  check_number TEXT,
+  check_date TEXT,
+  eft_trace TEXT,
+  payment_method TEXT NOT NULL DEFAULT 'check',
+  total_amount NUMERIC(12,2) NOT NULL DEFAULT 0,
+  applied_amount NUMERIC(12,2) NOT NULL DEFAULT 0,
+  status TEXT NOT NULL DEFAULT 'received',
+  source TEXT NOT NULL DEFAULT 'manual',
+  metadata_json TEXT DEFAULT '{}',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rpb_tenant ON rcm_payment_batch(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rpb_payer ON rcm_payment_batch(payer_id);
+CREATE INDEX IF NOT EXISTS idx_rpb_status ON rcm_payment_batch(status);
+
+-- RCM: Payment lines (payment-store.ts)
+CREATE TABLE IF NOT EXISTS rcm_payment_line (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  batch_id TEXT NOT NULL,
+  claim_id TEXT,
+  patient_name TEXT,
+  service_date TEXT,
+  procedure_code TEXT,
+  charged_amount NUMERIC(12,2) NOT NULL DEFAULT 0,
+  paid_amount NUMERIC(12,2) NOT NULL DEFAULT 0,
+  adjustment_amount NUMERIC(12,2) NOT NULL DEFAULT 0,
+  patient_responsibility NUMERIC(12,2) NOT NULL DEFAULT 0,
+  adjustment_reason_json TEXT DEFAULT '[]',
+  remark_codes_json TEXT DEFAULT '[]',
+  status TEXT NOT NULL DEFAULT 'unposted',
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rpl_tenant ON rcm_payment_line(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rpl_batch ON rcm_payment_line(batch_id);
+CREATE INDEX IF NOT EXISTS idx_rpl_claim ON rcm_payment_line(claim_id);
+CREATE INDEX IF NOT EXISTS idx_rpl_status ON rcm_payment_line(status);
+
+-- RCM: Payment posting events (payment-store.ts)
+CREATE TABLE IF NOT EXISTS rcm_payment_posting (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  claim_id TEXT NOT NULL,
+  batch_id TEXT,
+  line_id TEXT,
+  posting_type TEXT NOT NULL DEFAULT 'payment',
+  amount NUMERIC(12,2) NOT NULL DEFAULT 0,
+  posted_by TEXT,
+  posted_at TEXT NOT NULL,
+  reversal_of TEXT,
+  notes TEXT,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rpp_tenant ON rcm_payment_posting(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rpp_claim ON rcm_payment_posting(claim_id);
+
+-- RCM: Underpayment cases (payment-store.ts)
+CREATE TABLE IF NOT EXISTS rcm_underpayment_case (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  claim_id TEXT NOT NULL,
+  payer_id TEXT,
+  expected_amount NUMERIC(12,2) NOT NULL DEFAULT 0,
+  paid_amount NUMERIC(12,2) NOT NULL DEFAULT 0,
+  variance NUMERIC(12,2) NOT NULL DEFAULT 0,
+  variance_pct NUMERIC(5,2) NOT NULL DEFAULT 0,
+  reason TEXT,
+  status TEXT NOT NULL DEFAULT 'open',
+  resolution TEXT,
+  resolved_at TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_ruc_tenant ON rcm_underpayment_case(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_ruc_claim ON rcm_underpayment_case(claim_id);
+CREATE INDEX IF NOT EXISTS idx_ruc_status ON rcm_underpayment_case(status);
+
+-- RCM: LOA requests (loa-store.ts)
+CREATE TABLE IF NOT EXISTS rcm_loa_request (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  payer_id TEXT NOT NULL,
+  patient_dfn TEXT NOT NULL,
+  patient_name TEXT,
+  auth_number TEXT,
+  service_type TEXT,
+  status TEXT NOT NULL DEFAULT 'draft',
+  submitted_at TEXT,
+  approved_at TEXT,
+  denied_at TEXT,
+  expires_at TEXT,
+  metadata_json TEXT DEFAULT '{}',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rlr_tenant ON rcm_loa_request(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rlr_payer ON rcm_loa_request(payer_id);
+CREATE INDEX IF NOT EXISTS idx_rlr_patient ON rcm_loa_request(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_rlr_status ON rcm_loa_request(status);
+
+-- RCM: Remittance documents (remittance-intake.ts)
+CREATE TABLE IF NOT EXISTS rcm_remit_document (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  source TEXT NOT NULL DEFAULT 'manual',
+  file_name TEXT,
+  content_type TEXT,
+  content TEXT,
+  status TEXT NOT NULL DEFAULT 'received',
+  processed_at TEXT,
+  error TEXT,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rrd_tenant ON rcm_remit_document(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rrd_status ON rcm_remit_document(status);
+
+-- RCM: Transaction envelopes (envelope.ts)
+CREATE TABLE IF NOT EXISTS rcm_transaction_envelope (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  source_id TEXT NOT NULL,
+  source_type TEXT NOT NULL,
+  control_number TEXT,
+  envelope_type TEXT NOT NULL DEFAULT 'outbound',
+  content TEXT,
+  status TEXT NOT NULL DEFAULT 'created',
+  correlation_id TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rte_tenant ON rcm_transaction_envelope(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rte_source ON rcm_transaction_envelope(source_id, source_type);
+CREATE INDEX IF NOT EXISTS idx_rte_correlation ON rcm_transaction_envelope(correlation_id);
+
+-- RCM: PhilHealth submissions (eclaims3/submission-tracker.ts)
+CREATE TABLE IF NOT EXISTS rcm_ph_submission (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  claim_id TEXT,
+  draft_id TEXT,
+  packet_id TEXT,
+  status TEXT NOT NULL DEFAULT 'pending',
+  submitted_at TEXT,
+  response_json TEXT,
+  error TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rphs_tenant ON rcm_ph_submission(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rphs_claim ON rcm_ph_submission(claim_id);
+CREATE INDEX IF NOT EXISTS idx_rphs_draft ON rcm_ph_submission(draft_id);
+CREATE INDEX IF NOT EXISTS idx_rphs_status ON rcm_ph_submission(status);
+
+-- RCM: HMO submissions (hmo-portal/submission-tracker.ts)
+CREATE TABLE IF NOT EXISTS rcm_hmo_submission (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  claim_id TEXT,
+  payer_id TEXT,
+  status TEXT NOT NULL DEFAULT 'pending',
+  submitted_at TEXT,
+  response_json TEXT,
+  error TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rhms_tenant ON rcm_hmo_submission(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rhms_claim ON rcm_hmo_submission(claim_id);
+CREATE INDEX IF NOT EXISTS idx_rhms_status ON rcm_hmo_submission(status);
+
+-- RCM: Payer enrollments (payerOps/store.ts)
+CREATE TABLE IF NOT EXISTS rcm_payer_enrollment (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  payer_id TEXT NOT NULL,
+  provider_npi TEXT,
+  enrollment_type TEXT NOT NULL DEFAULT 'electronic',
+  status TEXT NOT NULL DEFAULT 'pending',
+  enrolled_at TEXT,
+  metadata_json TEXT DEFAULT '{}',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rpe_tenant ON rcm_payer_enrollment(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rpe_payer ON rcm_payer_enrollment(payer_id);
+CREATE INDEX IF NOT EXISTS idx_rpe_status ON rcm_payer_enrollment(status);
+
+-- RCM: LOA cases (payerOps/store.ts)
+CREATE TABLE IF NOT EXISTS rcm_loa_case (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  payer_id TEXT NOT NULL,
+  patient_dfn TEXT NOT NULL,
+  auth_number TEXT,
+  service_type TEXT,
+  units_approved INTEGER,
+  status TEXT NOT NULL DEFAULT 'pending',
+  expires_at TEXT,
+  metadata_json TEXT DEFAULT '{}',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rlc_tenant ON rcm_loa_case(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rlc_payer ON rcm_loa_case(payer_id);
+CREATE INDEX IF NOT EXISTS idx_rlc_patient ON rcm_loa_case(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_rlc_status ON rcm_loa_case(status);
+
+-- RCM: Credential vault (payerOps/store.ts) — encrypted at rest
+CREATE TABLE IF NOT EXISTS rcm_credential_vault (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  payer_id TEXT NOT NULL,
+  credential_type TEXT NOT NULL,
+  encrypted_value TEXT NOT NULL,
+  label TEXT,
+  expires_at TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rcv_tenant ON rcm_credential_vault(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rcv_payer ON rcm_credential_vault(payer_id);
+
+-- RCM: PhilHealth claim drafts (payerOps/philhealth-store.ts)
+CREATE TABLE IF NOT EXISTS rcm_ph_claim_draft (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT,
+  payer_id TEXT,
+  form_type TEXT NOT NULL DEFAULT 'cf2',
+  form_data_json TEXT NOT NULL DEFAULT '{}',
+  status TEXT NOT NULL DEFAULT 'draft',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rpcd_tenant ON rcm_ph_claim_draft(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rpcd_status ON rcm_ph_claim_draft(status);
+
+-- RCM: PhilHealth facility setups (payerOps/philhealth-store.ts)
+CREATE TABLE IF NOT EXISTS rcm_ph_facility_setup (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  facility_code TEXT NOT NULL,
+  facility_name TEXT,
+  setup_data_json TEXT NOT NULL DEFAULT '{}',
+  status TEXT NOT NULL DEFAULT 'active',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rpfs_tenant ON rcm_ph_facility_setup(tenant_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_rpfs_facility ON rcm_ph_facility_setup(tenant_id, facility_code);
+
+-- RCM: Payer rules (rules/payer-rules.ts)
+CREATE TABLE IF NOT EXISTS rcm_payer_rule (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  payer_id TEXT NOT NULL,
+  rule_type TEXT NOT NULL,
+  name TEXT NOT NULL,
+  condition_json TEXT NOT NULL DEFAULT '{}',
+  action_json TEXT NOT NULL DEFAULT '{}',
+  priority INTEGER NOT NULL DEFAULT 100,
+  active BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rpr_tenant ON rcm_payer_rule(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rpr_payer ON rcm_payer_rule(payer_id);
+CREATE INDEX IF NOT EXISTS idx_rpr_type ON rcm_payer_rule(rule_type);
+
+-- RCM: Payer rulepacks (payers/payer-rulepacks.ts)
+CREATE TABLE IF NOT EXISTS rcm_payer_rulepack (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  payer_id TEXT,
+  name TEXT NOT NULL,
+  description TEXT,
+  rules_json TEXT NOT NULL DEFAULT '[]',
+  active BOOLEAN NOT NULL DEFAULT TRUE,
+  version INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rprp_tenant ON rcm_payer_rulepack(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rprp_payer ON rcm_payer_rulepack(payer_id);
+
+-- RCM: Denial cases (workflows/claims-workflow.ts)
+CREATE TABLE IF NOT EXISTS rcm_denial (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  claim_id TEXT NOT NULL,
+  reason_code TEXT,
+  reason_description TEXT,
+  payer_id TEXT,
+  denial_date TEXT,
+  status TEXT NOT NULL DEFAULT 'open',
+  resolution TEXT,
+  resolved_at TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rd_tenant ON rcm_denial(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rd_claim ON rcm_denial(claim_id);
+CREATE INDEX IF NOT EXISTS idx_rd_status ON rcm_denial(status);
+
+-- RCM: Payer directory (payerDirectory/normalization.ts)
+CREATE TABLE IF NOT EXISTS rcm_payer_directory_entry (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  payer_id TEXT NOT NULL,
+  field_name TEXT NOT NULL,
+  field_value TEXT,
+  source TEXT NOT NULL DEFAULT 'manual',
+  confidence NUMERIC(3,2) DEFAULT 1.0,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rpde_tenant ON rcm_payer_directory_entry(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rpde_payer ON rcm_payer_directory_entry(payer_id);
+
+-- RCM: Job queue (jobs/queue.ts)
+CREATE TABLE IF NOT EXISTS rcm_job_queue_entry (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  job_type TEXT NOT NULL,
+  payload_json TEXT NOT NULL DEFAULT '{}',
+  status TEXT NOT NULL DEFAULT 'pending',
+  priority INTEGER NOT NULL DEFAULT 100,
+  max_retries INTEGER NOT NULL DEFAULT 3,
+  retry_count INTEGER NOT NULL DEFAULT 0,
+  scheduled_at TEXT NOT NULL,
+  started_at TEXT,
+  completed_at TEXT,
+  error TEXT,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rjqe_tenant ON rcm_job_queue_entry(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rjqe_status ON rcm_job_queue_entry(status);
+CREATE INDEX IF NOT EXISTS idx_rjqe_type ON rcm_job_queue_entry(job_type);
+CREATE INDEX IF NOT EXISTS idx_rjqe_scheduled ON rcm_job_queue_entry(scheduled_at);
+
+-- Clinical: Write-back drafts (routes/write-backs.ts)
+CREATE TABLE IF NOT EXISTS clinical_draft (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  user_duz TEXT NOT NULL,
+  draft_type TEXT NOT NULL,
+  content_json TEXT NOT NULL DEFAULT '{}',
+  status TEXT NOT NULL DEFAULT 'draft',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_cd_tenant ON clinical_draft(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_cd_patient ON clinical_draft(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_cd_user ON clinical_draft(user_duz);
+
+-- Clinical: UI preferences (ui-prefs-store.ts)
+CREATE TABLE IF NOT EXISTS ui_preference (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  user_duz TEXT NOT NULL,
+  pref_key TEXT NOT NULL,
+  pref_value TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_up_tenant ON ui_preference(tenant_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_up_user_key ON ui_preference(tenant_id, user_duz, pref_key);
+
+-- Clinical: Handoff reports (handoff/handoff-store.ts)
+CREATE TABLE IF NOT EXISTS handoff_report (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  from_provider TEXT NOT NULL,
+  to_provider TEXT,
+  report_type TEXT NOT NULL DEFAULT 'sbar',
+  content_json TEXT NOT NULL DEFAULT '{}',
+  status TEXT NOT NULL DEFAULT 'active',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_hr_tenant ON handoff_report(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_hr_patient ON handoff_report(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_hr_from ON handoff_report(from_provider);
+
+-- Intake: Sessions (intake/intake-store.ts)
+CREATE TABLE IF NOT EXISTS intake_session (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT,
+  status TEXT NOT NULL DEFAULT 'active',
+  current_step TEXT,
+  answers_json TEXT NOT NULL DEFAULT '{}',
+  summary_json TEXT,
+  brain_provider TEXT,
+  locale TEXT NOT NULL DEFAULT 'en',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_is_tenant ON intake_session(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_is_patient ON intake_session(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_is_status ON intake_session(status);
+
+-- Infrastructure: Migration jobs (migration/migration-store.ts)
+CREATE TABLE IF NOT EXISTS migration_job (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  job_type TEXT NOT NULL,
+  source_system TEXT,
+  target_system TEXT,
+  status TEXT NOT NULL DEFAULT 'pending',
+  progress_json TEXT DEFAULT '{}',
+  started_at TEXT,
+  completed_at TEXT,
+  error TEXT,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_mj_tenant ON migration_job(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_mj_status ON migration_job(status);
+
+-- Infrastructure: Export jobs (lib/export-governance.ts)
+CREATE TABLE IF NOT EXISTS export_job (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  user_id TEXT NOT NULL,
+  export_type TEXT NOT NULL,
+  format TEXT NOT NULL DEFAULT 'csv',
+  status TEXT NOT NULL DEFAULT 'pending',
+  output_path TEXT,
+  row_count INTEGER,
+  error TEXT,
+  created_at TEXT NOT NULL,
+  completed_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_ej_tenant ON export_job(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_ej_user ON export_job(user_id);
+CREATE INDEX IF NOT EXISTS idx_ej_status ON export_job(status);
+`,
+  },
 ];
 
 /**
@@ -1400,6 +2059,43 @@ export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: s
     "clinic_preferences",
     "patient_consent",
     "patient_portal_pref",
+    // Phase 146: Durability Wave 3 tables
+    "portal_user",
+    "portal_session",
+    "portal_refill",
+    "portal_task",
+    "portal_sensitivity_config",
+    "portal_share_link",
+    "portal_export",
+    "portal_proxy_invitation",
+    "imaging_device",
+    "idp_vista_binding",
+    "iam_break_glass_session",
+    "rcm_payment_batch",
+    "rcm_payment_line",
+    "rcm_payment_posting",
+    "rcm_underpayment_case",
+    "rcm_loa_request",
+    "rcm_remit_document",
+    "rcm_transaction_envelope",
+    "rcm_ph_submission",
+    "rcm_hmo_submission",
+    "rcm_payer_enrollment",
+    "rcm_loa_case",
+    "rcm_credential_vault",
+    "rcm_ph_claim_draft",
+    "rcm_ph_facility_setup",
+    "rcm_payer_rule",
+    "rcm_payer_rulepack",
+    "rcm_denial",
+    "rcm_payer_directory_entry",
+    "rcm_job_queue_entry",
+    "clinical_draft",
+    "ui_preference",
+    "handoff_report",
+    "intake_session",
+    "migration_job",
+    "export_job",
   ];
 
   const applied: string[] = [];
