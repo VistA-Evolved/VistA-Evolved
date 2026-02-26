@@ -32,6 +32,8 @@ import {
   updateSessionStatus,
 } from "./intake-store.js";
 import type { QuestionnaireResponse } from "./types.js";
+import { isRpcAvailable } from "../vista/rpcCapabilities.js";
+import { log } from "../lib/logger.js";
 
 /* ------------------------------------------------------------------ */
 /* Session + brain state storage (in-memory)                            */
@@ -115,50 +117,55 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
     const requestedProvider = body.providerId ?? session.brainProvider ?? "rules_engine";
     const { plugin, fellBack, originalId } = resolveBrainPlugin(requestedProvider);
 
-    const startTime = Date.now();
-    const brainState = await plugin.startSession(session, session.context);
-    const latencyMs = Date.now() - startTime;
+    try {
+      const startTime = Date.now();
+      const brainState = await plugin.startSession(session, session.context);
+      const latencyMs = Date.now() - startTime;
 
-    brainStates.set(id, brainState);
+      brainStates.set(id, brainState);
 
-    // Audit
-    logBrainDecision({
-      sessionId: id,
-      providerId: plugin.id,
-      providerFamily: plugin.family,
-      decisionType: "start_session",
-      inputHash: hashForAudit({ sessionId: id, context: session.context }),
-      outputHash: hashForAudit(brainState),
-      usedLlm: false,
-      phiRedacted: false,
-      latencyMs,
-      fellBackToRules: fellBack,
-      safetyWarnings: [],
-    });
+      // Audit
+      logBrainDecision({
+        sessionId: id,
+        providerId: plugin.id,
+        providerFamily: plugin.family,
+        decisionType: "start_session",
+        inputHash: hashForAudit({ sessionId: id, context: session.context }),
+        outputHash: hashForAudit(brainState),
+        usedLlm: false,
+        phiRedacted: false,
+        latencyMs,
+        fellBackToRules: fellBack,
+        safetyWarnings: [],
+      });
 
-    appendEvent({
-      sessionId: id,
-      type: "session.created",
-      actor: portal.patientDfn,
-      actorType: "patient",
-      payload: {
-        brainProvider: plugin.id,
+      appendEvent({
+        sessionId: id,
+        type: "session.created",
+        actor: portal.patientDfn,
+        actorType: "patient",
+        payload: {
+          brainProvider: plugin.id,
+          fellBack,
+          originalProvider: originalId,
+        },
+      });
+
+      return {
+        ok: true,
+        providerId: plugin.id,
+        providerName: plugin.name,
         fellBack,
-        originalProvider: originalId,
-      },
-    });
-
-    return {
-      ok: true,
-      providerId: plugin.id,
-      providerName: plugin.name,
-      fellBack,
-      brainState: {
-        turnsCompleted: brainState.turnsCompleted,
-        estimatedTurnsRemaining: brainState.estimatedTurnsRemaining,
-        activeComplaintClusters: brainState.activeComplaintClusters,
-      },
-    };
+        brainState: {
+          turnsCompleted: brainState.turnsCompleted,
+          estimatedTurnsRemaining: brainState.estimatedTurnsRemaining,
+          activeComplaintClusters: brainState.activeComplaintClusters,
+        },
+      };
+    } catch (err: any) {
+      log.error("Brain start session failed", { sessionId: id, provider: plugin.id, error: err?.message });
+      return reply.code(500).send({ ok: false, error: "Brain session start failed", detail: err?.message });
+    }
   });
 
   /** Brain-driven next question */
@@ -199,52 +206,57 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
       updateSessionStatus(id, "in_progress", portal.patientDfn, "patient");
     }
 
-    const startTime = Date.now();
-    const result = await plugin.nextQuestion(session, qrSoFar, session.context, brainState);
-    const latencyMs = Date.now() - startTime;
+    try {
+      const startTime = Date.now();
+      const result = await plugin.nextQuestion(session, qrSoFar, session.context, brainState);
+      const latencyMs = Date.now() - startTime;
 
-    // Update stored brain state
-    brainStates.set(id, result.brainState);
+      // Update stored brain state
+      brainStates.set(id, result.brainState);
 
-    // Audit
-    logBrainDecision({
-      sessionId: id,
-      providerId: plugin.id,
-      providerFamily: plugin.family,
-      decisionType: "next_question",
-      inputHash: hashForAudit({ qrItemCount: qrSoFar.item.length }),
-      outputHash: hashForAudit({ nextItemCount: result.nextItems.length, isComplete: result.isComplete }),
-      usedLlm: result.usedLlm,
-      phiRedacted: false,
-      latencyMs,
-      fellBackToRules: fellBack,
-      safetyWarnings: [],
-    });
-
-    if (result.nextItems.length > 0) {
-      appendEvent({
+      // Audit
+      logBrainDecision({
         sessionId: id,
-        type: "question.asked",
-        actor: portal.patientDfn,
-        actorType: "patient",
-        payload: {
-          brainProvider: plugin.id,
-          itemCount: result.nextItems.length,
-          usedLlm: result.usedLlm,
-          linkIds: result.nextItems.map((i) => i.linkId),
-        },
+        providerId: plugin.id,
+        providerFamily: plugin.family,
+        decisionType: "next_question",
+        inputHash: hashForAudit({ qrItemCount: qrSoFar.item.length }),
+        outputHash: hashForAudit({ nextItemCount: result.nextItems.length, isComplete: result.isComplete }),
+        usedLlm: result.usedLlm,
+        phiRedacted: false,
+        latencyMs,
+        fellBackToRules: fellBack,
+        safetyWarnings: [],
       });
-    }
 
-    return {
-      ok: true,
-      ...result,
-      brainState: {
-        turnsCompleted: result.brainState.turnsCompleted,
-        estimatedTurnsRemaining: result.brainState.estimatedTurnsRemaining,
-        activeComplaintClusters: result.brainState.activeComplaintClusters,
-      },
-    };
+      if (result.nextItems.length > 0) {
+        appendEvent({
+          sessionId: id,
+          type: "question.asked",
+          actor: portal.patientDfn,
+          actorType: "patient",
+          payload: {
+            brainProvider: plugin.id,
+            itemCount: result.nextItems.length,
+            usedLlm: result.usedLlm,
+            linkIds: result.nextItems.map((i) => i.linkId),
+          },
+        });
+      }
+
+      return {
+        ok: true,
+        ...result,
+        brainState: {
+          turnsCompleted: result.brainState.turnsCompleted,
+          estimatedTurnsRemaining: result.brainState.estimatedTurnsRemaining,
+          activeComplaintClusters: result.brainState.activeComplaintClusters,
+        },
+      };
+    } catch (err: any) {
+      log.error("Brain next question failed", { sessionId: id, provider: plugin.id, error: err?.message });
+      return reply.code(500).send({ ok: false, error: "Brain next question failed", detail: err?.message });
+    }
   });
 
   /** Brain-driven answer submission */
@@ -297,50 +309,55 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
     saveSnapshot(id, qr, portal.patientDfn);
 
     // Process through brain
-    const startTime = Date.now();
-    const result = await plugin.submitAnswer(session, qr, answers, session.context, brainState);
-    const latencyMs = Date.now() - startTime;
+    try {
+      const startTime = Date.now();
+      const result = await plugin.submitAnswer(session, qr, answers, session.context, brainState);
+      const latencyMs = Date.now() - startTime;
 
-    brainStates.set(id, result.brainState);
+      brainStates.set(id, result.brainState);
 
-    // Audit
-    logBrainDecision({
-      sessionId: id,
-      providerId: plugin.id,
-      providerFamily: plugin.family,
-      decisionType: "submit_answer",
-      inputHash: hashForAudit({ answerCount: answers.length }),
-      outputHash: hashForAudit({ followUpCount: result.followUpItems.length, redFlagCount: result.newRedFlags.length }),
-      usedLlm: false,
-      phiRedacted: false,
-      latencyMs,
-      fellBackToRules: fellBack,
-      safetyWarnings: result.newRedFlags.map((rf) => `[${rf.severity}] ${rf.flag}`),
-    });
-
-    for (const ans of answers) {
-      appendEvent({
+      // Audit
+      logBrainDecision({
         sessionId: id,
-        type: "question.answered",
-        actor: portal.patientDfn,
-        actorType: "patient",
-        payload: { linkId: ans.linkId, brainProvider: plugin.id },
-        questionId: ans.linkId,
+        providerId: plugin.id,
+        providerFamily: plugin.family,
+        decisionType: "submit_answer",
+        inputHash: hashForAudit({ answerCount: answers.length }),
+        outputHash: hashForAudit({ followUpCount: result.followUpItems.length, redFlagCount: result.newRedFlags.length }),
+        usedLlm: false,
+        phiRedacted: false,
+        latencyMs,
+        fellBackToRules: fellBack,
+        safetyWarnings: result.newRedFlags.map((rf) => `[${rf.severity}] ${rf.flag}`),
       });
-    }
 
-    return {
-      ok: true,
-      questionnaireResponse: qr,
-      followUpItems: result.followUpItems,
-      newRedFlags: result.newRedFlags,
-      clusterUpdates: result.clusterUpdates,
-      brainState: {
-        turnsCompleted: result.brainState.turnsCompleted,
-        estimatedTurnsRemaining: result.brainState.estimatedTurnsRemaining,
-        activeComplaintClusters: result.brainState.activeComplaintClusters,
-      },
-    };
+      for (const ans of answers) {
+        appendEvent({
+          sessionId: id,
+          type: "question.answered",
+          actor: portal.patientDfn,
+          actorType: "patient",
+          payload: { linkId: ans.linkId, brainProvider: plugin.id },
+          questionId: ans.linkId,
+        });
+      }
+
+      return {
+        ok: true,
+        questionnaireResponse: qr,
+        followUpItems: result.followUpItems,
+        newRedFlags: result.newRedFlags,
+        clusterUpdates: result.clusterUpdates,
+        brainState: {
+          turnsCompleted: result.brainState.turnsCompleted,
+          estimatedTurnsRemaining: result.brainState.estimatedTurnsRemaining,
+          activeComplaintClusters: result.brainState.activeComplaintClusters,
+        },
+      };
+    } catch (err: any) {
+      log.error("Brain submit answer failed", { sessionId: id, provider: plugin.id, error: err?.message });
+      return reply.code(500).send({ ok: false, error: "Brain answer submission failed", detail: err?.message });
+    }
   });
 
   /** Brain-driven summary generation */
@@ -378,46 +395,51 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
       item: [],
     };
 
-    const startTime = Date.now();
-    const summary = await plugin.finalizeSummary(session, qr, session.context, brainState);
-    const latencyMs = Date.now() - startTime;
+    try {
+      const startTime = Date.now();
+      const summary = await plugin.finalizeSummary(session, qr, session.context, brainState);
+      const latencyMs = Date.now() - startTime;
 
-    // Audit
-    logBrainDecision({
-      sessionId: id,
-      providerId: plugin.id,
-      providerFamily: plugin.family,
-      decisionType: "finalize_summary",
-      inputHash: hashForAudit({ qrItemCount: qr.item.length }),
-      outputHash: hashForAudit({ citationCount: summary.citations.length, tiuReady: summary.tiuReady }),
-      usedLlm: summary.generatedBy === "llm_constrained",
-      phiRedacted: false,
-      latencyMs,
-      fellBackToRules: fellBack,
-      safetyWarnings: summary.governance.containsDiagnosis
-        ? ["Summary contained diagnosis -- blocked"]
-        : [],
-    });
+      // Audit
+      logBrainDecision({
+        sessionId: id,
+        providerId: plugin.id,
+        providerFamily: plugin.family,
+        decisionType: "finalize_summary",
+        inputHash: hashForAudit({ qrItemCount: qr.item.length }),
+        outputHash: hashForAudit({ citationCount: summary.citations.length, tiuReady: summary.tiuReady }),
+        usedLlm: summary.generatedBy === "llm_constrained",
+        phiRedacted: false,
+        latencyMs,
+        fellBackToRules: fellBack,
+        safetyWarnings: summary.governance.containsDiagnosis
+          ? ["Summary contained diagnosis -- blocked"]
+          : [],
+      });
 
-    appendEvent({
-      sessionId: id,
-      type: "summary.generated",
-      actor: portal?.patientDfn ?? clinician?.duz ?? "system",
-      actorType: portal ? "patient" : "clinician",
-      payload: {
-        brainProvider: plugin.id,
-        generatedBy: summary.generatedBy,
-        tiuReady: summary.tiuReady,
-        citationCount: summary.citations.length,
-        redFlagCount: summary.sections.redFlags.length,
-      },
-    });
+      appendEvent({
+        sessionId: id,
+        type: "summary.generated",
+        actor: portal?.patientDfn ?? clinician?.duz ?? "system",
+        actorType: portal ? "patient" : "clinician",
+        payload: {
+          brainProvider: plugin.id,
+          generatedBy: summary.generatedBy,
+          tiuReady: summary.tiuReady,
+          citationCount: summary.citations.length,
+          redFlagCount: summary.sections.redFlags.length,
+        },
+      });
 
-    return {
-      ok: true,
-      summary,
-      governance: summary.governance,
-    };
+      return {
+        ok: true,
+        summary,
+        governance: summary.governance,
+      };
+    } catch (err: any) {
+      log.error("Brain summary generation failed", { sessionId: id, provider: plugin.id, error: err?.message });
+      return reply.code(500).send({ ok: false, error: "Brain summary generation failed", detail: err?.message });
+    }
   });
 
   // =============================================
@@ -452,48 +474,66 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
       item: [],
     };
 
-    const summary = await plugin.finalizeSummary(session, qr, session.context, brainState);
+    try {
+      const summary = await plugin.finalizeSummary(session, qr, session.context, brainState);
 
-    // Build TIU-ready note structure
-    const tiuDraft = {
-      noteTitle: summary.tiuNoteTitle,
-      noteText: summary.draftNoteText,
-      tiuReady: summary.tiuReady,
-      patientDfn: session.patientDfn,
-      authorDuz: clinician.duz,
-      authorName: clinician.name,
-      sessionId: session.id,
-      generatedAt: new Date().toISOString(),
-      generatedBy: summary.generatedBy,
-      providerId: summary.providerId,
-      governance: summary.governance,
-      sections: {
-        hpi: summary.sections.hpiNarrative,
-        rosCount: summary.sections.reviewOfSystems.filter((r) => r.status !== "not_asked").length,
-        redFlagCount: summary.sections.redFlags.length,
-        citationCount: summary.citations.length,
-      },
-      vistaIntegration: {
-        status: "draft_ready",
-        targetRpcs: ["TIU CREATE RECORD", "TIU SET DOCUMENT TEXT"],
-        requiresSignature: true,
-        note: "Draft note requires clinician review and electronic signature before filing to VistA",
-      },
-    };
+      // Check VistA TIU RPC availability
+      const tiuCreateAvailable = isRpcAvailable("TIU CREATE RECORD");
+      const tiuSetTextAvailable = isRpcAvailable("TIU SET DOCUMENT TEXT");
+      const vistaAvailable = tiuCreateAvailable && tiuSetTextAvailable;
 
-    appendEvent({
-      sessionId: id,
-      type: "clinician.exported",
-      actor: clinician.duz,
-      actorType: "clinician",
-      payload: {
-        format: "tiu-draft",
-        brainProvider: summary.providerId,
+      // Build TIU-ready note structure
+      const tiuDraft = {
+        noteTitle: summary.tiuNoteTitle,
+        noteText: summary.draftNoteText,
         tiuReady: summary.tiuReady,
-      },
-    });
+        patientDfn: session.patientDfn,
+        authorDuz: clinician.duz,
+        authorName: clinician.name,
+        sessionId: session.id,
+        generatedAt: new Date().toISOString(),
+        generatedBy: summary.generatedBy,
+        providerId: summary.providerId,
+        governance: summary.governance,
+        sections: {
+          hpi: summary.sections.hpiNarrative,
+          rosCount: summary.sections.reviewOfSystems.filter((r) => r.status !== "not_asked").length,
+          redFlagCount: summary.sections.redFlags.length,
+          citationCount: summary.citations.length,
+        },
+        vistaIntegration: {
+          status: vistaAvailable ? "draft_ready" as const : "integration_pending" as const,
+          vistaAvailable,
+          targetRpcs: ["TIU CREATE RECORD", "TIU SET DOCUMENT TEXT"],
+          rpcStatus: {
+            "TIU CREATE RECORD": tiuCreateAvailable,
+            "TIU SET DOCUMENT TEXT": tiuSetTextAvailable,
+          },
+          requiresSignature: true,
+          note: vistaAvailable
+            ? "Draft note requires clinician review and electronic signature before filing to VistA"
+            : "VistA TIU RPCs not yet available -- draft saved for manual review. Filing will be enabled when TIU CREATE RECORD and TIU SET DOCUMENT TEXT are configured.",
+        },
+      };
 
-    return { ok: true, tiuDraft };
+      appendEvent({
+        sessionId: id,
+        type: "clinician.exported",
+        actor: clinician.duz,
+        actorType: "clinician",
+        payload: {
+          format: "tiu-draft",
+          brainProvider: summary.providerId,
+          tiuReady: summary.tiuReady,
+          vistaAvailable,
+        },
+      });
+
+      return { ok: true, tiuDraft };
+    } catch (err: any) {
+      log.error("TIU draft generation failed", { sessionId: id, provider: plugin.id, error: err?.message });
+      return reply.code(500).send({ ok: false, error: "TIU draft generation failed", detail: err?.message });
+    }
   });
 
   // =============================================

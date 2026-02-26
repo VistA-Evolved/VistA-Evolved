@@ -93,7 +93,7 @@ export default function IntakeStartPage() {
     try {
       const res = await portalFetch("/intake/sessions", {
         method: "POST",
-        body: JSON.stringify({ language: locale, context: {} }),
+        body: JSON.stringify({ language: locale, context: {}, brainProvider: selectedProvider }),
       });
       if (res.ok && res.session) {
         router.push(`/dashboard/intake/${res.session.id}`);

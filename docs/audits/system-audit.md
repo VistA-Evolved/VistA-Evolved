@@ -1,7 +1,7 @@
 # VistA-Evolved System Audit
 
-> Generated: 2026-02-26T05:03:23.430Z  
-> HEAD: 0f5f63c  
+> Generated: 2026-02-26T05:48:05.482Z  
+> HEAD: f22b4e8  
 > Node: v24.13.0 | pnpm: 10.29.2
 
 ## What Is Truly Wired End-to-End
@@ -32,9 +32,9 @@
 ## Durability Posture
 
 - **SQLite tables:** 47
-- **In-memory Map stores:** 175
+- **In-memory Map stores:** 177
 - **High-risk (data loss on restart):** 37
-- **Medium-risk:** 29
+- **Medium-risk:** 30
 - **JSON seed/mutable stores:** 16
 
 ### High-Risk In-Memory Stores
@@ -91,13 +91,13 @@
 
 | Marker | Files | Total Hits |
 |--------|-------|------------|
-| integration_pending | 65 | 342 |
+| integration_pending | 67 | 346 |
 | mock | 2 | 2 |
 | placeholder | 77 | 208 |
 | todo | 1 | 1 |
 | fixme | 0 | 0 |
 | local_only | 4 | 6 |
-| stub | 43 | 976 |
+| stub | 45 | 978 |
 | not_implemented | 14 | 433 |
 
 ## Top 20 Prioritized Next Build Items

@@ -1,23 +1,20 @@
 {
-  "featureTitle": "Phase 142: RCM Operational Excellence (Polling + Denial Loop + Reconciliation)",
+  "featureTitle": "Phase 143 VERIFY: AI Intake Engine",
   "stage": "verified",
   "status": "complete",
-  "promptRefPath": "prompts/147-PHASE-142-RCM-OPS-EXCELLENCE/142-01-IMPLEMENT.md",
+  "promptRefPath": "prompts/148-PHASE-143-AI-INTAKE-ENGINE/143-99-VERIFY.md",
   "runbookPath": "ops/summary.md",
   "verifyScriptUsed": "qa/gauntlet/cli.mjs --suite fast + --suite rc",
-  "commitSHA": "1494d15",
+  "commitSHA": "edd37e3",
   "gauntletFast": "4 PASS / 0 FAIL / 1 WARN",
   "gauntletRc": "15 PASS / 0 FAIL / 1 WARN",
   "filesModified": [
-    "apps/api/src/routes/portal-documents.ts",
-    "apps/api/src/index.ts",
-    "apps/api/src/lib/immutable-audit.ts",
-    "apps/api/src/platform/pg/pg-schema.ts",
-    "apps/api/src/platform/pg/pg-migrate.ts",
-    "apps/api/src/platform/pg/repo/pg-consent-repo.ts",
-    "apps/api/src/platform/pg/repo/index.ts",
-    "apps/portal/src/app/dashboard/documents/page.tsx",
-    "apps/portal/src/app/dashboard/consents/page.tsx",
+    "apps/api/src/intake/brain-routes.ts",
+    "apps/api/src/intake/intake-routes.ts",
+    "apps/api/src/middleware/security.ts",
+    "apps/portal/src/app/dashboard/intake/page.tsx"
+  ]
+}
     "apps/portal/src/components/portal-nav.tsx",
     "apps/portal/src/lib/api.ts",
     "apps/portal/public/messages/en.json",

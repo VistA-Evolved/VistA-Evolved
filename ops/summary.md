@@ -1,3 +1,39 @@
+# Phase 143 VERIFY -- AI Intake Engine
+
+## What Changed (VERIFY fixes)
+
+### 1. Portal → Brain Provider Wiring (HIGH)
+- `apps/portal/src/app/dashboard/intake/page.tsx`: `startNewIntake()` now sends `brainProvider: selectedProvider` in POST body
+- `apps/api/src/intake/intake-routes.ts`: `createSession()` now receives `body.brainProvider`
+- **Before**: Provider dropdown existed but selection was dead — never transmitted
+
+### 2. TIU Draft VistA RPC Capability Check (HIGH)
+- `apps/api/src/intake/brain-routes.ts`: `/tiu-draft` now checks `isRpcAvailable("TIU CREATE RECORD")` and `isRpcAvailable("TIU SET DOCUMENT TEXT")`
+- Returns `status: "integration_pending"` with per-RPC breakdown when VistA unavailable
+- Returns `status: "draft_ready"` only when both RPCs are confirmed available
+
+### 3. Error Handling on Brain Routes (MEDIUM)
+- All 5 brain operation routes (start, next, submit, summary, tiu-draft) now have try/catch
+- Structured `log.error()`, 500 responses with safe error messages
+
+### 4. AUTH_RULE for /intake/ (PRE-EXISTING BUG FIX)
+- `apps/api/src/middleware/security.ts`: Added `{ pattern: /^\/intake\//, auth: "none" }`
+- Portal users (with `portal_session` cookie) were blocked by auth gateway
+- Intake routes do own session checking — matches `/portal/` pattern
+
+## Verifier Output
+- Gauntlet FAST: 4P/0F/1W (baseline maintained)
+- Gauntlet RC: 15P/0F/1W (baseline maintained)
+- TSC: clean (api, portal, web)
+- Runtime: All 10 brain endpoints exercised, 3 languages, TIU VistA check confirmed
+
+## Follow-ups
+- Clinical question i18n: Pack text is English-only; certified medical translation needed
+- Brain audit hash chain linking (low priority — append-only with FIFO eviction)
+- LLM/3P integration: Env-gated scaffolds ready; needs real AI Gateway endpoint
+
+---
+
 # Phase 142 -- RCM Operational Excellence (Polling + Denial Loop + Reconciliation)
 
 ## What Changed

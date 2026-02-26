@@ -93,6 +93,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
       proxyDfn: body.proxyDfn ?? null,
       language: body.language ?? "en",
       context: body.context ?? {},
+      brainProvider: body.brainProvider,
     });
 
     return { ok: true, session };
