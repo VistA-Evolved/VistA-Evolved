@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-26T01:57:27.710Z",
+  "generatedAt": "2026-02-26T02:23:39.994Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 150,
+  "phaseCount": 151,
   "phases": [
     {
       "phaseNumber": "1",
@@ -2162,6 +2162,52 @@
         "apps/portal/src/app/dashboard/appointments/page.tsx",
         "scripts/vista/inventory-scheduling.mjs",
         "docs/runbooks/scheduling-lifecycle.md"
+      ]
+    },
+    {
+      "phaseNumber": "140",
+      "title": "Portal Parity Closure (Immunizations + Documents + Consents) — IMPLEMENT",
+      "folder": "145-PHASE-140-PORTAL-PARITY",
+      "files": [
+        "140-01-IMPLEMENT.md",
+        "140-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "140-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "140-99-VERIFY.md"
+      ],
+      "routes": [
+        "/portal/consents",
+        "/portal/documents",
+        "/portal/documents/download/:token",
+        "/portal/documents/generate"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx",
+        "portal-nav.tsx"
+      ],
+      "filesTouched": [
+        "prompts/145-PHASE-140-PORTAL-PARITY/140-01-IMPLEMENT.md",
+        "prompts/145-PHASE-140-PORTAL-PARITY/140-99-VERIFY.md",
+        "apps/api/src/lib/immutable-audit.ts",
+        "apps/api/src/platform/pg/pg-schema.ts",
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/platform/pg/repo/pg-consent-repo.ts",
+        "apps/api/src/routes/portal-documents.ts",
+        "apps/api/src/index.ts",
+        "apps/portal/src/app/dashboard/documents/page.tsx",
+        "apps/portal/src/app/dashboard/consents/page.tsx",
+        "apps/portal/src/components/portal-nav.tsx",
+        "apps/portal/src/lib/api.ts",
+        "apps/portal/public/messages/en.json",
+        "apps/portal/public/messages/fil.json",
+        "apps/portal/public/messages/es.json",
+        "docs/runbooks/portal-parity.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
       ]
     },
     {

@@ -144,6 +144,8 @@ import vistaMailmanRoutes from "./routes/vista-mailman.js";
 import portalMailmanRoutes, { initPortalMailman } from "./routes/portal-mailman.js";
 // Phase 65: Immunizations v1 (VistA-first)
 import immunizationsRoutes from "./routes/immunizations/index.js";
+// Phase 140: Portal Parity — Documents + Consents
+import portalDocumentsRoutes, { initPortalDocuments } from "./routes/portal-documents.js";
 // Phase 66: Production IAM v1 (OIDC + SAML posture)
 import idpRoutes from "./auth/idp/idp-routes.js";
 import { initIdentityProviders } from "./auth/idp/index.js";
@@ -297,6 +299,7 @@ server.register(portalAuthRoutes);
 // Register portal core routes — messaging, appointments, sharing, settings, export (Phase 27)
 initPortalCore(getPortalSession);
 initPortalMailman(getPortalSession);
+initPortalDocuments(getPortalSession);
 server.register(portalCoreRoutes);
 
 // Register record portability routes — export, download, share, audit (Phase 80)
@@ -440,6 +443,9 @@ server.register(messagingRoutes);
 // Register VistA MailMan clinician + portal bridge routes (Phase 130)
 server.register(vistaMailmanRoutes);
 server.register(portalMailmanRoutes);
+
+// Register portal documents + consents routes (Phase 140)
+server.register(portalDocumentsRoutes);
 
 // Register immunization routes -- VistA-first ORQQPX IMMUN LIST (Phase 65)
 server.register(immunizationsRoutes);

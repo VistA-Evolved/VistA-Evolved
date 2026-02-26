@@ -1066,3 +1066,48 @@ export const pgClinicPreferences = pgTable("clinic_preferences", {
   index("idx_cp_clinic").on(table.clinicIen),
   index("idx_cp_tenant_clinic").on(table.tenantId, table.clinicIen),
 ]);
+
+/**
+ * Phase 140: Patient Consent
+ * Tracks patient consent decisions (HIPAA, research, data sharing, etc.).
+ * Tenant-scoped, patient-keyed by DFN.
+ */
+export const pgPatientConsent = pgTable("patient_consent", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  patientDfn: text("patient_dfn").notNull(),
+  consentType: text("consent_type").notNull(),
+  status: text("status").notNull().default("pending"),
+  signedAt: text("signed_at"),
+  revokedAt: text("revoked_at"),
+  locale: text("locale").notNull().default("en"),
+  version: integer("version").notNull().default(1),
+  metadata: text("metadata"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_pc_tenant").on(table.tenantId),
+  index("idx_pc_patient").on(table.patientDfn),
+  index("idx_pc_type").on(table.consentType),
+  index("idx_pc_tenant_patient").on(table.tenantId, table.patientDfn),
+]);
+
+/**
+ * Phase 140: Patient Portal Preferences
+ * User-level portal configuration (notifications, display, language).
+ * Tenant-scoped, patient-keyed by DFN.
+ */
+export const pgPatientPortalPref = pgTable("patient_portal_pref", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  patientDfn: text("patient_dfn").notNull(),
+  notifications: text("notifications"),
+  language: text("language").notNull().default("en"),
+  displayPrefs: text("display_prefs"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_ppp_tenant").on(table.tenantId),
+  index("idx_ppp_patient").on(table.patientDfn),
+  index("idx_ppp_tenant_patient").on(table.tenantId, table.patientDfn),
+]);

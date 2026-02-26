@@ -141,7 +141,13 @@ export type ImmutableAuditAction =
   | "handoff.submit"
   | "handoff.accept"
   | "handoff.archive"
-  | "handoff.ward-patients";
+  | "handoff.ward-patients"
+  // Phase 140: Portal parity — documents + consents
+  | "portal.document.list"
+  | "portal.document.generate"
+  | "portal.document.download"
+  | "portal.consent.view"
+  | "portal.consent.update";
 
 export type ImmutableAuditOutcome = "success" | "failure" | "denied" | "error";
 

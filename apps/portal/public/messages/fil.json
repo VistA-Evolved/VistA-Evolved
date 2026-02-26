@@ -39,7 +39,10 @@
     "account": "Account",
     "myProfile": "Aking Profile",
     "aiHelp": "AI Tulong",
-    "intake": "Pre-Visit Intake"
+    "intake": "Pre-Visit Intake",
+    "immunizations": "Mga Bakuna",
+    "documents": "Mga Dokumento",
+    "consents": "Mga Pahintulot"
   },
   "dashboard": {
     "welcome": "Maligayang pagdating",

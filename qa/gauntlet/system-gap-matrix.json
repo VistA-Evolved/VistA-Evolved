@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-02-26T01:57:08.600Z",
-  "headSha": "dbf627f",
+  "generatedAt": "2026-02-26T02:30:48.237Z",
+  "headSha": "4abd719",
   "domains": [
     {
       "domain": "AUTH_IAM",
@@ -167,7 +167,7 @@
         },
         {
           "metric": "totalCallSites",
-          "value": 165
+          "value": 172
         }
       ],
       "topGaps": [
@@ -297,6 +297,18 @@
           ]
         },
         {
+          "route": "/dashboard/consents",
+          "tags": [
+            "Portal"
+          ]
+        },
+        {
+          "route": "/dashboard/documents",
+          "tags": [
+            "Portal"
+          ]
+        },
+        {
           "route": "/dashboard/exports",
           "tags": [
             "Portal"
@@ -316,18 +328,6 @@
         },
         {
           "route": "/dashboard/intake",
-          "tags": [
-            "Portal"
-          ]
-        },
-        {
-          "route": "/dashboard/intake/:id",
-          "tags": [
-            "Portal"
-          ]
-        },
-        {
-          "route": "/dashboard/medications",
           "tags": [
             "Portal"
           ]
@@ -785,7 +785,7 @@
         },
         {
           "metric": "inMemoryMaps",
-          "value": 172
+          "value": 173
         },
         {
           "metric": "highRiskMaps",
@@ -793,7 +793,7 @@
         },
         {
           "metric": "medRiskMaps",
-          "value": 27
+          "value": 28
         }
       ],
       "topGaps": [

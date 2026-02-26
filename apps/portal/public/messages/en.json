@@ -39,7 +39,10 @@
     "account": "Account",
     "myProfile": "My Profile",
     "aiHelp": "AI Help",
-    "intake": "Pre-Visit Intake"
+    "intake": "Pre-Visit Intake",
+    "immunizations": "Immunizations",
+    "documents": "Documents",
+    "consents": "Consents"
   },
   "dashboard": {
     "welcome": "Welcome",

@@ -1231,6 +1231,46 @@ CREATE INDEX IF NOT EXISTS idx_cp_clinic ON clinic_preferences(clinic_ien);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_cp_tenant_clinic ON clinic_preferences(tenant_id, clinic_ien);
 `,
   },
+  {
+    version: 17,
+    name: "patient_consent_and_portal_pref",
+    sql: `
+-- Phase 140: Patient consent decisions (HIPAA, research, data sharing, etc.)
+CREATE TABLE IF NOT EXISTS patient_consent (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  consent_type TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending',
+  signed_at TIMESTAMPTZ,
+  revoked_at TIMESTAMPTZ,
+  locale TEXT NOT NULL DEFAULT 'en',
+  version INTEGER NOT NULL DEFAULT 1,
+  metadata TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_pc_tenant ON patient_consent(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_pc_patient ON patient_consent(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_pc_type ON patient_consent(consent_type);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_pc_tenant_patient_type ON patient_consent(tenant_id, patient_dfn, consent_type);
+
+-- Phase 140: Patient portal preferences (notifications, language, display)
+CREATE TABLE IF NOT EXISTS patient_portal_pref (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  notifications TEXT,
+  language TEXT NOT NULL DEFAULT 'en',
+  display_prefs TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_ppp_tenant ON patient_portal_pref(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_ppp_patient ON patient_portal_pref(patient_dfn);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_ppp_tenant_patient ON patient_portal_pref(tenant_id, patient_dfn);
+`,
+  },
 ];
 
 /**
@@ -1358,6 +1398,8 @@ export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: s
     "user_locale_preference",
     "intake_question_schema",
     "clinic_preferences",
+    "patient_consent",
+    "patient_portal_pref",
   ];
 
   const applied: string[] = [];

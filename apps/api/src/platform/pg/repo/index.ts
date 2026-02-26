@@ -29,3 +29,4 @@ export * as pgImagingWorklistRepo from "./pg-imaging-worklist-repo.js";
 export * as pgImagingIngestRepo from "./pg-imaging-ingest-repo.js";
 export * as pgSchedulingRequestRepo from "./pg-scheduling-request-repo.js";
 export * as pgSchedulingLockRepo from "./pg-scheduling-lock-repo.js";
+export * as pgConsentRepo from "./pg-consent-repo.js";

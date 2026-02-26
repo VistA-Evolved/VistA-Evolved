@@ -391,3 +391,33 @@ export async function askPortalSearch(query: string) {
     body: JSON.stringify({ query }),
   });
 }
+
+// ─── Documents (Phase 140) ───
+
+export async function fetchDocumentTypes() {
+  return portalFetch("/portal/documents");
+}
+
+export async function generateDocument(documentType: string) {
+  return portalFetch("/portal/documents/generate", {
+    method: "POST",
+    body: JSON.stringify({ documentType }),
+  });
+}
+
+export function documentDownloadUrl(token: string): string {
+  return `${API_BASE}/portal/documents/download/${token}`;
+}
+
+// ─── Consents (Phase 140) ───
+
+export async function fetchConsents() {
+  return portalFetch("/portal/consents");
+}
+
+export async function updateConsent(consentType: string, status: string) {
+  return portalFetch("/portal/consents", {
+    method: "POST",
+    body: JSON.stringify({ consentType, status }),
+  });
+}

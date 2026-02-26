@@ -1,43 +1,73 @@
-# Phase 139 VERIFY — Scheduling Lifecycle + Clinic Resources + Portal Integration
+# Phase 140 — Portal Parity Closure (Immunizations + Documents + Consents)
 
 ## What Changed
 
-### VERIFY Fixes Applied (4 issues found + fixed)
-1. **Status badge colors** — Admin request queue now uses green/red/yellow per status (was always yellow)
-2. **GET /scheduling/requests** — Now merges PG + in-memory stores (was in-memory only)
-3. **Approve/reject status guard** — Returns 409 if request is not pending (was allowing double-approve)
-4. **Unused variable** — Removed unused `body` variable in approve endpoint
-5. **Inventory script** — Fixed RPC_REGISTRY regex (array format, not object) + capabilities.json nested structure
-
-### New API Endpoints (6)
-- POST `/scheduling/appointments/:id/checkin` -- lifecycle transition to checked_in
-- POST `/scheduling/appointments/:id/checkout` -- lifecycle transition to completed
-- POST `/scheduling/requests/:id/approve` -- admin approve scheduling request
-- POST `/scheduling/requests/:id/reject` -- admin reject scheduling request
-- GET `/scheduling/clinic/:ien/preferences` -- read clinic scheduling config
-- PUT `/scheduling/clinic/:ien/preferences` -- upsert clinic scheduling config
+### Portal Document Center (5 endpoints)
+- `GET /portal/documents` — Lists 5 document types (health_summary, immunization_record, medication_list, allergy_list, lab_results)
+- `POST /portal/documents/generate` — Generates signed HMAC-SHA256 token (5-min TTL, single-use) for document download
+- `GET /portal/documents/download/:token` — Downloads VistA-sourced document via signed token
+- `GET /portal/consents` — Lists 5 consent types with status (hipaa_release, data_sharing, research_participation, telehealth_consent, portal_terms)
+- `POST /portal/consents` — Updates consent status (granted/revoked) with PG persistence
 
 ### Data Model
-- **PG migration v16**: `clinic_preferences` table (tenant_id, clinic_ien, timezone, slot_duration, etc.)
-- **RLS**: `clinic_preferences` added to `applyRlsPolicies()` tenant tables
-- **pg-clinic-preferences-repo.ts**: New CRUD repo for clinic preferences
+- **PG migration v17**: `patient_consent` + `patient_portal_pref` tables
+- **RLS**: Both tables added to `applyRlsPolicies()` tenant tables (now 46)
+- **pg-consent-repo.ts**: CRUD repo for consents + portal preferences (Drizzle ORM)
 
-### Audit + Capabilities
-- **immutable-audit.ts**: +5 actions (scheduling.checkin/checkout/approve/reject/clinic_preferences)
-- **capabilities.json**: +5 capabilities (scheduling.checkin/checkout/request.approve/reject/clinic.preferences)
+### Audit
+- **immutable-audit.ts**: +5 actions (`portal.document.list`, `portal.document.generate`, `portal.document.download`, `portal.consent.view`, `portal.consent.update`)
 
-### UI Enhancement
-- **Admin scheduling page**: Approve/Reject buttons in Request Queue, Check In/Out in Lifecycle
-- **Portal appointments**: New status colors (booked, checked_in, approved, rejected), check-in notification
+### Portal UI
+- **documents/page.tsx**: Document center with generate/download workflow, DataSourceBadge, card layout
+- **consents/page.tsx**: Consent management with grant/revoke, status badges, required indicators
+- **portal-nav.tsx**: +3 nav items (Immunizations 💉, Documents 📑, Consents ✅)
+- **i18n**: 3 new nav keys in en.json, fil.json, es.json
 
-### Tooling
-- **scripts/vista/inventory-scheduling.mjs**: Read-only scheduling RPC/capability inventory
+### Security
+- Signed tokens: HMAC-SHA256 with random 32-byte secret, 5-min TTL, single-use, in-memory store with 60s cleanup
+- Session-authenticated endpoints via `requirePortalSession()`
+- Consent writes audited via `immutableAudit()`
 
 ## How to Test Manually
 
 ```bash
-curl -X POST http://localhost:3001/scheduling/appointments/test-1/checkin \
-  -H 'Content-Type: application/json' -b cookies.txt \
+# Login as portal patient
+curl -X POST http://localhost:3001/portal/auth/login \
+  -H 'Content-Type: application/json' \
+  -d '{"username":"patient1","password":"patient1"}' \
+  -c cookies-p140.txt
+
+# List document types
+curl http://localhost:3001/portal/documents -b cookies-p140.txt
+
+# Generate signed token for allergy_list
+curl -X POST http://localhost:3001/portal/documents/generate \
+  -H 'Content-Type: application/json' \
+  -d '{"documentType":"allergy_list"}' -b cookies-p140.txt
+
+# Download document (use token from generate response)
+curl http://localhost:3001/portal/documents/download/<TOKEN> -b cookies-p140.txt
+
+# List consents
+curl http://localhost:3001/portal/consents -b cookies-p140.txt
+
+# Grant a consent
+curl -X POST http://localhost:3001/portal/consents \
+  -H 'Content-Type: application/json' \
+  -d '{"consentType":"hipaa_release","status":"granted"}' -b cookies-p140.txt
+```
+
+## Verifier Output
+
+- **Gauntlet FAST**: 4 PASS / 0 FAIL / 1 WARN
+- **Gauntlet RC**: 15 PASS / 0 FAIL / 1 WARN
+- **TSC**: Clean (API + Portal + Web)
+- **Builds**: Clean (24 static pages including new documents + consents)
+
+## Follow-ups
+- Health card with QR code (optional, deferred)
+- Consent-gated route middleware (future phase)
+- VistA consent integration when consent RPCs available
   -d '{"patientDfn":"3","clinicName":"Primary Care"}'
 
 curl http://localhost:3001/scheduling/clinic/44/preferences -b cookies.txt

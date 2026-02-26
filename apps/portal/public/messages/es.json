@@ -39,7 +39,10 @@
     "account": "Cuenta",
     "myProfile": "Mi Perfil",
     "aiHelp": "Ayuda IA",
-    "intake": "Cuestionario Pre-Visita"
+    "intake": "Cuestionario Pre-Visita",
+    "immunizations": "Vacunas",
+    "documents": "Documentos",
+    "consents": "Consentimientos"
   },
   "dashboard": {
     "welcome": "Bienvenido",

@@ -1,7 +1,7 @@
 # VistA-Evolved System Audit
 
-> Generated: 2026-02-26T01:57:07.656Z  
-> HEAD: dbf627f  
+> Generated: 2026-02-26T02:30:47.220Z  
+> HEAD: 4abd719  
 > Node: v24.13.0 | pnpm: 10.29.2
 
 ## What Is Truly Wired End-to-End
@@ -32,9 +32,9 @@
 ## Durability Posture
 
 - **SQLite tables:** 46
-- **In-memory Map stores:** 172
+- **In-memory Map stores:** 173
 - **High-risk (data loss on restart):** 37
-- **Medium-risk:** 27
+- **Medium-risk:** 28
 - **JSON seed/mutable stores:** 16
 
 ### High-Risk In-Memory Stores
@@ -61,19 +61,19 @@
 
 - **Unique RPCs used in code:** 85
 - **RPCs in registry:** 162
-- **Total call sites:** 165
+- **Total call sites:** 172
 - **Unregistered RPCs used:** 4
 - **Unused registered RPCs:** 56
 
 ## API Inventory
 
-- **Total endpoints:** 1230
-- **By tag:** vista(546), rcm(348), other(96), admin(84), portal(82), infra(60), scheduling(25), imaging(20), analytics(14), telehealth(13), interop(10), iam(9), posture(6), auth(3)
+- **Total endpoints:** 1235
+- **By tag:** vista(546), rcm(348), other(96), portal(87), admin(84), infra(60), scheduling(25), imaging(20), analytics(14), telehealth(13), interop(10), iam(9), posture(6), auth(3)
 
 ## UI Inventory
 
 - **web:** 51 pages, 39 dead-click markers
-- **portal:** 23 pages, 9 dead-click markers
+- **portal:** 25 pages, 11 dead-click markers
 
 ## CI Enforcement Posture
 
@@ -91,9 +91,9 @@
 
 | Marker | Files | Total Hits |
 |--------|-------|------------|
-| integration_pending | 64 | 339 |
+| integration_pending | 65 | 342 |
 | mock | 2 | 2 |
-| placeholder | 74 | 198 |
+| placeholder | 75 | 199 |
 | todo | 1 | 1 |
 | fixme | 0 | 0 |
 | local_only | 4 | 6 |
