@@ -517,7 +517,7 @@ export default async function emarRoutes(server: FastifyInstance) {
     immutableAudit("emar.administer", "success", auditActor(session), { detail: { dfn, orderIEN, action, status: "integration-pending" } });
 
     return reply.code(202).send({
-      ok: true,
+      ok: false,
       source: "integration-pending",
       status: "integration-pending",
       message: "Medication administration recording requires BCMA/PSB package. This attempt has been logged for audit.",
@@ -618,7 +618,7 @@ export default async function emarRoutes(server: FastifyInstance) {
     immutableAudit("emar.barcode-scan", "success", auditActor(session), { detail: { dfn, barcodeLength: barcode.length, status: "integration-pending" } });
 
     return reply.code(202).send({
-      ok: true,
+      ok: false,
       source: "integration-pending",
       status: "integration-pending",
       message: "Barcode medication verification requires BCMA/PSB package with PSJBCMA routines",

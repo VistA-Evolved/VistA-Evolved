@@ -215,7 +215,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
     try {
       const lines = await safeCallRpc("ORQPT WARD PATIENTS", [ward]);
       const items = parsePatientList(lines);
-      immutableAudit("nursing.vitals", "success", auditActor(session), { detail: { ward, count: items.length, context: "ward-patients" } });
+      immutableAudit("nursing.ward-patients", "success", auditActor(session), { detail: { ward, count: items.length, context: "ward-patients" } });
       return {
         ok: true,
         source: "vista",
@@ -449,7 +449,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
         nextVitalsDue: "Unknown",
         overdue: false,
         rpcUsed: [],
-        pendingTargets: ["ORQQVI VITALS"],
+        pendingTargets: [{ rpc: "ORQQVI VITALS", package: "OR", reason: "RPC call failed" }],
         _error: "RPC call failed",
       };
     }
@@ -641,6 +641,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
     try {
       const lines = await safeCallRpc("TIU GET RECORD TEXT", [ien]);
+      immutableAudit("nursing.note-text", "success", auditActor(session), { detail: { ien } });
       return {
         ok: true,
         source: "vista",
@@ -651,6 +652,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
       };
     } catch (err) {
       log.warn("TIU GET RECORD TEXT failed", { ien, err: String(err) });
+      immutableAudit("nursing.note-text", "error", auditActor(session), { detail: { ien, error: "RPC call failed" } });
       return {
         ok: false,
         source: "vista",

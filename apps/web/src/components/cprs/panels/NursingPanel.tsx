@@ -31,7 +31,7 @@ interface NursingResponse<T> {
   status?: string;
   note?: string;
 }
-interface FlowsheetEntry { category: string; label: string; value: string; date: string; units?: string }
+interface FlowsheetEntry { type: string; value: string; date: string; units?: string; critical?: boolean }
 interface HandoffReport { id: string; ward: string; shiftLabel: string; status: string; createdAt: string; patients?: unknown[] }
 
 /* ------------------------------------------------------------------ */
@@ -293,18 +293,18 @@ function FlowsheetTab({ dfn }: { dfn: string }) {
           <thead>
             <tr style={{ borderBottom: '1px solid var(--cprs-border, #ccc)', textAlign: 'left' }}>
               <th style={{ padding: '4px 8px' }}>Date</th>
-              <th style={{ padding: '4px 8px' }}>Category</th>
-              <th style={{ padding: '4px 8px' }}>Measure</th>
+              <th style={{ padding: '4px 8px' }}>Type</th>
               <th style={{ padding: '4px 8px' }}>Value</th>
+              <th style={{ padding: '4px 8px' }}>Flag</th>
             </tr>
           </thead>
           <tbody>
             {data.items.map((f, i) => (
-              <tr key={i} style={{ borderBottom: '1px solid var(--cprs-border, #eee)' }}>
+            <tr key={i} style={{ borderBottom: '1px solid var(--cprs-border, #eee)', background: f.critical ? 'rgba(220,38,38,0.08)' : undefined }}>
                 <td style={{ padding: '4px 8px' }}>{f.date}</td>
-                <td style={{ padding: '4px 8px' }}>{f.category}</td>
-                <td style={{ padding: '4px 8px' }}>{f.label}</td>
+                <td style={{ padding: '4px 8px' }}>{f.type}</td>
                 <td style={{ padding: '4px 8px' }}>{f.value}{f.units ? ` ${f.units}` : ''}</td>
+                <td style={{ padding: '4px 8px' }}>{f.critical ? '⚠' : ''}</td>
               </tr>
             ))}
           </tbody>

@@ -122,6 +122,8 @@ export type ImmutableAuditAction =
   | "nursing.assessments"
   | "nursing.context"
   | "nursing.thresholds"
+  | "nursing.ward-patients"
+  | "nursing.note-text"
   | "emar.schedule"
   | "emar.allergies"
   | "emar.history"
