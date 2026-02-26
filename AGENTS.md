@@ -1239,7 +1239,7 @@ data/vista/
   rpc-catalog-snapshot.json       -- Versioned RPC catalog (137 RPCs + 59 exceptions) (Phase 148)
 
 scripts/
-  verify-vista-compat.ps1         -- Compatibility test (13 gates) (Phase 148)
+  verify-vista-compat.ps1         -- Compatibility test (14 gates) (Phase 148)
 
 docs/runbooks/
   vista-distro-lane.md            -- Build, run, swap, cutover runbook (Phase 148)

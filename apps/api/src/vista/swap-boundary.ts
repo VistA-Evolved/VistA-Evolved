@@ -134,6 +134,16 @@ export interface VistaSwapBoundary {
   };
 }
 
+// ---- Helpers ----
+
+/** Parse VISTA_PORT with NaN defence (F1 audit fix) */
+function parsePort(fallback: number): number {
+  const raw = process.env.VISTA_PORT;
+  if (!raw) return fallback;
+  const n = parseInt(raw, 10);
+  return Number.isNaN(n) ? fallback : n;
+}
+
 // ---- Factory Functions ----
 
 /** Build a swap boundary descriptor for the dev sandbox */
@@ -144,7 +154,7 @@ export function devSandboxBoundary(): VistaSwapBoundary {
     contractVersion: "1.0.0",
     connection: {
       host: process.env.VISTA_HOST || "127.0.0.1",
-      port: Number(process.env.VISTA_PORT || 9430),
+      port: parsePort(9430),
       protocol: "xwb",
     },
     capabilities: {
@@ -160,7 +170,7 @@ export function devSandboxBoundary(): VistaSwapBoundary {
       brokerBind: "0.0.0.0",
     },
     probes: {
-      readiness: { type: "tcp", port: Number(process.env.VISTA_PORT || 9430) },
+      readiness: { type: "tcp", port: parsePort(9430) },
       liveness: { type: "rpc", rpcName: "XUS SIGNON SETUP" },
     },
   };
@@ -174,7 +184,7 @@ export function distroLaneBoundary(): VistaSwapBoundary {
     contractVersion: "1.0.0",
     connection: {
       host: process.env.VISTA_HOST || "127.0.0.1",
-      port: Number(process.env.VISTA_PORT || 9431),
+      port: parsePort(9431),
       protocol: "xwb",
     },
     capabilities: {
@@ -190,7 +200,7 @@ export function distroLaneBoundary(): VistaSwapBoundary {
       brokerBind: "0.0.0.0",
     },
     probes: {
-      readiness: { type: "tcp", port: Number(process.env.VISTA_PORT || 9431) },
+      readiness: { type: "tcp", port: parsePort(9431) },
       liveness: { type: "rpc", rpcName: "XUS SIGNON SETUP" },
     },
   };
@@ -198,7 +208,7 @@ export function distroLaneBoundary(): VistaSwapBoundary {
 
 /** Get the active swap boundary based on current env config */
 export function activeSwapBoundary(): VistaSwapBoundary {
-  const port = Number(process.env.VISTA_PORT || 9430);
+  const port = parsePort(9430);
   // Heuristic: port 9431 = distro lane, 9430 = dev sandbox
   // In practice, the VISTA_INSTANCE_ID env var is more reliable
   const instanceId = process.env.VISTA_INSTANCE_ID || (port === 9431 ? "vista-distro-lane" : "worldvista-docker-sandbox");

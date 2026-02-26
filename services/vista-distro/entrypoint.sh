@@ -82,9 +82,13 @@ service vista-broker
     socket_type  = stream
     protocol     = tcp
     wait         = no
+    # NOTE: xinetd runs as 'vista' user (Dockerfile USER directive), so
+    # the 'user' directive below is informational only (xinetd cannot
+    # switch users without root). Child processes inherit 'vista'.
     user         = vista
     bind         = ${BROKER_BIND}
     port         = ${BROKER_PORT}
+    # ydb is the standard YottaDB binary/symlink in r2.x images
     server       = /opt/yottadb/current/ydb
     server_args  = -run XWBTCPL
     instances    = 128
