@@ -1,7 +1,7 @@
 # VistA-Evolved System Audit
 
-> Generated: 2026-02-26T15:04:37.456Z  
-> HEAD: 3c1b13a  
+> Generated: 2026-02-26T23:17:26.383Z  
+> HEAD: 4904cdf  
 > Node: v24.13.0 | pnpm: 10.29.2
 
 ## What Is Truly Wired End-to-End
@@ -23,10 +23,10 @@
 
 | Domain | Status | Top Gap |
 |--------|--------|---------|
-| PORTAL_PATIENT | local_only | All portal stores are in-memory Maps |
-| TELEHEALTH | local_only | Room store is in-memory, resets on restart |
+| PORTAL_PATIENT | local_only | Portal stores use write-through Map+PG (pg_backed). Hot cache resets on restart but DB is source of truth. |
+| TELEHEALTH | local_only | Room store is pg_backed (write-through). Rooms are ephemeral (4h TTL) by design. Target: VistA SDEC APPOINTMENT STATUS for future scheduling linkage. |
 | REPORTING | local_only | Report cache is in-memory |
-| SCHEDULING_SDMODULE | integration_pending | SD scheduling RPCs named but sandbox data sparse |
+| SCHEDULING_SDMODULE | integration_pending | SDES RPCs callable but WorldVistA File 44 lacks resource/slot config. Target: SDES GET APPT TYPES, SDOE LIST ENCOUNTERS, SD W/L CREATE FILE. requestStore is pg_backed. |
 | INTERNATIONALIZATION | planned | No i18n framework integrated |
 
 ## Durability Posture
@@ -104,26 +104,26 @@
 
 | # | Severity | Domain | Gap | Key File |
 |---|----------|--------|-----|----------|
-| 1 | high | SCHEDULING_SDMODULE | SD scheduling RPCs named but sandbox data sparse | apps/api/src/routes/scheduling |
-| 2 | high | PORTAL_PATIENT | All portal stores are in-memory Maps | apps/api/src/portal-iam/access-log-store.ts |
-| 3 | high | TELEHEALTH | Room store is in-memory, resets on restart | apps/api/src/telehealth/room-store.ts |
-| 4 | high | IMAGING | Imaging worklist/ingest are in-memory | apps/api/src/services/imaging-worklist.ts |
-| 5 | high | RCM_CORE | Claim store is in-memory Map | apps/api/src/rcm/domain/claim-store.ts |
-| 6 | high | PAYER_INTEGRATIONS_PH | PhilHealth API not tested with live endpoint | apps/api/src/rcm/connectors/philhealth-connector.ts |
-| 7 | high | PAYER_INTEGRATIONS_US | Clearinghouse connector scaffold, no live integration | apps/api/src/rcm/connectors/clearinghouse-connector.ts |
-| 8 | high | MULTI_TENANCY | RLS policies gated by PLATFORM_PG_RLS_ENABLED | apps/api/src/posture/tenant-posture.ts |
-| 9 | high | MULTI_TENANCY | SQLite tables lack tenant isolation | apps/api/src/platform/db/schema.ts |
-| 10 | high | DATABASE_POSTURE | 33 high-risk in-memory stores lose data on restart | apps/api/src/adapters/adapter-loader.ts |
-| 11 | med | AUTH_IAM | OIDC is opt-in, not default | apps/api/src/auth/oidc-provider.ts |
-| 12 | med | CPRS_UI | Multiple admin pages may have placeholder content |  |
-| 13 | med | ORDERS_CPOE | Order signing workflow may be incomplete in sandbox | apps/api/src/routes/cprs/orders-cpoe.ts |
-| 14 | med | PORTAL_PATIENT | Portal auth is separate from VistA auth | apps/api/src/routes/portal-auth.ts |
-| 15 | med | IMAGING | Orthanc integration requires external Docker service | services/imaging/docker-compose.yml |
-| 16 | med | INTEROP_HL7_HLO | Custom M routines must be installed in Docker | services/vista/ZVEMIOP.m |
-| 17 | med | AI_GOVERNANCE | AI model integration is scaffold only |  |
-| 18 | med | AUDIT_COMPLIANCE | Audit JSONL files are append-only but not externally replicated | apps/api/src/lib/immutable-audit.ts |
-| 19 | low | AUTH_IAM | Passkey data delegated to Keycloak (not available in sandbox) | apps/api/src/auth/biometric/passkeys-provider.ts |
-| 20 | low | VISTA_RPC_COVERAGE | 70 registered RPCs not called in code |  |
+| 1 | med | AUTH_IAM | OIDC is opt-in, not default | apps/api/src/auth/oidc-provider.ts |
+| 2 | med | CPRS_UI | Multiple admin pages may have placeholder content |  |
+| 3 | med | ORDERS_CPOE | Order signing workflow may be incomplete in sandbox | apps/api/src/routes/cprs/orders-cpoe.ts |
+| 4 | med | SCHEDULING_SDMODULE | SDES RPCs callable but WorldVistA File 44 lacks resource/slot config. Target: SDES GET APPT TYPES, SDOE LIST ENCOUNTERS, SD W/L CREATE FILE. requestStore is pg_backed. | apps/api/src/routes/scheduling |
+| 5 | med | PORTAL_PATIENT | Portal auth is separate from VistA auth | apps/api/src/routes/portal-auth.ts |
+| 6 | med | IMAGING | Orthanc integration requires external Docker service | services/imaging/docker-compose.yml |
+| 7 | med | INTEROP_HL7_HLO | Custom M routines must be installed in Docker | services/vista/ZVEMIOP.m |
+| 8 | med | PAYER_INTEGRATIONS_PH | PhilHealth eClaims 3.0 connector is simulation scaffold. Blocked by: facility accreditation, TLS client cert (PKI), API access enrollment. Target: PhilHealth eClaims 3.0 REST /api/v3. | apps/api/src/rcm/connectors/philhealth-connector.ts |
+| 9 | med | PAYER_INTEGRATIONS_US | Clearinghouse connector is simulation scaffold. Blocked by: vendor contract (Change Healthcare/Availity/WayStar), SFTP credentials, sender/receiver ID enrollment. Target: vendor SFTP/API. | apps/api/src/rcm/connectors/clearinghouse-connector.ts |
+| 10 | med | AI_GOVERNANCE | AI model integration is scaffold only |  |
+| 11 | med | AUDIT_COMPLIANCE | Audit JSONL files are append-only but not externally replicated | apps/api/src/lib/immutable-audit.ts |
+| 12 | med | DATABASE_POSTURE | 33 Map stores flagged high-risk. Critical stores (claims, portal, imaging, telehealth, scheduling) are pg_backed via write-through. Remaining are rebuildable caches or ephemeral by design. | apps/api/src/adapters/adapter-loader.ts |
+| 13 | low | AUTH_IAM | Passkey data delegated to Keycloak (not available in sandbox) | apps/api/src/auth/biometric/passkeys-provider.ts |
+| 14 | low | VISTA_RPC_COVERAGE | 70 registered RPCs not called in code |  |
+| 15 | low | PORTAL_PATIENT | Portal stores use write-through Map+PG (pg_backed). Hot cache resets on restart but DB is source of truth. | apps/api/src/portal-iam/access-log-store.ts |
+| 16 | low | TELEHEALTH | Room store is pg_backed (write-through). Rooms are ephemeral (4h TTL) by design. Target: VistA SDEC APPOINTMENT STATUS for future scheduling linkage. | apps/api/src/telehealth/room-store.ts |
+| 17 | low | IMAGING | Imaging worklist/ingest are pg_backed (Phase 128 write-through + rehydration). Target: VistA ORWDXR NEW ORDER, RAD/NUC MED REGISTER for native storage. | apps/api/src/services/imaging-worklist.ts |
+| 18 | low | RCM_CORE | Claim store is pg_backed since Phase 126 (rcm_claim + rcm_remittance tables). Map is write-through cache. Target: VistA ^IB/^PRCA for production billing. | apps/api/src/rcm/domain/claim-store.ts |
+| 19 | low | RCM_CORE | CLAIM_SUBMISSION_ENABLED=false by default (intentional safety gate) | apps/api/src/rcm/edi/pipeline.ts |
+| 20 | low | REPORTING | Report cache is in-memory | apps/api/src/routes/reporting.ts |
 
 ---
 *This audit is auto-generated by `pnpm audit:system`. Do not edit manually.*

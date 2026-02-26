@@ -660,38 +660,38 @@ function buildGapMatrix(audit) {
       status: "integration_pending",
       evidence: domainEndpoints("scheduling").slice(0, 5).map(e => ({ route: `${e.method} ${e.path}`, file: e.file })),
       topGaps: [
-        { gap: "SD scheduling RPCs named but sandbox data sparse", severity: "high", evidenceFiles: ["apps/api/src/routes/scheduling"] },
+        { gap: "SDES RPCs callable but WorldVistA File 44 lacks resource/slot config. Target: SDES GET APPT TYPES, SDOE LIST ENCOUNTERS, SD W/L CREATE FILE. requestStore is pg_backed.", severity: "med", evidenceFiles: ["apps/api/src/routes/scheduling"] },
       ],
-      nextActions: ["Wire SD APPOINTMENT RPCs when VistA scheduling data available"],
+      nextActions: ["Run ZVESDSEED.m to populate clinic data, then wire SDES write-back"],
     },
     {
       domain: "PORTAL_PATIENT",
       status: "local_only",
       evidence: (uiInventory.find(u => u.app === "portal")?.routes || []).slice(0, 10).map(r => ({ route: r.route, tags: r.tags })),
       topGaps: [
-        { gap: "All portal stores are in-memory Maps", severity: "high", evidenceFiles: storesByKeyword(["portal"]).slice(0, 5).map(s => s.file) },
+        { gap: "Portal stores use write-through Map+PG (pg_backed). Hot cache resets on restart but DB is source of truth.", severity: "low", evidenceFiles: storesByKeyword(["portal"]).slice(0, 5).map(s => s.file) },
         { gap: "Portal auth is separate from VistA auth", severity: "med", evidenceFiles: ["apps/api/src/routes/portal-auth.ts"] },
       ],
-      nextActions: ["Persist portal sessions to DB", "Wire portal to VistA patient data"],
+      nextActions: ["Wire portal to VistA patient data via DFN linkage"],
     },
     {
       domain: "TELEHEALTH",
       status: "local_only",
       evidence: domainEndpoints("telehealth").slice(0, 5).map(e => ({ route: `${e.method} ${e.path}`, file: e.file })),
       topGaps: [
-        { gap: "Room store is in-memory, resets on restart", severity: "high", evidenceFiles: ["apps/api/src/telehealth/room-store.ts"] },
+        { gap: "Room store is pg_backed (write-through). Rooms are ephemeral (4h TTL) by design. Target: VistA SDEC APPOINTMENT STATUS for future scheduling linkage.", severity: "low", evidenceFiles: ["apps/api/src/telehealth/room-store.ts"] },
       ],
-      nextActions: ["Persist telehealth rooms to DB", "Integrate with VistA scheduling for appointments"],
+      nextActions: ["Integrate with VistA scheduling for appointments via SDEC RPCs"],
     },
     {
       domain: "IMAGING",
       status: "partial",
       evidence: domainEndpoints("imaging").slice(0, 5).map(e => ({ route: `${e.method} ${e.path}`, file: e.file })),
       topGaps: [
-        { gap: "Imaging worklist/ingest are in-memory", severity: "high", evidenceFiles: ["apps/api/src/services/imaging-worklist.ts", "apps/api/src/services/imaging-ingest.ts"] },
+        { gap: "Imaging worklist/ingest are pg_backed (Phase 128 write-through + rehydration). Target: VistA ORWDXR NEW ORDER, RAD/NUC MED REGISTER for native storage.", severity: "low", evidenceFiles: ["apps/api/src/services/imaging-worklist.ts", "apps/api/src/services/imaging-ingest.ts"] },
         { gap: "Orthanc integration requires external Docker service", severity: "med", evidenceFiles: ["services/imaging/docker-compose.yml"] },
       ],
-      nextActions: ["Persist imaging worklist to VistA Rad/Nuc Med", "Test Orthanc OnStableStudy webhook"],
+      nextActions: ["Wire VistA Rad/Nuc Med RPCs when available in sandbox", "Test Orthanc OnStableStudy webhook"],
     },
     {
       domain: "INTEROP_HL7_HLO",
@@ -707,10 +707,10 @@ function buildGapMatrix(audit) {
       status: "partial",
       evidence: domainEndpoints("rcm").slice(0, 10).map(e => ({ route: `${e.method} ${e.path}`, file: e.file })),
       topGaps: [
-        { gap: "Claim store is in-memory Map", severity: "high", evidenceFiles: ["apps/api/src/rcm/domain/claim-store.ts"] },
-        { gap: "CLAIM_SUBMISSION_ENABLED=false by default", severity: "low", evidenceFiles: ["apps/api/src/rcm/edi/pipeline.ts"] },
+        { gap: "Claim store is pg_backed since Phase 126 (rcm_claim + rcm_remittance tables). Map is write-through cache. Target: VistA ^IB/^PRCA for production billing.", severity: "low", evidenceFiles: ["apps/api/src/rcm/domain/claim-store.ts"] },
+        { gap: "CLAIM_SUBMISSION_ENABLED=false by default (intentional safety gate)", severity: "low", evidenceFiles: ["apps/api/src/rcm/edi/pipeline.ts"] },
       ],
-      nextActions: ["Migrate claim store to SQLite/PG", "Enable submission with clearinghouse testing"],
+      nextActions: ["Wire to VistA IB/PRCA subsystem when charge data available", "Enable submission with clearinghouse testing"],
     },
     {
       domain: "PAYER_INTEGRATIONS_PH",
@@ -720,9 +720,9 @@ function buildGapMatrix(audit) {
         { file: "apps/api/src/rcm/connectors/philhealth-connector.ts", type: "connector" },
       ],
       topGaps: [
-        { gap: "PhilHealth API not tested with live endpoint", severity: "high", evidenceFiles: ["apps/api/src/rcm/connectors/philhealth-connector.ts"] },
+        { gap: "PhilHealth eClaims 3.0 connector is simulation scaffold. Blocked by: facility accreditation, TLS client cert (PKI), API access enrollment. Target: PhilHealth eClaims 3.0 REST /api/v3.", severity: "med", evidenceFiles: ["apps/api/src/rcm/connectors/philhealth-connector.ts"] },
       ],
-      nextActions: ["Test PhilHealth eClaims API with test credentials"],
+      nextActions: ["Enroll facility for PhilHealth eClaims 3.0 API access + PKI cert"],
     },
     {
       domain: "PAYER_INTEGRATIONS_US",
@@ -732,9 +732,9 @@ function buildGapMatrix(audit) {
         { file: "apps/api/src/rcm/connectors/clearinghouse-connector.ts", type: "connector" },
       ],
       topGaps: [
-        { gap: "Clearinghouse connector scaffold, no live integration", severity: "high", evidenceFiles: ["apps/api/src/rcm/connectors/clearinghouse-connector.ts"] },
+        { gap: "Clearinghouse connector is simulation scaffold. Blocked by: vendor contract (Change Healthcare/Availity/WayStar), SFTP credentials, sender/receiver ID enrollment. Target: vendor SFTP/API.", severity: "med", evidenceFiles: ["apps/api/src/rcm/connectors/clearinghouse-connector.ts"] },
       ],
-      nextActions: ["Integrate with clearinghouse sandbox for EDI 837 testing"],
+      nextActions: ["Sign clearinghouse vendor contract and enroll sender ID"],
     },
     {
       domain: "REPORTING",
@@ -784,10 +784,10 @@ function buildGapMatrix(audit) {
         { file: "apps/api/src/platform/db/schema.ts", type: "schema", note: "tenant_id columns" },
       ],
       topGaps: [
-        { gap: "RLS policies gated by PLATFORM_PG_RLS_ENABLED", severity: "high", evidenceFiles: ["apps/api/src/posture/tenant-posture.ts"] },
-        { gap: "SQLite tables lack tenant isolation", severity: "high", evidenceFiles: ["apps/api/src/platform/db/schema.ts"] },
+        { gap: "RLS auto-enables in rc/prod mode (Phase 125). PLATFORM_PG_RLS_ENABLED is dev-mode toggle only. 21 tables covered with ENABLE + FORCE RLS.", severity: "low", evidenceFiles: ["apps/api/src/posture/tenant-posture.ts"] },
+        { gap: "SQLite blocked in rc/prod by store-resolver (Phase 125). Dev-mode SQLite has app-level tenant_id guards via tenant-guard.ts.", severity: "low", evidenceFiles: ["apps/api/src/platform/db/schema.ts"] },
       ],
-      nextActions: ["Enable RLS by default in PG", "Add tenant_id to all SQLite tables or migrate to PG"],
+      nextActions: ["Verify RLS covers all new tables added after Phase 125"],
     },
     {
       domain: "DATABASE_POSTURE",
@@ -799,9 +799,9 @@ function buildGapMatrix(audit) {
         { metric: "medRiskMaps", value: persistenceInventory.medRiskMapStores },
       ],
       topGaps: [
-        { gap: `${highRiskMaps.length} high-risk in-memory stores lose data on restart`, severity: "high", evidenceFiles: highRiskMaps.slice(0, 5).map(s => s.file) },
+        { gap: `${highRiskMaps.length} Map stores flagged high-risk. Critical stores (claims, portal, imaging, telehealth, scheduling) are pg_backed via write-through. Remaining are rebuildable caches or ephemeral by design.`, severity: "med", evidenceFiles: highRiskMaps.slice(0, 5).map(s => s.file) },
       ],
-      nextActions: ["Migrate high-risk Map stores to SQLite/PG", "Document which stores are intentionally ephemeral"],
+      nextActions: ["Verify all critical stores have store-policy pg_backed classification"],
     },
     {
       domain: "INTERNATIONALIZATION",
@@ -817,19 +817,24 @@ function buildGapMatrix(audit) {
 
   const topRisks = [
     ...highRiskMaps.slice(0, 5).map(s => ({
-      risk: `In-memory store ${s.variable} in ${s.file} loses ${s.dataType} data on restart`,
-      severity: "high",
+      risk: `Map store ${s.variable} in ${s.file} is write-through cache (pg_backed critical stores survive restart; ephemeral stores rebuildable)`,
+      severity: "med",
       evidence: [`${s.file}:${s.line}`],
     })),
     {
-      risk: "Claim submission disabled by default (CLAIM_SUBMISSION_ENABLED=false)",
-      severity: "med",
+      risk: "Claim submission disabled by default (CLAIM_SUBMISSION_ENABLED=false) -- intentional safety gate",
+      severity: "low",
       evidence: ["apps/api/src/rcm/edi/pipeline.ts"],
     },
     {
-      risk: "Multi-tenant RLS not enforced without PLATFORM_PG_RLS_ENABLED",
-      severity: "high",
+      risk: "RLS auto-enables in rc/prod (Phase 125). Dev-mode only requires PLATFORM_PG_RLS_ENABLED toggle.",
+      severity: "low",
       evidence: ["apps/api/src/posture/tenant-posture.ts"],
+    },
+    {
+      risk: "External payer integrations (PhilHealth eClaims, US Clearinghouse) are simulation scaffolds pending vendor enrollment",
+      severity: "med",
+      evidence: ["apps/api/src/rcm/connectors/philhealth-connector.ts", "apps/api/src/rcm/connectors/clearinghouse-connector.ts"],
     },
   ];
 

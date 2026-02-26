@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-26T12:30:20.468Z",
+  "generatedAt": "2026-02-26T23:14:40.944Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 159,
+  "phaseCount": 160,
   "phases": [
     {
       "phaseNumber": "1",
@@ -2438,7 +2438,7 @@
     },
     {
       "phaseNumber": "146",
-      "title": "Durability Wave 3: Store Elimination",
+      "title": "Durability Wave 3: Critical Map Stores to Zero",
       "folder": "151-PHASE-146-DURABILITY-WAVE3",
       "files": [
         "146-01-IMPLEMENT.md",
@@ -2453,11 +2453,16 @@
       "routes": [],
       "rpcs": [],
       "uiComponents": [],
-      "filesTouched": []
+      "filesTouched": [
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/platform/pg/repos/*.ts",
+        "apps/api/src/platform/store-policy.ts",
+        "qa/gauntlet/critical-map-baseline.json"
+      ]
     },
     {
       "phaseNumber": "147",
-      "title": "Scheduling Depth V2: SD Realism + Seeding",
+      "title": "Scheduling Realism Pack: SDES Depth + Truth Gates",
       "folder": "152-PHASE-147-SCHEDULING-DEPTH-V2",
       "files": [
         "147-01-IMPLEMENT.md",
@@ -2469,10 +2474,30 @@
       "verifyFiles": [
         "147-99-VERIFY.md"
       ],
-      "routes": [],
+      "routes": [
+        "/scheduling/appointment-types",
+        "/scheduling/cancel-reasons",
+        "/scheduling/clinic/:ien/resource",
+        "/scheduling/mode",
+        "/scheduling/sdes-availability",
+        "/scheduling/sdes-availability?clinicIen=&startDate=&endDate=",
+        "/scheduling/verify/:ref",
+        "/scheduling/verify/:ref?dfn="
+      ],
       "rpcs": [],
-      "uiComponents": [],
-      "filesTouched": []
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "services/vista/ZVESDSEED.m",
+        "apps/api/src/adapters/scheduling/interface.ts",
+        "apps/api/src/adapters/scheduling/stub-adapter.ts",
+        "apps/api/src/adapters/scheduling/vista-adapter.ts",
+        "apps/api/src/routes/scheduling/index.ts",
+        "apps/api/src/vista/rpcRegistry.ts",
+        "apps/api/src/lib/immutable-audit.ts",
+        "apps/portal/src/app/dashboard/appointments/page.tsx"
+      ]
     },
     {
       "phaseNumber": "148",
@@ -2491,7 +2516,36 @@
       "routes": [],
       "rpcs": [],
       "uiComponents": [],
-      "filesTouched": []
+      "filesTouched": [
+        "apps/api/src/vista/swap-boundary.ts",
+        "data/vista/rpc-catalog-snapshot.json",
+        "scripts/verify-vista-compat.ps",
+        "docs/runbooks/vista-distro-lane.md",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "phaseNumber": "149",
+      "title": "Truth Refresh + Residual Gap Burn-Down",
+      "folder": "154-PHASE-149-TRUTH-REFRESH",
+      "files": [
+        "149-01-IMPLEMENT.md",
+        "149-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "149-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "149-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "docs/audits/system-audit.md",
+        "qa/gauntlet/system-gap-matrix.json",
+        "docs/audits/phase149-burndown.md"
+      ]
     },
     {
       "phaseNumber": "14",

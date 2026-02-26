@@ -11,6 +11,8 @@
  * In strict mode, also checks:
  *   - Gap matrix has >= 15 domains
  *   - No domain has status "unknown"
+ *   - Zero high-severity gaps across all domains (Phase 149)
+ *   - Zero high-severity top risks (Phase 149)
  */
 
 import { execSync } from "node:child_process";
@@ -88,6 +90,26 @@ export async function run(opts = {}) {
         if (unknowns.length > 0) {
           details.push(`  strict: ${unknowns.length} domains with status=unknown`);
           status = "fail";
+        }
+        // Phase 149: zero high-severity gaps
+        const highGaps = (matrix.domains || []).flatMap(d =>
+          (d.topGaps || []).filter(g => g.severity === "high")
+        );
+        if (highGaps.length > 0) {
+          details.push(`  strict: ${highGaps.length} high-severity domain gaps (must be 0)`);
+          for (const g of highGaps.slice(0, 5)) {
+            details.push(`    - ${g.gap}`);
+          }
+          status = "fail";
+        } else {
+          details.push(`  strict: 0 high-severity domain gaps`);
+        }
+        const highRisks = (matrix.topRisks || []).filter(r => r.severity === "high");
+        if (highRisks.length > 0) {
+          details.push(`  strict: ${highRisks.length} high-severity top risks (must be 0)`);
+          status = "fail";
+        } else {
+          details.push(`  strict: 0 high-severity top risks`);
         }
       }
     } catch (err) {
