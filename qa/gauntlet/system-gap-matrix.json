@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-02-25T22:47:05.380Z",
-  "headSha": "aae062d",
+  "generatedAt": "2026-02-26T00:18:51.284Z",
+  "headSha": "3682d7b",
   "domains": [
     {
       "domain": "AUTH_IAM",
@@ -163,7 +163,7 @@
         },
         {
           "metric": "registeredRpcs",
-          "value": 157
+          "value": 162
         },
         {
           "metric": "totalCallSites",
@@ -182,7 +182,7 @@
           ]
         },
         {
-          "gap": "51 registered RPCs not called in code",
+          "gap": "56 registered RPCs not called in code",
           "severity": "low",
           "evidenceFiles": []
         }

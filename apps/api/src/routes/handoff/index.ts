@@ -1,5 +1,5 @@
 /**
- * Phase 86 — Shift Handoff + Signout Routes.
+ * Phase 86 — Shift Handoff + Signout Routes + Phase 138 hardening.
  *
  * Endpoints:
  *   GET    /handoff/reports           -- List handoff reports (filter by ward/status)
@@ -15,15 +15,19 @@
  * VistA RPCs used: ORQPT WARD PATIENTS, ORWPS ACTIVE, ORQQAL LIST (for data assembly).
  * VistA RPCs targeted: CRHD * (58 RPCs, not available in WorldVistA sandbox).
  *
+ * Phase 138 additions:
+ *   - Switched from `audit()` to `immutableAudit()` for hash-chained audit trail
+ *   - All handoff lifecycle events are tracked in immutable audit
+ *
  * Auth: session-based (/handoff/ in AUTH_RULES).
- * Audit: clinical.handoff-create, clinical.handoff-accept, clinical.handoff-view.
+ * Audit: handoff.create, handoff.accept, handoff.view, handoff.submit, handoff.archive.
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { requireSession } from "../../auth/auth-routes.js";
 import { safeCallRpc } from "../../lib/rpc-resilience.js";
 import { log } from "../../lib/logger.js";
-import { audit } from "../../lib/audit.js";
+import { immutableAudit } from "../../lib/immutable-audit.js";
 import {
   createHandoffReport,
   getHandoffReport,
@@ -47,6 +51,11 @@ function actorFromSession(session: any): { duz: string; name: string; role?: str
     name: session?.userName || session?.user?.name || "Unknown User",
     role: session?.role || session?.user?.role,
   };
+}
+
+/** Convert handoff actor to immutableAudit actor shape. */
+function auditActor(actor: { duz: string; name: string; role?: string }): { sub: string; name: string; roles: string[] } {
+  return { sub: actor.duz, name: actor.name, roles: actor.role ? [actor.role] : [] };
 }
 
 /** CRHD migration targets — all responses include these. */
@@ -157,7 +166,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
     }
 
     const actor = actorFromSession(session);
-    audit("phi.patient-list", "success", actor, { detail: { context: "handoff-ward-assembly", ward } });
+    immutableAudit("handoff.ward-patients", "success", auditActor(actor), { detail: { context: "handoff-ward-assembly", ward } });
 
     try {
       const { patients, rpcsUsed } = await assembleWardPatients(ward);
@@ -194,7 +203,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
     const status = query?.status ? String(query.status).trim() : undefined;
 
     const actor = actorFromSession(session);
-    audit("clinical.handoff-view", "success", actor, { detail: { context: "list", ward, status } });
+    immutableAudit("handoff.view", "success", auditActor(actor), { detail: { context: "list", ward, status } });
 
     const reports = listHandoffReports({ ward, status });
     const stats = getStoreStats();
@@ -235,7 +244,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
     }
 
     const actor = actorFromSession(session);
-    audit("clinical.handoff-view", "success", actor, {
+    immutableAudit("handoff.view", "success", auditActor(actor), {
       detail: { handoffId: id, ward: report.ward, status: report.status },
     });
 
@@ -303,7 +312,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
     });
 
     log.info("Handoff report created", { handoffId: report.id, ward, patientCount: report.patients.length });
-    audit("clinical.handoff-create", "success", actor, {
+    immutableAudit("handoff.create", "success", auditActor(actor), {
       detail: { handoffId: report.id, ward, shiftLabel, patientCount: patients.length },
     });
 
@@ -353,7 +362,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
 
     const actor = actorFromSession(session);
     log.info("Handoff report updated", { handoffId: id });
-    audit("clinical.handoff-update", "success", actor, {
+    immutableAudit("handoff.update", "success", auditActor(actor), {
       detail: { handoffId: id, ward: updated.ward },
     });
 
@@ -378,7 +387,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
 
     const actor = actorFromSession(session);
     log.info("Handoff report submitted", { handoffId: id, ward: submitted.ward });
-    audit("clinical.handoff-submit", "success", actor, {
+    immutableAudit("handoff.submit", "success", auditActor(actor), {
       detail: { handoffId: id, ward: submitted.ward },
     });
 
@@ -403,7 +412,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
     }
 
     log.info("Handoff report accepted", { handoffId: id, acceptedBy: actor.duz, ward: accepted.ward });
-    audit("clinical.handoff-accept", "success", actor, {
+    immutableAudit("handoff.accept", "success", auditActor(actor), {
       detail: { handoffId: id, ward: accepted.ward, acceptedBy: actor.duz },
     });
 
@@ -428,7 +437,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
 
     const actor = actorFromSession(session);
     log.info("Handoff report archived", { handoffId: id, ward: archived.ward });
-    audit("clinical.handoff-archive", "success", actor, {
+    immutableAudit("handoff.archive", "success", auditActor(actor), {
       detail: { handoffId: id, ward: archived.ward },
     });
 

@@ -1,8 +1,26 @@
-# Phase 137: ADT + Bedboard + Census (VistA-first)
+# Phase 138 — Nursing DOC + MAR + Handoff (VistA-first)
 
 ## What Changed
 
-### New Files
+### Infrastructure Wiring
+- **immutable-audit.ts**: Added 23 new audit actions (nursing.*, emar.*, handoff.*)
+- **rpcRegistry.ts**: Added 5 RPC exceptions (PSB MED LOG, PSB ALLERGY, PSJBCMA, GMRIO RESULTS, GMRIO ADD)
+- **capabilities.json**: Added 14 new capabilities (8 live, 6 pending)
+- **modules.json**: Added `/emar/` and `/handoff/` route patterns to clinical module
+
+### API Route Hardening
+- **nursing/index.ts**: All 14 endpoints hardened with immutableAudit, session, pendingFallback ok:false
+- **emar/index.ts**: All 6 endpoints hardened with immutableAudit, session, pendingFallback ok:false
+- **handoff/index.ts**: All 8 endpoints switched from audit() to immutableAudit()
+
+### UI Enhancement
+- **NursingPanel.tsx**: CSRF headers, Flowsheet tab, Handoff tab (6 sub-tabs total)
+
+## Verifier Output
+- Gauntlet FAST: 4P/0F/1W
+- Gauntlet RC: 15P/0F/1W
+- TypeScript API: Clean
+- Next.js build: Clean
 - services/vista/ZVEADT.m -- Custom M routine: WARDS, BEDS, MVHIST entry points for inpatient ADT
 - apps/web/src/app/inpatient/census/page.tsx -- Ward census UI (ward grid + drill-down patient table)
 - apps/web/src/app/inpatient/bedboard/page.tsx -- Bed board UI (ward selector + bed grid visualization)

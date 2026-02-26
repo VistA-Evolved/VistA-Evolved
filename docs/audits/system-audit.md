@@ -1,7 +1,7 @@
 # VistA-Evolved System Audit
 
-> Generated: 2026-02-25T22:47:04.606Z  
-> HEAD: aae062d  
+> Generated: 2026-02-26T00:18:50.476Z  
+> HEAD: 3682d7b  
 > Node: v24.13.0 | pnpm: 10.29.2
 
 ## What Is Truly Wired End-to-End
@@ -60,10 +60,10 @@
 ## VistA RPC Coverage
 
 - **Unique RPCs used in code:** 85
-- **RPCs in registry:** 157
+- **RPCs in registry:** 162
 - **Total call sites:** 165
 - **Unregistered RPCs used:** 4
-- **Unused registered RPCs:** 51
+- **Unused registered RPCs:** 56
 
 ## API Inventory
 
@@ -91,7 +91,7 @@
 
 | Marker | Files | Total Hits |
 |--------|-------|------------|
-| integration_pending | 63 | 327 |
+| integration_pending | 63 | 337 |
 | mock | 2 | 2 |
 | placeholder | 74 | 198 |
 | todo | 1 | 1 |

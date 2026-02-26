@@ -244,6 +244,12 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
   { name: "ZVEADT WARDS", reason: "Custom RPC installed by VistA-Evolved (ZVEADT.m) for ward census with bed counts (Phase 137)" },
   { name: "ZVEADT BEDS", reason: "Custom RPC installed by VistA-Evolved (ZVEADT.m) for bed-level occupancy (Phase 137)" },
   { name: "ZVEADT MVHIST", reason: "Custom RPC installed by VistA-Evolved (ZVEADT.m) for patient movement history from File 405 (Phase 137)" },
+  // Phase 138: BCMA/PSB RPCs — target RPCs for nursing MAR + eMAR integration (not in WorldVistA sandbox)
+  { name: "PSB MED LOG", reason: "BCMA medication log read/write — requires PSB package not available in WorldVistA Docker (Phase 138)" },
+  { name: "PSB ALLERGY", reason: "BCMA allergy check at med administration time — requires PSB package (Phase 138)" },
+  { name: "PSJBCMA", reason: "Barcode-to-medication lookup via PSJ BCMA routines — requires PSJ/PSB packages (Phase 138)" },
+  { name: "GMRIO RESULTS", reason: "I&O results from GMR(126) — RPC not exposed via OR CPRS GUI CHART context (Phase 138)" },
+  { name: "GMRIO ADD", reason: "I&O entry add — requires GMR IO package configuration (Phase 138)" },
 ];
 
 /* ------------------------------------------------------------------ */

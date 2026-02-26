@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-25T22:43:43.108Z",
+  "generatedAt": "2026-02-26T00:14:28.216Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 148,
+  "phaseCount": 149,
   "phases": [
     {
       "phaseNumber": "1",
@@ -2085,6 +2085,40 @@
         "services/vista/ZVEADT.m",
         "config/capabilities.json",
         "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "138",
+      "title": "IMPLEMENT: Nursing DOC + MAR + Handoff (VistA-First)",
+      "folder": "143-PHASE-138-NURSING-DOC-MAR-HANDOFF",
+      "files": [
+        "138-01-IMPLEMENT.md",
+        "138-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "138-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "138-99-VERIFY.md"
+      ],
+      "routes": [
+        "/emar/",
+        "/handoff/",
+        "/handoff/reports"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "NursingPanel.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/lib/immutable-audit.ts",
+        "apps/api/src/vista/rpcRegistry.ts",
+        "config/capabilities.json",
+        "config/modules.json",
+        "apps/api/src/routes/nursing/index.ts",
+        "apps/api/src/routes/emar/index.ts",
+        "apps/api/src/routes/handoff/index.ts",
+        "apps/web/src/components/cprs/panels/NursingPanel.tsx"
       ]
     },
     {

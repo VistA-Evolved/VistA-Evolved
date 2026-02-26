@@ -60,7 +60,9 @@
         "^/vista/inbox",
         "^/vista/mailman",
         "^/vista/adt",
-        "^/vista/nursing"
+        "^/vista/nursing",
+        "^/emar/",
+        "^/handoff/"
       ],
       "dependencies": ["kernel"],
       "adapters": ["clinical-engine"],

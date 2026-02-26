@@ -109,7 +109,32 @@ export type ImmutableAuditAction =
   | "inpatient.wards"
   | "inpatient.census"
   | "inpatient.bedboard"
-  | "inpatient.movements";
+  | "inpatient.movements"
+  // Phase 138: Nursing documentation + eMAR + handoff audit events
+  | "nursing.vitals"
+  | "nursing.vitals-range"
+  | "nursing.notes"
+  | "nursing.flowsheet"
+  | "nursing.create-note"
+  | "nursing.tasks"
+  | "nursing.mar"
+  | "nursing.io"
+  | "nursing.assessments"
+  | "nursing.context"
+  | "nursing.thresholds"
+  | "emar.schedule"
+  | "emar.allergies"
+  | "emar.history"
+  | "emar.administer"
+  | "emar.duplicate-check"
+  | "emar.barcode-scan"
+  | "handoff.create"
+  | "handoff.view"
+  | "handoff.update"
+  | "handoff.submit"
+  | "handoff.accept"
+  | "handoff.archive"
+  | "handoff.ward-patients";
 
 export type ImmutableAuditOutcome = "success" | "failure" | "denied" | "error";
 

@@ -1,5 +1,5 @@
 /**
- * eMAR + BCMA Posture Routes -- Phase 85.
+ * eMAR + BCMA Posture Routes -- Phase 85 + Phase 138 hardening.
  *
  * Endpoints:
  *   GET  /emar/schedule?dfn=N        -- Active medication schedule from ORWPS ACTIVE (real VistA)
@@ -8,6 +8,11 @@
  *   POST /emar/administer            -- Record administration (integration-pending -> PSB MED LOG)
  *   GET  /emar/duplicate-check?dfn=N -- Heuristic duplicate therapy detection (labeled)
  *   POST /emar/barcode-scan          -- BCMA barcode scan (integration-pending -> PSJBCMA)
+ *
+ * Phase 138 additions:
+ *   - Immutable audit logging on all endpoints
+ *   - pendingFallback returns ok: false (consistency fix)
+ *   - BCMA/PSB RPCs registered in rpcRegistry exceptions
  *
  * Real VistA data for schedule + allergies; integration-pending for BCMA write paths.
  * Every response includes rpcUsed[], pendingTargets[], source.
@@ -20,6 +25,7 @@ import { requireSession } from "../../auth/auth-routes.js";
 import { safeCallRpc } from "../../lib/rpc-resilience.js";
 import { log } from "../../lib/logger.js";
 import { safeErr } from '../../lib/safe-error.js';
+import { immutableAudit } from "../../lib/immutable-audit.js";
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
@@ -32,7 +38,7 @@ function pendingFallback(
   vistaGrounding?: Record<string, unknown>,
 ) {
   return {
-    ok: true,
+    ok: false,
     source: "integration-pending" as const,
     status: "integration-pending" as const,
     label,
@@ -275,9 +281,16 @@ function detectDuplicates(meds: ScheduleEntry[]): Array<{
 
 export default async function emarRoutes(server: FastifyInstance) {
 
+  /** Extract audit actor from session. */
+  function auditActor(session: any): { sub: string; name: string } {
+    const duz = session?.duz || session?.user?.duz || "unknown";
+    const name = session?.userName || session?.user?.name || "unknown";
+    return { sub: duz, name };
+  }
+
   /* ------ GET /emar/schedule?dfn=N ------ */
   server.get("/emar/schedule", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = await requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const dfn = validateDfn((request.query as any)?.dfn, reply);
     if (!dfn) return;
 
@@ -335,6 +348,7 @@ export default async function emarRoutes(server: FastifyInstance) {
         }
       }
 
+      immutableAudit("emar.schedule", "success", auditActor(session), { detail: { dfn, count: meds.length } });
       return {
         ok: true,
         source: "vista",
@@ -364,6 +378,7 @@ export default async function emarRoutes(server: FastifyInstance) {
       };
     } catch (err: any) {
       log.error("eMAR schedule fetch failed", { error: safeErr(err) });
+      immutableAudit("emar.schedule", "error", auditActor(session), { detail: { dfn, error: "RPC failed" } });
       return reply.code(502).send({
         ok: false,
         error: safeErr(err),
@@ -376,7 +391,7 @@ export default async function emarRoutes(server: FastifyInstance) {
 
   /* ------ GET /emar/allergies?dfn=N ------ */
   server.get("/emar/allergies", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = await requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const dfn = validateDfn((request.query as any)?.dfn, reply);
     if (!dfn) return;
 
@@ -419,6 +434,7 @@ export default async function emarRoutes(server: FastifyInstance) {
         }
       }
 
+      immutableAudit("emar.allergies", "success", auditActor(session), { detail: { dfn, count: allergies.length } });
       return {
         ok: true,
         source: "vista",
@@ -436,6 +452,7 @@ export default async function emarRoutes(server: FastifyInstance) {
       };
     } catch (err: any) {
       log.error("eMAR allergy fetch failed", { error: safeErr(err) });
+      immutableAudit("emar.allergies", "error", auditActor(session), { detail: { dfn, error: "RPC failed" } });
       return reply.code(502).send({
         ok: false,
         error: safeErr(err),
@@ -448,10 +465,11 @@ export default async function emarRoutes(server: FastifyInstance) {
 
   /* ------ GET /emar/history?dfn=N (integration-pending) ------ */
   server.get("/emar/history", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = await requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const dfn = validateDfn((request.query as any)?.dfn, reply);
     if (!dfn) return;
 
+    immutableAudit("emar.history", "success", auditActor(session), { detail: { dfn, status: "integration-pending" } });
     return {
       ...pendingFallback("Medication Administration History", [
         { rpc: "PSB MED LOG", package: "PSB", reason: "Administration history requires BCMA/PSB package (not available in WorldVistA sandbox)" },
@@ -466,7 +484,7 @@ export default async function emarRoutes(server: FastifyInstance) {
 
   /* ------ POST /emar/administer (integration-pending) ------ */
   server.post("/emar/administer", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = await requireSession(request, reply);
+    const session = await requireSession(request, reply);
 
     const body = (request.body as any) || {};
     const dfn = String(body.dfn || "").trim();
@@ -496,6 +514,7 @@ export default async function emarRoutes(server: FastifyInstance) {
       action,
       hasReason: !!reason,
     });
+    immutableAudit("emar.administer", "success", auditActor(session), { detail: { dfn, orderIEN, action, status: "integration-pending" } });
 
     return reply.code(202).send({
       ok: true,
@@ -519,7 +538,7 @@ export default async function emarRoutes(server: FastifyInstance) {
 
   /* ------ GET /emar/duplicate-check?dfn=N ------ */
   server.get("/emar/duplicate-check", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = await requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const dfn = validateDfn((request.query as any)?.dfn, reply);
     if (!dfn) return;
 
@@ -553,6 +572,7 @@ export default async function emarRoutes(server: FastifyInstance) {
       const meds = parseActiveMeds(activeLines);
       const duplicates = detectDuplicates(meds);
 
+      immutableAudit("emar.duplicate-check", "success", auditActor(session), { detail: { dfn, duplicateCount: duplicates.length, medCount: meds.length } });
       return {
         ok: true,
         source: "heuristic",
@@ -565,6 +585,7 @@ export default async function emarRoutes(server: FastifyInstance) {
       };
     } catch (err: any) {
       log.error("eMAR duplicate check failed", { error: safeErr(err) });
+      immutableAudit("emar.duplicate-check", "error", auditActor(session), { detail: { dfn, error: "RPC failed" } });
       return reply.code(502).send({
         ok: false,
         error: safeErr(err),
@@ -577,7 +598,7 @@ export default async function emarRoutes(server: FastifyInstance) {
 
   /* ------ POST /emar/barcode-scan (integration-pending) ------ */
   server.post("/emar/barcode-scan", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = await requireSession(request, reply);
+    const session = await requireSession(request, reply);
 
     const body = (request.body as any) || {};
     const barcode = String(body.barcode || "").trim();
@@ -594,6 +615,7 @@ export default async function emarRoutes(server: FastifyInstance) {
     }
 
     log.info("BCMA barcode scan attempt (integration-pending)", { dfn, barcodeLength: barcode.length });
+    immutableAudit("emar.barcode-scan", "success", auditActor(session), { detail: { dfn, barcodeLength: barcode.length, status: "integration-pending" } });
 
     return reply.code(202).send({
       ok: true,

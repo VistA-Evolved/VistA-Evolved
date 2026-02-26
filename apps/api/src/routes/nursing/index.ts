@@ -1,5 +1,5 @@
 /**
- * Nursing Workflow Routes -- Phase 68 + Phase 84 enhancements.
+ * Nursing Workflow Routes -- Phase 68 + Phase 84 + Phase 138 hardening.
  *
  * Phase 68 (original):
  *   GET  /vista/nursing/vitals?dfn=N                        -- Patient vitals (ORQQVI VITALS)
@@ -19,6 +19,11 @@
  *   GET  /vista/nursing/critical-thresholds                 -- Configurable critical value thresholds
  *   GET  /vista/nursing/patient-context?dfn=N               -- Patient banner data
  *
+ * Phase 138 (hardening):
+ *   - Immutable audit logging on all endpoints
+ *   - pendingFallback returns ok: false (consistency fix)
+ *   - BCMA/PSB RPCs registered in rpcRegistry exceptions
+ *
  * Auth: session-based (/vista/* catch-all in security.ts).
  * Every response includes rpcUsed[], pendingTargets[], source.
  */
@@ -28,6 +33,7 @@ import { requireSession } from "../../auth/auth-routes.js";
 import { safeCallRpc, safeCallRpcWithList } from "../../lib/rpc-resilience.js";
 import type { RpcParam } from "../../vista/rpcBrokerClient.js";
 import { log } from "../../lib/logger.js";
+import { immutableAudit } from "../../lib/immutable-audit.js";
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
@@ -39,7 +45,7 @@ function pendingFallback(
   targets: Array<{ rpc: string; package: string; reason: string }>,
 ) {
   return {
-    ok: true,
+    ok: false,
     source: "integration-pending",
     status: "integration-pending",
     label,
@@ -104,24 +110,34 @@ function parsePatientList(lines: string[]): Array<{ dfn: string; name: string }>
 
 export default async function nursingRoutes(server: FastifyInstance) {
 
+  /** Extract audit actor from session for immutableAudit. */
+  function auditActor(session: any): { sub: string; name: string } {
+    const duz = session?.duz || session?.user?.duz || "unknown";
+    const name = session?.userName || session?.user?.name || "unknown";
+    return { sub: duz, name };
+  }
+
   /* ------ GET /vista/nursing/vitals?dfn=N ------ */
   server.get("/vista/nursing/vitals", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = await requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
 
     try {
       const lines = await safeCallRpc("ORQQVI VITALS", [dfn]);
+      const items = parseVitals(lines);
+      immutableAudit("nursing.vitals", "success", auditActor(session), { detail: { dfn, count: items.length } });
       return {
         ok: true,
         source: "vista",
-        items: parseVitals(lines),
+        items,
         rpcUsed: ["ORQQVI VITALS"],
         pendingTargets: [],
       };
     } catch (err) {
       log.warn("Nursing vitals RPC failed, returning pending", { err: String(err), rpc: "ORQQVI VITALS" });
+      immutableAudit("nursing.vitals", "error", auditActor(session), { detail: { dfn, error: "RPC failed" } });
       return pendingFallback("Nursing Vitals", [
         { rpc: "ORQQVI VITALS", package: "OR", reason: "RPC call failed" },
       ]);
@@ -130,7 +146,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/vitals-range?dfn=N&start=D&end=D ------ */
   server.get("/vista/nursing/vitals-range", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = await requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const { dfn, start, end } = request.query as any;
     const dfnStr = String(dfn || "").trim();
     if (!dfnStr) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
@@ -140,16 +156,19 @@ export default async function nursingRoutes(server: FastifyInstance) {
       // ORQQVI VITALS FOR DATE RANGE expects DFN, start date, end date
       const params = [dfnStr, start || "", end || ""];
       const lines = await safeCallRpc("ORQQVI VITALS FOR DATE RANGE", params);
+      const items = parseVitals(lines);
+      immutableAudit("nursing.vitals-range", "success", auditActor(session), { detail: { dfn: dfnStr, count: items.length } });
       return {
         ok: true,
         source: "vista",
-        items: parseVitals(lines),
+        items,
         dateRange: { start: start || null, end: end || null },
         rpcUsed: ["ORQQVI VITALS FOR DATE RANGE"],
         pendingTargets: [],
       };
     } catch (err) {
       log.warn("Nursing vitals-range RPC failed, returning pending", { err: String(err), rpc: "ORQQVI VITALS FOR DATE RANGE" });
+      immutableAudit("nursing.vitals-range", "error", auditActor(session), { detail: { dfn: dfnStr, error: "RPC failed" } });
       return pendingFallback("Nursing Vitals (Shift Range)", [
         { rpc: "ORQQVI VITALS FOR DATE RANGE", package: "OR", reason: "RPC call failed or not available in sandbox" },
       ]);
@@ -158,7 +177,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/notes?dfn=N ------ */
   server.get("/vista/nursing/notes", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = await requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
@@ -167,16 +186,19 @@ export default async function nursingRoutes(server: FastifyInstance) {
       // TIU DOCUMENTS BY CONTEXT: params = [class, context, DFN, ...]
       // Class 3 = Nursing Documents in standard VistA; context 1 = All SIGNED
       const lines = await safeCallRpc("TIU DOCUMENTS BY CONTEXT", ["3", "1", dfn, "", "", "", "", "0", ""]);
+      const items = parseNotesList(lines);
+      immutableAudit("nursing.notes", "success", auditActor(session), { detail: { dfn, count: items.length } });
       return {
         ok: true,
         source: "vista",
-        items: parseNotesList(lines),
+        items,
         rpcUsed: ["TIU DOCUMENTS BY CONTEXT"],
         pendingTargets: [],
         note: "Filtered by TIU document class 3 (Nursing Documents). Class may differ by site.",
       };
     } catch (err) {
       log.warn("Nursing notes RPC failed, returning pending", { err: String(err), rpc: "TIU DOCUMENTS BY CONTEXT" });
+      immutableAudit("nursing.notes", "error", auditActor(session), { detail: { dfn, error: "RPC failed" } });
       return pendingFallback("Nursing Notes", [
         { rpc: "TIU DOCUMENTS BY CONTEXT", package: "TIU", reason: "RPC call failed" },
       ]);
@@ -185,17 +207,19 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/ward-patients?ward=IEN ------ */
   server.get("/vista/nursing/ward-patients", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = await requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const ward = String((request.query as any)?.ward || "").trim();
     if (!ward) return reply.code(400).send({ ok: false, error: "Missing ward parameter" });
     if (!/^\d+$/.test(ward)) return reply.code(400).send({ ok: false, error: "Invalid ward -- must be a positive integer" });
 
     try {
       const lines = await safeCallRpc("ORQPT WARD PATIENTS", [ward]);
+      const items = parsePatientList(lines);
+      immutableAudit("nursing.vitals", "success", auditActor(session), { detail: { ward, count: items.length, context: "ward-patients" } });
       return {
         ok: true,
         source: "vista",
-        items: parsePatientList(lines),
+        items,
         rpcUsed: ["ORQPT WARD PATIENTS"],
         pendingTargets: [],
       };
@@ -209,11 +233,12 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/tasks?dfn=N (integration-pending) ------ */
   server.get("/vista/nursing/tasks", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = await requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
 
+    immutableAudit("nursing.tasks", "success", auditActor(session), { detail: { dfn, status: "integration-pending" } });
     // No native VistA "nursing task list" RPC exists -- tasks are derived from orders,
     // MAR schedule, and nursing protocols. Real implementation requires BCMA + order parsing.
     return pendingFallback("Nursing Task List", [
@@ -224,11 +249,12 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/mar?dfn=N (integration-pending) ------ */
   server.get("/vista/nursing/mar", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = await requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
 
+    immutableAudit("nursing.mar", "success", auditActor(session), { detail: { dfn, status: "integration-pending" } });
     return pendingFallback("Medication Administration Record", [
       { rpc: "PSB ALLERGY", package: "PSB", reason: "BCMA/PSB package not available in WorldVistA sandbox" },
       { rpc: "PSB MED LOG", package: "PSB", reason: "BCMA/PSB package not available in WorldVistA sandbox" },
@@ -237,10 +263,11 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ POST /vista/nursing/mar/administer (integration-pending) ------ */
   server.post("/vista/nursing/mar/administer", async (request: FastifyRequest, reply: FastifyReply) => {
-    const _session = await requireSession(request, reply);
+    const session = await requireSession(request, reply);
 
+    immutableAudit("nursing.mar", "success", auditActor(session), { detail: { action: "administer-attempt", status: "integration-pending" } });
     return reply.code(202).send({
-      ok: true,
+      ok: false,
       source: "integration-pending",
       status: "integration-pending",
       message: "Medication administration recording requires BCMA/PSB package",
@@ -275,7 +302,8 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/critical-thresholds ------ */
   server.get("/vista/nursing/critical-thresholds", async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
+    const session = await requireSession(request, reply);
+    immutableAudit("nursing.thresholds", "success", auditActor(session), { detail: { context: "critical-thresholds" } });
     return {
       ok: true,
       source: "config",
@@ -288,7 +316,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/patient-context?dfn=N ------ */
   server.get("/vista/nursing/patient-context", async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
@@ -303,6 +331,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
       const roomBed = parts[6]?.trim() || "";
       const attending = parts[7]?.trim() || "";
 
+      immutableAudit("nursing.context", "success", auditActor(session), { detail: { dfn } });
       return {
         ok: true,
         source: "vista",
@@ -342,7 +371,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/flowsheet?dfn=N ------ */
   server.get("/vista/nursing/flowsheet", async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
@@ -396,6 +425,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
         }
       }
 
+      immutableAudit("nursing.flowsheet", "success", auditActor(session), { detail: { dfn, itemCount: flagged.length, criticalCount: flagged.filter((f) => f.critical).length } });
       return {
         ok: true,
         source: "vista",
@@ -427,7 +457,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/io?dfn=N (integration-pending) ------ */
   server.get("/vista/nursing/io", async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
@@ -435,8 +465,9 @@ export default async function nursingRoutes(server: FastifyInstance) {
     // VistA I&O is tracked in GMR(126) INTAKE/OUTPUT file.
     // The generic RPC "ORQQVI VITALS" does NOT cover I&O.
     // Possible RPCs: GMRIO RESULTS (not in sandbox OR CPRS GUI CHART context).
+    immutableAudit("nursing.io", "success", auditActor(session), { detail: { dfn, status: "integration-pending" } });
     return {
-      ok: true,
+      ok: false,
       source: "integration-pending",
       status: "integration-pending",
       items: [],
@@ -459,7 +490,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/assessments?dfn=N (integration-pending) ------ */
   server.get("/vista/nursing/assessments", async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
@@ -467,8 +498,9 @@ export default async function nursingRoutes(server: FastifyInstance) {
     // Nursing assessments in VistA are stored via GN (Nursing) package:
     // File 228 (GN ASSESSMENT) and File 228.1 (GN ASSESSMENT DETAIL).
     // No standard RPC in OR CPRS GUI CHART context for reading assessments.
+    immutableAudit("nursing.assessments", "success", auditActor(session), { detail: { dfn, status: "integration-pending" } });
     return {
-      ok: true,
+      ok: false,
       source: "integration-pending",
       status: "integration-pending",
       items: [],
@@ -496,7 +528,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ POST /vista/nursing/notes/create ------ */
   server.post("/vista/nursing/notes/create", async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const body = ((request as any).body as any) || {};
     const { dfn, title, text, shift } = body;
     const dfnStr = String(dfn || "").trim();
@@ -555,6 +587,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
       }
 
       log.info("Nursing note created via TIU", { ien: newIen });
+      immutableAudit("nursing.create-note", "success", auditActor(session), { detail: { dfn: dfnStr, noteIen: newIen, source: "vista" } });
       return {
         ok: true,
         source: "vista",
@@ -572,6 +605,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
       log.warn("Nursing note TIU creation failed, returning local draft", { err: String(err) });
 
       const draftId = `draft-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+      immutableAudit("nursing.create-note", "success", auditActor(session), { detail: { dfn: dfnStr, draftId, source: "local-draft" } });
       return reply.code(202).send({
         ok: true,
         source: "local-draft",
@@ -600,7 +634,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
   /* ------ GET /vista/nursing/note-text?ien=N ------ */
   server.get("/vista/nursing/note-text", async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const ien = String((request.query as any)?.ien || "").trim();
     if (!ien) return reply.code(400).send({ ok: false, error: "Missing ien parameter" });
     if (!/^\d+$/.test(ien)) return reply.code(400).send({ ok: false, error: "Invalid ien -- must be a positive integer" });

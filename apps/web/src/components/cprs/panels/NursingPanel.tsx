@@ -1,6 +1,17 @@
 'use client';
 
+/**
+ * NursingPanel — Phase 68 + Phase 84 + Phase 138 (hardened)
+ *
+ * 6 sub-tabs: Tasks, Vitals, Notes, Flowsheet, MAR, Handoff
+ * Phase 138 additions:
+ *   - CSRF headers on all mutation fetches
+ *   - Flowsheet tab (vitals + I/O + assessments from /vista/nursing/flowsheet)
+ *   - Handoff tab (SBAR reports from /handoff/reports)
+ */
+
 import { useState, useEffect } from 'react';
+import { csrfHeaders } from '@/lib/csrf';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
@@ -20,13 +31,28 @@ interface NursingResponse<T> {
   status?: string;
   note?: string;
 }
+interface FlowsheetEntry { category: string; label: string; value: string; date: string; units?: string }
+interface HandoffReport { id: string; ward: string; shiftLabel: string; status: string; createdAt: string; patients?: unknown[] }
 
 /* ------------------------------------------------------------------ */
 /* Fetch helper                                                         */
 /* ------------------------------------------------------------------ */
 
 async function apiFetch<T>(path: string): Promise<NursingResponse<T>> {
-  const res = await fetch(`${API_BASE}${path}`, { credentials: 'include' });
+  const res = await fetch(`${API_BASE}${path}`, {
+    credentials: 'include',
+    headers: { ...csrfHeaders() },
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function apiFetchRaw<T = any>(path: string): Promise<T> {
+  const res = await fetch(`${API_BASE}${path}`, {
+    credentials: 'include',
+    headers: { ...csrfHeaders() },
+  });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
 }
@@ -238,10 +264,117 @@ function MARTab({ dfn }: { dfn: string }) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Sub-tab: Flowsheet (Phase 138)                                        */
+/* ------------------------------------------------------------------ */
+
+function FlowsheetTab({ dfn }: { dfn: string }) {
+  const [data, setData] = useState<NursingResponse<FlowsheetEntry> | null>(null);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    apiFetch<FlowsheetEntry>(`/vista/nursing/flowsheet?dfn=${dfn}`)
+      .then(setData)
+      .catch((e) => setError(e.message));
+  }, [dfn]);
+
+  if (error) return <ErrorBanner message={error} />;
+  if (!data) return <LoadingSpinner />;
+  return (
+    <div>
+      <IntegrationPendingBanner targets={data.pendingTargets} />
+      {data.items.length === 0 ? (
+        <p style={{ fontSize: 13, color: 'var(--cprs-text-muted, #888)', padding: 8 }}>
+          No flowsheet data found.
+          {data.status === 'integration-pending' && ' Flowsheet aggregation will populate when I/O and assessment RPCs are wired.'}
+          {data.source && ` Source: ${data.source}`}
+        </p>
+      ) : (
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+          <thead>
+            <tr style={{ borderBottom: '1px solid var(--cprs-border, #ccc)', textAlign: 'left' }}>
+              <th style={{ padding: '4px 8px' }}>Date</th>
+              <th style={{ padding: '4px 8px' }}>Category</th>
+              <th style={{ padding: '4px 8px' }}>Measure</th>
+              <th style={{ padding: '4px 8px' }}>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.items.map((f, i) => (
+              <tr key={i} style={{ borderBottom: '1px solid var(--cprs-border, #eee)' }}>
+                <td style={{ padding: '4px 8px' }}>{f.date}</td>
+                <td style={{ padding: '4px 8px' }}>{f.category}</td>
+                <td style={{ padding: '4px 8px' }}>{f.label}</td>
+                <td style={{ padding: '4px 8px' }}>{f.value}{f.units ? ` ${f.units}` : ''}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {data.rpcUsed?.length > 0 && (
+        <div style={{ fontSize: 11, color: '#999', marginTop: 8 }}>
+          RPC: {data.rpcUsed.join(', ')} | Source: {data.source}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Sub-tab: Handoff SBAR (Phase 138)                                     */
+/* ------------------------------------------------------------------ */
+
+function HandoffTab({ dfn }: { dfn: string }) {
+  const [reports, setReports] = useState<HandoffReport[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    apiFetchRaw<{ ok: boolean; reports: HandoffReport[] }>(`/handoff/reports?status=submitted`)
+      .then((d) => { setReports(d.reports || []); setLoading(false); })
+      .catch((e) => { setError(e.message); setLoading(false); });
+  }, [dfn]);
+
+  if (error) return <ErrorBanner message={error} />;
+  if (loading) return <LoadingSpinner />;
+
+  return (
+    <div>
+      {reports.length === 0 ? (
+        <p style={{ fontSize: 13, color: 'var(--cprs-text-muted, #888)', padding: 8 }}>
+          No submitted handoff reports. Handoff reports use SBAR format (Situation, Background,
+          Assessment, Recommendation) and are created during shift changes.
+        </p>
+      ) : (
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+          <thead>
+            <tr style={{ borderBottom: '1px solid var(--cprs-border, #ccc)', textAlign: 'left' }}>
+              <th style={{ padding: '4px 8px' }}>Ward</th>
+              <th style={{ padding: '4px 8px' }}>Shift</th>
+              <th style={{ padding: '4px 8px' }}>Status</th>
+              <th style={{ padding: '4px 8px' }}>Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reports.map((r) => (
+              <tr key={r.id} style={{ borderBottom: '1px solid var(--cprs-border, #eee)' }}>
+                <td style={{ padding: '4px 8px' }}>{r.ward}</td>
+                <td style={{ padding: '4px 8px' }}>{r.shiftLabel}</td>
+                <td style={{ padding: '4px 8px' }}>{r.status}</td>
+                <td style={{ padding: '4px 8px' }}>{new Date(r.createdAt).toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* Main Panel                                                            */
 /* ------------------------------------------------------------------ */
 
-type NursingSubTab = 'tasks' | 'vitals' | 'notes' | 'mar';
+type NursingSubTab = 'tasks' | 'vitals' | 'notes' | 'flowsheet' | 'mar' | 'handoff';
 
 export default function NursingPanel({ dfn }: { dfn: string }) {
   const [activeTab, setActiveTab] = useState<NursingSubTab>('tasks');
@@ -250,7 +383,9 @@ export default function NursingPanel({ dfn }: { dfn: string }) {
     { key: 'tasks', label: 'Task List' },
     { key: 'vitals', label: 'Vitals' },
     { key: 'notes', label: 'Notes' },
+    { key: 'flowsheet', label: 'Flowsheet' },
     { key: 'mar', label: 'MAR' },
+    { key: 'handoff', label: 'Handoff' },
   ];
 
   return (
@@ -279,7 +414,9 @@ export default function NursingPanel({ dfn }: { dfn: string }) {
       {activeTab === 'tasks' && <TaskListTab dfn={dfn} />}
       {activeTab === 'vitals' && <VitalsTab dfn={dfn} />}
       {activeTab === 'notes' && <NotesTab dfn={dfn} />}
+      {activeTab === 'flowsheet' && <FlowsheetTab dfn={dfn} />}
       {activeTab === 'mar' && <MARTab dfn={dfn} />}
+      {activeTab === 'handoff' && <HandoffTab dfn={dfn} />}
     </div>
   );
 }

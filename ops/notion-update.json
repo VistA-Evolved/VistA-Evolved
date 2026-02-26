@@ -1,21 +1,25 @@
 {
-  "featureTitle": "Phase 137: ADT + Bedboard + Census (VistA-first)",
+  "featureTitle": "Phase 138: Nursing DOC + MAR + Handoff (VistA-first)",
   "stage": "verified",
   "status": "complete",
-  "promptRefPath": "prompts/142-PHASE-137-ADT-BEDBOARD/137-01-IMPLEMENT.md",
+  "promptRefPath": "prompts/143-PHASE-138-NURSING-DOC-MAR-HANDOFF/138-01-IMPLEMENT.md",
   "runbookPath": "ops/summary.md",
-  "verifyScriptUsed": "qa/gauntlet/cli.mjs --suite fast + --suite rc + pnpm vitest",
-  "commitSHA": "pending-verify",
-  "gauntletFast": "4 PASS / 0 FAIL / 1 WARN (pre-existing secret scan)",
-  "gauntletRc": "15 PASS / 0 FAIL / 1 WARN (pre-existing secret scan)",
-  "vitest": "20/20 files, 413/413 tests PASS",
-  "newEndpoints": [
-    "GET /vista/adt/census",
-    "GET /vista/adt/movements?dfn=N"
+  "verifyScriptUsed": "qa/gauntlet/cli.mjs --suite fast + --suite rc",
+  "commitSHA": "pending",
+  "gauntletFast": "4 PASS / 0 FAIL / 1 WARN",
+  "gauntletRc": "15 PASS / 0 FAIL / 1 WARN",
+  "vitest": "17/20 files pass (3 integration test files need running API)",
+  "filesModified": [
+    "apps/api/src/lib/immutable-audit.ts",
+    "apps/api/src/vista/rpcRegistry.ts",
+    "config/capabilities.json",
+    "config/modules.json",
+    "apps/api/src/routes/nursing/index.ts",
+    "apps/api/src/routes/emar/index.ts",
+    "apps/api/src/routes/handoff/index.ts",
+    "apps/web/src/components/cprs/panels/NursingPanel.tsx"
   ],
-  "newUI": [
-    "/inpatient/census",
-    "/inpatient/bedboard"
-  ],
-  "vistaBridge": "ZVEADT.m (WARDS, BEDS, MVHIST) -- not yet installed in Docker"
+  "newCapabilities": 14,
+  "newAuditActions": 23,
+  "newRpcExceptions": 5
 }

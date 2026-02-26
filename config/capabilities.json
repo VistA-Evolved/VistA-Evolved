@@ -1002,6 +1002,110 @@
       "targetRpc": "PSB MED LOG",
       "targetPackage": "PSB",
       "description": "Med administration recording (requires BCMA, Phase 68B)"
+    },
+    "clinical.nursing.flowsheet": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQQVI VITALS",
+      "targetPackage": "OR",
+      "description": "Nursing flowsheet view with critical-value flags and trend grouping (Phase 84/138)"
+    },
+    "clinical.nursing.io": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "GMRIO RESULTS",
+      "targetPackage": "GMR",
+      "description": "Intake/Output tracking via GMR(126) — RPCs not exposed in OR CPRS GUI CHART context (Phase 138)"
+    },
+    "clinical.nursing.assessments": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ZVENAS LIST",
+      "targetPackage": "ZVE",
+      "description": "Nursing assessments (head-to-toe, fall risk, Braden) — requires custom RPCs or TIU templates (Phase 138)"
+    },
+    "clinical.nursing.createNote": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "TIU CREATE RECORD",
+      "targetPackage": "TIU",
+      "description": "Create nursing notes via TIU with local-draft fallback (Phase 84/138)"
+    },
+    "clinical.nursing.noteText": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "TIU GET RECORD TEXT",
+      "targetPackage": "TIU",
+      "description": "Read nursing note text via TIU GET RECORD TEXT (Phase 84/138)"
+    },
+    "clinical.emar.schedule": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORWPS ACTIVE",
+      "targetPackage": "OR",
+      "description": "eMAR medication schedule from active orders with heuristic due times (Phase 85/138)"
+    },
+    "clinical.emar.allergies": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQQAL LIST",
+      "targetPackage": "OR",
+      "description": "eMAR allergy list with interaction warnings (Phase 85/138)"
+    },
+    "clinical.emar.history": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "PSB MED LOG",
+      "targetPackage": "PSB",
+      "description": "Medication administration history — requires BCMA/PSB package (Phase 85/138)"
+    },
+    "clinical.emar.administer": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "PSB MED LOG",
+      "targetPackage": "PSB",
+      "description": "Record medication administration — requires BCMA/PSB package (Phase 85/138)"
+    },
+    "clinical.emar.duplicateCheck": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORWPS ACTIVE",
+      "targetPackage": "OR",
+      "description": "Heuristic duplicate therapy detection from active med list (Phase 85/138)"
+    },
+    "clinical.emar.barcodeScan": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "PSJBCMA",
+      "targetPackage": "PSB",
+      "description": "BCMA barcode medication verification — requires PSJ/PSB packages (Phase 85/138)"
+    },
+    "clinical.handoff.reports": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "CRHD GET PAT LIST",
+      "targetPackage": "CRHD",
+      "description": "Shift handoff report CRUD with SBAR structure — in-memory store, CRHD migration target (Phase 86/138)"
+    },
+    "clinical.handoff.wardPatients": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQPT WARD PATIENTS",
+      "targetPackage": "OR",
+      "description": "Ward patient assembly for handoff with med/allergy counts (Phase 86/138)"
     }
   }
 }
