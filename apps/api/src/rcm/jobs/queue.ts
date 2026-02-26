@@ -24,7 +24,9 @@ export type RcmJobType =
   | "ELIGIBILITY_CHECK"
   | "STATUS_POLL"
   | "ERA_INGEST"
-  | "ACK_PROCESS";
+  | "ACK_PROCESS"
+  | "REMITTANCE_IMPORT"
+  | "DENIAL_FOLLOWUP_TICK";
 
 export type RcmJobStatus =
   | "queued"
@@ -269,9 +271,29 @@ export class InMemoryJobQueue implements RcmJobQueue {
 
 let _queue: RcmJobQueue | null = null;
 
+/**
+ * Get the singleton job queue instance.
+ * Phase 142: Uses DurableJobQueue (SQLite-backed) by default.
+ * Falls back to InMemoryJobQueue if durable queue fails to init.
+ */
 export function getJobQueue(): RcmJobQueue {
-  if (!_queue) _queue = new InMemoryJobQueue();
-  return _queue;
+  if (!_queue) {
+    try {
+      const { DurableJobQueue } = require("./durable-queue.js");
+      _queue = new DurableJobQueue();
+    } catch {
+      // Fallback: in-memory (e.g., during tests or before DB init)
+      _queue = new InMemoryJobQueue();
+    }
+  }
+  return _queue!;
+}
+
+/**
+ * Explicitly set the job queue backend. Used at startup after DB init.
+ */
+export function setJobQueue(queue: RcmJobQueue): void {
+  _queue = queue;
 }
 
 export function resetJobQueue(): void {

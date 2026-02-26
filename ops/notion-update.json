@@ -1,11 +1,11 @@
 {
-  "featureTitle": "Phase 140: Portal parity closure (immunizations + documents + consents) (VistA-first)",
+  "featureTitle": "Phase 142: RCM Operational Excellence (Polling + Denial Loop + Reconciliation)",
   "stage": "verified",
   "status": "complete",
-  "promptRefPath": "prompts/145-PHASE-140-PORTAL-PARITY/140-01-IMPLEMENT.md",
-  "runbookPath": "docs/runbooks/portal-parity.md",
+  "promptRefPath": "prompts/147-PHASE-142-RCM-OPS-EXCELLENCE/142-01-IMPLEMENT.md",
+  "runbookPath": "ops/summary.md",
   "verifyScriptUsed": "qa/gauntlet/cli.mjs --suite fast + --suite rc",
-  "commitSHA": "8998ec9",
+  "commitSHA": "1494d15",
   "gauntletFast": "4 PASS / 0 FAIL / 1 WARN",
   "gauntletRc": "15 PASS / 0 FAIL / 1 WARN",
   "filesModified": [

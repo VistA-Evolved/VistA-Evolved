@@ -224,6 +224,16 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: "Phase 126: PG repo (edi_acknowledgement, edi_claim_status). Write-through cache.",
   },
   {
+    id: "rcm-durable-job-queue",
+    file: "rcm/jobs/durable-queue.ts",
+    variable: "DurableJobQueue",
+    description: "Durable job queue for RCM background jobs (SQLite-backed)",
+    classification: "critical",
+    durability: "sqlite_backed",
+    domain: "rcm",
+    notes: "Phase 142: SQLite-backed job queue with idempotency, retry+backoff, dead-letter. Falls back to InMemoryJobQueue if DB unavailable.",
+  },
+  {
     id: "rcm-remit-processor",
     file: "rcm/edi/remit-processor.ts",
     variable: "processedRemittances",

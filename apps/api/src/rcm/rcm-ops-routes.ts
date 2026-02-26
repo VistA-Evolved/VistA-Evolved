@@ -1,5 +1,5 @@
 /**
- * RCM Ops Routes — Phase 82: RCM Adapter Expansion v2
+ * RCM Ops Routes — Phase 82 + Phase 142 enhancements
  *
  * Operational visibility endpoints for the RCM subsystem.
  * No fake data — if a connector/adapter is not connected,
@@ -16,6 +16,11 @@
  *   GET  /rcm/ops/denial-queue        -- Denial workqueue items + stats
  *   GET  /rcm/ops/scheduler-status    -- Polling scheduler status
  *   GET  /rcm/ops/dashboard           -- Unified ops dashboard
+ *   GET  /rcm/ops/jobs/durable        -- Durable job queue stats (Phase 142)
+ *   POST /rcm/ops/jobs/durable/purge  -- Purge completed durable jobs (Phase 142)
+ *   GET  /rcm/ops/evidence-gate/check -- Evidence gate check for a payer (Phase 142)
+ *   POST /rcm/ops/denial-followup/run -- Manual trigger for denial followup tick (Phase 142)
+ *   POST /rcm/ops/enqueue-remittance  -- Enqueue a remittance import job (Phase 142)
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
@@ -36,6 +41,10 @@ import {
 } from "./workqueues/workqueue-store.js";
 import { requirePermission, requireRcmWrite } from "../auth/rbac.js";
 import { safeErr } from "../lib/safe-error.js";
+import { getJobQueue } from "./jobs/queue.js";
+import { checkPayerEvidenceOverview, checkEvidenceGate } from "./evidence/evidence-gate.js";
+import { handleDenialFollowupTick } from "./jobs/denial-followup-tick.js";
+import { handleRemittanceImportJob } from "./jobs/remittance-import-job.js";
 
 /* ── Route plugin ───────────────────────────────────────────── */
 
@@ -322,6 +331,132 @@ export default async function rcmOpsRoutes(
               : "has-escalations",
         },
       };
+    },
+  );
+
+  /* ─────────────────────────────────────────────────────────── */
+  /* GET /rcm/ops/jobs/durable — Durable job queue stats (P142)  */
+  /* ─────────────────────────────────────────────────────────── */
+  server.get(
+    "/rcm/ops/jobs/durable",
+    async (request: FastifyRequest) => {
+      const q = request.query as Record<string, string>;
+      const tenantId = q.tenantId ?? "default";
+      try {
+        const queue = getJobQueue();
+        const stats = await queue.getStats();
+        const jobs = await queue.listJobs({
+          status: (q.status as any) || undefined,
+          type: (q.type as any) || undefined,
+          limit: Math.min(parseInt(q.limit ?? "50", 10) || 50, 200),
+          offset: parseInt(q.offset ?? "0", 10) || 0,
+        });
+        return { ok: true, tenantId, stats, jobs };
+      } catch (err) {
+        return { ok: false, error: safeErr(err) };
+      }
+    },
+  );
+
+  /* ─────────────────────────────────────────────────────────── */
+  /* POST /rcm/ops/jobs/durable/purge — Purge completed (P142)   */
+  /* ─────────────────────────────────────────────────────────── */
+  server.post(
+    "/rcm/ops/jobs/durable/purge",
+    async (request: FastifyRequest) => {
+      const body = (request.body as any) || {};
+      const olderThanMs = parseInt(body.olderThanMs ?? "86400000", 10) || 86_400_000; // 24h default
+      const beforeTimestamp = new Date(Date.now() - olderThanMs).toISOString();
+      try {
+        const queue = getJobQueue();
+        const purged = await queue.purge(beforeTimestamp);
+        return { ok: true, purged };
+      } catch (err) {
+        return { ok: false, error: safeErr(err) };
+      }
+    },
+  );
+
+  /* ─────────────────────────────────────────────────────────── */
+  /* GET /rcm/ops/evidence-gate/check — Evidence gate (P142)     */
+  /* ─────────────────────────────────────────────────────────── */
+  server.get(
+    "/rcm/ops/evidence-gate/check",
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const q = request.query as Record<string, string>;
+      const { payerId, method } = q;
+      if (!payerId) {
+        reply.code(400);
+        return { ok: false, error: "payerId query param is required" };
+      }
+      try {
+        if (method) {
+          const session = (request as any).session;
+          const gate = await checkEvidenceGate(payerId, method, session?.duz ?? "system");
+          const { payerId: _p, method: _m, ...rest } = gate;
+          return { ok: true, payerId, method, ...rest };
+        }
+        const overview = await checkPayerEvidenceOverview(payerId);
+        return { ok: true, payerId, overview };
+      } catch (err) {
+        return { ok: false, error: safeErr(err) };
+      }
+    },
+  );
+
+  /* ─────────────────────────────────────────────────────────── */
+  /* POST /rcm/ops/denial-followup/run — Manual followup (P142)  */
+  /* ─────────────────────────────────────────────────────────── */
+  server.post(
+    "/rcm/ops/denial-followup/run",
+    async (request: FastifyRequest) => {
+      try {
+        const result = await handleDenialFollowupTick({
+          id: `manual-${Date.now()}`,
+          payload: {},
+        });
+        return { ok: true, ...result };
+      } catch (err) {
+        return { ok: false, error: safeErr(err) };
+      }
+    },
+  );
+
+  /* ─────────────────────────────────────────────────────────── */
+  /* POST /rcm/ops/enqueue-remittance — Enqueue ERA import (P142)*/
+  /* ─────────────────────────────────────────────────────────── */
+  server.post(
+    "/rcm/ops/enqueue-remittance",
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const body = (request.body as any) || {};
+      const session = (request as any).session;
+
+      if (!body.entries || !Array.isArray(body.entries) || body.entries.length === 0) {
+        reply.code(400);
+        return { ok: false, error: "entries array is required" };
+      }
+
+      try {
+        const result = await auditedEnqueue({
+          type: "REMITTANCE_IMPORT",
+          payload: {
+            entries: body.entries,
+            sourceType: body.sourceType ?? "EDI_835",
+            originalFilename: body.originalFilename,
+            parserVersion: body.parserVersion,
+            importedBy: session?.duz ?? "unknown",
+          },
+          tenantId: body.tenantId ?? "default",
+          userId: session?.duz ?? "unknown",
+          priority: body.priority ?? 5,
+          idempotencyKey: body.idempotencyKey,
+        });
+
+        return { ok: true, ...result, type: "REMITTANCE_IMPORT" };
+      } catch (err: unknown) {
+        reply.code(422);
+        return { ok: false, error: safeErr(err) };
+      }
     },
   );
 }

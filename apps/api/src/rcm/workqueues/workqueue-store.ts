@@ -235,6 +235,25 @@ export async function getWorkqueueStats(tenantId?: string): Promise<{
   };
 }
 
+/**
+ * Count work items by sourceType and sourceId (for dedup in background jobs).
+ * Returns the number of non-resolved items matching the criteria.
+ */
+export async function countWorkqueueItemsBySource(
+  sourceType: WorkqueueItem["sourceType"],
+  sourceId: string,
+): Promise<number> {
+  if (_repo) {
+    const result = await _repo.listWorkItems({
+      sourceType,
+      sourceId,
+      limit: 1,
+    });
+    return result.total;
+  }
+  return 0;
+}
+
 export async function resetWorkqueueStore(): Promise<void> {
   if (_repo) {
     await _repo.resetWorkItems();

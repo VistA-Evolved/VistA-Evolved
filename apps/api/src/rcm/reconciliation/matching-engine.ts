@@ -184,6 +184,21 @@ export function matchImportBatch(importId: string): BatchMatchResult {
 
 /* ── Internal Helpers ──────────────────────────────────────── */
 
+/**
+ * Run batch matching for a given import and return a simplified result.
+ * Used by remittance-import-job.ts for background processing.
+ */
+export function runBatchMatch(importId: string): { attempted: number; matched: number; errors: string[] } {
+  const batch = matchImportBatch(importId);
+  return {
+    attempted: batch.totalLines,
+    matched: batch.matched + batch.needsReview,
+    errors: batch.errors,
+  };
+}
+
+/* ── Internal Helpers ──────────────────────────────────────── */
+
 function createMatchAndCheck(
   payment: PaymentRecord,
   claim: KnownClaim,

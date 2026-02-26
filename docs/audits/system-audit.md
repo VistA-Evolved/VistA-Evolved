@@ -1,7 +1,7 @@
 # VistA-Evolved System Audit
 
-> Generated: 2026-02-26T03:43:31.251Z  
-> HEAD: 80a2207  
+> Generated: 2026-02-26T04:45:56.276Z  
+> HEAD: 149eb03  
 > Node: v24.13.0 | pnpm: 10.29.2
 
 ## What Is Truly Wired End-to-End
@@ -31,7 +31,7 @@
 
 ## Durability Posture
 
-- **SQLite tables:** 46
+- **SQLite tables:** 47
 - **In-memory Map stores:** 175
 - **High-risk (data loss on restart):** 37
 - **Medium-risk:** 29
@@ -67,8 +67,8 @@
 
 ## API Inventory
 
-- **Total endpoints:** 1243
-- **By tag:** vista(546), rcm(348), other(96), admin(92), portal(87), infra(60), scheduling(25), imaging(20), analytics(14), telehealth(13), iam(10), interop(10), posture(6), auth(3)
+- **Total endpoints:** 1248
+- **By tag:** vista(546), rcm(353), other(96), admin(92), portal(87), infra(60), scheduling(25), imaging(20), analytics(14), telehealth(13), iam(10), interop(10), posture(6), auth(3)
 
 ## UI Inventory
 
@@ -93,7 +93,7 @@
 |--------|-------|------------|
 | integration_pending | 65 | 342 |
 | mock | 2 | 2 |
-| placeholder | 77 | 207 |
+| placeholder | 77 | 208 |
 | todo | 1 | 1 |
 | fixme | 0 | 0 |
 | local_only | 4 | 6 |

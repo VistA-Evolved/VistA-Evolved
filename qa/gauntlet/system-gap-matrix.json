@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-02-26T03:43:32.039Z",
-  "headSha": "80a2207",
+  "generatedAt": "2026-02-26T04:45:57.061Z",
+  "headSha": "149eb03",
   "domains": [
     {
       "domain": "AUTH_IAM",
@@ -781,7 +781,7 @@
       "evidence": [
         {
           "metric": "sqliteTables",
-          "value": 46
+          "value": 47
         },
         {
           "metric": "inMemoryMaps",

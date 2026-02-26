@@ -117,6 +117,9 @@ import { PhilHealthAdapter } from './adapters/philhealth-adapter.js';
 import { getPollingScheduler } from './jobs/polling-scheduler.js';
 import { getEligibilityPollerConfig, getEligibilityResultsSlice } from './jobs/eligibility-poller.js';
 import { getClaimStatusPollerConfig, getClaimStatusResultsSlice } from './jobs/claim-status-poller.js';
+// Phase 142: Denial followup tick + remittance import job
+import { getDenialFollowupConfig } from './jobs/denial-followup-tick.js';
+import { getRemittanceImportConfig } from './jobs/remittance-import-job.js';
 
 // Payer catalog importers (Phase 40 Superseding)
 import { CsvPayerImporter, JsonPayerImporter } from './importers/payer-catalog-importer.js';
@@ -281,6 +284,9 @@ async function ensureInitialized(): Promise<void> {
   const scheduler = getPollingScheduler();
   scheduler.registerJob(getEligibilityPollerConfig());
   scheduler.registerJob(getClaimStatusPollerConfig());
+  // Phase 142: Register denial followup tick + remittance import processor
+  scheduler.registerJob(getDenialFollowupConfig());
+  scheduler.registerJob(getRemittanceImportConfig());
   // Scheduler starts only if env vars enable it
   scheduler.start();
 }

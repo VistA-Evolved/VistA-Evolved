@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-26T03:41:02.687Z",
+  "generatedAt": "2026-02-26T04:37:21.901Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 152,
+  "phaseCount": 153,
   "phases": [
     {
       "phaseNumber": "1",
@@ -2248,6 +2248,43 @@
         "config/capabilities.json",
         "apps/web/src/app/cprs/admin/break-glass/page.tsx",
         "docs/runbooks/phase141-enterprise-iam.md"
+      ]
+    },
+    {
+      "phaseNumber": "142",
+      "title": "RCM Operational Excellence",
+      "folder": "147-PHASE-142-RCM-OPS-EXCELLENCE",
+      "files": [
+        "142-01-IMPLEMENT.md",
+        "142-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "142-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "142-99-VERIFY.md"
+      ],
+      "routes": [
+        "/rcm/ops/denial-followup/run",
+        "/rcm/ops/evidence-gate/check",
+        "/rcm/ops/jobs/durable"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/platform/db/migrate.ts",
+        "apps/api/src/platform/db/schema.ts",
+        "apps/api/src/rcm/jobs/durable-queue.ts",
+        "apps/api/src/rcm/jobs/queue.ts",
+        "apps/api/src/rcm/evidence/evidence-gate.ts",
+        "apps/api/src/rcm/jobs/denial-followup-tick.ts",
+        "apps/api/src/rcm/jobs/remittance-import-job.ts",
+        "apps/api/src/rcm/reconciliation/matching-engine.ts",
+        "apps/api/src/rcm/rcm-ops-routes.ts",
+        "apps/api/src/index.ts",
+        "apps/web/src/app/cprs/admin/rcm/page.tsx"
       ]
     },
     {

@@ -954,3 +954,25 @@ export const schedulingRequest = sqliteTable("scheduling_request", {
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
+
+/* ── AU) rcm_durable_job — Phase 142: Durable RCM job queue ─────────────── */
+
+export const rcmDurableJob = sqliteTable("rcm_durable_job", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  type: text("type").notNull(),                                  // CLAIM_SUBMIT | ELIGIBILITY_CHECK | STATUS_POLL | ERA_INGEST | ACK_PROCESS | REMITTANCE_IMPORT | DENIAL_FOLLOWUP_TICK
+  status: text("status").notNull().default("queued"),            // queued | processing | completed | failed | dead_letter | cancelled
+  payloadJson: text("payload_json").notNull().default("{}"),
+  resultJson: text("result_json"),
+  error: text("error"),
+  attempts: integer("attempts").notNull().default(0),
+  maxAttempts: integer("max_attempts").notNull().default(3),
+  idempotencyKey: text("idempotency_key"),
+  priority: integer("priority").notNull().default(5),            // 0 = highest, 9 = lowest
+  scheduledAt: text("scheduled_at").notNull(),
+  startedAt: text("started_at"),
+  completedAt: text("completed_at"),
+  nextRetryAt: text("next_retry_at"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});

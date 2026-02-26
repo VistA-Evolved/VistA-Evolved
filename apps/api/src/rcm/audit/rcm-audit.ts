@@ -180,7 +180,11 @@ export type RcmAuditAction =
   | 'draft.appeal_packet'
   | 'scrub_rule.created'
   | 'scrub_rule.updated'
-  | 'scrub_rule.deleted';
+  | 'scrub_rule.deleted'
+  | 'evidence.gate_blocked'
+  | 'evidence.stale_warning'
+  | 'denial.followup_flagged'
+  | 'remittance.import_processed';
 
 export interface RcmAuditEntry {
   id: string;

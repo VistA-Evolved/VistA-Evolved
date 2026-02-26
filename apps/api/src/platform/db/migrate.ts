@@ -1060,6 +1060,33 @@ CREATE TABLE IF NOT EXISTS scheduling_request (
 CREATE INDEX IF NOT EXISTS idx_schedreq_patient ON scheduling_request(patient_dfn);
 CREATE INDEX IF NOT EXISTS idx_schedreq_status ON scheduling_request(status);
 
+-- AU) rcm_durable_job — Phase 142: Durable RCM job queue
+CREATE TABLE IF NOT EXISTS rcm_durable_job (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  type TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'queued',
+  payload_json TEXT NOT NULL DEFAULT '{}',
+  result_json TEXT,
+  error TEXT,
+  attempts INTEGER NOT NULL DEFAULT 0,
+  max_attempts INTEGER NOT NULL DEFAULT 3,
+  idempotency_key TEXT,
+  priority INTEGER NOT NULL DEFAULT 5,
+  scheduled_at TEXT NOT NULL,
+  started_at TEXT,
+  completed_at TEXT,
+  next_retry_at TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_rcmjob_idemp ON rcm_durable_job(tenant_id, idempotency_key) WHERE idempotency_key IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_rcmjob_tenant ON rcm_durable_job(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rcmjob_status ON rcm_durable_job(status);
+CREATE INDEX IF NOT EXISTS idx_rcmjob_type ON rcm_durable_job(type);
+CREATE INDEX IF NOT EXISTS idx_rcmjob_sched ON rcm_durable_job(status, scheduled_at);
+CREATE INDEX IF NOT EXISTS idx_rcmjob_priority ON rcm_durable_job(priority, scheduled_at);
+
 `;
 
 // Phase 97B: Add payer_type column (idempotent — catches "duplicate column" error)

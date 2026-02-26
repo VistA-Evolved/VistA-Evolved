@@ -19,7 +19,7 @@ import { getCsrfTokenSync, getCsrfToken as fetchCsrfToken } from '@/lib/csrf';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
-type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions' | 'gateways' | 'adapters' | 'jobs' | 'eligibility' | 'claim-status' | 'ops-dashboard' | 'credential-vault' | 'accreditation' | 'claim-lifecycle' | 'evidence';
+type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions' | 'gateways' | 'adapters' | 'jobs' | 'eligibility' | 'claim-status' | 'ops-dashboard' | 'credential-vault' | 'accreditation' | 'claim-lifecycle' | 'evidence' | 'durable-jobs' | 'evidence-gate';
 
 function getCsrfToken(): string {
   return getCsrfTokenSync();
@@ -70,6 +70,8 @@ export default function RcmPage() {
     { id: 'accreditation', label: 'Accreditation' },
     { id: 'claim-lifecycle', label: 'Claim Lifecycle' },
     { id: 'evidence', label: 'Evidence Registry' },
+    { id: 'durable-jobs', label: 'Durable Jobs' },
+    { id: 'evidence-gate', label: 'Evidence Gate' },
     { id: 'audit', label: 'Audit Trail' },
   ];
 
@@ -142,6 +144,8 @@ export default function RcmPage() {
         {tab === 'accreditation' && <AccreditationTab />}
         {tab === 'claim-lifecycle' && <ClaimLifecycleTab />}
         {tab === 'evidence' && <EvidenceRegistryTab />}
+        {tab === 'durable-jobs' && <DurableJobsTab />}
+        {tab === 'evidence-gate' && <EvidenceGateTab />}
         {tab === 'audit' && <AuditTab />}
       </div>
     </div>
@@ -461,6 +465,229 @@ function ConnectorsTab() {
             </div>
           )}
         </>
+      )}
+    </div>
+  );
+}
+
+/* ─── Durable Jobs Tab (Phase 142) ──────────────────────────────── */
+
+function DurableJobsTab() {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [purgeResult, setPurgeResult] = useState<string | null>(null);
+
+  const refresh = useCallback(() => {
+    setLoading(true);
+    apiFetch('/rcm/ops/jobs/durable')
+      .then(setData)
+      .catch(() => setData(null))
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  const handlePurge = async () => {
+    setPurgeResult(null);
+    try {
+      const res = await apiFetch('/rcm/ops/jobs/durable/purge', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ olderThanMs: 86400000 }),
+      });
+      setPurgeResult(res.ok ? `Purged ${res.purged ?? 0} jobs` : (res.error ?? 'Purge failed'));
+      refresh();
+    } catch {
+      setPurgeResult('Purge request failed');
+    }
+  };
+
+  const handleFollowupTick = async () => {
+    try {
+      const res = await apiFetch('/rcm/ops/denial-followup/run', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
+      });
+      setPurgeResult(res.ok
+        ? `Followup tick: ${res.approachingSla ?? 0} approaching, ${res.overdueSla ?? 0} overdue, ${res.workItemsCreated ?? 0} work items`
+        : (res.error ?? 'Followup tick failed'));
+    } catch {
+      setPurgeResult('Followup tick request failed');
+    }
+  };
+
+  return (
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <h3 style={{ margin: 0, fontSize: 15 }}>Durable Job Queue</h3>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button onClick={handleFollowupTick} style={{ padding: '6px 14px', fontSize: 12, cursor: 'pointer', borderRadius: 4, border: '1px solid #fd7e14', background: '#fff3cd', color: '#664d03' }}>
+            Run Denial Followup
+          </button>
+          <button onClick={handlePurge} style={{ padding: '6px 14px', fontSize: 12, cursor: 'pointer', borderRadius: 4, border: '1px solid #dc3545', background: '#f8d7da', color: '#842029' }}>
+            Purge Completed
+          </button>
+          <button onClick={refresh} style={{ padding: '6px 14px', fontSize: 12, cursor: 'pointer', borderRadius: 4, border: '1px solid #dee2e6', background: '#fff' }}>
+            Refresh
+          </button>
+        </div>
+      </div>
+
+      {purgeResult && (
+        <div style={{ padding: '8px 16px', marginBottom: 12, background: '#d1e7dd', border: '1px solid #badbcc', borderRadius: 4, fontSize: 12 }}>
+          {purgeResult}
+        </div>
+      )}
+
+      {loading ? (
+        <p style={{ color: '#6c757d', fontSize: 13 }}>Loading...</p>
+      ) : !data?.ok ? (
+        <p style={{ color: '#dc3545', fontSize: 13 }}>Failed to load durable job data: {data?.error ?? 'unknown error'}</p>
+      ) : (
+        <>
+          {/* Stats summary */}
+          {data.stats && (
+            <div style={{ display: 'flex', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
+              {Object.entries(data.stats).map(([k, v]) => (
+                <div key={k} style={{ padding: '8px 14px', background: '#f8f9fa', borderRadius: 4, border: '1px solid #dee2e6', fontSize: 12 }}>
+                  <span style={{ fontWeight: 600 }}>{k}</span>
+                  <span style={{ marginLeft: 8 }}>{String(v)}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Recent jobs */}
+          {data.jobs && Array.isArray(data.jobs.items) && data.jobs.items.length > 0 ? (
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+                  <th style={{ padding: '8px 12px', borderBottom: '1px solid #dee2e6' }}>ID</th>
+                  <th style={{ padding: '8px 12px', borderBottom: '1px solid #dee2e6' }}>Type</th>
+                  <th style={{ padding: '8px 12px', borderBottom: '1px solid #dee2e6' }}>Status</th>
+                  <th style={{ padding: '8px 12px', borderBottom: '1px solid #dee2e6' }}>Attempts</th>
+                  <th style={{ padding: '8px 12px', borderBottom: '1px solid #dee2e6' }}>Created</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.jobs.items.map((job: any) => (
+                  <tr key={job.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                    <td style={{ padding: '8px 12px', fontFamily: 'monospace', fontSize: 11 }}>{job.id?.slice(0, 8)}...</td>
+                    <td style={{ padding: '8px 12px' }}>{job.type}</td>
+                    <td style={{ padding: '8px 12px' }}>
+                      <span style={{
+                        padding: '2px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600,
+                        background: job.status === 'completed' ? '#d1e7dd' : job.status === 'failed' ? '#f8d7da' : job.status === 'processing' ? '#cfe2ff' : '#e2e3e5',
+                        color: job.status === 'completed' ? '#0f5132' : job.status === 'failed' ? '#842029' : job.status === 'processing' ? '#084298' : '#41464b',
+                      }}>
+                        {job.status}
+                      </span>
+                    </td>
+                    <td style={{ padding: '8px 12px' }}>{job.attempts ?? 0}/{job.maxAttempts ?? 3}</td>
+                    <td style={{ padding: '8px 12px', fontSize: 11, color: '#6c757d' }}>{job.createdAt ? new Date(job.createdAt).toLocaleString() : '-'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p style={{ color: '#6c757d', fontSize: 13 }}>No durable jobs found.</p>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
+/* ─── Evidence Gate Tab (Phase 142) ─────────────────────────────── */
+
+function EvidenceGateTab() {
+  const [payerId, setPayerId] = useState('');
+  const [result, setResult] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+
+  const checkGate = async () => {
+    if (!payerId.trim()) return;
+    setLoading(true);
+    setResult(null);
+    try {
+      const res = await apiFetch(`/rcm/ops/evidence-gate/check?payerId=${encodeURIComponent(payerId.trim())}`);
+      setResult(res);
+    } catch {
+      setResult({ ok: false, error: 'Request failed' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div>
+      <h3 style={{ margin: '0 0 16px 0', fontSize: 15 }}>Evidence Gate Check</h3>
+      <p style={{ fontSize: 12, color: '#6c757d', margin: '0 0 16px 0' }}>
+        Check whether a payer has verified evidence for each integration method.
+        Missing or stale evidence blocks live integration calls.
+      </p>
+
+      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+        <input
+          type="text"
+          value={payerId}
+          onChange={e => setPayerId(e.target.value)}
+          placeholder="Enter payer ID"
+          style={{ padding: '6px 12px', fontSize: 13, border: '1px solid #dee2e6', borderRadius: 4, width: 300 }}
+        />
+        <button
+          onClick={checkGate}
+          disabled={loading || !payerId.trim()}
+          style={{ padding: '6px 14px', fontSize: 12, cursor: 'pointer', borderRadius: 4, border: '1px solid #0d6efd', background: '#0d6efd', color: '#fff' }}
+        >
+          {loading ? 'Checking...' : 'Check'}
+        </button>
+      </div>
+
+      {result && !result.ok && (
+        <div style={{ padding: '8px 16px', background: '#f8d7da', border: '1px solid #f5c6cb', borderRadius: 4, fontSize: 12, color: '#842029' }}>
+          {result.error ?? 'Unknown error'}
+        </div>
+      )}
+
+      {result?.ok && result.overview && (
+        <div>
+          <h4 style={{ fontSize: 13, margin: '16px 0 8px 0' }}>Evidence Overview for {result.payerId}</h4>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+            <thead>
+              <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+                <th style={{ padding: '8px 12px', borderBottom: '1px solid #dee2e6' }}>Method</th>
+                <th style={{ padding: '8px 12px', borderBottom: '1px solid #dee2e6' }}>Allowed</th>
+                <th style={{ padding: '8px 12px', borderBottom: '1px solid #dee2e6' }}>Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.entries(result.overview).map(([method, gate]: [string, any]) => (
+                <tr key={method} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                  <td style={{ padding: '8px 12px', fontWeight: 600 }}>{method}</td>
+                  <td style={{ padding: '8px 12px' }}>
+                    <span style={{
+                      padding: '2px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600,
+                      background: gate.allowed ? '#d1e7dd' : '#f8d7da',
+                      color: gate.allowed ? '#0f5132' : '#842029',
+                    }}>
+                      {gate.allowed ? 'ALLOWED' : 'BLOCKED'}
+                    </span>
+                  </td>
+                  <td style={{ padding: '8px 12px', color: '#6c757d' }}>{gate.reason ?? '-'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {result?.ok && !result.overview && result.allowed !== undefined && (
+        <div style={{ padding: '12px 16px', marginTop: 12, background: result.allowed ? '#d1e7dd' : '#f8d7da', border: `1px solid ${result.allowed ? '#badbcc' : '#f5c6cb'}`, borderRadius: 4, fontSize: 12 }}>
+          <strong>{result.allowed ? 'ALLOWED' : 'BLOCKED'}</strong>
+          {result.reason && <span style={{ marginLeft: 8 }}> {result.reason}</span>}
+        </div>
       )}
     </div>
   );

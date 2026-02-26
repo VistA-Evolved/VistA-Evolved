@@ -1,50 +1,8 @@
-# Phase 142 -- RCM Operational Excellence (Polling + Denial Loop + Reconciliation)
+# Phase 140 — Portal Parity Closure (Immunizations + Documents + Consents)
 
 ## What Changed
 
-### A. Durable Job Queue (SQLite-Backed)
-- New `rcm_durable_job` table with idempotency, retry+backoff, dead-letter, priority scheduling
-- `DurableJobQueue` class implementing `RcmJobQueue` interface with full SQLite persistence
-- Fallback to `InMemoryJobQueue` if DB unavailable
-- 2 new job types: `REMITTANCE_IMPORT`, `DENIAL_FOLLOWUP_TICK`
-- Store policy entry added
-
-### B. Evidence-Gated Adapter Enforcement
-- `evidence-gate.ts` checks integration_evidence registry before payer API calls
-- Missing/unverified evidence blocks the call with audit trail
-- Stale evidence (>90 days) generates warning; `RCM_EVIDENCE_STRICT=true` hard blocks
-- Evidence Gate tab in RCM admin UI
-
-### C. Denial Followup Tick Job
-- Background SLA scanner: finds denials approaching/past deadline
-- Creates work queue items for approaching/overdue SLA denials
-- Dedup via workqueue source check
-- Configurable: `RCM_DENIAL_FOLLOWUP_HORIZON_DAYS=7`, `RCM_DENIAL_FOLLOWUP_INTERVAL_MS=3600000`
-- Enabled by default in PollingScheduler
-
-### D. Reconciliation Automation
-- `remittance-import-job.ts`: Background ERA 835 import processing
-- `runBatchMatch()` wrapper for matching engine
-- Auto-underpayment detection (threshold: `RCM_UNDERPAYMENT_THRESHOLD=0.95`)
-
-### E. Ops Routes (5 New Endpoints)
-- `GET /rcm/ops/jobs/durable` -- Durable job stats + list
-- `POST /rcm/ops/jobs/durable/purge` -- Purge completed jobs
-- `GET /rcm/ops/evidence-gate/check` -- Evidence validation endpoint
-- `POST /rcm/ops/denial-followup/run` -- Manual trigger for denial tick
-- `POST /rcm/ops/enqueue-remittance` -- Enqueue a remittance import job
-
-### F. 4 New RCM Audit Actions
-- `evidence.gate_blocked`, `evidence.stale_warning`, `denial.followup_flagged`, `remittance.import_processed`
-
-## Verifier Output
-- Gauntlet FAST: 4P/0F/1W (matches baseline)
-- Gauntlet RC: 15P/0F/1W (matches baseline)
-- TSC: clean (both api and web)
-
-## Follow-ups
-- Enable REMITTANCE_IMPORT polling via `RCM_REMITTANCE_IMPORT_ENABLED=true` when 835 parsers wired
-- Add PG-backed durable queue variant when `PLATFORM_RUNTIME_MODE=rc/prod`
+### Portal Document Center (5 endpoints)
 - `GET /portal/documents` — Lists 5 document types (health_summary, immunization_record, medication_list, allergy_list, lab_results)
 - `POST /portal/documents/generate` — Generates signed HMAC-SHA256 token (5-min TTL, single-use) for document download
 - `GET /portal/documents/download/:token` — Downloads VistA-sourced document via signed token
