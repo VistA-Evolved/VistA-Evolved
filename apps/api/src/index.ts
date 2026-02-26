@@ -34,6 +34,9 @@ import { startCleanupJob as startPortabilityCleanup } from "./services/record-po
 // Phase 28: Enterprise Intake OS
 import intakeRoutes, { initIntakeRoutes } from "./intake/intake-routes.js";
 import "./intake/packs/index.js"; // registers 23 built-in packs
+// Phase 143: AI Intake Engine (Interchangeable Brain)
+import intakeBrainRoutes, { initBrainRoutes } from "./intake/brain-routes.js";
+import { initBrainPlugins } from "./intake/brain/index.js";
 // Phase 29: Portal IAM + Proxy Workflows + Access Logs
 import portalIamRoutes from "./portal-iam/portal-iam-routes.js";
 import { seedDevUsers } from "./portal-iam/portal-user-store.js";
@@ -331,6 +334,22 @@ initIntakeRoutes(
   }
 );
 server.register(intakeRoutes);
+
+// Register intake brain routes — AI intake engine, provider plugins, TIU draft (Phase 143)
+initBrainPlugins();
+initBrainRoutes(
+  (req: any) => {
+    const ps = getPortalSession(req);
+    return ps ? { patientDfn: ps.patientDfn, patientName: ps.patientName } : null;
+  },
+  async (req: any) => {
+    try {
+      const session = await requireSession(req, { code: () => ({ send: () => {} }) });
+      return session ? { duz: session.duz, name: session.userName } : null;
+    } catch { return null; }
+  }
+);
+server.register(intakeBrainRoutes);
 
 // Register portal IAM routes -- identity, proxy invitations, access logs (Phase 29)
 await seedDevUsers();

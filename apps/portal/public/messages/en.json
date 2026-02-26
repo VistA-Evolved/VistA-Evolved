@@ -81,7 +81,14 @@
     "statusNotStarted": "Not Started",
     "statusInProgress": "In Progress",
     "statusSubmitted": "Submitted",
-    "statusReviewed": "Clinician Reviewed"
+    "statusReviewed": "Clinician Reviewed",
+    "intakeMode": "Intake Mode",
+    "providerRulesEngine": "Standard Questionnaire",
+    "providerLlm": "AI-Assisted (Governed)",
+    "providerThirdParty": "Partner Integration",
+    "tiuDraftReady": "TIU Draft Note Ready",
+    "brainProvider": "Brain Provider",
+    "governanceInfo": "All AI interactions are governed, audited, and grounded in your answers."
   },
   "profile": {
     "demographics": "Demographics",

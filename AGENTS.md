@@ -1114,6 +1114,53 @@ docs/runbooks/
      session.csrfSecret)`. See `apps/web/src/lib/csrf.ts` for the shared
      frontend CSRF manager.
 
+## 7o. Architecture Quick Map (Phase 143 additions)
+
+```
+apps/api/src/intake/brain/
+  types.ts                      -- IntakeBrainPlugin interface + result types (Phase 143)
+  registry.ts                   -- Plugin registry + decision audit store (Phase 143)
+  rules-engine.ts               -- Deterministic rules engine brain (default) (Phase 143)
+  llm-provider.ts               -- LLM brain (AI Gateway bridge, governed) (Phase 143)
+  third-party-connector.ts      -- 3P connector scaffold (adapter pattern) (Phase 143)
+  index.ts                      -- Barrel + initBrainPlugins() (Phase 143)
+
+apps/api/src/intake/
+  brain-routes.ts               -- 9 brain-specific API endpoints (Phase 143)
+
+apps/portal/src/app/dashboard/intake/
+  page.tsx                      -- +Provider selector UI (Phase 143)
+
+apps/portal/public/messages/
+  en.json                       -- +7 intake brain i18n keys (Phase 143)
+  fil.json                      -- +7 intake brain i18n keys (Phase 143)
+  es.json                       -- +7 intake brain i18n keys (Phase 143)
+
+docs/runbooks/
+  phase143-ai-intake-engine.md  -- AI intake engine runbook (Phase 143)
+```
+
+132. **Brain plugin registry is always-fallback-to-rules (Phase 143).**
+     `resolveBrainPlugin()` tries exact match, then family match, then
+     rules_engine. The rules engine is always registered and cannot be
+     unregistered. LLM and 3P providers are opt-in via env vars.
+133. **Brain decisions are audited with input/output hashes (Phase 143).**
+     The `logBrainDecision()` function logs every nextQuestion, submitAnswer,
+     startSession, and finalizeSummary call. Hashes are SHA-256 truncated to
+     16 chars. No PHI in the audit store.
+134. **LLM brain may only RANK, never INVENT questions (Phase 143).**
+     The LLM provider gets eligible questions from the rules engine first,
+     then asks the LLM to rank them. The LLM cannot add new questions
+     not in the pack registry.
+135. **TIU draft notes are ALWAYS DRAFT and require clinician signature.**
+     The `/intake/sessions/:id/tiu-draft` endpoint generates TIU-ready
+     note text with `vistaIntegration.requiresSignature: true`. Target
+     RPCs: `TIU CREATE RECORD`, `TIU SET DOCUMENT TEXT`.
+136. **Brain state stores are in-memory (Phase 143).** `brainStates` Map
+     in brain-routes.ts and `decisionAuditLog` array in registry.ts.
+     Both registered in store-policy.ts. Loss on restart = session re-init
+     recreates brain state.
+
 ## 8. Bug Tracker & Lessons Learned
 
 A comprehensive log of every bug, challenge, and fix from Phase 1 through

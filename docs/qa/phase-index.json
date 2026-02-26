@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-26T05:00:07.940Z",
+  "generatedAt": "2026-02-26T05:21:36.591Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 153,
+  "phaseCount": 154,
   "phases": [
     {
       "phaseNumber": "1",
@@ -2285,6 +2285,40 @@
         "apps/api/src/rcm/rcm-ops-routes.ts",
         "apps/api/src/index.ts",
         "apps/web/src/app/cprs/admin/rcm/page.tsx"
+      ]
+    },
+    {
+      "phaseNumber": "143",
+      "title": "AI Intake Engine (Interchangeable Brain)",
+      "folder": "148-PHASE-143-AI-INTAKE-ENGINE",
+      "files": [
+        "143-01-IMPLEMENT.md",
+        "143-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "143-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "143-99-VERIFY.md"
+      ],
+      "routes": [
+        "/intake/providers",
+        "/intake/sessions/:id/tiu-draft"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/intake/types.ts",
+        "apps/api/src/intake/providers.ts",
+        "apps/api/src/intake/intake-routes.ts",
+        "apps/api/src/intake/intake-store.ts",
+        "apps/api/src/intake/summary-provider.ts",
+        "apps/api/src/ai/types.ts",
+        "apps/portal/src/app/dashboard/intake/page.tsx",
+        "apps/portal/public/messages/{en,fil,es}.json",
+        "docs/runbooks/phase143-ai-intake-engine.md"
       ]
     },
     {

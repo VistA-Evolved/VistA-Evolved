@@ -81,7 +81,14 @@
     "statusNotStarted": "Hindi pa nagsisimula",
     "statusInProgress": "Kasalukuyang ginagawa",
     "statusSubmitted": "Naisumite",
-    "statusReviewed": "Na-review ng Doktor"
+    "statusReviewed": "Na-review ng Doktor",
+    "intakeMode": "Paraan ng Intake",
+    "providerRulesEngine": "Karaniwang Questionnaire",
+    "providerLlm": "AI-Assisted (Governed)",
+    "providerThirdParty": "Partner Integration",
+    "tiuDraftReady": "TIU Draft Note Handa na",
+    "brainProvider": "Brain Provider",
+    "governanceInfo": "Lahat ng AI na interaksyon ay pinamamahalaan, ino-audit, at nakabase sa iyong mga sagot."
   },
   "profile": {
     "demographics": "Mga Demograpiko",

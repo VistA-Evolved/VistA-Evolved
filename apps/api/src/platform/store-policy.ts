@@ -717,6 +717,29 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: intake_sessions table",
     notes: "Phase 136: active intake forms lost on restart.",
   },
+  {
+    id: "intake-brain-states",
+    file: "intake/brain-routes.ts",
+    variable: "brainStates",
+    description: "Per-session brain plugin state (turns, clusters, provider data)",
+    classification: "cache",
+    durability: "in_memory_only",
+    domain: "intake",
+    migrationTarget: "pg: intake_brain_states table",
+    notes: "Phase 143: brain state lost on restart, session re-init recreates it.",
+  },
+  {
+    id: "intake-brain-audit",
+    file: "intake/brain/registry.ts",
+    variable: "decisionAuditLog",
+    description: "Brain plugin decision audit log (provider, latency, fallback, LLM usage)",
+    classification: "audit",
+    durability: "in_memory_only",
+    domain: "intake",
+    maxSize: 50_000,
+    migrationTarget: "pg: intake_brain_audit table",
+    notes: "Phase 143: governance audit trail for brain decisions.",
+  },
 
   // ═══════════════════════════════════════════════════════════
   // MIGRATION

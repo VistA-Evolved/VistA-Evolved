@@ -81,7 +81,14 @@
     "statusNotStarted": "No Iniciado",
     "statusInProgress": "En Progreso",
     "statusSubmitted": "Enviado",
-    "statusReviewed": "Revisado por el Medico"
+    "statusReviewed": "Revisado por el Medico",
+    "intakeMode": "Modo de Cuestionario",
+    "providerRulesEngine": "Cuestionario Estandar",
+    "providerLlm": "Asistido por IA (Gobernado)",
+    "providerThirdParty": "Integracion de Socio",
+    "tiuDraftReady": "Nota TIU Lista",
+    "brainProvider": "Proveedor de IA",
+    "governanceInfo": "Todas las interacciones de IA son gobernadas, auditadas y basadas en sus respuestas."
   },
   "profile": {
     "demographics": "Datos Demograficos",

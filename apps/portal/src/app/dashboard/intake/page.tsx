@@ -40,9 +40,12 @@ export default function IntakeStartPage() {
   const [creating, setCreating] = useState(false);
   const [notice, setNotice] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [questions, setQuestions] = useState<IntakeQuestion[]>([]);
+  const [providers, setProviders] = useState<any[]>([]);
+  const [selectedProvider, setSelectedProvider] = useState<string>("rules_engine");
 
   useEffect(() => {
     loadSessions();
+    loadProviders();
   }, []);
 
   useEffect(() => {
@@ -70,6 +73,17 @@ export default function IntakeStartPage() {
       }
     } catch {
       // fallback to empty — static text still shows
+    }
+  }
+
+  async function loadProviders() {
+    try {
+      const res = await portalFetch("/intake/providers");
+      if (res.ok && res.providers) {
+        setProviders(res.providers);
+      }
+    } catch {
+      // fallback to empty — rules_engine always available
     }
   }
 
@@ -180,6 +194,31 @@ export default function IntakeStartPage() {
                 </li>
               )}
             </ul>
+          </div>
+        )}
+
+        {/* Brain provider selection (Phase 143) */}
+        {providers.length > 1 && (
+          <div style={{ marginBottom: "16px" }}>
+            <label style={{ fontSize: "13px", fontWeight: 600, color: "var(--portal-text-muted, #6b7280)", display: "block", marginBottom: "6px" }}>
+              {t("intakeMode")}
+            </label>
+            <select
+              value={selectedProvider}
+              onChange={(e) => setSelectedProvider(e.target.value)}
+              style={{
+                padding: "8px 12px", borderRadius: "6px", fontSize: "14px",
+                border: "1px solid var(--portal-border, #d1d5db)",
+                background: "var(--portal-bg-card, #fff)",
+                width: "100%",
+              }}
+            >
+              {providers.map((p: any) => (
+                <option key={p.id} value={p.id}>
+                  {p.name} ({p.family.replace(/_/g, " ")})
+                </option>
+              ))}
+            </select>
           </div>
         )}
 
