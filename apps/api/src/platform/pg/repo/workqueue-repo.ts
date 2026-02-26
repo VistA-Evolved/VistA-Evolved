@@ -154,6 +154,8 @@ export async function listWorkItems(filters?: {
   payerId?: string;
   priority?: string;
   tenantId?: string;
+  sourceType?: string;
+  sourceId?: string;
   limit?: number;
   offset?: number;
 }): Promise<{ items: WorkItemRow[]; total: number }> {
@@ -166,6 +168,8 @@ export async function listWorkItems(filters?: {
   if (filters?.payerId) conditions.push(eq(pgRcmWorkItem.payerId, filters.payerId));
   if (filters?.priority) conditions.push(eq(pgRcmWorkItem.priority, filters.priority));
   if (filters?.tenantId) conditions.push(eq(pgRcmWorkItem.tenantId, filters.tenantId));
+  if (filters?.sourceType) conditions.push(eq(pgRcmWorkItem.sourceType, filters.sourceType));
+  if (filters?.sourceId) conditions.push(eq(pgRcmWorkItem.sourceId, filters.sourceId));
 
   const where = conditions.length > 0 ? and(...conditions) : undefined;
 

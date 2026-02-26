@@ -559,7 +559,7 @@ function DurableJobsTab() {
           )}
 
           {/* Recent jobs */}
-          {data.jobs && Array.isArray(data.jobs.items) && data.jobs.items.length > 0 ? (
+          {data.jobs && Array.isArray(data.jobs.jobs) && data.jobs.jobs.length > 0 ? (
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
               <thead>
                 <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
@@ -571,7 +571,7 @@ function DurableJobsTab() {
                 </tr>
               </thead>
               <tbody>
-                {data.jobs.items.map((job: any) => (
+                {data.jobs.jobs.map((job: any) => (
                   <tr key={job.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
                     <td style={{ padding: '8px 12px', fontFamily: 'monospace', fontSize: 11 }}>{job.id?.slice(0, 8)}...</td>
                     <td style={{ padding: '8px 12px' }}>{job.type}</td>
@@ -654,32 +654,43 @@ function EvidenceGateTab() {
       {result?.ok && result.overview && (
         <div>
           <h4 style={{ fontSize: 13, margin: '16px 0 8px 0' }}>Evidence Overview for {result.payerId}</h4>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
-            <thead>
-              <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
-                <th style={{ padding: '8px 12px', borderBottom: '1px solid #dee2e6' }}>Method</th>
-                <th style={{ padding: '8px 12px', borderBottom: '1px solid #dee2e6' }}>Allowed</th>
-                <th style={{ padding: '8px 12px', borderBottom: '1px solid #dee2e6' }}>Reason</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.entries(result.overview).map(([method, gate]: [string, any]) => (
-                <tr key={method} style={{ borderBottom: '1px solid #f0f0f0' }}>
-                  <td style={{ padding: '8px 12px', fontWeight: 600 }}>{method}</td>
-                  <td style={{ padding: '8px 12px' }}>
-                    <span style={{
-                      padding: '2px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600,
-                      background: gate.allowed ? '#d1e7dd' : '#f8d7da',
-                      color: gate.allowed ? '#0f5132' : '#842029',
-                    }}>
-                      {gate.allowed ? 'ALLOWED' : 'BLOCKED'}
-                    </span>
-                  </td>
-                  <td style={{ padding: '8px 12px', color: '#6c757d' }}>{gate.reason ?? '-'}</td>
+          <p style={{ fontSize: 12, color: result.overview.hasAnyVerified ? '#0f5132' : '#842029', margin: '0 0 12px 0' }}>
+            {result.overview.recommendation}
+          </p>
+          {Array.isArray(result.overview.methods) && result.overview.methods.length > 0 ? (
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+              <thead>
+                <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
+                  <th style={{ padding: '8px 12px', borderBottom: '1px solid #dee2e6' }}>Method</th>
+                  <th style={{ padding: '8px 12px', borderBottom: '1px solid #dee2e6' }}>Status</th>
+                  <th style={{ padding: '8px 12px', borderBottom: '1px solid #dee2e6' }}>Last Verified</th>
+                  <th style={{ padding: '8px 12px', borderBottom: '1px solid #dee2e6' }}>Stale</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {result.overview.methods.map((m: any, i: number) => (
+                  <tr key={i} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                    <td style={{ padding: '8px 12px', fontWeight: 600 }}>{m.method}</td>
+                    <td style={{ padding: '8px 12px' }}>
+                      <span style={{
+                        padding: '2px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600,
+                        background: m.status === 'verified' ? '#d1e7dd' : '#f8d7da',
+                        color: m.status === 'verified' ? '#0f5132' : '#842029',
+                      }}>
+                        {m.status?.toUpperCase() ?? 'UNKNOWN'}
+                      </span>
+                    </td>
+                    <td style={{ padding: '8px 12px', color: '#6c757d', fontSize: 11 }}>{m.lastVerified ? new Date(m.lastVerified).toLocaleString() : 'Never'}</td>
+                    <td style={{ padding: '8px 12px' }}>
+                      {m.stale && <span style={{ padding: '2px 6px', borderRadius: 4, fontSize: 10, background: '#fff3cd', color: '#664d03' }}>STALE</span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p style={{ color: '#6c757d', fontSize: 12 }}>No evidence records registered for this payer.</p>
+          )}
         </div>
       )}
 

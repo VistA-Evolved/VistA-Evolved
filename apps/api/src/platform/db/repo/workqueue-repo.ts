@@ -153,6 +153,8 @@ export function listWorkItems(filters?: {
   payerId?: string;
   priority?: string;
   tenantId?: string;
+  sourceType?: string;
+  sourceId?: string;
   limit?: number;
   offset?: number;
 }): { items: WorkItemRow[]; total: number } {
@@ -165,6 +167,8 @@ export function listWorkItems(filters?: {
   if (filters?.payerId) conditions.push(eq(rcmWorkItem.payerId, filters.payerId));
   if (filters?.priority) conditions.push(eq(rcmWorkItem.priority, filters.priority));
   if (filters?.tenantId) conditions.push(eq(rcmWorkItem.tenantId, filters.tenantId));
+  if (filters?.sourceType) conditions.push(eq(rcmWorkItem.sourceType, filters.sourceType));
+  if (filters?.sourceId) conditions.push(eq(rcmWorkItem.sourceId, filters.sourceId));
 
   const where = conditions.length > 0 ? and(...conditions) : undefined;
 
