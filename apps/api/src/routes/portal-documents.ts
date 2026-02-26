@@ -17,7 +17,7 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { log } from "../lib/logger.js";
 import { immutableAudit } from "../lib/immutable-audit.js";
-import { randomBytes, createHmac } from "node:crypto";
+import { randomBytes, createHmac, timingSafeEqual } from "node:crypto";
 import { isPgConfigured } from "../platform/pg/pg-db.js";
 
 /* ------------------------------------------------------------------ */
@@ -90,7 +90,8 @@ function verifyToken(token: string): boolean {
   if (parts.length !== 2) return false;
   const [raw, sig] = parts;
   const expected = createHmac("sha256", TOKEN_SECRET).update(raw).digest("hex").slice(0, 16);
-  return sig === expected;
+  if (sig.length !== expected.length) return false;
+  return timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
 }
 
 /* ------------------------------------------------------------------ */

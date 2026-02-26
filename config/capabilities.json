@@ -339,6 +339,46 @@
       "targetPackage": null,
       "description": "Create time-limited share link"
     },
+    "portal.documents.list": {
+      "status": "live",
+      "module": "portal",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "List available document types for download"
+    },
+    "portal.documents.generate": {
+      "status": "live",
+      "module": "portal",
+      "adapter": null,
+      "targetRpc": "ORQQAL LIST, ORWPS ACTIVE, ORQQPX IMMUN LIST, ORWLRR INTERIM",
+      "targetPackage": null,
+      "description": "Generate VistA-backed document with signed download token"
+    },
+    "portal.documents.download": {
+      "status": "live",
+      "module": "portal",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Download generated document via signed token"
+    },
+    "portal.consents.view": {
+      "status": "live",
+      "module": "portal",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "View patient consent decisions (PG-backed)"
+    },
+    "portal.consents.update": {
+      "status": "live",
+      "module": "portal",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Record or update patient consent decision"
+    },
     "analytics.dashboard.view": {
       "status": "live",
       "module": "analytics",

@@ -1350,6 +1350,18 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: "Phase 136: portal audit has no file sink — only in-memory.",
   },
   {
+    id: "portal-pending-docs",
+    file: "routes/portal-documents.ts",
+    variable: "pendingDocs",
+    description: "Short-lived signed download tokens for generated documents",
+    classification: "cache",
+    durability: "in_memory_only",
+    domain: "portal",
+    ttlMs: 300_000,
+    maxSize: 10_000,
+    notes: "Phase 140: single-use HMAC-signed tokens, auto-purged every 60s. Loss = user re-generates.",
+  },
+  {
     id: "analytics-event-buffer",
     file: "services/analytics-store.ts",
     variable: "eventBuffer",
