@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-26T02:47:18.766Z",
+  "generatedAt": "2026-02-26T03:16:42.993Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 151,
+  "phaseCount": 152,
   "phases": [
     {
       "phaseNumber": "1",
@@ -2208,6 +2208,46 @@
         "docs/runbooks/portal-parity.md",
         "ops/summary.md",
         "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "141",
+      "title": "Enterprise IAM Posture (OIDC Default + Break-Glass + Hardening)",
+      "folder": "146-PHASE-141-ENTERPRISE-IAM",
+      "files": [
+        "141-01-IMPLEMENT.md",
+        "141-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "141-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "141-99-VERIFY.md"
+      ],
+      "routes": [
+        "/admin/break-glass/active",
+        "/admin/break-glass/approve",
+        "/admin/break-glass/request",
+        "/admin/break-glass/revoke",
+        "/iam/auth-mode"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/auth/auth-mode-policy.ts",
+        "apps/api/src/auth/idp-role-mapper.ts",
+        "apps/api/src/auth/enterprise-break-glass.ts",
+        "apps/api/src/auth/scim-connector.ts",
+        "apps/api/src/routes/enterprise-break-glass-routes.ts",
+        "apps/api/src/lib/immutable-audit.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts",
+        "apps/api/src/index.ts",
+        "config/capabilities.json",
+        "apps/web/src/app/cprs/admin/break-glass/page.tsx",
+        "docs/runbooks/phase141-enterprise-iam.md"
       ]
     },
     {

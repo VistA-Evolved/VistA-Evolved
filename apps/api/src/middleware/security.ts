@@ -20,6 +20,7 @@ import type { SessionData } from "../auth/session-store.js";
 import { disconnect as disconnectRpcBroker } from "../vista/rpcBrokerClient.js";
 import { stopAggregationJob } from "../services/analytics-aggregator.js";
 import { stopRoomCleanup } from "../telehealth/room-store.js";
+import { stopBreakGlassCleanup } from "../auth/enterprise-break-glass.js";
 import { stopCleanupJob as stopPortabilityCleanup } from "../services/record-portability-store.js";
 import { stopEtl } from "../services/analytics-etl.js";
 // Phase 36: Telemetry
@@ -501,6 +502,8 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
         try { stopEtl(); } catch { /* connection may already be closed */ }
         // Phase 30: stop telehealth room cleanup timer
         try { stopRoomCleanup(); } catch { /* timer may already be cleared */ }
+        // Phase 141: stop break-glass cleanup timer
+        try { stopBreakGlassCleanup(); } catch { /* timer may already be cleared */ }
         // Phase 80: stop record portability cleanup timer
         try { stopPortabilityCleanup(); } catch { /* timer may already be cleared */ }
         // Phase 95B: close platform SQLite DB

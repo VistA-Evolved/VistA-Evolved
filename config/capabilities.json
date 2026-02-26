@@ -523,6 +523,62 @@
       "targetPackage": null,
       "description": "Identity provider health check endpoint (Phase 66)"
     },
+    "iam.auth-mode.validate": {
+      "status": "live",
+      "module": "iam",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Auth mode policy validation (oidc/dev_local) (Phase 141)"
+    },
+    "iam.break-glass.request": {
+      "status": "live",
+      "module": "iam",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Enterprise break-glass access request (Phase 141)"
+    },
+    "iam.break-glass.approve": {
+      "status": "live",
+      "module": "iam",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Enterprise break-glass approval by admin (Phase 141)"
+    },
+    "iam.break-glass.deny": {
+      "status": "live",
+      "module": "iam",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Enterprise break-glass denial by admin (Phase 141)"
+    },
+    "iam.break-glass.revoke": {
+      "status": "live",
+      "module": "iam",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Enterprise break-glass session revocation (Phase 141)"
+    },
+    "iam.role-mapping": {
+      "status": "live",
+      "module": "iam",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "IdP group-to-role mapping with tenant isolation (Phase 141)"
+    },
+    "iam.scim.readiness": {
+      "status": "pending",
+      "module": "iam",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "SCIM 2.0 user provisioning connector (Phase 141 placeholder)"
+    },
     "rcm.claims.view": {
       "status": "configured",
       "module": "rcm",

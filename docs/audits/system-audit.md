@@ -1,7 +1,7 @@
 # VistA-Evolved System Audit
 
-> Generated: 2026-02-26T02:54:52.807Z  
-> HEAD: f6d0805  
+> Generated: 2026-02-26T03:22:55.071Z  
+> HEAD: f0f6361  
 > Node: v24.13.0 | pnpm: 10.29.2
 
 ## What Is Truly Wired End-to-End
@@ -10,7 +10,7 @@
 |---|--------|--------|----------|
 | 1 | AUTH_IAM | **WIRED** | POST /portal/auth/login, POST /portal/auth/logout |
 | 2 | CPRS_UI | **WIRED** | /cprs/admin/analytics, /cprs/admin/audit-viewer |
-| 3 | ADMIN_PLATFORM | **WIRED** | GET /admin/audit-log, POST /admin/cache/invalidate |
+| 3 | ADMIN_PLATFORM | **WIRED** | GET /admin/audit-log, GET /admin/break-glass/active |
 | 4 | AUDIT_COMPLIANCE | **WIRED** | apps/api/src/lib/immutable-audit.ts, apps/api/src/services/imaging-audit.ts |
 | 5 | VISTA_RPC_COVERAGE | partial | uniqueRpcsUsed, registeredRpcs |
 | 6 | ORDERS_CPOE | partial | POST /vista/cprs/meds/quick-order, POST /vista/cprs/order-checks |
@@ -32,9 +32,9 @@
 ## Durability Posture
 
 - **SQLite tables:** 46
-- **In-memory Map stores:** 173
+- **In-memory Map stores:** 175
 - **High-risk (data loss on restart):** 37
-- **Medium-risk:** 28
+- **Medium-risk:** 29
 - **JSON seed/mutable stores:** 16
 
 ### High-Risk In-Memory Stores
@@ -67,12 +67,12 @@
 
 ## API Inventory
 
-- **Total endpoints:** 1235
-- **By tag:** vista(546), rcm(348), other(96), portal(87), admin(84), infra(60), scheduling(25), imaging(20), analytics(14), telehealth(13), interop(10), iam(9), posture(6), auth(3)
+- **Total endpoints:** 1243
+- **By tag:** vista(546), rcm(348), other(96), admin(92), portal(87), infra(60), scheduling(25), imaging(20), analytics(14), telehealth(13), iam(10), interop(10), posture(6), auth(3)
 
 ## UI Inventory
 
-- **web:** 51 pages, 39 dead-click markers
+- **web:** 52 pages, 39 dead-click markers
 - **portal:** 25 pages, 11 dead-click markers
 
 ## CI Enforcement Posture
@@ -93,12 +93,12 @@
 |--------|-------|------------|
 | integration_pending | 65 | 342 |
 | mock | 2 | 2 |
-| placeholder | 75 | 199 |
+| placeholder | 77 | 207 |
 | todo | 1 | 1 |
 | fixme | 0 | 0 |
 | local_only | 4 | 6 |
-| stub | 42 | 973 |
-| not_implemented | 13 | 424 |
+| stub | 43 | 976 |
+| not_implemented | 14 | 433 |
 
 ## Top 20 Prioritized Next Build Items
 

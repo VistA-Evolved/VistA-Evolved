@@ -149,6 +149,10 @@ import portalDocumentsRoutes, { initPortalDocuments } from "./routes/portal-docu
 // Phase 66: Production IAM v1 (OIDC + SAML posture)
 import idpRoutes from "./auth/idp/idp-routes.js";
 import { initIdentityProviders } from "./auth/idp/index.js";
+// Phase 141: Enterprise IAM posture (OIDC default + break-glass + SCIM readiness)
+import enterpriseBreakGlassRoutes from "./routes/enterprise-break-glass-routes.js";
+import { enforceAuthMode } from "./auth/auth-mode-policy.js";
+import { startBreakGlassCleanup, stopBreakGlassCleanup } from "./auth/enterprise-break-glass.js";
 // Phase 67: ADT + Inpatient Lists v1 (VistA-first read posture)
 import adtRoutes from "./routes/adt/index.js";
 // Phase 83: Inpatient Operations (census + bedboard + ADT workflow + movements)
@@ -180,6 +184,12 @@ import i18nRoutes from "./routes/i18n-routes.js";
 /* Throws in rc/prod if PLATFORM_PG_URL is missing.                     */
 /* ================================================================== */
 validateRuntimeMode();
+
+/* ================================================================== */
+/* Phase 141: Validate auth mode policy (after runtime mode)            */
+/* In rc/prod: requires AUTH_MODE=oidc. In dev/test: permissive.        */
+/* ================================================================== */
+enforceAuthMode();
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
@@ -343,6 +353,10 @@ server.register(aiGatewayRoutes);
 
 // Register IAM routes -- audit, policy, biometric, OIDC (Phase 35)
 server.register(iamRoutes);
+
+// Register enterprise break-glass + IAM posture routes (Phase 141)
+server.register(enterpriseBreakGlassRoutes);
+startBreakGlassCleanup();
 
 // Register module & capability routes -- SKU, adapters, toggles (Phase 37C)
 server.register(moduleCapabilityRoutes);

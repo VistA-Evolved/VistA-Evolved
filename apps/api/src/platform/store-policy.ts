@@ -1405,6 +1405,18 @@ export const STORE_INVENTORY: StoreEntry[] = [
     durability: "env_gated",
     domain: "qa",
   },
+  // Phase 141: Enterprise IAM posture
+  {
+    id: "enterprise-break-glass",
+    file: "auth/enterprise-break-glass.ts",
+    variable: "breakGlassStore",
+    description: "Enterprise break-glass sessions (pending/active/revoked)",
+    classification: "critical",
+    durability: "in_memory_only",
+    domain: "iam",
+    maxSize: 1_000,
+    migrationTarget: "pg: iam_break_glass_session table",
+  },
 ];
 
 // ─── Query helpers ──────────────────────────────────────────

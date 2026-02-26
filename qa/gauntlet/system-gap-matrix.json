@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-02-26T02:54:53.597Z",
-  "headSha": "f6d0805",
+  "generatedAt": "2026-02-26T03:22:55.857Z",
+  "headSha": "f0f6361",
   "domains": [
     {
       "domain": "AUTH_IAM",
@@ -19,6 +19,10 @@
           "file": "apps/api/src/routes/portal-auth.ts"
         },
         {
+          "route": "GET /admin/iam/posture",
+          "file": "apps/api/src/routes/enterprise-break-glass-routes.ts"
+        },
+        {
           "route": "GET /iam/audit/events",
           "file": "apps/api/src/routes/iam-routes.ts"
         },
@@ -32,10 +36,6 @@
         },
         {
           "route": "GET /iam/biometric/providers",
-          "file": "apps/api/src/routes/iam-routes.ts"
-        },
-        {
-          "route": "GET /iam/health",
           "file": "apps/api/src/routes/iam-routes.ts"
         }
       ],
@@ -74,6 +74,13 @@
         },
         {
           "route": "/cprs/admin/audit-viewer",
+          "tags": [
+            "CPRS",
+            "Admin"
+          ]
+        },
+        {
+          "route": "/cprs/admin/break-glass",
           "tags": [
             "CPRS",
             "Admin"
@@ -131,13 +138,6 @@
             "CPRS",
             "RCM",
             "Portal",
-            "Admin"
-          ]
-        },
-        {
-          "route": "/cprs/admin/integrations",
-          "tags": [
-            "CPRS",
             "Admin"
           ]
         }
@@ -669,40 +669,40 @@
           "file": "apps/api/src/routes/ws-console.ts"
         },
         {
+          "route": "GET /admin/break-glass/active",
+          "file": "apps/api/src/routes/enterprise-break-glass-routes.ts"
+        },
+        {
+          "route": "POST /admin/break-glass/approve",
+          "file": "apps/api/src/routes/enterprise-break-glass-routes.ts"
+        },
+        {
+          "route": "POST /admin/break-glass/deny",
+          "file": "apps/api/src/routes/enterprise-break-glass-routes.ts"
+        },
+        {
+          "route": "POST /admin/break-glass/request",
+          "file": "apps/api/src/routes/enterprise-break-glass-routes.ts"
+        },
+        {
+          "route": "POST /admin/break-glass/revoke",
+          "file": "apps/api/src/routes/enterprise-break-glass-routes.ts"
+        },
+        {
+          "route": "GET /admin/break-glass/session/:id",
+          "file": "apps/api/src/routes/enterprise-break-glass-routes.ts"
+        },
+        {
+          "route": "GET /admin/break-glass/stats",
+          "file": "apps/api/src/routes/enterprise-break-glass-routes.ts"
+        },
+        {
           "route": "POST /admin/cache/invalidate",
           "file": "apps/api/src/index.ts"
         },
         {
           "route": "POST /admin/circuit-breaker/reset",
           "file": "apps/api/src/index.ts"
-        },
-        {
-          "route": "POST /admin/connector-cb/reset",
-          "file": "apps/api/src/index.ts"
-        },
-        {
-          "route": "GET /admin/connector-cbs",
-          "file": "apps/api/src/index.ts"
-        },
-        {
-          "route": "GET /admin/fake-success-audit",
-          "file": "apps/api/src/index.ts"
-        },
-        {
-          "route": "GET /admin/fake-success-violations",
-          "file": "apps/api/src/index.ts"
-        },
-        {
-          "route": "GET /admin/feature-flags/:tenantId",
-          "file": "apps/api/src/routes/admin.ts"
-        },
-        {
-          "route": "PUT /admin/feature-flags/:tenantId",
-          "file": "apps/api/src/routes/admin.ts"
-        },
-        {
-          "route": "GET /admin/intake/question-schema",
-          "file": "apps/api/src/routes/i18n-routes.ts"
         }
       ],
       "topGaps": [],
@@ -785,7 +785,7 @@
         },
         {
           "metric": "inMemoryMaps",
-          "value": 173
+          "value": 175
         },
         {
           "metric": "highRiskMaps",
@@ -793,7 +793,7 @@
         },
         {
           "metric": "medRiskMaps",
-          "value": 28
+          "value": 29
         }
       ],
       "topGaps": [

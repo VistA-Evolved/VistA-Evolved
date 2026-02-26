@@ -147,7 +147,17 @@ export type ImmutableAuditAction =
   | "portal.document.generate"
   | "portal.document.download"
   | "portal.consent.view"
-  | "portal.consent.update";
+  | "portal.consent.update"
+  // Phase 141: Enterprise IAM posture — auth mode + break-glass + SCIM
+  | "iam.auth-mode.validated"
+  | "iam.auth-mode.enforced"
+  | "iam.break-glass.request"
+  | "iam.break-glass.approve"
+  | "iam.break-glass.deny"
+  | "iam.break-glass.revoke"
+  | "iam.break-glass.expire"
+  | "iam.role-mapping.resolve"
+  | "iam.tenant-isolation.violation";
 
 export type ImmutableAuditOutcome = "success" | "failure" | "denied" | "error";
 
