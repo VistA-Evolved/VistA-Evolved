@@ -234,6 +234,10 @@ export function transitionLoa(
   };
 
   loaStore.set(id, updated);
+
+  // Phase 146: Write-through status transition
+  dbRepo?.upsert({ id, tenantId: updated.tenantId ?? 'default', status: updated.status, updatedAt: updated.updatedAt, metadataJson: JSON.stringify(updated) }).catch(() => {});
+
   return updated;
 }
 
@@ -267,6 +271,10 @@ export function updateLoaChecklist(
   };
 
   loaStore.set(id, updated);
+
+  // Phase 146: Write-through checklist update
+  dbRepo?.upsert({ id, tenantId: updated.tenantId ?? 'default', status: updated.status, updatedAt: updated.updatedAt, metadataJson: JSON.stringify(updated) }).catch(() => {});
+
   return updated;
 }
 
@@ -295,6 +303,10 @@ export function addLoaAttachment(
   };
 
   loaStore.set(id, updated);
+
+  // Phase 146: Write-through attachment
+  dbRepo?.upsert({ id, tenantId: updated.tenantId ?? 'default', status: updated.status, updatedAt: updated.updatedAt, metadataJson: JSON.stringify(updated) }).catch(() => {});
+
   return updated;
 }
 
@@ -319,5 +331,9 @@ export function assignLoa(id: string, assignedTo: string, actor: string): LoaReq
   };
 
   loaStore.set(id, updated);
+
+  // Phase 146: Write-through assignment
+  dbRepo?.upsert({ id, tenantId: updated.tenantId ?? 'default', status: updated.status, updatedAt: updated.updatedAt, metadataJson: JSON.stringify(updated) }).catch(() => {});
+
   return updated;
 }

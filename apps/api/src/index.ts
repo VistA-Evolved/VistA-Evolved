@@ -2705,8 +2705,9 @@ try {
             loaCases: DR.createLoaCaseRepo(),
             credentials: DR.createCredentialVaultRepo(),
           });
-          const { initPhilHealthStoreRepo } = await import("./rcm/payerOps/philhealth-store.js");
+          const { initPhilHealthStoreRepo, initPhFacilityStoreRepo } = await import("./rcm/payerOps/philhealth-store.js");
           initPhilHealthStoreRepo(DR.createPhClaimDraftRepo());
+          initPhFacilityStoreRepo(DR.createPhFacilitySetupRepo());
           const { initRegistryStoreRepo } = await import("./rcm/payerOps/registry-store.js");
           initRegistryStoreRepo(DR.createPayerDirectoryEntryRepo());
           const { initDirectoryStoreRepo } = await import("./rcm/payerDirectory/normalization.js");

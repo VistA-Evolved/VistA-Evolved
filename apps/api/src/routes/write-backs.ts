@@ -98,6 +98,9 @@ function markDraftSynced(id: string): void {
   if (draft) {
     draft.status = 'synced';
     draft.updatedAt = new Date().toISOString();
+
+    // Phase 146: Write-through synced status
+    draftDbRepo?.upsert({ id, tenantId: 'default', status: 'synced', updatedAt: draft.updatedAt }).catch(() => {});
   }
 }
 
@@ -108,6 +111,9 @@ function markDraftFailed(id: string, error: string): void {
     draft.lastError = error;
     draft.syncAttempts++;
     draft.updatedAt = new Date().toISOString();
+
+    // Phase 146: Write-through failed status
+    draftDbRepo?.upsert({ id, tenantId: 'default', status: 'failed', updatedAt: draft.updatedAt }).catch(() => {});
   }
 }
 

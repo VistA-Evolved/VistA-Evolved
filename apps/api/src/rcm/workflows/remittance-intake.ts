@@ -234,6 +234,10 @@ export function tagRemittanceDocument(
   };
 
   remitDocStore.set(id, updated);
+
+  // Phase 146: Write-through tag
+  dbRepo?.upsert({ id, tenantId: updated.tenantId ?? 'default', status: updated.status, updatedAt: updated.updatedAt }).catch(() => {});
+
   return updated;
 }
 
@@ -276,6 +280,10 @@ export function reviewRemittanceDocument(
   };
 
   remitDocStore.set(id, updated);
+
+  // Phase 146: Write-through review
+  dbRepo?.upsert({ id, tenantId: updated.tenantId ?? 'default', status: updated.status, updatedAt: updated.updatedAt }).catch(() => {});
+
   return updated;
 }
 
@@ -312,6 +320,10 @@ export function markAsPosted(
   };
 
   remitDocStore.set(id, updated);
+
+  // Phase 146: Write-through post
+  dbRepo?.upsert({ id, tenantId: updated.tenantId ?? 'default', status: updated.status, updatedAt: updated.updatedAt }).catch(() => {});
+
   return updated;
 }
 

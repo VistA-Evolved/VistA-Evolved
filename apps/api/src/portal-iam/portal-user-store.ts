@@ -261,6 +261,10 @@ export async function authenticateUser(
       log.warn(`Portal user locked out: ${user.id} after ${user.failedAttempts} failed attempts`);
     }
     user.updatedAt = now();
+
+    // Phase 146: Write-through lockout state
+    userDbRepo?.upsert({ id: user.id, tenantId: 'default', status: user.status, failedAttempts: user.failedAttempts, updatedAt: user.updatedAt }).catch(() => {});
+
     return { success: false, error: "Invalid credentials" };
   }
 
@@ -269,6 +273,9 @@ export async function authenticateUser(
   user.lockedUntil = null;
   user.lastLoginAt = now();
   user.updatedAt = now();
+
+  // Phase 146: Write-through login success
+  userDbRepo?.upsert({ id: user.id, tenantId: 'default', status: user.status, failedAttempts: 0, lastLoginAt: user.lastLoginAt, updatedAt: user.updatedAt }).catch(() => {});
 
   // Check MFA
   if (user.mfaEnabled) {
@@ -290,6 +297,9 @@ export function generatePasswordResetToken(userId: string): string | null {
   user.passwordResetToken = hashToken(token);
   user.passwordResetExpiry = Date.now() + IAM_CONFIG.resetTokenTtlMs;
   user.updatedAt = now();
+
+  // Phase 146: Write-through reset token
+  userDbRepo?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt }).catch(() => {});
 
   return token; // Return plaintext — only returned once (sent via email)
 }
@@ -313,6 +323,10 @@ export async function resetPassword(
       user.lockedUntil = null;
       user.status = "active";
       user.updatedAt = now();
+
+      // Phase 146: Write-through password reset
+      userDbRepo?.upsert({ id: user.id, tenantId: 'default', passwordHash: user.passwordHash, status: user.status, failedAttempts: 0, updatedAt: user.updatedAt }).catch(() => {});
+
       return { success: true };
     }
   }
@@ -332,6 +346,10 @@ export async function changePassword(
 
   user.passwordHash = await hashPassword(newPassword);
   user.updatedAt = now();
+
+  // Phase 146: Write-through password change
+  userDbRepo?.upsert({ id: user.id, tenantId: 'default', passwordHash: user.passwordHash, updatedAt: user.updatedAt }).catch(() => {});
+
   return { success: true };
 }
 
@@ -358,6 +376,9 @@ export function setupMfa(userId: string): {
   user.totpSecret = secret;
   user.updatedAt = now();
 
+  // Phase 146: Write-through MFA setup
+  userDbRepo?.upsert({ id: user.id, tenantId: 'default', mfaEnabled: user.mfaEnabled, updatedAt: user.updatedAt }).catch(() => {});
+
   const uri = `otpauth://totp/VistA-Evolved:${user.username}?secret=${secret}&issuer=VistA-Evolved`;
   return { secret, uri };
 }
@@ -372,6 +393,10 @@ export function confirmMfa(userId: string, code: string): boolean {
   if (process.env.NODE_ENV !== "production" && code === "000000") {
     user.mfaEnabled = true;
     user.updatedAt = now();
+
+    // Phase 146: Write-through MFA confirm
+    userDbRepo?.upsert({ id: user.id, tenantId: 'default', mfaEnabled: true, updatedAt: user.updatedAt }).catch(() => {});
+
     return true;
   }
 
@@ -385,6 +410,10 @@ export function disableMfa(userId: string): boolean {
   user.mfaEnabled = false;
   user.totpSecret = null;
   user.updatedAt = now();
+
+  // Phase 146: Write-through MFA disable
+  userDbRepo?.upsert({ id: user.id, tenantId: 'default', mfaEnabled: false, updatedAt: user.updatedAt }).catch(() => {});
+
   return true;
 }
 
@@ -411,6 +440,10 @@ export function addPatientProfile(
   };
   user.patientProfiles.push(fullProfile);
   user.updatedAt = now();
+
+  // Phase 146: Write-through profile add
+  userDbRepo?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt }).catch(() => {});
+
   return fullProfile;
 }
 
@@ -423,6 +456,10 @@ export function removePatientProfile(userId: string, profileId: string): boolean
   if (user.patientProfiles[idx].isSelf) return false;
   user.patientProfiles.splice(idx, 1);
   user.updatedAt = now();
+
+  // Phase 146: Write-through profile remove
+  userDbRepo?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt }).catch(() => {});
+
   return true;
 }
 
@@ -454,6 +491,10 @@ export function createDeviceSession(
 
   user.deviceSessions.push(ds);
   user.updatedAt = now();
+
+  // Phase 146: Write-through device session
+  userDbRepo?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt }).catch(() => {});
+
   return ds;
 }
 
@@ -483,6 +524,10 @@ export function revokeDeviceSession(userId: string, sessionId: string): boolean 
   if (!ds) return false;
   ds.active = false;
   user.updatedAt = now();
+
+  // Phase 146: Write-through device revoke
+  userDbRepo?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt }).catch(() => {});
+
   return true;
 }
 
@@ -497,6 +542,10 @@ export function revokeAllDeviceSessions(userId: string): number {
     }
   }
   user.updatedAt = now();
+
+  // Phase 146: Write-through revoke all devices
+  userDbRepo?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt }).catch(() => {});
+
   return count;
 }
 

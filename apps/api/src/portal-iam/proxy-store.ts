@@ -232,6 +232,10 @@ export function respondToInvitation(
   );
 
   log.info(`Proxy invitation ${invitationId} ${response}`);
+
+  // Phase 146: Write-through invitation response
+  proxyDbRepo?.upsert({ id: inv.id, tenantId: 'default', fromUserId: inv.requestorUserId ?? '', status: inv.status, createdAt: inv.createdAt }).catch(() => {});
+
   return inv;
 }
 
@@ -245,6 +249,9 @@ export function cancelInvitation(invitationId: string, cancelledBy: string): boo
 
   inv.status = "cancelled";
   inv.respondedAt = now();
+
+  // Phase 146: Write-through invitation cancel
+  proxyDbRepo?.upsert({ id: inv.id, tenantId: 'default', fromUserId: inv.requestorUserId ?? '', status: 'cancelled', createdAt: inv.createdAt }).catch(() => {});
 
   log.info(`Proxy invitation cancelled: ${invitationId} by ${cancelledBy}`);
   return true;

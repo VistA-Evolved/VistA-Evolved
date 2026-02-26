@@ -243,6 +243,9 @@ export function cancelRefill(refillId: string, patientDfn: string): RefillReques
   req.statusNote = "Cancelled by patient.";
   req.updatedAt = new Date().toISOString();
 
+  // Phase 146: Write-through cancel
+  refillDbRepo?.upsert({ id: refillId, tenantId: 'default', status: req.status, updatedAt: req.updatedAt }).catch(() => {});
+
   portalAudit("portal.refill.cancel" as any, "success", patientDfn, {
     detail: { refillId },
   });
@@ -284,6 +287,9 @@ export function reviewRefill(
     req.statusNote = `Denied by ${clinicianName}. Reason: ${note}`;
     req.vistaSync = "not_attempted";
   }
+
+  // Phase 146: Write-through review
+  refillDbRepo?.upsert({ id: refillId, tenantId: 'default', status: req.status, updatedAt: req.updatedAt }).catch(() => {});
 
   return req;
 }

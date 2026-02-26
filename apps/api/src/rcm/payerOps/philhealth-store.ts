@@ -35,8 +35,11 @@ function newId(prefix: string): string {
 const claimDrafts = new Map<string, PhilHealthClaimDraft>();
 
 /* Phase 146: DB repo wiring */
-let phDraftDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
-export function initPhilHealthStoreRepo(repo: typeof phDraftDbRepo): void { phDraftDbRepo = repo; }
+type DurabilityRepo = { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null;
+let phDraftDbRepo: DurabilityRepo = null;
+let phFacilityDbRepo: DurabilityRepo = null;
+export function initPhilHealthStoreRepo(repo: DurabilityRepo): void { phDraftDbRepo = repo; }
+export function initPhFacilityStoreRepo(repo: DurabilityRepo): void { phFacilityDbRepo = repo; }
 
 export function createPhilHealthClaimDraft(data: {
   facilityId: string;
@@ -139,6 +142,10 @@ export function patchPhilHealthClaimDraft(
     }
   }
   draft.updatedAt = new Date().toISOString();
+
+  // Phase 146: Write-through patch
+  phDraftDbRepo?.upsert({ id, tenantId: (draft as any).tenantId ?? 'default', status: draft.status, updatedAt: draft.updatedAt }).catch(() => {});
+
   return { ok: true, draft };
 }
 
@@ -181,6 +188,10 @@ export function transitionPhilHealthClaimStatus(
   });
   draft.status = newStatus;
   draft.updatedAt = now;
+
+  // Phase 146: Write-through transition
+  phDraftDbRepo?.upsert({ id, tenantId: (draft as any).tenantId ?? 'default', status: draft.status, updatedAt: draft.updatedAt }).catch(() => {});
+
   return { ok: true, draft };
 }
 
@@ -255,6 +266,10 @@ export function generateExportPackage(
   }
 
   draft.updatedAt = now;
+
+  // Phase 146: Write-through export
+  phDraftDbRepo?.upsert({ id, tenantId: (draft as any).tenantId ?? 'default', status: draft.status, updatedAt: draft.updatedAt }).catch(() => {});
+
   return { ok: true, manifest, draft };
 }
 
@@ -354,6 +369,9 @@ export function simulateTestUpload(
     });
     draft.status = 'test_uploaded';
     draft.updatedAt = now;
+
+    // Phase 146: Write-through test upload
+    phDraftDbRepo?.upsert({ id, tenantId: (draft as any).tenantId ?? 'default', status: draft.status, updatedAt: draft.updatedAt }).catch(() => {});
   }
 
   return { ok: true, result, draft };
@@ -384,6 +402,9 @@ export function getOrCreateFacilitySetup(facilityId: string): PhilHealthFacility
       updatedAt: now,
     };
     facilitySetups.set(facilityId, setup);
+
+    // Phase 146: Write-through facility create
+    phFacilityDbRepo?.upsert({ id: setup.id, tenantId: 'default', facilityId, facilityCode: setup.facilityCode, createdAt: setup.createdAt }).catch(() => {});
   }
   return setup;
 }
@@ -402,6 +423,10 @@ export function updateFacilitySetup(
     }
   }
   setup.updatedAt = new Date().toISOString();
+
+  // Phase 146: Write-through facility update
+  phFacilityDbRepo?.upsert({ id: setup.id, tenantId: 'default', facilityId: setup.facilityId, facilityCode: setup.facilityCode, updatedAt: setup.updatedAt }).catch(() => {});
+
   return setup;
 }
 

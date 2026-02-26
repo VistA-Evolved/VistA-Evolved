@@ -29,6 +29,14 @@ function snakeToCamel(s: string): string {
   return s.replace(/_([a-z])/g, (_, c) => c.toUpperCase());
 }
 
+/** Guard against SQL injection via column/table name interpolation */
+const SAFE_IDENTIFIER = /^[a-z_][a-z0-9_]*$/;
+function assertSafeIdentifier(name: string, label: string): void {
+  if (!SAFE_IDENTIFIER.test(name)) {
+    throw new Error(`Unsafe SQL identifier in ${label}: "${name}"`);
+  }
+}
+
 function rowToObj<T>(row: Record<string, unknown>): T {
   const obj: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(row)) {
@@ -66,6 +74,7 @@ export interface GenericPgRepo<T extends { id: string }> {
 export function createPgRepo<T extends { id: string }>(
   tableName: string,
 ): GenericPgRepo<T> {
+  assertSafeIdentifier(tableName, "tableName");
   const pool = getPgPool();
 
   async function safeQuery(label: string, fn: () => Promise<any>): Promise<any> {
@@ -81,6 +90,7 @@ export function createPgRepo<T extends { id: string }>(
     async insert(data) {
       const row = objToRow(data as Record<string, unknown>);
       const cols = Object.keys(row);
+      cols.forEach((c) => assertSafeIdentifier(c, "insert.column"));
       const vals = Object.values(row);
       const placeholders = cols.map((_, i) => `$${i + 1}`).join(", ");
       const colStr = cols.join(", ");
@@ -97,6 +107,7 @@ export function createPgRepo<T extends { id: string }>(
     async upsert(data) {
       const row = objToRow(data as Record<string, unknown>);
       const cols = Object.keys(row);
+      cols.forEach((c) => assertSafeIdentifier(c, "upsert.column"));
       const vals = Object.values(row);
       const placeholders = cols.map((_, i) => `$${i + 1}`).join(", ");
       const colStr = cols.join(", ");
@@ -136,6 +147,7 @@ export function createPgRepo<T extends { id: string }>(
 
     async findByField(field, value, tenantId) {
       const snakeField = camelToSnake(field);
+      assertSafeIdentifier(snakeField, "findByField.column");
       return safeQuery("findByField", async () => {
         const where = tenantId
           ? `WHERE ${snakeField} = $1 AND tenant_id = $2`
@@ -150,6 +162,7 @@ export function createPgRepo<T extends { id: string }>(
       const row = objToRow(updates as Record<string, unknown>);
       const cols = Object.keys(row);
       if (cols.length === 0) return this.findById(id);
+      cols.forEach((c) => assertSafeIdentifier(c, "update.column"));
       const sets = cols.map((c, i) => `${c} = $${i + 2}`).join(", ");
       const vals = [id, ...Object.values(row)];
 

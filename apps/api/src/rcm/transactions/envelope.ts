@@ -220,6 +220,10 @@ export function transitionTransaction(
   }
 
   transactionStore.set(id, record);
+
+  // Phase 146: Write-through transaction transition
+  txnDbRepo?.upsert({ id, tenantId: 'default', status: record.state, updatedAt: record.updatedAt }).catch(() => {});
+
   return record;
 }
 

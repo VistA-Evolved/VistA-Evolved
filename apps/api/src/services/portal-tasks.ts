@@ -291,6 +291,9 @@ export function dismissTask(taskId: string, patientDfn: string): PortalTask | nu
   task.status = "dismissed";
   task.updatedAt = new Date().toISOString();
 
+  // Phase 146: Write-through dismiss
+  taskDbRepo?.upsert({ id: taskId, tenantId: 'default', status: task.status, updatedAt: task.updatedAt }).catch(() => {});
+
   portalAudit("portal.task.dismiss" as any, "success", patientDfn, {
     detail: { taskId },
   });
@@ -306,6 +309,9 @@ export function completeTask(taskId: string, patientDfn: string): PortalTask | n
 
   task.status = "completed";
   task.updatedAt = new Date().toISOString();
+
+  // Phase 146: Write-through complete
+  taskDbRepo?.upsert({ id: taskId, tenantId: 'default', status: task.status, updatedAt: task.updatedAt }).catch(() => {});
 
   portalAudit("portal.task.complete" as any, "success", patientDfn, {
     detail: { taskId },
