@@ -84,7 +84,9 @@ function verify() {
   // No PHI
   const text = JSON.stringify(golden);
   check("No SSN patterns", !/\b\d{3}-\d{2}-\d{4}\b/.test(text));
-  check("No password strings", !text.toLowerCase().includes("prov123"));
+  check("No sandbox credentials", !text.toLowerCase().includes("prov123") &&
+    !text.toLowerCase().includes("nurse123") &&
+    !text.toLowerCase().includes("pharm123"));
 
   console.log(`\n  Result: ${pass} pass, ${fail} fail\n`);
   if (fail > 0) process.exit(1);

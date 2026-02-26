@@ -164,8 +164,7 @@ export function classifyTests(enrichedPhase) {
 
 export function buildRegistry() {
   if (!existsSync(INDEX_PATH)) {
-    console.error("Phase index not found. Run: node scripts/build-phase-index.mjs");
-    process.exit(1);
+    throw new Error("Phase index not found. Run: node scripts/build-phase-index.mjs");
   }
 
   const raw = readFileSync(INDEX_PATH, "utf-8");

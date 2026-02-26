@@ -156,13 +156,11 @@ export async function run(opts = {}) {
 
   // ── 5. No PHI in Generated Files ──
 
-  const phiPatterns = [/\b\d{3}-\d{2}-\d{4}\b/, /PROV123/i, /patient.*name/i];
   let phiClean = true;
-  for (const content of [allGenerated]) {
-    if (phiPatterns[0].test(content) || phiPatterns[1].test(content)) {
-      phiClean = false;
-    }
-  }
+  if (/\b\d{3}-\d{2}-\d{4}\b/.test(allGenerated)) phiClean = false; // SSN
+  if (/PROV123/i.test(allGenerated)) phiClean = false;               // sandbox cred
+  if (/NURSE123/i.test(allGenerated)) phiClean = false;              // sandbox cred
+  if (/PHARM123/i.test(allGenerated)) phiClean = false;              // sandbox cred
   check("No PHI in generated test files", phiClean);
 
   return {
