@@ -1,6 +1,13 @@
-# Phase 139 — Scheduling Lifecycle + Clinic Resources + Portal Integration
+# Phase 139 VERIFY — Scheduling Lifecycle + Clinic Resources + Portal Integration
 
 ## What Changed
+
+### VERIFY Fixes Applied (4 issues found + fixed)
+1. **Status badge colors** — Admin request queue now uses green/red/yellow per status (was always yellow)
+2. **GET /scheduling/requests** — Now merges PG + in-memory stores (was in-memory only)
+3. **Approve/reject status guard** — Returns 409 if request is not pending (was allowing double-approve)
+4. **Unused variable** — Removed unused `body` variable in approve endpoint
+5. **Inventory script** — Fixed RPC_REGISTRY regex (array format, not object) + capabilities.json nested structure
 
 ### New API Endpoints (6)
 - POST `/scheduling/appointments/:id/checkin` -- lifecycle transition to checked_in

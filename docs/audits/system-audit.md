@@ -1,7 +1,7 @@
 # VistA-Evolved System Audit
 
-> Generated: 2026-02-26T01:31:24.165Z  
-> HEAD: fb0d40e  
+> Generated: 2026-02-26T01:57:07.656Z  
+> HEAD: dbf627f  
 > Node: v24.13.0 | pnpm: 10.29.2
 
 ## What Is Truly Wired End-to-End
@@ -32,8 +32,8 @@
 ## Durability Posture
 
 - **SQLite tables:** 46
-- **In-memory Map stores:** 171
-- **High-risk (data loss on restart):** 36
+- **In-memory Map stores:** 172
+- **High-risk (data loss on restart):** 37
 - **Medium-risk:** 27
 - **JSON seed/mutable stores:** 16
 
@@ -113,7 +113,7 @@
 | 7 | high | PAYER_INTEGRATIONS_US | Clearinghouse connector scaffold, no live integration | apps/api/src/rcm/connectors/clearinghouse-connector.ts |
 | 8 | high | MULTI_TENANCY | RLS policies gated by PLATFORM_PG_RLS_ENABLED | apps/api/src/posture/tenant-posture.ts |
 | 9 | high | MULTI_TENANCY | SQLite tables lack tenant isolation | apps/api/src/platform/db/schema.ts |
-| 10 | high | DATABASE_POSTURE | 36 high-risk in-memory stores lose data on restart | apps/api/src/adapters/adapter-loader.ts |
+| 10 | high | DATABASE_POSTURE | 37 high-risk in-memory stores lose data on restart | apps/api/src/adapters/adapter-loader.ts |
 | 11 | med | AUTH_IAM | OIDC is opt-in, not default | apps/api/src/auth/oidc-provider.ts |
 | 12 | med | CPRS_UI | Multiple admin pages may have placeholder content |  |
 | 13 | med | VISTA_RPC_COVERAGE | 4 RPCs used but not in registry | ORWPT APPTLST |

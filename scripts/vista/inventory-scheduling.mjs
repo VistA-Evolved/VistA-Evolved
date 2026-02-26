@@ -20,38 +20,27 @@ const ROOT = join(__dirname, "..", "..");
 const registryPath = join(ROOT, "apps", "api", "src", "vista", "rpcRegistry.ts");
 const registrySource = readFileSync(registryPath, "utf-8");
 
-// Extract RPC_REGISTRY entries
+// Extract RPC_REGISTRY entries (array of { name, domain, tag, description })
 const rpcEntries = [];
-const registryMatch = registrySource.match(/RPC_REGISTRY\s*=\s*\{([\s\S]*?)\}\s*as\s*const/);
+const registryMatch = registrySource.match(/RPC_REGISTRY[^=]*=\s*\[([\s\S]*?)\];/);
 if (registryMatch) {
   const body = registryMatch[1];
-  const entryRe = /"([^"]+)":\s*\{([^}]+)\}/g;
+  const entryRe = /\{\s*name:\s*"([^"]+)"[^}]*?tag:\s*"(\w+)"[^}]*?description:\s*"([^"]*)"[^}]*?\}/g;
   let m;
   while ((m = entryRe.exec(body)) !== null) {
-    const name = m[1];
-    const fields = m[2];
-    const tagMatch = fields.match(/tag:\s*"(\w+)"/);
-    const descMatch = fields.match(/desc:\s*"([^"]+)"/);
-    rpcEntries.push({
-      name,
-      tag: tagMatch?.[1] || "unknown",
-      description: descMatch?.[1] || "",
-    });
+    rpcEntries.push({ name: m[1], tag: m[2], description: m[3] });
   }
 }
 
 // Extract RPC_EXCEPTIONS
 const exceptions = [];
-const exceptionsMatch = registrySource.match(/RPC_EXCEPTIONS\s*=\s*\{([\s\S]*?)\}\s*as\s*const/);
+const exceptionsMatch = registrySource.match(/RPC_EXCEPTIONS[^=]*=\s*\[([\s\S]*?)\];/);
 if (exceptionsMatch) {
   const body = exceptionsMatch[1];
-  const entryRe = /"([^"]+)":\s*\{([^}]+)\}/g;
+  const entryRe = /\{\s*name:\s*"([^"]+)"/g;
   let m;
   while ((m = entryRe.exec(body)) !== null) {
-    exceptions.push({
-      name: m[1],
-      tag: "exception",
-    });
+    exceptions.push({ name: m[1], tag: "exception" });
   }
 }
 
@@ -68,8 +57,11 @@ const schedulingExceptions = exceptions.filter((r) =>
 const capsPath = join(ROOT, "config", "capabilities.json");
 const capsRaw = readFileSync(capsPath, "utf-8");
 // Strip BOM
-const caps = JSON.parse(capsRaw.charCodeAt(0) === 0xfeff ? capsRaw.slice(1) : capsRaw);
-const schedulingCaps = caps.filter((c) => c.id?.startsWith("scheduling."));
+const capsJson = JSON.parse(capsRaw.charCodeAt(0) === 0xfeff ? capsRaw.slice(1) : capsRaw);
+// capabilities.json has { _meta, capabilities: { "key": {...}, ... } }
+const capsObj = capsJson.capabilities || capsJson;
+const capsArray = Object.entries(capsObj).map(([id, v]) => ({ id, ...v }));
+const schedulingCaps = capsArray.filter((c) => c.id?.startsWith("scheduling."));
 
 /* ---- Known target RPCs not yet available ------------------------------ */
 const targetRpcs = [

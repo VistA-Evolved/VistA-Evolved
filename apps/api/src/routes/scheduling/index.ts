@@ -311,10 +311,22 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
   /* ---- GET /scheduling/requests ---- */
   server.get("/scheduling/requests", async (request: FastifyRequest, reply: FastifyReply) => {
     if (!requireSession(request, reply)) return;
+
+    // Merge PG + in-memory stores (PG is source of truth when available)
+    const merged = new Map<string, any>();
+    try {
+      const pgRequestRepo = await import("../../platform/pg/repo/pg-scheduling-request-repo.js");
+      const pgRows = await pgRequestRepo.findAllActiveRequests();
+      for (const row of pgRows) merged.set(row.id, row);
+    } catch { /* PG unavailable — fall through to in-memory */ }
+
     const store = await getRequestStore();
-    const requests = [...store.values()]
-      .filter((r) => r.status === "pending")
-      .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    for (const [id, req] of store.entries()) {
+      if (!merged.has(id)) merged.set(id, req);
+    }
+
+    const requests = [...merged.values()]
+      .sort((a: any, b: any) => (b.createdAt || "").localeCompare(a.createdAt || ""));
 
     return { ok: true, data: requests, count: requests.length };
   });
@@ -727,7 +739,6 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
   server.post("/scheduling/requests/:id/approve", async (request: FastifyRequest, reply: FastifyReply) => {
     if (!requireSession(request, reply)) return;
     const { id } = request.params as { id: string };
-    const body = (request.body as any) || {};
 
     try {
       const pgRequestRepo = await import("../../platform/pg/repo/pg-scheduling-request-repo.js");
@@ -740,6 +751,9 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
         if (!memReq) {
           return reply.code(404).send({ ok: false, error: "Request not found" });
         }
+        if (memReq.status !== "pending") {
+          return reply.code(409).send({ ok: false, error: `Cannot approve: request is already ${memReq.status}` });
+        }
         memReq.status = "approved";
         (memReq as any).updatedAt = new Date().toISOString();
 
@@ -751,6 +765,10 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
         });
 
         return { ok: true, data: memReq, notice: "Request approved (in-memory store)." };
+      }
+
+      if (existing.status !== "pending") {
+        return reply.code(409).send({ ok: false, error: `Cannot approve: request is already ${existing.status}` });
       }
 
       const updated = await pgRequestRepo.updateSchedulingRequest(id, { status: "approved" });
@@ -790,6 +808,9 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
         if (!memReq) {
           return reply.code(404).send({ ok: false, error: "Request not found" });
         }
+        if (memReq.status !== "pending") {
+          return reply.code(409).send({ ok: false, error: `Cannot reject: request is already ${memReq.status}` });
+        }
         memReq.status = "rejected";
         (memReq as any).updatedAt = new Date().toISOString();
 
@@ -801,6 +822,10 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
         });
 
         return { ok: true, data: memReq, notice: `Request rejected: ${reason}` };
+      }
+
+      if (existing.status !== "pending") {
+        return reply.code(409).send({ ok: false, error: `Cannot reject: request is already ${existing.status}` });
       }
 
       const updated = await pgRequestRepo.updateSchedulingRequest(id, { status: "rejected" });

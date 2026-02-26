@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-02-26T01:31:25.089Z",
-  "headSha": "fb0d40e",
+  "generatedAt": "2026-02-26T01:57:08.600Z",
+  "headSha": "dbf627f",
   "domains": [
     {
       "domain": "AUTH_IAM",
@@ -785,11 +785,11 @@
         },
         {
           "metric": "inMemoryMaps",
-          "value": 171
+          "value": 172
         },
         {
           "metric": "highRiskMaps",
-          "value": 36
+          "value": 37
         },
         {
           "metric": "medRiskMaps",
@@ -798,7 +798,7 @@
       ],
       "topGaps": [
         {
-          "gap": "36 high-risk in-memory stores lose data on restart",
+          "gap": "37 high-risk in-memory stores lose data on restart",
           "severity": "high",
           "evidenceFiles": [
             "apps/api/src/adapters/adapter-loader.ts",

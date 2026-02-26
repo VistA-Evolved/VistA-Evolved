@@ -469,7 +469,9 @@ export default function SchedulingPage() {
                     <td style={{ padding: '0.5rem' }}>{r.preferredDate ? new Date(r.preferredDate).toLocaleDateString() : '-'}</td>
                     <td style={{ padding: '0.5rem' }}>{r.type || 'new_appointment'}</td>
                     <td style={{ padding: '0.5rem' }}>
-                      <span style={{ padding: '0.125rem 0.5rem', borderRadius: 10, fontSize: '0.75rem', background: '#fff3cd', color: '#664d03' }}>
+                      <span style={{ padding: '0.125rem 0.5rem', borderRadius: 10, fontSize: '0.75rem',
+                        background: r.status === 'approved' ? '#d1e7dd' : r.status === 'rejected' ? '#f8d7da' : '#fff3cd',
+                        color: r.status === 'approved' ? '#0f5132' : r.status === 'rejected' ? '#842029' : '#664d03' }}>
                         {r.status}
                       </span>
                     </td>
