@@ -80,7 +80,7 @@ let cachedConfig: OidcConfig | null = null;
 export function getOidcConfig(): OidcConfig {
   if (cachedConfig) return cachedConfig;
 
-  const enabled = process.env.OIDC_ENABLED === "true";
+  const enabled = (process.env.OIDC_ENABLED || "").toLowerCase().trim() === "true";
   const issuer = process.env.OIDC_ISSUER || "http://localhost:8180/realms/vista-evolved";
   const clientId = process.env.OIDC_CLIENT_ID || "vista-evolved-api";
   const jwksUri = process.env.OIDC_JWKS_URI || `${issuer}/protocol/openid-connect/certs`;

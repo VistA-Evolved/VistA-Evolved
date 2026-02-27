@@ -94,7 +94,7 @@ export function validateRuntimeMode(): void {
 
   // Phase 150: OIDC is mandatory in rc/prod
   if (requiresOidc()) {
-    const oidcEnabled = process.env.OIDC_ENABLED;
+    const oidcEnabled = (process.env.OIDC_ENABLED || "").toLowerCase().trim();
     if (oidcEnabled !== "true") {
       throw new Error(
         `PLATFORM_RUNTIME_MODE=${mode} requires OIDC. ` +

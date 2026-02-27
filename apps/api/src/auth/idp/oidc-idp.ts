@@ -37,7 +37,7 @@ import type {
 function loadConfig(): OidcIdpConfig {
   return {
     type: "oidc",
-    enabled: process.env.IDP_OIDC_ENABLED === "true",
+    enabled: (process.env.IDP_OIDC_ENABLED || "").toLowerCase().trim() === "true",
     issuer: process.env.IDP_OIDC_ISSUER || process.env.OIDC_ISSUER || "http://localhost:8180/realms/vista-evolved",
     clientId: process.env.IDP_OIDC_CLIENT_ID || process.env.OIDC_CLIENT_ID || "vista-evolved-api",
     clientSecret: process.env.IDP_OIDC_CLIENT_SECRET || "",

@@ -123,7 +123,7 @@ export function checkDataPlanePosture(): DataPlanePosture {
 
   // Gate 7 (Phase 150): OIDC enforcement
   const oidcRequired = requiresOidc();
-  const oidcEnabled = process.env.OIDC_ENABLED === "true";
+  const oidcEnabled = (process.env.OIDC_ENABLED || "").toLowerCase().trim() === "true";
   const oidcIssuerSet = !!process.env.OIDC_ISSUER;
   const oidcOk = oidcEnabled && oidcIssuerSet;
   gates.push({

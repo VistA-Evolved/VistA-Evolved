@@ -155,6 +155,7 @@ import { initIdentityProviders } from "./auth/idp/index.js";
 // Phase 141: Enterprise IAM posture (OIDC default + break-glass + SCIM readiness)
 import enterpriseBreakGlassRoutes from "./routes/enterprise-break-glass-routes.js";
 import { enforceAuthMode } from "./auth/auth-mode-policy.js";
+import { validateOidcConfig } from "./auth/oidc-provider.js";
 import { startBreakGlassCleanup, stopBreakGlassCleanup } from "./auth/enterprise-break-glass.js";
 // Phase 67: ADT + Inpatient Lists v1 (VistA-first read posture)
 import adtRoutes from "./routes/adt/index.js";
@@ -193,6 +194,25 @@ validateRuntimeMode();
 /* In rc/prod: requires AUTH_MODE=oidc. In dev/test: permissive.        */
 /* ================================================================== */
 enforceAuthMode();
+
+/* ================================================================== */
+/* Phase 153: Validate OIDC config depth (warnings/errors at boot)      */
+/* Surfaces JWKS derivability + client_id explicitness issues.          */
+/* ================================================================== */
+{
+  const oidcValidation = validateOidcConfig();
+  if (oidcValidation.errors.length > 0) {
+    throw new Error(
+      `OIDC configuration validation failed: ${oidcValidation.errors.join("; ")}`
+    );
+  }
+  if (oidcValidation.warnings.length > 0) {
+    // Warnings are logged but do not prevent startup
+    for (const w of oidcValidation.warnings) {
+      log.warn(w, { component: "oidc-config" });
+    }
+  }
+}
 
 /* ================================================================== */
 /* Phase 36: Initialize OTel tracing (must be before Fastify)           */
