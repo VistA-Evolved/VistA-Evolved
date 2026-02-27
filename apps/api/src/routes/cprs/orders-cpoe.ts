@@ -628,6 +628,15 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
             detail: { error: safeErr(err) },
           });
         }
+        auditWrite("clinical.order-sign", "failure", actor, validDfn!, { mode: "real", rpc: "ORWOR1 SIG" });
+        return {
+          ok: false,
+          status: "sign-failed",
+          rpcUsed,
+          vivianPresence,
+          error: safeErr(err),
+          message: `Order signing RPC call failed: ${safeErr(err)}`,
+        };
       }
     }
 

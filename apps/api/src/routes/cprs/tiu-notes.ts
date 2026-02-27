@@ -274,15 +274,29 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
       "TIU UNLOCK RECORD": "present" as const,
     };
 
-    const errors = validateRequired(body, ["dfn", "docIen", "esCode"]);
+    const errors = validateRequired(body, ["dfn", "docIen"]);
     const validDfn = validateDfn(dfn);
     if (!validDfn) errors.push({ field: "dfn", message: "dfn must be numeric" });
     if (docIen && !/^\d+$/.test(String(docIen))) errors.push({ field: "docIen", message: "docIen must be numeric" });
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
 
+    const actor = getActor(request);
+
+    /* Phase 154: esCode required for real signing — structured blocker, not 400 */
+    if (!esCode) {
+      auditWrite("clinical.note-sign", "failure", actor, validDfn!, { mode: "blocked-no-esCode" });
+      return {
+        ok: false,
+        status: "sign-blocked",
+        blocker: "esCode_required",
+        rpcUsed,
+        vivianPresence,
+        message: "Electronic signature code (esCode) is required to sign TIU notes.",
+      };
+    }
+
     const checkLock = optionalRpc("TIU LOCK RECORD");
     const checkSign = optionalRpc("TIU SIGN RECORD");
-    const actor = getActor(request);
 
     if (checkLock.available && checkSign.available) {
       try {

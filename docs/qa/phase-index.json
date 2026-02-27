@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-27T07:06:18.663Z",
+  "generatedAt": "2026-02-27T08:33:11.606Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 164,
+  "phaseCount": 165,
   "phases": [
     {
       "phaseNumber": "1",
@@ -2647,6 +2647,40 @@
       "rpcs": [],
       "uiComponents": [],
       "filesTouched": []
+    },
+    {
+      "phaseNumber": "154",
+      "title": "CPOE Order Signing + Idempotency (Postgres-Backed)",
+      "folder": "159-PHASE-154-CPOE-SIGNING",
+      "files": [
+        "154-01-IMPLEMENT.md",
+        "154-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "154-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "154-99-VERIFY.md"
+      ],
+      "routes": [
+        "/vista/cprs/orders/sign"
+      ],
+      "rpcs": [
+        "ORWOR1 SIG"
+      ],
+      "uiComponents": [
+        "OrdersPanel.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/routes/cprs/orders-cpoe.ts",
+        "apps/api/src/routes/cprs/wave2-routes.ts",
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/platform/store-policy.ts",
+        "apps/web/src/components/cprs/panels/OrdersPanel.tsx",
+        "config/capabilities.json",
+        "prompts/159-PHASE-154-CPOE-SIGNING/154-01-IMPLEMENT.md",
+        "prompts/159-PHASE-154-CPOE-SIGNING/154-99-VERIFY.md"
+      ]
     },
     {
       "phaseNumber": "14",

@@ -251,7 +251,11 @@ export default function OrdersPanel({ dfn }: Props) {
     try {
       const res = await fetch(`${API_BASE}/vista/cprs/orders/sign`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
+        headers: {
+          'Content-Type': 'application/json',
+          'Idempotency-Key': `sign-${orderId}-${Date.now()}`,
+          ...csrfHeaders(),
+        },
         credentials: 'include',
         body: JSON.stringify({ dfn, orderIds: [orderId], esCode: esCode.trim() }),
       });
@@ -263,6 +267,8 @@ export default function OrdersPanel({ dfn }: Props) {
         fetchVistaOrders();
       } else if (data.status === 'sign-blocked') {
         setSignMsg(`Signing blocked: ${data.message || 'e-signature verification failed'}`);
+      } else if (data.status === 'sign-failed') {
+        setSignMsg(`Signing failed: ${data.message || data.error || 'RPC call failed — retry or contact support'}`);
       } else if (data.status === 'integration-pending') {
         setSignMsg(`Signing -- integration pending: ${data.pendingNote || 'ORWOR1 SIG not available'}`);
       } else if (data.ok) {
