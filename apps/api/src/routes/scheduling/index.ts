@@ -52,6 +52,7 @@ import { getRequestStore } from "../../adapters/scheduling/vista-adapter.js";
 import { immutableAudit } from "../../lib/immutable-audit.js";
 import { log } from "../../lib/logger.js";
 import { requiresPg } from "../../platform/runtime-mode.js";
+import writebackRoutes from "./writeback-routes.js";
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
@@ -1099,5 +1100,8 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
     }
   });
 
-  log.info("Scheduling routes registered (Phase 152: 31 endpoints, PG-only enforcement in rc/prod + truth gate audit redaction)");
+  // Phase 170: Register writeback guard routes
+  server.register(writebackRoutes);
+
+  log.info("Scheduling routes registered (Phase 170: 35 endpoints, writeback guard + truth gate enforcement)");
 }

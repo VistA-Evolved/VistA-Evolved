@@ -47,6 +47,8 @@
     "qa:generate-tests": "node scripts/qa/generate-phase-tests.mjs",
     "qa:rpc-trace:verify": "node scripts/qa/rpc-trace-manager.mjs verify",
     "qa:rpc-trace:record": "node scripts/qa/rpc-trace-manager.mjs record",
+    "qa:journeys:clinic-day": "node scripts/qa/clinic-day-runner.mjs",
+    "validate:specialty-packs": "node scripts/qa/validate-specialty-packs.mjs",
     "audit:system": "node scripts/audit/system-audit.mjs"
   }
 }

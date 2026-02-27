@@ -1,7 +1,7 @@
 # VistA-Evolved System Audit
 
-> Generated: 2026-02-27T14:08:48.092Z  
-> HEAD: 2fff6ee  
+> Generated: 2026-02-27T19:00:28.948Z  
+> HEAD: ae2f4c4  
 > Node: v24.13.0 | pnpm: 10.29.2
 
 ## What Is Truly Wired End-to-End
@@ -31,9 +31,9 @@
 ## Durability Posture
 
 - **SQLite tables:** 56
-- **In-memory Map stores:** 193
-- **High-risk (data loss on restart):** 34
-- **Medium-risk:** 30
+- **In-memory Map stores:** 200
+- **High-risk (data loss on restart):** 35
+- **Medium-risk:** 31
 - **JSON seed/mutable stores:** 17
 
 ### High-Risk In-Memory Stores
@@ -60,18 +60,18 @@
 
 - **Unique RPCs used in code:** 91
 - **RPCs in registry:** 196
-- **Total call sites:** 182
+- **Total call sites:** 186
 - **Unregistered RPCs used:** 0
 - **Unused registered RPCs:** 70
 
 ## API Inventory
 
-- **Total endpoints:** 1289
-- **By tag:** vista(548), rcm(353), admin(119), other(99), portal(87), infra(61), scheduling(31), imaging(20), analytics(14), telehealth(13), iam(10), interop(10), posture(8), auth(3)
+- **Total endpoints:** 1331
+- **By tag:** vista(560), rcm(353), admin(138), other(103), portal(90), infra(62), scheduling(35), imaging(20), analytics(14), telehealth(13), iam(10), interop(10), posture(8), auth(3)
 
 ## UI Inventory
 
-- **web:** 61 pages, 43 dead-click markers
+- **web:** 62 pages, 43 dead-click markers
 - **portal:** 25 pages, 11 dead-click markers
 
 ## CI Enforcement Posture
@@ -91,7 +91,7 @@
 
 | Marker | Files | Total Hits |
 |--------|-------|------------|
-| integration_pending | 71 | 362 |
+| integration_pending | 79 | 393 |
 | mock | 2 | 2 |
 | placeholder | 81 | 214 |
 | todo | 1 | 1 |
@@ -115,7 +115,7 @@
 | 9 | med | PAYER_INTEGRATIONS_US | Clearinghouse connector is simulation scaffold. Blocked by: vendor contract (Change Healthcare/Availity/WayStar), SFTP credentials, sender/receiver ID enrollment. Target: vendor SFTP/API. | apps/api/src/rcm/connectors/clearinghouse-connector.ts |
 | 10 | med | AI_GOVERNANCE | AI model integration is scaffold only |  |
 | 11 | med | AUDIT_COMPLIANCE | Audit JSONL files are append-only but not externally replicated | apps/api/src/lib/immutable-audit.ts |
-| 12 | med | DATABASE_POSTURE | 34 Map stores flagged high-risk. Critical stores (claims, portal, imaging, telehealth, scheduling) are pg_backed via write-through. Remaining are rebuildable caches or ephemeral by design. | apps/api/src/adapters/adapter-loader.ts |
+| 12 | med | DATABASE_POSTURE | 35 Map stores flagged high-risk. Critical stores (claims, portal, imaging, telehealth, scheduling) are pg_backed via write-through. Remaining are rebuildable caches or ephemeral by design. | apps/api/src/adapters/adapter-loader.ts |
 | 13 | low | AUTH_IAM | Passkey data delegated to Keycloak (not available in sandbox) | apps/api/src/auth/biometric/passkeys-provider.ts |
 | 14 | low | VISTA_RPC_COVERAGE | 70 registered RPCs not called in code |  |
 | 15 | low | PORTAL_PATIENT | Portal stores use write-through Map+PG (pg_backed). Hot cache resets on restart but DB is source of truth. | apps/api/src/portal-iam/access-log-store.ts |

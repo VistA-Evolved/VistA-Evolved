@@ -271,4 +271,24 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
 
     return { ok: true, ...result };
   });
+
+  // ─── Phase 167: Pack Validation ───────────────────────────────
+
+  server.get("/admin/templates/validate", async () => {
+    const { validateAllPacks } = await import("./pack-validator.js");
+    const report = validateAllPacks();
+    return { ok: true, report };
+  });
+
+  server.get("/admin/templates/validate/rubrics", async () => {
+    const { ALL_RUBRICS } = await import("./pack-validator.js");
+    return { ok: true, rubrics: ALL_RUBRICS };
+  });
+
+  server.get("/admin/templates/validate/user", async (request) => {
+    const session = (request as any).session || { tenantId: "default" };
+    const { validateUserTemplates } = await import("./pack-validator.js");
+    const report = await validateUserTemplates(session.tenantId);
+    return { ok: true, report };
+  });
 }

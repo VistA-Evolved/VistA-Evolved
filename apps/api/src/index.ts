@@ -199,6 +199,15 @@ import { perfRoutes } from "./performance/index.js";
 import moduleValidationRoutes from "./routes/module-validation-routes.js";
 // Phase 165: Specialty Coverage Score + QA Ladder
 import coverageRoutes from "./routes/coverage-routes.js";
+// Phase 166: Clinic Day Simulator (A-Z Proof Journeys)
+import qaJourneyRoutes from "./routes/qa-journey-routes.js";
+// Phase 168: Inpatient Depth (Med Rec + Discharge + MAR Safety)
+import medReconciliationRoutes from "./routes/med-reconciliation.js";
+import dischargeWorkflowRoutes from "./routes/discharge-workflow.js";
+import marSafetyRoutes from "./routes/mar-safety.js";
+import identityLinkingRoutes from "./routes/identity-linking.js";
+import opsAdminRoutes from "./routes/ops-admin.js";
+import certificationEvidenceRoutes from "./routes/certification-evidence.js";
 
 /* ================================================================== */
 /* Phase 125: Validate runtime mode contract BEFORE anything else       */
@@ -573,6 +582,23 @@ server.register(moduleValidationRoutes);
 
 // Register coverage score routes -- specialty scoring + QA ladder (Phase 165)
 server.register(coverageRoutes);
+
+// Register clinic day journey routes -- A-Z proof journeys (Phase 166)
+server.register(qaJourneyRoutes);
+
+// Register inpatient depth routes -- med-rec, discharge, MAR safety (Phase 168)
+server.register(medReconciliationRoutes);
+server.register(dischargeWorkflowRoutes);
+server.register(marSafetyRoutes);
+
+// Register identity linking routes (Phase 169)
+server.register(identityLinkingRoutes);
+
+// Register ops admin routes (Phase 171)
+server.register(opsAdminRoutes);
+
+// Register certification evidence routes (Phase 172)
+server.register(certificationEvidenceRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

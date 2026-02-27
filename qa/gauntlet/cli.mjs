@@ -77,6 +77,13 @@ const SUITE_GATES = {
     "G20_no_new_stub_growth",
     "G21_no_new_critical_map_store",
     "G22_phi_leak_audit",
+    "G23_clinic_day_journeys",
+    "G24_specialty_pack_hardening",
+    "G25_inpatient_depth",
+    "G26_patient_identity_linking",
+    "G27_scheduling_writeback",
+    "G28_ops_admin_center",
+    "G29_certification_evidence",
   ],
   full: [
     "G0_prompts_integrity",
@@ -102,6 +109,13 @@ const SUITE_GATES = {
     "G20_no_new_stub_growth",
     "G21_no_new_critical_map_store",
     "G22_phi_leak_audit",
+    "G23_clinic_day_journeys",
+    "G24_specialty_pack_hardening",
+    "G25_inpatient_depth",
+    "G26_patient_identity_linking",
+    "G27_scheduling_writeback",
+    "G28_ops_admin_center",
+    "G29_certification_evidence",
   ],
 };
 
@@ -136,6 +150,13 @@ const GATE_MODULES = {
   G20_no_new_stub_growth: "gates/g20-no-new-stub-growth.mjs",
   G21_no_new_critical_map_store: "gates/g21-no-new-critical-map-store.mjs",
   G22_phi_leak_audit: "gates/g22-phi-leak-audit.mjs",
+  G23_clinic_day_journeys: "gates/g23-clinic-day.mjs",
+  G24_specialty_pack_hardening: "gates/g24-specialty-pack-hardening.mjs",
+  G25_inpatient_depth: "gates/g25-inpatient-depth.mjs",
+  G26_patient_identity_linking: "gates/g26-patient-identity-linking.mjs",
+  G27_scheduling_writeback: "gates/g27-scheduling-writeback.mjs",
+  G28_ops_admin_center: "gates/g28-ops-admin-center.mjs",
+  G29_certification_evidence: "gates/g29-certification-evidence.mjs",
 };
 
 // ── Resolve which gates to run ──────────────────────────────
@@ -214,7 +235,13 @@ for (const gateId of gateIds) {
   try {
     const fullPath = pathToFileURL(resolve(__dirname, modulePath)).href;
     const mod = await import(fullPath);
+    const gateStart = Date.now();
     const result = await mod.run({ suite: suiteName, strict, ci: ciMode });
+    const gateDuration = Date.now() - gateStart;
+    // Normalize: ensure name and durationMs are always set
+    if (!result.name) result.name = mod.meta?.name || mod.name || gateId;
+    if (!result.id) result.id = mod.meta?.id || mod.id || gateId;
+    if (result.durationMs == null) result.durationMs = gateDuration;
     results.push(result);
 
     if (result.status === "pass") {

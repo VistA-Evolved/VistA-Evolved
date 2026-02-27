@@ -159,7 +159,12 @@ export type ImmutableAuditAction =
   | "iam.break-glass.revoke"
   | "iam.break-glass.expire"
   | "iam.role-mapping.resolve"
-  | "iam.tenant-isolation.violation";
+  | "iam.tenant-isolation.violation"
+  // Phase 169: Patient identity linking
+  | "identity.link_requested"
+  | "identity.link_verified"
+  | "identity.link_rejected"
+  | "identity.link_revoked";
 
 export type ImmutableAuditOutcome = "success" | "failure" | "denied" | "error";
 

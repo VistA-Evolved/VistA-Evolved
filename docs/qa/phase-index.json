@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-27T13:51:33.641Z",
+  "generatedAt": "2026-02-27T16:58:03.904Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 176,
+  "phaseCount": 183,
   "phases": [
     {
       "phaseNumber": "1",
@@ -3075,6 +3075,150 @@
       "uiComponents": [
         "page.tsx"
       ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "166",
+      "title": "Clinic Day Simulator (A-Z Proof Journeys)",
+      "folder": "171-PHASE-166-CLINIC-DAY-SIMULATOR",
+      "files": [
+        "166-01-IMPLEMENT.md",
+        "166-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "166-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "166-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/qa/clinic-day-runner.mjs",
+        "apps/api/src/qa/clinic-day-journeys.ts",
+        "apps/api/src/routes/qa-journey-routes.ts",
+        "qa/gauntlet/gates/g23-clinic-day.mjs",
+        "qa/gauntlet/cli.mjs",
+        "apps/api/src/index.ts",
+        "apps/api/src/platform/store-policy.ts",
+        "package.json",
+        "apps/web/e2e/clinic-day.spec.ts",
+        "docs/runbooks/phase166-clinic-day-simulator.md"
+      ]
+    },
+    {
+      "phaseNumber": "167",
+      "title": "Specialty Pack Hardening (Minimum Required Artifacts)",
+      "folder": "172-PHASE-167-SPECIALTY-PACK-HARDENING",
+      "files": [
+        "167-01-IMPLEMENT.md",
+        "167-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "167-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "167-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "168",
+      "title": "Inpatient Depth (Med Rec + Discharge + MAR Safety)",
+      "folder": "173-PHASE-168-INPATIENT-DEPTH",
+      "files": [
+        "168-01-IMPLEMENT.md",
+        "168-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "168-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "168-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "169",
+      "title": "Patient Identity Linking (Portal <-> VistA)",
+      "folder": "174-PHASE-169-PATIENT-IDENTITY-LINKING",
+      "files": [
+        "169-01-IMPLEMENT.md",
+        "169-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "169-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "169-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "170",
+      "title": "Scheduling Writeback Maturity",
+      "folder": "175-PHASE-170-SCHEDULING-WRITEBACK",
+      "files": [
+        "170-01-IMPLEMENT.md",
+        "170-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "170-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "170-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "171",
+      "title": "Ops Admin Center",
+      "folder": "176-PHASE-171-OPS-ADMIN-CENTER",
+      "files": [
+        "171-01-IMPLEMENT.md",
+        "171-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "171-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "171-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "172",
+      "title": "Certification Evidence Export Pack",
+      "folder": "177-PHASE-172-CERTIFICATION-EVIDENCE-EXPORT",
+      "files": [
+        "172-01-IMPLEMENT.md",
+        "172-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "172-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "172-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
       "filesTouched": []
     },
     {

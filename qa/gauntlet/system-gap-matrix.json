@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-02-27T14:08:49.198Z",
-  "headSha": "2fff6ee",
+  "generatedAt": "2026-02-27T19:00:29.861Z",
+  "headSha": "ae2f4c4",
   "domains": [
     {
       "domain": "AUTH_IAM",
@@ -163,7 +163,7 @@
         },
         {
           "metric": "totalCallSites",
-          "value": 182
+          "value": 186
         }
       ],
       "topGaps": [
@@ -768,20 +768,20 @@
         },
         {
           "metric": "inMemoryMaps",
-          "value": 193
+          "value": 200
         },
         {
           "metric": "highRiskMaps",
-          "value": 34
+          "value": 35
         },
         {
           "metric": "medRiskMaps",
-          "value": 30
+          "value": 31
         }
       ],
       "topGaps": [
         {
-          "gap": "34 Map stores flagged high-risk. Critical stores (claims, portal, imaging, telehealth, scheduling) are pg_backed via write-through. Remaining are rebuildable caches or ephemeral by design.",
+          "gap": "35 Map stores flagged high-risk. Critical stores (claims, portal, imaging, telehealth, scheduling) are pg_backed via write-through. Remaining are rebuildable caches or ephemeral by design.",
           "severity": "med",
           "evidenceFiles": [
             "apps/api/src/adapters/adapter-loader.ts",
