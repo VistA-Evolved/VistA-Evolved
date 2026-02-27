@@ -624,7 +624,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     durability: "pg_backed",
     domain: "scheduling",
     migrationTarget: "pg: scheduling_requests table or VistA SD files",
-    notes: "Phase 136: scheduling wait list entries lost on restart.",
+    notes: "Phase 152: PG-only in rc/prod. Map fallback only in dev mode (logged as DEV_ONLY_FALLBACK). 503 returned if PG unavailable in rc/prod.",
   },
   {
     id: "scheduling-booking-locks",

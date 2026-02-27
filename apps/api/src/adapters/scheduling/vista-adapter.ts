@@ -54,6 +54,7 @@ import type { AdapterResult } from "../types.js";
 import { safeCallRpc, safeCallRpcWithList } from "../../lib/rpc-resilience.js";
 import { log } from "../../lib/logger.js";
 import { randomUUID } from "node:crypto";
+import { requiresPg } from "../../platform/runtime-mode.js";
 
 /* ------------------------------------------------------------------ */
 /* DB-backed hybrid (Phase 121)                                          */
@@ -147,7 +148,13 @@ function dbRowToEntry(row: any): WaitListEntry {
 }
 
 function persistEntry(entry: WaitListEntry): void {
-  if (!dbRepo) return;
+  if (!dbRepo) {
+    // Phase 152: In rc/prod, missing DB repo is an error, not a silent skip
+    if (requiresPg()) {
+      log.error("Scheduling persist failed: no DB repo in rc/prod mode -- data not persisted", { entryId: entry.id });
+    }
+    return;
+  }
   Promise.resolve((async () => {
     const existing = await Promise.resolve(dbRepo!.findSchedulingRequestById(entry.id));
     if (existing) {
@@ -1519,7 +1526,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
 /* ------------------------------------------------------------------ */
 
 export async function getRequestStore(): Promise<Map<string, WaitListEntry>> {
-  // Phase 121: If cache is empty but DB has data, rehydrate
+  // Phase 152: If cache is empty but DB has data, rehydrate
   if (requestStore.size === 0 && dbRepo) {
     try {
       const raw = await Promise.resolve(dbRepo.findAllActiveRequests());
@@ -1531,6 +1538,10 @@ export async function getRequestStore(): Promise<Map<string, WaitListEntry>> {
     } catch (err) {
       dbWarn("getRequestStore-rehydrate", err);
     }
+  }
+  // Phase 152: In rc/prod, warn if serving from in-memory without PG backing
+  if (requiresPg() && !dbRepo) {
+    log.warn("PG_REQUIRED: scheduling request store has no DB repo in rc/prod mode");
   }
   return requestStore;
 }

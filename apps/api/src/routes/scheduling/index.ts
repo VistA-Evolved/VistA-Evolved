@@ -51,6 +51,7 @@ import type { SchedulingAdapter } from "../../adapters/scheduling/interface.js";
 import { getRequestStore } from "../../adapters/scheduling/vista-adapter.js";
 import { immutableAudit } from "../../lib/immutable-audit.js";
 import { log } from "../../lib/logger.js";
+import { requiresPg } from "../../platform/runtime-mode.js";
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
@@ -320,17 +321,34 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
   server.get("/scheduling/requests", async (request: FastifyRequest, reply: FastifyReply) => {
     if (!requireSession(request, reply)) return;
 
-    // Merge PG + in-memory stores (PG is source of truth when available)
+    // Phase 152: PG is source of truth; Map fallback only in dev mode
     const merged = new Map<string, any>();
+    let pgAvailable = false;
     try {
       const pgRequestRepo = await import("../../platform/pg/repo/pg-scheduling-request-repo.js");
       const pgRows = await pgRequestRepo.findAllActiveRequests();
       for (const row of pgRows) merged.set(row.id, row);
-    } catch { /* PG unavailable — fall through to in-memory */ }
+      pgAvailable = true;
+    } catch {
+      // PG unavailable
+      if (requiresPg()) {
+        return reply.code(503).send({
+          ok: false,
+          error: "Scheduling request store requires PostgreSQL in rc/prod mode",
+          target: "PLATFORM_PG_URL",
+        });
+      }
+    }
 
-    const store = await getRequestStore();
-    for (const [id, req] of store.entries()) {
-      if (!merged.has(id)) merged.set(id, req);
+    // Dev-only fallback: merge in-memory store entries not already in PG
+    if (!pgAvailable || !requiresPg()) {
+      const store = await getRequestStore();
+      for (const [id, req] of store.entries()) {
+        if (!merged.has(id)) merged.set(id, req);
+      }
+      if (!pgAvailable) {
+        log.warn("DEV_ONLY_FALLBACK: scheduling requests served from in-memory store");
+      }
     }
 
     const requests = [...merged.values()]
@@ -753,7 +771,12 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
 
       const existing = await pgRequestRepo.findSchedulingRequestById(id);
       if (!existing) {
-        // Fallback: try in-memory store
+        // Phase 152: In rc/prod, do not fall back to in-memory store
+        if (requiresPg()) {
+          return reply.code(404).send({ ok: false, error: "Request not found in PG store" });
+        }
+        // Dev-only fallback: try in-memory store
+        log.warn("DEV_ONLY_FALLBACK: approve using in-memory scheduling store");
         const store = await getRequestStore();
         const memReq = store.get(id);
         if (!memReq) {
@@ -769,10 +792,10 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
           requestId: (request as any).id,
           sourceIp: request.ip,
           tenantId: request.session?.tenantId,
-          detail: { schedulingRequestId: id, source: "in-memory" },
+          detail: { schedulingRequestId: id, source: "in-memory-dev" },
         });
 
-        return { ok: true, data: memReq, notice: "Request approved (in-memory store)." };
+        return { ok: true, data: memReq, notice: "Request approved (dev fallback store)." };
       }
 
       if (existing.status !== "pending") {
@@ -794,6 +817,14 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
         notice: "Request approved. Clinic scheduling will proceed.",
       };
     } catch (err: any) {
+      // Phase 152: If PG import itself failed in rc/prod, return 503
+      if (requiresPg() && (err.message?.includes("Cannot find module") || err.code === "ERR_MODULE_NOT_FOUND")) {
+        return reply.code(503).send({
+          ok: false,
+          error: "Scheduling request approval requires PostgreSQL in rc/prod mode",
+          target: "PLATFORM_PG_URL",
+        });
+      }
       log.warn("Request approve failed", { error: err.message });
       return reply.code(500).send({ ok: false, error: `Approve failed: ${err.message}` });
     }
@@ -811,6 +842,12 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
 
       const existing = await pgRequestRepo.findSchedulingRequestById(id);
       if (!existing) {
+        // Phase 152: In rc/prod, do not fall back to in-memory store
+        if (requiresPg()) {
+          return reply.code(404).send({ ok: false, error: "Request not found in PG store" });
+        }
+        // Dev-only fallback
+        log.warn("DEV_ONLY_FALLBACK: reject using in-memory scheduling store");
         const store = await getRequestStore();
         const memReq = store.get(id);
         if (!memReq) {
@@ -826,7 +863,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
           requestId: (request as any).id,
           sourceIp: request.ip,
           tenantId: request.session?.tenantId,
-          detail: { schedulingRequestId: id, reason, source: "in-memory" },
+          detail: { schedulingRequestId: id, reason, source: "in-memory-dev" },
         });
 
         return { ok: true, data: memReq, notice: `Request rejected: ${reason}` };
@@ -851,6 +888,14 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
         notice: `Request rejected: ${reason}`,
       };
     } catch (err: any) {
+      // Phase 152: If PG import itself failed in rc/prod, return 503
+      if (requiresPg() && (err.message?.includes("Cannot find module") || err.code === "ERR_MODULE_NOT_FOUND")) {
+        return reply.code(503).send({
+          ok: false,
+          error: "Scheduling request rejection requires PostgreSQL in rc/prod mode",
+          target: "PLATFORM_PG_URL",
+        });
+      }
       log.warn("Request reject failed", { error: err.message });
       return reply.code(500).send({ ok: false, error: `Reject failed: ${err.message}` });
     }
@@ -1013,10 +1058,11 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       immutableAudit("scheduling.truth_gate", result.data?.passed ? "success" : "failure", auditActor(request), {
         requestId: (request as any).id,
         sourceIp: request.ip,
+        tenantId: request.session?.tenantId,
         detail: {
           gate: "vista_verify",
           appointmentRef: ref,
-          patientDfn: dfn,
+          patientDfn: "[REDACTED]",
           passed: result.data?.passed ?? false,
           method: result.data?.verificationMethod ?? "unknown",
         },
@@ -1042,5 +1088,5 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
     }
   });
 
-  log.info("Scheduling routes registered (Phase 147: 31 endpoints, 28+ RPCs wired -- SDES depth + truth gates)");
+  log.info("Scheduling routes registered (Phase 152: 31 endpoints, PG-only enforcement in rc/prod + truth gate audit redaction)");
 }

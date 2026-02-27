@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-27T01:49:12.659Z",
+  "generatedAt": "2026-02-27T02:29:32.428Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 162,
+  "phaseCount": 163,
   "phases": [
     {
       "phaseNumber": "1",
@@ -2599,6 +2599,30 @@
         "151-99-VERIFY.md"
       ],
       "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "152",
+      "title": "SCHEDULING REALISM V3 (PG-ONLY, NO MAP FALLBACK, OPTIONAL SEED)",
+      "folder": "157-PHASE-152-SCHEDULING-PG-ONLY",
+      "files": [
+        "152-01-IMPLEMENT.md",
+        "152-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "152-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "152-99-VERIFY.md"
+      ],
+      "routes": [
+        "/scheduling/requests",
+        "/scheduling/requests/:id/approve",
+        "/scheduling/requests/:id/reject",
+        "/scheduling/verify/:ref"
+      ],
       "rpcs": [],
       "uiComponents": [],
       "filesTouched": []
