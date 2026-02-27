@@ -136,8 +136,15 @@ export default async function vistaProvisionRoutes(
     const partialCount = routines.filter((r) => r.health === "partial").length;
     const missingCount = routines.filter((r) => r.health === "missing").length;
 
-    const overallHealth =
-      missingCount === 0 && partialCount === 0
+    const cap = getCapabilities();
+    const cacheWarmed = cap !== null;
+
+    // When capability cache hasn't been warmed yet, optionalRpc() returns
+    // available:true for everything (graceful degradation). Report "unknown"
+    // instead of a falsely optimistic "fully-provisioned".
+    const overallHealth = !cacheWarmed
+      ? "unknown"
+      : missingCount === 0 && partialCount === 0
         ? "fully-provisioned"
         : missingCount === totalRoutines
           ? "unprovisioned"
@@ -150,11 +157,10 @@ export default async function vistaProvisionRoutes(
       missing: missingCount,
     });
 
-    const cap = getCapabilities();
     return {
       ok: true,
       overallHealth,
-      cacheWarmed: cap !== null,
+      cacheWarmed,
       lastDiscovery: cap?.discoveredAt ?? null,
       summary: {
         totalRoutines,

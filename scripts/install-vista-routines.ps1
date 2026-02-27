@@ -108,8 +108,14 @@ foreach ($routine in $productionRoutines) {
         Write-Gate "WARN" "$routine not found at $src -- skipping"
         continue
     }
-    docker cp $src "${ContainerName}:/home/wv/r/$routine" 2>$null
-    if ($LASTEXITCODE -ne 0) {
+    # docker cp outputs "Successfully copied..." to stderr; suppress with
+    # $ErrorActionPreference override to avoid PowerShell treating it as fatal.
+    $prevEAP = $ErrorActionPreference
+    $ErrorActionPreference = "SilentlyContinue"
+    docker cp $src "${ContainerName}:/home/wv/r/$routine" 2>&1 | Out-Null
+    $cpExit = $LASTEXITCODE
+    $ErrorActionPreference = $prevEAP
+    if ($cpExit -ne 0) {
         Write-Gate "FAIL" "Failed to copy $routine"
         $copyFailed = $true
     } else {
@@ -159,16 +165,20 @@ $installSteps = @(
 
 foreach ($step in $installSteps) {
     Write-Host "  Installing: $($step.Label)..."
-    try {
-        $output = docker exec $ContainerName su - wv -c $step.Command 2>&1
-        $outputStr = ($output | Out-String).Trim()
-        if ($outputStr) {
-            # Indent multi-line output
-            $outputStr -split "`n" | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
-        }
+    $prevEAP = $ErrorActionPreference
+    $ErrorActionPreference = "SilentlyContinue"
+    $output = docker exec $ContainerName su - wv -c $step.Command 2>&1
+    $stepExit = $LASTEXITCODE
+    $ErrorActionPreference = $prevEAP
+    $outputStr = ($output | Out-String).Trim()
+    if ($outputStr) {
+        # Indent multi-line output
+        $outputStr -split "`n" | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+    }
+    if ($stepExit -ne 0) {
+        Write-Gate "FAIL" "$($step.Label) (exit $stepExit)"
+    } else {
         Write-Gate "PASS" $step.Label
-    } catch {
-        Write-Gate "FAIL" "$($step.Label): $_"
     }
 }
 
@@ -180,15 +190,19 @@ Write-Host "--- Step 4: Add RPCs to broker context ---"
 
 # VEMCTX3 handles interop RPCs; ZVEMSIN handles mail RPCs internally
 Write-Host "  Running VEMCTX3 (interop context adder)..."
-try {
-    $ctxOutput = docker exec $ContainerName su - wv -c "mumps -run VEMCTX3" 2>&1
-    $ctxStr = ($ctxOutput | Out-String).Trim()
-    if ($ctxStr) {
-        $ctxStr -split "`n" | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
-    }
+$prevEAP = $ErrorActionPreference
+$ErrorActionPreference = "SilentlyContinue"
+$ctxOutput = docker exec $ContainerName su - wv -c "mumps -run VEMCTX3" 2>&1
+$ctxExit = $LASTEXITCODE
+$ErrorActionPreference = $prevEAP
+$ctxStr = ($ctxOutput | Out-String).Trim()
+if ($ctxStr) {
+    $ctxStr -split "`n" | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+}
+if ($ctxExit -ne 0) {
+    Write-Gate "WARN" "Context registration (exit $ctxExit)"
+} else {
     Write-Gate "PASS" "Context registration (VEMCTX3)"
-} catch {
-    Write-Gate "WARN" "Context registration: $_"
 }
 
 # ================================================================
@@ -197,15 +211,19 @@ try {
 if ($Seed) {
     Write-Host ""
     Write-Host "--- Step 5a: Scheduling sandbox seed (ZVESDSEED) ---"
-    try {
-        $seedOutput = docker exec $ContainerName su - wv -c "mumps -run ZVESDSEED" 2>&1
-        $seedStr = ($seedOutput | Out-String).Trim()
-        if ($seedStr) {
-            $seedStr -split "`n" | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
-        }
+    $prevEAP = $ErrorActionPreference
+    $ErrorActionPreference = "SilentlyContinue"
+    $seedOutput = docker exec $ContainerName su - wv -c "mumps -run ZVESDSEED" 2>&1
+    $seedExit = $LASTEXITCODE
+    $ErrorActionPreference = $prevEAP
+    $seedStr = ($seedOutput | Out-String).Trim()
+    if ($seedStr) {
+        $seedStr -split "`n" | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+    }
+    if ($seedExit -ne 0) {
+        Write-Gate "WARN" "Scheduling seed (exit $seedExit)"
+    } else {
         Write-Gate "PASS" "Scheduling seed (DEV only)"
-    } catch {
-        Write-Gate "WARN" "Scheduling seed: $_"
     }
 }
 
@@ -221,36 +239,43 @@ if (-not $SkipVerify) {
         @{
             Label   = "ZVEMIOP callable"
             Command = "mumps -run %XCMD 'N R D LINKS^ZVEMIOP(.R,5) W R(0)'"
-            Match   = "OK|0\^"
+            Match   = "OK|0\^|\^"
         },
         @{
             Label   = "ZVEMSGR callable"
             Command = "mumps -run %XCMD 'N R D FOLDERS^ZVEMSGR(.R,87) W R(0)'"
-            Match   = "."
+            Match   = "\d|\^|MAIL"
         },
         @{
             Label   = "ZVERPC callable"
             Command = "mumps -run %XCMD 'N R D LIST^ZVERPC(.R,"""") W R(0)'"
-            Match   = "."
+            Match   = "\d|\^|RPC"
+        },
+        @{
+            Label   = "ZVERCMP callable"
+            Command = "mumps -run %XCMD 'N R D INFO^ZVERCMP(.R,87) W R(0)'"
+            Match   = "\d|\^|PROVIDER"
         },
         @{
             Label   = "ZVEADT callable"
             Command = "mumps -run %XCMD 'N R D WARDS^ZVEADT(.R,"""") W R(0)'"
-            Match   = "."
+            Match   = "\d|\^|WARD"
         }
     )
 
     foreach ($test in $verifyTests) {
-        try {
-            $result = docker exec $ContainerName su - wv -c $test.Command 2>&1
-            $resultStr = ($result | Out-String).Trim()
-            if ($resultStr -match $test.Match) {
-                Write-Gate "PASS" $test.Label
-            } else {
-                Write-Gate "WARN" "$($test.Label) -- output: $resultStr"
-            }
-        } catch {
-            Write-Gate "WARN" "$($test.Label): $_"
+        $prevEAP = $ErrorActionPreference
+        $ErrorActionPreference = "SilentlyContinue"
+        $result = docker exec $ContainerName su - wv -c $test.Command 2>&1
+        $verifyExit = $LASTEXITCODE
+        $ErrorActionPreference = $prevEAP
+        $resultStr = ($result | Out-String).Trim()
+        if ($verifyExit -ne 0) {
+            Write-Gate "WARN" "$($test.Label) (exit $verifyExit)"
+        } elseif ($resultStr -match $test.Match) {
+            Write-Gate "PASS" $test.Label
+        } else {
+            Write-Gate "WARN" "$($test.Label) -- output: $resultStr"
         }
     }
 }
