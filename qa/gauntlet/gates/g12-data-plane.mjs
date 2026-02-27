@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * G12 -- Data Plane Gate (Phase 125)
+ * G12 -- Data Plane Gate (Phase 125, extended Phase 150)
  *
  * Validates the Postgres-only production data plane contract:
  *   1. runtime-mode.ts module exists with required exports
@@ -9,6 +9,8 @@
  *   4. payer-persistence.ts guards JSON writes with blocksJsonStores()
  *   5. pg-migrate.ts auto-enables RLS for rc/prod modes
  *   6. Migration script exists at scripts/migrations/sqlite-to-pg.mjs
+ *   7. OIDC enforcement in rc/prod (Phase 150)
+ *   8. Portal session token hashing repo (Phase 150)
  */
 
 import { readFileSync, existsSync } from "node:fs";
@@ -124,6 +126,37 @@ export async function run(opts = {}) {
     status = "fail";
   } else {
     details.push("scripts/migrations/sqlite-to-pg.mjs: present");
+  }
+
+  // ── 7. OIDC enforcement in rc/prod (Phase 150) ───────────
+  if (existsSync(runtimeModePath)) {
+    const rtSrc = readFileSync(runtimeModePath, "utf8");
+    const hasRequiresOidc = rtSrc.includes("export function requiresOidc");
+    const hasOidcValidation = rtSrc.includes("OIDC_ENABLED") && rtSrc.includes("OIDC_ISSUER");
+    if (!hasRequiresOidc) {
+      details.push("runtime-mode.ts: missing requiresOidc() export (Phase 150)");
+      status = "fail";
+    } else if (!hasOidcValidation) {
+      details.push("runtime-mode.ts: OIDC validation missing in validateRuntimeMode()");
+      status = "fail";
+    } else {
+      details.push("runtime-mode.ts: OIDC enforcement in rc/prod present (Phase 150)");
+    }
+  }
+
+  // ── 8. Portal session token hashing (Phase 150) ──────────
+  const portalSessionRepoPath = resolve(API_SRC, "platform/pg/repo/pg-portal-session-repo.ts");
+  if (!existsSync(portalSessionRepoPath)) {
+    details.push("pg-portal-session-repo.ts: MISSING (Phase 150)");
+    status = "fail";
+  } else {
+    const repoSrc = readFileSync(portalSessionRepoPath, "utf8");
+    if (!repoSrc.includes("hashPortalToken") || !repoSrc.includes("sha256")) {
+      details.push("pg-portal-session-repo.ts: missing token hashing");
+      status = "fail";
+    } else {
+      details.push("pg-portal-session-repo.ts: SHA-256 token hashing present (Phase 150)");
+    }
   }
 
   return { id, name, status, details, durationMs: Date.now() - start };

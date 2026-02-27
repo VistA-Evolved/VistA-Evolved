@@ -805,13 +805,17 @@ function buildGapMatrix(audit) {
     },
     {
       domain: "INTERNATIONALIZATION",
-      status: "planned",
-      evidence: [],
-      topGaps: [
-        { gap: "No i18n framework integrated", severity: "low", evidenceFiles: [] },
-        { gap: "PHP peso currency in PH payer data but no locale system", severity: "low", evidenceFiles: ["data/payers/ph_hmos.json"] },
+      status: "partial",
+      evidence: [
+        { metric: "i18nFramework", value: "next-intl 4.8" },
+        { metric: "webMessages", value: "apps/web/public/messages/en.json" },
+        { metric: "portalMessages", value: "apps/portal/public/messages/{en,fil,es}.json" },
       ],
-      nextActions: ["Evaluate next-intl or similar", "Add locale support for PH market"],
+      topGaps: [
+        { gap: "I18nProvider wired in web+portal layouts (Phase 132) but not all strings extracted", severity: "low", evidenceFiles: ["apps/web/src/components/I18nProvider.tsx"] },
+        { gap: "PHP peso currency in PH payer data -- locale formatting pending", severity: "low", evidenceFiles: ["data/payers/ph_hmos.json"] },
+      ],
+      nextActions: ["Extract remaining hardcoded strings to message files", "Add locale-aware currency formatting for PH market"],
     },
   ];
 

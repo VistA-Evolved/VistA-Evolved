@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-26T23:35:11.553Z",
+  "generatedAt": "2026-02-27T01:14:19.925Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 160,
+  "phaseCount": 161,
   "phases": [
     {
       "phaseNumber": "1",
@@ -2551,6 +2551,37 @@
         "qa/gauntlet/system-gap-matrix.json",
         "docs/audits/phase149-burndown.md",
         "docs/qa/phase-index.json"
+      ]
+    },
+    {
+      "phaseNumber": "150",
+      "title": "Enterprise IAM Default + Portal Auth Modernization",
+      "folder": "155-PHASE-150-IAM-PORTAL-AUTH",
+      "files": [
+        "150-01-IMPLEMENT.md",
+        "150-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "150-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "150-99-VERIFY.md"
+      ],
+      "routes": [
+        "/posture/data-plane"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/platform/runtime-mode.ts",
+        "apps/api/src/posture/data-plane-posture.ts",
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/platform/pg/repo/pg-portal-session-repo.ts",
+        "apps/api/src/platform/pg/repo/durability-repos.ts",
+        "apps/api/src/routes/portal-auth.ts",
+        "apps/api/src/index.ts",
+        "scripts/audit/system-audit.mjs",
+        "docs/runbooks/phase150-iam-portal-auth.md"
       ]
     },
     {

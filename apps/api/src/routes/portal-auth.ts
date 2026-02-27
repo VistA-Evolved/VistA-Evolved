@@ -1,16 +1,20 @@
 /**
- * Portal Auth Routes — Phase 26
+ * Portal Auth Routes -- Phase 26, modernized Phase 150
  *
  * Separate authentication domain for patient portal users.
  * Portal sessions are isolated from clinician sessions.
  *
  * Dev mode: Maps demo credentials to patient DFN.
- * Production: OIDC/SAML integration (future).
+ * rc/prod:  Requires OIDC -- see runtime-mode.ts.
+ *
+ * Phase 150: In-memory Map is now a hot cache with PG write-through.
+ * Tokens stored as SHA-256 hashes in the database. DFN never logged
+ * in general log output (only in audit trail).
  *
  * Routes:
- *   POST /portal/auth/login   — authenticate portal user, set portal_session cookie
- *   POST /portal/auth/logout  — destroy portal session
- *   GET  /portal/auth/session — return current portal session
+ *   POST /portal/auth/login   -- authenticate portal user, set portal_session cookie
+ *   POST /portal/auth/logout  -- destroy portal session
+ *   GET  /portal/auth/session -- return current portal session
  *
  * Health data proxy routes (DFN-scoped):
  *   GET /portal/health/allergies
@@ -26,11 +30,17 @@
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { randomBytes } from "node:crypto";
+import { randomBytes, randomUUID } from "node:crypto";
 import { log } from "../lib/logger.js";
 import { portalAudit } from "../services/portal-audit.js";
 import { validateCredentials } from "../vista/config.js";
 import { connect, disconnect, callRpc } from "../vista/rpcBrokerClient.js";
+import {
+  hashPortalToken,
+  upsertPortalSession,
+  revokePortalSession,
+  touchPortalSession,
+} from "../platform/pg/repo/pg-portal-session-repo.js";
 
 /* ------------------------------------------------------------------ */
 /* Portal Session Store (separate from clinician sessions)              */
@@ -102,6 +112,7 @@ function checkLoginRate(ip: string): boolean {
 function createPortalSession(dfn: string, name: string): string {
   const token = randomBytes(32).toString("hex");
   const now = Date.now();
+  const sessionId = randomUUID();
   portalSessions.set(token, {
     token,
     patientDfn: dfn,
@@ -109,6 +120,21 @@ function createPortalSession(dfn: string, name: string): string {
     createdAt: now,
     lastActivity: now,
   });
+
+  // Phase 150: Write-through to PG (fire-and-forget)
+  void upsertPortalSession({
+    id: sessionId,
+    tenantId: "default",
+    tokenHash: hashPortalToken(token),
+    userId: dfn,
+    subject: "",
+    patientDfn: dfn,
+    dataJson: JSON.stringify({ patientName: name }),
+    createdAt: new Date(now).toISOString(),
+    expiresAt: new Date(now + PORTAL_SESSION_TTL_MS).toISOString(),
+    lastActivityAt: new Date(now).toISOString(),
+  });
+
   return token;
 }
 
@@ -128,6 +154,10 @@ export function getPortalSession(request: FastifyRequest): PortalSessionData | n
   }
 
   session.lastActivity = now;
+
+  // Phase 150: Touch PG session timestamp (fire-and-forget, best-effort)
+  void touchPortalSession(hashPortalToken(cookie));
+
   return session;
 }
 
@@ -203,7 +233,7 @@ export default async function portalAuthRoutes(
       sourceIp: ip,
     });
 
-    log.info("Portal login", { dfn: patient.dfn });
+    log.info("Portal login succeeded");
 
     reply.setCookie(PORTAL_COOKIE, token, COOKIE_OPTS);
     return reply.send({
@@ -223,6 +253,8 @@ export default async function portalAuthRoutes(
         });
       }
       portalSessions.delete(cookie);
+      // Phase 150: Revoke in PG (fire-and-forget)
+      void revokePortalSession(hashPortalToken(cookie));
     }
 
     reply.clearCookie(PORTAL_COOKIE, { path: "/" });

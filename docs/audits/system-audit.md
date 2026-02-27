@@ -1,7 +1,7 @@
 # VistA-Evolved System Audit
 
-> Generated: 2026-02-26T23:25:51.018Z  
-> HEAD: c0eed25  
+> Generated: 2026-02-27T01:17:18.896Z  
+> HEAD: 3c497a0  
 > Node: v24.13.0 | pnpm: 10.29.2
 
 ## What Is Truly Wired End-to-End
@@ -27,7 +27,6 @@
 | TELEHEALTH | local_only | Room store is pg_backed (write-through). Rooms are ephemeral (4h TTL) by design. Target: VistA SDEC APPOINTMENT STATUS for future scheduling linkage. |
 | REPORTING | local_only | Report cache is in-memory |
 | SCHEDULING_SDMODULE | integration_pending | SDES RPCs callable but WorldVistA File 44 lacks resource/slot config. Target: SDES GET APPT TYPES, SDOE LIST ENCOUNTERS, SD W/L CREATE FILE. requestStore is pg_backed. |
-| INTERNATIONALIZATION | planned | No i18n framework integrated |
 
 ## Durability Posture
 

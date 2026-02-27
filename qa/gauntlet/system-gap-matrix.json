@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-02-26T23:25:51.851Z",
-  "headSha": "c0eed25",
+  "generatedAt": "2026-02-27T01:17:19.718Z",
+  "headSha": "3c497a0",
   "domains": [
     {
       "domain": "AUTH_IAM",
@@ -802,16 +802,31 @@
     },
     {
       "domain": "INTERNATIONALIZATION",
-      "status": "planned",
-      "evidence": [],
-      "topGaps": [
+      "status": "partial",
+      "evidence": [
         {
-          "gap": "No i18n framework integrated",
-          "severity": "low",
-          "evidenceFiles": []
+          "metric": "i18nFramework",
+          "value": "next-intl 4.8"
         },
         {
-          "gap": "PHP peso currency in PH payer data but no locale system",
+          "metric": "webMessages",
+          "value": "apps/web/public/messages/en.json"
+        },
+        {
+          "metric": "portalMessages",
+          "value": "apps/portal/public/messages/{en,fil,es}.json"
+        }
+      ],
+      "topGaps": [
+        {
+          "gap": "I18nProvider wired in web+portal layouts (Phase 132) but not all strings extracted",
+          "severity": "low",
+          "evidenceFiles": [
+            "apps/web/src/components/I18nProvider.tsx"
+          ]
+        },
+        {
+          "gap": "PHP peso currency in PH payer data -- locale formatting pending",
           "severity": "low",
           "evidenceFiles": [
             "data/payers/ph_hmos.json"
@@ -819,8 +834,8 @@
         }
       ],
       "nextActions": [
-        "Evaluate next-intl or similar",
-        "Add locale support for PH market"
+        "Extract remaining hardcoded strings to message files",
+        "Add locale-aware currency formatting for PH market"
       ]
     }
   ],

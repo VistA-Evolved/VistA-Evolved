@@ -1,10 +1,9 @@
 {
-    "runbookPath":  "ops/summary.md",
-    "stage":  "verified",
-    "commitSHA":  "5467c51",
-    "featureTitle":  "Phase 144: QA Ladder V2",
-    "gauntletResult":  "16P/0F/1W",
-    "verifyScript":  "qa/gauntlet/cli.mjs --suite rc",
-    "status":  "complete",
-    "promptRefPath":  "prompts/149-PHASE-144-QA-LADDER-V2/144-01-IMPLEMENT.md"
+  "feature": "Phase 150: Enterprise IAM Default + Portal Auth Modernization",
+  "stage": "implement",
+  "status": "complete",
+  "promptRef": "prompts/155-PHASE-150-IAM-PORTAL-AUTH/150-01-IMPLEMENT.md",
+  "runbookPath": "docs/runbooks/phase150-iam-portal-auth.md",
+  "verifyScript": "qa/gauntlet/cli.mjs --suite rc",
+  "commitSha": "e2de97f"
 }

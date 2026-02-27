@@ -2753,6 +2753,11 @@ try {
           initExportStoreRepo(DR.createExportJobRepo());
 
           log.info("Phase 146: All critical Map stores wired to PG (30+ repos)");
+
+          // Phase 150: Portal session PG write-through (token hashing)
+          const { initPortalSessionPgRepo } = await import("./platform/pg/repo/pg-portal-session-repo.js");
+          initPortalSessionPgRepo(DR.createPortalSessionRepo());
+          log.info("Phase 150: Portal session PG write-through wired");
         } catch (d146Err: any) {
           log.warn("Phase 146 durability wire partially failed (Map cache fallback)", { error: d146Err.message });
         }

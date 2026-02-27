@@ -68,6 +68,11 @@ export function blocksJsonStores(): boolean {
   return requiresPg();
 }
 
+/** True when OIDC must be enabled (rc or prod). Phase 150. */
+export function requiresOidc(): boolean {
+  return requiresPg();
+}
+
 /**
  * Validate that the current environment satisfies the runtime mode contract.
  * Throws if rc/prod mode is set but PG is not configured.
@@ -83,6 +88,25 @@ export function validateRuntimeMode(): void {
         `PLATFORM_RUNTIME_MODE=${mode} requires PostgreSQL. ` +
         `Set PLATFORM_PG_URL or PLATFORM_PG_HOST. ` +
         `Use PLATFORM_RUNTIME_MODE=dev for SQLite-only local development.`
+      );
+    }
+  }
+
+  // Phase 150: OIDC is mandatory in rc/prod
+  if (requiresOidc()) {
+    const oidcEnabled = process.env.OIDC_ENABLED;
+    if (oidcEnabled !== "true") {
+      throw new Error(
+        `PLATFORM_RUNTIME_MODE=${mode} requires OIDC. ` +
+        `Set OIDC_ENABLED=true and OIDC_ISSUER to your IdP issuer URL. ` +
+        `Use PLATFORM_RUNTIME_MODE=dev for VistA-only local development.`
+      );
+    }
+    const oidcIssuer = process.env.OIDC_ISSUER;
+    if (!oidcIssuer) {
+      throw new Error(
+        `PLATFORM_RUNTIME_MODE=${mode} requires OIDC_ISSUER to be set. ` +
+        `Point it at your Keycloak (or OIDC-compliant) issuer URL.`
       );
     }
   }

@@ -1266,6 +1266,22 @@ docs/runbooks/
      probe results and the boundary descriptor to get a list of unmet
      contract requirements. Empty list = swap is safe. Used in the
      compatibility test and available for runtime health checks.
+146. **OIDC is mandatory in rc/prod mode (Phase 150).** `requiresOidc()`
+     returns true for rc/prod. `validateRuntimeMode()` throws at startup
+     if OIDC_ENABLED is not "true" or OIDC_ISSUER is not set. Dev mode
+     is unaffected -- VistA RPC auth remains the only path.
+147. **Portal session tokens are SHA-256 hashed in PG (Phase 150).**
+     The raw token is stored only in the httpOnly cookie and the in-memory
+     Map cache. The database stores `hashPortalToken(token)` using SHA-256.
+     This prevents session hijacking if the database is compromised.
+     Use `pg-portal-session-repo.ts` for all PG session operations.
+148. **Portal logs never contain DFN (Phase 150).** The `log.info("Portal
+     login")` call no longer includes `{ dfn }`. DFN appears only in the
+     `portalAudit()` security audit trail. Do not add DFN to general
+     `log.*` calls.
+149. **`portal_patient_identity` maps OIDC sub to patient DFN (Phase 150).**
+     New table with unique index on (tenant_id, oidc_sub). Included in
+     RLS tenant tables. Not yet populated -- requires OIDC login path.
 
 ## 8. Bug Tracker & Lessons Learned
 

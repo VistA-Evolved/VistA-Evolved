@@ -1930,6 +1930,39 @@ CREATE INDEX IF NOT EXISTS idx_ej_user ON export_job(user_id);
 CREATE INDEX IF NOT EXISTS idx_ej_status ON export_job(status);
 `,
   },
+  {
+    version: 19,
+    name: "phase150_portal_session_oidc",
+    sql: `
+-- ============================================================
+-- Phase 150: Portal Session Modernization + Patient Identity
+-- ============================================================
+
+-- 1. Add OIDC/token-hash columns to portal_session
+ALTER TABLE portal_session ADD COLUMN IF NOT EXISTS token_hash TEXT;
+ALTER TABLE portal_session ADD COLUMN IF NOT EXISTS subject TEXT;
+ALTER TABLE portal_session ADD COLUMN IF NOT EXISTS patient_dfn TEXT;
+ALTER TABLE portal_session ADD COLUMN IF NOT EXISTS last_activity_at TEXT;
+ALTER TABLE portal_session ADD COLUMN IF NOT EXISTS revoked_at TEXT;
+
+CREATE INDEX IF NOT EXISTS idx_ps_token_hash ON portal_session(token_hash);
+CREATE INDEX IF NOT EXISTS idx_ps_subject ON portal_session(subject);
+
+-- 2. Portal Patient Identity: maps OIDC subject to DFN
+CREATE TABLE IF NOT EXISTS portal_patient_identity (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  oidc_sub TEXT NOT NULL,
+  patient_dfn TEXT NOT NULL,
+  display_name TEXT,
+  verified_at TEXT,
+  created_at TEXT NOT NULL
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_ppi_sub ON portal_patient_identity(tenant_id, oidc_sub);
+CREATE INDEX IF NOT EXISTS idx_ppi_dfn ON portal_patient_identity(tenant_id, patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_ppi_tenant ON portal_patient_identity(tenant_id);
+`,
+  },
 ];
 
 /**
@@ -2096,6 +2129,8 @@ export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: s
     "intake_session",
     "migration_job",
     "export_job",
+    // Phase 150: Patient identity mapping
+    "portal_patient_identity",
   ];
 
   const applied: string[] = [];

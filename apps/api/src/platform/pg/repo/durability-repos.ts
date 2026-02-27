@@ -18,6 +18,10 @@ export function createPortalSessionRepo(): GenericPgRepo<any> {
   return createPgRepo("portal_session");
 }
 
+export function createPortalPatientIdentityRepo(): GenericPgRepo<any> {
+  return createPgRepo("portal_patient_identity");
+}
+
 export function createPortalRefillRepo(): GenericPgRepo<any> {
   return createPgRepo("portal_refill");
 }

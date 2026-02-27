@@ -10,7 +10,7 @@
  *   Gate 6: JSON mutable file stores blocked (required in rc/prod)
  */
 
-import { getRuntimeMode, requiresPg, allowsSqlite, blocksJsonStores } from "../platform/runtime-mode.js";
+import { getRuntimeMode, requiresPg, allowsSqlite, blocksJsonStores, requiresOidc } from "../platform/runtime-mode.js";
 import { isPgConfigured } from "../platform/pg/pg-db.js";
 import { resolveBackend } from "../platform/store-resolver.js";
 
@@ -116,6 +116,24 @@ export function checkDataPlanePosture(): DataPlanePosture {
           ? "RLS not configured for " + mode + " mode"
           : "RLS optional in " + mode + " mode",
     severity: pgRequired && !rlsReady ? "critical" : "info",
+  });
+
+  // Gate 7 (Phase 150): OIDC enforcement
+  const oidcRequired = requiresOidc();
+  const oidcEnabled = process.env.OIDC_ENABLED === "true";
+  const oidcIssuerSet = !!process.env.OIDC_ISSUER;
+  const oidcOk = oidcEnabled && oidcIssuerSet;
+  gates.push({
+    name: "oidc_enforcement",
+    pass: oidcOk || !oidcRequired,
+    detail: oidcRequired
+      ? oidcOk
+        ? "OIDC enabled with issuer " + process.env.OIDC_ISSUER
+        : "OIDC NOT configured -- REQUIRED in " + mode + " mode"
+      : oidcOk
+        ? "OIDC enabled (optional in " + mode + " mode)"
+        : "OIDC not enabled (optional in " + mode + " mode)",
+    severity: oidcRequired && !oidcOk ? "critical" : "info",
   });
 
   const passCount = gates.filter((g) => g.pass).length;
