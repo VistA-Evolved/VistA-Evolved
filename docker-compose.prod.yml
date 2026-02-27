@@ -101,6 +101,10 @@ services:
       # Performance
       - RPC_CALL_TIMEOUT_MS=${RPC_CALL_TIMEOUT_MS:-15000}
       - CACHE_DEFAULT_TTL_MS=${CACHE_DEFAULT_TTL_MS:-60000}
+      # Imaging (Phase 156: only needed when --profile imaging is active)
+      - ORTHANC_URL=${ORTHANC_URL:-http://orthanc:8042}
+      - OHIF_URL=${OHIF_URL:-http://ohif-viewer:80}
+      - IMAGING_INGEST_WEBHOOK_SECRET=${IMAGING_INGEST_WEBHOOK_SECRET:-dev-imaging-ingest-key-change-in-production}
       # Job runner (only first instance should run jobs; use JOB_WORKER_ENABLED=true selectively)
       - JOB_WORKER_ENABLED=${JOB_WORKER_ENABLED:-false}
     volumes:

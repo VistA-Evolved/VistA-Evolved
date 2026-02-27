@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-27T09:25:23.996Z",
+  "generatedAt": "2026-02-27T09:47:59.446Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 166,
+  "phaseCount": 167,
   "phases": [
     {
       "phaseNumber": "1",
@@ -2755,6 +2755,36 @@
         "apps/api/src/index.ts",
         "scripts/verify-phase155-provisioning.ps",
         "docs/runbooks/vista-provisioning.md",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "phaseNumber": "156",
+      "title": "Imaging Operationalization (Orthanc Profile + Wiring + CI Smoke)",
+      "folder": "161-PHASE-156-IMAGING-ORTHANC",
+      "files": [
+        "156-01-IMPLEMENT.md",
+        "156-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "156-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "156-99-VERIFY.md"
+      ],
+      "routes": [
+        "/imaging/health",
+        "/system"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/.env.examp",
+        "apps/api/src/routes/imaging-viewer.ts",
+        "apps/api/src/middleware/security.ts",
+        ".github/workflows/ci-imaging-smoke.yml",
+        "scripts/verify-phase156-imaging-orthanc.ps",
+        "docs/runbooks/imaging-orthanc-operations.md",
         "AGENTS.md"
       ]
     },

@@ -165,7 +165,7 @@ export function devSandboxBoundary(): VistaSwapBoundary {
     },
     security: {
       credentialSource: "env",
-      hasDefaultCredentials: true, // WorldVistA ships with PROV123/etc.
+      hasDefaultCredentials: true, // WorldVistA ships with sandbox demo accounts
       sshExposed: true,           // WorldVistA exposes port 22
       brokerBind: "0.0.0.0",
     },

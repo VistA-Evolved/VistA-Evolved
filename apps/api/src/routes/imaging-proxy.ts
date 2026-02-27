@@ -785,7 +785,12 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
         ohif: { url: IMAGING_CONFIG.ohifUrl, status: "unknown" },
         composeProfile: "imaging",
         composeHint: "docker compose --profile imaging up -d",
-        security: { rbacEnabled: true, breakGlassEnabled: true },
+        security: {
+          rbacEnabled: true,
+          breakGlassEnabled: true,
+          dicomwebRateLimit: DICOMWEB_RATE_LIMIT,
+          dicomwebRateWindowMs: DICOMWEB_RATE_WINDOW_MS,
+        },
         audit: auditStats,
       };
     } catch (err: any) {
@@ -795,7 +800,12 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
         ohif: { url: IMAGING_CONFIG.ohifUrl, status: "unknown" },
         composeProfile: "imaging",
         composeHint: "docker compose --profile imaging up -d",
-        security: { rbacEnabled: true, breakGlassEnabled: true },
+        security: {
+          rbacEnabled: true,
+          breakGlassEnabled: true,
+          dicomwebRateLimit: DICOMWEB_RATE_LIMIT,
+          dicomwebRateWindowMs: DICOMWEB_RATE_WINDOW_MS,
+        },
         audit: auditStats,
       };
     }
