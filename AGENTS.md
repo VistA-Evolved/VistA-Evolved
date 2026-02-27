@@ -1390,6 +1390,37 @@ config/
      is never stored in audit trails or PG events. `hashEsCode()` uses SHA-256
      truncated to 16 hex chars. The hash is stored in `cpoe_order_sign_event.es_hash`.
 
+## 7t. Architecture Quick Map (Phase 155 additions)
+
+```
+scripts/
+  install-vista-routines.ps1      -- Unified VistA routine installer (Phase 155)
+  verify-phase155-provisioning.ps1 -- Phase 155 verifier (19 gates) (Phase 155)
+
+apps/api/src/routes/
+  vista-provision.ts              -- GET /vista/provision/status (admin-only) (Phase 155)
+
+docs/runbooks/
+  vista-provisioning.md           -- Provisioning runbook (Phase 155)
+```
+
+163. **`install-vista-routines.ps1` is the single unified installer (Phase 155).**
+     Replaces the need to run `install-interop-rpcs.ps1`, `install-rpc-catalog.ps1`,
+     and `install-rcm-wrappers.ps1` individually. Copies 8 production .m routines,
+     runs 5 INSTALL entry points, registers context via VEMCTX3, and optionally
+     seeds scheduling data with `-Seed`. Fully idempotent.
+164. **`/vista/provision/status` returns live provisioning health (Phase 155).**
+     Admin-only endpoint that probes 16 RPCs across 5 routine families via the
+     RPC capability cache. Returns per-routine health (installed/partial/missing)
+     and overall health (fully-provisioned/partially-provisioned/unprovisioned).
+165. **Existing per-subsystem install scripts are retained (Phase 155).**
+     `install-interop-rpcs.ps1`, `install-rpc-catalog.ps1`, and
+     `install-rcm-wrappers.ps1` remain for backward compatibility. The unified
+     installer subsumes all three.
+166. **Never KILL VistA globals in install scripts (Phase 155).** All INSTALL
+     tags check `$O(^XWB(8994,"B",NAME,""))` before inserting. VEMCTX3 finds
+     max sub-IEN and appends. No destructive operations.
+
 ## 8. Bug Tracker & Lessons Learned
 
 A comprehensive log of every bug, challenge, and fix from Phase 1 through

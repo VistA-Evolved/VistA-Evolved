@@ -117,6 +117,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/(admin|audit|reports)\//, auth: "admin" },
   { pattern: /^\/ws\//, auth: "session" }, // WebSocket console (has own role check too)
   { pattern: /^\/vista\/interop\//, auth: "admin" }, // Phase 21: interop telemetry requires admin/provider
+  { pattern: /^\/vista\/provision/, auth: "admin" }, // Phase 155: provisioning status (admin only)
   { pattern: /^\/vista\//, auth: "session" },
   // Default: session required for anything else
 ];

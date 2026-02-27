@@ -179,6 +179,24 @@ export const KNOWN_RPCS: { rpc: string; domain: string; fallback?: string; descr
   { rpc: "IBD GET FORMSPEC", domain: "billing", description: "Billing form specification" },
   { rpc: "IBARXM QUERY ONLY", domain: "billing", description: "Pharmacy billing query" },
   { rpc: "IBO MT LTC COPAY QUERY", domain: "billing", description: "Means test / LTC copay" },
+
+  // Phase 155: Custom VistA-Evolved RPCs (provisioned via install-vista-routines.ps1)
+  { rpc: "VE INTEROP HL7 LINKS",   domain: "interop",    description: "List HL7 logical links (ZVEMIOP)" },
+  { rpc: "VE INTEROP HL7 MSGS",    domain: "interop",    description: "List recent HL7 messages (ZVEMIOP)" },
+  { rpc: "VE INTEROP HLO STATUS",  domain: "interop",    description: "HLO application status (ZVEMIOP)" },
+  { rpc: "VE INTEROP QUEUE DEPTH", domain: "interop",    description: "HL7 queue depths (ZVEMIOP)" },
+  { rpc: "VE INTEROP MSG LIST",    domain: "interop",    description: "List HL7 messages with filters (ZVEMIOP)" },
+  { rpc: "VE INTEROP MSG DETAIL",  domain: "interop",    description: "HL7 message detail (ZVEMIOP)" },
+  { rpc: "ZVE MAIL FOLDERS",       domain: "messaging",  description: "MailMan folders (ZVEMSGR)" },
+  { rpc: "ZVE MAIL LIST",          domain: "messaging",  description: "MailMan message list (ZVEMSGR)" },
+  { rpc: "ZVE MAIL GET",           domain: "messaging",  description: "Get MailMan message (ZVEMSGR)" },
+  { rpc: "ZVE MAIL SEND",          domain: "messaging",  description: "Send MailMan message (ZVEMSGR)" },
+  { rpc: "ZVE MAIL MANAGE",        domain: "messaging",  description: "Manage MailMan folders (ZVEMSGR)" },
+  { rpc: "VE LIST RPCS",           domain: "catalog",    description: "List installed RPCs (ZVERPC)" },
+  { rpc: "VE RCM PROVIDER INFO",   domain: "rcm",        description: "Provider info for RCM (ZVERCMP)" },
+  { rpc: "ZVEADT WARDS",           domain: "adt",        description: "Ward census (ZVEADT)" },
+  { rpc: "ZVEADT BEDS",            domain: "adt",        description: "Bed board (ZVEADT)" },
+  { rpc: "ZVEADT MVHIST",          domain: "adt",        description: "Movement history (ZVEADT)" },
 ];
 
 /* ------------------------------------------------------------------ */

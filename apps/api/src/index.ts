@@ -711,6 +711,10 @@ server.get("/vista/swap-boundary", async () => {
   return { ok: true, boundary };
 });
 
+// Phase 155: VistA provisioning status (admin-only)
+import vistaProvisionRoutes from "./routes/vista-provision.js";
+server.register(vistaProvisionRoutes);
+
 // Phase 37B: RPC Catalog — list all registered RPCs from File 8994
 // Uses VE LIST RPCS custom RPC (installed via scripts/install-rpc-catalog.ps1)
 // Falls back to empty if RPC not available (sandbox may not have it installed)

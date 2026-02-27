@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-27T08:33:11.606Z",
+  "generatedAt": "2026-02-27T09:12:42.115Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 165,
+  "phaseCount": 166,
   "phases": [
     {
       "phaseNumber": "1",
@@ -2728,6 +2728,34 @@
         "scripts/verify-phase1-to-phase14-parity-closure.ps",
         "scripts/verify-latest.ps",
         "docs/runbooks/cprs-parity-closure-phase14.md"
+      ]
+    },
+    {
+      "phaseNumber": "155",
+      "title": "VistA Routine Install Automation (M Routines + RPC Registration)",
+      "folder": "160-PHASE-155-VISTA-ROUTINE-INSTALLER",
+      "files": [
+        "155-01-IMPLEMENT.md",
+        "155-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "155-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "155-99-VERIFY.md"
+      ],
+      "routes": [
+        "/vista/provision/status"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/install-vista-routines.ps",
+        "apps/api/src/routes/vista-provision.ts",
+        "apps/api/src/index.ts",
+        "scripts/verify-phase155-provisioning.ps",
+        "docs/runbooks/vista-provisioning.md",
+        "AGENTS.md"
       ]
     },
     {
