@@ -1,7 +1,7 @@
 # VistA-Evolved System Audit
 
-> Generated: 2026-02-27T07:39:19.542Z  
-> HEAD: 0efd058  
+> Generated: 2026-02-27T14:08:48.092Z  
+> HEAD: 2fff6ee  
 > Node: v24.13.0 | pnpm: 10.29.2
 
 ## What Is Truly Wired End-to-End
@@ -9,8 +9,8 @@
 | # | Domain | Status | Evidence |
 |---|--------|--------|----------|
 | 1 | AUTH_IAM | **WIRED** | POST /portal/auth/login, POST /portal/auth/logout |
-| 2 | CPRS_UI | **WIRED** | /cprs/admin/analytics, /cprs/admin/audit-viewer |
-| 3 | ADMIN_PLATFORM | **WIRED** | GET /admin/audit-log, GET /admin/break-glass/active |
+| 2 | CPRS_UI | **WIRED** | /cprs/admin/alignment, /cprs/admin/analytics |
+| 3 | ADMIN_PLATFORM | **WIRED** | GET /admin/alignment/gates, GET /admin/alignment/score |
 | 4 | AUDIT_COMPLIANCE | **WIRED** | apps/api/src/lib/immutable-audit.ts, apps/api/src/services/imaging-audit.ts |
 | 5 | VISTA_RPC_COVERAGE | partial | uniqueRpcsUsed, registeredRpcs |
 | 6 | ORDERS_CPOE | partial | POST /vista/cprs/meds/quick-order, POST /vista/cprs/order-checks |
@@ -30,9 +30,9 @@
 
 ## Durability Posture
 
-- **SQLite tables:** 47
-- **In-memory Map stores:** 177
-- **High-risk (data loss on restart):** 33
+- **SQLite tables:** 56
+- **In-memory Map stores:** 193
+- **High-risk (data loss on restart):** 34
 - **Medium-risk:** 30
 - **JSON seed/mutable stores:** 17
 
@@ -41,6 +41,9 @@
 | Store | File | Data Type |
 |-------|------|-----------|
 | adapters | apps/api/src/adapters/adapter-loader.ts | BaseAdapter |
+| offsets | apps/api/src/audit-shipping/shipper.ts | AuditShipOffset |
+| result | apps/api/src/audit-shipping/shipper.ts | IndexedLine |
+| tenantLines | apps/api/src/audit-shipping/shipper.ts | IndexedLine |
 | ruleMap | apps/api/src/rcm/claim-lifecycle/scrubber.ts | ScrubRuleRow |
 | processedRemittances | apps/api/src/rcm/edi/remit-processor.ts | Remittance |
 | loaPacketCache | apps/api/src/rcm/hmo-portal/hmo-portal-routes.ts | LoaPacket |
@@ -52,9 +55,6 @@
 | payerGroups | apps/api/src/rcm/payments/aging-intelligence.ts | ClaimCase |
 | underpaymentsByPayer | apps/api/src/rcm/payments/aging-intelligence.ts | number |
 | bridges | apps/api/src/rcm/payments/export-bridge.ts | unknown |
-| uploadCache | apps/api/src/rcm/payments/payment-routes.ts | string |
-| batches | apps/api/src/rcm/payments/payment-store.ts | RemittanceBatch |
-| lines | apps/api/src/rcm/payments/payment-store.ts | RemittanceLine |
 
 ## VistA RPC Coverage
 
@@ -66,17 +66,18 @@
 
 ## API Inventory
 
-- **Total endpoints:** 1255
-- **By tag:** vista(547), rcm(353), other(96), admin(92), portal(87), infra(60), scheduling(31), imaging(20), analytics(14), telehealth(13), iam(10), interop(10), posture(6), auth(3)
+- **Total endpoints:** 1289
+- **By tag:** vista(548), rcm(353), admin(119), other(99), portal(87), infra(61), scheduling(31), imaging(20), analytics(14), telehealth(13), iam(10), interop(10), posture(8), auth(3)
 
 ## UI Inventory
 
-- **web:** 52 pages, 39 dead-click markers
+- **web:** 61 pages, 43 dead-click markers
 - **portal:** 25 pages, 11 dead-click markers
 
 ## CI Enforcement Posture
 
-- **Workflow files:** 8
+- **Workflow files:** 9
+- **ci-imaging-smoke.yml:** triggers=[pull_request] gates=[]
 - **ci-security.yml:** triggers=[push,schedule] gates=[secret-scan]
 - **ci-verify.yml:** triggers=[push] gates=[evidence-gate,secret-scan,phi-leak-scan,unit-tests]
 - **ci.yml:** triggers=[push] gates=[build]
@@ -90,13 +91,13 @@
 
 | Marker | Files | Total Hits |
 |--------|-------|------------|
-| integration_pending | 67 | 346 |
+| integration_pending | 71 | 362 |
 | mock | 2 | 2 |
-| placeholder | 77 | 208 |
+| placeholder | 81 | 214 |
 | todo | 1 | 1 |
 | fixme | 0 | 0 |
 | local_only | 4 | 6 |
-| stub | 45 | 984 |
+| stub | 48 | 989 |
 | not_implemented | 14 | 433 |
 
 ## Top 20 Prioritized Next Build Items
@@ -114,7 +115,7 @@
 | 9 | med | PAYER_INTEGRATIONS_US | Clearinghouse connector is simulation scaffold. Blocked by: vendor contract (Change Healthcare/Availity/WayStar), SFTP credentials, sender/receiver ID enrollment. Target: vendor SFTP/API. | apps/api/src/rcm/connectors/clearinghouse-connector.ts |
 | 10 | med | AI_GOVERNANCE | AI model integration is scaffold only |  |
 | 11 | med | AUDIT_COMPLIANCE | Audit JSONL files are append-only but not externally replicated | apps/api/src/lib/immutable-audit.ts |
-| 12 | med | DATABASE_POSTURE | 33 Map stores flagged high-risk. Critical stores (claims, portal, imaging, telehealth, scheduling) are pg_backed via write-through. Remaining are rebuildable caches or ephemeral by design. | apps/api/src/adapters/adapter-loader.ts |
+| 12 | med | DATABASE_POSTURE | 34 Map stores flagged high-risk. Critical stores (claims, portal, imaging, telehealth, scheduling) are pg_backed via write-through. Remaining are rebuildable caches or ephemeral by design. | apps/api/src/adapters/adapter-loader.ts |
 | 13 | low | AUTH_IAM | Passkey data delegated to Keycloak (not available in sandbox) | apps/api/src/auth/biometric/passkeys-provider.ts |
 | 14 | low | VISTA_RPC_COVERAGE | 70 registered RPCs not called in code |  |
 | 15 | low | PORTAL_PATIENT | Portal stores use write-through Map+PG (pg_backed). Hot cache resets on restart but DB is source of truth. | apps/api/src/portal-iam/access-log-store.ts |

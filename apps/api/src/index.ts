@@ -185,6 +185,20 @@ import { safeErr } from "./lib/safe-error.js";
 import { validateRuntimeMode, getRuntimeMode } from "./platform/runtime-mode.js";
 // Phase 132: I18N Foundation — locale preference + intake question schema
 import i18nRoutes from "./routes/i18n-routes.js";
+// Phase 158: Specialty Template & Workflow Studio
+import { templateRoutes } from "./templates/index.js";
+// Phase 159: Patient Queue / Waiting / Numbering / Calling System
+import { queueRoutes } from "./queue/index.js";
+// Phase 160: Department Workflow Packs
+import { workflowRoutes } from "./workflows/index.js";
+// Phase 161: VistA + CPRS Alignment Verification Pack
+import alignmentRoutes from "./routes/alignment-routes.js";
+// Phase 162: Performance + UX Speed Pass
+import { perfRoutes } from "./performance/index.js";
+// Phase 163: Modular Packaging Validation
+import moduleValidationRoutes from "./routes/module-validation-routes.js";
+// Phase 165: Specialty Coverage Score + QA Ladder
+import coverageRoutes from "./routes/coverage-routes.js";
 
 /* ================================================================== */
 /* Phase 125: Validate runtime mode contract BEFORE anything else       */
@@ -538,6 +552,27 @@ server.register(auditShippingRoutes);
 
 // Register i18n routes -- locale preference, supported locales, intake question schema (Phase 132)
 server.register(i18nRoutes);
+
+// Register template routes -- specialty templates, note builder, quick text (Phase 158)
+server.register(templateRoutes);
+
+// Register queue routes -- patient queue, waiting, numbering, calling (Phase 159)
+server.register(queueRoutes);
+
+// Register workflow routes -- department workflow packs (Phase 160)
+server.register(workflowRoutes);
+
+// Register alignment routes -- VistA + CPRS alignment verification (Phase 161)
+server.register(alignmentRoutes);
+
+// Register performance routes -- performance monitoring (Phase 162)
+server.register(perfRoutes);
+
+// Register module validation routes -- packaging validation (Phase 163)
+server.register(moduleValidationRoutes);
+
+// Register coverage score routes -- specialty scoring + QA ladder (Phase 165)
+server.register(coverageRoutes);
 
 // Register auto-generated domain RPC stub routes (problems, meds, notes, orders, labs, reports)
 registerDomainRoutes(server);

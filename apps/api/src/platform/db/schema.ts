@@ -999,3 +999,109 @@ export const auditShipManifest = sqliteTable("audit_ship_manifest", {
   byteSize: integer("byte_size").notNull().default(0),
   createdAt: text("created_at").notNull(),
 });
+
+// Phase 158: Specialty Template & Workflow Studio
+export const clinicalTemplate = sqliteTable("clinical_template", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  name: text("name").notNull(),
+  specialty: text("specialty").notNull(),
+  setting: text("setting").notNull().default("any"),
+  version: integer("version").notNull().default(1),
+  status: text("status").notNull().default("draft"),
+  description: text("description"),
+  tagsJson: text("tags_json"),
+  sectionsJson: text("sections_json"),
+  quickInsertSectionsJson: text("quick_insert_sections_json"),
+  autoExpandRulesJson: text("auto_expand_rules_json"),
+  createdBy: text("created_by"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export const templateVersionEvent = sqliteTable("template_version_event", {
+  id: text("id").primaryKey(),
+  templateId: text("template_id").notNull(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  version: integer("version").notNull(),
+  action: text("action").notNull(),
+  actor: text("actor").notNull(),
+  changeSummary: text("change_summary"),
+  snapshotJson: text("snapshot_json"),
+  createdAt: text("created_at").notNull(),
+});
+
+export const quickText = sqliteTable("quick_text", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  key: text("key").notNull(),
+  text: text("text").notNull(),
+  tagsJson: text("tags_json"),
+  specialty: text("specialty"),
+  version: integer("version").notNull().default(1),
+  createdBy: text("created_by"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+// ── Phase 159: Patient Queue / Waiting / Numbering / Calling ────────
+export const queueTicket = sqliteTable("queue_ticket", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  department: text("department").notNull(),
+  ticketNumber: text("ticket_number").notNull(),
+  patientDfn: text("patient_dfn").notNull(),
+  patientName: text("patient_name").notNull(),
+  priority: text("priority").notNull().default("normal"),
+  status: text("status").notNull().default("waiting"),
+  providerDuz: text("provider_duz"),
+  windowNumber: text("window_number"),
+  notes: text("notes"),
+  appointmentIen: text("appointment_ien"),
+  transferredFrom: text("transferred_from"),
+  createdAt: text("created_at").notNull(),
+  calledAt: text("called_at"),
+  servedAt: text("served_at"),
+  completedAt: text("completed_at"),
+});
+
+export const queueEvent = sqliteTable("queue_event", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  ticketId: text("ticket_id").notNull(),
+  eventType: text("event_type").notNull(),
+  actorDuz: text("actor_duz"),
+  detail: text("detail"),
+  createdAt: text("created_at").notNull(),
+});
+
+// ── Phase 160: Department Workflow Packs ─────────────────────────────
+export const workflowDefinition = sqliteTable("workflow_definition", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  department: text("department").notNull(),
+  name: text("name").notNull(),
+  description: text("description"),
+  version: integer("version").notNull().default(1),
+  status: text("status").notNull().default("draft"),
+  stepsJson: text("steps_json"),
+  tagsJson: text("tags_json"),
+  createdBy: text("created_by"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export const workflowInstance = sqliteTable("workflow_instance", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  definitionId: text("definition_id").notNull(),
+  department: text("department").notNull(),
+  patientDfn: text("patient_dfn").notNull(),
+  encounterRef: text("encounter_ref"),
+  queueTicketId: text("queue_ticket_id"),
+  status: text("status").notNull().default("not_started"),
+  stepsJson: text("steps_json"),
+  startedBy: text("started_by"),
+  startedAt: text("started_at").notNull(),
+  completedAt: text("completed_at"),
+});

@@ -1114,6 +1114,128 @@ CREATE TABLE IF NOT EXISTS audit_ship_manifest (
 CREATE INDEX IF NOT EXISTS idx_ship_manifest_tenant ON audit_ship_manifest(tenant_id, created_at);
 CREATE INDEX IF NOT EXISTS idx_ship_manifest_key ON audit_ship_manifest(object_key);
 
+-- AX) clinical_template -- Phase 158: Specialty Template & Workflow Studio
+CREATE TABLE IF NOT EXISTS clinical_template (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  name TEXT NOT NULL,
+  specialty TEXT NOT NULL,
+  setting TEXT NOT NULL DEFAULT 'any',
+  version INTEGER NOT NULL DEFAULT 1,
+  status TEXT NOT NULL DEFAULT 'draft',
+  description TEXT,
+  tags_json TEXT,
+  sections_json TEXT,
+  quick_insert_sections_json TEXT,
+  auto_expand_rules_json TEXT,
+  created_by TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_template_tenant ON clinical_template(tenant_id, specialty);
+CREATE INDEX IF NOT EXISTS idx_template_status ON clinical_template(tenant_id, status);
+
+-- AY) template_version_event -- Phase 158: Template versioning audit
+CREATE TABLE IF NOT EXISTS template_version_event (
+  id TEXT PRIMARY KEY,
+  template_id TEXT NOT NULL,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  version INTEGER NOT NULL,
+  action TEXT NOT NULL,
+  actor TEXT NOT NULL,
+  change_summary TEXT,
+  snapshot_json TEXT,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_tpl_version_tenant ON template_version_event(tenant_id, template_id);
+
+-- AZ) quick_text -- Phase 158: Quick text / macros library
+CREATE TABLE IF NOT EXISTS quick_text (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  key TEXT NOT NULL,
+  text TEXT NOT NULL,
+  tags_json TEXT,
+  specialty TEXT,
+  version INTEGER NOT NULL DEFAULT 1,
+  created_by TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_quick_text_tenant ON quick_text(tenant_id, specialty);
+
+-- BA) queue_ticket -- Phase 159: Patient queue tickets
+CREATE TABLE IF NOT EXISTS queue_ticket (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  department TEXT NOT NULL,
+  ticket_number TEXT NOT NULL,
+  patient_dfn TEXT NOT NULL,
+  patient_name TEXT NOT NULL,
+  priority TEXT NOT NULL DEFAULT 'normal',
+  status TEXT NOT NULL DEFAULT 'waiting',
+  provider_duz TEXT,
+  window_number TEXT,
+  notes TEXT,
+  appointment_ien TEXT,
+  transferred_from TEXT,
+  created_at TEXT NOT NULL,
+  called_at TEXT,
+  served_at TEXT,
+  completed_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_queue_ticket_dept ON queue_ticket(tenant_id, department, status);
+CREATE INDEX IF NOT EXISTS idx_queue_ticket_date ON queue_ticket(tenant_id, created_at);
+
+-- BB) queue_event -- Phase 159: Queue event audit trail
+CREATE TABLE IF NOT EXISTS queue_event (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  ticket_id TEXT NOT NULL,
+  event_type TEXT NOT NULL,
+  actor_duz TEXT,
+  detail TEXT,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_queue_event_ticket ON queue_event(tenant_id, ticket_id);
+
+-- BC) workflow_definition -- Phase 160: Department workflow templates
+CREATE TABLE IF NOT EXISTS workflow_definition (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  department TEXT NOT NULL,
+  name TEXT NOT NULL,
+  description TEXT,
+  version INTEGER NOT NULL DEFAULT 1,
+  status TEXT NOT NULL DEFAULT 'draft',
+  steps_json TEXT,
+  tags_json TEXT,
+  created_by TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_workflow_def_dept ON workflow_definition(tenant_id, department);
+CREATE INDEX IF NOT EXISTS idx_workflow_def_status ON workflow_definition(tenant_id, status);
+
+-- BD) workflow_instance -- Phase 160: Running workflow instances
+CREATE TABLE IF NOT EXISTS workflow_instance (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  definition_id TEXT NOT NULL,
+  department TEXT NOT NULL,
+  patient_dfn TEXT NOT NULL,
+  encounter_ref TEXT,
+  queue_ticket_id TEXT,
+  status TEXT NOT NULL DEFAULT 'not_started',
+  steps_json TEXT,
+  started_by TEXT,
+  started_at TEXT NOT NULL,
+  completed_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_workflow_inst_dept ON workflow_instance(tenant_id, department);
+CREATE INDEX IF NOT EXISTS idx_workflow_inst_patient ON workflow_instance(tenant_id, patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_workflow_inst_status ON workflow_instance(tenant_id, status);
+
 `;
 
 // Phase 97B: Add payer_type column (idempotent — catches "duplicate column" error)

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-02-27T07:39:20.361Z",
-  "headSha": "0efd058",
+  "generatedAt": "2026-02-27T14:08:49.198Z",
+  "headSha": "2fff6ee",
   "domains": [
     {
       "domain": "AUTH_IAM",
@@ -65,6 +65,13 @@
       "status": "wired",
       "evidence": [
         {
+          "route": "/cprs/admin/alignment",
+          "tags": [
+            "CPRS",
+            "Admin"
+          ]
+        },
+        {
           "route": "/cprs/admin/analytics",
           "tags": [
             "CPRS",
@@ -94,6 +101,13 @@
           ]
         },
         {
+          "route": "/cprs/admin/certification",
+          "tags": [
+            "CPRS",
+            "Admin"
+          ]
+        },
+        {
           "route": "/cprs/admin/claims-queue",
           "tags": [
             "CPRS",
@@ -117,27 +131,9 @@
           ]
         },
         {
-          "route": "/cprs/admin/denial-cases",
+          "route": "/cprs/admin/coverage",
           "tags": [
             "CPRS",
-            "RCM",
-            "Admin"
-          ]
-        },
-        {
-          "route": "/cprs/admin/denials",
-          "tags": [
-            "CPRS",
-            "RCM",
-            "Admin"
-          ]
-        },
-        {
-          "route": "/cprs/admin/hmo-portal",
-          "tags": [
-            "CPRS",
-            "RCM",
-            "Portal",
             "Admin"
           ]
         }
@@ -653,44 +649,44 @@
       "status": "wired",
       "evidence": [
         {
-          "route": "GET /admin/audit-log",
-          "file": "apps/api/src/routes/ws-console.ts"
+          "route": "GET /admin/alignment/gates",
+          "file": "apps/api/src/routes/alignment-routes.ts"
         },
         {
-          "route": "GET /admin/break-glass/active",
-          "file": "apps/api/src/routes/enterprise-break-glass-routes.ts"
+          "route": "GET /admin/alignment/score",
+          "file": "apps/api/src/routes/alignment-routes.ts"
         },
         {
-          "route": "POST /admin/break-glass/approve",
-          "file": "apps/api/src/routes/enterprise-break-glass-routes.ts"
+          "route": "GET /admin/alignment/snapshots",
+          "file": "apps/api/src/routes/alignment-routes.ts"
         },
         {
-          "route": "POST /admin/break-glass/deny",
-          "file": "apps/api/src/routes/enterprise-break-glass-routes.ts"
+          "route": "POST /admin/alignment/snapshots",
+          "file": "apps/api/src/routes/alignment-routes.ts"
         },
         {
-          "route": "POST /admin/break-glass/request",
-          "file": "apps/api/src/routes/enterprise-break-glass-routes.ts"
+          "route": "GET /admin/alignment/snapshots/:id",
+          "file": "apps/api/src/routes/alignment-routes.ts"
         },
         {
-          "route": "POST /admin/break-glass/revoke",
-          "file": "apps/api/src/routes/enterprise-break-glass-routes.ts"
+          "route": "DELETE /admin/alignment/snapshots/:id",
+          "file": "apps/api/src/routes/alignment-routes.ts"
         },
         {
-          "route": "GET /admin/break-glass/session/:id",
-          "file": "apps/api/src/routes/enterprise-break-glass-routes.ts"
+          "route": "POST /admin/alignment/snapshots/compare",
+          "file": "apps/api/src/routes/alignment-routes.ts"
         },
         {
-          "route": "GET /admin/break-glass/stats",
-          "file": "apps/api/src/routes/enterprise-break-glass-routes.ts"
+          "route": "GET /admin/alignment/summary",
+          "file": "apps/api/src/routes/alignment-routes.ts"
         },
         {
-          "route": "POST /admin/cache/invalidate",
-          "file": "apps/api/src/index.ts"
+          "route": "GET /admin/alignment/tripwires",
+          "file": "apps/api/src/routes/alignment-routes.ts"
         },
         {
-          "route": "POST /admin/circuit-breaker/reset",
-          "file": "apps/api/src/index.ts"
+          "route": "POST /admin/alignment/tripwires",
+          "file": "apps/api/src/routes/alignment-routes.ts"
         }
       ],
       "topGaps": [],
@@ -768,15 +764,15 @@
       "evidence": [
         {
           "metric": "sqliteTables",
-          "value": 47
+          "value": 56
         },
         {
           "metric": "inMemoryMaps",
-          "value": 177
+          "value": 193
         },
         {
           "metric": "highRiskMaps",
-          "value": 33
+          "value": 34
         },
         {
           "metric": "medRiskMaps",
@@ -785,14 +781,14 @@
       ],
       "topGaps": [
         {
-          "gap": "33 Map stores flagged high-risk. Critical stores (claims, portal, imaging, telehealth, scheduling) are pg_backed via write-through. Remaining are rebuildable caches or ephemeral by design.",
+          "gap": "34 Map stores flagged high-risk. Critical stores (claims, portal, imaging, telehealth, scheduling) are pg_backed via write-through. Remaining are rebuildable caches or ephemeral by design.",
           "severity": "med",
           "evidenceFiles": [
             "apps/api/src/adapters/adapter-loader.ts",
-            "apps/api/src/rcm/claim-lifecycle/scrubber.ts",
-            "apps/api/src/rcm/edi/remit-processor.ts",
-            "apps/api/src/rcm/hmo-portal/hmo-portal-routes.ts",
-            "apps/api/src/rcm/hmo-portal/hmo-portal-routes.ts"
+            "apps/api/src/audit-shipping/shipper.ts",
+            "apps/api/src/audit-shipping/shipper.ts",
+            "apps/api/src/audit-shipping/shipper.ts",
+            "apps/api/src/rcm/claim-lifecycle/scrubber.ts"
           ]
         }
       ],
@@ -848,31 +844,31 @@
       ]
     },
     {
+      "risk": "Map store offsets in apps/api/src/audit-shipping/shipper.ts is write-through cache (pg_backed critical stores survive restart; ephemeral stores rebuildable)",
+      "severity": "med",
+      "evidence": [
+        "apps/api/src/audit-shipping/shipper.ts:54"
+      ]
+    },
+    {
+      "risk": "Map store result in apps/api/src/audit-shipping/shipper.ts is write-through cache (pg_backed critical stores survive restart; ephemeral stores rebuildable)",
+      "severity": "med",
+      "evidence": [
+        "apps/api/src/audit-shipping/shipper.ts:137"
+      ]
+    },
+    {
+      "risk": "Map store tenantLines in apps/api/src/audit-shipping/shipper.ts is write-through cache (pg_backed critical stores survive restart; ephemeral stores rebuildable)",
+      "severity": "med",
+      "evidence": [
+        "apps/api/src/audit-shipping/shipper.ts:147"
+      ]
+    },
+    {
       "risk": "Map store ruleMap in apps/api/src/rcm/claim-lifecycle/scrubber.ts is write-through cache (pg_backed critical stores survive restart; ephemeral stores rebuildable)",
       "severity": "med",
       "evidence": [
         "apps/api/src/rcm/claim-lifecycle/scrubber.ts:149"
-      ]
-    },
-    {
-      "risk": "Map store processedRemittances in apps/api/src/rcm/edi/remit-processor.ts is write-through cache (pg_backed critical stores survive restart; ephemeral stores rebuildable)",
-      "severity": "med",
-      "evidence": [
-        "apps/api/src/rcm/edi/remit-processor.ts:88"
-      ]
-    },
-    {
-      "risk": "Map store loaPacketCache in apps/api/src/rcm/hmo-portal/hmo-portal-routes.ts is write-through cache (pg_backed critical stores survive restart; ephemeral stores rebuildable)",
-      "severity": "med",
-      "evidence": [
-        "apps/api/src/rcm/hmo-portal/hmo-portal-routes.ts:66"
-      ]
-    },
-    {
-      "risk": "Map store claimPacketCache in apps/api/src/rcm/hmo-portal/hmo-portal-routes.ts is write-through cache (pg_backed critical stores survive restart; ephemeral stores rebuildable)",
-      "severity": "med",
-      "evidence": [
-        "apps/api/src/rcm/hmo-portal/hmo-portal-routes.ts:67"
       ]
     },
     {

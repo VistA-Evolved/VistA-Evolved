@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-27T10:27:47.540Z",
+  "generatedAt": "2026-02-27T13:51:33.641Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 168,
+  "phaseCount": 176,
   "phases": [
     {
       "phaseNumber": "1",
@@ -2829,6 +2829,199 @@
       ]
     },
     {
+      "phaseNumber": "158",
+      "title": "01 — IMPLEMENT: Specialty Template & Workflow Studio",
+      "folder": "163-PHASE-158-SPECIALTY-TEMPLATE-WORKFLOW-STUDIO",
+      "files": [
+        "158-01-IMPLEMENT.md",
+        "158-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "158-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "158-99-VERIFY.md"
+      ],
+      "routes": [
+        "/admin/templates",
+        "/admin/templates/:id",
+        "/admin/templates/:id/publish",
+        "/admin/templates/:id/versions",
+        "/encounter/note-builder/generate"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "NotesPanel.tsx",
+        "page.tsx",
+        "tenant-context.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/platform/db/schema.ts",
+        "apps/api/src/platform/db/migrate.ts",
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/routes/template-routes.ts",
+        "apps/api/src/services/template-engine.ts",
+        "data/templates/*.json",
+        "apps/web/src/app/cprs/admin/templates/page.tsx",
+        "apps/web/src/app/encounter/note-builder/page.tsx",
+        "apps/api/src/platform/store-policy.ts",
+        "config/modules.json",
+        "docs/research/phase158-sources.md",
+        "docs/runbooks/phase158-specialty-templates.md"
+      ]
+    },
+    {
+      "phaseNumber": "159",
+      "title": "01: IMPLEMENT — Patient Queue / Waiting / Numbering / Calling System",
+      "folder": "164-PHASE-159-PATIENT-QUEUE-WAITING-CALLING",
+      "files": [
+        "159-01-IMPLEMENT.md",
+        "159-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "159-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "159-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/admin/queue",
+        "/queue/display/:dept",
+        "/queue/stats/:dept"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "160",
+      "title": "01: IMPLEMENT — Department Workflow Packs",
+      "folder": "165-PHASE-160-DEPARTMENT-WORKFLOW-PACKS",
+      "files": [
+        "160-01-IMPLEMENT.md",
+        "160-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "160-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "160-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "161",
+      "title": "VistA + CPRS Alignment Verification Pack",
+      "folder": "166-PHASE-161-VISTA-CPRS-ALIGNMENT-VERIFICATION-PACK",
+      "files": [
+        "01-IMPLEMENT.md",
+        "99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/vista/alignment/types.ts",
+        "apps/api/src/vista/alignment/golden-tracer.ts",
+        "apps/api/src/vista/alignment/tripwire-monitor.ts",
+        "apps/api/src/vista/alignment/alignment-scorer.ts",
+        "apps/api/src/vista/alignment/index.ts",
+        "apps/api/src/routes/alignment-routes.ts",
+        "apps/api/src/index.ts",
+        "apps/api/src/platform/store-policy.ts",
+        "apps/web/src/app/cprs/admin/alignment/page.tsx",
+        "docs/runbooks/phase161-vista-alignment-verification.md"
+      ]
+    },
+    {
+      "phaseNumber": "162",
+      "title": "Performance + UX Speed Pass",
+      "folder": "167-PHASE-162-PERFORMANCE-UX-SPEED-PASS",
+      "files": [
+        "01-IMPLEMENT.md",
+        "99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/performance/types.ts",
+        "apps/api/src/performance/profiler.ts",
+        "apps/api/src/performance/budget-engine.ts",
+        "apps/api/src/performance/perf-routes.ts",
+        "apps/api/src/performance/index.ts",
+        "apps/api/src/index.ts",
+        "apps/api/src/platform/store-policy.ts",
+        "apps/web/src/app/cprs/admin/performance/page.tsx",
+        "docs/runbooks/phase162-performance-ux.md"
+      ]
+    },
+    {
+      "phaseNumber": "163",
+      "title": "Modular Packaging Validation",
+      "folder": "168-PHASE-163-MODULAR-PACKAGING-VALIDATION",
+      "files": [
+        "01-IMPLEMENT.md",
+        "99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "164",
+      "title": "Certification / Readiness Posture",
+      "folder": "169-PHASE-164-CERTIFICATION-READINESS-POSTURE",
+      "files": [
+        "01-IMPLEMENT.md",
+        "99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
       "phaseNumber": "15",
       "title": "ENTERPRISE HARDENING",
       "folder": "17-PHASE-15-ENTERPRISE-HARDENING",
@@ -2860,6 +3053,27 @@
         "layout.tsx",
         "page.tsx",
         "session-context.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "165",
+      "title": "Specialty Coverage Score + QA Ladder Extension",
+      "folder": "170-PHASE-165-SPECIALTY-COVERAGE-SCORE-QA-LADDER",
+      "files": [
+        "01-IMPLEMENT.md",
+        "99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
       ],
       "filesTouched": []
     },

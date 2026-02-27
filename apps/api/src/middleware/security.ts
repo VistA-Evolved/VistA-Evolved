@@ -111,6 +111,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/i18n\//, auth: "session" }, // Phase 132: locale preference (session required)
   { pattern: /^\/intake\/question-schema$/, auth: "none" }, // Phase 132: intake questions (public, for portal)
   { pattern: /^\/intake\//, auth: "none" }, // Phase 28/143: intake routes (own session check, portal or clinician)
+  { pattern: /^\/queue\/display\//, auth: "none" }, // Phase 159: public queue display board (no auth)
   { pattern: /^\/posture\//, auth: "admin" }, // Phase 107: production posture (admin only)
   { pattern: /^\/posture$/, auth: "admin" }, // Phase 107: unified posture endpoint
   { pattern: /^\/hardening\//, auth: "admin" }, // Phase 118: go-live hardening (admin only)

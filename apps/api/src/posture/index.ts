@@ -19,6 +19,7 @@ import { checkPerfPosture } from "./perf-posture.js";
 import { checkBackupPosture } from "./backup-posture.js";
 import { checkDataPlanePosture } from "./data-plane-posture.js";
 import { checkAuditShippingPosture } from "./audit-shipping-posture.js";
+import { checkCertificationPosture } from "./certification-posture.js";
 import { getStoreInventorySummary } from "../platform/store-policy.js";
 
 export default async function postureRoutes(server: FastifyInstance) {
@@ -32,6 +33,7 @@ export default async function postureRoutes(server: FastifyInstance) {
     ]);
     const dataPlane = checkDataPlanePosture();
     const auditShipping = await checkAuditShippingPosture();
+    const certification = checkCertificationPosture();
     const storePolicy = getStoreInventorySummary();
 
     const totalGates = [
@@ -41,6 +43,7 @@ export default async function postureRoutes(server: FastifyInstance) {
       ...backup.gates,
       ...dataPlane.gates,
       ...auditShipping.gates,
+      ...certification.gates,
     ];
     const passCount = totalGates.filter((g) => g.pass).length;
     const totalScore = Math.round((passCount / totalGates.length) * 100);
@@ -56,6 +59,7 @@ export default async function postureRoutes(server: FastifyInstance) {
         backup,
         dataPlane,
         auditShipping,
+        certification,
         storePolicy: {
           total: storePolicy.total,
           criticalInMemoryCount: storePolicy.criticalInMemoryCount,
@@ -106,6 +110,11 @@ export default async function postureRoutes(server: FastifyInstance) {
   // Phase 157: Audit shipping posture
   server.get("/posture/audit-shipping", async () => {
     return { ok: true, ...(await checkAuditShippingPosture()) };
+  });
+
+  // Phase 164: Certification / readiness posture
+  server.get("/posture/certification", async () => {
+    return { ok: true, ...checkCertificationPosture() };
   });
 
   // Phase 136: Store policy posture

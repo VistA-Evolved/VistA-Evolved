@@ -2053,6 +2053,151 @@ CREATE INDEX IF NOT EXISTS idx_ship_manifest_key
   ON audit_ship_manifest(object_key);
 `,
   },
+  {
+    version: 23,
+    name: "phase158_specialty_templates",
+    sql: `
+-- Phase 158: Specialty Template & Workflow Studio
+CREATE TABLE IF NOT EXISTS clinical_template (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  name TEXT NOT NULL,
+  specialty TEXT NOT NULL,
+  setting TEXT NOT NULL DEFAULT 'any',
+  version INTEGER NOT NULL DEFAULT 1,
+  status TEXT NOT NULL DEFAULT 'draft',
+  description TEXT,
+  tags_json JSONB,
+  sections_json JSONB,
+  quick_insert_sections_json JSONB,
+  auto_expand_rules_json JSONB,
+  created_by TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_template_tenant
+  ON clinical_template(tenant_id, specialty);
+CREATE INDEX IF NOT EXISTS idx_template_status
+  ON clinical_template(tenant_id, status);
+
+CREATE TABLE IF NOT EXISTS template_version_event (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  template_id TEXT NOT NULL,
+  version INTEGER NOT NULL,
+  action TEXT NOT NULL,
+  actor TEXT NOT NULL,
+  change_summary TEXT,
+  snapshot_json JSONB,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_tpl_version_tenant
+  ON template_version_event(tenant_id, template_id);
+
+CREATE TABLE IF NOT EXISTS quick_text (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  key TEXT NOT NULL,
+  text TEXT NOT NULL,
+  tags_json JSONB,
+  specialty TEXT,
+  version INTEGER NOT NULL DEFAULT 1,
+  created_by TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_quick_text_tenant
+  ON quick_text(tenant_id, specialty);
+`,
+  },
+  {
+    version: 24,
+    name: "phase159_patient_queue",
+    sql: `
+-- Phase 159: Patient Queue / Waiting / Numbering / Calling System
+CREATE TABLE IF NOT EXISTS queue_ticket (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  department TEXT NOT NULL,
+  ticket_number TEXT NOT NULL,
+  patient_dfn TEXT NOT NULL,
+  patient_name TEXT NOT NULL,
+  priority TEXT NOT NULL DEFAULT 'normal',
+  status TEXT NOT NULL DEFAULT 'waiting',
+  provider_duz TEXT,
+  window_number TEXT,
+  notes TEXT,
+  appointment_ien TEXT,
+  transferred_from TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  called_at TIMESTAMPTZ,
+  served_at TIMESTAMPTZ,
+  completed_at TIMESTAMPTZ
+);
+CREATE INDEX IF NOT EXISTS idx_queue_ticket_dept
+  ON queue_ticket(tenant_id, department, status);
+CREATE INDEX IF NOT EXISTS idx_queue_ticket_date
+  ON queue_ticket(tenant_id, created_at);
+
+CREATE TABLE IF NOT EXISTS queue_event (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  ticket_id TEXT NOT NULL,
+  event_type TEXT NOT NULL,
+  actor_duz TEXT,
+  detail TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_queue_event_ticket
+  ON queue_event(tenant_id, ticket_id);
+`,
+  },
+  {
+    version: 25,
+    name: "phase160_department_workflows",
+    sql: `
+-- Phase 160: Department Workflow Packs
+CREATE TABLE IF NOT EXISTS workflow_definition (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  department TEXT NOT NULL,
+  name TEXT NOT NULL,
+  description TEXT,
+  version INTEGER NOT NULL DEFAULT 1,
+  status TEXT NOT NULL DEFAULT 'draft',
+  steps_json JSONB,
+  tags_json JSONB,
+  created_by TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_workflow_def_dept
+  ON workflow_definition(tenant_id, department);
+CREATE INDEX IF NOT EXISTS idx_workflow_def_status
+  ON workflow_definition(tenant_id, status);
+
+CREATE TABLE IF NOT EXISTS workflow_instance (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  definition_id TEXT NOT NULL,
+  department TEXT NOT NULL,
+  patient_dfn TEXT NOT NULL,
+  encounter_ref TEXT,
+  queue_ticket_id TEXT,
+  status TEXT NOT NULL DEFAULT 'not_started',
+  steps_json JSONB,
+  started_by TEXT,
+  started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  completed_at TIMESTAMPTZ
+);
+CREATE INDEX IF NOT EXISTS idx_workflow_inst_dept
+  ON workflow_instance(tenant_id, department);
+CREATE INDEX IF NOT EXISTS idx_workflow_inst_patient
+  ON workflow_instance(tenant_id, patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_workflow_inst_status
+  ON workflow_instance(tenant_id, status);
+`,
+  },
 ];
 
 /**
@@ -2228,6 +2373,16 @@ export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: s
     // Phase 157: Audit JSONL shipping
     "audit_ship_offset",
     "audit_ship_manifest",
+    // Phase 158: Specialty Template & Workflow Studio
+    "clinical_template",
+    "template_version_event",
+    "quick_text",
+    // Phase 159: Patient Queue
+    "queue_ticket",
+    "queue_event",
+    // Phase 160: Department Workflows
+    "workflow_definition",
+    "workflow_instance",
   ];
 
   const applied: string[] = [];
