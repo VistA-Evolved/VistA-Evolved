@@ -26,11 +26,13 @@ import { LoginBodySchema, validate } from "../lib/validation.js";
 import { getPermissionsForRole, getRbacMatrix } from "./rbac.js";
 
 const COOKIE_NAME = SESSION_CONFIG.cookieName;
+// Phase 153: secure cookie when NODE_ENV=production OR PLATFORM_RUNTIME_MODE=rc|prod
+const _rtMode = (process.env.PLATFORM_RUNTIME_MODE || "").toLowerCase().trim();
 const COOKIE_OPTS = {
   path: "/",
   httpOnly: true,
   sameSite: "lax" as const,
-  secure: process.env.NODE_ENV === "production",
+  secure: process.env.NODE_ENV === "production" || _rtMode === "rc" || _rtMode === "prod",
   maxAge: Math.floor(SESSION_CONFIG.absoluteTtlMs / 1000),
 };
 

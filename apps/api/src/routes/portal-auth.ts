@@ -183,7 +183,7 @@ const COOKIE_OPTS = {
   path: "/",
   httpOnly: true,
   sameSite: "strict" as const,
-  secure: process.env.NODE_ENV === "production",
+  secure: process.env.NODE_ENV === "production" || ["rc","prod"].includes((process.env.PLATFORM_RUNTIME_MODE || "").toLowerCase().trim()),
   maxAge: Math.floor(PORTAL_SESSION_TTL_MS / 1000),
 };
 

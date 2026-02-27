@@ -98,7 +98,7 @@ export default async function hardeningRoutes(server: FastifyInstance): Promise<
     const cookies = {
       httpOnly: true,
       sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
+      secure: process.env.NODE_ENV === "production" || ["rc","prod"].includes((process.env.PLATFORM_RUNTIME_MODE || "").toLowerCase().trim()),
     };
 
     return {
@@ -196,12 +196,13 @@ export default async function hardeningRoutes(server: FastifyInstance): Promise<
     // 5. CSRF protection
     checks.push({ name: "csrf_protection", status: "pass", detail: "Session-bound synchronizer token (Phase 132)" });
 
-    // 6. Session cookie posture
-    const secureCookies = process.env.NODE_ENV === "production";
+    // 6. Session cookie posture (Phase 153: also considers PLATFORM_RUNTIME_MODE)
+    const _rtm = (process.env.PLATFORM_RUNTIME_MODE || "").toLowerCase().trim();
+    const secureCookies = process.env.NODE_ENV === "production" || _rtm === "rc" || _rtm === "prod";
     checks.push({
       name: "session_cookie_secure",
       status: secureCookies ? "pass" : "warn",
-      detail: secureCookies ? "Secure flag enabled" : "NODE_ENV != production (secure flag off)",
+      detail: secureCookies ? "Secure flag enabled" : "No production NODE_ENV or runtime mode (secure flag off)",
     });
 
     // 7. Imaging audit file sink (default-on since Phase 118)

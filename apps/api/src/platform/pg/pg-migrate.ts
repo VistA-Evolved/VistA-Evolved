@@ -1963,6 +1963,34 @@ CREATE INDEX IF NOT EXISTS idx_ppi_dfn ON portal_patient_identity(tenant_id, pat
 CREATE INDEX IF NOT EXISTS idx_ppi_tenant ON portal_patient_identity(tenant_id);
 `,
   },
+  {
+    version: 20,
+    name: "phase153_tenant_oidc_mapping",
+    sql: `
+-- ============================================================
+-- Phase 153: Tenant OIDC Mapping
+-- Maps each tenant to its OIDC provider configuration.
+-- Required for multi-tenant enterprise SSO.
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS tenant_oidc_mapping (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  issuer_url TEXT NOT NULL,
+  client_id TEXT NOT NULL,
+  audience TEXT,
+  claim_mapping_json TEXT,
+  enabled INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL,
+  updated_at TEXT
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_tom_tenant_issuer
+  ON tenant_oidc_mapping(tenant_id, issuer_url);
+CREATE INDEX IF NOT EXISTS idx_tom_tenant
+  ON tenant_oidc_mapping(tenant_id);
+`,
+  },
 ];
 
 /**
@@ -2131,6 +2159,8 @@ export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: s
     "export_job",
     // Phase 150: Patient identity mapping
     "portal_patient_identity",
+    // Phase 153: Tenant OIDC mapping
+    "tenant_oidc_mapping",
   ];
 
   const applied: string[] = [];

@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-27T02:29:32.428Z",
+  "generatedAt": "2026-02-27T07:06:18.663Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 163,
+  "phaseCount": 164,
   "phases": [
     {
       "phaseNumber": "1",
@@ -2622,6 +2622,27 @@
         "/scheduling/requests/:id/approve",
         "/scheduling/requests/:id/reject",
         "/scheduling/verify/:ref"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "153",
+      "title": "IMPLEMENT: Enterprise IAM Default (OIDC Mandatory in rc/prod)",
+      "folder": "158-PHASE-153-IAM-OIDC-DEFAULT",
+      "files": [
+        "153-01-IMPLEMENT.md",
+        "153-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "153-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "153-99-VERIFY.md"
+      ],
+      "routes": [
+        "/posture/data-plane"
       ],
       "rpcs": [],
       "uiComponents": [],

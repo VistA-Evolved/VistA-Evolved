@@ -1,5 +1,5 @@
 /**
- * Data Plane Posture — Phase 125: Postgres-Only Production Data Plane
+ * Data Plane Posture -- Phase 125 + Phase 150 + Phase 153
  *
  * Production readiness gates for the data plane:
  *   Gate 1: Runtime mode is set and recognized
@@ -8,6 +8,9 @@
  *   Gate 4: Store backend resolves to "pg" (required in rc/prod)
  *   Gate 5: No SQLite runtime path active (required in rc/prod)
  *   Gate 6: JSON mutable file stores blocked (required in rc/prod)
+ *   Gate 7: OIDC enforcement (Phase 150)
+ *   Gate 8: AUTH_MODE alignment (Phase 153)
+ *   Gate 9: OIDC config depth (Phase 153)
  */
 
 import { getRuntimeMode, requiresPg, allowsSqlite, blocksJsonStores, requiresOidc } from "../platform/runtime-mode.js";
@@ -134,6 +137,34 @@ export function checkDataPlanePosture(): DataPlanePosture {
         ? "OIDC enabled (optional in " + mode + " mode)"
         : "OIDC not enabled (optional in " + mode + " mode)",
     severity: oidcRequired && !oidcOk ? "critical" : "info",
+  });
+
+  // Gate 8 (Phase 153): AUTH_MODE alignment
+  const authMode = (process.env.AUTH_MODE || "dev_local").toLowerCase().trim();
+  const authModeOk = authMode === "oidc" || !pgRequired;
+  gates.push({
+    name: "auth_mode_alignment",
+    pass: authModeOk,
+    detail: pgRequired
+      ? authMode === "oidc"
+        ? "AUTH_MODE=oidc (required for " + mode + " mode)"
+        : "AUTH_MODE=" + authMode + " -- must be 'oidc' in " + mode + " mode"
+      : "AUTH_MODE=" + authMode + " (" + mode + " mode allows dev_local)",
+    severity: pgRequired && !authModeOk ? "critical" : "info",
+  });
+
+  // Gate 9 (Phase 153): OIDC config depth (client ID explicit, not default)
+  const oidcClientIdExplicit = !!process.env.OIDC_CLIENT_ID;
+  const oidcConfigDepthOk = !oidcRequired || (oidcOk && oidcClientIdExplicit);
+  gates.push({
+    name: "oidc_config_depth",
+    pass: oidcConfigDepthOk,
+    detail: oidcRequired
+      ? oidcConfigDepthOk
+        ? "OIDC config depth OK: issuer + client_id + enabled"
+        : "OIDC config incomplete: OIDC_CLIENT_ID must be explicitly set in " + mode
+      : "OIDC config depth check skipped (" + mode + " mode)",
+    severity: oidcRequired && !oidcConfigDepthOk ? "critical" : "info",
   });
 
   const passCount = gates.filter((g) => g.pass).length;

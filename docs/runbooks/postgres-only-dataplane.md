@@ -98,7 +98,7 @@ apps/api/src/
     pg/
       pg-migrate.ts        -- Auto-enables RLS in rc/prod
   posture/
-    data-plane-posture.ts  -- 6 production readiness gates
+    data-plane-posture.ts  -- 9 production readiness gates (Phase 125+150+153)
     index.ts               -- /posture/data-plane endpoint
   rcm/payers/
     payer-persistence.ts   -- JSON writes blocked in rc/prod

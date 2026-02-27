@@ -164,6 +164,68 @@ export function mapClaimsToUserMeta(claims: OidcTokenClaims): {
   };
 }
 
+/* ------------------------------------------------------------------ */
+/* Phase 153: Configuration validation                                  */
+/* ------------------------------------------------------------------ */
+
+export interface OidcConfigValidation {
+  valid: boolean;
+  enabled: boolean;
+  errors: string[];
+  warnings: string[];
+}
+
+/**
+ * Validate OIDC configuration depth.
+ *
+ * In rc/prod (requiresPg), OIDC must be fully configured:
+ *   - OIDC_ENABLED=true
+ *   - OIDC_ISSUER set (not localhost default)
+ *   - OIDC_CLIENT_ID set (not silent default)
+ *   - OIDC_AUDIENCE set or inherited from OIDC_CLIENT_ID
+ *
+ * In dev/test, missing values produce warnings, not errors.
+ */
+export function validateOidcConfig(): OidcConfigValidation {
+  // Avoid importing runtime-mode to prevent circular deps — inline check
+  const mode = (process.env.PLATFORM_RUNTIME_MODE || "dev").toLowerCase().trim();
+  const isRcProd = mode === "rc" || mode === "prod";
+
+  const config = getOidcConfig();
+  const errors: string[] = [];
+  const warnings: string[] = [];
+
+  if (!config.enabled && isRcProd) {
+    errors.push("OIDC_ENABLED must be 'true' in rc/prod mode");
+  }
+
+  if (config.enabled) {
+    // Issuer must be explicitly set (not the localhost default)
+    if (!process.env.OIDC_ISSUER) {
+      const msg = "OIDC_ISSUER not set -- using default localhost. Set it to your IdP issuer URL.";
+      isRcProd ? errors.push(msg) : warnings.push(msg);
+    }
+
+    // Client ID must be explicitly set in rc/prod
+    if (!process.env.OIDC_CLIENT_ID) {
+      const msg = "OIDC_CLIENT_ID not set -- using default 'vista-evolved-api'. Set it explicitly.";
+      isRcProd ? errors.push(msg) : warnings.push(msg);
+    }
+
+    // JWKS URI should be derivable
+    if (!process.env.OIDC_JWKS_URI && !process.env.OIDC_ISSUER) {
+      warnings.push("OIDC_JWKS_URI not set and OIDC_ISSUER not set -- JWKS cannot be resolved.");
+    }
+  }
+
+  return {
+    valid: errors.length === 0,
+    enabled: config.enabled,
+    errors,
+    warnings,
+  };
+}
+
 /** Reset config cache (for testing). */
 export function resetOidcConfig(): void {
   cachedConfig = null;

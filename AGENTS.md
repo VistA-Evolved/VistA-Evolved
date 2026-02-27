@@ -1052,7 +1052,7 @@ apps/api/src/
     runtime-mode.ts               -- PLATFORM_RUNTIME_MODE contract (dev/test/rc/prod) (Phase 125)
     store-resolver.ts             -- +blocks SQLite in rc/prod (Phase 125)
   posture/
-    data-plane-posture.ts         -- 6 production data plane gates (Phase 125)
+    data-plane-posture.ts         -- 9 production data plane gates (Phase 125+150+153)
     index.ts                      -- +/posture/data-plane endpoint (Phase 125)
   platform/pg/
     pg-migrate.ts                 -- +auto-enables RLS for rc/prod mode (Phase 125)
@@ -1298,6 +1298,53 @@ docs/runbooks/
      field coverage, server-config settings, and audit emitter wiring. Add
      any new PHI fields to `PHI_FIELDS` in phi-redaction.ts, not in individual
      audit modules.
+
+## 7r. Architecture Quick Map (Phase 153 additions)
+
+```
+apps/api/src/
+  auth/
+    oidc-provider.ts              -- +validateOidcConfig(), OidcConfigValidation (Phase 153)
+  posture/
+    data-plane-posture.ts         -- +Gate 8 AUTH_MODE alignment, +Gate 9 OIDC config depth (Phase 153)
+  platform/pg/
+    pg-migrate.ts                 -- +v20 tenant_oidc_mapping table + RLS entry (Phase 153)
+
+qa/gauntlet/gates/
+  g12-data-plane.mjs              -- +sub-checks 9-11: auth-mode, validateOidcConfig, tenant mapping (Phase 153)
+
+apps/api/
+  .env.example                    -- +OIDC/IAM/runtime-mode env vars (Phase 153)
+
+# Cookie secure flag alignment (Phase 153):
+apps/api/src/auth/auth-routes.ts          -- +PLATFORM_RUNTIME_MODE check
+apps/api/src/auth/idp/idp-routes.ts       -- +PLATFORM_RUNTIME_MODE check
+apps/api/src/routes/portal-auth.ts        -- +PLATFORM_RUNTIME_MODE check
+apps/api/src/portal-iam/portal-iam-routes.ts -- +PLATFORM_RUNTIME_MODE check
+apps/api/src/routes/hardening-routes.ts   -- +PLATFORM_RUNTIME_MODE check + posture update
+```
+
+153. **`validateOidcConfig()` enforces OIDC config depth in rc/prod (Phase 153).**
+     In rc/prod mode, `validateOidcConfig()` returns errors (not just warnings)
+     for: missing OIDC_ENABLED, missing OIDC_ISSUER, missing OIDC_CLIENT_ID.
+     In dev/test, the same missing values produce warnings only. The function
+     does NOT import from `runtime-mode.ts` to avoid circular deps -- it reads
+     `PLATFORM_RUNTIME_MODE` directly from `process.env`.
+154. **Cookie secure flag aligned with PLATFORM_RUNTIME_MODE (Phase 153).**
+     All 5 cookie `secure:` flags now also check `PLATFORM_RUNTIME_MODE=rc|prod`
+     in addition to `NODE_ENV=production`. This ensures cookies are secure even
+     when NODE_ENV is not explicitly set to production but the runtime mode is.
+155. **Data plane posture now has 9 gates (Phase 153).** Gate 8 checks
+     AUTH_MODE=oidc when PG is required (rc/prod). Gate 9 checks OIDC config
+     depth (OIDC_CLIENT_ID explicitly set, not defaulted). Gates 1-6 are
+     Phase 125, Gate 7 is Phase 150, Gates 8-9 are Phase 153.
+156. **`tenant_oidc_mapping` table (Phase 153).** PG migration v20 creates
+     the table with columns: id, tenant_id, issuer_url, client_id, audience,
+     claim_mapping_json, enabled, created_at, updated_at. Unique index on
+     (tenant_id, issuer_url). Included in RLS tenant tables array.
+157. **G12 gauntlet gate has 11 sub-checks (Phase 153).** Sub-checks 9-11
+     validate auth-mode-policy.ts enforceAuthMode, oidc-provider.ts
+     validateOidcConfig, and tenant_oidc_mapping migration presence.
 
 ## 8. Bug Tracker & Lessons Learned
 
