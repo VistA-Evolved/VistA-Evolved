@@ -1991,6 +1991,33 @@ CREATE INDEX IF NOT EXISTS idx_tom_tenant
   ON tenant_oidc_mapping(tenant_id);
 `,
   },
+
+  /* ── v21: Phase 154 — CPOE order sign events ─────────────────── */
+  {
+    version: 21,
+    name: "phase154_cpoe_order_sign_event",
+    sql: `
+CREATE TABLE IF NOT EXISTS cpoe_order_sign_event (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  order_ien TEXT NOT NULL,
+  dfn TEXT NOT NULL,
+  duz TEXT NOT NULL,
+  action TEXT NOT NULL,
+  status TEXT NOT NULL,
+  es_hash TEXT,
+  rpc_used TEXT,
+  detail JSONB,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_cpoe_sign_tenant
+  ON cpoe_order_sign_event(tenant_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_cpoe_sign_order
+  ON cpoe_order_sign_event(tenant_id, order_ien);
+CREATE INDEX IF NOT EXISTS idx_cpoe_sign_dfn
+  ON cpoe_order_sign_event(tenant_id, dfn);
+`,
+  },
 ];
 
 /**
@@ -2161,6 +2188,8 @@ export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: s
     "portal_patient_identity",
     // Phase 153: Tenant OIDC mapping
     "tenant_oidc_mapping",
+    // Phase 154: CPOE order sign events
+    "cpoe_order_sign_event",
   ];
 
   const applied: string[] = [];

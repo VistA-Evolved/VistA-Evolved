@@ -68,9 +68,10 @@ export default function OrdersPanel({ dfn }: Props) {
   const [orderChecks, setOrderChecks] = useState<OrderCheck[]>([]);
   const [checkLoading, setCheckLoading] = useState(false);
 
-  // Sign state
+  // Sign state (Phase 154: esCode required for real signing)
   const [signLoading, setSignLoading] = useState(false);
   const [signMsg, setSignMsg] = useState<string | null>(null);
+  const [esCode, setEsCode] = useState('');
 
   // Discontinue state
   const [dcLoading, setDcLoading] = useState(false);
@@ -161,7 +162,7 @@ export default function OrdersPanel({ dfn }: Props) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Idempotency-Key': `${type}-${dfn}-${Date.now()}`,
+          'Idempotency-Key': `${type}-${dfn}-${Date.now()}`,
           ...csrfHeaders(),
         },
         credentials: 'include',
@@ -238,9 +239,13 @@ export default function OrdersPanel({ dfn }: Props) {
   }
 
   /* ---------------------------------------------------------------- */
-  /* Sign order (Phase 59)                                             */
+  /* Sign order (Phase 59 / Phase 154: requires esCode)                */
   /* ---------------------------------------------------------------- */
   async function handleSignOrder(orderId: string) {
+    if (!esCode.trim()) {
+      setSignMsg('E-signature code is required to sign orders.');
+      return;
+    }
     setSignLoading(true);
     setSignMsg(null);
     try {
@@ -248,17 +253,23 @@ export default function OrdersPanel({ dfn }: Props) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
-        body: JSON.stringify({ dfn, orderIds: [orderId] }),
+        body: JSON.stringify({ dfn, orderIds: [orderId], esCode: esCode.trim() }),
       });
       const data = await res.json();
-      if (data.ok) {
+      if (data.ok && data.status === 'signed') {
         setSignMsg('Order signed successfully');
+        setEsCode('');
         cache.updateOrderStatus(dfn, orderId, 'signed');
         fetchVistaOrders();
-      } else if (data.integrationPending) {
-        setSignMsg(`Signing -- integration pending: ${data.pendingReason || 'e-signature not configured'}`);
+      } else if (data.status === 'sign-blocked') {
+        setSignMsg(`Signing blocked: ${data.message || 'e-signature verification failed'}`);
+      } else if (data.status === 'integration-pending') {
+        setSignMsg(`Signing -- integration pending: ${data.pendingNote || 'ORWOR1 SIG not available'}`);
+      } else if (data.ok) {
+        setSignMsg(data.message || 'Order sign processed');
+        fetchVistaOrders();
       } else {
-        setSignMsg(`Sign failed: ${data.error || 'unknown error'}`);
+        setSignMsg(`Sign failed: ${data.message || data.error || 'unknown error'}`);
       }
     } catch (e: unknown) {
       setSignMsg(`Sign error: ${(e as Error).message}`);
@@ -486,11 +497,22 @@ export default function OrdersPanel({ dfn }: Props) {
                     {checkLoading ? 'Checking...' : 'Run Order Checks'}
                   </button>
                 )}
-                {/* Sign button */}
+                {/* Sign button + esCode input (Phase 154) */}
                 {(selected.status === 'draft' || selected.status === 'unsigned') && (
-                  <button className={styles.btnPrimary} onClick={() => handleSignOrder(selected.id)} disabled={signLoading}>
-                    {signLoading ? 'Signing...' : 'Sign Order'}
-                  </button>
+                  <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                    <input
+                      type="password"
+                      placeholder="E-Signature Code"
+                      value={esCode}
+                      onChange={e => setEsCode(e.target.value)}
+                      style={{ width: 140, padding: '4px 8px', fontSize: 12, borderRadius: 4, border: '1px solid var(--cprs-border)' }}
+                      disabled={signLoading}
+                      aria-label="Electronic signature code"
+                    />
+                    <button className={styles.btnPrimary} onClick={() => handleSignOrder(selected.id)} disabled={signLoading || !esCode.trim()}>
+                      {signLoading ? 'Signing...' : 'Sign Order'}
+                    </button>
+                  </div>
                 )}
                 {/* Discontinue button */}
                 {selected.status !== 'discontinued' && selected.status !== 'cancelled' && (

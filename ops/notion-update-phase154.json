@@ -1,0 +1,11 @@
+{
+  "feature": "Phase 154 -- CPOE Order Signing + Postgres-Backed Idempotency",
+  "stage": "implemented",
+  "status": "verified",
+  "promptRef": "prompts/159-PHASE-154-CPOE-SIGNING/154-01-IMPLEMENT.md",
+  "verifyPromptRef": "prompts/159-PHASE-154-CPOE-SIGNING/154-99-VERIFY.md",
+  "runbookPath": null,
+  "verifyScript": "scripts/verify-phase154-cpoe-signing.ps1",
+  "verifyResult": "17/17 PASS",
+  "commitSha": "pending"
+}

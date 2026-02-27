@@ -1346,6 +1346,50 @@ apps/api/src/routes/hardening-routes.ts   -- +PLATFORM_RUNTIME_MODE check + post
      validate auth-mode-policy.ts enforceAuthMode, oidc-provider.ts
      validateOidcConfig, and tenant_oidc_mapping migration presence.
 
+## 7s. Architecture Quick Map (Phase 154 additions)
+
+```
+apps/api/src/
+  routes/cprs/
+    orders-cpoe.ts                -- +DB-backed idempotency, +PG sign event audit (Phase 154)
+    wave2-routes.ts               -- +DB-backed idempotency, Map removed (Phase 154)
+    tiu-notes.ts                  -- +DB-backed idempotency, Map removed (Phase 154)
+  middleware/
+    idempotency.ts                -- +X-Idempotency-Key backward compat (Phase 154)
+  platform/pg/
+    pg-migrate.ts                 -- +v21 cpoe_order_sign_event table (Phase 154)
+  platform/
+    store-policy.ts               -- orders/wave2/tiu idempotency -> pg_backed (Phase 154)
+
+apps/web/src/components/cprs/panels/
+  OrdersPanel.tsx                 -- +esCode input, +Idempotency-Key header (Phase 154)
+
+config/
+  capabilities.json               -- clinical.orders.sign targetRpc corrected to ORWOR1 SIG (Phase 154)
+```
+
+158. **In-memory Map idempotency eliminated from all CPRS write routes (Phase 154).**
+     `orders-cpoe.ts`, `wave2-routes.ts`, and `tiu-notes.ts` all used separate
+     `Map<string, IdempotencyEntry>` stores with 10-min TTL. These are replaced
+     by the DB-backed `idempotencyGuard()` middleware from `middleware/idempotency.ts`
+     which uses the `idempotency_key` PG table (24h TTL). Multi-instance safe.
+159. **`idempotencyGuard` middleware now accepts both header names (Phase 154).**
+     Both `Idempotency-Key` and `X-Idempotency-Key` are accepted for backward
+     compatibility. The middleware reads `request.headers["idempotency-key"]`
+     first, falls back to `request.headers["x-idempotency-key"]`.
+160. **`cpoe_order_sign_event` PG table tracks all sign attempts (Phase 154).**
+     PG migration v21 creates the table with columns: id (UUID PK), tenant_id,
+     order_ien, dfn, duz, action, status, es_hash (SHA-256 truncated to 16 chars),
+     rpc_used, detail (JSONB), created_at. Three indexes on (tenant_id, created_at),
+     (tenant_id, order_ien), (tenant_id, dfn). Included in RLS tenant tables.
+161. **Sign endpoint returns structured blockers, never fake success (Phase 154).**
+     Missing esCode returns `{ok:false, status:"sign-blocked", blocker:"esCode_required"}`.
+     RPC unavailable returns `{ok:false, status:"integration-pending"}`.
+     Successful sign returns `{ok:true, status:"signed"}`. No silent no-ops.
+162. **esCode is hashed before logging (Phase 154).** The raw e-signature code
+     is never stored in audit trails or PG events. `hashEsCode()` uses SHA-256
+     truncated to 16 hex chars. The hash is stored in `cpoe_order_sign_event.es_hash`.
+
 ## 8. Bug Tracker & Lessons Learned
 
 A comprehensive log of every bug, challenge, and fix from Phase 1 through

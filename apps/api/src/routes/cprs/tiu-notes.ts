@@ -7,7 +7,7 @@
  *   3. WRITE calls: LOCK/action/UNLOCK with always-unlock
  *   4. Audit: metadata only -- NEVER log input args, PHI, or clinical content
  *   5. Return rpcUsed[] and vivianPresence for traceability
- *   6. Idempotency via X-Idempotency-Key header
+ *   6. Idempotency via DB-backed idempotencyGuard (Phase 154: Postgres-backed)
  *   7. Draft fallback when RPC unavailable
  *
  * Endpoints:
@@ -28,33 +28,12 @@ import { audit } from "../../lib/audit.js";
 import { log } from "../../lib/logger.js";
 import { createDraft } from "../write-backs.js";
 import { safeErr } from '../../lib/safe-error.js';
+import { idempotencyGuard, idempotencyOnSend } from "../../middleware/idempotency.js";
 
 /* ------------------------------------------------------------------ */
-/* Idempotency (shared store pattern from wave2 / orders-cpoe)         */
+/* Phase 154: In-memory idempotency REMOVED.                           */
+/* DB-backed idempotency via idempotencyGuard middleware (PG-backed).   */
 /* ------------------------------------------------------------------ */
-
-interface IdempotencyEntry { result: unknown; createdAt: number; }
-const idempotencyStore = new Map<string, IdempotencyEntry>();
-const IDEMPOTENCY_TTL_MS = 10 * 60 * 1000;
-
-function checkIdempotency(key: string | undefined): unknown | null {
-  if (!key) return null;
-  const entry = idempotencyStore.get(key);
-  if (entry && Date.now() - entry.createdAt < IDEMPOTENCY_TTL_MS) return entry.result;
-  if (entry) idempotencyStore.delete(key);
-  return null;
-}
-
-function storeIdempotency(key: string | undefined, result: unknown): void {
-  if (!key) return;
-  idempotencyStore.set(key, { result, createdAt: Date.now() });
-  if (idempotencyStore.size > 1000) {
-    const now = Date.now();
-    for (const [k, v] of idempotencyStore) {
-      if (now - v.createdAt > IDEMPOTENCY_TTL_MS) idempotencyStore.delete(k);
-    }
-  }
-}
 
 /* ------------------------------------------------------------------ */
 /* Validation helpers                                                  */
@@ -78,9 +57,7 @@ function validateRequired(body: Record<string, unknown>, fields: string[]): Vali
   return errors;
 }
 
-function getIdempotencyKey(request: any): string | undefined {
-  return (request.headers as any)?.["x-idempotency-key"] as string | undefined;
-}
+/* getIdempotencyKey removed in Phase 154 -- DB-backed middleware uses Idempotency-Key header */
 
 function getActor(request: any): string {
   return (request as any).session?.duz ?? (request as any).session?.userName ?? "unknown";
@@ -121,6 +98,17 @@ function parseFileManDate(fmDate: string): string {
 /* ------------------------------------------------------------------ */
 
 export default async function tiuNotesRoutes(server: FastifyInstance): Promise<void> {
+
+  /* ------------------------------------------------------------------ */
+  /* Phase 154: Register DB-backed idempotency middleware for POST routes */
+  /* ------------------------------------------------------------------ */
+  const idempotencyPreHandler = idempotencyGuard();
+  server.addHook("onRequest", async (request, reply) => {
+    if (request.method === "POST") {
+      await idempotencyPreHandler(request, reply);
+    }
+  });
+  server.addHook("onSend", idempotencyOnSend);
 
   /* ================================================================
    * GET /vista/cprs/notes
@@ -292,10 +280,6 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
     if (docIen && !/^\d+$/.test(String(docIen))) errors.push({ field: "docIen", message: "docIen must be numeric" });
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
 
-    const iKey = getIdempotencyKey(request);
-    const cached = checkIdempotency(iKey);
-    if (cached) return cached;
-
     const checkLock = optionalRpc("TIU LOCK RECORD");
     const checkSign = optionalRpc("TIU SIGN RECORD");
     const actor = getActor(request);
@@ -349,7 +333,6 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
             rpcUsed, vivianPresence,
           };
           auditWrite("clinical.note-sign", "success", actor, validDfn!, { mode: "real", rpc: "TIU SIGN RECORD", docIen: String(docIen) });
-          storeIdempotency(iKey, result);
           return result;
         } catch (signErr: any) {
           // Always unlock even on error
@@ -376,7 +359,6 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
       syncPending: true, rpcUsed, vivianPresence,
       message: "Note sign saved as server-side draft. TIU SIGN RECORD sync pending.",
     };
-    storeIdempotency(iKey, result);
     return result;
   });
 
@@ -398,10 +380,6 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
     if (!validDfn) errors.push({ field: "dfn", message: "dfn must be numeric" });
     if (parentDocIen && !/^\d+$/.test(String(parentDocIen))) errors.push({ field: "parentDocIen", message: "parentDocIen must be numeric" });
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
-
-    const iKey = getIdempotencyKey(request);
-    const cached = checkIdempotency(iKey);
-    if (cached) return cached;
 
     const checkCreate = optionalRpc("TIU CREATE ADDENDUM RECORD");
     const checkText = optionalRpc("TIU SET DOCUMENT TEXT");
@@ -445,7 +423,6 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
           rpcUsed, vivianPresence,
         };
         auditWrite("clinical.note-addendum", "success", actor, validDfn!, { mode: "real", rpc: "TIU CREATE ADDENDUM RECORD", docIen: addendumIen });
-        storeIdempotency(iKey, result);
         return result;
       } catch (err: any) {
         disconnect();
@@ -463,7 +440,6 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
       syncPending: true, rpcUsed, vivianPresence,
       message: "Addendum saved as server-side draft. TIU CREATE ADDENDUM RECORD sync pending.",
     };
-    storeIdempotency(iKey, result);
     return result;
   });
 

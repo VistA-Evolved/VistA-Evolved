@@ -1,5 +1,5 @@
 /**
- * Phase 59 -- CPOE Parity: Order routes (lab, imaging, consult, sign, checks, list)
+ * Phase 59 / Phase 154 -- CPOE Parity: Order routes (lab, imaging, consult, sign, checks, list)
  *
  * Every endpoint follows the safety model established in Wave 2 (Phase 57):
  *   1. Validate inputs server-side (400 before any RPC)
@@ -7,8 +7,14 @@
  *   3. WRITE calls: LOCK/action/UNLOCK with always-unlock
  *   4. Audit: metadata only -- NEVER log input args, PHI, or clinical content
  *   5. Return rpcUsed[] and vivianPresence for traceability
- *   6. Idempotency via X-Idempotency-Key header
+ *   6. Idempotency via DB-backed idempotencyGuard (Phase 154: Postgres-backed)
  *   7. Draft fallback when RPC unavailable
+ *
+ * Phase 154 changes:
+ *   - Replaced in-memory Map idempotency with DB-backed idempotencyGuard middleware
+ *   - Enhanced POST /vista/cprs/orders/sign with PG sign event audit trail
+ *   - Added esCode validation and e-signature hash logging
+ *   - Signing returns real signed state or structured integration-pending blocker
  *
  * Endpoints:
  *   GET  /vista/cprs/orders           -- ORWORR AGET (active order list)
@@ -20,6 +26,7 @@
  */
 
 import type { FastifyInstance } from "fastify";
+import { createHash } from "node:crypto";
 import { validateCredentials } from "../../vista/config.js";
 import { connect, disconnect, getDuz } from "../../vista/rpcBrokerClient.js";
 import { optionalRpc } from "../../vista/rpcCapabilities.js";
@@ -28,32 +35,64 @@ import { audit } from "../../lib/audit.js";
 import { log } from "../../lib/logger.js";
 import { createDraft } from "../write-backs.js";
 import { safeErr } from '../../lib/safe-error.js';
+import { idempotencyGuard, idempotencyOnSend } from "../../middleware/idempotency.js";
 
 /* ------------------------------------------------------------------ */
-/* Idempotency (shared store pattern from wave2)                       */
+/* Phase 154: PG sign event logging (lazy-wired)                       */
 /* ------------------------------------------------------------------ */
 
-interface IdempotencyEntry { result: unknown; createdAt: number; }
-const idempotencyStore = new Map<string, IdempotencyEntry>();
-const IDEMPOTENCY_TTL_MS = 10 * 60 * 1000;
+let _pgPool: any = null;
+let _pgImportAttempted = false;
 
-function checkIdempotency(key: string | undefined): unknown | null {
-  if (!key) return null;
-  const entry = idempotencyStore.get(key);
-  if (entry && Date.now() - entry.createdAt < IDEMPOTENCY_TTL_MS) return entry.result;
-  if (entry) idempotencyStore.delete(key);
+/** Lazy-load PG pool for sign event logging. */
+async function getPgPoolLazy(): Promise<any> {
+  if (_pgPool) return _pgPool;
+  if (_pgImportAttempted) return null;
+  _pgImportAttempted = true;
+  try {
+    const pgDb = await import("../../platform/pg/pg-db.js");
+    if (pgDb.isPgConfigured()) {
+      _pgPool = pgDb.getPgPool();
+      return _pgPool;
+    }
+  } catch { /* PG not available -- sign events will only be audited via immutableAudit */ }
   return null;
 }
 
-function storeIdempotency(key: string | undefined, result: unknown): void {
-  if (!key) return;
-  idempotencyStore.set(key, { result, createdAt: Date.now() });
-  if (idempotencyStore.size > 1000) {
-    const now = Date.now();
-    for (const [k, v] of idempotencyStore) {
-      if (now - v.createdAt > IDEMPOTENCY_TTL_MS) idempotencyStore.delete(k);
-    }
+/**
+ * Log a CPOE sign event to PG. Non-blocking — errors are warn-logged, never thrown.
+ */
+async function logSignEvent(evt: {
+  tenantId: string;
+  orderIen: string;
+  dfn: string;
+  duz: string;
+  action: string;
+  status: string;
+  esHash?: string;
+  rpcUsed?: string;
+  detail?: Record<string, unknown>;
+}): Promise<void> {
+  const pool = await getPgPoolLazy();
+  if (!pool) return;
+  try {
+    await pool.query(
+      `INSERT INTO cpoe_order_sign_event (tenant_id, order_ien, dfn, duz, action, status, es_hash, rpc_used, detail)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+      [
+        evt.tenantId, evt.orderIen, evt.dfn, evt.duz, evt.action, evt.status,
+        evt.esHash || null, evt.rpcUsed || null,
+        evt.detail ? JSON.stringify(evt.detail) : null,
+      ],
+    );
+  } catch (err) {
+    log.warn("cpoe_order_sign_event insert failed (non-fatal)", { error: safeErr(err as Error) });
   }
+}
+
+/** Hash esCode for audit logging (never store raw e-signature codes). */
+function hashEsCode(esCode: string): string {
+  return createHash("sha256").update(esCode).digest("hex").slice(0, 16);
 }
 
 /* ------------------------------------------------------------------ */
@@ -78,9 +117,7 @@ function validateRequired(body: Record<string, unknown>, fields: string[]): Vali
   return errors;
 }
 
-function getIdempotencyKey(request: any): string | undefined {
-  return (request.headers as any)?.["x-idempotency-key"] as string | undefined;
-}
+/* getIdempotencyKey removed in Phase 154 — DB-backed idempotency uses Idempotency-Key header via middleware */
 
 function getActor(request: any): string {
   return (request as any).session?.duz ?? (request as any).session?.userName ?? "unknown";
@@ -118,6 +155,17 @@ const LAB_QUICK_ORDERS: { ien: number; name: string; keywords: string[] }[] = [
 /* ------------------------------------------------------------------ */
 
 export default async function ordersCpoeRoutes(server: FastifyInstance): Promise<void> {
+
+  /* ------------------------------------------------------------------ */
+  /* Phase 154: Register DB-backed idempotency middleware for POST routes */
+  /* ------------------------------------------------------------------ */
+  const idempotencyPreHandler = idempotencyGuard();
+  server.addHook("onRequest", async (request, reply) => {
+    if (request.method === "POST") {
+      await idempotencyPreHandler(request, reply);
+    }
+  });
+  server.addHook("onSend", idempotencyOnSend);
 
   /* ================================================================
    * GET /vista/cprs/orders
@@ -216,10 +264,6 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
     }
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
 
-    const iKey = getIdempotencyKey(request);
-    const cached = checkIdempotency(iKey);
-    if (cached) return cached;
-
     const actor = getActor(request);
 
     // If a specific quickOrderIen is provided, use it directly
@@ -261,7 +305,6 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
           "Medication quick orders (PSOZ* IENs 1628-1658) are available as an alternative path.",
         message: `Lab order for "${labTest || ""}" saved as draft. Quick order IEN not available in sandbox.`,
       };
-      storeIdempotency(iKey, result);
       return result;
     }
 
@@ -279,7 +322,6 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         rpcUsed, vivianPresence,
         message: "Lab order saved as draft. ORWDXM AUTOACK sync pending.",
       };
-      storeIdempotency(iKey, result);
       return result;
     }
 
@@ -334,7 +376,6 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         vivianPresence,
         message: `Lab order created (unsigned): QO#${qoIen}`,
       };
-      storeIdempotency(iKey, result);
       return result;
     } catch (err: any) {
       if (locked) {
@@ -373,10 +414,6 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
 
     // If quickOrderIen provided, attempt real path
     if (quickOrderIen && /^\d+$/.test(String(quickOrderIen))) {
-      const iKey = getIdempotencyKey(request);
-      const cached = checkIdempotency(iKey);
-      if (cached) return cached;
-
       const check = optionalRpc("ORWDXM AUTOACK");
       if (check.available) {
         let locked = false;
@@ -415,7 +452,6 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
             rpcUsed, vivianPresence,
             message: `Imaging order created (unsigned): QO#${quickOrderIen}`,
           };
-          storeIdempotency(iKey, result);
           return result;
         } catch (err: any) {
           if (locked) await safeCallRpc("ORWDX UNLOCK", [validDfn!], { idempotent: true }).catch(() => {});
@@ -494,6 +530,8 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
   /* ================================================================
    * POST /vista/cprs/orders/sign
    * RPC: ORWOR1 SIG — electronically sign order(s)
+   * Phase 154: Enhanced with PG sign event audit, esCode validation,
+   *            DB-backed idempotency via middleware, structured blockers.
    * ================================================================ */
   server.post("/vista/cprs/orders/sign", async (request, reply) => {
     const body = (request.body as any) || {};
@@ -509,14 +547,34 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
     }
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
 
-    const iKey = getIdempotencyKey(request);
-    const cached = checkIdempotency(iKey);
-    if (cached) return cached;
-
     const actor = getActor(request);
+    const tenantId = (request as any).tenantId || "default";
     const check = optionalRpc("ORWOR1 SIG");
 
-    if (check.available && esCode) {
+    /* ---- Phase 154: esCode required for real signing ---- */
+    if (!esCode) {
+      // Structured blocker: no fake success
+      auditWrite("clinical.order-sign", "failure", actor, validDfn!, { mode: "blocked-no-esCode" });
+      for (const oid of (orderIds as string[])) {
+        void logSignEvent({
+          tenantId, orderIen: oid, dfn: validDfn!, duz: actor,
+          action: "sign_attempt", status: "blocked_no_esCode",
+          detail: { reason: "esCode not provided" },
+        });
+      }
+      return {
+        ok: false,
+        status: "sign-blocked",
+        blocker: "esCode_required",
+        rpcUsed,
+        vivianPresence,
+        message: "Electronic signature code (esCode) is required to sign orders. " +
+          "This is the provider's personal e-signature code as configured in VistA.",
+        unsignedCount: (orderIds as string[]).length,
+      };
+    }
+
+    if (check.available) {
       try {
         validateCredentials();
         await connect();
@@ -524,6 +582,8 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         // ORWOR1 SIG params: DFN^OrderIEN(s)^ESCode
         // OrderIENs joined by semicolons
         const orderIenStr = (orderIds as string[]).join(";");
+        const esHash = hashEsCode(String(esCode));
+
         const resp = await safeCallRpc("ORWOR1 SIG", [
           validDfn!, orderIenStr, String(esCode),
         ], { idempotent: false });
@@ -536,7 +596,17 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
           mode: "real", rpc: "ORWOR1 SIG",
         });
 
-        const result = {
+        // Phase 154: Log sign events to PG for each order
+        for (const oid of (orderIds as string[])) {
+          void logSignEvent({
+            tenantId, orderIen: oid, dfn: validDfn!, duz: actor,
+            action: "sign", status: success ? "signed" : "sign_failed",
+            esHash, rpcUsed: "ORWOR1 SIG",
+            detail: { responsePrefix: raw.slice(0, 80), orderCount: orderIds.length },
+          });
+        }
+
+        return {
           ok: success,
           mode: "real",
           status: success ? "signed" : "sign-failed",
@@ -547,32 +617,39 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
             ? `${orderIds.length} order(s) signed successfully`
             : `Order signing failed: ${raw}`,
         };
-        storeIdempotency(iKey, result);
-        return result;
       } catch (err: any) {
         disconnect();
         log.warn("ORWOR1 SIG failed", { error: safeErr(err) });
+        for (const oid of (orderIds as string[])) {
+          void logSignEvent({
+            tenantId, orderIen: oid, dfn: validDfn!, duz: actor,
+            action: "sign", status: "rpc_error",
+            esHash: hashEsCode(String(esCode)), rpcUsed: "ORWOR1 SIG",
+            detail: { error: safeErr(err) },
+          });
+        }
       }
     }
 
-    // Signing not available or no esCode — return honest pending
-    auditWrite("clinical.order-sign", "success", actor, validDfn!, { mode: "pending" });
-    const result = {
-      ok: true,
+    // Signing RPC not available — return honest pending (no fake success)
+    auditWrite("clinical.order-sign", "failure", actor, validDfn!, { mode: "rpc-unavailable" });
+    for (const oid of (orderIds as string[])) {
+      void logSignEvent({
+        tenantId, orderIen: oid, dfn: validDfn!, duz: actor,
+        action: "sign_attempt", status: "rpc_unavailable",
+        detail: { rpcTarget: "ORWOR1 SIG" },
+      });
+    }
+    return {
+      ok: false,
       status: "integration-pending",
       rpcUsed,
       vivianPresence,
       pendingTargets: ["ORWOR1 SIG"],
-      pendingNote: !esCode
-        ? "Electronic signature code required for order signing. " +
-          "In CPRS, this is the user's e-signature code entered at sign time. " +
-          "Orders remain unsigned until signed. Target RPC: ORWOR1 SIG."
-        : "ORWOR1 SIG not available at runtime. Orders remain unsigned.",
+      pendingNote: "ORWOR1 SIG not available at runtime. Orders remain unsigned.",
       unsignedCount: (orderIds as string[]).length,
       message: `${(orderIds as string[]).length} order(s) remain unsigned. Signing integration pending.`,
     };
-    storeIdempotency(iKey, result);
-    return result;
   });
 
   /* ================================================================

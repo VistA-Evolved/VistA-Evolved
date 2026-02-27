@@ -10,7 +10,7 @@
  *   6. Return rpcUsed[] and vivianPresence for traceability
  *   7. LOCK/UNLOCK pattern for order writes (always unlock, even on error)
  *
- * Idempotency: X-Idempotency-Key header prevents duplicate submissions.
+ * Idempotency: DB-backed via idempotencyGuard middleware (Phase 154: Postgres-backed).
  * Draft fallback: server-side structured draft when RPC is unavailable.
  *
  * Endpoints:
@@ -35,40 +35,12 @@ import { safeCallRpc, safeCallRpcWithList } from "../../lib/rpc-resilience.js";
 import { audit } from "../../lib/audit.js";
 import { log } from "../../lib/logger.js";
 import { createDraft, type ServerDraft } from "../write-backs.js";
+import { idempotencyGuard, idempotencyOnSend } from "../../middleware/idempotency.js";
 
 /* ------------------------------------------------------------------ */
-/* Idempotency store (in-memory, keyed by X-Idempotency-Key)           */
+/* Phase 154: In-memory idempotency REMOVED.                           */
+/* DB-backed idempotency via idempotencyGuard middleware (PG-backed).   */
 /* ------------------------------------------------------------------ */
-
-interface IdempotencyEntry {
-  result: unknown;
-  createdAt: number;
-}
-
-const idempotencyStore = new Map<string, IdempotencyEntry>();
-const IDEMPOTENCY_TTL_MS = 10 * 60 * 1000; // 10 minutes
-
-function checkIdempotency(key: string | undefined): unknown | null {
-  if (!key) return null;
-  const entry = idempotencyStore.get(key);
-  if (entry && Date.now() - entry.createdAt < IDEMPOTENCY_TTL_MS) {
-    return entry.result;
-  }
-  if (entry) idempotencyStore.delete(key);
-  return null;
-}
-
-function storeIdempotency(key: string | undefined, result: unknown): void {
-  if (!key) return;
-  idempotencyStore.set(key, { result, createdAt: Date.now() });
-  // Evict old entries periodically
-  if (idempotencyStore.size > 1000) {
-    const now = Date.now();
-    for (const [k, v] of idempotencyStore) {
-      if (now - v.createdAt > IDEMPOTENCY_TTL_MS) idempotencyStore.delete(k);
-    }
-  }
-}
 
 /* ------------------------------------------------------------------ */
 /* Validation helpers                                                  */
@@ -95,9 +67,7 @@ function validateRequired(body: Record<string, unknown>, fields: string[]): Vali
   return errors;
 }
 
-function getIdempotencyKey(request: any): string | undefined {
-  return (request.headers as any)?.["x-idempotency-key"] as string | undefined;
-}
+/* getIdempotencyKey removed in Phase 154 -- DB-backed middleware uses Idempotency-Key header */
 
 /* ------------------------------------------------------------------ */
 /* Shared audit helper -- metadata only, never log input args          */
@@ -126,6 +96,17 @@ function getActor(request: any): string {
 
 export default async function cprsWave2Routes(server: FastifyInstance): Promise<void> {
 
+  /* ------------------------------------------------------------------ */
+  /* Phase 154: Register DB-backed idempotency middleware for POST routes */
+  /* ------------------------------------------------------------------ */
+  const idempotencyPreHandler = idempotencyGuard();
+  server.addHook("onRequest", async (request, reply) => {
+    if (request.method === "POST") {
+      await idempotencyPreHandler(request, reply);
+    }
+  });
+  server.addHook("onSend", idempotencyOnSend);
+
   /* ================================================================
    * POST /vista/cprs/problems/add
    * RPC: ORQQPL ADD SAVE
@@ -143,10 +124,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
 
     // Idempotency
-    const iKey = getIdempotencyKey(request);
-    const cached = checkIdempotency(iKey);
-    if (cached) return cached;
-
     const check = optionalRpc("ORQQPL ADD SAVE");
     const actor = getActor(request);
 
@@ -166,7 +143,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
           response: resp.join("\n"),
         };
         auditWrite("clinical.problem-add", "success", actor, validDfn!, { mode: "real", rpc: "ORQQPL ADD SAVE" });
-        storeIdempotency(iKey, result);
         return result;
       } catch (err: any) {
         disconnect();
@@ -184,7 +160,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
       syncPending: true, rpcUsed, vivianPresence,
       message: "Problem saved as server-side draft. ORQQPL ADD SAVE sync pending.",
     };
-    storeIdempotency(iKey, result);
     return result;
   });
 
@@ -202,10 +177,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     const validDfn = validateDfn(dfn);
     if (!validDfn) errors.push({ field: "dfn", message: "dfn must be numeric" });
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
-
-    const iKey = getIdempotencyKey(request);
-    const cached = checkIdempotency(iKey);
-    if (cached) return cached;
 
     const check = optionalRpc("ORQQPL EDIT SAVE");
     const actor = getActor(request);
@@ -226,7 +197,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
           response: resp.join("\n"),
         };
         auditWrite("clinical.problem-edit", "success", actor, validDfn!, { mode: "real", rpc: "ORQQPL EDIT SAVE" });
-        storeIdempotency(iKey, result);
         return result;
       } catch (err: any) {
         disconnect();
@@ -243,7 +213,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
       syncPending: true, rpcUsed, vivianPresence,
       message: "Problem edit saved as server-side draft. ORQQPL EDIT SAVE sync pending.",
     };
-    storeIdempotency(iKey, result);
     return result;
   });
 
@@ -264,10 +233,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     const validDfn = validateDfn(dfn);
     if (!validDfn) errors.push({ field: "dfn", message: "dfn must be numeric" });
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
-
-    const iKey = getIdempotencyKey(request);
-    const cached = checkIdempotency(iKey);
-    if (cached) return cached;
 
     const check1 = optionalRpc("TIU CREATE RECORD");
     const check2 = optionalRpc("TIU SET DOCUMENT TEXT");
@@ -313,7 +278,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
           rpcUsed, vivianPresence,
         };
         auditWrite("clinical.note-create", "success", actor, validDfn!, { mode: "real", rpc: "TIU CREATE RECORD" });
-        storeIdempotency(iKey, result);
         return result;
       } catch (err: any) {
         disconnect();
@@ -330,7 +294,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
       syncPending: true, rpcUsed, vivianPresence,
       message: "Note saved as server-side draft. TIU CREATE RECORD sync pending.",
     };
-    storeIdempotency(iKey, result);
     return result;
   });
 
@@ -352,10 +315,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     const validDfn = validateDfn(dfn);
     if (!validDfn) errors.push({ field: "dfn", message: "dfn must be numeric" });
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
-
-    const iKey = getIdempotencyKey(request);
-    const cached = checkIdempotency(iKey);
-    if (cached) return cached;
 
     const check = optionalRpc("ORWDX SAVE");
     const actor = getActor(request);
@@ -395,7 +354,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
           response: saveResp.join("\n"),
         };
         auditWrite("clinical.order-draft", "success", actor, validDfn!, { mode: "real", rpc: "ORWDX SAVE" });
-        storeIdempotency(iKey, result);
         return result;
       } catch (err: any) {
         // ALWAYS unlock on error
@@ -416,7 +374,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
       syncPending: true, rpcUsed, vivianPresence,
       message: "Order saved as server-side draft. ORWDX SAVE sync pending.",
     };
-    storeIdempotency(iKey, result);
     return result;
   });
 
@@ -434,10 +391,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     const validDfn = validateDfn(dfn);
     if (!validDfn) errors.push({ field: "dfn", message: "dfn must be numeric" });
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
-
-    const iKey = getIdempotencyKey(request);
-    const cached = checkIdempotency(iKey);
-    if (cached) return cached;
 
     const check = optionalRpc("ORWDXA VERIFY");
     const actor = getActor(request);
@@ -457,7 +410,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
           response: resp.join("\n"),
         };
         auditWrite("clinical.order-verify", "success", actor, validDfn!, { mode: "real", rpc: "ORWDXA VERIFY" });
-        storeIdempotency(iKey, result);
         return result;
       } catch (err: any) {
         disconnect();
@@ -474,7 +426,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
       syncPending: true, rpcUsed, vivianPresence,
       message: "Order verification stored as draft. ORWDXA VERIFY sync pending.",
     };
-    storeIdempotency(iKey, result);
     return result;
   });
 
@@ -503,10 +454,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     const validDfn = validateDfn(dfn);
     if (!validDfn) errors.push({ field: "dfn", message: "dfn must be numeric" });
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
-
-    const iKey = getIdempotencyKey(request);
-    const cached = checkIdempotency(iKey);
-    if (cached) return cached;
 
     const check = optionalRpc("ORWDXA DC");
     const actor = getActor(request);
@@ -549,7 +496,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
             rpcUsed, vivianPresence,
           };
           auditWrite("clinical.order-dc", "failure", actor, validDfn!, { mode: "error", rpc: "ORWDXA DC" });
-          storeIdempotency(iKey, result);
           return result;
         }
 
@@ -560,7 +506,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
           message: `Order ${orderId} discontinued via ORWDXA DC.`,
         };
         auditWrite("clinical.order-dc", "success", actor, validDfn!, { mode: "real", rpc: "ORWDXA DC" });
-        storeIdempotency(iKey, result);
         return result;
       } catch (err: any) {
         if (locked) {
@@ -580,7 +525,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
       syncPending: true, rpcUsed, vivianPresence,
       message: "Order discontinue stored as draft. ORWDXA DC sync pending.",
     };
-    storeIdempotency(iKey, result);
     return result;
   });
 
@@ -599,10 +543,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     const validDfn = validateDfn(dfn);
     if (!validDfn) errors.push({ field: "dfn", message: "dfn must be numeric" });
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
-
-    const iKey = getIdempotencyKey(request);
-    const cached = checkIdempotency(iKey);
-    if (cached) return cached;
 
     const check = optionalRpc("ORWDXA FLAG");
     const actor = getActor(request);
@@ -627,7 +567,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
             rpcUsed, vivianPresence,
           };
           auditWrite("clinical.order-flag", "failure", actor, validDfn!, { mode: "error", rpc: "ORWDXA FLAG" });
-          storeIdempotency(iKey, result);
           return result;
         }
 
@@ -638,7 +577,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
           message: `Order ${orderId} flagged via ORWDXA FLAG.`,
         };
         auditWrite("clinical.order-flag", "success", actor, validDfn!, { mode: "real", rpc: "ORWDXA FLAG" });
-        storeIdempotency(iKey, result);
         return result;
       } catch (err: any) {
         disconnect();
@@ -655,7 +593,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
       syncPending: true, rpcUsed, vivianPresence,
       message: "Order flag stored as draft. ORWDXA FLAG sync pending.",
     };
-    storeIdempotency(iKey, result);
     return result;
   });
 
@@ -677,10 +614,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     const validDfn = validateDfn(dfn);
     if (!validDfn) errors.push({ field: "dfn", message: "dfn must be numeric" });
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
-
-    const iKey = getIdempotencyKey(request);
-    const cached = checkIdempotency(iKey);
-    if (cached) return cached;
 
     const check = optionalRpc("ORWDXM AUTOACK");
     const actor = getActor(request);
@@ -720,7 +653,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
           response: ackResp.join("\n"),
         };
         auditWrite("clinical.medication-add", "success", actor, validDfn!, { mode: "real", rpc: "ORWDXM AUTOACK" });
-        storeIdempotency(iKey, result);
         return result;
       } catch (err: any) {
         if (locked) {
@@ -740,7 +672,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
       syncPending: true, rpcUsed, vivianPresence,
       message: "Quick order saved as server-side draft. ORWDXM AUTOACK sync pending.",
     };
-    storeIdempotency(iKey, result);
     return result;
   });
 
@@ -762,10 +693,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     }
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
 
-    const iKey = getIdempotencyKey(request);
-    const cached = checkIdempotency(iKey);
-    if (cached) return cached;
-
     const check = optionalRpc("ORWLRR ACK");
     const actor = getActor(request);
 
@@ -783,7 +710,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
           rpcUsed, vivianPresence,
         };
         auditWrite("clinical.lab-ack", "success", actor, validDfn!, { mode: "real", rpc: "ORWLRR ACK" });
-        storeIdempotency(iKey, result);
         return result;
       } catch (err: any) {
         disconnect();
@@ -801,7 +727,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
       rpcUsed, vivianPresence,
       message: "Lab acknowledgements stored as draft. ORWLRR ACK sync pending.",
     };
-    storeIdempotency(iKey, result);
     return result;
   });
 
@@ -819,10 +744,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     const validDfn = validateDfn(dfn);
     if (!validDfn) errors.push({ field: "dfn", message: "dfn must be numeric" });
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
-
-    const iKey = getIdempotencyKey(request);
-    const cached = checkIdempotency(iKey);
-    if (cached) return cached;
 
     const check = optionalRpc("GMV ADD VM");
     const actor = getActor(request);
@@ -844,7 +765,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
           response: resp.join("\n"),
         };
         auditWrite("clinical.vitals-add", "success", actor, validDfn!, { mode: "real", rpc: "GMV ADD VM" });
-        storeIdempotency(iKey, result);
         return result;
       } catch (err: any) {
         disconnect();
@@ -861,7 +781,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
       syncPending: true, rpcUsed, vivianPresence,
       message: "Vital measurement saved as draft. GMV ADD VM sync pending.",
     };
-    storeIdempotency(iKey, result);
     return result;
   });
 
@@ -879,10 +798,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     const validDfn = validateDfn(dfn);
     if (!validDfn) errors.push({ field: "dfn", message: "dfn must be numeric" });
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
-
-    const iKey = getIdempotencyKey(request);
-    const cached = checkIdempotency(iKey);
-    if (cached) return cached;
 
     const check = optionalRpc("ORWDAL32 SAVE ALLERGY");
     const actor = getActor(request);
@@ -922,7 +837,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
           response: resp.join("\n"),
         };
         auditWrite("clinical.allergy-add", "success", actor, validDfn!, { mode: "real", rpc: "ORWDAL32 SAVE ALLERGY" });
-        storeIdempotency(iKey, result);
         return result;
       } catch (err: any) {
         disconnect();
@@ -939,7 +853,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
       syncPending: true, rpcUsed, vivianPresence,
       message: "Allergy saved as draft. ORWDAL32 SAVE ALLERGY sync pending.",
     };
-    storeIdempotency(iKey, result);
     return result;
   });
 
@@ -957,10 +870,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     const validDfn = validateDfn(dfn);
     if (!validDfn) errors.push({ field: "dfn", message: "dfn must be numeric" });
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
-
-    const iKey = getIdempotencyKey(request);
-    const cached = checkIdempotency(iKey);
-    if (cached) return cached;
 
     const check = optionalRpc("ORQQCN2 MED RESULTS");
     const actor = getActor(request);
@@ -981,7 +890,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
           response: resp.join("\n"),
         };
         auditWrite("clinical.consult-complete", "success", actor, validDfn!, { mode: "real", rpc: "ORQQCN2 MED RESULTS" });
-        storeIdempotency(iKey, result);
         return result;
       } catch (err: any) {
         disconnect();
@@ -998,7 +906,6 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
       syncPending: true, rpcUsed, vivianPresence,
       message: "Consult completion stored as draft. ORQQCN2 MED RESULTS sync pending.",
     };
-    storeIdempotency(iKey, result);
     return result;
   });
 }

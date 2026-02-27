@@ -207,9 +207,9 @@
       "status": "live",
       "module": "clinical",
       "adapter": "clinical-engine",
-      "targetRpc": "ORWDX SEND",
+      "targetRpc": "ORWOR1 SIG",
       "targetPackage": "OR",
-      "description": "Sign orders"
+      "description": "Sign orders electronically (Phase 154: corrected from ORWDX SEND to ORWOR1 SIG)"
     },
     "clinical.orders.create": {
       "status": "pending",

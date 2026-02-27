@@ -95,8 +95,8 @@ export function idempotencyGuard() {
     const method = request.method.toUpperCase();
     if (!["POST", "PUT", "PATCH"].includes(method)) return;
 
-    // Check for idempotency header
-    const idempotencyKey = request.headers["idempotency-key"] as string | undefined;
+    // Check for idempotency header (accepts both Idempotency-Key and X-Idempotency-Key)
+    const idempotencyKey = (request.headers["idempotency-key"] ?? request.headers["x-idempotency-key"]) as string | undefined;
     if (!idempotencyKey) return; // No header = no deduplication
 
     // Validate key format (must be non-empty, max 128 chars)
@@ -210,7 +210,7 @@ export async function idempotencyOnSend(
   reply: FastifyReply,
   payload: unknown,
 ): Promise<unknown> {
-  const idempotencyKey = request.headers["idempotency-key"] as string | undefined;
+  const idempotencyKey = (request.headers["idempotency-key"] ?? request.headers["x-idempotency-key"]) as string | undefined;
   if (!idempotencyKey) return payload;
 
   const method = request.method.toUpperCase();
