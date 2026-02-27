@@ -2,8 +2,9 @@
  * Audit JSONL Shipper — Phase 157
  *
  * Periodically ships new immutable audit JSONL entries to S3/MinIO
- * object storage. Tracks offsets in Postgres (or SQLite for dev)
- * to ensure idempotent, retryable uploads.
+ * object storage. Tracks offsets in-memory (PG/SQLite tables exist
+ * but setShipperDbRepo() wiring is a follow-up). On restart, offsets
+ * reset and the file is re-shipped; S3 PUT is idempotent so this is safe.
  *
  * Architecture:
  *   1. Read audit JSONL file from last shipped offset

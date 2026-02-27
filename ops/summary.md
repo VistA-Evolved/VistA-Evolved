@@ -53,3 +53,27 @@ node qa/gauntlet/cli.mjs --suite rc
 - Extend G22 to scan for `patientName` in log payloads (currently only checks `dfn`)
 - Consider adding runtime PHI leak detection for telemetry span attributes
 - Audit remaining 50+ `immutableAudit` call sites that pass detail with `{ dfn }` (centralized sanitizer catches them, but call sites should be cleaned for clarity)
+
+---
+
+# Phase 157 VERIFY — Audit Shipping Verification
+
+## What Was Verified
+1. **Live MinIO test**: Shipper ran against local MinIO (port 9000), shipped 76 entries on initial cycle
+2. **Manifest integrity**: SHA-256 hashes, seq ranges (1-75, 76-78, 79-79, 80-80), byte sizes verified
+3. **Idempotency**: 3 manual triggers each shipped exactly 1 new entry (self-audit), no duplicates
+4. **Posture**: Score 100, all 6 posture gates PASS
+5. **Schema alignment**: PG/SQLite/Drizzle/TS types consistent across all 4 sources
+
+## Fixes Applied During VERIFY
+1. **AGENTS.md item 175**: Corrected to state offsets are in-memory (DB tables ready for wiring)
+2. **shipper.ts docstring**: Updated to match reality about in-memory offset tracking
+3. **no-fake-success middleware**: Added ~100 missing EFFECT_PROOF_FIELDS entries, eliminating 59 spurious warnings across 20 route files
+
+## Verifier Output
+- Phase 157: **18/18 PASS**
+- Gauntlet RC: **4 PASS, 0 FAIL, 1 WARN** (pre-existing secret scan)
+
+## Follow-ups
+- Wire `setShipperDbRepo()` for durable offset persistence across API restarts
+- Tune `AUDIT_SHIP_INTERVAL_MS` for production workloads

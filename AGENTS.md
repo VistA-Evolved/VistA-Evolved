@@ -1496,11 +1496,13 @@ scripts/
      `audit/{tenantId}/YYYY/MM/DD/{timestamp}_{firstSeq}-{lastSeq}.jsonl`.
      Each chunk has a `.manifest.json` sidecar with SHA-256 content hash,
      entry count, seq range, and byte size.
-175. **Shipping is idempotent via offset tracking (Phase 157).** Each tenant+
-     source pair tracks the last shipped line offset. Offsets are persisted
-     to Postgres (v22 migration) or SQLite. In-memory cache is the hot path;
-     DB is the durable backing store. Duplicate uploads are impossible as long
-     as offset tracking is intact.
+175. **Shipping offsets are in-memory with DB tables ready for wiring (Phase 157).**
+     Each tenant+source pair tracks the last shipped line offset in an
+     in-memory Map. PG (v22) and SQLite tables exist but `setShipperDbRepo()`
+     is not yet called at startup -- DB persistence is ready for wiring.
+     On API restart, offsets reset and the shipper re-uploads from the start.
+     S3 PUT is idempotent so this is safe but produces duplicate-keyed chunks.
+     Wire `setShipperDbRepo()` to enable durable offset persistence.
 176. **No PHI reaches the object store (Phase 157).** Audit entries are already
      PHI-redacted by `immutable-audit.ts` (Phase 35/151). The shipper reads
      the JSONL file verbatim without adding any PHI. S3 credentials are never
