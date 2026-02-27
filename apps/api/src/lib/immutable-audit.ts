@@ -23,6 +23,7 @@ import { dirname } from "path";
 import { log } from "./logger.js";
 import { getCurrentTraceId } from "../telemetry/tracing.js";
 import { safeErr } from "./safe-error.js";
+import { sanitizeAuditDetail } from "./phi-redaction.js";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -285,16 +286,15 @@ const PHI_PATTERNS = [
   /\b[A-Z]+,[A-Z ]+\b/g,       // VistA patient name format
 ];
 
-function sanitizeDetail(detail?: Record<string, unknown>): Record<string, unknown> | undefined {
-  if (!detail) return undefined;
+// Phase 151: delegate to centralized sanitizeAuditDetail from phi-redaction.ts
+// The local sanitizeDetail is kept as a secondary defense layer
+function sanitizeDetailLocal(detail?: Record<string, unknown>): Record<string, unknown> | undefined {
+  // First pass: centralized PHI redaction (covers dfn, patientDfn, name, etc.)
+  const centralized = sanitizeAuditDetail(detail);
+  if (!centralized) return undefined;
+  // Second pass: legacy pattern scrub (SSN/DOB patterns in string values)
   const sanitized: Record<string, unknown> = {};
-  for (const [key, value] of Object.entries(detail)) {
-    // Strip known PHI field names
-    const lowerKey = key.toLowerCase();
-    if (["ssn", "dob", "dateofbirth", "socialSecurityNumber", "notetext", "notecontent"].includes(lowerKey)) {
-      sanitized[key] = "[REDACTED]";
-      continue;
-    }
+  for (const [key, value] of Object.entries(centralized)) {
     if (typeof value === "string") {
       let clean = value;
       for (const pattern of PHI_PATTERNS) {
@@ -371,7 +371,7 @@ export function immutableAudit(
     traceId: getCurrentTraceId() || undefined,
     sourceIp: opts?.sourceIp ? hashIp(opts.sourceIp) : undefined,
     tenantId: opts?.tenantId,
-    detail: sanitizeDetail(opts?.detail),
+    detail: sanitizeDetailLocal(opts?.detail),
   };
 
   const hash = computeEntryHash(entryBase);

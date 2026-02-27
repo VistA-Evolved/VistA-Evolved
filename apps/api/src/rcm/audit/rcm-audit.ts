@@ -219,6 +219,9 @@ function sanitizeDetail(detail: Record<string, unknown>): Record<string, unknown
       sanitized[key] = '[REDACTED-DOB]';
     } else if (lk.includes('patient_name') || lk.includes('patientname')) {
       sanitized[key] = '[REDACTED-NAME]';
+    } else if (lk === 'dfn' || lk === 'patientdfn' || lk === 'patient_dfn' || lk === 'mrn') {
+      // Phase 151: redact patient identifiers
+      sanitized[key] = '[REDACTED]';
     } else if (typeof value === 'string') {
       let cleaned = value;
       for (const pattern of PHI_PATTERNS) {

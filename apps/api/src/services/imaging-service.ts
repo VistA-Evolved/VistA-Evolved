@@ -298,7 +298,7 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
           }
         }
       } catch (err: any) {
-        log.warn("MAG4 study list failed", { error: err.message, dfn });
+        log.warn("MAG4 study list failed", { error: err.message });
         disconnect();
       }
     }
@@ -335,7 +335,7 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
           }
         }
       } catch (err: any) {
-        log.warn("Orthanc QIDO-RS query failed", { error: err.message, dfn });
+        log.warn("Orthanc QIDO-RS query failed", { error: err.message });
       }
     }
 
@@ -473,7 +473,7 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
       return { ok: true, available: true, photos, count: photos.length, rpcUsed: "MAGG PAT PHOTOS" };
     } catch (err: any) {
       disconnect();
-      log.warn("MAGG PAT PHOTOS failed", { error: err.message, dfn });
+      log.warn("MAGG PAT PHOTOS failed", { error: err.message });
       return { ok: true, available: false, photos: [], error: safeErr(err) };
     }
   });
@@ -537,7 +537,7 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
       return { ok: true, available: true, images, count: images.length, rpcUsed: "MAG4 PAT GET IMAGES" };
     } catch (err: any) {
       disconnect();
-      log.warn("MAG4 PAT GET IMAGES failed", { error: err.message, dfn });
+      log.warn("MAG4 PAT GET IMAGES failed", { error: err.message });
       return { ok: true, available: false, images: [], error: safeErr(err) };
     }
   });

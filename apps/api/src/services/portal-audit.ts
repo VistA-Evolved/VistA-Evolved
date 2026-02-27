@@ -8,6 +8,7 @@
 
 import { createHash } from "node:crypto";
 import { log } from "../lib/logger.js";
+import { sanitizeAuditDetail } from "../lib/phi-redaction.js";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
@@ -125,7 +126,7 @@ export function portalAudit(
     outcome,
     actorHash: hashPatientId(actorDfn),
     sourceIp: opts?.sourceIp || "unknown",
-    detail: opts?.detail,
+    detail: sanitizeAuditDetail(opts?.detail),
   };
 
   store.push(event);

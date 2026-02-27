@@ -267,13 +267,12 @@ export function audit(
   const actionPrefix = action.split(".")[0] || "unknown";
   try { auditEventsTotal.inc({ action_prefix: actionPrefix }); } catch { /* metric not critical */ }
 
-  // Also emit to structured log for correlation
+  // Also emit to structured log for correlation — Phase 151: no PHI in logs
   log.info(`AUDIT: ${action} → ${outcome}`, {
     auditId: event.id,
     action,
     outcome,
     actorDuz: event.actorDuz,
-    patientDfn: event.patientDfn,
     requestId: event.requestId,
   });
 

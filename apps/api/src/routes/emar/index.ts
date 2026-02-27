@@ -614,7 +614,7 @@ export default async function emarRoutes(server: FastifyInstance) {
       return reply.code(400).send({ ok: false, error: "Missing or non-numeric dfn" });
     }
 
-    log.info("BCMA barcode scan attempt (integration-pending)", { dfn, barcodeLength: barcode.length });
+    log.info("BCMA barcode scan attempt (integration-pending)", { barcodeLength: barcode.length });
     immutableAudit("emar.barcode-scan", "success", auditActor(session), { detail: { dfn, barcodeLength: barcode.length, status: "integration-pending" } });
 
     return reply.code(202).send({

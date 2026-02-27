@@ -21,6 +21,7 @@ import { createHash, randomUUID } from "crypto";
 import { appendFileSync, mkdirSync, existsSync, readFileSync } from "fs";
 import { dirname } from "path";
 import { log } from "../lib/logger.js";
+import { sanitizeAuditDetail as centralSanitize } from "../lib/phi-redaction.js";
 
 /* ================================================================== */
 /* Types                                                                */
@@ -281,18 +282,23 @@ export function imagingAuditDenied(
 /**
  * Sanitize detail object to ensure no DICOM pixel data or sensitive content.
  * Checks keys case-insensitively and recurses into nested objects.
+ * Phase 151: delegates first pass to centralized PHI redaction.
  */
 function sanitizeDetail(detail?: Record<string, unknown>, depth = 0): Record<string, unknown> | undefined {
   if (!detail) return undefined;
   if (depth > 5) return { _truncated: "max depth exceeded" };
+  // Phase 151: centralized PHI redaction first pass (top-level only)
+  const preSanitized = depth === 0 ? (centralSanitize(detail) ?? detail) : detail;
   const sanitized: Record<string, unknown> = {};
   const BLOCKED_KEYS = new Set([
     "pixeldata", "pixel_data", "bulkdatauri", "inlinebinary",
     "hl7body", "hl7message", "messagebody",
     "accesscode", "verifycode", "password", "token", "secret",
     "ssn", "socialsecuritynumber", "dateofbirth",
+    // Phase 151: patient identifiers
+    "dfn", "patientdfn", "patient_dfn", "patientname", "patient_name", "mrn",
   ]);
-  for (const [key, value] of Object.entries(detail)) {
+  for (const [key, value] of Object.entries(preSanitized)) {
     if (BLOCKED_KEYS.has(key.toLowerCase())) continue;
     // Recurse into nested objects
     if (value && typeof value === "object" && !Array.isArray(value)) {

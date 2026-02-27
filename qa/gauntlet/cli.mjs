@@ -76,6 +76,7 @@ const SUITE_GATES = {
     "G19_system_audit_snapshot",
     "G20_no_new_stub_growth",
     "G21_no_new_critical_map_store",
+    "G22_phi_leak_audit",
   ],
   full: [
     "G0_prompts_integrity",
@@ -100,6 +101,7 @@ const SUITE_GATES = {
     "G19_system_audit_snapshot",
     "G20_no_new_stub_growth",
     "G21_no_new_critical_map_store",
+    "G22_phi_leak_audit",
   ],
 };
 
@@ -133,6 +135,7 @@ const GATE_MODULES = {
   G19_system_audit_snapshot: "gates/g19-system-audit-snapshot.mjs",
   G20_no_new_stub_growth: "gates/g20-no-new-stub-growth.mjs",
   G21_no_new_critical_map_store: "gates/g21-no-new-critical-map-store.mjs",
+  G22_phi_leak_audit: "gates/g22-phi-leak-audit.mjs",
 };
 
 // ── Resolve which gates to run ──────────────────────────────

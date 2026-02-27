@@ -48,12 +48,14 @@ export const LOG_CONFIG = {
 /* ------------------------------------------------------------------ */
 
 export const PHI_CONFIG = {
-  /** Maximum patient identifier detail in audit logs (dfn only, no name) */
-  auditIncludesDfn: true,
+  /** Phase 151: DFN must never appear in audit logs — use hashed refs instead */
+  auditIncludesDfn: false,
   /** Never include these in any log output */
   neverLogFields: [
     "ssn", "socialSecurityNumber", "dob", "dateOfBirth",
     "noteText", "noteContent", "problemText",
+    // Phase 151: patient identifiers
+    "dfn", "patientDfn", "patient_dfn", "patientName", "patient_name", "mrn",
   ],
 } as const;
 

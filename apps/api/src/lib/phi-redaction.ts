@@ -29,6 +29,8 @@ export const CREDENTIAL_FIELDS: ReadonlySet<string> = new Set([
  * These carry Protected Health Information per HIPAA.
  */
 export const PHI_FIELDS: ReadonlySet<string> = new Set([
+  // Patient identifiers — Phase 151: added dfn/patientdfn/patient_dfn/mrn
+  "dfn", "patientdfn", "patient_dfn", "mrn",
   "ssn", "socialsecuritynumber", "social_security_number",
   "dob", "dateofbirth", "date_of_birth", "birthdate",
   "notetext", "notecontent", "problemtext",
@@ -179,6 +181,19 @@ export function assertNoPhiInAttributes(attrs: Record<string, unknown>): void {
  * Validate that a set of metric label names contains no PHI fields.
  * Used during metric registration to prevent PHI labels at definition time.
  */
+/**
+ * Convenience wrapper: deep-scrub an audit detail object.
+ * Delegates to redactPhi with audit-appropriate depth.
+ * All audit emitters should call this on their detail param.
+ * Phase 151: exported for use by immutableAudit, portalAudit, imagingAudit, etc.
+ */
+export function sanitizeAuditDetail(
+  detail?: Record<string, unknown>,
+): Record<string, unknown> | undefined {
+  if (!detail) return undefined;
+  return redactPhi(detail) as Record<string, unknown>;
+}
+
 export function assertNoPhiInMetricLabels(labels: readonly string[]): void {
   for (const label of labels) {
     const lc = label.toLowerCase();

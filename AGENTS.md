@@ -1282,6 +1282,22 @@ docs/runbooks/
 149. **`portal_patient_identity` maps OIDC sub to patient DFN (Phase 150).**
      New table with unique index on (tenant_id, oidc_sub). Included in
      RLS tenant tables. Not yet populated -- requires OIDC login path.
+150. **`sanitizeAuditDetail()` is the single entry point for audit PHI scrub (Phase 151).**
+     Exported from `lib/phi-redaction.ts`. All audit emitters (immutableAudit,
+     portalAudit, imagingAudit, rcmAudit) now delegate to it before storing
+     detail objects. It calls `redactPhi()` which strips all PHI_FIELDS keys
+     (including dfn, patientDfn, patient_dfn, mrn, ssn, dob, patientName)
+     and scrubs inline patterns (SSN, DOB, VistA names). Never bypass it.
+151. **`auditIncludesDfn: false` in server-config.ts (Phase 151).** DFN is
+     no longer included in audit log output. The `neverLogFields` set also
+     blocks dfn, patientDfn, patient_dfn, patientName, patient_name, mrn
+     from appearing in structured log payloads.
+152. **G22 PHI Leak Audit is a static analysis CI gate (Phase 151).** Scans
+     `routes/` and `services/` directories for `log.info|warn|error` calls
+     that include `dfn` in their payload object. Also validates phi-redaction.ts
+     field coverage, server-config settings, and audit emitter wiring. Add
+     any new PHI fields to `PHI_FIELDS` in phi-redaction.ts, not in individual
+     audit modules.
 
 ## 8. Bug Tracker & Lessons Learned
 

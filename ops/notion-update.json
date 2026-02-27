@@ -1,9 +1,9 @@
 {
-  "feature": "Phase 150: Enterprise IAM Default + Portal Auth Modernization",
+  "feature": "Phase 151: PHI Redaction Hardening (Audit/Log/Trace Scrub + CI Gate)",
   "stage": "verified",
   "status": "complete",
-  "promptRef": "prompts/155-PHASE-150-IAM-PORTAL-AUTH/150-01-IMPLEMENT.md",
-  "runbookPath": "docs/runbooks/phase150-iam-portal-auth.md",
+  "promptRef": "prompts/156-PHASE-151-PHI-REDACTION/151-01-IMPLEMENT.md",
+  "runbookPath": "docs/runbooks/phase151-phi-redaction.md",
   "verifyScript": "qa/gauntlet/cli.mjs --suite rc",
-  "commitSha": "46b40c3"
+  "commitSha": "6be9e7f"
 }

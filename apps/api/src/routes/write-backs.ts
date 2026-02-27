@@ -84,7 +84,7 @@ export function createDraft(type: ServerDraft['type'], dfn: string, requiredRpc:
   // Phase 146: Write-through to PG
   draftDbRepo?.upsert({ id, tenantId: 'default', patientDfn: dfn, draftType: type, content: JSON.stringify(payload), createdAt: draft.createdAt, updatedAt: draft.createdAt }).catch(() => {});
 
-  log.info("Draft created", { type, draftId: id, dfn, requiredRpc });
+  log.info("Draft created", { type, draftId: id, requiredRpc });
   // Phase 15C: centralized audit for draft creation
   centralAudit("clinical.draft-create", "success", { duz: "system" }, {
     patientDfn: dfn,

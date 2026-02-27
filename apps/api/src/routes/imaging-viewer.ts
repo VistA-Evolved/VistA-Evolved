@@ -151,7 +151,7 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
           }
         }
       } catch (err: any) {
-        log.warn("MAG4 study list failed", { error: err.message, dfn });
+        log.warn("MAG4 study list failed", { error: err.message });
       }
     } else {
       pendingTargets.push({

@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-27T01:14:19.925Z",
+  "generatedAt": "2026-02-27T01:49:12.659Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 161,
+  "phaseCount": 162,
   "phases": [
     {
       "phaseNumber": "1",
@@ -2583,6 +2583,25 @@
         "scripts/audit/system-audit.mjs",
         "docs/runbooks/phase150-iam-portal-auth.md"
       ]
+    },
+    {
+      "phaseNumber": "151",
+      "title": "PHI Redaction Hardening",
+      "folder": "156-PHASE-151-PHI-REDACTION",
+      "files": [
+        "151-01-IMPLEMENT.md",
+        "151-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "151-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "151-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
     },
     {
       "phaseNumber": "14",

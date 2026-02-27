@@ -1,26 +1,19 @@
-# Phase 150 -- Ops Summary
+# Phase 151 -- Ops Summary
 
 ## What changed
 
-1. **OIDC mandatory in rc/prod**: `runtime-mode.ts` exports `requiresOidc()`. `validateRuntimeMode()` throws at startup if rc/prod without OIDC_ENABLED=true + OIDC_ISSUER.
-2. **Portal session PG write-through**: New `pg-portal-session-repo.ts` with SHA-256 token hashing. Map remains hot cache; create/touch/revoke write-through to PG.
-3. **Patient identity mapping**: New `portal_patient_identity` table (OIDC sub to patient DFN). Added to RLS tenant tables.
-4. **PHI cleanup**: Removed DFN from `log.info` in portal-auth.ts. DFN only in audit trail.
-5. **Audit classifier**: INTERNATIONALIZATION status "planned" to "partial" (next-intl 4.8 integrated Phase 132).
-6. **Gauntlet G12**: Added Gate 7 (OIDC enforcement) and Gate 8 (token hashing repo).
-7. **Data plane posture**: Gate 7 `oidc_enforcement` added.
-
-## VERIFY fixes applied
-
-- **BUG-068**: `requirePortalSession()` in `portal-auth.ts` was using `reply.send()` + `throw` pattern → fixed to throw with `statusCode: 401` property
-- **UNIQUE constraint**: `token` column in `portal_session` has NOT NULL + UNIQUE index → upsert now sets `token = tokenHash` instead of empty string
-- **Store policy**: `portal_patient_identity` was missing from `store-policy.ts` → added as `pg_backed` critical store
-- **ops/notion-update.json**: Stale `commitSha` corrected
+1. **Centralized PHI redaction**: Extended `phi-redaction.ts` with `dfn`, `patientdfn`, `patient_dfn`, `mrn` in `PHI_FIELDS`. Added `sanitizeAuditDetail()` export.
+2. **Audit sanitization hardened**: All 4 sanitizeDetail implementations (immutable-audit, imaging-audit, rcm-audit, portal-audit) now block DFN/MRN/patientName keys. Immutable-audit and imaging-audit delegate to centralized `sanitizeAuditDetail` first.
+3. **Config lockdown**: `auditIncludesDfn: false` in server-config.ts. `neverLogFields` expanded with dfn/patientDfn/patientName/mrn.
+4. **Log PHI leaks fixed**: Removed `dfn` from `log.info/warn/error` payloads in 7 call sites (imaging-service x4, imaging-viewer x1, emar x1, write-backs x1). Removed `patientDfn` from audit.ts log.info.
+5. **G22 PHI Leak Audit gate**: New gauntlet gate with 6 static-analysis checks. Wired into RC + full suites.
+6. **Unit tests**: 37 tests covering PHI_FIELDS, redactPhi, sanitizeAuditDetail, sanitizeForAudit, isBlockedField, classifyField, assertNoPhiInAttributes, assertNoPhiInMetricLabels.
 
 ## How to test manually
 
 ```bash
 pnpm -C apps/api exec tsc --noEmit
+pnpm -C apps/api exec vitest run tests/phi-redaction.test.ts
 node qa/gauntlet/cli.mjs fast
 node qa/gauntlet/cli.mjs --suite rc
 ```
@@ -28,11 +21,11 @@ node qa/gauntlet/cli.mjs --suite rc
 ## Verifier output
 
 - FAST: 4P / 0F / 0S / 1W
-- RC: 17P / 0F / 1S / 2W
-- FULL: 18P / 1F(VistA Probe, Docker off) / 1S / 2W
+- RC: 18P / 0F / 1S / 2W
+- FULL: 19P / 1F(VistA Probe, Docker off) / 1S / 2W
 
 ## Follow-ups
 
-- Wire OIDC bearer token validation for portal auth in rc/prod login path
-- Populate portal_patient_identity on OIDC login
-- Add portal session cleanup cron (cleanExpiredPortalSessions)
+- Extend G22 to scan for `patientName` in log payloads (currently only checks `dfn`)
+- Consider adding runtime PHI leak detection for telemetry span attributes
+- Audit remaining 50+ `immutableAudit` call sites that pass detail with `{ dfn }` (centralized sanitizer catches them, but call sites should be cleaned for clarity)
