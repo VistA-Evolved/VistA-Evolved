@@ -1,0 +1,144 @@
+# Phase 156 -- Imaging CI Smoke Test
+#
+# Lightweight workflow that starts Orthanc as a service container,
+# verifies DICOMweb + /system endpoints respond, and validates
+# the imaging health check plumbing.  Runs on PRs that touch
+# imaging-related paths.
+#
+# This does NOT require VistA -- only Orthanc.
+
+name: CI Imaging Smoke
+
+on:
+  pull_request:
+    paths:
+      - 'services/imaging/**'
+      - 'apps/api/src/routes/imaging-*'
+      - 'apps/api/src/services/imaging-*'
+      - 'apps/api/src/config/imaging-*'
+      - 'docker-compose.prod.yml'
+      - '.github/workflows/ci-imaging-smoke.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'services/imaging/**'
+      - 'apps/api/src/routes/imaging-*'
+
+jobs:
+  imaging-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    services:
+      orthanc:
+        image: orthancteam/orthanc:25.12.3-full
+        ports:
+          - 8042:8042
+          - 4242:4242
+        options: >-
+          --health-cmd "curl -sf http://localhost:8042/system"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+          --health-start-period 15s
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for Orthanc healthy
+        run: |
+          echo "Waiting for Orthanc to be ready..."
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:8042/system > /dev/null 2>&1; then
+              echo "Orthanc is healthy"
+              break
+            fi
+            echo "  attempt $i/30..."
+            sleep 2
+          done
+
+      - name: Verify Orthanc /system
+        run: |
+          RESP=$(curl -sf http://localhost:8042/system)
+          echo "$RESP" | jq .
+          # Validate required fields
+          echo "$RESP" | jq -e '.Version' > /dev/null
+          echo "PASS: Orthanc /system returns valid JSON with Version"
+
+      - name: Verify DICOMweb QIDO-RS
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8042/dicom-web/studies)
+          echo "QIDO-RS /studies returned HTTP $STATUS"
+          if [ "$STATUS" -eq 200 ] || [ "$STATUS" -eq 204 ]; then
+            echo "PASS: DICOMweb QIDO-RS endpoint is accessible"
+          else
+            echo "FAIL: Expected 200 or 204, got $STATUS"
+            exit 1
+          fi
+
+      - name: Verify DICOM C-STORE port
+        run: |
+          if nc -z localhost 4242; then
+            echo "PASS: DICOM C-STORE port 4242 is open"
+          else
+            echo "FAIL: DICOM C-STORE port 4242 not reachable"
+            exit 1
+          fi
+
+      - name: Verify orthanc.json config integrity
+        run: |
+          echo "Validating services/imaging/orthanc.json..."
+          python3 -c "
+          import json, sys
+          with open('services/imaging/orthanc.json') as f:
+              cfg = json.load(f)
+          assert cfg.get('DicomWeb', {}).get('Enable') == True, 'DICOMweb must be enabled'
+          assert cfg.get('DicomPort') == 4242, 'DICOM port must be 4242'
+          assert cfg.get('HttpPort') == 8042, 'HTTP port must be 8042'
+          assert cfg.get('AuthenticationEnabled') == False, 'Auth must be disabled (API proxy handles auth)'
+          print('PASS: orthanc.json config is valid')
+          "
+
+      - name: Verify imaging env vars documented
+        run: |
+          echo "Checking apps/api/.env.example for imaging vars..."
+          MISSING=0
+          for VAR in ORTHANC_URL OHIF_URL ORTHANC_DICOMWEB_ROOT IMAGING_PROXY_TIMEOUT_MS \
+                     IMAGING_INGEST_WEBHOOK_SECRET DICOMWEB_RATE_LIMIT; do
+            if grep -q "$VAR" apps/api/.env.example; then
+              echo "  OK: $VAR documented"
+            else
+              echo "  MISSING: $VAR"
+              MISSING=$((MISSING + 1))
+            fi
+          done
+          if [ "$MISSING" -gt 0 ]; then
+            echo "FAIL: $MISSING imaging env vars not in .env.example"
+            exit 1
+          fi
+          echo "PASS: All imaging env vars documented"
+
+      - name: Verify prod compose imaging profile
+        run: |
+          echo "Checking docker-compose.prod.yml for imaging services..."
+          if grep -q 'profiles:.*imaging' docker-compose.prod.yml; then
+            echo "PASS: Imaging profile found in prod compose"
+          else
+            echo "FAIL: No imaging profile in docker-compose.prod.yml"
+            exit 1
+          fi
+          if grep -q 'orthanc-data' docker-compose.prod.yml; then
+            echo "PASS: Orthanc data volume defined"
+          else
+            echo "FAIL: orthanc-data volume missing"
+            exit 1
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Imaging Smoke Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- Orthanc service container: orthancteam/orthanc:25.12.3-full" >> $GITHUB_STEP_SUMMARY
+          echo "- DICOMweb: /dicom-web/studies" >> $GITHUB_STEP_SUMMARY
+          echo "- DICOM C-STORE: port 4242" >> $GITHUB_STEP_SUMMARY
+          echo "- Config validation: orthanc.json + .env.example + prod compose" >> $GITHUB_STEP_SUMMARY

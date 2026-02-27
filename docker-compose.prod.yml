@@ -148,10 +148,62 @@ services:
     networks:
       - frontend
 
+  # ---------- Orthanc DICOM server (optional, Phase 156) ----------
+  # Enable with: docker compose -f docker-compose.prod.yml --profile imaging up -d
+  orthanc:
+    image: orthancteam/orthanc:25.12.3-full
+    container_name: ve-orthanc-prod
+    profiles: ["imaging"]
+    volumes:
+      - orthanc-data:/var/lib/orthanc/db
+      - ./services/imaging/orthanc.json:/etc/orthanc/orthanc.json:ro
+      - ./services/imaging/on-stable-study.lua:/etc/orthanc/on-stable-study.lua:ro
+    environment:
+      - ORTHANC_NAME=VistA-Evolved-Imaging
+      - VERBOSE_ENABLED=true
+      - INGEST_CALLBACK_URL=http://api:3001/imaging/ingest/callback
+      - INGEST_SERVICE_KEY=${IMAGING_INGEST_WEBHOOK_SECRET:-dev-imaging-ingest-key-change-in-production}
+    expose:
+      - "8042"
+      - "4242"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8042/system"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - backend
+
+  # ---------- OHIF DICOM viewer (optional, Phase 156) ----------
+  ohif-viewer:
+    image: ohif/app:latest
+    container_name: ve-ohif-prod
+    profiles: ["imaging"]
+    volumes:
+      - ./services/imaging/ohif-config.js:/usr/share/nginx/html/app-config.js:ro
+    depends_on:
+      orthanc:
+        condition: service_healthy
+    expose:
+      - "80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:80"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - backend
+
 volumes:
   api-logs:
     driver: local
   pgdata:
+    driver: local
+  orthanc-data:
     driver: local
 
 networks:

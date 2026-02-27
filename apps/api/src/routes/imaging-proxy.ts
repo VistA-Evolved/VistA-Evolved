@@ -715,6 +715,7 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
    * GET /imaging/health
    * Check connectivity to Orthanc + imaging subsystem status.
    * Phase 24: Includes audit chain stats and DICOMweb rate limit info.
+   * Phase 156: Added live OHIF probe and compose profile hint.
    */
   server.get("/imaging/health", async (_request, reply) => {
     // Audit chain stats (fast, no DB call)
@@ -741,6 +742,19 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
 
       if (resp.ok) {
         const info = await resp.json();
+
+        // Phase 156: Live OHIF probe
+        let ohifStatus: "connected" | "unreachable" | "configured" = "configured";
+        try {
+          const ohifCtrl = new AbortController();
+          const ohifTimeout = setTimeout(() => ohifCtrl.abort(), 3000);
+          const ohifResp = await fetch(IMAGING_CONFIG.ohifUrl, { signal: ohifCtrl.signal });
+          clearTimeout(ohifTimeout);
+          ohifStatus = (ohifResp.ok || ohifResp.status === 304) ? "connected" : "unreachable";
+        } catch {
+          ohifStatus = "unreachable";
+        }
+
         return {
           ok: true,
           orthanc: {
@@ -751,8 +765,10 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
           },
           ohif: {
             url: IMAGING_CONFIG.ohifUrl,
-            status: "configured",
+            status: ohifStatus,
           },
+          composeProfile: "imaging",
+          composeHint: "docker compose --profile imaging up -d",
           security: {
             rbacEnabled: true,
             breakGlassEnabled: true,
@@ -762,12 +778,23 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
           audit: auditStats,
         };
       }
-      return { ok: false, error: `Orthanc returned ${resp.status}`, audit: auditStats };
+      return {
+        ok: false,
+        error: `Orthanc returned ${resp.status}`,
+        orthanc: { status: "error", error: `HTTP ${resp.status}` },
+        ohif: { url: IMAGING_CONFIG.ohifUrl, status: "unknown" },
+        composeProfile: "imaging",
+        composeHint: "docker compose --profile imaging up -d",
+        security: { rbacEnabled: true, breakGlassEnabled: true },
+        audit: auditStats,
+      };
     } catch (err: any) {
       return {
         ok: false,
         orthanc: { status: "disconnected", error: safeErr(err) },
         ohif: { url: IMAGING_CONFIG.ohifUrl, status: "unknown" },
+        composeProfile: "imaging",
+        composeHint: "docker compose --profile imaging up -d",
         security: { rbacEnabled: true, breakGlassEnabled: true },
         audit: auditStats,
       };

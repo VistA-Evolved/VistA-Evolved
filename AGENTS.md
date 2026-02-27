@@ -1421,6 +1421,47 @@ docs/runbooks/
      tags check `$O(^XWB(8994,"B",NAME,""))` before inserting. VEMCTX3 finds
      max sub-IEN and appends. No destructive operations.
 
+## 7u. Architecture Quick Map (Phase 156 additions)
+
+```
+.github/workflows/
+  ci-imaging-smoke.yml            -- CI Orthanc service container smoke test (Phase 156)
+
+docker-compose.prod.yml           -- +orthanc + ohif-viewer under profiles: [imaging] (Phase 156)
+
+apps/api/src/routes/
+  imaging-proxy.ts                -- +live OHIF probe, +composeProfile hint in /imaging/health (Phase 156)
+
+apps/api/
+  .env.example                    -- +10 imaging env vars documented (Phase 156)
+
+scripts/
+  verify-phase156-imaging-orthanc.ps1 -- Phase 156 verifier (15 gates) (Phase 156)
+```
+
+167. **Orthanc + OHIF are optional via `profiles: [imaging]` in both dev and prod compose (Phase 156).**
+     Dev compose: `services/imaging/docker-compose.yml`. Prod compose: `docker-compose.prod.yml`.
+     Start with `docker compose --profile imaging up -d`. Without the profile flag,
+     imaging services are not started-this keeps the dev loop fast for non-imaging work.
+168. **`/imaging/health` now probes OHIF live, not just "configured" (Phase 156).**
+     The endpoint fetches `IMAGING_CONFIG.ohifUrl` with a 3s timeout. Returns
+     `ohif.status: "connected" | "unreachable"` instead of always `"configured"`.
+     Also includes `composeProfile` and `composeHint` in the response.
+169. **CI imaging smoke runs Orthanc as a GitHub Actions service container (Phase 156).**
+     The `ci-imaging-smoke.yml` workflow validates: Orthanc `/system`, DICOMweb
+     QIDO-RS, DICOM C-STORE port, `orthanc.json` config integrity, env var
+     documentation, and prod compose imaging profile. Path-scoped to
+     `services/imaging/**` and `apps/api/src/routes/imaging-*`.
+170. **10 imaging env vars now documented in `.env.example` (Phase 156).**
+     ORTHANC_URL, OHIF_URL, ORTHANC_DICOMWEB_ROOT, IMAGING_PROXY_TIMEOUT_MS,
+     IMAGING_QIDO_CACHE_TTL_MS, IMAGING_ENABLE_DEMO_UPLOAD,
+     IMAGING_MAX_UPLOAD_BYTES, IMAGING_INGEST_WEBHOOK_SECRET,
+     DICOMWEB_RATE_LIMIT, DICOMWEB_RATE_WINDOW_MS.
+171. **Prod compose imaging uses internal networking (Phase 156).** Orthanc
+     and OHIF `expose` ports internally (no `ports:`) so they are only
+     reachable via the API proxy. The ingest callback URL uses `http://api:3001`
+     (Docker service DNS) instead of `host.docker.internal`.
+
 ## 8. Bug Tracker & Lessons Learned
 
 A comprehensive log of every bug, challenge, and fix from Phase 1 through
