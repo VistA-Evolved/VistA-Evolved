@@ -253,7 +253,6 @@ export async function getClinicalReportText(
     const elapsedMs = Date.now() - startMs;
     log.error("Clinical report text fetch failed", {
       error: safeErr(err),
-      dfn,
       reportId,
       elapsedMs,
     });

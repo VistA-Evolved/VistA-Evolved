@@ -13,6 +13,7 @@
 
 import { AUDIT_CONFIG, PHI_CONFIG } from "../config/server-config.js";
 import { log, getRequestId } from "./logger.js";
+import { sanitizeAuditDetail } from "./phi-redaction.js";
 import { appendFileSync, mkdirSync, existsSync } from "fs";
 import { dirname } from "path";
 // Phase 133: audit events counter metric
@@ -258,7 +259,7 @@ export function audit(
     // Phase 133: auto-inject correlationId from request context
     requestId: opts?.requestId || getRequestId(),
     sourceIp: opts?.sourceIp,
-    detail: opts?.detail,
+    detail: sanitizeAuditDetail(opts?.detail),
   };
 
   writeSink(event);

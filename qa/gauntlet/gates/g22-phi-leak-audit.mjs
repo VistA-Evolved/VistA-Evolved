@@ -165,11 +165,34 @@ function scanDir(dirPath, leaks) {
         const lines = src.split("\n");
         for (let i = 0; i < lines.length; i++) {
           const line = lines[i];
-          // Match: log.info/warn/error/debug calls with dfn in the payload object
+          // Single-line: log.info/warn/error with dfn on same line
           if (/log\.(info|warn|error|debug)\s*\(/.test(line) &&
               /[{,]\s*dfn\b/.test(line)) {
             const relPath = fullPath.replace(/\\/g, "/").replace(/.*apps\/api\/src\//, "");
             leaks.push(`${relPath}:${i + 1}`);
+            continue;
+          }
+          // Multi-line: log.info( opens on one line, dfn on next few lines
+          // Only include continuation lines that are part of the same call
+          // (stop at lines that start a new statement/call like immutableAudit, await, etc.)
+          if (/log\.(info|warn|error|debug)\s*\(\s*$/.test(line) ||
+              /log\.(info|warn|error|debug)\s*\([^)]*[{,]\s*$/.test(line) ||
+              /log\.(info|warn|error|debug)\s*\("[^"]*",\s*\{\s*$/.test(line)) {
+            // Collect continuation lines until we hit closing paren or a new statement
+            const windowLines = [line];
+            for (let j = i + 1; j < Math.min(i + 8, lines.length); j++) {
+              const nextLine = lines[j].trim();
+              // Stop if this line starts a new call/statement (not a continuation)
+              if (/^(immutableAudit|portalAudit|imagingAudit|rcmAudit|audit|await\s|return\s|const\s|let\s|if\s*\(|}\s*$|\/\/)/.test(nextLine)) break;
+              windowLines.push(lines[j]);
+              // Stop if we found the closing of the log call
+              if (/\)\s*;?\s*$/.test(nextLine)) break;
+            }
+            const window = windowLines.join(" ");
+            if (/[{,]\s*dfn\b/.test(window)) {
+              const relPath = fullPath.replace(/\\/g, "/").replace(/.*apps\/api\/src\//, "");
+              leaks.push(`${relPath}:${i + 1} (multi-line)`);
+            }
           }
         }
       } catch { /* skip unreadable files */ }

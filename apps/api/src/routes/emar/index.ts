@@ -507,9 +507,8 @@ export default async function emarRoutes(server: FastifyInstance) {
       return reply.code(400).send({ ok: false, error: "Reason exceeds maximum length (2000 chars)" });
     }
 
-    // Log the administration attempt for audit (no PHI in reason field)
+    // Log the administration attempt for audit (Phase 151: no PHI in log payloads)
     log.info("eMAR administration attempt (integration-pending)", {
-      dfn,
       orderIEN,
       action,
       hasReason: !!reason,

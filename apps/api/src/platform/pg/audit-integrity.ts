@@ -20,6 +20,7 @@
 
 import { createHash } from "node:crypto";
 import { getPgPool, isPgConfigured } from "./pg-db.js";
+import { redactPhi } from "../../lib/phi-redaction.js";
 
 /* ================================================================
  *  Constants
@@ -50,13 +51,17 @@ const PHI_PATTERNS = [
 export function sanitizeAuditDetail(detail: unknown): unknown {
   if (detail === null || detail === undefined) return detail;
 
-  const str = typeof detail === "string" ? detail : JSON.stringify(detail);
+  // Phase 151: delegate to centralized redactPhi first for field-level scrub
+  const preSanitized = redactPhi(detail);
+
+  // Then apply local inline PHI pattern scrub as secondary defense
+  const str = typeof preSanitized === "string" ? preSanitized : JSON.stringify(preSanitized);
   let sanitized = str;
   for (const pattern of PHI_PATTERNS) {
     sanitized = sanitized.replace(pattern, "[REDACTED]");
   }
 
-  if (typeof detail === "string") return sanitized;
+  if (typeof preSanitized === "string") return sanitized;
   try {
     return JSON.parse(sanitized);
   } catch {

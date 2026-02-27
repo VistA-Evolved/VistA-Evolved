@@ -18,6 +18,7 @@
  */
 
 import { createHash } from "node:crypto";
+import { sanitizeAuditDetail as centralSanitize } from "../../lib/phi-redaction.js";
 import { appendFileSync, mkdirSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -77,22 +78,14 @@ let counter = 0;
 function sanitizeDetail(detail: unknown): unknown {
   if (detail === null || detail === undefined) return detail;
   if (typeof detail === "string") {
-    // Strip potential PHI patterns (SSN, DOB)
+    // For string detail: run inline PHI pattern scrub
     return detail
       .replace(/\b\d{3}-\d{2}-\d{4}\b/g, "[SSN-REDACTED]")
       .replace(/\b\d{4}-\d{2}-\d{2}T/g, "[DATE]T");
   }
   if (typeof detail === "object") {
-    const sanitized: Record<string, unknown> = {};
-    for (const [key, val] of Object.entries(detail as Record<string, unknown>)) {
-      const lk = key.toLowerCase();
-      if (lk.includes("ssn") || lk.includes("password") || lk.includes("secret") || lk.includes("credential")) {
-        sanitized[key] = "[REDACTED]";
-      } else {
-        sanitized[key] = sanitizeDetail(val);
-      }
-    }
-    return sanitized;
+    // Phase 151: delegate to centralized PHI sanitizer for objects
+    return centralSanitize(detail as Record<string, unknown>) ?? detail;
   }
   return detail;
 }
@@ -144,7 +137,9 @@ export function appendPayerAudit(params: {
     after: sanitizeDetail(params.after),
     reason: params.reason,
     evidenceLink: params.evidenceLink,
-    detail: params.detail,
+    detail: typeof params.detail === "string"
+      ? sanitizeDetail(params.detail) as string | undefined
+      : params.detail,
     prevHash: lastHash,
   };
 
