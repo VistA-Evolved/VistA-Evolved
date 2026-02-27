@@ -201,8 +201,8 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
 
   // ── Note Templates ──────────────────────────────────────────────
 
-  /** GET /admin/templates/:tenantId — list note templates */
-  server.get("/admin/templates/:tenantId", async (request, reply) => {
+  /** GET /admin/note-templates/:tenantId — list note templates */
+  server.get("/admin/note-templates/:tenantId", async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId } = request.params as { tenantId: string };
@@ -211,8 +211,8 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     return { ok: true, tenantId, templates: tenant.noteTemplates };
   });
 
-  /** PUT /admin/templates/:tenantId/:templateId — upsert a note template */
-  server.put("/admin/templates/:tenantId/:templateId", async (request, reply) => {
+  /** PUT /admin/note-templates/:tenantId/:templateId — upsert a note template */
+  server.put("/admin/note-templates/:tenantId/:templateId", async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId, templateId } = request.params as { tenantId: string; templateId: string };
