@@ -326,11 +326,22 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
     let pgAvailable = false;
     try {
       const pgRequestRepo = await import("../../platform/pg/repo/pg-scheduling-request-repo.js");
-      const pgRows = await pgRequestRepo.findAllActiveRequests();
-      for (const row of pgRows) merged.set(row.id, row);
-      pgAvailable = true;
+      try {
+        const pgRows = await pgRequestRepo.findAllActiveRequests();
+        for (const row of pgRows) merged.set(row.id, row);
+        pgAvailable = true;
+      } catch (queryErr: any) {
+        // PG module loaded but query failed (connection, table, etc.)
+        if (requiresPg()) {
+          log.error("Scheduling PG query failed in rc/prod", { error: queryErr.message });
+          return reply.code(500).send({
+            ok: false,
+            error: "Scheduling request query failed",
+          });
+        }
+      }
     } catch {
-      // PG unavailable
+      // PG module import failed
       if (requiresPg()) {
         return reply.code(503).send({
           ok: false,
@@ -773,7 +784,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       if (!existing) {
         // Phase 152: In rc/prod, do not fall back to in-memory store
         if (requiresPg()) {
-          return reply.code(404).send({ ok: false, error: "Request not found in PG store" });
+          return reply.code(404).send({ ok: false, error: "Scheduling request not found" });
         }
         // Dev-only fallback: try in-memory store
         log.warn("DEV_ONLY_FALLBACK: approve using in-memory scheduling store");
@@ -844,7 +855,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       if (!existing) {
         // Phase 152: In rc/prod, do not fall back to in-memory store
         if (requiresPg()) {
-          return reply.code(404).send({ ok: false, error: "Request not found in PG store" });
+          return reply.code(404).send({ ok: false, error: "Scheduling request not found" });
         }
         // Dev-only fallback
         log.warn("DEV_ONLY_FALLBACK: reject using in-memory scheduling store");
