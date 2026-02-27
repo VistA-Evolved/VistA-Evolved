@@ -1,9 +1,9 @@
 {
   "feature": "Phase 150: Enterprise IAM Default + Portal Auth Modernization",
-  "stage": "implement",
+  "stage": "verified",
   "status": "complete",
   "promptRef": "prompts/155-PHASE-150-IAM-PORTAL-AUTH/150-01-IMPLEMENT.md",
   "runbookPath": "docs/runbooks/phase150-iam-portal-auth.md",
   "verifyScript": "qa/gauntlet/cli.mjs --suite rc",
-  "commitSha": "e2de97f"
+  "commitSha": "46b40c3"
 }

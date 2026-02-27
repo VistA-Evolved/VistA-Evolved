@@ -77,9 +77,10 @@ export async function upsertPortalSession(data: {
     const pool = getPgPool();
     await pool.query(
       `INSERT INTO portal_session (id, tenant_id, token_hash, token, user_id, subject, patient_dfn, data_json, created_at, expires_at, last_activity_at)
-       VALUES ($1, $2, $3, '', $4, $5, $6, $7, $8, $9, $10)
+       VALUES ($1, $2, $3, $3, $4, $5, $6, $7, $8, $9, $10)
        ON CONFLICT (id) DO UPDATE SET
          token_hash = EXCLUDED.token_hash,
+         token = EXCLUDED.token,
          subject = EXCLUDED.subject,
          patient_dfn = EXCLUDED.patient_dfn,
          data_json = EXCLUDED.data_json,

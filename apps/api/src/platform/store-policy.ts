@@ -503,6 +503,17 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: "Phase 136: pending proxy invitations lost on restart.",
   },
   {
+    id: "portal-patient-identity",
+    file: "platform/pg/repo/durability-repos.ts",
+    variable: "portal_patient_identity",
+    description: "OIDC subject to patient DFN mapping",
+    classification: "critical",
+    durability: "pg_backed",
+    domain: "portal",
+    migrationTarget: "pg: portal_patient_identity table (migration v19)",
+    notes: "Phase 150: not yet populated; requires OIDC login path.",
+  },
+  {
     id: "portal-access-logs",
     file: "portal-iam/access-log-store.ts",
     variable: "accessLogs",

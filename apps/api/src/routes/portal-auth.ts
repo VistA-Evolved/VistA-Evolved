@@ -167,8 +167,10 @@ function requirePortalSession(
 ): PortalSessionData {
   const session = getPortalSession(request);
   if (!session) {
-    reply.code(401).send({ ok: false, error: "Not authenticated" });
-    throw new Error("No portal session");
+    // BUG-068: throw with statusCode, never reply.send() + throw
+    const err: any = new Error("No portal session");
+    err.statusCode = 401;
+    throw err;
   }
   return session;
 }

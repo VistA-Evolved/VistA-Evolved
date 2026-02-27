@@ -10,6 +10,13 @@
 6. **Gauntlet G12**: Added Gate 7 (OIDC enforcement) and Gate 8 (token hashing repo).
 7. **Data plane posture**: Gate 7 `oidc_enforcement` added.
 
+## VERIFY fixes applied
+
+- **BUG-068**: `requirePortalSession()` in `portal-auth.ts` was using `reply.send()` + `throw` pattern → fixed to throw with `statusCode: 401` property
+- **UNIQUE constraint**: `token` column in `portal_session` has NOT NULL + UNIQUE index → upsert now sets `token = tokenHash` instead of empty string
+- **Store policy**: `portal_patient_identity` was missing from `store-policy.ts` → added as `pg_backed` critical store
+- **ops/notion-update.json**: Stale `commitSha` corrected
+
 ## How to test manually
 
 ```bash
@@ -22,7 +29,7 @@ node qa/gauntlet/cli.mjs --suite rc
 
 - FAST: 4P / 0F / 0S / 1W
 - RC: 17P / 0F / 1S / 2W
-- RC strict: 16P / 0F / 1S / 3W
+- FULL: 18P / 1F(VistA Probe, Docker off) / 1S / 2W
 
 ## Follow-ups
 
