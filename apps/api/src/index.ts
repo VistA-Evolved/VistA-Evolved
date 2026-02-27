@@ -173,6 +173,9 @@ import emarRoutes from "./routes/emar/index.js";
 import handoffRoutes from "./routes/handoff/index.js";
 // Phase 107: Production Posture Pack
 import postureRoutes from "./posture/index.js";
+// Phase 157: Audit JSONL Shipping to Object Store
+import { auditShippingRoutes } from "./routes/audit-shipping-routes.js";
+import { startShipperJob } from "./audit-shipping/shipper.js";
 // Phase 116: Job Queue (Graphile Worker)
 import { jobAdminRoutes } from "./routes/job-admin-routes.js";
 // Phase 118: Go-Live Hardening Pack
@@ -529,6 +532,9 @@ server.register(jobAdminRoutes);
 
 // Register go-live hardening routes -- audit verify, security posture, backup status, RC checklist (Phase 118)
 server.register(hardeningRoutes);
+
+// Register audit shipping routes -- shipping status, manual trigger, manifests (Phase 157)
+server.register(auditShippingRoutes);
 
 // Register i18n routes -- locale preference, supported locales, intake question schema (Phase 132)
 server.register(i18nRoutes);
@@ -2802,6 +2808,8 @@ try {
   // Phase 25: Restore persisted analytics events and start aggregation
   initAnalyticsStore();
   startAggregationJob();
+  // Phase 157: Start audit JSONL shipper (if enabled)
+  startShipperJob();
   // Phase 25: Initialize ETL writer (non-blocking — connects to ROcto lazily)
   initEtl();
   // Phase 133: Periodic PG pool stats collection (every 15s)

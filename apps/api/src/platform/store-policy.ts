@@ -1415,6 +1415,27 @@ export const STORE_INVENTORY: StoreEntry[] = [
     domain: "analytics",
     notes: "Phase 25: configurable ring buffer with JSONL file sink.",
   },
+  {
+    id: "audit-ship-offsets",
+    file: "audit-shipping/shipper.ts",
+    variable: "offsets",
+    description: "Audit JSONL shipping offset tracker per tenant",
+    classification: "audit",
+    durability: "pg_backed",
+    domain: "audit",
+    notes: "Phase 157: tracks last-shipped offset per tenant+source. DB-backed when PG available.",
+  },
+  {
+    id: "audit-ship-manifests",
+    file: "audit-shipping/shipper.ts",
+    variable: "manifests",
+    description: "Audit JSONL shipping manifest cache (500 FIFO)",
+    classification: "audit",
+    durability: "pg_backed",
+    domain: "audit",
+    maxSize: 500,
+    notes: "Phase 157: in-memory cache of recent manifests. Full history in DB + S3.",
+  },
 
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // DEV/QA ONLY

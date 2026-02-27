@@ -1462,6 +1462,50 @@ scripts/
      reachable via the API proxy. The ingest callback URL uses `http://api:3001`
      (Docker service DNS) instead of `host.docker.internal`.
 
+## 7v. Architecture Quick Map (Phase 157 additions)
+
+```
+apps/api/src/
+  audit-shipping/
+    types.ts                  -- AuditShipConfig, AuditShipOffset, AuditShipManifest, AuditShipStatus (Phase 157)
+    s3-client.ts              -- Zero-dep S3/MinIO client with AWS Sig V4 (Phase 157)
+    manifest.ts               -- SHA-256 manifest builder + verifier (Phase 157)
+    shipper.ts                -- Scheduled JSONL shipper job (Phase 157)
+    index.ts                  -- Barrel export (Phase 157)
+  routes/
+    audit-shipping-routes.ts  -- 4 admin endpoints: status, trigger, manifests, health (Phase 157)
+  posture/
+    audit-shipping-posture.ts -- 6 gates: enabled, creds, job, S3, manifests, file (Phase 157)
+
+docs/runbooks/
+  phase157-audit-shipping.md  -- Audit shipping runbook (Phase 157)
+
+scripts/
+  verify-phase157-audit-shipping.ps1 -- Phase 157 verifier (18 gates) (Phase 157)
+```
+
+172. **Audit shipper is opt-in via `AUDIT_SHIP_ENABLED=true` (Phase 157).**
+     Without it, the shipper job does not start and no S3 connections are made.
+     Default behavior is disabled. Ship interval defaults to 5 minutes
+     (`AUDIT_SHIP_INTERVAL_MS`). Chunk size defaults to 1000 lines.
+173. **S3 client uses zero external dependencies (Phase 157).** The
+     `s3-client.ts` implements AWS Signature V4 using only Node.js `crypto`,
+     `http`, and `https`. Supports both path-style (MinIO) and virtual-hosted
+     (AWS S3) addressing. 30s request timeout.
+174. **Audit object keys are tenant-partitioned (Phase 157).** Format:
+     `audit/{tenantId}/YYYY/MM/DD/{timestamp}_{firstSeq}-{lastSeq}.jsonl`.
+     Each chunk has a `.manifest.json` sidecar with SHA-256 content hash,
+     entry count, seq range, and byte size.
+175. **Shipping is idempotent via offset tracking (Phase 157).** Each tenant+
+     source pair tracks the last shipped line offset. Offsets are persisted
+     to Postgres (v22 migration) or SQLite. In-memory cache is the hot path;
+     DB is the durable backing store. Duplicate uploads are impossible as long
+     as offset tracking is intact.
+176. **No PHI reaches the object store (Phase 157).** Audit entries are already
+     PHI-redacted by `immutable-audit.ts` (Phase 35/151). The shipper reads
+     the JSONL file verbatim without adding any PHI. S3 credentials are never
+     logged or included in audit entries.
+
 ## 8. Bug Tracker & Lessons Learned
 
 A comprehensive log of every bug, challenge, and fix from Phase 1 through

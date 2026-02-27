@@ -22,6 +22,7 @@ import { stopAggregationJob } from "../services/analytics-aggregator.js";
 import { stopRoomCleanup } from "../telehealth/room-store.js";
 import { stopBreakGlassCleanup } from "../auth/enterprise-break-glass.js";
 import { stopCleanupJob as stopPortabilityCleanup } from "../services/record-portability-store.js";
+import { stopShipperJob } from "../audit-shipping/shipper.js";
 import { stopEtl } from "../services/analytics-etl.js";
 // Phase 36: Telemetry
 import { getCurrentTraceId } from "../telemetry/tracing.js";
@@ -508,6 +509,8 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
         try { stopBreakGlassCleanup(); } catch { /* timer may already be cleared */ }
         // Phase 80: stop record portability cleanup timer
         try { stopPortabilityCleanup(); } catch { /* timer may already be cleared */ }
+        // Phase 157: stop audit JSONL shipper
+        try { stopShipperJob(); } catch { /* timer may already be cleared */ }
         // Phase 95B: close platform SQLite DB
         try { closeDb(); } catch { /* DB may already be closed */ }
         // Phase 101: close platform Postgres pool

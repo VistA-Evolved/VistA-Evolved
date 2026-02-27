@@ -2018,6 +2018,41 @@ CREATE INDEX IF NOT EXISTS idx_cpoe_sign_dfn
   ON cpoe_order_sign_event(tenant_id, dfn);
 `,
   },
+  {
+    version: 22,
+    name: "phase157_audit_ship_offset_manifest",
+    sql: `
+-- Phase 157: Audit JSONL shipping offset tracking
+CREATE TABLE IF NOT EXISTS audit_ship_offset (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  source TEXT NOT NULL,
+  last_offset INTEGER NOT NULL DEFAULT 0,
+  last_hash TEXT NOT NULL DEFAULT '',
+  shipped_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_ship_offset_tenant_source
+  ON audit_ship_offset(tenant_id, source);
+
+-- Phase 157: Audit JSONL shipping manifest registry
+CREATE TABLE IF NOT EXISTS audit_ship_manifest (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  object_key TEXT NOT NULL,
+  content_hash TEXT NOT NULL,
+  entry_count INTEGER NOT NULL DEFAULT 0,
+  first_seq INTEGER NOT NULL DEFAULT 0,
+  last_seq INTEGER NOT NULL DEFAULT 0,
+  last_entry_hash TEXT NOT NULL DEFAULT '',
+  byte_size INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_ship_manifest_tenant
+  ON audit_ship_manifest(tenant_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_ship_manifest_key
+  ON audit_ship_manifest(object_key);
+`,
+  },
 ];
 
 /**
@@ -2190,6 +2225,9 @@ export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: s
     "tenant_oidc_mapping",
     // Phase 154: CPOE order sign events
     "cpoe_order_sign_event",
+    // Phase 157: Audit JSONL shipping
+    "audit_ship_offset",
+    "audit_ship_manifest",
   ];
 
   const applied: string[] = [];

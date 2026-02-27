@@ -1087,6 +1087,33 @@ CREATE INDEX IF NOT EXISTS idx_rcmjob_type ON rcm_durable_job(type);
 CREATE INDEX IF NOT EXISTS idx_rcmjob_sched ON rcm_durable_job(status, scheduled_at);
 CREATE INDEX IF NOT EXISTS idx_rcmjob_priority ON rcm_durable_job(priority, scheduled_at);
 
+-- AV) audit_ship_offset — Phase 157: Audit JSONL shipping offset tracking
+CREATE TABLE IF NOT EXISTS audit_ship_offset (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  source TEXT NOT NULL,
+  last_offset INTEGER NOT NULL DEFAULT 0,
+  last_hash TEXT NOT NULL DEFAULT '',
+  shipped_at TEXT NOT NULL
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_ship_offset_tenant_source ON audit_ship_offset(tenant_id, source);
+
+-- AW) audit_ship_manifest — Phase 157: Audit JSONL shipping manifests
+CREATE TABLE IF NOT EXISTS audit_ship_manifest (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  object_key TEXT NOT NULL,
+  content_hash TEXT NOT NULL,
+  entry_count INTEGER NOT NULL DEFAULT 0,
+  first_seq INTEGER NOT NULL DEFAULT 0,
+  last_seq INTEGER NOT NULL DEFAULT 0,
+  last_entry_hash TEXT NOT NULL DEFAULT '',
+  byte_size INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_ship_manifest_tenant ON audit_ship_manifest(tenant_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_ship_manifest_key ON audit_ship_manifest(object_key);
+
 `;
 
 // Phase 97B: Add payer_type column (idempotent — catches "duplicate column" error)

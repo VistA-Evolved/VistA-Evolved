@@ -1,9 +1,9 @@
 {
-  "feature": "Phase 151: PHI Redaction Hardening (Audit/Log/Trace Scrub + CI Gate)",
+  "feature": "Phase 157: Audit JSONL Shipping to Object Store",
   "stage": "verified",
   "status": "complete",
-  "promptRef": "prompts/156-PHASE-151-PHI-REDACTION/151-01-IMPLEMENT.md",
-  "runbookPath": "docs/runbooks/phase151-phi-redaction.md",
-  "verifyScript": "qa/gauntlet/cli.mjs --suite rc",
-  "commitSha": "6be9e7f"
+  "promptRef": "prompts/162-PHASE-157-AUDIT-JSONL-SHIPPING/157-01-IMPLEMENT.md",
+  "runbookPath": "docs/runbooks/phase157-audit-shipping.md",
+  "verifyScript": "scripts/verify-phase157-audit-shipping.ps1",
+  "commitSha": "e852724"
 }

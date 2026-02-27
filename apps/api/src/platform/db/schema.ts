@@ -976,3 +976,26 @@ export const rcmDurableJob = sqliteTable("rcm_durable_job", {
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
+
+// Phase 157: Audit JSONL Shipping
+export const auditShipOffset = sqliteTable("audit_ship_offset", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  source: text("source").notNull(),
+  lastOffset: integer("last_offset").notNull().default(0),
+  lastHash: text("last_hash").notNull().default(""),
+  shippedAt: text("shipped_at").notNull(),
+});
+
+export const auditShipManifest = sqliteTable("audit_ship_manifest", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  objectKey: text("object_key").notNull(),
+  contentHash: text("content_hash").notNull(),
+  entryCount: integer("entry_count").notNull().default(0),
+  firstSeq: integer("first_seq").notNull().default(0),
+  lastSeq: integer("last_seq").notNull().default(0),
+  lastEntryHash: text("last_entry_hash").notNull().default(""),
+  byteSize: integer("byte_size").notNull().default(0),
+  createdAt: text("created_at").notNull(),
+});

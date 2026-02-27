@@ -1,8 +1,32 @@
-# Phase 151 -- Ops Summary
+# Phase 157: Audit JSONL Shipping to Object Store
 
-## What changed
+## What Changed
 
-1. **Centralized PHI redaction**: Extended `phi-redaction.ts` with `dfn`, `patientdfn`, `patient_dfn`, `mrn` in `PHI_FIELDS`. Added `sanitizeAuditDetail()` export.
+Implemented an audit JSONL shipper that replicates immutable audit trail entries
+to S3/MinIO-compatible object storage with SHA-256 integrity manifests.
+
+### New Files (7)
+- `apps/api/src/audit-shipping/types.ts` -- Shared type definitions
+- `apps/api/src/audit-shipping/s3-client.ts` -- Zero-dep S3/MinIO client (AWS Sig V4)
+- `apps/api/src/audit-shipping/manifest.ts` -- SHA-256 manifest builder + verifier
+- `apps/api/src/audit-shipping/shipper.ts` -- Scheduled JSONL shipper job
+- `apps/api/src/audit-shipping/index.ts` -- Barrel export
+- `apps/api/src/routes/audit-shipping-routes.ts` -- 4 admin endpoints
+- `apps/api/src/posture/audit-shipping-posture.ts` -- 6 posture gates
+
+### Modified Files (9)
+- `apps/api/src/platform/pg/pg-migrate.ts` -- v22: audit_ship_offset + audit_ship_manifest + RLS
+- `apps/api/src/platform/db/migrate.ts` -- SQLite equivalents
+- `apps/api/src/platform/db/schema.ts` -- Drizzle ORM table definitions
+- `apps/api/src/platform/store-policy.ts` -- 2 store entries (audit classification)
+- `apps/api/src/posture/index.ts` -- Wired audit-shipping into unified posture
+- `apps/api/src/middleware/security.ts` -- stopShipperJob in graceful shutdown
+- `apps/api/src/index.ts` -- startShipperJob + route registration
+- `apps/api/.env.example` -- 9 AUDIT_SHIP_* env vars documented
+- `AGENTS.md` -- Section 7v, items 172-176
+
+## Verifier: 18 PASS / 0 FAIL / 0 WARN
+## Gauntlet RC: 4 PASS / 0 FAIL / 1 WARN (pre-existing secret scan)
 2. **Audit sanitization hardened**: All 4 sanitizeDetail implementations (immutable-audit, imaging-audit, rcm-audit, portal-audit) now block DFN/MRN/patientName keys. Immutable-audit and imaging-audit delegate to centralized `sanitizeAuditDetail` first.
 3. **Config lockdown**: `auditIncludesDfn: false` in server-config.ts. `neverLogFields` expanded with dfn/patientDfn/patientName/mrn.
 4. **Log PHI leaks fixed**: Removed `dfn` from `log.info/warn/error` payloads in 7 call sites (imaging-service x4, imaging-viewer x1, emar x1, write-backs x1). Removed `patientDfn` from audit.ts log.info.
