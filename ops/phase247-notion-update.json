@@ -1,0 +1,9 @@
+{
+  "featureTitle": "Wave 6 Certification Suite",
+  "stage": "Done",
+  "status": "Complete",
+  "promptRef": "prompts/244-PHASE-247-WAVE6-CERTIFICATION/247-01-IMPLEMENT.md",
+  "runbookPath": "docs/waves/wave6-certification-snapshot.md",
+  "verifyScript": "scripts/verify-wave6-certification.ps1",
+  "commitSHA": "(pending)"
+}

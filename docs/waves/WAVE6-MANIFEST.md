@@ -1,7 +1,7 @@
 # Wave 6 Manifest — Enterprise Integrations + Customer Ops + Pilot Hospital Hardening
 
 **Created:** 2025-07-22
-**Status:** In Progress
+**Status:** Complete
 
 ## Overview
 
@@ -24,16 +24,16 @@ tooling, data exports), and pilot hospital hardening for production readiness.
 
 | # | Phase | Folder | Status | Commit |
 |---|-------|--------|--------|--------|
-| P1 | 238 — OSS Reuse Audit + ADRs | 235-PHASE-238-OSS-REUSE-AUDIT | In Progress | — |
-| P2 | 239 — HL7v2 Engine Packaging | 236-PHASE-239-HL7-ENGINE-PACKAGING | Not Started | — |
-| P3 | 240 — HL7v2 Routing Layer | 237-PHASE-240-HL7-ROUTING-LAYER | Not Started | — |
-| P4 | 241 — HL7v2 Core Message Packs | 238-PHASE-241-HL7-MESSAGE-PACKS | Not Started | — |
-| P5 | 242 — Payer Adapter Scale Hardening | 239-PHASE-242-PAYER-SCALE-HARDENING | Not Started | — |
-| P6 | 243 — Onboarding UX Wizard | 240-PHASE-243-ONBOARDING-UX | Not Started | — |
-| P7 | 244 — Support Tooling | 241-PHASE-244-SUPPORT-TOOLING | Not Started | — |
-| P8 | 245 — Data Portability Exports v2 | 242-PHASE-245-DATA-EXPORTS-V2 | Not Started | — |
-| P9 | 246 — Pilot Hospital Hardening | 243-PHASE-246-PILOT-HARDENING | Not Started | — |
-| P10 | 247 — Wave 6 Certification Suite | 244-PHASE-247-WAVE6-CERTIFICATION | Not Started | — |
+| P1 | 238 — OSS Reuse Audit + ADRs | 235-PHASE-238-OSS-REUSE-AUDIT | Done | cd6e3f1 |
+| P2 | 239 — HL7v2 Engine Packaging | 236-PHASE-239-HL7-ENGINE-PACKAGING | Done | 98b438b |
+| P3 | 240 — HL7v2 Routing Layer | 237-PHASE-240-HL7-ROUTING-LAYER | Done | feabe86 |
+| P4 | 241 — HL7v2 Core Message Packs | 238-PHASE-241-HL7-MESSAGE-PACKS | Done | 1e52a57 |
+| P5 | 242 — Payer Adapter Scale Hardening | 239-PHASE-242-PAYER-SCALE-HARDENING | Done | 192b543 |
+| P6 | 243 — Onboarding UX Wizard | 240-PHASE-243-ONBOARDING-UX | Done | b8beb21 |
+| P7 | 244 — Support Tooling | 241-PHASE-244-SUPPORT-TOOLING | Done | e719f25 |
+| P8 | 245 — Data Portability Exports v2 | 242-PHASE-245-DATA-EXPORTS-V2 | Done | b3c8a24 |
+| P9 | 246 — Pilot Hospital Hardening | 243-PHASE-246-PILOT-HARDENING | Done | c04f27e |
+| P10 | 247 — Wave 6 Certification Suite | 244-PHASE-247-WAVE6-CERTIFICATION | Done | (this commit) |
 
 ## Dependencies
 

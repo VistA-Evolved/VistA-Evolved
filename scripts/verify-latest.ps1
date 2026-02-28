@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 119: QA Gauntlet Generator (phase-by-phase regression + CI-enforced)
-& "$PSScriptRoot\verify-phase119-qa-gauntlet.ps1" @args
+# Phase 247: Wave 6 Certification Suite
+& "$PSScriptRoot\verify-wave6-certification.ps1" @args
