@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-28T07:04:06.769Z",
+  "generatedAt": "2026-02-28T07:05:43.078Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 228,
+  "phaseCount": 229,
   "phases": [
     {
       "phaseNumber": "1",
@@ -4412,6 +4412,29 @@
       "filesTouched": [
         "scripts/enrich-wave-phases.mjs",
         "prompts/210-PHASE-199-CI-PR-GATES/199-01-IMPLEMENT.md"
+      ]
+    },
+    {
+      "phaseNumber": "220",
+      "title": "Release Candidate Convergence Snapshot",
+      "folder": "226-PHASE-220-CONVERGENCE-SNAPSHOT",
+      "files": [
+        "220-01-IMPLEMENT.md",
+        "220-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "220-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "220-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "docs/wave4-convergence-snapshot.md",
+        "prompts/226-PHASE-220-CONVERGENCE-SNAPSHOT/220-01-IMPLEMENT.md",
+        "prompts/226-PHASE-220-CONVERGENCE-SNAPSHOT/220-99-VERIFY.md"
       ]
     },
     {
