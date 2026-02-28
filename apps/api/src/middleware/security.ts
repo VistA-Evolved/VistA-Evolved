@@ -27,6 +27,8 @@ import { stopLinkRequestCleanup } from "../routes/identity-linking.js";
 import { stopEtl } from "../services/analytics-etl.js";
 import { stopHealthMonitor } from "../rcm/connectors/health-monitor.js";
 import { stopHl7Engine } from "../hl7/index.js";
+import { stopMeteringFlush } from "../billing/metering.js";
+import { getFeatureFlagProvider } from "../flags/types.js";
 import { extractBearerToken, validateFhirBearerToken, principalFromSession } from "../fhir/fhir-bearer-auth.js";
 // Phase 36: Telemetry
 import { getCurrentTraceId } from "../telemetry/tracing.js";
@@ -569,6 +571,10 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
         try { await stopHl7Engine(); } catch { /* engine may not be running */ }
         // Phase 242: stop payer connector health monitor
         try { stopHealthMonitor(); } catch { /* timer may already be cleared */ }
+        // Phase 284: stop billing metering flush timer
+        try { stopMeteringFlush(); } catch { /* timer may already be cleared */ }
+        // Phase 285: destroy feature flag provider (stop Unleash polling)
+        try { const ffp = getFeatureFlagProvider(); if (ffp) await ffp.destroy(); } catch { /* provider may not be initialized */ }
         // Phase 101: close platform Postgres pool
         try { await closePgDb(); } catch { /* pool may already be closed */ }
         // Phase 116: stop Graphile Worker job runner

@@ -22,6 +22,7 @@ export type ThemePackId =
   | "vista-legacy"
   | "openmrs"
   | "openemr"
+  | "high-contrast"
   | `custom:${string}`;
 
 export interface ThemePack {

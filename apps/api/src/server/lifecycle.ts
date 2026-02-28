@@ -18,6 +18,9 @@ import { dbPoolInUse, dbPoolTotal, dbPoolWaiting } from "../telemetry/metrics.js
 import { getRuntimeMode } from "../platform/runtime-mode.js";
 import { initHl7Engine, stopHl7Engine, isHl7EngineEnabled } from "../hl7/index.js";
 import { startHealthMonitor, stopHealthMonitor } from "../rcm/connectors/health-monitor.js";
+import { initBillingProvider } from "../billing/index.js";
+import { startMeteringFlush } from "../billing/metering.js";
+import { initFeatureFlagProvider } from "../flags/index.js";
 /**
  * Initialize Postgres platform DB and wire all repos.
  */
@@ -317,6 +320,13 @@ async function startBackgroundServices(): Promise<void> {
   // Phase 96B: Load QA flow catalog
   const flowResult = loadFlowCatalog();
   log.info("QA flow catalog loaded", { loaded: flowResult.loaded, errors: flowResult.errors.length });
+
+  // Phase 284: Initialize billing provider (mock or Lago based on BILLING_PROVIDER env)
+  initBillingProvider();
+  startMeteringFlush();
+
+  // Phase 285: Initialize feature flag provider (db or Unleash based on FEATURE_FLAG_PROVIDER env)
+  initFeatureFlagProvider();
 
   // Phase 25: Restore persisted analytics events and start aggregation
   initAnalyticsStore();

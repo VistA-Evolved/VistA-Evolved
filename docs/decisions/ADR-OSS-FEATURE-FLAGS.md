@@ -64,7 +64,7 @@ Unleash adapter behind a `FeatureFlagProvider` interface.**
 ## Integration Plan
 
 1. Add `rollout_percentage` (INT 0-100) and `user_targeting` (JSONB) columns
-   to `tenant_feature_flag` via migration v28
+   to `tenant_feature_flag` via migration v29
 2. Define `FeatureFlagProvider` interface in `apps/api/src/flags/types.ts`
 3. Implement `DbFeatureFlagProvider` with deterministic hash rollout
 4. Implement `UnleashFeatureFlagProvider` with local cache + fail-safe
