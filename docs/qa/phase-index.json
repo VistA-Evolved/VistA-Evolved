@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-28T06:45:11.655Z",
+  "generatedAt": "2026-02-28T06:50:01.792Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 224,
+  "phaseCount": 225,
   "phases": [
     {
       "phaseNumber": "1",
@@ -4293,6 +4293,30 @@
       "rpcs": [],
       "uiComponents": [],
       "filesTouched": []
+    },
+    {
+      "phaseNumber": "216",
+      "title": "Fix Contract/RPC Drift: Generate Route-RPC Map",
+      "folder": "222-PHASE-216-ROUTE-RPC-MAP",
+      "files": [
+        "216-01-IMPLEMENT.md",
+        "216-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "216-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "216-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "tools/rpc-extract/build-route-rpc-map.mjs",
+        "docs/vista-alignment/route-rpc-map.json",
+        "docs/vista-alignment/route-rpc-map.md",
+        "package.json"
+      ]
     },
     {
       "phaseNumber": "21",
