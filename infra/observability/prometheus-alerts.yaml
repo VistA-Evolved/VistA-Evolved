@@ -1,0 +1,89 @@
+# Prometheus alerting rules for VistA-Evolved
+# Deploy to Prometheus via configmap mount or Prometheus Operator PrometheusRule
+
+groups:
+  - name: ve-api-alerts
+    rules:
+      # High error rate (>5% of requests returning 5xx)
+      - alert: HighErrorRate
+        expr: |
+          sum(rate(http_requests_total{job="ve-api",status_code=~"5.."}[5m]))
+          /
+          sum(rate(http_requests_total{job="ve-api"}[5m]))
+          > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          team: platform
+        annotations:
+          summary: "API error rate exceeds 5%"
+          description: "{{ $value | humanizePercentage }} of requests are returning 5xx errors."
+
+      # High latency (P95 > 2s)
+      - alert: HighLatency
+        expr: |
+          histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="ve-api"}[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          team: platform
+        annotations:
+          summary: "API P95 latency exceeds 2s"
+          description: "P95 latency is {{ $value | humanizeDuration }}."
+
+      # Circuit breaker open
+      - alert: CircuitBreakerOpen
+        expr: vista_circuit_breaker_state{state="open"} == 1
+        for: 1m
+        labels:
+          severity: critical
+          team: platform
+        annotations:
+          summary: "VistA circuit breaker is OPEN"
+          description: "RPC calls to VistA are being rejected. Check VistA connectivity."
+
+      # High memory usage (>80% of limit)
+      - alert: HighMemoryUsage
+        expr: |
+          process_resident_memory_bytes{job="ve-api"} / 1073741824 > 0.8
+        for: 10m
+        labels:
+          severity: warning
+          team: platform
+        annotations:
+          summary: "API memory usage exceeds 80% of 1Gi limit"
+          description: "RSS is {{ $value | humanize1024 }}B."
+
+      # Pod restarts
+      - alert: PodRestarts
+        expr: |
+          increase(kube_pod_container_status_restarts_total{namespace=~"ve-.*"}[1h]) > 3
+        for: 5m
+        labels:
+          severity: warning
+          team: platform
+        annotations:
+          summary: "Pod {{ $labels.pod }} has restarted >3 times in 1h"
+
+  - name: ve-pg-alerts
+    rules:
+      # PG connection pool exhaustion
+      - alert: PgPoolExhausted
+        expr: pg_pool_active_connections{job="ve-api"} > 18
+        for: 2m
+        labels:
+          severity: warning
+          team: platform
+        annotations:
+          summary: "PG connection pool nearing max (20)"
+          description: "{{ $value }} active connections."
+
+      # PG down
+      - alert: PostgresDown
+        expr: pg_up{job="ve-platform-db"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          team: platform
+        annotations:
+          summary: "Platform PostgreSQL is down"

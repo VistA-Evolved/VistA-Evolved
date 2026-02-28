@@ -1,0 +1,60 @@
+{{- if .Values.networkPolicies.enabled }}
+---
+# Default deny all ingress in tenant namespace
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+  namespace: {{ include "ve-tenant.namespace" . }}
+  labels:
+    {{- include "ve-tenant.labels" . | nindent 4 }}
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+---
+# Allow shared gateway to reach tenant API
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-gateway-to-api
+  namespace: {{ include "ve-tenant.namespace" . }}
+  labels:
+    {{- include "ve-tenant.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: tenant-api
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              app.kubernetes.io/part-of: vista-evolved
+              app.kubernetes.io/component: shared
+      ports:
+        - port: {{ .Values.api.port }}
+  policyTypes:
+    - Ingress
+---
+# Allow tenant API to reach VistA (intra-namespace)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-api-to-vista
+  namespace: {{ include "ve-tenant.namespace" . }}
+  labels:
+    {{- include "ve-tenant.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: vista
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: tenant-api
+      ports:
+        - port: {{ .Values.vista.port }}
+  policyTypes:
+    - Ingress
+{{- end }}

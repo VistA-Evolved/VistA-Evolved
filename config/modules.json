@@ -169,6 +169,21 @@
       ],
       "healthCheckEndpoint": "/vista/interop/status"
     },
+    "fhir": {
+      "name": "FHIR R4 Gateway",
+      "version": "0.1.0",
+      "description": "Read-only FHIR R4 gateway: Patient, AllergyIntolerance, Condition, Observation, MedicationRequest, DocumentReference",
+      "alwaysEnabled": false,
+      "routePatterns": [
+        "^/fhir/"
+      ],
+      "dependencies": ["kernel", "clinical"],
+      "adapters": ["clinical-engine"],
+      "services": [],
+      "permissions": ["clinical:read"],
+      "dataStores": [],
+      "healthCheckEndpoint": "/fhir/metadata"
+    },
     "intake": {
       "name": "Intake OS / Questionnaires",
       "version": "1.0.0",

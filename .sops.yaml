@@ -1,0 +1,20 @@
+# VistA-Evolved Secrets Strategy — SOPS + age
+#
+# This file documents the secrets management approach for K8s deployments.
+# We use Mozilla SOPS (https://github.com/getsops/sops) with age encryption
+# (https://github.com/FiloSottile/age) as a lightweight, git-friendly
+# secrets strategy that works without cloud KMS.
+#
+# For cloud deployments, SOPS also supports AWS KMS, GCP KMS, Azure Key Vault.
+#
+# Creation rules for .sops.yaml at repo root.
+
+creation_rules:
+  # Dev/staging secrets use the team age key
+  - path_regex: infra/secrets/dev/.*\.yaml$
+    age: "age1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"  # REPLACE with real team public key
+  - path_regex: infra/secrets/staging/.*\.yaml$
+    age: "age1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"  # REPLACE with real team public key
+  # Production secrets use a separate key (rotated quarterly)
+  - path_regex: infra/secrets/prod/.*\.yaml$
+    age: "age1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"  # REPLACE with real prod public key

@@ -1,0 +1,89 @@
+# infra/observability/grafana-dashboard-api.json
+# VistA-Evolved API Overview Dashboard for Grafana
+# Import via Grafana UI > Dashboards > Import
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "title": "Request Rate (req/s)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "expr": "rate(http_requests_total{job=\"ve-api\"}[5m])",
+          "legendFormat": "{{method}} {{route}} {{status_code}}"
+        }
+      ]
+    },
+    {
+      "title": "P95 Latency (ms)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job=\"ve-api\"}[5m])) * 1000",
+          "legendFormat": "{{route}}"
+        }
+      ]
+    },
+    {
+      "title": "RPC Broker Calls",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "targets": [
+        {
+          "expr": "rate(vista_rpc_calls_total{job=\"ve-api\"}[5m])",
+          "legendFormat": "{{rpc_name}} {{status}}"
+        }
+      ]
+    },
+    {
+      "title": "Circuit Breaker State",
+      "type": "stat",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "targets": [
+        {
+          "expr": "vista_circuit_breaker_state{job=\"ve-api\"}",
+          "legendFormat": "{{state}}"
+        }
+      ]
+    },
+    {
+      "title": "Memory Usage (MB)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+      "targets": [
+        {
+          "expr": "process_resident_memory_bytes{job=\"ve-api\"} / 1024 / 1024",
+          "legendFormat": "RSS"
+        },
+        {
+          "expr": "nodejs_heap_size_used_bytes{job=\"ve-api\"} / 1024 / 1024",
+          "legendFormat": "Heap Used"
+        }
+      ]
+    },
+    {
+      "title": "Active PG Connections",
+      "type": "gauge",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
+      "targets": [
+        {
+          "expr": "pg_pool_active_connections{job=\"ve-api\"}",
+          "legendFormat": "Active"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "tags": ["vista-evolved", "api"],
+  "templating": { "list": [] },
+  "time": { "from": "now-1h", "to": "now" },
+  "title": "VistA-Evolved API Overview",
+  "uid": "ve-api-overview"
+}

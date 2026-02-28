@@ -132,6 +132,7 @@ import schemaStatusRoutes from "../routes/admin/schema-status.js";
 
 // FHIR R4 gateway (Phase 178)
 import fhirRoutes from "../fhir/fhir-routes.js";
+import smartConfigRoutes from "../fhir/smart-configuration.js";
 
 // Infrastructure routes
 import postureRoutes from "../posture/index.js";
@@ -389,6 +390,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);
+
+  // SMART on FHIR configuration (Phase 179)
+  server.register(smartConfigRoutes);
 
   // Inline routes (health, ready, version, metrics, audit, admin, vista/*)
   registerInlineRoutes(server);

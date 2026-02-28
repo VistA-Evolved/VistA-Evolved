@@ -1,0 +1,97 @@
+{{- if .Values.vista.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ve-vista-data
+  namespace: {{ include "ve-tenant.namespace" . }}
+  labels:
+    {{- include "ve-tenant.labels" . | nindent 4 }}
+spec:
+  accessModes: [ReadWriteOnce]
+  {{- if .Values.vista.storage.storageClass }}
+  storageClassName: {{ .Values.vista.storage.storageClass }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.vista.storage.size }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ve-vista
+  namespace: {{ include "ve-tenant.namespace" . }}
+  labels:
+    {{- include "ve-tenant.labels" . | nindent 4 }}
+    app.kubernetes.io/name: vista
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vista
+      vista-evolved/tenant-slug: {{ .Values.tenantSlug | quote }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: vista
+        app.kubernetes.io/part-of: vista-evolved
+        vista-evolved/tenant-slug: {{ .Values.tenantSlug | quote }}
+    spec:
+      containers:
+        - name: vista
+          image: {{ .Values.vista.image.repository }}:{{ .Values.vista.image.tag }}
+          ports:
+            - containerPort: {{ .Values.vista.port }}
+              name: rpc
+          env:
+            - name: VISTA_BROKER_PORT
+              value: {{ .Values.vista.port | quote }}
+            - name: VISTA_ADMIN_ACCESS
+              valueFrom:
+                secretKeyRef:
+                  name: tenant-secrets
+                  key: VISTA_ADMIN_ACCESS
+            - name: VISTA_ADMIN_VERIFY
+              valueFrom:
+                secretKeyRef:
+                  name: tenant-secrets
+                  key: VISTA_ADMIN_VERIFY
+          volumeMounts:
+            - name: vista-data
+              mountPath: /data
+          resources:
+            {{- toYaml .Values.vista.resources | nindent 12 }}
+          readinessProbe:
+            tcpSocket:
+              port: rpc
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: rpc
+            initialDelaySeconds: 30
+            periodSeconds: 30
+      volumes:
+        - name: vista-data
+          persistentVolumeClaim:
+            claimName: ve-vista-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ve-vista
+  namespace: {{ include "ve-tenant.namespace" . }}
+  labels:
+    {{- include "ve-tenant.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: vista
+    vista-evolved/tenant-slug: {{ .Values.tenantSlug | quote }}
+  ports:
+    - port: {{ .Values.vista.port }}
+      targetPort: rpc
+      name: rpc
+{{- end }}

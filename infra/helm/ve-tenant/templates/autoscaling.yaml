@@ -1,0 +1,40 @@
+{{- if and .Values.api.autoscaling.enabled .Values.api.autoscaling.maxReplicas }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ve-tenant-api
+  namespace: {{ include "ve-tenant.namespace" . }}
+  labels:
+    {{- include "ve-tenant.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ve-tenant-api
+  minReplicas: {{ .Values.api.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.api.autoscaling.maxReplicas }}
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.api.autoscaling.targetCPUUtilization }}
+{{- end }}
+---
+{{- if .Values.pdb.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: ve-tenant-api
+  namespace: {{ include "ve-tenant.namespace" . }}
+  labels:
+    {{- include "ve-tenant.labels" . | nindent 4 }}
+spec:
+  minAvailable: {{ .Values.pdb.minAvailable }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: tenant-api
+      vista-evolved/tenant-slug: {{ .Values.tenantSlug | quote }}
+{{- end }}

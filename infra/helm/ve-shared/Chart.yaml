@@ -1,0 +1,12 @@
+apiVersion: v2
+name: ve-shared
+description: VistA-Evolved shared platform layer (ingress, postgres, redis, keycloak, observability)
+version: 0.1.0
+appVersion: "1.0.0"
+type: application
+keywords:
+  - vista-evolved
+  - healthcare
+  - platform
+maintainers:
+  - name: VistA-Evolved Team

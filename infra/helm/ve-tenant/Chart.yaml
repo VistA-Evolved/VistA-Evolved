@@ -1,0 +1,12 @@
+apiVersion: v2
+name: ve-tenant
+description: VistA-Evolved tenant layer (namespace-per-tenant API + VistA/YottaDB + PVC)
+version: 0.1.0
+appVersion: "1.0.0"
+type: application
+keywords:
+  - vista-evolved
+  - healthcare
+  - tenant
+maintainers:
+  - name: VistA-Evolved Team

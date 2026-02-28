@@ -1,0 +1,32 @@
+# infra/environments/staging.yaml - Staging overlay for ve-shared
+# Usage: helm upgrade --install ve-shared infra/helm/ve-shared -f infra/environments/staging.yaml
+
+global:
+  namespace: ve-system
+
+postgres:
+  enabled: true
+  storage:
+    size: 20Gi
+  password: ""  # must be supplied via --set or SOPS-encrypted secret
+
+redis:
+  enabled: true
+
+ingress:
+  enabled: true
+  replicas: 2
+
+keycloak:
+  enabled: true
+  url: "https://auth.staging.example.com"
+
+observability:
+  enabled: true
+  otelCollectorEndpoint: "http://otel-collector.ve-system:4318"
+
+minio:
+  enabled: false
+
+networkPolicies:
+  enabled: true

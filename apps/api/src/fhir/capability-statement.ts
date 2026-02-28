@@ -7,7 +7,7 @@
  *
  * Supported resource types (US Core read-only):
  *   Patient, AllergyIntolerance, Condition, Observation, MedicationRequest,
- *   DocumentReference
+ *   DocumentReference, Encounter
  */
 
 import type { FhirCapabilityStatement } from "./types.js";
@@ -47,6 +47,7 @@ export function buildCapabilityStatement(baseUrl: string): FhirCapabilityStateme
           searchParam: [
             { name: "name", type: "string" },
             { name: "_id", type: "token" },
+            { name: "_count", type: "number" },
           ],
         },
         {
@@ -93,6 +94,16 @@ export function buildCapabilityStatement(baseUrl: string): FhirCapabilityStateme
         {
           type: "DocumentReference",
           profile: "http://hl7.org/fhir/us/core/StructureDefinition/us-core-documentreference",
+          interaction: [
+            { code: "search-type" },
+          ],
+          searchParam: [
+            { name: "patient", type: "reference" },
+          ],
+        },
+        {
+          type: "Encounter",
+          profile: "http://hl7.org/fhir/us/core/StructureDefinition/us-core-encounter",
           interaction: [
             { code: "search-type" },
           ],

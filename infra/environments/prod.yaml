@@ -1,0 +1,36 @@
+# infra/environments/prod.yaml - Production overlay for ve-shared
+# Usage: helm upgrade --install ve-shared infra/helm/ve-shared -f infra/environments/prod.yaml
+
+global:
+  namespace: ve-system
+
+postgres:
+  enabled: true
+  storage:
+    size: 100Gi
+    storageClass: gp3  # AWS EBS example; adjust per cloud
+  password: ""  # MUST be supplied via external secrets operator or --set
+
+redis:
+  enabled: true
+
+ingress:
+  enabled: true
+  replicas: 3
+
+keycloak:
+  enabled: true
+  url: "https://auth.prod.example.com"
+
+observability:
+  enabled: true
+  otelCollectorEndpoint: "http://otel-collector.ve-system:4318"
+
+minio:
+  enabled: false  # use real S3 in production
+
+networkPolicies:
+  enabled: true
+
+podSecurityStandards:
+  enforce: restricted

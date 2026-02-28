@@ -15,6 +15,7 @@ import type {
   MedicationRecord,
   ProblemRecord,
   LabResult,
+  EncounterRecord,
 } from "../types.js";
 
 export class VistaClinicalAdapter implements ClinicalEngineAdapter {
@@ -152,6 +153,60 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       return { ok: true, data: labs };
     } catch (err: any) {
       return { ok: false, error: err.message };
+    }
+  }
+
+  async getEncounters(dfn: string): Promise<AdapterResult<EncounterRecord[]>> {
+    try {
+      const { safeCallRpc } = await import("../../lib/rpc-resilience.js");
+      // Use ORWCV VST to get visits/encounters for a patient
+      const rawLines = await safeCallRpc("ORWCV VST", [dfn]);
+      const encounters: EncounterRecord[] = rawLines.filter(Boolean).map((line: string) => {
+        const parts = line.split("^");
+        return {
+          id: parts[0] || "",
+          patientDfn: dfn,
+          dateTime: parts[1] || "",
+          status: parts[2] || "finished",
+          class: parts[3] || "AMB",
+          clinic: parts[4] || "",
+          clinicIen: parts[5] || undefined,
+          provider: parts[6] || undefined,
+        };
+      });
+      return { ok: true, data: encounters };
+    } catch {
+      // Fallback: try scheduling adapter's SDOE LIST ENCOUNTERS FOR PAT
+      try {
+        const { getAdapter } = await import("../adapter-loader.js");
+        const schedAdapter = getAdapter("scheduling") as any;
+        if (schedAdapter && !schedAdapter._isStub) {
+          const result = await schedAdapter.listAppointments(dfn);
+          if (result.ok && result.data) {
+            const mapped: EncounterRecord[] = result.data.map((a: any) => ({
+              id: a.encounterIen || a.id,
+              patientDfn: dfn,
+              dateTime: a.dateTime,
+              status: a.status === "CHECKED OUT" ? "finished" : "planned",
+              class: "AMB",
+              type: a.type,
+              clinic: a.clinic,
+              clinicIen: a.clinicIen,
+              provider: a.provider,
+              providerDuz: a.providerDuz,
+              reason: a.reason,
+              duration: a.duration,
+            }));
+            return { ok: true, data: mapped };
+          }
+        }
+      } catch { /* ignore scheduling fallback errors */ }
+      return {
+        ok: false,
+        pending: true,
+        target: "ORWCV VST / SDOE LIST ENCOUNTERS FOR PAT",
+        error: "Encounter data not available in sandbox",
+      };
     }
   }
 

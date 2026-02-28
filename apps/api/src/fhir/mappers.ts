@@ -22,6 +22,7 @@ import type {
   MedicationRecord,
   ProblemRecord,
   LabResult,
+  EncounterRecord,
 } from "../adapters/types.js";
 
 import type {
@@ -31,6 +32,7 @@ import type {
   FhirObservation,
   FhirMedicationRequest,
   FhirDocumentReference,
+  FhirEncounter,
   FhirBundle,
   FhirBundleEntry,
   FhirResource,
@@ -48,6 +50,8 @@ const US_CORE_VITAL = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-v
 const US_CORE_LAB = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observation-lab";
 const US_CORE_MEDREQUEST = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-medicationrequest";
 const US_CORE_DOCREF = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-documentreference";
+const US_CORE_ENCOUNTER = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-encounter";
+const ENCOUNTER_CLASS_SYSTEM = "http://terminology.hl7.org/CodeSystem/v3-ActCode";
 
 const LOINC_SYSTEM = "http://loinc.org";
 const SNOMED_SYSTEM = "http://snomed.info/sct";
@@ -232,8 +236,9 @@ export function toFhirVitalObservation(rec: VitalRecord, patientDfn: string): Fh
   if (rec.dateTime) resource.effectiveDateTime = normalizeDate(rec.dateTime);
 
   // Attempt numeric parse for valueQuantity — must be a clean number
-  const numVal = parseFloat(rec.value);
-  if (!isNaN(numVal) && String(numVal) === rec.value.trim()) {
+  const trimmedValue = rec.value.trim();
+  const numVal = parseFloat(trimmedValue);
+  if (!isNaN(numVal) && /^-?\d+(\.\d+)?$/.test(trimmedValue)) {
     resource.valueQuantity = { value: numVal };
     if (rec.unit) {
       resource.valueQuantity.unit = rec.unit;
@@ -266,9 +271,10 @@ export function toFhirLabObservation(rec: LabResult, patientDfn: string): FhirOb
 
   if (rec.dateTime) resource.effectiveDateTime = normalizeDate(rec.dateTime);
 
-  // Attempt numeric parse
-  const numVal = parseFloat(rec.result);
-  if (!isNaN(numVal)) {
+  // Attempt numeric parse — strict: must be a clean number, not ">100" etc.
+  const trimmedResult = rec.result.trim();
+  const numVal = parseFloat(trimmedResult);
+  if (!isNaN(numVal) && /^-?\d+(\.\d+)?$/.test(trimmedResult)) {
     resource.valueQuantity = { value: numVal };
     if (rec.units) {
       resource.valueQuantity.unit = rec.units;
@@ -362,6 +368,91 @@ export function toFhirDocumentReference(rec: NoteRecord, patientDfn: string): Fh
 }
 
 /* ================================================================== */
+/* Encounter (Phase 179)                                                */
+/* ================================================================== */
+
+export function toFhirEncounter(rec: EncounterRecord): FhirEncounter {
+  const resource: FhirEncounter = {
+    resourceType: "Encounter",
+    id: `encounter-${rec.id}`,
+    meta: { profile: [US_CORE_ENCOUNTER], source: "vista" },
+    status: mapEncounterStatus(rec.status),
+    class: {
+      system: ENCOUNTER_CLASS_SYSTEM,
+      code: mapEncounterClass(rec.class),
+      display: mapEncounterClassDisplay(rec.class),
+    },
+    subject: { reference: `Patient/${rec.patientDfn}` },
+  };
+
+  // Type
+  if (rec.type) {
+    resource.type = [{ text: rec.type }];
+  }
+
+  // Period
+  if (rec.dateTime) {
+    const start = normalizeDate(rec.dateTime);
+    resource.period = { start };
+    if (rec.duration) {
+      // Estimate end time from duration
+      try {
+        const startDate = new Date(start);
+        if (!isNaN(startDate.getTime())) {
+          startDate.setMinutes(startDate.getMinutes() + rec.duration);
+          resource.period.end = startDate.toISOString();
+        }
+      } catch { /* ignore date parse errors */ }
+    }
+  }
+
+  // Length
+  if (rec.duration) {
+    resource.length = {
+      value: rec.duration,
+      unit: "min",
+      system: "http://unitsofmeasure.org",
+      code: "min",
+    };
+  }
+
+  // Participant (provider)
+  if (rec.provider) {
+    resource.participant = [{
+      type: [{
+        coding: [{
+          system: "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+          code: "ATND",
+          display: "attender",
+        }],
+      }],
+      individual: {
+        reference: rec.providerDuz ? `Practitioner/${rec.providerDuz}` : undefined,
+        display: rec.provider,
+      },
+    }];
+  }
+
+  // ServiceProvider (clinic/location)
+  if (rec.clinic) {
+    resource.serviceProvider = { display: rec.clinic };
+    resource.location = [{
+      location: {
+        reference: rec.clinicIen ? `Location/${rec.clinicIen}` : undefined,
+        display: rec.clinic,
+      },
+    }];
+  }
+
+  // Reason
+  if (rec.reason) {
+    resource.reasonCode = [{ text: rec.reason }];
+  }
+
+  return resource;
+}
+
+/* ================================================================== */
 /* Bundle builder                                                       */
 /* ================================================================== */
 
@@ -414,6 +505,11 @@ function normalizeDate(raw: string): string {
       const mm = timePart.substring(2, 4);
       const ss = timePart.length >= 6 ? timePart.substring(4, 6) : "00";
       return `${y}-${m}-${d}T${hh}:${mm}:${ss}`;
+    }
+    if (timePart.length >= 2) {
+      // L3: handle 2-digit FM time (hours only, e.g. "3240601.14")
+      const hh = timePart.substring(0, 2);
+      return `${y}-${m}-${d}T${hh}:00:00`;
     }
     return `${y}-${m}-${d}`;
   }
@@ -474,4 +570,37 @@ function mapAbnormalFlag(flag: string): string {
   if (f === "N" || f.includes("NORMAL")) return "N";
   if (f.includes("CRITICAL")) return "AA";
   return f || "N";
+}
+
+function mapEncounterStatus(status: string): FhirEncounter["status"] {
+  const s = status?.toUpperCase() || "";
+  if (s.includes("FINISH") || s.includes("COMPLETE") || s.includes("CHECKED OUT")) return "finished";
+  if (s.includes("CANCEL")) return "cancelled";
+  if (s.includes("PROGRESS") || s.includes("CHECKED IN")) return "in-progress";
+  if (s.includes("PLAN") || s.includes("SCHEDULE") || s.includes("FUTURE")) return "planned";
+  if (s.includes("ARRIVE")) return "arrived";
+  if (s.includes("TRIAGE")) return "triaged";
+  return "unknown";
+}
+
+function mapEncounterClass(cls: string): string {
+  const c = cls?.toUpperCase() || "";
+  if (c === "AMB" || c.includes("AMBULAT") || c.includes("OUTPAT")) return "AMB";
+  if (c === "IMP" || c.includes("INPAT")) return "IMP";
+  if (c === "EMER" || c.includes("EMERG")) return "EMER";
+  if (c === "HH" || c.includes("HOME")) return "HH";
+  if (c === "VR" || c.includes("VIRTUAL") || c.includes("TELE")) return "VR";
+  return "AMB";
+}
+
+function mapEncounterClassDisplay(cls: string): string {
+  const code = mapEncounterClass(cls);
+  switch (code) {
+    case "AMB": return "ambulatory";
+    case "IMP": return "inpatient encounter";
+    case "EMER": return "emergency";
+    case "HH": return "home health";
+    case "VR": return "virtual";
+    default: return "ambulatory";
+  }
 }

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ include "ve-tenant.namespace" . }}
+  labels:
+    {{- include "ve-tenant.labels" . | nindent 4 }}
+    pod-security.kubernetes.io/enforce: baseline

@@ -121,6 +121,8 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/vista\/interop\//, auth: "admin" }, // Phase 21: interop telemetry requires admin/provider
   { pattern: /^\/vista\/provision/, auth: "admin" }, // Phase 155: provisioning status (admin only)
   { pattern: /^\/vista\//, auth: "session" },
+  { pattern: /^\/fhir\/metadata$/, auth: "none" }, // Phase 178: FHIR CapabilityStatement (public per FHIR spec)
+  { pattern: /^\/\.well-known\/smart-configuration$/, auth: "none" }, // Phase 179: SMART on FHIR discovery (public per spec)
   { pattern: /^\/fhir\//, auth: "session" }, // Phase 178: FHIR R4 gateway (session required)
   // Default: session required for anything else
 ];

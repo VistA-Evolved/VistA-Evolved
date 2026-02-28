@@ -111,3 +111,19 @@ export interface LabResult {
   status?: string;
   abnormalFlag?: string;
 }
+
+/** Encounter/visit record shape (Phase 179). */
+export interface EncounterRecord {
+  id: string;
+  patientDfn: string;
+  dateTime: string;
+  status: string;
+  class: string;
+  type?: string;
+  clinic?: string;
+  clinicIen?: string;
+  provider?: string;
+  providerDuz?: string;
+  reason?: string;
+  duration?: number;
+}

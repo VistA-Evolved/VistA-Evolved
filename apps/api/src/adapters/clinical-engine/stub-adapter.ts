@@ -6,7 +6,7 @@
  */
 
 import type { ClinicalEngineAdapter } from "./interface.js";
-import type { AdapterResult, PatientRecord, AllergyRecord, VitalRecord, NoteRecord, MedicationRecord, ProblemRecord, LabResult } from "../types.js";
+import type { AdapterResult, PatientRecord, AllergyRecord, VitalRecord, NoteRecord, MedicationRecord, ProblemRecord, LabResult, EncounterRecord } from "../types.js";
 
 const STUB_RESULT = { ok: false as const, pending: true, error: "Clinical engine adapter not configured" };
 
@@ -27,6 +27,7 @@ export class StubClinicalAdapter implements ClinicalEngineAdapter {
   async getMedications(): Promise<AdapterResult<MedicationRecord[]>> { return STUB_RESULT; }
   async getProblems(): Promise<AdapterResult<ProblemRecord[]>> { return STUB_RESULT; }
   async getLabs(): Promise<AdapterResult<LabResult[]>> { return STUB_RESULT; }
+  async getEncounters(): Promise<AdapterResult<EncounterRecord[]>> { return STUB_RESULT; }
   async getReportList(): Promise<AdapterResult<Array<{ id: string; name: string }>>> { return STUB_RESULT; }
   async getReportText(): Promise<AdapterResult<string>> { return STUB_RESULT; }
 }

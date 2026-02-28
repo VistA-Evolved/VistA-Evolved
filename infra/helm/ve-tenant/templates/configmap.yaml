@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tenant-config
+  namespace: {{ include "ve-tenant.namespace" . }}
+  labels:
+    {{- include "ve-tenant.labels" . | nindent 4 }}
+data:
+  TENANT_ID: {{ .Values.tenantId | quote }}
+  TENANT_SLUG: {{ .Values.tenantSlug | quote }}
+  VISTA_HOST: "ve-vista"
+  VISTA_PORT: {{ .Values.vista.port | quote }}
+  PLATFORM_PG_HOST: "ve-platform-db.{{ .Values.global.sharedNamespace }}.svc.cluster.local"
+  PLATFORM_PG_PORT: "5432"
+  PLATFORM_PG_DB: "ve_platform"
+  PLATFORM_PG_USER: "ve_api"
+  REDIS_URL: "redis://ve-redis.{{ .Values.global.sharedNamespace }}.svc.cluster.local:6379"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tenant-secrets
+  namespace: {{ include "ve-tenant.namespace" . }}
+  labels:
+    {{- include "ve-tenant.labels" . | nindent 4 }}
+type: Opaque
+data:
+  # Placeholder — real secrets injected by SOPS/External Secrets/sealed-secrets
+  PLATFORM_PG_PASSWORD: {{ "changeme-in-production" | b64enc | quote }}
+  VISTA_ADMIN_ACCESS: {{ "REPLACEME" | b64enc | quote }}
+  VISTA_ADMIN_VERIFY: {{ "REPLACEME" | b64enc | quote }}

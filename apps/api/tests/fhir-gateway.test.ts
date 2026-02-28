@@ -19,6 +19,7 @@ import {
   toFhirLabObservation,
   toFhirMedicationRequest,
   toFhirDocumentReference,
+  toFhirEncounter,
   toSearchBundle,
 } from "../src/fhir/mappers.js";
 
@@ -32,6 +33,7 @@ import type {
   MedicationRecord,
   ProblemRecord,
   LabResult,
+  EncounterRecord,
 } from "../src/adapters/types.js";
 
 import type {
@@ -41,6 +43,7 @@ import type {
   FhirObservation,
   FhirMedicationRequest,
   FhirDocumentReference,
+  FhirEncounter,
   FhirBundle,
   FhirCapabilityStatement,
 } from "../src/fhir/types.js";
@@ -115,6 +118,21 @@ const NOTE: NoteRecord = {
   dateTime: "3240601.1000",
   status: "COMPLETED",
   text: "Patient seen for diabetes follow-up. A1C improved to 6.8%.",
+};
+
+const ENCOUNTER: EncounterRecord = {
+  id: "701",
+  patientDfn: "3",
+  dateTime: "3240601.0900",
+  status: "CHECKED OUT",
+  class: "AMB",
+  type: "FOLLOW-UP",
+  clinic: "PRIMARY CARE",
+  clinicIen: "44",
+  provider: "PROVIDER,CLYDE WV",
+  providerDuz: "87",
+  reason: "Diabetes follow-up",
+  duration: 30,
 };
 
 /* ================================================================== */
@@ -398,7 +416,7 @@ describe("FHIR R4 Gateway — Phase 178", () => {
       expect(cs.status).toBe("draft");
     });
 
-    it("declares all 6 supported resource types", () => {
+    it("declares all 7 supported resource types", () => {
       const cs = buildCapabilityStatement("http://localhost:3001");
       const resourceTypes = cs.rest?.[0]?.resource?.map((r) => r.type) || [];
       expect(resourceTypes).toContain("Patient");
@@ -407,7 +425,8 @@ describe("FHIR R4 Gateway — Phase 178", () => {
       expect(resourceTypes).toContain("Observation");
       expect(resourceTypes).toContain("MedicationRequest");
       expect(resourceTypes).toContain("DocumentReference");
-      expect(resourceTypes.length).toBe(6);
+      expect(resourceTypes).toContain("Encounter");
+      expect(resourceTypes.length).toBe(7);
     });
 
     it("declares read interaction for Patient", () => {
@@ -536,6 +555,300 @@ describe("FHIR R4 Gateway — Phase 178", () => {
       const rec: VitalRecord = { ...VITAL, dateTime: "3240601.143000" };
       const result = toFhirVitalObservation(rec, "3");
       expect(result.effectiveDateTime).toBe("2024-06-01T14:30:00");
+    });
+
+    it("converts VistA FM date with 2-digit time (hours only) [L3]", () => {
+      const rec: VitalRecord = { ...VITAL, dateTime: "3240601.14" };
+      const result = toFhirVitalObservation(rec, "3");
+      expect(result.effectiveDateTime).toBe("2024-06-01T14:00:00");
+    });
+  });
+
+  /* ---------------------------------------------------------------- */
+  /* Audit hardening: C1 + M5 numeric edge cases                       */
+  /* ---------------------------------------------------------------- */
+  describe("Audit hardening — numeric parsing", () => {
+    it("[C1] lab result with qualifier '>100' → valueString, not valueQuantity", () => {
+      const qualifierLab: LabResult = { ...LAB, result: ">100" };
+      const result = toFhirLabObservation(qualifierLab, "3");
+      expect(result.valueString).toBe(">100");
+      expect(result.valueQuantity).toBeUndefined();
+    });
+
+    it("[C1] lab result with qualifier '<0.5' → valueString", () => {
+      const qualifierLab: LabResult = { ...LAB, result: "<0.5" };
+      const result = toFhirLabObservation(qualifierLab, "3");
+      expect(result.valueString).toBe("<0.5");
+      expect(result.valueQuantity).toBeUndefined();
+    });
+
+    it("[C1] lab result 'POSITIVE' → valueString", () => {
+      const textLab: LabResult = { ...LAB, result: "POSITIVE" };
+      const result = toFhirLabObservation(textLab, "3");
+      expect(result.valueString).toBe("POSITIVE");
+      expect(result.valueQuantity).toBeUndefined();
+    });
+
+    it("[C1] lab result with space '105 ' → valueString (untrimmed check)", () => {
+      // Result has trailing space — after trim, "105" is clean numeric
+      const spaceLab: LabResult = { ...LAB, result: "105 " };
+      const result = toFhirLabObservation(spaceLab, "3");
+      // trimmedResult = "105" which is a clean number → valueQuantity
+      expect(result.valueQuantity?.value).toBe(105);
+    });
+
+    it("[M5] vital with trailing zero '98.60' → valueQuantity", () => {
+      const tzVital: VitalRecord = { ...VITAL, type: "TEMPERATURE", value: "98.60", unit: "F" };
+      const result = toFhirVitalObservation(tzVital, "3");
+      expect(result.valueQuantity?.value).toBe(98.6);
+      expect(result.valueQuantity?.unit).toBe("F");
+    });
+
+    it("[M5] vital '37.0' → valueQuantity (trailing zero after decimal)", () => {
+      const tzVital: VitalRecord = { ...VITAL, type: "TEMPERATURE", value: "37.0", unit: "C" };
+      const result = toFhirVitalObservation(tzVital, "3");
+      expect(result.valueQuantity?.value).toBe(37);
+    });
+
+    it("[C1] lab result '-1.5' (negative) → valueQuantity", () => {
+      const negLab: LabResult = { ...LAB, result: "-1.5" };
+      const result = toFhirLabObservation(negLab, "3");
+      expect(result.valueQuantity?.value).toBe(-1.5);
+    });
+
+    it("[C1] lab result '7.4' (clean decimal) → valueQuantity", () => {
+      const decLab: LabResult = { ...LAB, result: "7.4" };
+      const result = toFhirLabObservation(decLab, "3");
+      expect(result.valueQuantity?.value).toBe(7.4);
+    });
+  });
+
+  /* ---------------------------------------------------------------- */
+  /* Encounter mapper (Phase 179)                                      */
+  /* ---------------------------------------------------------------- */
+  describe("Encounter mapper", () => {
+    it("maps VistA EncounterRecord to FHIR Encounter", () => {
+      const result = toFhirEncounter(ENCOUNTER) as FhirEncounter;
+      expect(result.resourceType).toBe("Encounter");
+      expect(result.id).toBe("encounter-701");
+      expect(result.status).toBe("finished");
+      expect(result.class.code).toBe("AMB");
+      expect(result.class.system).toBe("http://terminology.hl7.org/CodeSystem/v3-ActCode");
+      expect(result.subject?.reference).toBe("Patient/3");
+      expect(result.meta?.profile?.[0]).toContain("us-core-encounter");
+    });
+
+    it("maps encounter period from VistA FM datetime", () => {
+      const result = toFhirEncounter(ENCOUNTER) as FhirEncounter;
+      expect(result.period?.start).toBe("2024-06-01T09:00:00");
+      expect(result.period?.end).toBeDefined(); // computed from duration
+    });
+
+    it("maps participant from provider", () => {
+      const result = toFhirEncounter(ENCOUNTER) as FhirEncounter;
+      expect(result.participant?.length).toBe(1);
+      expect(result.participant?.[0].individual?.display).toBe("PROVIDER,CLYDE WV");
+      expect(result.participant?.[0].individual?.reference).toBe("Practitioner/87");
+    });
+
+    it("maps serviceProvider from clinic", () => {
+      const result = toFhirEncounter(ENCOUNTER) as FhirEncounter;
+      expect(result.serviceProvider?.display).toBe("PRIMARY CARE");
+    });
+
+    it("maps location from clinic", () => {
+      const result = toFhirEncounter(ENCOUNTER) as FhirEncounter;
+      expect(result.location?.length).toBe(1);
+      expect(result.location?.[0].location.display).toBe("PRIMARY CARE");
+      expect(result.location?.[0].location.reference).toBe("Location/44");
+    });
+
+    it("maps type from encounter type", () => {
+      const result = toFhirEncounter(ENCOUNTER) as FhirEncounter;
+      expect(result.type?.[0].text).toBe("FOLLOW-UP");
+    });
+
+    it("maps reasonCode from reason", () => {
+      const result = toFhirEncounter(ENCOUNTER) as FhirEncounter;
+      expect(result.reasonCode?.[0].text).toBe("Diabetes follow-up");
+    });
+
+    it("maps length from duration", () => {
+      const result = toFhirEncounter(ENCOUNTER) as FhirEncounter;
+      expect(result.length?.value).toBe(30);
+      expect(result.length?.unit).toBe("min");
+    });
+
+    it("maps various encounter statuses", () => {
+      expect((toFhirEncounter({ ...ENCOUNTER, status: "CHECKED OUT" }) as FhirEncounter).status).toBe("finished");
+      expect((toFhirEncounter({ ...ENCOUNTER, status: "CHECKED IN" }) as FhirEncounter).status).toBe("in-progress");
+      expect((toFhirEncounter({ ...ENCOUNTER, status: "SCHEDULED" }) as FhirEncounter).status).toBe("planned");
+      expect((toFhirEncounter({ ...ENCOUNTER, status: "CANCELLED" }) as FhirEncounter).status).toBe("cancelled");
+      expect((toFhirEncounter({ ...ENCOUNTER, status: "" }) as FhirEncounter).status).toBe("unknown");
+    });
+
+    it("maps encounter class codes", () => {
+      expect((toFhirEncounter({ ...ENCOUNTER, class: "IMP" }) as FhirEncounter).class.code).toBe("IMP");
+      expect((toFhirEncounter({ ...ENCOUNTER, class: "EMER" }) as FhirEncounter).class.code).toBe("EMER");
+      expect((toFhirEncounter({ ...ENCOUNTER, class: "INPATIENT" }) as FhirEncounter).class.code).toBe("IMP");
+      expect((toFhirEncounter({ ...ENCOUNTER, class: "EMERGENCY" }) as FhirEncounter).class.code).toBe("EMER");
+    });
+
+    it("handles minimal encounter (no optional fields)", () => {
+      const minimal: EncounterRecord = {
+        id: "800",
+        patientDfn: "5",
+        dateTime: "3240101",
+        status: "finished",
+        class: "AMB",
+      };
+      const result = toFhirEncounter(minimal) as FhirEncounter;
+      expect(result.resourceType).toBe("Encounter");
+      expect(result.id).toBe("encounter-800");
+      expect(result.subject?.reference).toBe("Patient/5");
+      expect(result.participant).toBeUndefined();
+      expect(result.serviceProvider).toBeUndefined();
+      expect(result.location).toBeUndefined();
+      expect(result.type).toBeUndefined();
+      expect(result.reasonCode).toBeUndefined();
+      expect(result.length).toBeUndefined();
+    });
+  });
+
+  /* ---------------------------------------------------------------- */
+  /* CapabilityStatement includes Encounter (Phase 179)                */
+  /* ---------------------------------------------------------------- */
+  describe("CapabilityStatement — Encounter", () => {
+    it("declares Encounter resource type", () => {
+      const cs = buildCapabilityStatement("http://localhost:3001");
+      const encounter = cs.rest?.[0]?.resource?.find((r) => r.type === "Encounter");
+      expect(encounter).toBeDefined();
+      expect(encounter?.profile).toContain("us-core-encounter");
+      expect(encounter?.interaction?.map((i) => i.code)).toContain("search-type");
+      expect(encounter?.searchParam?.map((p) => p.name)).toContain("patient");
+    });
+  });
+
+  /* ---------------------------------------------------------------- */  /* FHIR Cache / ETag (Phase 179 Q194)                                */
+  /* ---------------------------------------------------------------- */
+  describe("FHIR Cache — ETag", () => {
+    it("fhir-cache module exports getFhirCacheStats", async () => {
+      const { getFhirCacheStats } = await import("../src/fhir/fhir-cache.js");
+      const stats = getFhirCacheStats();
+      expect(stats.enabled).toBe(true);
+      expect(stats.ttlMs).toBeGreaterThan(0);
+      expect(stats.maxEntries).toBeGreaterThan(0);
+      expect(typeof stats.size).toBe("number");
+    });
+
+    it("fhir-cache module exports clearFhirCache", async () => {
+      const { clearFhirCache, getFhirCacheStats } = await import("../src/fhir/fhir-cache.js");
+      clearFhirCache();
+      expect(getFhirCacheStats().size).toBe(0);
+    });
+
+    it("fhir-cache.ts source uses SHA-256 for ETag computation", async () => {
+      const fs = await import("node:fs");
+      const path = await import("node:path");
+      const cachePath = path.resolve(import.meta.dirname, "../src/fhir/fhir-cache.ts");
+      const content = fs.readFileSync(cachePath, "utf-8");
+      expect(content).toContain("sha256");
+      expect(content).toContain('W/"');
+      expect(content).toContain("If-None-Match");
+      expect(content).toContain("304");
+    });
+
+    it("fhir-cache supports cache-control header", async () => {
+      const fs = await import("node:fs");
+      const path = await import("node:path");
+      const cachePath = path.resolve(import.meta.dirname, "../src/fhir/fhir-cache.ts");
+      const content = fs.readFileSync(cachePath, "utf-8");
+      expect(content).toContain("cache-control");
+      expect(content).toContain("private");
+    });
+  });
+
+  /* ---------------------------------------------------------------- */
+  /* SMART on FHIR posture (Phase 179 Q195)                            */
+  /* ---------------------------------------------------------------- */
+  describe("SMART on FHIR posture", () => {
+    it("buildSmartConfiguration returns required fields", async () => {
+      const { buildSmartConfiguration } = await import("../src/fhir/smart-configuration.js");
+      const config = buildSmartConfiguration("http://localhost:3001");
+      expect(config.capabilities).toBeDefined();
+      expect(config.capabilities.length).toBeGreaterThan(0);
+      expect(config.grant_types_supported).toBeDefined();
+      expect(config["x-vista-evolved-fhir-base"]).toBe("http://localhost:3001/fhir");
+    });
+
+    it("includes patient scope declarations", async () => {
+      const { buildSmartConfiguration } = await import("../src/fhir/smart-configuration.js");
+      const config = buildSmartConfiguration("http://localhost:3001");
+      expect(config.scopes_supported).toContain("patient/*.read");
+      expect(config.scopes_supported).toContain("launch");
+    });
+
+    it("smart-configuration endpoint is public in AUTH_RULES", async () => {
+      const fs = await import("node:fs");
+      const path = await import("node:path");
+      const secPath = path.resolve(import.meta.dirname, "../src/middleware/security.ts");
+      const content = fs.readFileSync(secPath, "utf-8");
+      expect(content).toContain("smart-configuration");
+      expect(content).toContain('"none"');
+    });
+
+    it("advertises Encounter scope", async () => {
+      const { buildSmartConfiguration } = await import("../src/fhir/smart-configuration.js");
+      const config = buildSmartConfiguration("http://localhost:3001");
+      expect(config.scopes_supported).toContain("patient/Encounter.read");
+    });
+  });
+
+  /* ---------------------------------------------------------------- */  /* Audit hardening: CapabilityStatement _count param [L5]            */
+  /* ---------------------------------------------------------------- */
+  describe("Audit hardening — CapabilityStatement", () => {
+    it("[L5] Patient declares _count search parameter", () => {
+      const cs = buildCapabilityStatement("http://localhost:3001");
+      const patient = cs.rest?.[0]?.resource?.find((r) => r.type === "Patient");
+      const paramNames = patient?.searchParam?.map((p) => p.name) || [];
+      expect(paramNames).toContain("_count");
+    });
+  });
+
+  /* ---------------------------------------------------------------- */
+  /* Audit hardening: module registration [M6]                         */
+  /* ---------------------------------------------------------------- */
+  describe("Audit hardening — module governance", () => {
+    it("[M6] config/modules.json includes fhir module", async () => {
+      const fs = await import("node:fs");
+      const path = await import("node:path");
+      const modulesPath = path.resolve(import.meta.dirname, "../../../config/modules.json");
+      const raw = fs.readFileSync(modulesPath, "utf-8");
+      const parsed = JSON.parse(raw);
+      expect(parsed.modules.fhir).toBeDefined();
+      expect(parsed.modules.fhir.routePatterns).toContain("^/fhir/");
+      expect(parsed.modules.fhir.dependencies).toContain("kernel");
+      expect(parsed.modules.fhir.dependencies).toContain("clinical");
+    });
+  });
+
+  /* ---------------------------------------------------------------- */
+  /* Audit hardening: AUTH_RULES metadata public [M7]                  */
+  /* ---------------------------------------------------------------- */
+  describe("Audit hardening — security rules", () => {
+    it("[M7] /fhir/metadata auth rule is 'none' (public) in security.ts", async () => {
+      const fs = await import("node:fs");
+      const path = await import("node:path");
+      const secPath = path.resolve(import.meta.dirname, "../src/middleware/security.ts");
+      const content = fs.readFileSync(secPath, "utf-8");
+      // Must have a metadata-specific rule with "none" auth BEFORE the /fhir/ session rule
+      const metadataRuleIdx = content.indexOf('/fhir\\/metadata');
+      const sessionRuleIdx = content.indexOf('/fhir\\//');
+      expect(metadataRuleIdx).toBeGreaterThan(-1);
+      expect(metadataRuleIdx).toBeLessThan(sessionRuleIdx);
+      // The metadata rule line should contain "none"
+      const metadataLine = content.substring(metadataRuleIdx - 50, metadataRuleIdx + 100);
+      expect(metadataLine).toContain('"none"');
     });
   });
 });

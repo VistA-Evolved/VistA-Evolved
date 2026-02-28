@@ -16,6 +16,7 @@ import type {
   MedicationRecord,
   ProblemRecord,
   LabResult,
+  EncounterRecord,
 } from "../types.js";
 
 export interface ClinicalEngineAdapter extends BaseAdapter {
@@ -45,8 +46,11 @@ export interface ClinicalEngineAdapter extends BaseAdapter {
   /** Get patient lab results. */
   getLabs(dfn: string): Promise<AdapterResult<LabResult[]>>;
 
+  /** Get patient encounters/visits (Phase 179). */
+  getEncounters(dfn: string): Promise<AdapterResult<EncounterRecord[]>>;
+
   /** Get report list. */
-  getReportList(): Promise<AdapterResult<Array<{ id: string; name: string }>>>;
+  getReportList(): Promise<AdapterResult<Array<{ id: string; name: string }>>>;  
 
   /** Get report text. */
   getReportText(dfn: string, reportId: string): Promise<AdapterResult<string>>;

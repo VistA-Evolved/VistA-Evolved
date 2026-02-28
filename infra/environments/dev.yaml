@@ -1,0 +1,29 @@
+# infra/environments/dev.yaml - Kind / local development overlay for ve-shared
+# Usage: helm upgrade --install ve-shared infra/helm/ve-shared -f infra/environments/dev.yaml
+
+global:
+  namespace: ve-system
+
+postgres:
+  enabled: true
+  storage:
+    size: 2Gi
+
+redis:
+  enabled: true
+
+ingress:
+  enabled: true
+  replicas: 1
+
+keycloak:
+  enabled: false
+
+observability:
+  enabled: false
+
+minio:
+  enabled: false
+
+networkPolicies:
+  enabled: false

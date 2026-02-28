@@ -195,6 +195,36 @@ export interface FhirDocumentReference extends FhirResource {
 }
 
 /* ================================================================== */
+/* Encounter (Phase 179)                                                */
+/* ================================================================== */
+
+export interface FhirEncounter extends FhirResource {
+  resourceType: "Encounter";
+  status: "planned" | "arrived" | "triaged" | "in-progress" | "onleave" | "finished" | "cancelled" | "entered-in-error" | "unknown";
+  class: FhirCoding;
+  type?: FhirCodeableConcept[];
+  subject?: FhirReference;
+  participant?: Array<{
+    type?: FhirCodeableConcept[];
+    individual?: FhirReference;
+    period?: FhirPeriod;
+  }>;
+  period?: FhirPeriod;
+  reasonCode?: FhirCodeableConcept[];
+  serviceProvider?: FhirReference;
+  location?: Array<{
+    location: FhirReference;
+    status?: "planned" | "active" | "reserved" | "completed";
+  }>;
+  length?: {
+    value: number;
+    unit: string;
+    system: string;
+    code: string;
+  };
+}
+
+/* ================================================================== */
 /* Bundle                                                               */
 /* ================================================================== */
 
