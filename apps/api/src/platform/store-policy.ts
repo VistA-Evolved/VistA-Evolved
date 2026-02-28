@@ -2111,6 +2111,43 @@ export const STORE_INVENTORY: StoreEntry[] = [
     domain: "writeback",
     notes: "Phase 300: Runtime-only adapter registry, populated at startup.",
   },
+
+  // ─── Telehealth Hardening (Phase 307) ──────────────────────────
+  {
+    id: "telehealth-encounter-links",
+    file: "telehealth/encounter-link.ts",
+    variable: "links",
+    description: "Telehealth room-to-VistA encounter linkage records",
+    classification: "operational",
+    durability: "in_memory_only",
+    domain: "telehealth",
+    maxSize: 2_000,
+    migrationTarget: "pg: telehealth_encounter_link table",
+    notes: "Phase 307: Encounter linkage resets on restart. ORWPCE SAVE writeback is integration-pending.",
+  },
+  {
+    id: "telehealth-consent-records",
+    file: "telehealth/consent-posture.ts",
+    variable: "consentStore",
+    description: "Telehealth consent records per room per participant",
+    classification: "operational",
+    durability: "in_memory_only",
+    domain: "telehealth",
+    maxSize: 2_000,
+    migrationTarget: "pg: telehealth_consent table",
+    notes: "Phase 307: Consent state resets on restart. All consent events audited.",
+  },
+  {
+    id: "telehealth-heartbeats",
+    file: "telehealth/session-hardening.ts",
+    variable: "heartbeats",
+    description: "Per-participant heartbeat tracking for telehealth sessions",
+    classification: "ephemeral",
+    durability: "in_memory_only",
+    domain: "telehealth",
+    maxSize: 2_000,
+    notes: "Phase 307: Ephemeral heartbeat data, no persistence needed.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

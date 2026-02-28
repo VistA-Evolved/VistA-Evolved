@@ -171,7 +171,12 @@ export type ImmutableAuditAction =
   | "writeback.dry_run"
   | "writeback.reject"
   | "writeback.retry"
-  | "writeback.fail";
+  | "writeback.fail"
+  // Phase 307: Telehealth hardening
+  | "telehealth.encounter_link"
+  | "telehealth.consent_recorded"
+  | "telehealth.consent_withdrawn"
+  | "telehealth.session_auto_ended";
 
 export type ImmutableAuditOutcome = "success" | "failure" | "denied" | "error";
 
