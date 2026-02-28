@@ -16,7 +16,7 @@ import { loadFlowCatalog } from "../qa/index.js";
 import { startShipperJob } from "../audit-shipping/shipper.js";
 import { dbPoolInUse, dbPoolTotal, dbPoolWaiting } from "../telemetry/metrics.js";
 import { getRuntimeMode } from "../platform/runtime-mode.js";
-
+import { initHl7Engine, stopHl7Engine, isHl7EngineEnabled } from "../hl7/index.js";
 /**
  * Initialize Postgres platform DB and wire all repos.
  */
@@ -326,6 +326,14 @@ async function startBackgroundServices(): Promise<void> {
 
   // Phase 25: Initialize ETL writer (non-blocking -- connects to ROcto lazily)
   initEtl();
+
+  // Phase 239: Initialize HL7v2 MLLP engine (if enabled)
+  if (isHl7EngineEnabled()) {
+    const hl7Started = await initHl7Engine();
+    if (hl7Started) {
+      log.info("HL7 MLLP engine started (HL7_ENGINE_ENABLED=true)");
+    }
+  }
 
   // Phase 133: Periodic PG pool stats collection (every 15s)
   if (isPgConfigured()) {

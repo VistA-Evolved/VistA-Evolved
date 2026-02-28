@@ -134,6 +134,9 @@ import schemaStatusRoutes from "../routes/admin/schema-status.js";
 import fhirRoutes from "../fhir/fhir-routes.js";
 import smartConfigRoutes from "../fhir/smart-configuration.js";
 
+// HL7v2 Engine (Phase 239)
+import hl7EngineRoutes from "../routes/hl7-engine.js";
+
 // Infrastructure routes
 import postureRoutes from "../posture/index.js";
 import { jobAdminRoutes } from "../routes/job-admin-routes.js";
@@ -387,6 +390,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // VistA provisioning (Phase 155)
   server.register(vistaProvisionRoutes);
+
+  // HL7v2 Engine (Phase 239)
+  server.register(hl7EngineRoutes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);
