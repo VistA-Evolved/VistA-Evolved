@@ -1,0 +1,38 @@
+=== Wave 7 Repo Scan -- Existing Tools & Features ===
+Date: 2026-02-28 19:43:51
+
+-- CI Workflows (13) --
+  cd-deploy.yml   ci-e2e-smoke.yml   ci-imaging-smoke.yml   ci-pr-gates.yml   ci-security.yml   ci-verify.yml   ci.yml   codeql.yml   dr-nightly.yml   qa-gauntlet.yml   quality-gates.yml   supply-chain-attest.yml   verify.yml
+
+-- Verification Scripts --
+  Count: 120
+  Latest: verify-wave6-certification.ps1
+
+-- k6 Test Scripts --
+  db-load.js   hardening-smoke.js   load-mixed.js   perf-budgets.js   rc-baseline.js   smoke-fhir.js   smoke-login.js   smoke-reads.js   smoke-write.js
+
+-- Playwright E2E Specs --
+  Count: 41 spec files
+
+-- FHIR Gateway --
+  capability-statement.ts   fhir-bearer-auth.ts   fhir-cache.ts   fhir-routes.ts   fhir-scope-enforcement.ts   fhir-search-params.ts   index.ts   mappers.ts   smart-configuration.ts   types.ts
+
+-- RPC Registry --
+  File: apps/api/src/vista/rpcRegistry.ts
+  RPCs: 137 registered + 59 exceptions (per AGENTS.md)
+
+-- DR Infrastructure --
+  .github/workflows/dr-nightly.yml (PG backup/restore daily)
+  scripts/dr/backup.mjs
+  scripts/dr/restore-verify.mjs
+  scripts/ops/backup-drill.ps1
+  scripts/ops/restore-drill.ps1
+
+-- Supply Chain --
+  .github/workflows/supply-chain-attest.yml (Syft SBOM + cosign)
+  scripts/ops/generate-sbom.ps1 (CycloneDX)
+
+-- Pilot Hardening (Phase 246) --
+  apps/api/src/pilot/site-config.ts
+  apps/api/src/pilot/preflight.ts
+  apps/api/src/routes/pilot-routes.ts
