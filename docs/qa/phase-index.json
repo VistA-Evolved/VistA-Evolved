@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-28T06:54:33.700Z",
+  "generatedAt": "2026-02-28T06:59:26.435Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 226,
+  "phaseCount": 227,
   "phases": [
     {
       "phaseNumber": "1",
@@ -4338,6 +4338,31 @@
       "filesTouched": [
         "scripts/verify-rpc-communication.mjs"
       ]
+    },
+    {
+      "phaseNumber": "218",
+      "title": "Fix What Verification Finds",
+      "folder": "224-PHASE-218-FIX-RPC-FINDINGS",
+      "files": [
+        "218-01-IMPLEMENT.md",
+        "218-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "218-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "218-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [
+        "ORQPT DEFAULT LIST SOURCE",
+        "ORQPT DEFAULT PATIENT LIST",
+        "ORQQPX REMINDER DETAIL",
+        "ORQQPX REMINDERS LIST",
+        "ORWCV VST"
+      ],
+      "uiComponents": [],
+      "filesTouched": []
     },
     {
       "phaseNumber": "21",
