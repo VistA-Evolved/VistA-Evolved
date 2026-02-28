@@ -11,6 +11,7 @@ import { existsSync } from "fs";
 import { join } from "path";
 import { fileURLToPath } from "url";
 import { isPgConfigured } from "../platform/pg/pg-db.js";
+import { STORE_INVENTORY } from "../platform/store-policy.js";
 import type { PostureGate } from "./observability-posture.js";
 
 // Resolve workspace root from this file's location (apps/api/src/posture/)
@@ -18,16 +19,12 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const WS_ROOT = join(__dirname, "..", "..", "..", "..");
 
 /**
- * Number of in-memory Map/Set stores across the API codebase.
- * Inventoried in Phase 107 IMPLEMENT (room-store, imaging-worklist,
- * imaging-ingest, claim-store, session-store, analytics-store,
- * payer-registry, edi-pipeline, rcm connectors, device-check,
- * imaging-devices, imaging-audit, immutable-audit, rcm-audit,
- * tenant-config, capability caches, policy-engine, biometric
- * challenge stores, rate-limiter buckets, circuit breaker state,
- * etc.). Update when new stores are added.
+ * Phase 177: Derive in-memory store count from the canonical STORE_INVENTORY
+ * instead of a hardcoded constant. This prevents drift.
  */
-const IN_MEMORY_STORE_COUNT = 30;
+const IN_MEMORY_STORE_COUNT = STORE_INVENTORY.filter(
+  s => s.durability === "in_memory_only"
+).length;
 
 export interface BackupPosture {
   score: number;
