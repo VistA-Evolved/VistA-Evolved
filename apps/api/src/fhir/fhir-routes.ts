@@ -15,7 +15,7 @@
  *   GET  /fhir/DocumentReference?patient=N      -- Notes by patient
  *   GET  /fhir/Encounter?patient=N              -- Encounters by patient (Phase 179)
  *
- * Auth: session-based (/fhir/* added to AUTH_RULES in security.ts).
+ * Auth: session cookie or SMART Bearer JWT (/fhir/* routes use "fhir" AuthLevel in security.ts).
  * Content-Type: application/fhir+json for all FHIR responses.
  *
  * All data flows through the ClinicalEngineAdapter — no direct RPC calls.
@@ -39,7 +39,6 @@ import {
   toFhirMedicationRequest,
   toFhirDocumentReference,
   toFhirEncounter,
-  toSearchBundle,
   toPagedSearchBundle,
 } from "./mappers.js";
 import type { FhirOperationOutcome, FhirResource } from "./types.js";
@@ -194,10 +193,10 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
         }
         const result = await adapter.getPatient(query._id);
         if (!result.ok || !result.data) {
-          return fhirReply(reply, 200, toSearchBundle([], 0, baseUrl, "Patient"));
+          return fhirReply(reply, 200, toPagedSearchBundle([], baseUrl, "Patient"));
         }
         const resource = toFhirPatient(result.data);
-        return fhirReply(reply, 200, toSearchBundle([resource], 1, baseUrl, "Patient"));
+        return fhirReply(reply, 200, toPagedSearchBundle([resource], baseUrl, "Patient"));
       }
 
       // Search by name
@@ -212,18 +211,20 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
         return fhirReply(reply, 503, operationOutcome("error", "transient", "Clinical engine adapter not available"));
       }
 
-      const count = Math.min(Math.max(parseInt(query._count || "", 10) || 20, 1), 100);
+      const { offset, count } = extractPaging(query);
       const result = await adapter.searchPatients(name, count);
       if (!result.ok || !result.data) {
         if (result.pending) {
           return fhirReply(reply, 503, operationOutcome("error", "transient",
             `Integration pending: ${result.target || "patient search"}`));
         }
-        return fhirReply(reply, 200, toSearchBundle([], 0, baseUrl, "Patient"));
+        return fhirReply(reply, 200, toPagedSearchBundle([], baseUrl, "Patient"));
       }
 
       const resources = result.data.map(toFhirPatient);
-      fhirReply(reply, 200, toSearchBundle(resources, resources.length, baseUrl, "Patient"));
+      fhirReply(reply, 200, toPagedSearchBundle(resources, baseUrl, "Patient", {
+        offset, count, queryString: buildSearchQueryString(query),
+      }));
     } catch (err: unknown) {
       log.error("FHIR Patient search error", { error: err instanceof Error ? err.message : String(err) });
       fhirReply(reply, 500, operationOutcome("error", "exception", "Internal server error"));
@@ -258,7 +259,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
           return fhirReply(reply, 503, operationOutcome("error", "transient",
             `Integration pending: ${result.target || "allergies"}`));
         }
-        return fhirReply(reply, 200, toSearchBundle([], 0, baseUrl, "AllergyIntolerance"));
+        return fhirReply(reply, 200, toPagedSearchBundle([], baseUrl, "AllergyIntolerance"));
       }
 
       const resources = result.data.map((a) => toFhirAllergyIntolerance(a, dfn));
@@ -301,7 +302,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
           return fhirReply(reply, 503, operationOutcome("error", "transient",
             `Integration pending: ${result.target || "problems"}`));
         }
-        return fhirReply(reply, 200, toSearchBundle([], 0, baseUrl, "Condition"));
+        return fhirReply(reply, 200, toPagedSearchBundle([], baseUrl, "Condition"));
       }
 
       const resources = result.data.map((p) => toFhirCondition(p, dfn));
@@ -396,7 +397,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
           return fhirReply(reply, 503, operationOutcome("error", "transient",
             `Integration pending: ${result.target || "medications"}`));
         }
-        return fhirReply(reply, 200, toSearchBundle([], 0, baseUrl, "MedicationRequest"));
+        return fhirReply(reply, 200, toPagedSearchBundle([], baseUrl, "MedicationRequest"));
       }
 
       const resources = result.data.map((m) => toFhirMedicationRequest(m, dfn));
@@ -439,7 +440,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
           return fhirReply(reply, 503, operationOutcome("error", "transient",
             `Integration pending: ${result.target || "notes"}`));
         }
-        return fhirReply(reply, 200, toSearchBundle([], 0, baseUrl, "DocumentReference"));
+        return fhirReply(reply, 200, toPagedSearchBundle([], baseUrl, "DocumentReference"));
       }
 
       const resources = result.data.map((n) => toFhirDocumentReference(n, dfn));
@@ -482,7 +483,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
           return fhirReply(reply, 503, operationOutcome("error", "transient",
             `Integration pending: ${result.target || "encounters"}`));
         }
-        return fhirReply(reply, 200, toSearchBundle([], 0, baseUrl, "Encounter"));
+        return fhirReply(reply, 200, toPagedSearchBundle([], baseUrl, "Encounter"));
       }
 
       const resources = result.data.map((e) => toFhirEncounter(e));

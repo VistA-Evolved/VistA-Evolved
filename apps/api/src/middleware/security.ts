@@ -304,14 +304,20 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
         if (result.ok) {
           request.fhirPrincipal = result.principal;
           // Also set a synthetic session for backward compat with requireSession()
+          const now = Date.now();
           request.session = {
             token: "bearer",
             duz: result.principal.duz,
             userName: result.principal.userName,
-            role: result.principal.roles[0] || "provider",
-            loginTime: Date.now(),
+            role: (result.principal.roles[0] || "provider") as SessionData["role"],
+            facilityStation: "",
+            facilityName: "",
+            divisionIen: "",
             tenantId: result.principal.tenantId,
-          } as SessionData;
+            createdAt: now,
+            lastActivity: now,
+            csrfSecret: "",
+          } satisfies SessionData;
           return;
         }
         // Bearer token was present but invalid — reject (don't fall through to session)

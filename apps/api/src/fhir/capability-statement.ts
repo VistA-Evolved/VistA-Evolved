@@ -21,11 +21,13 @@ import { getOidcConfig } from "../auth/oidc-provider.js";
 
 const VERSION = "0.2.0";
 
+type CapabilitySecurity = NonNullable<NonNullable<FhirCapabilityStatement["rest"]>[number]["security"]>;
+
 export function buildCapabilityStatement(baseUrl: string): FhirCapabilityStatement {
   const oidc = getOidcConfig();
 
   // Phase 235: SMART security extension (only when OIDC is enabled)
-  const security: any = {
+  const security: CapabilitySecurity = {
     cors: true,
     service: [{
       coding: [{
