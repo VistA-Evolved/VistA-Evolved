@@ -43,7 +43,7 @@ services:
     # and adding: -c archive_mode=on -c archive_command='cp %p /wal-archive/%f'
     # to the command. See docs/runbooks/pg-backup-pitr.md for full guide.
 
-  # ---------- Reverse proxy (TLS termination placeholder) ----------
+  # ---------- Reverse proxy (TLS termination) ----------
   proxy:
     image: nginx:alpine
     ports:
@@ -51,9 +51,12 @@ services:
       - "80:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      # Mount TLS certs here:
-      # - ./certs/cert.pem:/etc/nginx/certs/cert.pem:ro
-      # - ./certs/key.pem:/etc/nginx/certs/key.pem:ro
+      # TLS: mount tls.conf + certs to enable HTTPS.
+      # Generate certs with: .\infra\tls\mkcert-bootstrap.ps1
+      # Then copy to nginx/certs/ or adjust paths below.
+      - ./nginx/tls.conf:/etc/nginx/conf.d/tls.conf:ro
+      - ./nginx/certs/cert.pem:/etc/nginx/certs/cert.pem:ro
+      - ./nginx/certs/key.pem:/etc/nginx/certs/key.pem:ro
     depends_on:
       api:
         condition: service_healthy

@@ -1,0 +1,88 @@
+# VistA-Evolved — Local Dev TLS Reverse Proxy
+#
+# Caddy auto-generates a self-signed CA and leaf cert for ehr.local.
+# Trust the CA once: caddy trust (or use mkcert-bootstrap.ps1 for manual control).
+#
+# Usage:
+#   docker compose -f infra/tls/docker-compose.tls.yml up -d
+#
+# Then access: https://ehr.local (add 127.0.0.1 ehr.local to hosts file)
+
+{
+	# Dev-mode: use internal CA (Caddy's built-in ACME-less issuer)
+	local_certs
+	# Disable admin API in dev proxy
+	admin off
+}
+
+# HTTPS reverse proxy — ehr.local
+ehr.local {
+	# --- API routes ---
+	handle /auth/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /vista/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /health {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /ready {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /metrics/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /admin/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /ws/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /imaging/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /rcm/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /telehealth/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /analytics/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /iam/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /posture/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /scheduling/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /intake/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /portal/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /api/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /version {
+		reverse_proxy host.docker.internal:3001
+	}
+
+	# --- Web frontend (catch-all) ---
+	handle {
+		reverse_proxy host.docker.internal:3000
+	}
+
+	# Security headers
+	header {
+		X-Content-Type-Options nosniff
+		X-Frame-Options DENY
+		Referrer-Policy strict-origin-when-cross-origin
+		Strict-Transport-Security "max-age=63072000; includeSubDomains"
+	}
+}

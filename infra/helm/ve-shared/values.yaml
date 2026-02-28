@@ -116,3 +116,20 @@ policy:
 # ---------- Pod Security ----------
 podSecurityStandards:
   enforce: baseline
+
+# ---------- TLS / cert-manager ----------
+certManager:
+  enabled: false
+  # type: "self-signed" for dev/staging, "acme" for production (Let's Encrypt)
+  type: self-signed
+  issuerName: ve-selfsigned-issuer
+  # ACME settings (only used when type: acme)
+  acme:
+    email: ""
+    server: "https://acme-v02.api.letsencrypt.org/directory"
+  certificate:
+    duration: "2160h"     # 90 days
+    renewBefore: "360h"   # 15 days before expiry
+    dnsNames:
+      - "ehr.local"
+      - "*.ehr.local"

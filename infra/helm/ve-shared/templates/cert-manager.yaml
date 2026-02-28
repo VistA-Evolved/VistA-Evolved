@@ -1,0 +1,49 @@
+{{- if .Values.certManager.enabled }}
+---
+# cert-manager ClusterIssuer — self-signed CA for dev/staging
+# Replace with Let's Encrypt or ACME issuer for production.
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ .Values.certManager.issuerName }}
+  labels:
+    {{- include "ve-shared.labels" . | nindent 4 }}
+spec:
+  {{- if eq .Values.certManager.type "self-signed" }}
+  selfSigned: {}
+  {{- else if eq .Values.certManager.type "acme" }}
+  acme:
+    email: {{ .Values.certManager.acme.email }}
+    server: {{ .Values.certManager.acme.server | default "https://acme-v02.api.letsencrypt.org/directory" }}
+    privateKeySecretRef:
+      name: letsencrypt-{{ .Values.certManager.issuerName }}
+    solvers:
+      - http01:
+          ingress:
+            class: {{ .Values.ingress.className }}
+  {{- end }}
+---
+# Certificate for the VistA-Evolved gateway
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ve-gateway-tls
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "ve-shared.labels" . | nindent 4 }}
+spec:
+  secretName: ve-gateway-tls-secret
+  duration: {{ .Values.certManager.certificate.duration | default "2160h" }}
+  renewBefore: {{ .Values.certManager.certificate.renewBefore | default "360h" }}
+  isCA: false
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  dnsNames:
+    {{- range .Values.certManager.certificate.dnsNames }}
+    - {{ . }}
+    {{- end }}
+  issuerRef:
+    name: {{ .Values.certManager.issuerName }}
+    kind: ClusterIssuer
+{{- end }}

@@ -1,0 +1,43 @@
+# VistA-Evolved — Local TLS Dev Overlay (Caddy)
+#
+# Usage:
+#   docker compose -f infra/tls/docker-compose.tls.yml up -d
+#
+# Prerequisites:
+#   1. Add to hosts file: 127.0.0.1 ehr.local
+#   2. Start API + Web locally (ports 3001 + 3000)
+#   3. (Optional) Run mkcert-bootstrap.ps1 for pre-trusted certs
+#
+# After start, access: https://ehr.local
+# Caddy auto-generates a self-signed cert for ehr.local.
+# Run "caddy trust" or accept the browser warning on first visit.
+
+services:
+  caddy-tls:
+    image: caddy:2-alpine
+    container_name: ve-caddy-tls
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+      # If using mkcert-generated certs, mount them:
+      # - ./certs:/etc/caddy/certs:ro
+    extra_hosts:
+      # Allow Caddy to reach host-network services (API + Web)
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "--no-check-certificate", "https://localhost/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  caddy-data:
+    driver: local
+  caddy-config:
+    driver: local
