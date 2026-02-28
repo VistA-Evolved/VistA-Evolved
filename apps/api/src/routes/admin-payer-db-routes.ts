@@ -61,6 +61,7 @@ const __dirname_resolved = typeof __dirname !== "undefined"
 const REPO_ROOT = join(__dirname_resolved, "..", "..", "..", "..");
 
 let pgReady = false;
+let pgInitPromise: Promise<void> | null = null;
 
 const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
 
@@ -69,15 +70,21 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
   server.addHook("onSend", idempotencyOnSend);
 
   async function ensureDb(): Promise<void> {
-    if (!pgReady && isPgConfigured()) {
-      const pgResult = await initPlatformPg();
-      pgReady = true;
-      if (pgResult.ok) {
-        server.log.info(`Platform PG initialized (migrations: ${pgResult.migrations?.applied ?? 0} applied)`);
-      } else {
-        server.log.warn(`Platform PG init failed: ${pgResult.error}`);
-      }
+    if (pgReady) return;
+    if (!isPgConfigured()) return;
+    // Deduplicate concurrent init calls via shared promise
+    if (!pgInitPromise) {
+      pgInitPromise = (async () => {
+        const pgResult = await initPlatformPg();
+        pgReady = true;
+        if (pgResult.ok) {
+          server.log.info(`Platform PG initialized (migrations: ${pgResult.migrations?.applied ?? 0} applied)`);
+        } else {
+          server.log.warn(`Platform PG init failed: ${pgResult.error}`);
+        }
+      })();
     }
+    await pgInitPromise;
   }
 
   /** Get repo facade for the active backend */

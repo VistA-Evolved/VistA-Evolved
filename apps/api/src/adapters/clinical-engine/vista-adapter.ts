@@ -6,6 +6,7 @@
  */
 
 import type { ClinicalEngineAdapter } from "./interface.js";
+import { log } from "../../lib/logger.js";
 import type {
   AdapterResult,
   PatientRecord,
@@ -175,7 +176,11 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
         };
       });
       return { ok: true, data: encounters };
-    } catch {
+    } catch (primaryErr) {
+      // Log primary RPC error before attempting fallback
+      log.debug("VistA encounters RPC failed, trying scheduling fallback", {
+        error: primaryErr instanceof Error ? primaryErr.message : String(primaryErr),
+      });
       // Fallback: try scheduling adapter's SDOE LIST ENCOUNTERS FOR PAT
       try {
         const { getAdapter } = await import("../adapter-loader.js");

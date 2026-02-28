@@ -69,7 +69,7 @@ export async function handleRetentionCleanup(
       log.info("retention_cleanup: dry-run sessions", { cutoff: cutoffIso });
     } else {
       const res = await pool.query(
-        "DELETE FROM session WHERE expires_at < $1",
+        "DELETE FROM auth_session WHERE expires_at < $1",
         [cutoffIso],
       );
       results.sessionsDeleted = res.rowCount ?? 0;
@@ -93,6 +93,8 @@ export async function handleRetentionCleanup(
         [cutoffIso],
       );
       results.idempotencyKeysDeleted = res.rowCount ?? 0;
+    } else {
+      log.info("retention_cleanup: dry-run idempotency keys", { cutoff: cutoffIso });
     }
   } catch (err) {
     const errMsg = err instanceof Error ? err.message : String(err);

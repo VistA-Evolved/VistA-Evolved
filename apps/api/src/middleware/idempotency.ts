@@ -4,7 +4,7 @@
  * Phase 103: DB Performance Posture
  *
  * Uses the idempotency_key table (Phase 101) to prevent duplicate
- * writes from retried requests. Works with both SQLite and PG backends.
+ * writes from retried requests. Works with PG backend and in-memory fallback.
  *
  * Usage: Client sends `Idempotency-Key: <uuid>` header on POST/PUT/PATCH.
  * If the key was already used (within TTL), the cached response is returned.
@@ -76,7 +76,7 @@ function pruneExpired(): void {
     }
   }
   if (_repo) {
-    try { _repo.pruneExpiredKeys(); } catch (e) { dbWarn("persist", e); }
+    try { void Promise.resolve(_repo.pruneExpiredKeys()).catch((e) => dbWarn("prune", e)); } catch (e) { dbWarn("prune", e); }
   }
 }
 

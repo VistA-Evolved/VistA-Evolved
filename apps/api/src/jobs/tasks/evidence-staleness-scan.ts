@@ -39,8 +39,8 @@ export async function handleEvidenceStalenessScan(
     "../../rcm/evidence/evidence-registry-repo.js"
   );
 
-  // 1. Fetch all evidence for tenant
-  const allEvidence = await listAll(tenantId !== "default" ? tenantId : undefined);
+  // 1. Fetch all evidence for tenant (always scoped — no cross-tenant scan)
+  const allEvidence = await listAll(tenantId);
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - staleAfterDays);
   const cutoffIso = cutoffDate.toISOString();

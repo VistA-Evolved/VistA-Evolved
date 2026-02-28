@@ -12,7 +12,7 @@
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { randomUUID } from "crypto";
-import { log, setRequestId, clearRequestId, runWithRequestId } from "../lib/logger.js";
+import { log, setRequestId, clearRequestId } from "../lib/logger.js";
 import { audit } from "../lib/audit.js";
 import { RATE_LIMIT_CONFIG, CSRF_CONFIG } from "../config/server-config.js";
 import { getSession } from "../auth/session-store.js";
@@ -29,7 +29,7 @@ import { stopEtl } from "../services/analytics-etl.js";
 import { getCurrentTraceId } from "../telemetry/tracing.js";
 import {
   httpRequestDuration, httpRequestsTotal, httpActiveRequests,
-  errorsTotal, sanitizeRoute, recordSloSample, auditEventsTotal,
+  errorsTotal, sanitizeRoute, recordSloSample,
 } from "../telemetry/metrics.js";
 import { shutdownTracing } from "../telemetry/tracing.js";
 import { closePgDb } from "../platform/pg/pg-db.js";
@@ -157,12 +157,13 @@ interface RateBucket {
 const rateBuckets = new Map<string, RateBucket>();
 
 // Cleanup old buckets every 60s
-setInterval(() => {
+const _rateBucketCleanup = setInterval(() => {
   const now = Date.now();
   for (const [key, bucket] of rateBuckets) {
     if (bucket.resetAt <= now) rateBuckets.delete(key);
   }
 }, 60_000);
+_rateBucketCleanup.unref(); // Don't keep process alive for cleanup timer
 
 function checkRateLimit(ip: string, endpoint: string): { allowed: boolean; remaining: number; resetAt: number } {
   const isLogin = endpoint === "/auth/login";
@@ -536,6 +537,6 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
   }
 
   log.info("Security middleware registered", {
-    features: ["request-ids", "security-headers", "rate-limiting", "auth-gateway", "origin-check", "csrf-double-submit", "error-handler", "graceful-shutdown"],
+    features: ["request-ids", "security-headers", "rate-limiting", "auth-gateway", "origin-check", "csrf-synchronizer-token", "error-handler", "graceful-shutdown"],
   });
 }

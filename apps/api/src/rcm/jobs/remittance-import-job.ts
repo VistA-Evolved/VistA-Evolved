@@ -207,40 +207,36 @@ export async function handleRemittanceImportJob(
  * create an underpayment case.
  */
 async function detectUnderpayments(importId: string): Promise<number> {
-  try {
-    const { listPaymentsByImport, createUnderpaymentCase } = await import(
-      "../reconciliation/recon-store.js"
-    );
+  const { listPaymentsByImport, createUnderpaymentCase } = await import(
+    "../reconciliation/recon-store.js"
+  );
 
-    const payments = await listPaymentsByImport(importId);
-    let created = 0;
+  const payments = await listPaymentsByImport(importId);
+  let created = 0;
 
-    for (const payment of payments) {
-      if (
-        payment.status === "MATCHED" &&
-        payment.billedAmountCents > 0 &&
-        payment.paidAmountCents < payment.billedAmountCents * UNDERPAYMENT_THRESHOLD
-      ) {
-        try {
-          await createUnderpaymentCase({
-            claimRef: payment.claimRef,
-            paymentId: payment.id,
-            payerId: payment.payerId,
-            expectedAmountModel: "BILLED_AMOUNT",
-            expectedAmountCents: payment.billedAmountCents,
-            paidAmountCents: payment.paidAmountCents,
-          });
-          created++;
-        } catch {
-          // Already exists or other non-fatal error
-        }
+  for (const payment of payments) {
+    if (
+      payment.status === "MATCHED" &&
+      payment.billedAmountCents > 0 &&
+      payment.paidAmountCents < payment.billedAmountCents * UNDERPAYMENT_THRESHOLD
+    ) {
+      try {
+        await createUnderpaymentCase({
+          claimRef: payment.claimRef,
+          paymentId: payment.id,
+          payerId: payment.payerId,
+          expectedAmountModel: "BILLED_AMOUNT",
+          expectedAmountCents: payment.billedAmountCents,
+          paidAmountCents: payment.paidAmountCents,
+        });
+        created++;
+      } catch {
+        // Already exists or other non-fatal creation error
       }
     }
-
-    return created;
-  } catch {
-    return 0;
   }
+
+  return created;
 }
 
 /* ── Registration Config ───────────────────────────────────── */

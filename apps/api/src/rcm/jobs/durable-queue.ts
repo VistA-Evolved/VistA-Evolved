@@ -111,43 +111,37 @@ export class DurableJobQueue implements RcmJobQueue {
     const db = getPgDb();
     const now = new Date().toISOString();
 
-    // Find next ready job — highest priority (lowest number), then earliest scheduled
-    const dequeueRows = await db
-      .select()
-      .from(rcmDurableJob)
-      .where(
-        and(
-          eq(rcmDurableJob.status, "queued"),
-          lte(rcmDurableJob.scheduledAt, now),
-        ),
-      )
-      .orderBy(asc(rcmDurableJob.priority), asc(rcmDurableJob.scheduledAt))
-      .limit(1);
-    const row = dequeueRows[0] ?? null;
-
-    if (!row) return null;
-
-    // Atomically transition to processing
-    await db.update(rcmDurableJob)
+    // Atomic dequeue: UPDATE ... RETURNING avoids race conditions
+    // between concurrent workers. Only one worker can claim each job.
+    const claimed = await db
+      .update(rcmDurableJob)
       .set({
         status: "processing",
         startedAt: now,
-        attempts: (row.attempts ?? 0) + 1,
+        attempts: sql`${rcmDurableJob.attempts} + 1`,
         updatedAt: now,
       })
       .where(
         and(
-          eq(rcmDurableJob.id, row.id),
-          eq(rcmDurableJob.status, "queued"), // CAS guard
+          eq(rcmDurableJob.status, "queued"),
+          lte(rcmDurableJob.scheduledAt, now),
+          // Pick the best candidate by sub-selecting the exact row ID
+          sql`${rcmDurableJob.id} = (
+            SELECT ${rcmDurableJob.id} FROM ${rcmDurableJob}
+            WHERE ${rcmDurableJob.status} = 'queued'
+              AND ${rcmDurableJob.scheduledAt} <= ${now}
+            ORDER BY ${rcmDurableJob.priority} ASC, ${rcmDurableJob.scheduledAt} ASC
+            LIMIT 1
+            FOR UPDATE SKIP LOCKED
+          )`,
         ),
-      );
+      )
+      .returning();
 
-    // Re-fetch to get updated state
-    const updatedRows = await db.select().from(rcmDurableJob).where(eq(rcmDurableJob.id, row.id));
-    const updated = updatedRows[0] ?? null;
-    if (!updated || updated.status !== "processing") return null;
+    const row = claimed[0] ?? null;
+    if (!row) return null;
 
-    return rowToJob(updated);
+    return rowToJob(row);
   }
 
   async complete(jobId: string, result?: Record<string, unknown>): Promise<void> {
@@ -258,7 +252,7 @@ export class DurableJobQueue implements RcmJobQueue {
       .select({ count: sql<number>`count(*)` })
       .from(rcmDurableJob)
       .where(whereClause);
-    const total = (countRows[0] as any)?.count ?? 0;
+    const total = Number((countRows[0] as any)?.count ?? 0);
 
     const limit = filter?.limit ?? 50;
     const offset = filter?.offset ?? 0;
@@ -292,7 +286,7 @@ export class DurableJobQueue implements RcmJobQueue {
 
     const stats = { queued: 0, processing: 0, completed: 0, failed: 0, deadLetter: 0 };
     for (const row of rows) {
-      const count = (row as any).count ?? 0;
+      const count = Number((row as any).count ?? 0);
       switch (row.status) {
         case "queued":       stats.queued = count; break;
         case "processing":   stats.processing = count; break;
@@ -306,22 +300,17 @@ export class DurableJobQueue implements RcmJobQueue {
 
   async purge(beforeTimestamp: string): Promise<number> {
     const db = getPgDb();
-    // Count first, then delete
-    const targets = await db
-      .select({ id: rcmDurableJob.id })
-      .from(rcmDurableJob)
+    // Atomic bulk delete — no SELECT+loop needed
+    const deleted = await db
+      .delete(rcmDurableJob)
       .where(
         and(
           lte(rcmDurableJob.completedAt, beforeTimestamp),
           sql`${rcmDurableJob.status} IN ('completed', 'cancelled')`,
         ),
-      );
+      )
+      .returning({ id: rcmDurableJob.id });
 
-    if (targets.length === 0) return 0;
-
-    for (const t of targets) {
-      await db.delete(rcmDurableJob).where(eq(rcmDurableJob.id, t.id));
-    }
-    return targets.length;
+    return deleted.length;
   }
 }

@@ -239,8 +239,8 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     return { ok: true, tenantId, template: result };
   });
 
-  /** DELETE /admin/templates/:tenantId/:templateId — delete a note template */
-  server.delete("/admin/templates/:tenantId/:templateId", async (request, reply) => {
+  /** DELETE /admin/note-templates/:tenantId/:templateId — delete a note template */
+  server.delete("/admin/note-templates/:tenantId/:templateId", async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ["admin"], reply);
     const { tenantId, templateId } = request.params as { tenantId: string; templateId: string };

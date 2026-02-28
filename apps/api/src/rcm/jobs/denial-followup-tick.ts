@@ -173,8 +173,14 @@ async function getExistingFollowupItems(denialId: string): Promise<number> {
   try {
     const { countWorkqueueItemsBySource } = await import("../workqueues/workqueue-store.js");
     return countWorkqueueItemsBySource("manual", denialId);
-  } catch {
-    return 0; // If function doesn't exist, assume no dedup needed
+  } catch (err: unknown) {
+    // Only swallow module-not-found errors; rethrow real DB errors
+    if (err instanceof Error && ("code" in err) && (err as any).code === "MODULE_NOT_FOUND") {
+      return 0;
+    }
+    // If the function doesn't exist on the module, treat as 0
+    if (err instanceof TypeError) return 0;
+    throw err;
   }
 }
 

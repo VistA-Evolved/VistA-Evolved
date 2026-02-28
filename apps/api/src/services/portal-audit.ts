@@ -31,6 +31,7 @@ export type PortalAuditAction =
   | "portal.appointment.view"
   | "portal.appointment.request"
   | "portal.appointment.cancel"
+  | "portal.appointment.reschedule"
   | "portal.share.create"
   | "portal.share.access"
   | "portal.share.revoke"

@@ -102,7 +102,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
       metadata: body.metadata,
       createdBy: body.createdBy || "system",
     });
-    appendRcmAudit("credential_vault_create" as any, {
+    appendRcmAudit("credential_vault_create", {
       userId: body.createdBy,
       detail: { credentialId: item.id, credentialType: item.credentialType, entityId: item.entityId },
     });
@@ -145,7 +145,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     const tenantId = body.tenantId || "default";
     const item = await updateCredential(tenantId, id, body);
     if (!item) return reply.code(404).send({ ok: false, error: "Credential not found" });
-    appendRcmAudit("credential_vault_update" as any, {
+    appendRcmAudit("credential_vault_update", {
       userId: body.updatedBy,
       detail: { credentialId: id, fields: Object.keys(body) },
     });
@@ -160,7 +160,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     const verifiedBy = body.verifiedBy || "system";
     const item = await verifyCredential(tenantId, id, verifiedBy);
     if (!item) return reply.code(404).send({ ok: false, error: "Credential not found" });
-    appendRcmAudit("credential_vault_verify" as any, {
+    appendRcmAudit("credential_vault_verify", {
       userId: verifiedBy,
       detail: { credentialId: id },
     });
@@ -184,7 +184,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
       sha256Hash: body.sha256Hash,
       uploadedBy: body.uploadedBy || "system",
     });
-    appendRcmAudit("credential_document_add" as any, {
+    appendRcmAudit("credential_document_add", {
       userId: body.uploadedBy,
       detail: { credentialId: id, documentId: doc.id, fileName: doc.fileName },
     });
@@ -203,7 +203,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     const { docId } = request.params as any;
     const deleted = await deleteDocument(docId);
     if (!deleted) return reply.code(404).send({ ok: false, error: "Document not found" });
-    appendRcmAudit("credential_document_delete" as any, {
+    appendRcmAudit("credential_document_delete", {
       detail: { documentId: docId },
     });
     return { ok: true };
@@ -241,7 +241,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
       expirationDate: body.expirationDate,
       createdBy: body.createdBy || "system",
     });
-    appendRcmAudit("accreditation_create" as any, {
+    appendRcmAudit("accreditation_create", {
       payerId: body.payerId,
       userId: body.createdBy,
       detail: { accreditationId: item.id, providerEntityId: item.providerEntityId },
@@ -278,7 +278,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     const tenantId = body.tenantId || "default";
     const item = await updateAccreditation(tenantId, id, body);
     if (!item) return reply.code(404).send({ ok: false, error: "Accreditation not found" });
-    appendRcmAudit("accreditation_update" as any, {
+    appendRcmAudit("accreditation_update", {
       payerId: item.payerId,
       userId: body.updatedBy,
       detail: { accreditationId: id, fields: Object.keys(body) },
@@ -294,7 +294,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     const verifiedBy = body.verifiedBy || "system";
     const item = await verifyAccreditation(tenantId, id, verifiedBy);
     if (!item) return reply.code(404).send({ ok: false, error: "Accreditation not found" });
-    appendRcmAudit("accreditation_verify" as any, {
+    appendRcmAudit("accreditation_verify", {
       payerId: item.payerId,
       userId: verifiedBy,
       detail: { accreditationId: id },
@@ -334,7 +334,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
       dueDate: body.dueDate,
       assignedTo: body.assignedTo,
     });
-    appendRcmAudit("accreditation_task_create" as any, {
+    appendRcmAudit("accreditation_task_create", {
       detail: { accreditationId: id, taskId: task.id, title: task.title },
     });
     return reply.code(201).send({ ok: true, task });
@@ -346,7 +346,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     const body = (request.body as any) || {};
     const task = await updateTask(taskId, body);
     if (!task) return reply.code(404).send({ ok: false, error: "Task not found" });
-    appendRcmAudit("accreditation_task_update" as any, {
+    appendRcmAudit("accreditation_task_update", {
       detail: { taskId, fields: Object.keys(body) },
     });
     return { ok: true, task };
@@ -358,7 +358,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     const body = (request.body as any) || {};
     const task = await completeTask(taskId, body.completedBy || "system");
     if (!task) return reply.code(404).send({ ok: false, error: "Task not found" });
-    appendRcmAudit("accreditation_task_complete" as any, {
+    appendRcmAudit("accreditation_task_complete", {
       userId: body.completedBy,
       detail: { taskId },
     });
@@ -370,7 +370,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     const { taskId } = request.params as any;
     const deleted = await deleteTask(taskId);
     if (!deleted) return reply.code(404).send({ ok: false, error: "Task not found" });
-    appendRcmAudit("accreditation_task_delete" as any, {
+    appendRcmAudit("accreditation_task_delete", {
       detail: { taskId },
     });
     return { ok: true };

@@ -8,7 +8,7 @@
 import type { ClinicalEngineAdapter } from "./interface.js";
 import type { AdapterResult, PatientRecord, AllergyRecord, VitalRecord, NoteRecord, MedicationRecord, ProblemRecord, LabResult, EncounterRecord } from "../types.js";
 
-const STUB_RESULT = { ok: false as const, pending: true, error: "Clinical engine adapter not configured" };
+const STUB_RESULT = Object.freeze({ ok: false as const, pending: true, error: "Clinical engine adapter not configured" });
 
 export class StubClinicalAdapter implements ClinicalEngineAdapter {
   readonly adapterType = "clinical-engine" as const;

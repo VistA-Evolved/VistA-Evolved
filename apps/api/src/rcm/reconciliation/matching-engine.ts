@@ -73,8 +73,14 @@ interface KnownClaim {
 }
 
 const knownClaims = new Map<string, KnownClaim>();
+const MAX_KNOWN_CLAIMS = 50_000;
 
 export function registerKnownClaim(claim: KnownClaim): void {
+  // Evict oldest entries if over capacity (FIFO by insertion order)
+  if (knownClaims.size >= MAX_KNOWN_CLAIMS) {
+    const firstKey = knownClaims.keys().next().value;
+    if (firstKey !== undefined) knownClaims.delete(firstKey);
+  }
   knownClaims.set(claim.claimRef, claim);
 }
 

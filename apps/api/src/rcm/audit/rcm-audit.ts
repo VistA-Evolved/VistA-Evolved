@@ -184,7 +184,19 @@ export type RcmAuditAction =
   | 'evidence.gate_blocked'
   | 'evidence.stale_warning'
   | 'denial.followup_flagged'
-  | 'remittance.import_processed';
+  | 'remittance.import_processed'
+  | 'credential_vault_create'
+  | 'credential_vault_update'
+  | 'credential_vault_verify'
+  | 'credential_document_add'
+  | 'credential_document_delete'
+  | 'accreditation_create'
+  | 'accreditation_update'
+  | 'accreditation_verify'
+  | 'accreditation_task_create'
+  | 'accreditation_task_update'
+  | 'accreditation_task_complete'
+  | 'accreditation_task_delete';
 
 export interface RcmAuditEntry {
   id: string;

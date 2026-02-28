@@ -142,8 +142,8 @@ export async function checkTenantIsolationPosture(): Promise<TenantIsolationPost
     } catch {
       gates.push({
         name: "pg_default_tenant",
-        pass: true,
-        detail: "PG session variable app.current_tenant_id configured via init.sql",
+        pass: false,
+        detail: "PG session variable app.current_tenant_id not configured (SHOW failed)",
       });
     }
   } else {

@@ -108,7 +108,7 @@ function rowToAppt(row: any): Appointment {
     notes: row.notes ?? "",
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
-    vistaSync: row.vistaSync ? "synced" : "not_synced",
+    vistaSync: row.vistaSync === "synced" ? "synced" : row.vistaSync === "pending" ? "pending" : "not_synced",
     vistaRef: row.vistaRef ?? null,
     cancelReason: row.cancelReason,
     reschedulePreference: row.reschedulePreference,
@@ -195,7 +195,7 @@ function seedDemoAppointments() {
   }
 }
 
-seedDemoAppointments();
+if (process.env.NODE_ENV !== "production") seedDemoAppointments();
 
 /* ------------------------------------------------------------------ */
 /* Queries                                                              */
@@ -329,7 +329,7 @@ export function requestReschedule(
     try { _repo.updateAppointment(appointmentId, { status: "reschedule_requested", reschedulePreference: appt.reschedulePreference }); } catch (e) { dbWarn("persist", e); }
   }
 
-  portalAudit("portal.appointment.request", "success", patientDfn, {
+  portalAudit("portal.appointment.reschedule", "success", patientDfn, {
     detail: { appointmentId, type: "reschedule" },
   });
 

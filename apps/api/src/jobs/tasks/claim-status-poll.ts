@@ -1,7 +1,7 @@
 /**
  * Task: claim_status_poll — Phase 116
  *
- * Polls pending claim status checks from the SQLite store and
+ * Polls pending claim status checks from the store and
  * processes them via the appropriate payer adapter.
  *
  * Payload (no PHI):

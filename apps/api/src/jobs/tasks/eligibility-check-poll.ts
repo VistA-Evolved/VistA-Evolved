@@ -1,7 +1,7 @@
 /**
  * Task: eligibility_check_poll — Phase 116
  *
- * Polls pending eligibility checks from the SQLite store and
+ * Polls pending eligibility checks from the store and
  * processes them via the appropriate payer adapter.
  *
  * Payload (no PHI):

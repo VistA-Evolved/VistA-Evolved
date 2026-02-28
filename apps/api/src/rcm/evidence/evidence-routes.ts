@@ -167,7 +167,7 @@ const evidenceRoutes: FastifyPluginAsync = async (server) => {
       contactInfo: body.contactInfo,
       submissionRequirements: body.submissionRequirements,
       supportedChannelsJson: body.supportedChannelsJson
-        ? JSON.stringify(body.supportedChannelsJson)
+        ? (typeof body.supportedChannelsJson === "string" ? body.supportedChannelsJson : JSON.stringify(body.supportedChannelsJson))
         : undefined,
       lastVerifiedAt: body.lastVerifiedAt,
       verifiedBy: body.verifiedBy,
@@ -192,7 +192,7 @@ const evidenceRoutes: FastifyPluginAsync = async (server) => {
       contactInfo: body.contactInfo,
       submissionRequirements: body.submissionRequirements,
       supportedChannelsJson: body.supportedChannelsJson
-        ? JSON.stringify(body.supportedChannelsJson)
+        ? (typeof body.supportedChannelsJson === "string" ? body.supportedChannelsJson : JSON.stringify(body.supportedChannelsJson))
         : undefined,
       lastVerifiedAt: body.lastVerifiedAt,
       verifiedBy: body.verifiedBy,
