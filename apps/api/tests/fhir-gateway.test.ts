@@ -413,7 +413,7 @@ describe("FHIR R4 Gateway — Phase 178", () => {
       expect(cs.resourceType).toBe("CapabilityStatement");
       expect(cs.fhirVersion).toBe("4.0.1");
       expect(cs.kind).toBe("instance");
-      expect(cs.status).toBe("draft");
+      expect(cs.status).toBe("active");
     });
 
     it("declares all 7 supported resource types", () => {

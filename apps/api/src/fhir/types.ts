@@ -260,6 +260,18 @@ export interface FhirCapabilityStatement extends FhirResource {
   format: string[];
   rest?: Array<{
     mode: "server" | "client";
+    security?: {
+      cors?: boolean;
+      service?: FhirCodeableConcept[];
+      description?: string;
+      extension?: Array<{
+        url: string;
+        extension?: Array<{
+          url: string;
+          valueUri?: string;
+        }>;
+      }>;
+    };
     resource?: Array<{
       type: string;
       profile?: string;
@@ -269,6 +281,7 @@ export interface FhirCapabilityStatement extends FhirResource {
       searchParam?: Array<{
         name: string;
         type: "number" | "date" | "string" | "token" | "reference" | "composite" | "quantity" | "uri" | "special";
+        documentation?: string;
       }>;
     }>;
   }>;

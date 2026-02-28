@@ -456,6 +456,70 @@ export function toFhirEncounter(rec: EncounterRecord): FhirEncounter {
 /* Bundle builder                                                       */
 /* ================================================================== */
 
+/** Pagination options for FHIR search bundle (Phase 234). */
+export interface FhirPagingOptions {
+  /** Page offset (0-based). Default 0. */
+  offset?: number;
+  /** Page size. Default 20, max 100. */
+  count?: number;
+  /** Query string to preserve in paging links (e.g. "patient=3&status=active"). */
+  queryString?: string;
+}
+
+/**
+ * Build a paged FHIR search bundle with next/previous links.
+ *
+ * Phase 234: Supports offset-based pagination. Total reflects the
+ * unfiltered match count. Bundle.link includes self, next (if more pages),
+ * and previous (if offset > 0).
+ */
+export function toPagedSearchBundle(
+  allResources: FhirResource[],
+  baseUrl: string,
+  resourceType: string,
+  options: FhirPagingOptions = {},
+): FhirBundle {
+  const offset = Math.max(options.offset || 0, 0);
+  const count = Math.min(Math.max(options.count || 20, 1), 100);
+  const total = allResources.length;
+  const paged = allResources.slice(offset, offset + count);
+  const qs = options.queryString ? `&${options.queryString}` : "";
+  const basePath = `${baseUrl}/fhir/${resourceType}`;
+
+  const links: Array<{ relation: string; url: string }> = [
+    { relation: "self", url: `${basePath}?_offset=${offset}&_count=${count}${qs}` },
+  ];
+
+  if (offset + count < total) {
+    links.push({
+      relation: "next",
+      url: `${basePath}?_offset=${offset + count}&_count=${count}${qs}`,
+    });
+  }
+
+  if (offset > 0) {
+    const prevOffset = Math.max(offset - count, 0);
+    links.push({
+      relation: "previous",
+      url: `${basePath}?_offset=${prevOffset}&_count=${count}${qs}`,
+    });
+  }
+
+  const entries: FhirBundleEntry[] = paged.map((r) => ({
+    fullUrl: `${baseUrl}/fhir/${r.resourceType}/${r.id}`,
+    resource: r,
+    search: { mode: "match" as const },
+  }));
+
+  return {
+    resourceType: "Bundle",
+    type: "searchset",
+    total,
+    link: links,
+    entry: entries,
+  };
+}
+
 export function toSearchBundle(
   resources: FhirResource[],
   total: number,

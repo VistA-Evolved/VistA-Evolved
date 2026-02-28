@@ -25,6 +25,7 @@ import { stopCleanupJob as stopPortabilityCleanup } from "../services/record-por
 import { stopShipperJob } from "../audit-shipping/shipper.js";
 import { stopLinkRequestCleanup } from "../routes/identity-linking.js";
 import { stopEtl } from "../services/analytics-etl.js";
+import { extractBearerToken, validateFhirBearerToken, principalFromSession } from "../fhir/fhir-bearer-auth.js";
 // Phase 36: Telemetry
 import { getCurrentTraceId } from "../telemetry/tracing.js";
 import {
@@ -65,7 +66,7 @@ export function corsOriginValidator(origin: string, cb: (err: Error | null, allo
 /* Auth gateway — path-based auth requirements                          */
 /* ================================================================== */
 
-type AuthLevel = "none" | "session" | "admin" | "service";
+type AuthLevel = "none" | "session" | "admin" | "service" | "fhir";
 
 interface AuthRule {
   pattern: RegExp;
@@ -123,7 +124,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/vista\//, auth: "session" },
   { pattern: /^\/fhir\/metadata$/, auth: "none" }, // Phase 178: FHIR CapabilityStatement (public per FHIR spec)
   { pattern: /^\/\.well-known\/smart-configuration$/, auth: "none" }, // Phase 179: SMART on FHIR discovery (public per spec)
-  { pattern: /^\/fhir\//, auth: "session" }, // Phase 178: FHIR R4 gateway (session required)
+  { pattern: /^\/fhir\//, auth: "fhir" }, // Phase 231: FHIR R4 gateway (session OR SMART bearer)
   // Default: session required for anything else
 ];
 
@@ -294,6 +295,39 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
       return;
     }
 
+    // Phase 231: FHIR auth — accepts session cookie OR SMART Bearer JWT
+    if (requiredAuth === "fhir") {
+      const bearerToken = extractBearerToken(request);
+      if (bearerToken) {
+        // Try SMART Bearer JWT first
+        const result = await validateFhirBearerToken(bearerToken);
+        if (result.ok) {
+          request.fhirPrincipal = result.principal;
+          // Also set a synthetic session for backward compat with requireSession()
+          request.session = {
+            token: "bearer",
+            duz: result.principal.duz,
+            userName: result.principal.userName,
+            role: result.principal.roles[0] || "provider",
+            loginTime: Date.now(),
+            tenantId: result.principal.tenantId,
+          } as SessionData;
+          return;
+        }
+        // Bearer token was present but invalid — reject (don't fall through to session)
+        log.warn("FHIR bearer token rejected", { error: result.error, url });
+        (request as any)._rejected = true;
+        reply.code(401).send({
+          ok: false,
+          error: "Invalid bearer token",
+          resourceType: "OperationOutcome",
+          issue: [{ severity: "error", code: "login", diagnostics: result.error }],
+        });
+        return;
+      }
+      // No bearer token — fall through to session auth below
+    }
+
     // Extract and validate session
     const token = extractToken(request);
     if (!token) {
@@ -311,6 +345,11 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
 
     // Attach session to request for downstream audit attribution
     request.session = session;
+
+    // Phase 231: For FHIR routes with session auth, also set fhirPrincipal
+    if (requiredAuth === "fhir") {
+      request.fhirPrincipal = principalFromSession(session);
+    }
 
     // Admin role check -- strict admin-only (AGENTS.md #24 RBAC tightening)
     if (requiredAuth === "admin") {

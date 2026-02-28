@@ -261,8 +261,8 @@ describe("FHIR R4 Conformance Suite — Phase 179", () => {
       expect(cs.kind).toBe("instance");
     });
 
-    it("declares status='draft'", () => {
-      expect(cs.status).toBe("draft");
+    it("declares status='active'", () => {
+      expect(cs.status).toBe("active");
     });
 
     it("has software name and version", () => {
