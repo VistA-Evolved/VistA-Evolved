@@ -1,0 +1,9 @@
+{
+  "rpcName": "ORWLRR INTERIMG",
+  "caseName": "success",
+  "recordedAt": "2026-02-28T00:00:00.000Z",
+  "sanitized": true,
+  "params": ["3"],
+  "response": ["^Chemistry^3000101^GLUCOSE^95^mg/dL^70-110"],
+  "responseHash": "placeholder"
+}

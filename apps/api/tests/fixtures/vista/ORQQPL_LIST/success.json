@@ -1,0 +1,9 @@
+{
+  "rpcName": "ORQQPL LIST",
+  "caseName": "success",
+  "recordedAt": "2026-02-28T00:00:00.000Z",
+  "sanitized": true,
+  "params": ["3"],
+  "response": ["1^Hypertension^Active^ICD-10:I10"],
+  "responseHash": "placeholder"
+}

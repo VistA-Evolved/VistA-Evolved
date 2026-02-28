@@ -1,0 +1,9 @@
+{
+  "rpcName": "ORQQAL LIST",
+  "caseName": "success",
+  "recordedAt": "2026-02-28T00:00:00.000Z",
+  "sanitized": true,
+  "params": ["3"],
+  "response": ["HASHED:a1^Penicillin^ALLERGY"],
+  "responseHash": "placeholder"
+}

@@ -1,0 +1,9 @@
+{
+  "rpcName": "TIU DOCUMENTS BY CONTEXT",
+  "caseName": "success",
+  "recordedAt": "2026-02-28T00:00:00.000Z",
+  "sanitized": true,
+  "params": ["3","1","0","","","","1","100"],
+  "response": ["1234^PROGRESS NOTE^3000101.120000^PROVIDER,ANONYMOUS^COMPLETED"],
+  "responseHash": "placeholder"
+}

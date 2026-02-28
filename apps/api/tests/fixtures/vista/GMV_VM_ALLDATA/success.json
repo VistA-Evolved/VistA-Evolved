@@ -1,0 +1,9 @@
+{
+  "rpcName": "GMV V/M ALLDATA",
+  "caseName": "success",
+  "recordedAt": "2026-02-28T00:00:00.000Z",
+  "sanitized": true,
+  "params": ["3"],
+  "response": ["T;3000101.120000;120/80;;;"],
+  "responseHash": "placeholder"
+}

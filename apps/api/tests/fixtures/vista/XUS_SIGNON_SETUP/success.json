@@ -1,0 +1,17 @@
+{
+  "rpcName": "XUS SIGNON SETUP",
+  "caseName": "success",
+  "recordedAt": "2026-02-28T00:00:00.000Z",
+  "sanitized": true,
+  "params": [],
+  "response": [
+    "REDACTED-SERVER-INFO",
+    "REDACTED-SERVER-INFO",
+    "REDACTED-SERVER-INFO",
+    "REDACTED-SERVER-INFO",
+    "REDACTED-SERVER-INFO",
+    "REDACTED-SERVER-INFO",
+    "REDACTED-SERVER-INFO"
+  ],
+  "responseHash": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+}
