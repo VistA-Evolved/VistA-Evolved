@@ -15,7 +15,8 @@ spec:
 
   source:
     # Path within this repo -- ArgoCD resolves relative to repoURL root
-    repoURL: https://github.com/anthropic-ai/VistA-Evolved.git
+    # TODO: Replace YOUR-ORG with your actual GitHub organization
+    repoURL: https://github.com/YOUR-ORG/VistA-Evolved.git
     targetRevision: HEAD
     path: infra/helm/ve-shared
     helm:

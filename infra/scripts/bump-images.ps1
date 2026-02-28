@@ -1,8 +1,5 @@
 # infra/scripts/bump-images.ps1 - Update GitOps image tags for an environment
 #Requires -Version 5.1
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-
 param(
     [Parameter(Mandatory=$true)]
     [ValidateSet('dev', 'staging', 'prod')]
@@ -14,6 +11,9 @@ param(
     [switch]$Commit,
     [switch]$DryRun
 )
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 $EnvDir   = Join-Path $RepoRoot "infra/environments/$Env"

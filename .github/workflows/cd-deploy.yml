@@ -166,7 +166,7 @@ jobs:
           # Update shared values
           sed -i "s/^imageTag:.*/imageTag: \"$TAG\"/" infra/environments/staging/shared.values.yaml
           # Update tenant defaults
-          sed -i "s/^  tag:.*/  tag: \"$TAG\"/" infra/environments/staging/tenant.defaults.values.yaml
+          sed -i "s/^    tag: .*/    tag: \"$TAG\"/" infra/environments/staging/tenant.defaults.values.yaml
 
       - name: Commit staging promotion
         run: |
@@ -191,7 +191,7 @@ jobs:
         run: |
           TAG="${{ needs.build-images.outputs.image-tag }}"
           sed -i "s/^imageTag:.*/imageTag: \"$TAG\"/" infra/environments/prod/shared.values.yaml
-          sed -i "s/^  tag:.*/  tag: \"$TAG\"/" infra/environments/prod/tenant.defaults.values.yaml
+          sed -i "s/^    tag: .*/    tag: \"$TAG\"/" infra/environments/prod/tenant.defaults.values.yaml
 
       - name: Create PR
         uses: peter-evans/create-pull-request@v7

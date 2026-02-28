@@ -1,8 +1,5 @@
 # infra/scripts/build-images.ps1 - Build all Docker images for VistA-Evolved
 #Requires -Version 5.1
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-
 param(
     [string]$Tag = "dev",
     [string]$Registry = "",
@@ -10,8 +7,12 @@ param(
     [switch]$NoPrune
 )
 
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
+
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
-$BuildSha = (git -C $RepoRoot rev-parse --short HEAD 2>$null) ?? "unknown"
+$BuildSha = git -C $RepoRoot rev-parse --short HEAD 2>$null
+if (-not $BuildSha) { $BuildSha = "unknown" }
 $BuildTime = (Get-Date -Format 'yyyy-MM-ddTHH:mm:ssZ')
 
 Write-Host "=== VistA-Evolved Docker Image Builder ===" -ForegroundColor Cyan

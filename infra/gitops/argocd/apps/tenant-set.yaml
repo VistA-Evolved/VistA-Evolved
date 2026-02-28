@@ -12,7 +12,7 @@ spec:
   generators:
     # Git file generator: discovers tenant values files in the environments tree
     - git:
-        repoURL: https://github.com/anthropic-ai/VistA-Evolved.git
+        repoURL: https://github.com/YOUR-ORG/VistA-Evolved.git  # TODO: update to actual repo
         revision: HEAD
         files:
           - path: "infra/environments/*/tenants/*.values.yaml"
@@ -34,7 +34,7 @@ spec:
     spec:
       project: ve-tenants
       source:
-        repoURL: https://github.com/anthropic-ai/VistA-Evolved.git
+        repoURL: https://github.com/YOUR-ORG/VistA-Evolved.git  # TODO: update to actual repo
         targetRevision: HEAD
         path: infra/helm/ve-tenant
         helm:

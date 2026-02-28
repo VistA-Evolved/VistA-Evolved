@@ -1,9 +1,6 @@
 # infra/scripts/canary-check.ps1 - Metric gate for canary tenant deployments
 # Queries Prometheus (or simulates) to verify tenant health before promotion.
 #Requires -Version 5.1
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-
 param(
     [Parameter(Mandatory=$true)]
     [string]$TenantSlug,
@@ -21,6 +18,9 @@ param(
 
     [string]$OutputDir = ""
 )
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 if (-not $OutputDir) {

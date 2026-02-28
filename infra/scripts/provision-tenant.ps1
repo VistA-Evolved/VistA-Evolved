@@ -1,8 +1,5 @@
 # infra/scripts/provision-tenant.ps1 - Provision a new tenant in the VistA-Evolved cluster
 #Requires -Version 5.1
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-
 param(
     [Parameter(Mandatory=$true)]
     [string]$TenantId,
@@ -15,6 +12,9 @@ param(
     [switch]$DryRun,
     [switch]$SkipVista
 )
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
 $helmPath = "$env:LOCALAPPDATA\helm"
 if (Test-Path "$helmPath\helm.exe") { $env:PATH = "$helmPath;$env:PATH" }

@@ -1,8 +1,5 @@
 # infra/scripts/backup-pg.ps1 - PostgreSQL backup with PITR support
 #Requires -Version 5.1
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-
 param(
     [ValidateSet('full', 'wal', 'restore')]
     [string]$Mode = "full",
@@ -17,6 +14,9 @@ param(
     [string]$RestoreTarget = "",  # ISO 8601 timestamp for PITR
     [switch]$DryRun
 )
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 $Timestamp = Get-Date -Format 'yyyyMMdd-HHmmss'

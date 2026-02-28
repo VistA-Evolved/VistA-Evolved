@@ -1,12 +1,12 @@
 # infra/scripts/helm-install-shared.ps1 - Install the ve-shared Helm chart into Kind
 #Requires -Version 5.1
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-
 param(
     [string]$Overlay = "",
     [switch]$DryRun
 )
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 $ChartPath = Join-Path $RepoRoot 'infra/helm/ve-shared'

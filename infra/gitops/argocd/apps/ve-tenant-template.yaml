@@ -16,7 +16,7 @@ spec:
   project: ve-tenants
 
   source:
-    repoURL: https://github.com/anthropic-ai/VistA-Evolved.git
+    repoURL: https://github.com/YOUR-ORG/VistA-Evolved.git  # TODO: update to actual repo
     targetRevision: HEAD
     path: infra/helm/ve-tenant
     helm:

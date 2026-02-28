@@ -1,8 +1,5 @@
 # infra/scripts/release-failure-pack.ps1 - Generate incident artifact pack on release failure
 #Requires -Version 5.1
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-
 param(
     [Parameter(Mandatory=$true)]
     [string]$TenantSlug,
@@ -15,6 +12,9 @@ param(
     [string]$OutputDir = ""
 )
 
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
+
 $RepoRoot  = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 $timestamp = Get-Date -Format 'yyyyMMdd-HHmmss'
 
@@ -25,14 +25,19 @@ if (-not (Test-Path $OutputDir)) {
     New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
 }
 
+$_gitCommit = git -C $RepoRoot rev-parse HEAD 2>$null
+if (-not $_gitCommit) { $_gitCommit = "unknown" }
+$_gitBranch = git -C $RepoRoot branch --show-current 2>$null
+if (-not $_gitBranch) { $_gitBranch = "unknown" }
+
 $pack = @{
     incidentId    = "INC-$timestamp"
     timestamp     = (Get-Date).ToString('o')
     environment   = $Env
     tenantSlug    = $TenantSlug
     imageTag      = $Tag
-    gitCommit     = (git -C $RepoRoot rev-parse HEAD 2>$null) ?? "unknown"
-    gitBranch     = (git -C $RepoRoot branch --show-current 2>$null) ?? "unknown"
+    gitCommit     = $_gitCommit
+    gitBranch     = $_gitBranch
     artifacts     = @()
 }
 

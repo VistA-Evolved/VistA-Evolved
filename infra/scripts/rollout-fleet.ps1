@@ -179,20 +179,21 @@ if ($SkipCanary) {
 } else {
     Log ""
     Log "--- Phase 3: Canary metric gate (${CanaryMinutes}m) ---"
-    Log "Waiting ${CanaryMinutes} minutes for metrics to stabilize..."
+    Log "Canary gate: checking metrics over ${CanaryMinutes}m window..."
 
     # In CI/local without Prometheus, simulate the wait
     $canaryScript = Join-Path $repoRoot "infra/scripts/canary-check.ps1"
     $canaryResult = $null
 
     if ($PrometheusUrl -and (Test-Path $canaryScript)) {
-        # Wait the canary period
-        Start-Sleep -Seconds ($CanaryMinutes * 60)
-
-        # Run canary check
-        $canaryReport = Join-Path $outDir "canary-check-result.json"
-        & $canaryScript -Environment $Environment -PrometheusUrl $PrometheusUrl -OutFile $canaryReport
-        $canaryResult = Get-Content $canaryReport -Raw | ConvertFrom-Json
+        # canary-check.ps1 handles both the wait and the metric queries
+        $canaryTenantSlug = if ($canaryTenants.Count -gt 0) { $canaryTenants[0].Name } else { "canary" }
+        & $canaryScript -TenantSlug $canaryTenantSlug -PrometheusUrl $PrometheusUrl -OutputDir $outDir -DurationMinutes $CanaryMinutes
+        $canaryReportFile = Get-ChildItem $outDir -Filter "canary-check-*.json" -ErrorAction SilentlyContinue |
+            Sort-Object LastWriteTime -Descending | Select-Object -First 1
+        $canaryResult = if ($canaryReportFile) {
+            Get-Content $canaryReportFile.FullName -Raw | ConvertFrom-Json
+        } else { @{ overallPass = $false } }
 
         if ($canaryResult.overallPass -ne $true) {
             Log "CANARY GATE FAILED -- initiating rollback"

@@ -1,8 +1,5 @@
 # infra/scripts/rollback-release.ps1 - Rollback a tenant or environment to last known good
 #Requires -Version 5.1
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-
 param(
     [Parameter(Mandatory=$true)]
     [ValidateSet('dev', 'staging', 'prod')]
@@ -14,6 +11,9 @@ param(
     [switch]$Commit,
     [switch]$DryRun
 )
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 $EnvDir   = Join-Path $RepoRoot "infra/environments/$Env"
@@ -28,7 +28,7 @@ Write-Host ""
 if (-not $ToTag) {
     if (Test-Path $LkgFile) {
         $lkg = Get-Content $LkgFile -Raw | ConvertFrom-Json
-        $ToTag = $lkg.imageTag
+        $ToTag = $lkg.tag
         Write-Host "  Rolling back to last-known-good: $ToTag" -ForegroundColor Yellow
     } else {
         Write-Host "ERROR: No --ToTag and no last-known-good.json found at $LkgFile" -ForegroundColor Red

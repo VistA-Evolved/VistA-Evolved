@@ -1,8 +1,5 @@
 # infra/scripts/deprovision-tenant.ps1 - Remove a tenant from the VistA-Evolved cluster
 #Requires -Version 5.1
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-
 param(
     [Parameter(Mandatory=$true)]
     [string]$TenantSlug,
@@ -11,6 +8,9 @@ param(
     [switch]$DryRun,
     [switch]$Force
 )
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
 $helmPath = "$env:LOCALAPPDATA\helm"
 if (Test-Path "$helmPath\helm.exe") { $env:PATH = "$helmPath;$env:PATH" }

@@ -1,11 +1,11 @@
 # infra/scripts/argocd-portforward.ps1 - Port-forward ArgoCD server UI to localhost:8080
 #Requires -Version 5.1
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-
 param(
     [int]$Port = 8080
 )
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
 Write-Host "=== ArgoCD Port Forward ===" -ForegroundColor Cyan
 Write-Host "  URL:      http://localhost:$Port" -ForegroundColor Green

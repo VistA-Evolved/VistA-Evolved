@@ -1,9 +1,6 @@
 # infra/scripts/dr-drill.ps1 - Disaster Recovery drill automation
 # Measures RPO (data loss window) and RTO (recovery time) for PG + YottaDB
 #Requires -Version 5.1
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-
 param(
     [ValidateSet('full', 'pg-only', 'ydb-only')]
     [string]$Scope = "full",
@@ -11,6 +8,9 @@ param(
     [string]$EvidenceDir = "",
     [switch]$DryRun
 )
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 $Timestamp = Get-Date -Format 'yyyyMMdd-HHmmss'

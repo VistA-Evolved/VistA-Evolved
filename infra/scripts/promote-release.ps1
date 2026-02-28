@@ -1,8 +1,5 @@
 # infra/scripts/promote-release.ps1 - Promote release from canary to stable tenants
 #Requires -Version 5.1
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-
 param(
     [Parameter(Mandatory=$true)]
     [string]$Tag,
@@ -17,6 +14,9 @@ param(
     [switch]$Commit,
     [switch]$DryRun
 )
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 $EnvDir   = Join-Path $RepoRoot "infra/environments/$Env"

@@ -1,11 +1,11 @@
 # infra/scripts/argocd-install.ps1 - Install ArgoCD into the Kind cluster
 #Requires -Version 5.1
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-
 param(
     [switch]$Uninstall
 )
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 $Namespace = 'argocd'

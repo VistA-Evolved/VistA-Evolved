@@ -1,8 +1,5 @@
 # infra/scripts/rotate-secrets.ps1 - Rotate secrets for a VistA-Evolved environment
 #Requires -Version 5.1
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-
 param(
     [Parameter(Mandatory=$true)]
     [ValidateSet('dev', 'staging', 'prod')]
@@ -11,6 +8,9 @@ param(
     [switch]$GenerateAgeKey,
     [switch]$DryRun
 )
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 

@@ -1,8 +1,5 @@
 # infra/scripts/backup-yottadb.ps1 - YottaDB/VistA database backup
 #Requires -Version 5.1
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-
 param(
     [ValidateSet('online', 'offline', 'restore')]
     [string]$Mode = "online",
@@ -14,6 +11,9 @@ param(
     [int]$RetainDays = 7,
     [switch]$DryRun
 )
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 $Timestamp = Get-Date -Format 'yyyyMMdd-HHmmss'

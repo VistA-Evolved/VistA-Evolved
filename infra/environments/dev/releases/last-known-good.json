@@ -1,5 +1,5 @@
 {
-  "imageTag": "dev",
+  "tag": "dev",
   "promotedAt": "2026-02-28T00:00:00Z",
   "promotedBy": "initial",
   "canaryTenant": "",
