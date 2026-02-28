@@ -208,6 +208,9 @@ import vistaProvisionRoutes from "../routes/vista-provision.js";
 import { registerInlineRoutes } from "./inline-routes.js";
 import { registerDomainRoutes } from "../routes/index.js";
 
+// Writeback command bus (Phase 300)
+import writebackCommandRoutes from "../writeback/writeback-routes.js";
+
 /**
  * Register all route plugins in the exact order from the original index.ts.
  * Also starts cleanup jobs that were previously co-located with route registration.
@@ -483,6 +486,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(dataPortabilityRoutes);
   // Phase 265: SAT Suite + Degraded Mode
   server.register(satRoutes);
+
+  // Phase 300: Writeback command bus
+  server.register(writebackCommandRoutes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

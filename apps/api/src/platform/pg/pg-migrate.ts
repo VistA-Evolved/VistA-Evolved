@@ -2631,6 +2631,52 @@ CREATE INDEX IF NOT EXISTS idx_tff_rollout
   ON tenant_feature_flag(tenant_id, rollout_percentage);
 `,
   },
+  {
+    version: 30,
+    name: "phase300_clinical_writeback_commands",
+    sql: `
+-- Phase 300: Clinical Writeback Command Bus tables
+CREATE TABLE IF NOT EXISTS clinical_command (
+  id UUID PRIMARY KEY,
+  tenant_id TEXT NOT NULL,
+  patient_ref_hash TEXT NOT NULL,
+  domain TEXT NOT NULL,
+  intent TEXT NOT NULL,
+  payload_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+  idempotency_key TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  created_by TEXT NOT NULL,
+  correlation_id TEXT,
+  attempt_count INTEGER NOT NULL DEFAULT 0,
+  last_error TEXT,
+  dry_run_transcript JSONB,
+  UNIQUE (tenant_id, idempotency_key)
+);
+CREATE INDEX IF NOT EXISTS idx_cc_tenant_status ON clinical_command(tenant_id, status);
+CREATE INDEX IF NOT EXISTS idx_cc_tenant_domain ON clinical_command(tenant_id, domain);
+CREATE INDEX IF NOT EXISTS idx_cc_tenant_created ON clinical_command(tenant_id, created_at);
+
+CREATE TABLE IF NOT EXISTS clinical_command_attempt (
+  id SERIAL PRIMARY KEY,
+  command_id UUID NOT NULL REFERENCES clinical_command(id),
+  attempt_no INTEGER NOT NULL,
+  started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  ended_at TIMESTAMPTZ,
+  status TEXT NOT NULL DEFAULT 'running',
+  error_class TEXT,
+  error_detail_redacted TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_cca_command ON clinical_command_attempt(command_id);
+
+CREATE TABLE IF NOT EXISTS clinical_command_result (
+  command_id UUID PRIMARY KEY REFERENCES clinical_command(id),
+  vista_refs JSONB NOT NULL DEFAULT '{}'::jsonb,
+  result_summary TEXT,
+  completed_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+`,
+  },
 ];
 
 /**
@@ -2795,6 +2841,10 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   "module_audit_log",
   // Phase 275: Tenant config control plane
   "tenant_config",
+  // Phase 300: Clinical writeback command bus
+  "clinical_command",
+  "clinical_command_attempt",
+  "clinical_command_result",
 ] as const;
 
 /**

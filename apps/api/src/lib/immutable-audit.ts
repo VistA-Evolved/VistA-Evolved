@@ -164,7 +164,14 @@ export type ImmutableAuditAction =
   | "identity.link_requested"
   | "identity.link_verified"
   | "identity.link_rejected"
-  | "identity.link_revoked";
+  | "identity.link_revoked"
+  // Phase 300: Clinical writeback command bus
+  | "writeback.submit"
+  | "writeback.execute"
+  | "writeback.dry_run"
+  | "writeback.reject"
+  | "writeback.retry"
+  | "writeback.fail";
 
 export type ImmutableAuditOutcome = "success" | "failure" | "denied" | "error";
 
