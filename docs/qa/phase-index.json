@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-28T06:32:11.345Z",
+  "generatedAt": "2026-02-28T06:40:25.320Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 186,
+  "phaseCount": 184,
   "phases": [
     {
       "phaseNumber": "1",
@@ -270,50 +270,6 @@
         "apps/web/src/app/cprs/admin/rcm/page.tsx",
         "docs/runbooks/rcm-eligibility-claimstatus-phase100.md",
         "scripts/verify-phase100-eligibility-claimstatus.ps"
-      ]
-    },
-    {
-      "phaseNumber": "179",
-      "title": "Wave 2: K8s / DR / Perf / FHIR (Q179–Q196)",
-      "folder": "100-PHASE-179-WAVE2-K8S-DR-PERF-FHIR",
-      "files": [
-        "179-01-IMPLEMENT.md",
-        "179-99-VERIFY.md"
-      ],
-      "implementFiles": [
-        "179-01-IMPLEMENT.md"
-      ],
-      "verifyFiles": [
-        "179-99-VERIFY.md"
-      ],
-      "routes": [],
-      "rpcs": [],
-      "uiComponents": [],
-      "filesTouched": [
-        "infra/secrets/dev/shared-secrets.yaml",
-        "infra/.sops.yaml",
-        "infra/README.md",
-        "infra/observability/grafana-dashboard-api.json",
-        "infra/observability/prometheus-alerts.yaml",
-        "apps/api/src/jobs/backpressure.ts",
-        "apps/api/src/fhir/fhir-cache.ts",
-        "apps/api/src/fhir/smart-configuration.ts",
-        "apps/api/tests/fhir-conformance.test.ts",
-        "tests/k6/smoke-fhir.js",
-        "tests/k6/load-mixed.js",
-        "docs/runbooks/performance-tuning.md",
-        "apps/api/src/adapters/types.ts",
-        "apps/api/src/adapters/clinical-engine/interface.ts",
-        "apps/api/src/adapters/clinical-engine/stub-adapter.ts",
-        "apps/api/src/adapters/clinical-engine/vista-adapter.ts",
-        "apps/api/src/fhir/types.ts",
-        "apps/api/src/fhir/mappers.ts",
-        "apps/api/src/fhir/fhir-routes.ts",
-        "apps/api/src/fhir/capability-statement.ts",
-        "apps/api/src/fhir/index.ts",
-        "apps/api/src/server/register-routes.ts",
-        "apps/api/src/middleware/security.ts",
-        "apps/api/tests/fhir-gateway.test.ts"
       ]
     },
     {
@@ -1362,18 +1318,18 @@
       ]
     },
     {
-      "phaseNumber": "120",
+      "phaseNumber": "120B",
       "title": "Full System Audit + Evidence-Based Gap Matrix",
-      "folder": "124-PHASE-120-FULL-SYSTEM-AUDIT",
+      "folder": "124-PHASE-120B-FULL-SYSTEM-AUDIT",
       "files": [
-        "120-01-IMPLEMENT.md",
-        "120-99-VERIFY.md"
+        "120B-01-IMPLEMENT.md",
+        "120B-99-VERIFY.md"
       ],
       "implementFiles": [
-        "120-01-IMPLEMENT.md"
+        "120B-01-IMPLEMENT.md"
       ],
       "verifyFiles": [
-        "120-99-VERIFY.md"
+        "120B-99-VERIFY.md"
       ],
       "routes": [
         "/reports"
@@ -1638,12 +1594,15 @@
       "title": "IMPLEMENT: Portal + Telehealth Durability (Postgres Repos + Restart Gate)",
       "folder": "131-PHASE-127-PORTAL-TELEHEALTH-PG",
       "files": [
-        "127-01-IMPLEMENT.md"
+        "127-01-IMPLEMENT.md",
+        "127-99-VERIFY.md"
       ],
       "implementFiles": [
         "127-01-IMPLEMENT.md"
       ],
-      "verifyFiles": [],
+      "verifyFiles": [
+        "127-99-VERIFY.md"
+      ],
       "routes": [],
       "rpcs": [],
       "uiComponents": [],
@@ -1774,14 +1733,20 @@
       "title": "IMPLEMENT: Scheduling SD Depth (VistA-First Lifecycle)",
       "folder": "135-PHASE-131-SCHEDULING-DEPTH",
       "files": [
-        "131-01-IMPLEMENT.md"
+        "131-01-IMPLEMENT.md",
+        "131-99-VERIFY.md"
       ],
       "implementFiles": [
         "131-01-IMPLEMENT.md"
       ],
-      "verifyFiles": [],
+      "verifyFiles": [
+        "131-99-VERIFY.md"
+      ],
       "routes": [
         "/scheduling/appointments/cprs",
+        "/scheduling/appointments/cprs?dfn=3",
+        "/scheduling/health",
+        "/scheduling/lifecycle",
         "/scheduling/lifecycle/transition",
         "/scheduling/lifecycle?patientDfn=X",
         "/scheduling/posture",
@@ -1789,7 +1754,23 @@
       ],
       "rpcs": [],
       "uiComponents": [
-        "page.tsx"
+        "AIAssistPanel.tsx",
+        "AcknowledgeLabDialog.tsx",
+        "AddAllergyDialog.tsx",
+        "AddMedicationDialog.tsx",
+        "AddProblemDialog.tsx",
+        "AddVitalDialog.tsx",
+        "CreateNoteDialog.tsx",
+        "EditProblemDialog.tsx",
+        "ImagingPanel.tsx",
+        "IntakePanel.tsx",
+        "MessagingTasksPanel.tsx",
+        "NotesPanel.tsx",
+        "OrdersPanel.tsx",
+        "TelehealthPanel.tsx",
+        "cprs-ui-state.tsx",
+        "page.tsx",
+        "session-context.tsx"
       ],
       "filesTouched": [
         "apps/api/src/platform/pg/pg-migrate.ts",
@@ -1807,12 +1788,15 @@
       "title": "CSRF Synchronizer Token Migration",
       "folder": "136-PHASE-132-CSRF-SYNC-TOKEN",
       "files": [
-        "132-01-IMPLEMENT.md"
+        "132-01-IMPLEMENT.md",
+        "132-99-VERIFY.md"
       ],
       "implementFiles": [
         "132-01-IMPLEMENT.md"
       ],
-      "verifyFiles": [],
+      "verifyFiles": [
+        "132-99-VERIFY.md"
+      ],
       "routes": [
         "/auth/csrf-token",
         "/scheduling/lifecycle/transition"
@@ -1851,18 +1835,18 @@
       ]
     },
     {
-      "phaseNumber": "132",
+      "phaseNumber": "132B",
       "title": "I18N FOUNDATION (MULTILINGUAL UI + INTAKE SCHEMA)",
-      "folder": "137-PHASE-132-I18N",
+      "folder": "137-PHASE-132B-I18N",
       "files": [
-        "132-01-IMPLEMENT.md",
-        "132-99-VERIFY.md"
+        "132B-01-IMPLEMENT.md",
+        "132B-99-VERIFY.md"
       ],
       "implementFiles": [
-        "132-01-IMPLEMENT.md"
+        "132B-01-IMPLEMENT.md"
       ],
       "verifyFiles": [
-        "132-99-VERIFY.md"
+        "132B-99-VERIFY.md"
       ],
       "routes": [
         "/admin/intake/question-schema",
@@ -3270,12 +3254,15 @@
       "title": "178: Production Convergence Wave 1",
       "folder": "178-PHASE-173-178-PROD-CONVERGENCE",
       "files": [
-        "173-01-IMPLEMENT.md"
+        "173-01-IMPLEMENT.md",
+        "173-99-VERIFY.md"
       ],
       "implementFiles": [
         "173-01-IMPLEMENT.md"
       ],
-      "verifyFiles": [],
+      "verifyFiles": [
+        "173-99-VERIFY.md"
+      ],
       "routes": [],
       "rpcs": [],
       "uiComponents": [],
@@ -3353,6 +3340,28 @@
         "apps/web/src/app/cprs/layout.tsx",
         "docs/runbooks/README.md",
         "scripts/verify-latest.ps"
+      ]
+    },
+    {
+      "phaseNumber": "212",
+      "title": "Repair Prompts Tree to Match Policy",
+      "folder": "180-PHASE-212-REPAIR-PROMPTS-TREE",
+      "files": [
+        "212-01-IMPLEMENT.md",
+        "212-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "212-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "212-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "prompts/197-01-IMPLEMENT.md",
+        "docs/qa/phase-index.json"
       ]
     },
     {
@@ -4453,33 +4462,20 @@
       "title": "Enterprise RCM Loop: Acks + Remits + Denial Workqueues + Rule Updates",
       "folder": "47-PHASE-43-RCM-LOOP",
       "files": [
-        "47-01-IMPLEMENT.md"
+        "43-01-IMPLEMENT.md",
+        "43-99-VERIFY.md"
       ],
       "implementFiles": [
-        "47-01-IMPLEMENT.md"
+        "43-01-IMPLEMENT.md"
       ],
-      "verifyFiles": [],
+      "verifyFiles": [
+        "43-99-VERIFY.md"
+      ],
       "routes": [],
       "rpcs": [],
       "uiComponents": [
         "page.tsx"
       ],
-      "filesTouched": []
-    },
-    {
-      "phaseNumber": "43",
-      "title": "VERIFY",
-      "folder": "48-PHASE-43-VERIFY",
-      "files": [
-        "48-99-VERIFY.md"
-      ],
-      "implementFiles": [],
-      "verifyFiles": [
-        "48-99-VERIFY.md"
-      ],
-      "routes": [],
-      "rpcs": [],
-      "uiComponents": [],
       "filesTouched": [
         "scripts/verify-phase43-claim-quality.ps",
         "prompts/48-PHASE-43-VERIFY/prompt.md"
@@ -5990,14 +5986,14 @@
       "title": "Mega Prompt Audit: IMPLEMENT",
       "folder": "92-PHASE-87-MEGA-AUDIT",
       "files": [
-        "92-01-IMPLEMENT.md",
-        "92-99-VERIFY.md"
+        "87-01-IMPLEMENT.md",
+        "87-99-VERIFY.md"
       ],
       "implementFiles": [
-        "92-01-IMPLEMENT.md"
+        "87-01-IMPLEMENT.md"
       ],
       "verifyFiles": [
-        "92-99-VERIFY.md"
+        "87-99-VERIFY.md"
       ],
       "routes": [
         "/api/",
@@ -6025,18 +6021,18 @@
       ]
     },
     {
-      "phaseNumber": "87",
+      "phaseNumber": "87B",
       "title": "Philippines RCM Foundation (PayerOps core) — IMPLEMENT",
-      "folder": "93-PHASE-87-PH-RCM",
+      "folder": "93-PHASE-87B-PH-RCM",
       "files": [
-        "93-01-IMPLEMENT.md",
-        "93-99-VERIFY.md"
+        "87B-01-IMPLEMENT.md",
+        "87B-99-VERIFY.md"
       ],
       "implementFiles": [
-        "93-01-IMPLEMENT.md"
+        "87B-01-IMPLEMENT.md"
       ],
       "verifyFiles": [
-        "93-99-VERIFY.md"
+        "87B-99-VERIFY.md"
       ],
       "routes": [
         "/rcm/payerops/*",
@@ -6275,82 +6271,6 @@
       ]
     },
     {
-      "phaseNumber": "131",
-      "title": "132 VERIFY",
-      "folder": "99-PHASE-131-132-VERIFY",
-      "files": [
-        "131-99-VERIFY.md"
-      ],
-      "implementFiles": [],
-      "verifyFiles": [
-        "131-99-VERIFY.md"
-      ],
-      "routes": [
-        "/scheduling/appointments/cprs?dfn=3",
-        "/scheduling/health",
-        "/scheduling/lifecycle",
-        "/scheduling/lifecycle/transition",
-        "/scheduling/posture",
-        "/scheduling/reference-data"
-      ],
-      "rpcs": [],
-      "uiComponents": [
-        "AIAssistPanel.tsx",
-        "AcknowledgeLabDialog.tsx",
-        "AddAllergyDialog.tsx",
-        "AddMedicationDialog.tsx",
-        "AddProblemDialog.tsx",
-        "AddVitalDialog.tsx",
-        "CreateNoteDialog.tsx",
-        "EditProblemDialog.tsx",
-        "ImagingPanel.tsx",
-        "IntakePanel.tsx",
-        "MessagingTasksPanel.tsx",
-        "NotesPanel.tsx",
-        "OrdersPanel.tsx",
-        "TelehealthPanel.tsx",
-        "cprs-ui-state.tsx",
-        "page.tsx",
-        "session-context.tsx"
-      ],
-      "filesTouched": [
-        "prompts/99-PHASE-131-132-VERIFY/131-99-VERIFY.md",
-        "apps/web/src/lib/csrf.ts",
-        "apps/web/src/stores/session-context.tsx",
-        "apps/web/src/stores/cprs-ui-state.tsx",
-        "apps/web/src/app/cprs/scheduling/page.tsx",
-        "apps/web/src/app/cprs/nursing/page.tsx",
-        "apps/web/src/app/cprs/inpatient/page.tsx",
-        "apps/web/src/app/cprs/handoff/page.tsx",
-        "apps/web/src/app/cprs/emar/page.tsx",
-        "apps/web/src/app/cprs/messages/page.tsx",
-        "apps/web/src/app/cprs/inbox/page.tsx",
-        "apps/web/src/app/cprs/admin/hmo-portal/page.tsx",
-        "apps/web/src/app/cprs/admin/loa-queue/page.tsx",
-        "apps/web/src/app/cprs/admin/migration/page.tsx",
-        "apps/web/src/app/cprs/admin/denial-cases/page.tsx",
-        "apps/web/src/app/cprs/admin/capability-matrix/page.tsx",
-        "apps/web/src/app/cprs/admin/claims-queue/page.tsx",
-        "apps/web/src/app/cprs/admin/claims-workbench/page.tsx",
-        "apps/web/src/app/cprs/admin/philhealth-eclaims3/page.tsx",
-        "apps/web/src/app/cprs/admin/denials/page.tsx",
-        "apps/web/src/components/cprs/dialogs/AddAllergyDialog.tsx",
-        "apps/web/src/components/cprs/dialogs/AddProblemDialog.tsx",
-        "apps/web/src/components/cprs/dialogs/AddVitalDialog.tsx",
-        "apps/web/src/components/cprs/dialogs/EditProblemDialog.tsx",
-        "apps/web/src/components/cprs/dialogs/CreateNoteDialog.tsx",
-        "apps/web/src/components/cprs/dialogs/AddMedicationDialog.tsx",
-        "apps/web/src/components/cprs/dialogs/AcknowledgeLabDialog.tsx",
-        "apps/web/src/components/cprs/panels/AIAssistPanel.tsx",
-        "apps/web/src/components/cprs/panels/ImagingPanel.tsx",
-        "apps/web/src/components/cprs/panels/TelehealthPanel.tsx",
-        "apps/web/src/components/cprs/panels/OrdersPanel.tsx",
-        "apps/web/src/components/cprs/panels/NotesPanel.tsx",
-        "apps/web/src/components/cprs/panels/MessagingTasksPanel.tsx",
-        "apps/web/src/components/cprs/panels/IntakePanel.tsx"
-      ]
-    },
-    {
       "phaseNumber": "93",
       "title": "PH HMO Deepening Pack (ALL Licensed HMOs) — IMPLEMENT",
       "folder": "99-PHASE-93-PH-HMO-DEEPENING",
@@ -6462,12 +6382,15 @@
       "title": "Platform Persistence Unification + Payer Registry Audit/Evidence",
       "folder": "99-PHASE-95B-PLATFORM-PERSISTENCE",
       "files": [
-        "95B-01-IMPLEMENT.md"
+        "95B-01-IMPLEMENT.md",
+        "95B-99-VERIFY.md"
       ],
       "implementFiles": [
         "95B-01-IMPLEMENT.md"
       ],
-      "verifyFiles": [],
+      "verifyFiles": [
+        "95B-99-VERIFY.md"
+      ],
       "routes": [],
       "rpcs": [],
       "uiComponents": [
