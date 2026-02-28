@@ -149,6 +149,9 @@ import rcmScaleRoutes from "../routes/rcm-scale.js";
 // Onboarding Wizard (Phase 243)
 import onboardingRoutes from "../routes/onboarding-routes.js";
 
+// Support Tooling (Phase 244)
+import supportRoutes from "../routes/support-routes.js";
+
 // Infrastructure routes
 import postureRoutes from "../posture/index.js";
 import { jobAdminRoutes } from "../routes/job-admin-routes.js";
@@ -417,6 +420,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Phase 243: Onboarding wizard
   server.register(onboardingRoutes);
+
+  // Phase 244: Support tooling
+  server.register(supportRoutes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

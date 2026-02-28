@@ -53,6 +53,7 @@ const ADMIN_NAV: AdminNavItem[] = [
   { label: 'Break-Glass',   href: '/cprs/admin/break-glass',   moduleId: 'iam' },
   { label: 'RPC Debug',     href: '/cprs/admin/rpc-debug' },
   { label: 'Reports',       href: '/cprs/admin/reports' },
+  { label: 'Support',        href: '/cprs/admin/support' },
   { label: 'Migration',     href: '/cprs/admin/migration' },
 ];
 
