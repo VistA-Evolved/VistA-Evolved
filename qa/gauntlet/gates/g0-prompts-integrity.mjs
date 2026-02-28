@@ -25,6 +25,7 @@ export async function run() {
   const gates = [
     { label: "prompts-tree-health", cmd: "node scripts/qa-gates/prompts-tree-health.mjs" },
     { label: "phase-index-gate", cmd: "node scripts/qa-gates/phase-index-gate.mjs" },
+    { label: "prompts-quality-gate", cmd: "node scripts/qa-gates/prompts-quality-gate.mjs" },
   ];
 
   for (const g of gates) {

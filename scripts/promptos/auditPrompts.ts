@@ -56,16 +56,16 @@ const allEntries = readdirSync(PROMPTS_DIR)
   .sort();
 
 const META_RE = /^00-/;
-const PHASE_RE = /^(\d{2})-PHASE-(\d+[A-Z]?)-(.+)$/;
+const PHASE_RE = /^(\d{1,3})-PHASE-(\d+[A-Z]?)-(.+)$/;
 
 const metaFolders = allEntries.filter((e) => META_RE.test(e));
-const phaseFolders = allEntries.filter((e) => !META_RE.test(e) && /^\d{2}-/.test(e));
+const phaseFolders = allEntries.filter((e) => !META_RE.test(e) && /^\d{1,3}-/.test(e));
 
 // ── Rule 1: Unique folder prefixes ──────────────────────────────
 
 const prefixMap = new Map<string, string[]>();
 for (const f of phaseFolders) {
-  const m = f.match(/^(\d{2})-/);
+  const m = f.match(/^(\d{1,3})-/);
   if (m) {
     const p = m[1];
     if (!prefixMap.has(p)) prefixMap.set(p, []);
@@ -102,14 +102,14 @@ if (gaps.length === 0) {
 // ── Rule 3: IMPLEMENT + VERIFY files per phase ─────────────────
 
 for (const folder of phaseFolders) {
-  const m = folder.match(/^(\d{2})-/);
+  const m = folder.match(/^(\d{1,3})-/);
   if (!m) continue;
   const prefix = m[1];
   const folderPath = join(PROMPTS_DIR, folder);
   const files = readdirSync(folderPath).filter((f) => f.endsWith(".md"));
 
-  // Check for XX-01-IMPLEMENT.md
-  const implementFile = files.find((f) => f.startsWith(`${prefix}-01-IMPLEMENT`) || f === `${prefix}-01-IMPLEMENT.md`);
+  // Check for IMPLEMENT file (prefix-01-IMPLEMENT or phase-num-01-IMPLEMENT)
+  const implementFile = files.find((f) => f.includes("IMPLEMENT"));
   // Also accept prompt.md as a legacy single-file pattern
   const hasPrompt = files.some((f) => f === "prompt.md");
 
@@ -130,8 +130,8 @@ for (const folder of phaseFolders) {
     }
   }
 
-  // Check for XX-99-VERIFY.md
-  const verifyFile = files.find((f) => f.startsWith(`${prefix}-99-VERIFY`) || f === `${prefix}-99-VERIFY.md`);
+  // Check for VERIFY file (prefix-99-VERIFY or phase-num-99-VERIFY)
+  const verifyFile = files.find((f) => f.includes("VERIFY"));
   if (verifyFile) {
     pass("has-verify", `Found ${verifyFile}`, folder);
   } else {

@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-27T16:58:03.904Z",
+  "generatedAt": "2026-02-28T06:32:11.345Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 183,
+  "phaseCount": 186,
   "phases": [
     {
       "phaseNumber": "1",
@@ -270,6 +270,50 @@
         "apps/web/src/app/cprs/admin/rcm/page.tsx",
         "docs/runbooks/rcm-eligibility-claimstatus-phase100.md",
         "scripts/verify-phase100-eligibility-claimstatus.ps"
+      ]
+    },
+    {
+      "phaseNumber": "179",
+      "title": "Wave 2: K8s / DR / Perf / FHIR (Q179–Q196)",
+      "folder": "100-PHASE-179-WAVE2-K8S-DR-PERF-FHIR",
+      "files": [
+        "179-01-IMPLEMENT.md",
+        "179-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "179-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "179-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "infra/secrets/dev/shared-secrets.yaml",
+        "infra/.sops.yaml",
+        "infra/README.md",
+        "infra/observability/grafana-dashboard-api.json",
+        "infra/observability/prometheus-alerts.yaml",
+        "apps/api/src/jobs/backpressure.ts",
+        "apps/api/src/fhir/fhir-cache.ts",
+        "apps/api/src/fhir/smart-configuration.ts",
+        "apps/api/tests/fhir-conformance.test.ts",
+        "tests/k6/smoke-fhir.js",
+        "tests/k6/load-mixed.js",
+        "docs/runbooks/performance-tuning.md",
+        "apps/api/src/adapters/types.ts",
+        "apps/api/src/adapters/clinical-engine/interface.ts",
+        "apps/api/src/adapters/clinical-engine/stub-adapter.ts",
+        "apps/api/src/adapters/clinical-engine/vista-adapter.ts",
+        "apps/api/src/fhir/types.ts",
+        "apps/api/src/fhir/mappers.ts",
+        "apps/api/src/fhir/fhir-routes.ts",
+        "apps/api/src/fhir/capability-statement.ts",
+        "apps/api/src/fhir/index.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/tests/fhir-gateway.test.ts"
       ]
     },
     {
@@ -3215,6 +3259,50 @@
       ],
       "verifyFiles": [
         "172-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "173",
+      "title": "178: Production Convergence Wave 1",
+      "folder": "178-PHASE-173-178-PROD-CONVERGENCE",
+      "files": [
+        "173-01-IMPLEMENT.md"
+      ],
+      "implementFiles": [
+        "173-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/index.ts",
+        "apps/api/src/server/*.ts",
+        "apps/api/src/fhir/*.ts",
+        "apps/api/src/platform/store-resolver.ts",
+        "apps/api/package.json",
+        "apps/api/tests/server-smoke.test.ts",
+        "apps/api/tests/rls-isolation.test.ts",
+        "apps/api/tests/fhir.test.ts"
+      ]
+    },
+    {
+      "phaseNumber": "211",
+      "title": "PromptOps Governance Upgrade",
+      "folder": "179-PHASE-211-PROMPTOPS-GOVERNANCE",
+      "files": [
+        "211-01-IMPLEMENT.md",
+        "211-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "211-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "211-99-VERIFY.md"
       ],
       "routes": [],
       "rpcs": [],

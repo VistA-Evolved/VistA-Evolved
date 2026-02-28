@@ -40,10 +40,13 @@
 ## 4. Prompts Directory Rules
 
 - `/prompts` is the canonical instruction system.
-- Each phase folder follows `NN-PHASE-X-DESCRIPTION` naming.
+- Phase folder prefix is for ordering (supports 1--3 digits): `N-`, `NN-`, `NNN-`.
+- Folder naming: `<prefix>-PHASE-<phaseNum>-<TITLE>` (e.g., `179-PHASE-211-PROMPTOPS-GOVERNANCE`).
+- File prefix inside the folder uses the **phase number**, not the folder prefix.
 - Each phase folder MUST contain:
-  - `NN-01-IMPLEMENT.md` (implementation instructions)
-  - `NN-99-VERIFY.md` (verification instructions)
+  - An IMPLEMENT file (e.g., `211-01-IMPLEMENT.md`) with implementation steps and files touched.
+  - A VERIFY file (e.g., `211-99-VERIFY.md`) with verification steps and acceptance criteria.
+- Playbooks and wave aggregation docs belong in `prompts/00-PLAYBOOKS/`, not as phase folders.
 - Prompts are the source of truth for what was built and how to verify it.
 - See `prompts/00-ORDERING-RULES.md` for detailed naming conventions.
 

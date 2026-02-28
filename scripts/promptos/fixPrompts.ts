@@ -73,12 +73,12 @@ const allEntries = readdirSync(PROMPTS_DIR)
   .sort();
 
 const META_RE = /^00-/;
-const phaseFolders = allEntries.filter((e) => !META_RE.test(e) && /^\d{2}-/.test(e));
+const phaseFolders = allEntries.filter((e) => !META_RE.test(e) && /^\d{1,3}-/.test(e));
 
 // ── Fix 1: Create missing IMPLEMENT/VERIFY stubs ─────────────────
 
 for (const folder of phaseFolders) {
-  const m = folder.match(/^(\d{2})-/);
+  const m = folder.match(/^(\d{1,3})-/);
   if (!m) continue;
   const prefix = m[1];
   const folderPath = join(PROMPTS_DIR, folder);

@@ -51,14 +51,16 @@ const SUITES = {
     { name: "VistA probe", cmd: "node scripts/qa-gates/vista-probe.mjs" },
   ],
   prompts: [
-    { name: "Prompts ordering", cmd: "pnpm exec tsx scripts/check-prompts-ordering.ts" },
+    { name: "Prompts tree health", cmd: "node scripts/qa-gates/prompts-tree-health.mjs" },
+    { name: "Prompts quality", cmd: "node scripts/qa-gates/prompts-quality-gate.mjs" },
   ],
   "prod-posture": [
     { name: "Production posture", cmd: "node scripts/qa-gates/prod-posture.mjs" },
   ],
   "phase-audit": [
     { name: "Phase index integrity", cmd: "node scripts/qa-gates/phase-index-gate.mjs" },
-    { name: "Prompts ordering", cmd: "pnpm exec tsx scripts/check-prompts-ordering.ts" },
+    { name: "Prompts tree health", cmd: "node scripts/qa-gates/prompts-tree-health.mjs" },
+    { name: "Prompts quality", cmd: "node scripts/qa-gates/prompts-quality-gate.mjs" },
   ],
 };
 
