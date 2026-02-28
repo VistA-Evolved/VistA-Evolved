@@ -130,6 +130,9 @@ import uiPrefsRoutes from "../routes/ui-prefs.js";
 // Schema status (Phase 175)
 import schemaStatusRoutes from "../routes/admin/schema-status.js";
 
+// FHIR R4 gateway (Phase 178)
+import fhirRoutes from "../fhir/fhir-routes.js";
+
 // Infrastructure routes
 import postureRoutes from "../posture/index.js";
 import { jobAdminRoutes } from "../routes/job-admin-routes.js";
@@ -383,6 +386,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // VistA provisioning (Phase 155)
   server.register(vistaProvisionRoutes);
+
+  // FHIR R4 gateway (Phase 178)
+  server.register(fhirRoutes);
 
   // Inline routes (health, ready, version, metrics, audit, admin, vista/*)
   registerInlineRoutes(server);
