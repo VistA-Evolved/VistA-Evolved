@@ -137,6 +137,9 @@ import smartConfigRoutes from "../fhir/smart-configuration.js";
 // HL7v2 Engine (Phase 239)
 import hl7EngineRoutes from "../routes/hl7-engine.js";
 
+// HL7v2 Routing (Phase 240)
+import hl7RoutingRoutes from "../routes/hl7-routing.js";
+
 // Infrastructure routes
 import postureRoutes from "../posture/index.js";
 import { jobAdminRoutes } from "../routes/job-admin-routes.js";
@@ -393,6 +396,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // HL7v2 Engine (Phase 239)
   server.register(hl7EngineRoutes);
+
+  // HL7v2 Routing (Phase 240)
+  server.register(hl7RoutingRoutes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

@@ -10,6 +10,7 @@ import { MllpServer } from "./mllp-server.js";
 import { ackAccept, ackError } from "./ack-generator.js";
 import { messageSummary } from "./parser.js";
 import type { Hl7EngineStatus, Hl7Message, MllpConnection } from "./types.js";
+import { routingMessageHandler, shutdownDispatcher } from "./routing/index.js";
 
 // Re-exports
 export { MllpServer } from "./mllp-server.js";
@@ -60,9 +61,9 @@ export async function initHl7Engine(): Promise<boolean> {
     maxConnections,
   });
 
-  // Register default message handler
-  // Phase 240 (P3) will replace this with the routing layer
-  engineInstance.onMessage(defaultMessageHandler);
+  // Register routing message handler (Phase 240, replaces default handler)
+  // Falls back to ACK-accept if no routes match (dead-lettered)
+  engineInstance.onMessage(routingMessageHandler);
 
   try {
     await engineInstance.start();
@@ -89,6 +90,7 @@ export async function stopHl7Engine(): Promise<void> {
   if (!engineInstance) return;
 
   try {
+    shutdownDispatcher();
     await engineInstance.stop();
     log.info("HL7 engine stopped", { component: "hl7-engine" });
   } catch (err) {
