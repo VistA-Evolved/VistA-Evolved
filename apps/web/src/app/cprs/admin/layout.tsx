@@ -55,6 +55,7 @@ const ADMIN_NAV: AdminNavItem[] = [
   { label: 'Reports',       href: '/cprs/admin/reports' },
   { label: 'Exports',       href: '/cprs/admin/exports' },
   { label: 'Support',        href: '/cprs/admin/support' },
+  { label: 'Pilot',          href: '/cprs/admin/pilot' },
   { label: 'Migration',     href: '/cprs/admin/migration' },
 ];
 

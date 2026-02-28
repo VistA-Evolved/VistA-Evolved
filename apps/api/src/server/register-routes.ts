@@ -155,6 +155,9 @@ import supportRoutes from "../routes/support-routes.js";
 // Data Exports v2 (Phase 245)
 import exportV2Routes from "../routes/export-routes.js";
 
+// Pilot Hospital Hardening (Phase 246)
+import pilotRoutes from "../routes/pilot-routes.js";
+
 // Infrastructure routes
 import postureRoutes from "../posture/index.js";
 import { jobAdminRoutes } from "../routes/job-admin-routes.js";
@@ -429,6 +432,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Phase 245: Data Exports v2
   server.register(exportV2Routes);
+
+  // Phase 246: Pilot Hospital Hardening
+  server.register(pilotRoutes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);
