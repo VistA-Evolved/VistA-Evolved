@@ -241,6 +241,8 @@ export default async function moduleEntitlementRoutes(
         flagValue,
         moduleId,
         description,
+        rolloutPercentage,
+        userTargeting,
         reason,
       } = body;
 
@@ -248,6 +250,19 @@ export default async function moduleEntitlementRoutes(
         return reply.code(400).send({
           ok: false,
           error: "flagKey (string) and flagValue (string) are required",
+        });
+      }
+
+      // Validate rolloutPercentage range
+      if (
+        rolloutPercentage !== undefined &&
+        (typeof rolloutPercentage !== "number" ||
+          rolloutPercentage < 0 ||
+          rolloutPercentage > 100)
+      ) {
+        return reply.code(400).send({
+          ok: false,
+          error: "rolloutPercentage must be an integer 0-100",
         });
       }
 
@@ -261,7 +276,9 @@ export default async function moduleEntitlementRoutes(
         flagKey,
         String(flagValue),
         moduleId,
-        description
+        description,
+        rolloutPercentage,
+        userTargeting
       );
 
       // Audit

@@ -783,7 +783,7 @@ function EntitlementsTab() {
 }
 
 /* ================================================================== */
-/* Feature Flags Tab -- Phase 109                                      */
+/* Feature Flags Tab -- Phase 109, upgraded Phase 285                  */
 /* ================================================================== */
 
 interface FlagRow {
@@ -793,13 +793,15 @@ interface FlagRow {
   flagValue: string;
   moduleId: string | null;
   description: string | null;
+  rolloutPercentage: number | null;
+  userTargeting: unknown[] | null;
 }
 
 function FeatureFlagsTab() {
   const [flags, setFlags] = useState<FlagRow[]>([]);
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
-  const [newFlag, setNewFlag] = useState({ flagKey: '', flagValue: '', moduleId: '', description: '' });
+  const [newFlag, setNewFlag] = useState({ flagKey: '', flagValue: '', moduleId: '', description: '', rolloutPercentage: '100' });
 
   const load = useCallback(async () => {
     try {
@@ -814,6 +816,8 @@ function FeatureFlagsTab() {
 
   const createFlag = async () => {
     if (!newFlag.flagKey || !newFlag.flagValue) { setError('flagKey and flagValue are required'); return; }
+    const pct = parseInt(newFlag.rolloutPercentage, 10);
+    if (isNaN(pct) || pct < 0 || pct > 100) { setError('Rollout percentage must be 0-100'); return; }
     setSaving(true);
     setError('');
     const res = await apiPost('/admin/modules/feature-flags', {
@@ -821,10 +825,11 @@ function FeatureFlagsTab() {
       flagValue: newFlag.flagValue,
       moduleId: newFlag.moduleId || undefined,
       description: newFlag.description || undefined,
+      rolloutPercentage: pct,
       reason: 'Created from admin UI',
     });
     if (!res.ok) setError(res.error || 'Failed to create flag');
-    else setNewFlag({ flagKey: '', flagValue: '', moduleId: '', description: '' });
+    else setNewFlag({ flagKey: '', flagValue: '', moduleId: '', description: '', rolloutPercentage: '100' });
     await load();
     setSaving(false);
   };
@@ -845,7 +850,7 @@ function FeatureFlagsTab() {
   return (
     <div>
       <p style={{ fontSize: 13, color: '#6c757d', marginBottom: 16 }}>
-        Manage per-tenant feature flags. Flags are key-value pairs that control fine-grained behavior within modules.
+        Manage per-tenant feature flags with gradual rollout support. Flags are key-value pairs that control fine-grained behavior within modules.
       </p>
       {error && <div style={{ padding: '6px 12px', background: '#f8d7da', color: '#842029', fontSize: 12, marginBottom: 8, borderRadius: 4 }}>{error}</div>}
 
@@ -854,13 +859,19 @@ function FeatureFlagsTab() {
         <strong style={{ fontSize: 13, display: 'block', marginBottom: 8 }}>Add / Update Flag</strong>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'flex-end' }}>
           <input placeholder="Flag key" value={newFlag.flagKey} onChange={e => setNewFlag(f => ({ ...f, flagKey: e.target.value }))}
-            style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #ced4da', borderRadius: 3, width: 160 }} />
+            style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #ced4da', borderRadius: 3, width: 140 }} />
           <input placeholder="Flag value" value={newFlag.flagValue} onChange={e => setNewFlag(f => ({ ...f, flagValue: e.target.value }))}
-            style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #ced4da', borderRadius: 3, width: 160 }} />
-          <input placeholder="Module ID (optional)" value={newFlag.moduleId} onChange={e => setNewFlag(f => ({ ...f, moduleId: e.target.value }))}
-            style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #ced4da', borderRadius: 3, width: 160 }} />
+            style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #ced4da', borderRadius: 3, width: 120 }} />
+          <input placeholder="Module ID" value={newFlag.moduleId} onChange={e => setNewFlag(f => ({ ...f, moduleId: e.target.value }))}
+            style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #ced4da', borderRadius: 3, width: 120 }} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <label style={{ fontSize: 10, color: '#6c757d' }}>Rollout %</label>
+            <input type="number" min="0" max="100" value={newFlag.rolloutPercentage}
+              onChange={e => setNewFlag(f => ({ ...f, rolloutPercentage: e.target.value }))}
+              style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #ced4da', borderRadius: 3, width: 70 }} />
+          </div>
           <input placeholder="Description" value={newFlag.description} onChange={e => setNewFlag(f => ({ ...f, description: e.target.value }))}
-            style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #ced4da', borderRadius: 3, width: 200 }} />
+            style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #ced4da', borderRadius: 3, width: 180 }} />
           <button onClick={createFlag} disabled={saving}
             style={{ padding: '4px 14px', fontSize: 12, background: '#198754', color: '#fff', border: 'none', borderRadius: 3, cursor: saving ? 'not-allowed' : 'pointer' }}>
             Save
@@ -873,6 +884,7 @@ function FeatureFlagsTab() {
           <tr style={{ borderBottom: '2px solid #dee2e6', textAlign: 'left' }}>
             <th style={{ padding: '8px 12px' }}>Key</th>
             <th style={{ padding: '8px 12px' }}>Value</th>
+            <th style={{ padding: '8px 12px' }}>Rollout</th>
             <th style={{ padding: '8px 12px' }}>Module</th>
             <th style={{ padding: '8px 12px' }}>Description</th>
             <th style={{ padding: '8px 12px' }}>Action</th>
@@ -880,12 +892,24 @@ function FeatureFlagsTab() {
         </thead>
         <tbody>
           {flags.length === 0 && (
-            <tr><td colSpan={5} style={{ padding: 16, color: '#6c757d', textAlign: 'center' }}>No feature flags set for this tenant.</td></tr>
+            <tr><td colSpan={6} style={{ padding: 16, color: '#6c757d', textAlign: 'center' }}>No feature flags set for this tenant.</td></tr>
           )}
           {flags.map(f => (
             <tr key={f.flagKey} style={{ borderBottom: '1px solid #dee2e6' }}>
               <td style={{ padding: '8px 12px', fontFamily: 'monospace', fontSize: 12 }}>{f.flagKey}</td>
               <td style={{ padding: '8px 12px', fontFamily: 'monospace', fontSize: 12 }}>{f.flagValue}</td>
+              <td style={{ padding: '8px 12px', fontSize: 12 }}>
+                <span style={{
+                  padding: '2px 6px',
+                  borderRadius: 3,
+                  fontSize: 11,
+                  fontWeight: 600,
+                  background: (f.rolloutPercentage ?? 100) === 100 ? '#d1e7dd' : (f.rolloutPercentage ?? 100) === 0 ? '#f8d7da' : '#fff3cd',
+                  color: (f.rolloutPercentage ?? 100) === 100 ? '#0f5132' : (f.rolloutPercentage ?? 100) === 0 ? '#842029' : '#664d03',
+                }}>
+                  {f.rolloutPercentage ?? 100}%
+                </span>
+              </td>
               <td style={{ padding: '8px 12px', fontSize: 12 }}>{f.moduleId || '-'}</td>
               <td style={{ padding: '8px 12px', fontSize: 12, color: '#6c757d' }}>{f.description || '-'}</td>
               <td style={{ padding: '8px 12px' }}>

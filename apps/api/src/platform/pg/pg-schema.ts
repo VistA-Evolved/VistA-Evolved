@@ -1467,6 +1467,8 @@ export const tenantFeatureFlag = pgTable("tenant_feature_flag", {
   flagValue: text("flag_value").notNull().default("true"),
   moduleId: text("module_id"),
   description: text("description"),
+  rolloutPercentage: integer("rollout_percentage").default(100),
+  userTargeting: jsonb("user_targeting").default([]),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 }, (table) => [

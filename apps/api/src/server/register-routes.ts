@@ -103,6 +103,9 @@ import evidenceRoutes from "../rcm/evidence/evidence-routes.js";
 // SaaS Billing/Metering (Phase 284)
 import billingRoutes from "../billing/billing-routes.js";
 
+// Feature Flag Evaluation (Phase 285)
+import flagEvalRoutes from "../flags/flag-eval-routes.js";
+
 // Migration toolkit
 import migrationRoutes from "../migration/migration-routes.js";
 
@@ -241,6 +244,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // SaaS Billing/Metering (Phase 284)
   server.register(billingRoutes);
+
+  // Feature Flag Evaluation (Phase 285)
+  server.register(flagEvalRoutes);
 
   // Schema status (Phase 175)
   server.register(schemaStatusRoutes);

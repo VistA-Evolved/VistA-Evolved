@@ -2617,6 +2617,20 @@ ALTER TABLE tenant_config
   ADD COLUMN IF NOT EXISTS branding JSONB NOT NULL DEFAULT '{}'::jsonb;
 `,
   },
+  {
+    version: 29,
+    name: "phase285_feature_flags_upgrade",
+    sql: `
+-- Phase 285: Add rollout_percentage and user_targeting to tenant_feature_flag
+ALTER TABLE tenant_feature_flag
+  ADD COLUMN IF NOT EXISTS rollout_percentage INTEGER DEFAULT 100;
+ALTER TABLE tenant_feature_flag
+  ADD COLUMN IF NOT EXISTS user_targeting JSONB DEFAULT '[]'::jsonb;
+-- Index for rollout queries
+CREATE INDEX IF NOT EXISTS idx_tff_rollout
+  ON tenant_feature_flag(tenant_id, rollout_percentage);
+`,
+  },
 ];
 
 /**

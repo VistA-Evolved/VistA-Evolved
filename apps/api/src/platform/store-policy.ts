@@ -2043,6 +2043,18 @@ export const STORE_INVENTORY: StoreEntry[] = [
     domain: "billing",
     notes: "Phase 284: accumulated between flushes; billing provider is durable store. Max 10K tenants.",
   },
+
+  // ─── Feature Flags (Phase 285) ─────────────────────────────────
+  {
+    id: "unleash-toggle-cache",
+    file: "flags/unleash-provider.ts",
+    variable: "cache",
+    description: "Unleash toggle cache (Map<flagKey, UnleashToggle>), refreshed periodically from Unleash API",
+    classification: "cache",
+    durability: "in_memory_only",
+    domain: "flags",
+    notes: "Phase 285: only active when FEATURE_FLAG_PROVIDER=unleash. Falls back to DB provider on miss.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

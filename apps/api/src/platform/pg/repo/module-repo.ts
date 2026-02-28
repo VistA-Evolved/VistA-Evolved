@@ -57,6 +57,8 @@ export interface TenantFeatureFlagRow {
   flagValue: string;
   moduleId: string | null;
   description: string | null;
+  rolloutPercentage: number | null;
+  userTargeting: unknown[] | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -365,6 +367,8 @@ export async function upsertTenantFeatureFlag(
   flagValue: string,
   moduleId?: string,
   description?: string,
+  rolloutPercentage?: number,
+  userTargeting?: unknown[],
 ): Promise<TenantFeatureFlagRow> {
   const db = getPgDb();
   const now = new Date().toISOString();
@@ -377,6 +381,8 @@ export async function upsertTenantFeatureFlag(
         flagValue,
         moduleId: moduleId ?? existing.moduleId,
         description: description ?? existing.description,
+        rolloutPercentage: rolloutPercentage ?? existing.rolloutPercentage,
+        userTargeting: userTargeting ?? existing.userTargeting,
         updatedAt: now,
       })
       .where(
@@ -393,6 +399,8 @@ export async function upsertTenantFeatureFlag(
       flagValue,
       moduleId: moduleId ?? null,
       description: description ?? null,
+      rolloutPercentage: rolloutPercentage ?? 100,
+      userTargeting: userTargeting ?? [],
       createdAt: now,
       updatedAt: now,
     });
