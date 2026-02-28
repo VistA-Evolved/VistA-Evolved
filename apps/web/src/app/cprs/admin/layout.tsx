@@ -23,6 +23,7 @@ interface AdminNavItem {
 }
 
 const ADMIN_NAV: AdminNavItem[] = [
+  { label: 'Onboarding',    href: '/cprs/admin/onboarding' },
   { label: 'Modules',       href: '/cprs/admin/modules' },
   { label: 'Integrations',  href: '/cprs/admin/integrations',  moduleId: 'interop' },
   { label: 'Analytics',     href: '/cprs/admin/analytics',     moduleId: 'analytics' },
