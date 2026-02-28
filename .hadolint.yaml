@@ -1,0 +1,15 @@
+# hadolint configuration -- Dockerfile best practices
+# https://github.com/hadolint/hadolint
+
+# Ignore rules that conflict with our build pattern
+ignored:
+  # DL3008: pin versions in apt-get -- we use --no-install-recommends
+  # and the base image already pins the OS version
+  - DL3008
+  # DL3003: use WORKDIR instead of cd -- we use WORKDIR already
+  - DL3003
+
+# Trusted registries (optional, for stricter environments)
+trustedRegistries:
+  - docker.io
+  - ghcr.io
