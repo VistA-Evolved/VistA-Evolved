@@ -1,0 +1,146 @@
+name: CI PR Gates
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ci-pr-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ---- Build + Test ----
+  build-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "10.29.2"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.13.0"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: TypeScript check
+        run: pnpm -C apps/api exec tsc --noEmit
+
+      - name: Unit tests
+        run: pnpm -C apps/api test
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: apps/api/test-results.json
+          retention-days: 7
+
+  # ---- QA Gauntlet (FAST) ----
+  gauntlet:
+    name: QA Gauntlet FAST
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "10.29.2"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.13.0"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run QA Gauntlet (FAST)
+        run: pnpm qa:gauntlet:fast
+
+      - name: Upload gauntlet results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-gauntlet-fast
+          path: artifacts/qa-gauntlet.json
+          retention-days: 7
+
+  # ---- Secret Scan (gitleaks) ----
+  secret-scan:
+    name: Secret Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for gitleaks
+
+      - name: Run gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+
+  # ---- SBOM Generation ----
+  sbom:
+    name: SBOM Generation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Syft
+        uses: anchore/sbom-action/download-syft@v0
+
+      - name: Generate SBOM (filesystem)
+        run: |
+          syft dir:. -o spdx-json=sbom-repo.spdx.json
+          echo "SBOM generated: sbom-repo.spdx.json"
+
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-pr
+          path: sbom-repo.spdx.json
+          retention-days: 30
+
+  # ---- Helm Lint ----
+  helm-lint:
+    name: Helm Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Lint ve-shared
+        run: helm lint infra/helm/ve-shared
+
+      - name: Lint ve-tenant
+        run: helm lint infra/helm/ve-tenant
+
+      - name: Template ve-shared (dev)
+        run: |
+          helm template ve-shared infra/helm/ve-shared \
+            -f infra/environments/dev/shared.values.yaml \
+            > /dev/null
+          echo "ve-shared template OK"
+
+      - name: Template ve-tenant (dev defaults)
+        run: |
+          helm template ve-tenant infra/helm/ve-tenant \
+            -f infra/environments/dev/tenant.defaults.values.yaml \
+            --set tenantId=lint-test,tenantSlug=lint-test \
+            > /dev/null
+          echo "ve-tenant template OK"

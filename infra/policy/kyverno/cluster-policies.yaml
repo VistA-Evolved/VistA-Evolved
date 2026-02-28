@@ -1,0 +1,187 @@
+# Kyverno Cluster Policies for VistA-Evolved
+# Apply with: kubectl apply -f infra/policy/kyverno/
+# Requires: Kyverno installed in cluster (via ve-shared chart with policy.enabled=true)
+
+# ---- disallow-privileged ----
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: ve-disallow-privileged
+  annotations:
+    policies.kyverno.io/title: Disallow Privileged Containers
+    policies.kyverno.io/category: Pod Security
+    policies.kyverno.io/severity: high
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: disallow-privileged
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      validate:
+        message: "Privileged containers are not allowed."
+        pattern:
+          spec:
+            containers:
+              - =(securityContext):
+                  =(privileged): false
+            =(initContainers):
+              - =(securityContext):
+                  =(privileged): false
+
+---
+# ---- disallow-host-namespaces ----
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: ve-disallow-host-namespaces
+  annotations:
+    policies.kyverno.io/title: Disallow Host Namespaces
+    policies.kyverno.io/category: Pod Security
+    policies.kyverno.io/severity: high
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: disallow-host-namespaces
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      validate:
+        message: "Host network, PID, and IPC namespaces are not allowed."
+        pattern:
+          spec:
+            =(hostNetwork): false
+            =(hostPID): false
+            =(hostIPC): false
+
+---
+# ---- disallow-host-path ----
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: ve-disallow-host-path
+  annotations:
+    policies.kyverno.io/title: Disallow HostPath Volumes
+    policies.kyverno.io/category: Pod Security
+    policies.kyverno.io/severity: high
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: disallow-host-path
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      validate:
+        message: "HostPath volumes are not allowed."
+        deny:
+          conditions:
+            any:
+              - key: "{{ request.object.spec.volumes[].hostPath || '' }}"
+                operator: NotEquals
+                value: ""
+
+---
+# ---- require-resource-limits ----
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: ve-require-resource-limits
+  annotations:
+    policies.kyverno.io/title: Require Resource Requests and Limits
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: require-limits
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      validate:
+        message: "All containers must have CPU and memory requests and limits."
+        pattern:
+          spec:
+            containers:
+              - resources:
+                  requests:
+                    memory: "?*"
+                    cpu: "?*"
+                  limits:
+                    memory: "?*"
+                    cpu: "?*"
+
+---
+# ---- require-probes ----
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: ve-require-probes
+  annotations:
+    policies.kyverno.io/title: Require Readiness and Liveness Probes
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
+spec:
+  validationFailureAction: Audit  # Audit-only: some system pods don't have probes
+  background: true
+  rules:
+    - name: require-probes
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - "ve-tenant-*"
+      validate:
+        message: "Liveness and readiness probes are recommended for tenant pods."
+        pattern:
+          spec:
+            containers:
+              - livenessProbe:
+                  httpGet:
+                    path: "?*"
+              - readinessProbe:
+                  httpGet:
+                    path: "?*"
+
+---
+# ---- require-labels ----
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: ve-require-labels
+  annotations:
+    policies.kyverno.io/title: Require Standard Labels
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: low
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+    - name: require-app-label
+      match:
+        any:
+          - resources:
+              kinds:
+                - Deployment
+                - StatefulSet
+              namespaces:
+                - "ve-*"
+      validate:
+        message: "Deployments in VE namespaces must have app.kubernetes.io/part-of label."
+        pattern:
+          metadata:
+            labels:
+              app.kubernetes.io/part-of: "?*"

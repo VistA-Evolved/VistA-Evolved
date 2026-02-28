@@ -1,0 +1,42 @@
+# infra/environments/prod/tenant.defaults.values.yaml
+# Default tenant values for production.
+
+api:
+  image:
+    tag: ""  # Must be set per release
+  replicas: 3
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: "2"
+      memory: 2Gi
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 8
+    targetCPUUtilization: 70
+
+vista:
+  enabled: true
+  image:
+    tag: ""  # Must be set per release
+
+backup:
+  enabled: true
+  schedule: "0 2 * * *"
+  retention:
+    keepDays: 30
+
+networkPolicies:
+  enabled: true
+
+pdb:
+  enabled: true
+  minAvailable: 1
+
+metrics:
+  enabled: true
+
+releaseChannel: stable

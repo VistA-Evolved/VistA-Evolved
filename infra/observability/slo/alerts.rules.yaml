@@ -1,0 +1,213 @@
+# Prometheus Alerting Rules — VistA-Evolved
+# Hand-written multi-window burn-rate alerts matching SLO spec.
+# Deploy alongside Prometheus via ConfigMap or file_sd.
+
+groups:
+  # ================================================================
+  #  SLO-1 — API Availability (99.5% over 30d)
+  # ================================================================
+  - name: slo.api.availability
+    interval: 30s
+    rules:
+      # --- Recording rules (error budget burn rate) ---
+      - record: slo:api_availability:error_ratio_5m
+        expr: >
+          sum(rate(http_requests_total{job="vista-evolved-api", code=~"5.."}[5m]))
+          /
+          sum(rate(http_requests_total{job="vista-evolved-api"}[5m]))
+
+      - record: slo:api_availability:error_ratio_1h
+        expr: >
+          sum(rate(http_requests_total{job="vista-evolved-api", code=~"5.."}[1h]))
+          /
+          sum(rate(http_requests_total{job="vista-evolved-api"}[1h]))
+
+      - record: slo:api_availability:error_ratio_6h
+        expr: >
+          sum(rate(http_requests_total{job="vista-evolved-api", code=~"5.."}[6h]))
+          /
+          sum(rate(http_requests_total{job="vista-evolved-api"}[6h]))
+
+      # --- Alerting: fast burn (page) ---
+      - alert: VEApiAvailabilityFastBurn
+        expr: >
+          slo:api_availability:error_ratio_5m > (14.4 * 0.005)
+          and
+          slo:api_availability:error_ratio_1h > (14.4 * 0.005)
+        for: 2m
+        labels:
+          severity: critical
+          slo: api-availability
+          team: platform
+        annotations:
+          summary: "API availability fast burn: 14.4x budget consumption"
+          description: >
+            5m error ratio {{ $value | humanizePercentage }} exceeds
+            fast-burn threshold (7.2%). Page on-call immediately.
+
+      # --- Alerting: slow burn (ticket) ---
+      - alert: VEApiAvailabilitySlowBurn
+        expr: >
+          slo:api_availability:error_ratio_6h > (1.0 * 0.005)
+        for: 1h
+        labels:
+          severity: warning
+          slo: api-availability
+          team: platform
+        annotations:
+          summary: "API availability slow burn: error budget depleting"
+          description: >
+            6h error ratio {{ $value | humanizePercentage }} indicates
+            slow budget depletion. Investigate within shift.
+
+  # ================================================================
+  #  SLO-2 — API Latency p95 < 2s (95% target)
+  # ================================================================
+  - name: slo.api.latency
+    interval: 30s
+    rules:
+      - record: slo:api_latency:good_ratio_5m
+        expr: >
+          sum(rate(http_request_duration_seconds_bucket{job="vista-evolved-api", le="2.0"}[5m]))
+          /
+          sum(rate(http_request_duration_seconds_count{job="vista-evolved-api"}[5m]))
+
+      - record: slo:api_latency:good_ratio_1h
+        expr: >
+          sum(rate(http_request_duration_seconds_bucket{job="vista-evolved-api", le="2.0"}[1h]))
+          /
+          sum(rate(http_request_duration_seconds_count{job="vista-evolved-api"}[1h]))
+
+      - alert: VEApiLatencyFastBurn
+        expr: >
+          (1 - slo:api_latency:good_ratio_5m) > (14.4 * 0.05)
+          and
+          (1 - slo:api_latency:good_ratio_1h) > (14.4 * 0.05)
+        for: 2m
+        labels:
+          severity: critical
+          slo: api-latency-p95
+          team: platform
+        annotations:
+          summary: "API latency fast burn: p95 SLO at risk"
+          description: >
+            More than {{ $value | humanizePercentage }} of requests
+            exceed 2s in the last 5m.
+
+      - alert: VEApiLatencySlowBurn
+        expr: >
+          (1 - slo:api_latency:good_ratio_1h) > (1.0 * 0.05)
+        for: 3h
+        labels:
+          severity: warning
+          slo: api-latency-p95
+          team: platform
+        annotations:
+          summary: "API latency slow burn: p95 degrading"
+
+  # ================================================================
+  #  SLO-3 — RPC Broker Success (99%)
+  # ================================================================
+  - name: slo.rpc.broker
+    interval: 30s
+    rules:
+      - record: slo:rpc_broker:error_ratio_5m
+        expr: >
+          sum(rate(rpc_calls_total{job="vista-evolved-api", status="error"}[5m]))
+          /
+          sum(rate(rpc_calls_total{job="vista-evolved-api"}[5m]))
+
+      - alert: VERpcBrokerHighFailure
+        expr: slo:rpc_broker:error_ratio_5m > 0.10
+        for: 5m
+        labels:
+          severity: critical
+          slo: rpc-broker-success
+          team: platform
+        annotations:
+          summary: "RPC broker failure rate > 10% for 5 minutes"
+          description: >
+            VistA RPC broker error ratio {{ $value | humanizePercentage }}.
+            Circuit breaker may be open.
+
+      - alert: VERpcBrokerElevatedFailure
+        expr: slo:rpc_broker:error_ratio_5m > 0.01
+        for: 15m
+        labels:
+          severity: warning
+          slo: rpc-broker-success
+          team: platform
+        annotations:
+          summary: "RPC broker failure rate > 1% for 15 minutes"
+
+  # ================================================================
+  #  SLO-4 — Backup Success (99.9%)
+  # ================================================================
+  - name: slo.backup
+    interval: 60s
+    rules:
+      - alert: VEBackupFailure
+        expr: >
+          increase(backup_result_total{status="failure"}[24h]) > 0
+        labels:
+          severity: critical
+          slo: backup-success
+          team: platform
+        annotations:
+          summary: "Database backup failed in the last 24 hours"
+          description: >
+            At least one backup failure detected.
+            Check backup job logs and storage connectivity.
+
+  # ================================================================
+  #  Infrastructure — DR & Pod Health
+  # ================================================================
+  - name: infra.health
+    interval: 30s
+    rules:
+      - alert: VEPodCrashLooping
+        expr: >
+          increase(kube_pod_container_status_restarts_total{namespace=~"ve-.*"}[1h]) > 3
+        for: 5m
+        labels:
+          severity: critical
+          team: platform
+        annotations:
+          summary: "Pod {{ $labels.pod }} crash-looping (>3 restarts/hour)"
+
+      - alert: VEPodNotReady
+        expr: >
+          kube_pod_status_ready{namespace=~"ve-.*", condition="true"} == 0
+        for: 10m
+        labels:
+          severity: warning
+          team: platform
+        annotations:
+          summary: "Pod {{ $labels.pod }} not ready for 10+ minutes"
+
+      - alert: VEHighMemoryUsage
+        expr: >
+          container_memory_working_set_bytes{namespace=~"ve-.*"}
+          /
+          container_spec_memory_limit_bytes{namespace=~"ve-.*"}
+          > 0.9
+        for: 5m
+        labels:
+          severity: warning
+          team: platform
+        annotations:
+          summary: "Container {{ $labels.container }} memory > 90% of limit"
+
+      - alert: VEDiskPressure
+        expr: >
+          (
+            node_filesystem_avail_bytes{mountpoint="/"}
+            /
+            node_filesystem_size_bytes{mountpoint="/"}
+          ) < 0.1
+        for: 5m
+        labels:
+          severity: critical
+          team: platform
+        annotations:
+          summary: "Disk space < 10% remaining on {{ $labels.instance }}"

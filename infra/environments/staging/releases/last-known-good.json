@@ -1,0 +1,7 @@
+{
+  "imageTag": "latest",
+  "promotedAt": "",
+  "promotedBy": "",
+  "canaryTenant": "",
+  "notes": "Placeholder -- updated by CD pipeline on successful canary"
+}

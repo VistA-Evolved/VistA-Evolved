@@ -1,0 +1,12 @@
+# infra/environments/dev/tenants/demo.values.yaml
+# Per-tenant overrides for the "demo" tenant in dev environment.
+# Merged on top of tenant.defaults.values.yaml by ArgoCD / helm.
+
+tenantId: demo
+tenantSlug: demo
+
+# Demo tenant uses default dev settings -- minimal overrides
+api:
+  env:
+    - name: TENANT_DISPLAY_NAME
+      value: "Demo Clinic"

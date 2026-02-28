@@ -1,0 +1,71 @@
+# ArgoCD Bootstrap Values for VistA-Evolved
+# Used by argocd-install.ps1 to customize the ArgoCD Helm install.
+# Ref: https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd
+
+global:
+  # Kind-friendly: single replica, no HA
+  revisionHistoryLimit: 3
+
+configs:
+  params:
+    # Insecure mode for local/kind (no TLS termination inside ArgoCD)
+    server.insecure: true
+  cm:
+    # Allow local repo path (for kind testing)
+    resource.customizations: ""
+    # Disable HTTPS redirect in dev
+    url: "http://localhost:8080"
+
+server:
+  replicas: 1
+  service:
+    type: ClusterIP
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+controller:
+  replicas: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+repoServer:
+  replicas: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+redis:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+applicationSet:
+  replicas: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+notifications:
+  enabled: false

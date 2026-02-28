@@ -1,0 +1,31 @@
+# infra/environments/dev/tenant.defaults.values.yaml
+# Default tenant values for the dev environment.
+# Individual tenants override via tenants/<slug>.values.yaml
+
+api:
+  image:
+    tag: dev
+  replicas: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+vista:
+  enabled: true
+  image:
+    tag: dev
+
+backup:
+  enabled: false
+
+networkPolicies:
+  enabled: false
+
+metrics:
+  enabled: true
+
+releaseChannel: stable

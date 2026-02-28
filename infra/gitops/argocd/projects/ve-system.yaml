@@ -1,0 +1,40 @@
+# ve-system AppProject -- shared platform layer
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: ve-system
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: "VistA-Evolved shared platform layer (postgres, redis, ingress, keycloak, observability)"
+
+  # Source repos allowed
+  sourceRepos:
+    - '*'  # Tighten to actual repo URL for production
+
+  # Destination namespaces -- shared layer only deploys to ve-system
+  destinations:
+    - namespace: ve-system
+      server: https://kubernetes.default.svc
+    - namespace: argocd
+      server: https://kubernetes.default.svc
+
+  # Cluster-scoped resources the shared layer may manage
+  clusterResourceWhitelist:
+    - group: ''
+      kind: Namespace
+    - group: networking.k8s.io
+      kind: IngressClass
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRole
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRoleBinding
+
+  # Deny dangerous cluster resources
+  clusterResourceBlacklist:
+    - group: ''
+      kind: Node
+
+  orphanedResources:
+    warn: true

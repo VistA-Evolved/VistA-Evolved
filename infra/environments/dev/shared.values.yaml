@@ -1,0 +1,34 @@
+# infra/environments/dev/shared.values.yaml
+# Kind / local development overlay for ve-shared.
+# Consumed by ArgoCD Application 've-shared' or:
+#   helm upgrade --install ve-shared infra/helm/ve-shared -f infra/environments/dev/shared.values.yaml
+
+global:
+  namespace: ve-system
+
+postgres:
+  enabled: true
+  storage:
+    size: 2Gi
+
+redis:
+  enabled: true
+
+ingress:
+  enabled: true
+  replicas: 1
+
+keycloak:
+  enabled: false
+
+observability:
+  enabled: false
+
+minio:
+  enabled: false
+
+networkPolicies:
+  enabled: false
+
+policy:
+  enabled: false

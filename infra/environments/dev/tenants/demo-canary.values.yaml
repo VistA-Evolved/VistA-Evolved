@@ -1,0 +1,12 @@
+# infra/environments/dev/tenants/demo-canary.values.yaml
+# Canary tenant for testing progressive delivery in dev.
+
+tenantId: demo-canary
+tenantSlug: demo-canary
+
+releaseChannel: canary
+
+api:
+  env:
+    - name: TENANT_DISPLAY_NAME
+      value: "Demo Canary"

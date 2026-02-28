@@ -1,0 +1,45 @@
+# ve-shared ArgoCD Application -- shared platform layer
+# Syncs the ve-shared Helm chart with environment-specific values.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ve-shared
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: vista-evolved
+    ve.layer: shared
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: ve-system
+
+  source:
+    # Path within this repo -- ArgoCD resolves relative to repoURL root
+    repoURL: https://github.com/anthropic-ai/VistA-Evolved.git
+    targetRevision: HEAD
+    path: infra/helm/ve-shared
+    helm:
+      valueFiles:
+        # Environment-specific values -- override repoURL placeholder with actual env
+        - ../../environments/dev/shared.values.yaml
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ve-system
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: 3
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 1m
+
+  # Health checks
+  ignoreDifferences: []

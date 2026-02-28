@@ -1,0 +1,3 @@
+# infra/environments/prod/tenants/.gitkeep
+# Tenant values files go here. Example: acme-health.values.yaml
+# Never store secrets in these files -- use external secrets operator.

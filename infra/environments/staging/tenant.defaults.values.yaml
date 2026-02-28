@@ -1,0 +1,33 @@
+# infra/environments/staging/tenant.defaults.values.yaml
+# Default tenant values for staging.
+
+api:
+  image:
+    tag: latest
+  replicas: 2
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+
+vista:
+  enabled: true
+  image:
+    tag: latest
+
+backup:
+  enabled: true
+  schedule: "0 3 * * *"
+  retention:
+    keepDays: 14
+
+networkPolicies:
+  enabled: true
+
+metrics:
+  enabled: true
+
+releaseChannel: stable

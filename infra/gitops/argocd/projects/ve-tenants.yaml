@@ -1,0 +1,49 @@
+# ve-tenants AppProject -- tenant workloads
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: ve-tenants
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: "VistA-Evolved tenant workloads (one Application per tenant)"
+
+  sourceRepos:
+    - '*'  # Tighten to actual repo URL for production
+
+  # Tenant namespaces follow the pattern ve-tenant-*
+  destinations:
+    - namespace: 've-tenant-*'
+      server: https://kubernetes.default.svc
+
+  # Tenants should NOT create cluster-scoped resources
+  clusterResourceWhitelist:
+    - group: ''
+      kind: Namespace
+
+  clusterResourceBlacklist:
+    - group: ''
+      kind: Node
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRole
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRoleBinding
+
+  # Namespace-scoped resources tenants may create
+  namespaceResourceWhitelist:
+    - group: ''
+      kind: '*'
+    - group: apps
+      kind: '*'
+    - group: batch
+      kind: '*'
+    - group: networking.k8s.io
+      kind: '*'
+    - group: autoscaling
+      kind: '*'
+    - group: policy
+      kind: '*'
+
+  orphanedResources:
+    warn: true

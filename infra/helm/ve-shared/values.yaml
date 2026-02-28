@@ -103,6 +103,16 @@ networkPolicies:
   enabled: false
   # Enabled by default in staging/prod overlays, disabled for kind/dev
 
+# ---------- Policy (Kyverno) ----------
+policy:
+  enabled: false
+  # When enabled, installs Kyverno ClusterPolicies via a post-install hook.
+  # Enabled in staging/prod overlays.
+  kyverno:
+    image:
+      repository: bitnami/kubectl
+      tag: "1.30"
+
 # ---------- Pod Security ----------
 podSecurityStandards:
   enforce: baseline

@@ -1,0 +1,41 @@
+{{- if .Values.policy.enabled }}
+# Kyverno install job -- uses Helm to install/upgrade Kyverno from its chart.
+# In production, Kyverno should be installed as a separate Helm release.
+# This template creates a Job that applies the Kyverno policies from the repo.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ve-policy-loader
+  namespace: {{ .Values.global.namespace | default "ve-system" }}
+  labels:
+    {{- include "ve-shared.labels" . | nindent 4 }}
+    app.kubernetes.io/component: policy
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-weight: "10"
+    helm.sh/hook-delete-policy: before-hook-creation
+spec:
+  backoffLimit: 1
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: default
+      containers:
+        - name: policy-loader
+          image: bitnami/kubectl:latest
+          command:
+            - sh
+            - -c
+            - |
+              echo "Kyverno policies are applied via kubectl apply -f infra/policy/kyverno/"
+              echo "This Job is a placeholder -- apply policies from CI/CD or ArgoCD."
+              echo "See: infra/policy/kyverno/cluster-policies.yaml"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+{{- end }}

@@ -1,0 +1,110 @@
+name: Supply Chain Attestation
+
+on:
+  workflow_run:
+    workflows: ["CD Deploy"]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write  # For cosign keyless signing via GitHub OIDC
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ${{ github.repository_owner }}/vista-evolved
+  COSIGN_ENABLED: false   # Set to true when ready for keyless signing
+
+jobs:
+  attest:
+    name: SBOM Attestation
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        image: [api, web, portal]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Syft
+        uses: anchore/sbom-action/download-syft@v0
+
+      - name: Install cosign
+        if: env.COSIGN_ENABLED == 'true'
+        uses: sigstore/cosign-installer@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate SBOM for ${{ matrix.image }}
+        run: |
+          IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/${{ matrix.image }}:latest"
+          syft "$IMAGE" -o spdx-json=sbom-${{ matrix.image }}.spdx.json
+          echo "SBOM generated for $IMAGE"
+
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v4
+        with:
+          name: "sbom-${{ matrix.image }}"
+          path: "sbom-${{ matrix.image }}.spdx.json"
+          retention-days: 90
+
+      # ---- Optional: cosign keyless sign ----
+      - name: Sign image (keyless)
+        if: env.COSIGN_ENABLED == 'true'
+        run: |
+          IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/${{ matrix.image }}:latest"
+          cosign sign --yes "$IMAGE"
+          echo "Image signed: $IMAGE"
+
+      # ---- Optional: attach SBOM as attestation ----
+      - name: Attach SBOM attestation
+        if: env.COSIGN_ENABLED == 'true'
+        run: |
+          IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/${{ matrix.image }}:latest"
+          cosign attest --yes \
+            --predicate sbom-${{ matrix.image }}.spdx.json \
+            --type spdxjson \
+            "$IMAGE"
+          echo "SBOM attestation attached."
+
+  # ---- Release index ----
+  release-index:
+    name: Update Release Index
+    needs: attest
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate release index entry
+        run: |
+          mkdir -p artifacts/releases
+          cat > artifacts/release-index-entry.json <<EOF
+          {
+            "commit": "${{ github.sha }}",
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "images": {
+              "api": "${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/api:latest",
+              "web": "${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/web:latest",
+              "portal": "${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/portal:latest"
+            },
+            "sbom": true,
+            "signed": ${{ env.COSIGN_ENABLED }},
+            "trivy": "see cd-deploy artifacts"
+          }
+          EOF
+          echo "Release index entry generated."
+
+      - name: Upload release index
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-index
+          path: artifacts/release-index-entry.json
+          retention-days: 365

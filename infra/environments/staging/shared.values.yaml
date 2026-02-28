@@ -1,0 +1,38 @@
+# infra/environments/staging/shared.values.yaml
+# Staging overlay for ve-shared.
+
+global:
+  namespace: ve-system
+
+postgres:
+  enabled: true
+  storage:
+    size: 20Gi
+
+redis:
+  enabled: true
+
+ingress:
+  enabled: true
+  replicas: 2
+
+keycloak:
+  enabled: true
+  external:
+    url: "https://auth.staging.example.com"
+
+observability:
+  enabled: true
+  prometheus:
+    scrapeInterval: 15s
+
+minio:
+  enabled: false
+
+networkPolicies:
+  enabled: true
+
+policy:
+  enabled: true
+
+imageTag: latest

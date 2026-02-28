@@ -1,0 +1,59 @@
+# Tenant ApplicationSet -- generates one ArgoCD Application per tenant
+# values file found in infra/environments/<env>/tenants/<slug>.values.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: ve-tenants
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+
+  generators:
+    # Git file generator: discovers tenant values files in the environments tree
+    - git:
+        repoURL: https://github.com/anthropic-ai/VistA-Evolved.git
+        revision: HEAD
+        files:
+          - path: "infra/environments/*/tenants/*.values.yaml"
+        # Template values extracted from file path:
+        #   .path.basename = "<slug>.values.yaml"
+        #   The env is parsed from the path segment
+
+  template:
+    metadata:
+      name: "ve-tenant-{{ index .path.segments 2 }}-{{ trimSuffix \".values.yaml\" .path.basenameNormalized }}"
+      namespace: argocd
+      labels:
+        app.kubernetes.io/part-of: vista-evolved
+        ve.layer: tenant
+        ve.environment: "{{ index .path.segments 2 }}"
+        ve.tenant: "{{ trimSuffix \".values.yaml\" .path.basenameNormalized }}"
+      annotations:
+        ve.values-file: "{{ .path.path }}"
+    spec:
+      project: ve-tenants
+      source:
+        repoURL: https://github.com/anthropic-ai/VistA-Evolved.git
+        targetRevision: HEAD
+        path: infra/helm/ve-tenant
+        helm:
+          valueFiles:
+            - "../../environments/{{ index .path.segments 2 }}/tenant.defaults.values.yaml"
+            - "../../{{ .path.path }}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "ve-tenant-{{ trimSuffix \".values.yaml\" .path.basenameNormalized }}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true
+        retry:
+          limit: 3
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 1m

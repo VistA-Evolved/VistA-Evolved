@@ -1,0 +1,21 @@
+# Test manifest: intentionally bad pod that MUST be rejected by Kyverno policies
+# Used by verify gates to prove enforcement is working.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod-test
+  namespace: default
+  labels:
+    purpose: policy-test
+spec:
+  # VIOLATION 1: privileged container
+  containers:
+    - name: bad-container
+      image: nginx:latest
+      securityContext:
+        privileged: true
+      # VIOLATION 2: no resource requests/limits
+  # VIOLATION 3: hostNetwork
+  hostNetwork: true
+  # VIOLATION 4: hostPID
+  hostPID: true

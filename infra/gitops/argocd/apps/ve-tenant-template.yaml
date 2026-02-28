@@ -1,0 +1,51 @@
+# ve-tenant-TEMPLATE ArgoCD Application
+# Copy this file per tenant, replacing TENANT_SLUG in 3 places.
+# Or use the ApplicationSet generator (see apps/tenant-set.yaml).
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ve-tenant-TENANT_SLUG          # <-- replace TENANT_SLUG
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: vista-evolved
+    ve.layer: tenant
+    ve.tenant: TENANT_SLUG             # <-- replace TENANT_SLUG
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: ve-tenants
+
+  source:
+    repoURL: https://github.com/anthropic-ai/VistA-Evolved.git
+    targetRevision: HEAD
+    path: infra/helm/ve-tenant
+    helm:
+      # Layer values: defaults first, then tenant-specific overrides
+      valueFiles:
+        - ../../environments/dev/tenant.defaults.values.yaml
+        - ../../environments/dev/tenants/TENANT_SLUG.values.yaml  # <-- replace
+
+      # Override tenant identity
+      parameters:
+        - name: tenantId
+          value: "TENANT_SLUG"         # <-- replace
+        - name: tenantSlug
+          value: "TENANT_SLUG"         # <-- replace
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ve-tenant-TENANT_SLUG   # <-- replace TENANT_SLUG
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: 3
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 1m

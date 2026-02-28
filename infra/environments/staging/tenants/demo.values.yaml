@@ -1,0 +1,8 @@
+# infra/environments/staging/tenants/demo.values.yaml
+tenantId: demo
+tenantSlug: demo
+
+api:
+  env:
+    - name: TENANT_DISPLAY_NAME
+      value: "Demo Staging"

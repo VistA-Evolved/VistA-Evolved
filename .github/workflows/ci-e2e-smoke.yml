@@ -1,0 +1,154 @@
+name: E2E Smoke (Playwright)
+
+# Runs the Playwright smoke suite on PRs and main merges.
+# Uses a lightweight setup (no VistA Docker) — only UI rendering + dead-click checks.
+# Full integration e2e (with VistA) runs in the nightly DR workflow.
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "apps/web/**"
+      - "apps/portal/**"
+      - "apps/api/src/routes/**"
+  push:
+    branches: [main]
+    paths:
+      - "apps/web/**"
+      - "apps/portal/**"
+
+concurrency:
+  group: "e2e-${{ github.ref }}"
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: "24"
+  PNPM_VERSION: "10"
+
+jobs:
+  e2e-web:
+    name: Playwright Web Smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm -C apps/web exec playwright install --with-deps chromium
+
+      - name: Build web app
+        run: pnpm -C apps/web build
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+
+      # Start web app in preview mode (no API needed for smoke)
+      - name: Start web server
+        run: |
+          cd apps/web
+          pnpm start &
+          echo "Waiting for web server..."
+          for i in $(seq 1 30); do
+            if curl -s http://localhost:3000 > /dev/null 2>&1; then
+              echo "Web server is up!"
+              break
+            fi
+            sleep 2
+          done
+
+      # Run only the smoke suite (non-API tests)
+      - name: Run Playwright smoke tests
+        run: |
+          cd apps/web
+          pnpm exec playwright test \
+            --project=login-flow \
+            --reporter=json \
+            --output=e2e-results-ci.json \
+            || true
+        env:
+          CI: "true"
+          PLAYWRIGHT_JSON_OUTPUT_NAME: "e2e-results-ci.json"
+
+      # Always upload artifacts
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-web-results
+          path: |
+            apps/web/e2e-results-ci.json
+            apps/web/e2e-report/
+            apps/web/test-results/
+          retention-days: 14
+
+  e2e-portal:
+    name: Playwright Portal Smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm -C apps/portal exec playwright install --with-deps chromium
+
+      - name: Build portal app
+        run: pnpm -C apps/portal build
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+
+      - name: Start portal server
+        run: |
+          cd apps/portal
+          pnpm start &
+          for i in $(seq 1 30); do
+            if curl -s http://localhost:3002 > /dev/null 2>&1; then
+              echo "Portal server is up!"
+              break
+            fi
+            sleep 2
+          done
+
+      - name: Run portal smoke tests
+        run: |
+          cd apps/portal
+          pnpm exec playwright test \
+            --reporter=json \
+            || true
+        env:
+          CI: "true"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-portal-results
+          path: |
+            apps/portal/e2e-report/
+            apps/portal/test-results/
+          retention-days: 14

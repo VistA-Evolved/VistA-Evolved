@@ -1,0 +1,42 @@
+# infra/environments/prod/shared.values.yaml
+# Production overlay for ve-shared.
+
+global:
+  namespace: ve-system
+
+postgres:
+  enabled: true
+  storage:
+    size: 100Gi
+    storageClass: gp3
+
+redis:
+  enabled: true
+
+ingress:
+  enabled: true
+  replicas: 3
+
+keycloak:
+  enabled: true
+  external:
+    url: "https://auth.prod.example.com"
+
+observability:
+  enabled: true
+  prometheus:
+    scrapeInterval: 15s
+
+minio:
+  enabled: false
+
+networkPolicies:
+  enabled: true
+
+policy:
+  enabled: true
+
+podSecurityStandards:
+  enforce: restricted
+
+imageTag: ""  # Must be set per release -- never auto-deploy to prod
