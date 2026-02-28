@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useCallback, useEffect, useRef, type ReactNode } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
+import { getThemePack, applyThemeTokens, clearThemeTokens, type ThemePack } from '@/lib/theme-tokens';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -34,6 +35,8 @@ export interface CPRSPreferences {
   initialTab: string;
   coverSheetLayout: CoverSheetLayout;
   enableDragReorder: boolean;
+  /** Phase 281: Active theme pack ID (e.g., "modern-default", "openmrs") */
+  themePack: string;
 }
 
 export interface CPRSUIStateValue {
@@ -54,6 +57,8 @@ export interface CPRSUIStateValue {
   closeModal: () => void;
   /** Whether prefs are loaded from server */
   prefsSource: 'loading' | 'server' | 'local' | 'defaults';
+  /** Phase 281: Set theme pack (persists to server) */
+  setThemePack: (packId: string) => void;
 }
 
 /* ------------------------------------------------------------------ */
@@ -93,6 +98,7 @@ const DEFAULT_PREFS: CPRSPreferences = {
   initialTab: 'cover',
   coverSheetLayout: DEFAULT_COVER_LAYOUT,
   enableDragReorder: false,
+  themePack: 'modern-default',
 };
 
 /* ------------------------------------------------------------------ */
@@ -171,6 +177,32 @@ async function resetServerPrefs(): Promise<boolean> {
   } catch { return false; }
 }
 
+/** Phase 281: Fetch user's active theme pack from server */
+async function fetchServerTheme(): Promise<{ themePack: string; source: string } | null> {
+  try {
+    const res = await fetch(`${API_BASE}/ui-prefs/theme`, { credentials: 'include' });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (data.ok && data.activeThemePack) {
+      return { themePack: data.activeThemePack, source: data.source };
+    }
+  } catch { /* server unreachable */ }
+  return null;
+}
+
+/** Phase 281: Push theme pack to server */
+async function pushServerTheme(themePack: string): Promise<boolean> {
+  try {
+    const res = await fetch(`${API_BASE}/ui-prefs/theme`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
+      credentials: 'include',
+      body: JSON.stringify({ themePack }),
+    });
+    return res.ok;
+  } catch { return false; }
+}
+
 /* ------------------------------------------------------------------ */
 /* Context + Provider                                                  */
 /* ------------------------------------------------------------------ */
@@ -189,19 +221,24 @@ export function CPRSUIProvider({ children }: { children: ReactNode }) {
     const localPrefs = loadPrefs();
     setPreferences(localPrefs);
 
-    fetchServerPrefs().then((serverResult) => {
-      if (serverResult && serverResult.source === 'server') {
-        const merged = {
-          ...localPrefs,
-          coverSheetLayout: serverResult.layout,
-          layoutMode: serverResult.layout.layoutMode,
-        };
-        setPreferences(merged);
-        savePrefs(merged); // sync local with server
-        setPrefsSource('server');
-      } else {
-        setPrefsSource('local');
-      }
+    // Fetch both layout and theme from server
+    Promise.all([fetchServerPrefs(), fetchServerTheme()]).then(([serverResult, themeResult]) => {
+      setPreferences(prev => {
+        let updated = { ...prev };
+        if (serverResult && serverResult.source === 'server') {
+          updated = {
+            ...updated,
+            coverSheetLayout: serverResult.layout,
+            layoutMode: serverResult.layout.layoutMode,
+          };
+        }
+        if (themeResult && themeResult.source !== 'default') {
+          updated = { ...updated, themePack: themeResult.themePack };
+        }
+        savePrefs(updated);
+        setPrefsSource(serverResult?.source === 'server' || themeResult?.source === 'user' ? 'server' : 'local');
+        return updated;
+      });
     }).catch(() => {
       setPrefsSource('local');
     });
@@ -234,6 +271,34 @@ export function CPRSUIProvider({ children }: { children: ReactNode }) {
       return () => mq.removeEventListener('change', handler);
     }
   }, [preferences.theme]);
+
+  // Phase 281: Apply theme pack CSS tokens on themePack change
+  const prevPackRef = useRef<ThemePack | null>(null);
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const el = document.documentElement;
+
+    // Clear previous pack tokens
+    if (prevPackRef.current) {
+      clearThemeTokens(el, prevPackRef.current);
+    }
+
+    // Apply new pack tokens
+    const pack = getThemePack(preferences.themePack);
+    applyThemeTokens(el, pack);
+    prevPackRef.current = pack;
+
+    // Also set data-theme based on pack's dark/light nature
+    if (pack.isDark) {
+      el.setAttribute('data-theme', 'dark');
+    }
+
+    return () => {
+      if (prevPackRef.current) {
+        clearThemeTokens(el, prevPackRef.current);
+      }
+    };
+  }, [preferences.themePack]);
 
   // Debounced server push (500ms after last layout change)
   const pushLayoutToServer = useCallback((layout: CoverSheetLayout) => {
@@ -287,12 +352,25 @@ export function CPRSUIProvider({ children }: { children: ReactNode }) {
     setModalData(null);
   }, []);
 
+  // Phase 281: Set theme pack (persists to localStorage + server)
+  const setThemePack = useCallback((packId: string) => {
+    setPreferences((prev) => {
+      const next = { ...prev, themePack: packId };
+      savePrefs(next);
+      return next;
+    });
+    // Push to server async
+    pushServerTheme(packId).then((ok) => {
+      if (ok) setPrefsSource('server');
+    });
+  }, []);
+
   return (
     <CPRSUIContext.Provider
       value={{
         preferences, activeModal, modalData, prefsSource,
         updatePreferences, saveCoverSheetLayout, resetCoverSheetLayout,
-        openModal, closeModal,
+        openModal, closeModal, setThemePack,
       }}
     >
       {children}

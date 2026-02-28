@@ -81,7 +81,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
       featureFlags: body.featureFlags ?? {},
       uiDefaults: body.uiDefaults ?? {
         theme: "light", density: "comfortable", layoutMode: "cprs",
-        initialTab: "cover", enableDragReorder: false,
+        initialTab: "cover", enableDragReorder: false, themePack: "modern-default",
       },
       noteTemplates: body.noteTemplates ?? [],
       connectors: body.connectors ?? [],

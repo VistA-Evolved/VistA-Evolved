@@ -89,6 +89,8 @@ export interface UIDefaults {
   layoutMode: "cprs" | "modern";
   initialTab: string;
   enableDragReorder: boolean;
+  /** Phase 281: Default theme pack for new users at this facility */
+  themePack: string;
 }
 
 export const DEFAULT_UI_DEFAULTS: UIDefaults = {
@@ -97,6 +99,7 @@ export const DEFAULT_UI_DEFAULTS: UIDefaults = {
   layoutMode: "cprs",
   initialTab: "cover",
   enableDragReorder: false,
+  themePack: "modern-default",
 };
 
 /** Note template definition. */

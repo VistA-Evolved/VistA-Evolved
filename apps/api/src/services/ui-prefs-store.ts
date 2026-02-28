@@ -34,6 +34,8 @@ export interface UIPrefsDocument {
   tenantId: string;
   duz: string;
   coverSheet: CoverSheetLayoutV1;
+  /** Phase 281: Active theme pack ID (e.g., "modern-default", "openmrs") */
+  themePack: string;
   updatedAt: string;
   updatedBy: string;
 }
@@ -220,10 +222,12 @@ export function saveUIPrefs(
   layout: CoverSheetLayoutV1,
   updatedBy: string,
 ): UIPrefsDocument {
+  const existing = store.get(makeKey(tenantId, duz));
   const doc: UIPrefsDocument = {
     tenantId,
     duz,
     coverSheet: layout,
+    themePack: existing?.themePack ?? "modern-default",
     updatedAt: new Date().toISOString(),
     updatedBy,
   };
@@ -233,6 +237,38 @@ export function saveUIPrefs(
   prefsDbRepo?.upsert({ id: makeKey(tenantId, duz), tenantId, userDuz: duz, key: 'layout', value: JSON.stringify(layout), createdAt: (doc as any).createdAt ?? new Date().toISOString(), updatedAt: doc.updatedAt }).catch(() => {});
 
   log.debug("UI prefs saved", { tenantId, duz });
+  return doc;
+}
+
+/** Phase 281: Get user's active theme pack ID */
+export function getUserThemePack(tenantId: string, duz: string): string | null {
+  const doc = store.get(makeKey(tenantId, duz));
+  return doc?.themePack ?? null;
+}
+
+/** Phase 281: Set user's active theme pack ID */
+export function setUserThemePack(
+  tenantId: string,
+  duz: string,
+  themePack: string,
+  updatedBy: string,
+): UIPrefsDocument {
+  const key = makeKey(tenantId, duz);
+  const existing = store.get(key);
+  const doc: UIPrefsDocument = {
+    tenantId,
+    duz,
+    coverSheet: existing?.coverSheet ?? getDefaultCoverSheetLayout(),
+    themePack,
+    updatedAt: new Date().toISOString(),
+    updatedBy,
+  };
+  store.set(key, doc);
+
+  // Write-through theme to PG
+  prefsDbRepo?.upsert({ id: `${key}:theme`, tenantId, userDuz: duz, key: 'theme_pack', value: themePack, createdAt: new Date().toISOString(), updatedAt: doc.updatedAt }).catch(() => {});
+
+  log.debug("Theme pack saved", { tenantId, duz, themePack });
   return doc;
 }
 
