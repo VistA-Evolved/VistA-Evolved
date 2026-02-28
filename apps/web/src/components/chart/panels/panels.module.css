@@ -141,11 +141,11 @@
 }
 
 .listBadge.active {
-  background: #c8e6c9;
+  background: var(--cprs-badge-active, #c8e6c9);
   color: var(--cprs-success, #2e7d32);
 }
 
 .listBadge.inactive {
-  background: #ffcdd2;
+  background: var(--cprs-badge-inactive, #ffcdd2);
   color: var(--cprs-error, #c62828);
 }

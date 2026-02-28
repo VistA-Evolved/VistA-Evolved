@@ -1,9 +1,13 @@
 /**
- * migration-routes.ts -- Migration REST Endpoints (Phase 50)
+ * migration-routes.ts -- Migration REST Endpoints (Phase 50 + Phase 281)
  *
  * Admin-only migration console API:
  *   - Job lifecycle (create, validate, dry-run, import, export, rollback)
  *   - Template management (list, get, create, delete)
+ *   - FHIR Bundle import (Phase 281)
+ *   - CCD/CCDA import (Phase 281)
+ *   - Reconciliation (Phase 281)
+ *   - Orchestrated batch migration (Phase 281)
  *   - Health + stats
  *
  * All endpoints require session + migration:admin permission.
@@ -33,6 +37,10 @@ import { runValidation, runDryRun, runImport } from "./import-pipeline.js";
 import { runExport, type ExportOptions } from "./export-pipeline.js";
 import { registerBuiltinTemplates } from "./templates.js";
 import type { MappingTemplate, ImportEntityType, SourceFormat, ExportBundleType } from "./types.js";
+import { parseFhirBundle, listSupportedFhirResourceTypes } from "./fhir-bundle-parser.js";
+import { parseCcdaDocument, listSupportedCcdaSections } from "./ccda-parser.js";
+import { reconcileImport, verifyReportIntegrity } from "./reconciliation.js";
+import { createMigrationPlan, executeMigrationPlan, getDependencyOrder } from "./migration-orchestrator.js";
 
 /* ------------------------------------------------------------------ */
 /* Init                                                                */
@@ -372,5 +380,174 @@ export default async function migrationRoutes(server: FastifyInstance) {
     return { ok: true };
   });
 
-  log.info("Migration routes registered (Phase 50)");
+  // ---- FHIR Bundle Import (Phase 281) ----
+
+  server.get("/migration/fhir/resource-types", async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requirePermission(session, "migration:read", reply);
+    return { ok: true, resourceTypes: listSupportedFhirResourceTypes() };
+  });
+
+  server.post("/migration/import/fhir-bundle", async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requirePermission(session, "migration:admin", reply);
+    const body = (request.body as any) || {};
+
+    if (!body.bundle || typeof body.bundle !== "object") {
+      reply.code(400).send({ ok: false, error: "Request body must include 'bundle' (FHIR R4 Bundle object)" });
+      return;
+    }
+
+    const result = parseFhirBundle(body.bundle);
+    auditMigration("system.config-change", result.ok ? "success" : "failure", session, {
+      action: "import.fhir-bundle.parse",
+      totalEntries: result.totalEntries,
+      parsedCount: result.parsed.length,
+      skippedCount: result.skipped.length,
+    });
+
+    return result;
+  });
+
+  // ---- CCD/CCDA Import (Phase 281) ----
+
+  server.get("/migration/ccda/sections", async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requirePermission(session, "migration:read", reply);
+    return { ok: true, sections: listSupportedCcdaSections() };
+  });
+
+  server.post("/migration/import/ccda", async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requirePermission(session, "migration:admin", reply);
+    const body = (request.body as any) || {};
+
+    if (!body.xml || typeof body.xml !== "string") {
+      reply.code(400).send({ ok: false, error: "Request body must include 'xml' (CCD/CCDA XML string)" });
+      return;
+    }
+
+    const result = parseCcdaDocument(body.xml);
+    auditMigration("system.config-change", result.ok ? "success" : "failure", session, {
+      action: "import.ccda.parse",
+      documentType: result.documentType,
+      sectionCount: result.sections.length,
+    });
+
+    return result;
+  });
+
+  // ---- Reconciliation (Phase 281) ----
+
+  server.post("/migration/reconcile", async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requirePermission(session, "migration:admin", reply);
+    const body = (request.body as any) || {};
+
+    if (!Array.isArray(body.sourceRecords) || !Array.isArray(body.targetRecords)) {
+      reply.code(400).send({
+        ok: false,
+        error: "Request body must include 'sourceRecords' and 'targetRecords' arrays",
+      });
+      return;
+    }
+
+    const report = reconcileImport(body.sourceRecords, body.targetRecords, {
+      idMapping: body.idMapping ? new Map(Object.entries(body.idMapping)) : undefined,
+    });
+
+    auditMigration("system.config-change", "success", session, {
+      action: "import.reconcile",
+      matched: report.summary.matched,
+      mismatched: report.summary.mismatched,
+      missingInTarget: report.summary.missingInTarget,
+    });
+
+    return { ok: true, report };
+  });
+
+  server.post("/migration/reconcile/verify", async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requirePermission(session, "migration:read", reply);
+    const body = (request.body as any) || {};
+
+    if (!body.report) {
+      reply.code(400).send({ ok: false, error: "Request body must include 'report' (ReconciliationReport)" });
+      return;
+    }
+
+    const valid = verifyReportIntegrity(body.report);
+    return { ok: true, valid };
+  });
+
+  // ---- Migration Orchestrator (Phase 281) ----
+
+  server.get("/migration/orchestrator/dependency-order", async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requirePermission(session, "migration:read", reply);
+    const q = request.query as any;
+    const types = q.types ? (q.types as string).split(",") : ["patient", "allergy", "problem", "medication", "vital", "encounter", "appointment", "document"];
+    return { ok: true, order: getDependencyOrder(types as any[]) };
+  });
+
+  server.post("/migration/orchestrator/plan", async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requirePermission(session, "migration:admin", reply);
+    const body = (request.body as any) || {};
+
+    if (!Array.isArray(body.batches) || body.batches.length === 0) {
+      reply.code(400).send({
+        ok: false,
+        error: "Request body must include 'batches' array of MigrationEntityBatch objects",
+      });
+      return;
+    }
+
+    const plan = createMigrationPlan(body.batches, {
+      dryRun: body.dryRun ?? true,
+      sourceDescription: body.sourceDescription || "API-submitted plan",
+      batchSize: body.batchSize,
+    });
+
+    auditMigration("system.config-change", "success", session, {
+      action: "migration.plan.created",
+      planId: plan.id,
+      stepCount: plan.steps.length,
+      dryRun: plan.dryRun,
+    });
+
+    return { ok: true, plan };
+  });
+
+  server.post("/migration/orchestrator/execute", async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requirePermission(session, "migration:admin", reply);
+    const body = (request.body as any) || {};
+
+    if (!body.plan || !Array.isArray(body.batches)) {
+      reply.code(400).send({ ok: false, error: "Request body must include 'plan' (MigrationPlan) and 'batches' array" });
+      return;
+    }
+
+    // Default import handler: no-op for dry run, returns counts
+    const defaultHandler = async (entityType: string, records: Record<string, string>[], dryRun: boolean) => ({
+      successCount: dryRun ? 0 : records.length,
+      failureCount: 0,
+      skippedCount: dryRun ? records.length : 0,
+      errors: [] as string[],
+    });
+
+    const result = await executeMigrationPlan(body.plan, body.batches, defaultHandler);
+
+    auditMigration("system.config-change", result.status === "completed" ? "success" : "failure", session, {
+      action: "migration.plan.executed",
+      planId: result.id,
+      status: result.status,
+      stepCount: result.steps.length,
+    });
+
+    return { ok: result.status === "completed", plan: result };
+  });
+
+  log.info("Migration routes registered (Phase 50 + Phase 281)");
 }

@@ -193,9 +193,9 @@ function makeBundle(entries: FhirBundleEntry[], source: string): FhirBundle {
 
 function entry(resource: FhirResource, method = "PUT"): FhirBundleEntry {
   return {
-    fullUrl: `urn:uuid:${(resource as any).id}`,
+    fullUrl: `urn:uuid:${resource.id}`,
     resource,
-    request: { method, url: `${resource.resourceType}/${(resource as any).id}` },
+    request: { method, url: `${resource.resourceType}/${resource.id}` },
   };
 }
 

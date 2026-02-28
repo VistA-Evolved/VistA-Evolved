@@ -69,19 +69,19 @@
 }
 
 .menuItem.disabled {
-  color: #999;
+  color: var(--cprs-text-muted, #999);
   cursor: default;
 }
 
 .menuItem.disabled:hover {
   background: none;
-  color: #999;
+  color: var(--cprs-text-muted, #999);
 }
 
 .shortcut {
   margin-left: auto;
   font-size: 12px;
-  color: #888;
+  color: var(--cprs-text-muted, #888);
 }
 
 .menuItem:hover .shortcut {
@@ -89,7 +89,7 @@
 }
 
 .menuItem.disabled .shortcut {
-  color: #bbb;
+  color: var(--cprs-text-muted, #bbb);
 }
 
 .arrow {

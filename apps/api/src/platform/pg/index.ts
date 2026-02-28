@@ -18,6 +18,10 @@ export * as pgSchema from "./pg-schema.js";
 export { withPgRetry, isPgUniqueViolation } from "./pg-retry.js";
 export type { PgRetryOptions, PgRetryResult } from "./pg-retry.js";
 
+// Phase 276: Read-through cache utilities
+export { readThroughGet, readThroughList, hydrateMapsFromPg } from "./read-through.js";
+export type { HydrateTask } from "./read-through.js";
+
 // Phase 104: Audit integrity + export
 export {
   verifyAuditChain,

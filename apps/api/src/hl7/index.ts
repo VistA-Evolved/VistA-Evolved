@@ -16,6 +16,9 @@ export { MllpClient } from "./mllp-client.js";
 export { parseMessage, getField, getSegments, messageSummary } from "./parser.js";
 export { generateAck, ackAccept, ackError, ackReject } from "./ack-generator.js";
 export * from "./types.js";
+export * from "./fhir-bridge.js";
+export * from "./channel-health.js";
+export * from "./outbound-builder.js";
 
 /* ------------------------------------------------------------------ */
 /*  Singleton Engine Instance                                          */

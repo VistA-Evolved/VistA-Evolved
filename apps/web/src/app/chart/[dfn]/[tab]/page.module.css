@@ -3,7 +3,7 @@
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
-  background: #ffffff;
+  background: var(--cprs-content-bg, #ffffff);
 }
 
 .content {
