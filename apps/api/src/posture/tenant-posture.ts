@@ -15,6 +15,7 @@
  */
 
 import { isPgConfigured, getPgPool } from "../platform/pg/pg-db.js";
+import { CANONICAL_RLS_TABLES } from "../platform/pg/pg-migrate.js";
 import type { PostureGate } from "./observability-posture.js";
 import { safeErr } from "../lib/safe-error.js";
 
@@ -28,30 +29,8 @@ export interface TenantIsolationPosture {
   rlsTables: string[];
 }
 
-/** Tables that MUST have RLS when Postgres is active */
-const TENANT_TABLES = [
-  "platform_audit_event",
-  "idempotency_key",
-  "outbox_event",
-  "payer",
-  "tenant_payer",
-  "payer_capability",
-  "payer_task",
-  "payer_evidence_snapshot",
-  "payer_audit_event",
-  "denial_case",
-  "denial_action",
-  "denial_attachment",
-  "resubmission_attempt",
-  "remittance_import",
-  "payment_record",
-  "reconciliation_match",
-  "underpayment_case",
-  "eligibility_check",
-  "claim_status_check",
-  "capability_matrix_cell",
-  "capability_matrix_evidence",
-];
+/** Phase 176: Use the canonical RLS table list from pg-migrate.ts */
+const TENANT_TABLES = CANONICAL_RLS_TABLES;
 
 export async function checkTenantIsolationPosture(): Promise<TenantIsolationPosture> {
   const gates: PostureGate[] = [];

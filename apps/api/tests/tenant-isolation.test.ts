@@ -1,11 +1,12 @@
 /**
- * tenant-isolation.test.ts -- Phase 122: Tenant Isolation Enforcement
+ * tenant-isolation.test.ts -- Phase 122/176: Tenant Isolation Enforcement
  *
  * Verifies that:
  * 1. requireTenantId() rejects missing/empty tenant IDs
  * 2. assertTenantMatch() blocks cross-tenant access
  * 3. Tenant-scoped query wrappers enforce ownership
  * 4. TenantIsolationError has correct status code (403)
+ * 5. Phase 176: All table lists derive from CANONICAL_RLS_TABLES
  */
 
 import { describe, it, expect } from "vitest";
@@ -17,6 +18,7 @@ import {
   GLOBAL_TABLES,
   PENDING_TENANT_ID_TABLES,
 } from "../src/platform/pg/repo/tenant-guard.js";
+import { CANONICAL_RLS_TABLES } from "../src/platform/pg/pg-migrate.js";
 
 describe("Phase 122: Tenant Isolation Guards", () => {
   /* ── requireTenantId ─────────────────────────────── */
@@ -111,16 +113,25 @@ describe("Phase 122: Tenant Isolation Guards", () => {
   /* ── Table inventory ─────────────────────────────── */
 
   describe("Table inventory", () => {
-    it("TENANT_SCOPED_TABLES has entries (tables with tenantId column)", () => {
-      expect(TENANT_SCOPED_TABLES.length).toBeGreaterThan(20);
+    it("TENANT_SCOPED_TABLES has >100 entries (derived from canonical list)", () => {
+      expect(TENANT_SCOPED_TABLES.length).toBeGreaterThan(100);
     });
 
     it("GLOBAL_TABLES has entries", () => {
       expect(GLOBAL_TABLES.length).toBeGreaterThan(0);
     });
 
-    it("PENDING_TENANT_ID_TABLES tracks tables needing migration", () => {
-      expect(PENDING_TENANT_ID_TABLES.length).toBeGreaterThan(0);
+    it("PENDING_TENANT_ID_TABLES is empty (all tables now have tenant_id)", () => {
+      expect(PENDING_TENANT_ID_TABLES.length).toBe(0);
+    });
+
+    it("TENANT_SCOPED_TABLES + GLOBAL_TABLES = CANONICAL_RLS_TABLES", () => {
+      const combined = new Set([...TENANT_SCOPED_TABLES, ...GLOBAL_TABLES as readonly string[]]);
+      const canonical = new Set(CANONICAL_RLS_TABLES);
+      expect(combined.size).toBe(canonical.size);
+      for (const t of canonical) {
+        expect(combined.has(t)).toBe(true);
+      }
     });
 
     it("no overlap between global and scoped tables", () => {

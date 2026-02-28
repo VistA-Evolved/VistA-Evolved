@@ -1,9 +1,12 @@
 /**
- * tenant-guard.ts -- Phase 122/174: Tenant Isolation Enforcement
+ * tenant-guard.ts -- Phase 122/174/176: Tenant Isolation Enforcement
  *
  * Application-layer tenant isolation guards. In PG-only mode, RLS enforces
  * tenant isolation at the database level, but these guards provide defense-
  * in-depth at the application layer.
+ *
+ * Phase 176: All table lists now derive from CANONICAL_RLS_TABLES in
+ * pg-migrate.ts to prevent list drift.
  *
  * Usage:
  *   import { requireTenantId, assertTenantMatch } from "./tenant-guard.js";
@@ -14,6 +17,8 @@
  *     return row ? assertTenantMatch(row, tenantId) : null;
  *   }
  */
+
+import { CANONICAL_RLS_TABLES } from "../pg-migrate.js";
 
 /**
  * Validate that a tenantId is present and non-empty.
@@ -60,61 +65,25 @@ export class TenantIsolationError extends Error {
 }
 
 /**
- * List of repos/tables that are globally scoped by design.
- * These do NOT require tenant_id guards.
+ * Tables that are logically global reference data but still receive RLS
+ * policies (because they have tenant_id for partitioning).
+ * Guard code should allow null/missing tenantId on reads for these.
  */
 export const GLOBAL_TABLES = [
   "payer",                  // Global reference data
   "module_catalog",         // Global module definitions
-  "idempotency_key",        // Tenant scoped via composite key pattern
 ] as const;
 
 /**
- * List of repos/tables that HAVE a tenant_id column and MUST use tenant guards.
- * PG RLS enforces isolation at the database level; these lists provide
- * documentation and CI gate verification.
+ * Phase 176: TENANT_SCOPED_TABLES is derived from the canonical RLS list,
+ * minus the GLOBAL_TABLES. This ensures it stays in sync automatically.
  */
-export const TENANT_SCOPED_TABLES = [
-  "tenant_payer",
-  "payer_capability",
-  "payer_task",
-  "payer_evidence_snapshot",
-  "payer_audit_event",
-  "eligibility_check",
-  "claim_status_check",
-  "tenant_module",
-  "tenant_feature_flag",
-  "module_audit_log",
-  "credential_artifact",
-  "credential_document",
-  "accreditation_status",
-  "accreditation_task",
-  "loa_request",
-  "loa_attachment",
-  "claim_draft",
-  "scrub_rule",
-  "scrub_result",
-  "claim_lifecycle_event",
-  "integration_evidence",
-  "auth_session",
-  "rcm_work_item",
-  "rcm_work_item_event",
-  "rcm_claim",
-  "rcm_remittance",
-  "rcm_claim_case",
-] as const;
+const _globalSet = new Set<string>(GLOBAL_TABLES);
+export const TENANT_SCOPED_TABLES: readonly string[] =
+  CANONICAL_RLS_TABLES.filter(t => !_globalSet.has(t));
 
 /**
- * Tables that NEED a tenant_id column but don't have one yet.
- * PG RLS does not cover these until they gain a tenant_id column.
+ * Phase 176: No more "pending" tables -- all tables now have tenant_id
+ * columns and are covered by RLS. Retained as empty for backward compat.
  */
-export const PENDING_TENANT_ID_TABLES = [
-  "portal_access_log",
-  "portal_message",
-  "portal_appointment",
-  "telehealth_room",
-  "imaging_work_order",
-  "imaging_study_link",
-  "imaging_unmatched",
-  "scheduling_request",
-] as const;
+export const PENDING_TENANT_ID_TABLES: readonly string[] = [] as const;
