@@ -15,6 +15,7 @@
  */
 
 import { getPgPool } from "./pg-db.js";
+import { createHash } from "node:crypto";
 
 interface Migration {
   version: number;
@@ -2581,35 +2582,95 @@ CREATE INDEX IF NOT EXISTS idx_mal_tenant_created
 ];
 
 /**
+ * Compute SHA-256 checksum for a migration's SQL.
+ */
+function migrationChecksum(sql: string): string {
+  return createHash("sha256").update(sql).digest("hex").slice(0, 16);
+}
+
+/**
+ * Get the full migration manifest (for CI gates and schema status).
+ * Returns all defined migrations with their version, name, and SQL checksum.
+ */
+export function getMigrationManifest(): Array<{
+  version: number;
+  name: string;
+  checksum: string;
+}> {
+  return MIGRATIONS.map(m => ({
+    version: m.version,
+    name: m.name,
+    checksum: migrationChecksum(m.sql),
+  }));
+}
+
+/**
+ * Get the latest migration version defined in code.
+ */
+export function getLatestMigrationVersion(): number {
+  return MIGRATIONS.length > 0
+    ? Math.max(...MIGRATIONS.map(m => m.version))
+    : 0;
+}
+
+/**
  * Run all pending migrations. Version-tracked in _platform_migrations table.
- * Idempotent — safe to call on every startup.
+ * Idempotent -- safe to call on every startup.
+ *
+ * Phase 175: Enhanced with SQL checksums for drift detection.
  */
 export async function runPgMigrations(): Promise<{
   applied: number;
   skipped: number;
   errors: string[];
+  currentVersion: number;
+  checksumMismatches: string[];
 }> {
   const pool = getPgPool();
   let applied = 0;
   let skipped = 0;
   const errors: string[] = [];
+  const checksumMismatches: string[] = [];
 
-  // Create migrations tracking table
+  // Create migrations tracking table (with checksum column, Phase 175)
   await pool.query(`
     CREATE TABLE IF NOT EXISTS _platform_migrations (
       version INTEGER PRIMARY KEY,
       name TEXT NOT NULL,
+      checksum TEXT,
       applied_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
   `);
 
-  // Get already-applied versions
-  const result = await pool.query("SELECT version FROM _platform_migrations ORDER BY version");
-  const appliedVersions = new Set(result.rows.map((r: any) => r.version));
+  // Phase 175: Add checksum column if it doesn't exist (backwards compat)
+  await pool.query(`
+    ALTER TABLE _platform_migrations
+    ADD COLUMN IF NOT EXISTS checksum TEXT;
+  `);
+
+  // Get already-applied versions with checksums
+  const result = await pool.query(
+    "SELECT version, checksum FROM _platform_migrations ORDER BY version"
+  );
+  const appliedMap = new Map<number, string | null>(
+    result.rows.map((r: any) => [r.version, r.checksum])
+  );
+
+  let currentVersion = 0;
 
   for (const migration of MIGRATIONS) {
-    if (appliedVersions.has(migration.version)) {
+    const expectedChecksum = migrationChecksum(migration.sql);
+
+    if (appliedMap.has(migration.version)) {
+      // Drift detection: warn if SQL changed after application
+      const storedChecksum = appliedMap.get(migration.version);
+      if (storedChecksum && storedChecksum !== expectedChecksum) {
+        checksumMismatches.push(
+          `v${migration.version} (${migration.name}): stored=${storedChecksum} code=${expectedChecksum}`
+        );
+      }
       skipped++;
+      currentVersion = Math.max(currentVersion, migration.version);
       continue;
     }
 
@@ -2618,11 +2679,12 @@ export async function runPgMigrations(): Promise<{
       await client.query("BEGIN");
       await client.query(migration.sql);
       await client.query(
-        "INSERT INTO _platform_migrations (version, name) VALUES ($1, $2)",
-        [migration.version, migration.name]
+        "INSERT INTO _platform_migrations (version, name, checksum) VALUES ($1, $2, $3)",
+        [migration.version, migration.name, expectedChecksum]
       );
       await client.query("COMMIT");
       applied++;
+      currentVersion = Math.max(currentVersion, migration.version);
     } catch (err: any) {
       await client.query("ROLLBACK");
       errors.push(`Migration v${migration.version} (${migration.name}): ${err.message}`);
@@ -2631,7 +2693,7 @@ export async function runPgMigrations(): Promise<{
     }
   }
 
-  return { applied, skipped, errors };
+  return { applied, skipped, errors, currentVersion, checksumMismatches };
 }
 
 /**

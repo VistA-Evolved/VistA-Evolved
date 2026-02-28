@@ -127,6 +127,9 @@ import emarRoutes from "../routes/emar/index.js";
 import handoffRoutes from "../routes/handoff/index.js";
 import uiPrefsRoutes from "../routes/ui-prefs.js";
 
+// Schema status (Phase 175)
+import schemaStatusRoutes from "../routes/admin/schema-status.js";
+
 // Infrastructure routes
 import postureRoutes from "../posture/index.js";
 import { jobAdminRoutes } from "../routes/job-admin-routes.js";
@@ -186,6 +189,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Admin/tenant routes (Phase 17B)
   server.register(adminRoutes);
+
+  // Schema status (Phase 175)
+  server.register(schemaStatusRoutes);
 
   // Interop routes (Phase 18B/D, 21)
   server.register(interopRoutes);
