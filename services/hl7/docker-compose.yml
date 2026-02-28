@@ -1,0 +1,32 @@
+# HL7v2 Engine Docker Compose — Phase 258
+#
+# Optional docker compose profile for HL7v2 integration testing.
+# The MLLP engine runs in-process with the API; this compose file
+# provides a simulated HL7 sender for development/testing.
+#
+# Usage:
+#   docker compose -f services/hl7/docker-compose.yml up -d
+#
+# The API's HL7 engine must be enabled separately:
+#   HL7_ENGINE_ENABLED=true HL7_MLLP_PORT=2575
+
+version: "3.8"
+
+services:
+  # Simulated HL7 sender for integration testing
+  hl7-test-sender:
+    image: node:20-alpine
+    container_name: ve-hl7-test-sender
+    working_dir: /app
+    volumes:
+      - ../../fixtures/hl7:/app/fixtures:ro
+      - ./send-test-message.sh:/app/send-test-message.sh:ro
+    entrypoint: ["sh", "-c", "echo 'HL7 test sender ready. Use: docker exec ve-hl7-test-sender sh /app/send-test-message.sh <fixture-file>' && tail -f /dev/null"]
+    networks:
+      - hl7-net
+    profiles:
+      - hl7-test
+
+networks:
+  hl7-net:
+    driver: bridge
