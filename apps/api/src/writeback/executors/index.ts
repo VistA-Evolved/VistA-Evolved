@@ -10,3 +10,4 @@ export { ordersExecutor } from "./orders-executor.js";
 export { pharmExecutor } from "./pharm-executor.js";
 export { labExecutor } from "./lab-executor.js";
 export { adtExecutor } from "./adt-executor.js";
+export { imgExecutor } from "./img-executor.js";
