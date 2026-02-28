@@ -17,6 +17,7 @@ import { startShipperJob } from "../audit-shipping/shipper.js";
 import { dbPoolInUse, dbPoolTotal, dbPoolWaiting } from "../telemetry/metrics.js";
 import { getRuntimeMode } from "../platform/runtime-mode.js";
 import { initHl7Engine, stopHl7Engine, isHl7EngineEnabled } from "../hl7/index.js";
+import { startHealthMonitor, stopHealthMonitor } from "../rcm/connectors/health-monitor.js";
 /**
  * Initialize Postgres platform DB and wire all repos.
  */
@@ -334,6 +335,9 @@ async function startBackgroundServices(): Promise<void> {
       log.info("HL7 MLLP engine started (HL7_ENGINE_ENABLED=true)");
     }
   }
+
+  // Phase 242: Start background connector health monitor
+  startHealthMonitor();
 
   // Phase 133: Periodic PG pool stats collection (every 15s)
   if (isPgConfigured()) {

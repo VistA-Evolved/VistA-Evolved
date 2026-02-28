@@ -143,6 +143,9 @@ import hl7RoutingRoutes from "../routes/hl7-routing.js";
 // HL7v2 Message Packs (Phase 241)
 import hl7PackRoutes from "../routes/hl7-packs.js";
 
+// RCM Scale Hardening (Phase 242)
+import rcmScaleRoutes from "../routes/rcm-scale.js";
+
 // Infrastructure routes
 import postureRoutes from "../posture/index.js";
 import { jobAdminRoutes } from "../routes/job-admin-routes.js";
@@ -405,6 +408,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // HL7v2 Message Packs (Phase 241)
   server.register(hl7PackRoutes);
+
+  // RCM Scale Hardening (Phase 242)
+  server.register(rcmScaleRoutes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

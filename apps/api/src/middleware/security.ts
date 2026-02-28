@@ -25,6 +25,8 @@ import { stopCleanupJob as stopPortabilityCleanup } from "../services/record-por
 import { stopShipperJob } from "../audit-shipping/shipper.js";
 import { stopLinkRequestCleanup } from "../routes/identity-linking.js";
 import { stopEtl } from "../services/analytics-etl.js";
+import { stopHealthMonitor } from "../rcm/connectors/health-monitor.js";
+import { stopHl7Engine } from "../hl7/index.js";
 import { extractBearerToken, validateFhirBearerToken, principalFromSession } from "../fhir/fhir-bearer-auth.js";
 // Phase 36: Telemetry
 import { getCurrentTraceId } from "../telemetry/tracing.js";
@@ -563,6 +565,10 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
         try { stopShipperJob(); } catch { /* timer may already be cleared */ }
         // Phase 169: stop identity link request cleanup
         try { stopLinkRequestCleanup(); } catch { /* timer may already be cleared */ }
+        // Phase 239: stop HL7v2 MLLP engine
+        try { await stopHl7Engine(); } catch { /* engine may not be running */ }
+        // Phase 242: stop payer connector health monitor
+        try { stopHealthMonitor(); } catch { /* timer may already be cleared */ }
         // Phase 101: close platform Postgres pool
         try { await closePgDb(); } catch { /* pool may already be closed */ }
         // Phase 116: stop Graphile Worker job runner
