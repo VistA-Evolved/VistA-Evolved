@@ -107,21 +107,29 @@ export async function onboardingIntegrationRoutes(
           .send({ ok: false, error: "kind, label, and host required" });
       }
 
-      const session = upsertEndpoint(id, {
-        id: body.endpointId,
-        kind,
-        label,
-        host,
-        port,
-        tlsEnabled,
-        options: options || {},
-      });
+      try {
+        const session = upsertEndpoint(id, {
+          id: body.endpointId,
+          kind,
+          label,
+          host,
+          port,
+          tlsEnabled,
+          options: options || {},
+        });
 
-      if (!session) {
-        return reply.code(404).send({ ok: false, error: "Session not found" });
+        if (!session) {
+          return reply.code(404).send({ ok: false, error: "Session not found" });
+        }
+
+        return { ok: true, session };
+      } catch (err: unknown) {
+        return reply.code(500).send({
+          ok: false,
+          error: "Failed to upsert endpoint",
+          detail: err instanceof Error ? err.message : "Unknown error",
+        });
       }
-
-      return { ok: true, session };
     },
   );
 
@@ -144,11 +152,19 @@ export async function onboardingIntegrationRoutes(
     async (request, reply) => {
       const { id } = request.params as any;
       const body = (request.body as any) || {};
-      const session = advanceIntegrationStep(id, body.data);
-      if (!session) {
-        return reply.code(404).send({ ok: false, error: "Session not found" });
+      try {
+        const session = advanceIntegrationStep(id, body.data);
+        if (!session) {
+          return reply.code(404).send({ ok: false, error: "Session not found" });
+        }
+        return { ok: true, session };
+      } catch (err: unknown) {
+        return reply.code(500).send({
+          ok: false,
+          error: "Failed to advance step",
+          detail: err instanceof Error ? err.message : "Unknown error",
+        });
       }
-      return { ok: true, session };
     },
   );
 
@@ -157,13 +173,21 @@ export async function onboardingIntegrationRoutes(
     "/admin/onboarding/integrations/:id/probe",
     async (request, reply) => {
       const { id } = request.params as any;
-      const session = getIntegrationSession(id);
-      if (!session) {
-        return reply.code(404).send({ ok: false, error: "Session not found" });
-      }
+      try {
+        const session = getIntegrationSession(id);
+        if (!session) {
+          return reply.code(404).send({ ok: false, error: "Session not found" });
+        }
 
-      const probed = probeEndpoints(session);
-      return { ok: true, session: probed };
+        const probed = probeEndpoints(session);
+        return { ok: true, session: probed };
+      } catch (err: unknown) {
+        return reply.code(500).send({
+          ok: false,
+          error: "Failed to probe endpoints",
+          detail: err instanceof Error ? err.message : "Unknown error",
+        });
+      }
     },
   );
 
@@ -172,13 +196,21 @@ export async function onboardingIntegrationRoutes(
     "/admin/onboarding/integrations/:id/preflight",
     async (request, reply) => {
       const { id } = request.params as any;
-      const session = getIntegrationSession(id);
-      if (!session) {
-        return reply.code(404).send({ ok: false, error: "Session not found" });
-      }
+      try {
+        const session = getIntegrationSession(id);
+        if (!session) {
+          return reply.code(404).send({ ok: false, error: "Session not found" });
+        }
 
-      const summary = runPreflight(session);
-      return { ok: true, preflight: summary, session };
+        const summary = runPreflight(session);
+        return { ok: true, preflight: summary, session };
+      } catch (err: unknown) {
+        return reply.code(500).send({
+          ok: false,
+          error: "Failed to run preflight",
+          detail: err instanceof Error ? err.message : "Unknown error",
+        });
+      }
     },
   );
 

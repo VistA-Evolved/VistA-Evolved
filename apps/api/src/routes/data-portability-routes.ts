@@ -55,23 +55,32 @@ export async function dataPortabilityRoutes(
         .send({ ok: false, error: "subjectId required for patient/group level" });
     }
 
-    const job = kickoffBulkExport({
-      level,
-      subjectId,
-      tenantId,
-      requestedBy: "admin",
-      resourceTypes,
-      since,
-    });
+    const requestedBy = (request as any).session?.duz || "admin";
+    try {
+      const job = kickoffBulkExport({
+        level,
+        subjectId,
+        tenantId,
+        requestedBy,
+        resourceTypes,
+        since,
+      });
 
-    // Return 202 Accepted with Content-Location (FHIR Bulk Data pattern)
-    return reply
-      .code(202)
-      .header(
-        "Content-Location",
-        `/admin/exports/bulk/${job.id}/status`,
-      )
-      .send({ ok: true, job });
+      // Return 202 Accepted with Content-Location (FHIR Bulk Data pattern)
+      return reply
+        .code(202)
+        .header(
+          "Content-Location",
+          `/admin/exports/bulk/${job.id}/status`,
+        )
+        .send({ ok: true, job });
+    } catch (err: unknown) {
+      return reply.code(500).send({
+        ok: false,
+        error: "Failed to kick off bulk export",
+        detail: err instanceof Error ? err.message : "Unknown error",
+      });
+    }
   });
 
   /** Check bulk export status */
@@ -144,8 +153,16 @@ export async function dataPortabilityRoutes(
         .send({ ok: false, error: "patientDfn required" });
     }
 
-    const chart = generatePatientChart({ patientDfn, tenantId, format });
-    return reply.code(201).send({ ok: true, chart });
+    try {
+      const chart = generatePatientChart({ patientDfn, tenantId, format });
+      return reply.code(201).send({ ok: true, chart });
+    } catch (err: unknown) {
+      return reply.code(500).send({
+        ok: false,
+        error: "Failed to generate patient chart",
+        detail: err instanceof Error ? err.message : "Unknown error",
+      });
+    }
   });
 
   /** Get patient chart */
@@ -180,20 +197,29 @@ export async function dataPortabilityRoutes(
     const body = (request.body as any) || {};
     const { tenantId = "default", scopes, format } = body;
 
-    const job = kickoffTenantExport({
-      tenantId,
-      requestedBy: "admin",
-      scopes,
-      format,
-    });
+    const requestedBy = (request as any).session?.duz || "admin";
+    try {
+      const job = kickoffTenantExport({
+        tenantId,
+        requestedBy,
+        scopes,
+        format,
+      });
 
-    return reply
-      .code(202)
-      .header(
-        "Content-Location",
-        `/admin/exports/tenant/${job.id}/status`,
-      )
-      .send({ ok: true, job });
+      return reply
+        .code(202)
+        .header(
+          "Content-Location",
+          `/admin/exports/tenant/${job.id}/status`,
+        )
+        .send({ ok: true, job });
+    } catch (err: unknown) {
+      return reply.code(500).send({
+        ok: false,
+        error: "Failed to kick off tenant export",
+        detail: err instanceof Error ? err.message : "Unknown error",
+      });
+    }
   });
 
   /** Check tenant export status */
@@ -248,8 +274,16 @@ export async function dataPortabilityRoutes(
         .send({ ok: false, error: "manifest with manifestHash and files required" });
     }
 
-    const result = verifyExportManifest(manifest);
-    return { ok: true, verification: result };
+    try {
+      const result = verifyExportManifest(manifest);
+      return { ok: true, verification: result };
+    } catch (err: unknown) {
+      return reply.code(500).send({
+        ok: false,
+        error: "Failed to verify manifest",
+        detail: err instanceof Error ? err.message : "Unknown error",
+      });
+    }
   });
 
   /* ==== Capabilities summary ==== */

@@ -6,14 +6,14 @@
  * - GET /hl7/use-cases — List supported message type → domain event mappings
  * - GET /hl7/use-cases/fixtures — List available test fixtures
  */
-import { FastifyInstance } from "fastify";
+import type { FastifyInstance } from "fastify";
 import {
   mapHl7ToDomainEvent,
   listSupportedMappings,
 } from "../hl7/domain-mapper.js";
 import { recordMessageEvent } from "../hl7/message-event-store.js";
 import { addEnhancedDeadLetter } from "../hl7/dead-letter-enhanced.js";
-import * as fs from "fs";
+import * as fs from "fs/promises";
 import * as path from "path";
 
 export async function hl7UseCaseRoutes(server: FastifyInstance): Promise<void> {
@@ -30,56 +30,64 @@ export async function hl7UseCaseRoutes(server: FastifyInstance): Promise<void> {
 
     const tenantId = body.tenantId || "default";
 
-    // Extract MSH fields for event recording
-    const firstLine = raw.split(/\r?\n|\r/)[0] ?? "";
-    const mshParts = firstLine.split("|");
-    const sendingApp = mshParts[2] ?? "";
-    const sendingFac = mshParts[3] ?? "";
-    const messageType = mshParts[8] ?? "";
-    const controlId = mshParts[9] ?? "";
+    try {
+      // Extract MSH fields for event recording
+      const firstLine = raw.split(/\r?\n|\r/)[0] ?? "";
+      const mshParts = firstLine.split("|");
+      const sendingApp = mshParts[2] ?? "";
+      const sendingFac = mshParts[3] ?? "";
+      const messageType = mshParts[8] ?? "";
+      const controlId = mshParts[9] ?? "";
 
-    // Attempt domain mapping
-    const domainEvent = mapHl7ToDomainEvent(raw);
+      // Attempt domain mapping
+      const domainEvent = mapHl7ToDomainEvent(raw);
 
-    if (domainEvent) {
-      // Record successful processing
-      recordMessageEvent({
-        tenantId,
-        direction: "inbound",
-        messageType,
-        messageControlId: controlId,
-        sendingApplication: sendingApp,
-        sendingFacility: sendingFac,
-        receivingApplication: "VISTA_EVOLVED",
-        receivingFacility: tenantId,
-        status: "routed",
-        rawMessage: raw,
-      });
+      if (domainEvent) {
+        // Record successful processing
+        recordMessageEvent({
+          tenantId,
+          direction: "inbound",
+          messageType,
+          messageControlId: controlId,
+          sendingApplication: sendingApp,
+          sendingFacility: sendingFac,
+          receivingApplication: "VISTA_EVOLVED",
+          receivingFacility: tenantId,
+          status: "routed",
+          rawMessage: raw,
+        });
 
-      return reply.send({
-        ok: true,
-        domainEvent,
-        sourceMessageType: messageType,
-        sourceControlId: controlId,
-      });
-    } else {
-      // Dead-letter unmappable messages
-      addEnhancedDeadLetter({
-        messageType,
-        messageControlId: controlId,
-        sendingApplication: sendingApp,
-        sendingFacility: sendingFac,
-        reason: `Unsupported message type: ${messageType}`,
-        rawMessage: raw,
-        tenantId,
-      });
+        return reply.send({
+          ok: true,
+          domainEvent,
+          sourceMessageType: messageType,
+          sourceControlId: controlId,
+        });
+      } else {
+        // Dead-letter unmappable messages
+        addEnhancedDeadLetter({
+          messageType,
+          messageControlId: controlId,
+          sendingApplication: sendingApp,
+          sendingFacility: sendingFac,
+          reason: `Unsupported message type: ${messageType}`,
+          rawMessage: raw,
+          tenantId,
+        });
 
-      return reply.code(422).send({
+        return reply.code(422).send({
+          ok: false,
+          error: "Unsupported message type",
+          messageType,
+          controlId,
+          detail: "Message added to dead-letter queue for review",
+        });
+      }
+    } catch (err: unknown) {
+      return reply.code(500).send({
         ok: false,
-        error: "Unsupported message type",
-        messageType,
-        controlId,
-        detail: "Message added to dead-letter queue for review",
+        error: "HL7 ingest failed",
+        detail: err instanceof Error ? err.message : "Unknown error",
       });
     }
   });
@@ -105,12 +113,9 @@ export async function hl7UseCaseRoutes(server: FastifyInstance): Promise<void> {
       "../../services/hl7/fixtures"
     );
     try {
-      if (!fs.existsSync(fixturesDir)) {
-        return reply.send({ ok: true, fixtures: [], note: "Fixtures directory not found" });
-      }
-      const files = fs
-        .readdirSync(fixturesDir)
-        .filter((f) => f.endsWith(".hl7"));
+      await fs.access(fixturesDir);
+      const allFiles = await fs.readdir(fixturesDir);
+      const files = allFiles.filter((f) => f.endsWith(".hl7"));
       return reply.send({
         ok: true,
         fixtures: files.map((f) => ({

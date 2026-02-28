@@ -6,7 +6,7 @@
  *
  * Route convention: /hl7/pipeline/* for event stream, /hl7/dlq/* for DLQ.
  */
-import { FastifyInstance } from "fastify";
+import type { FastifyInstance } from "fastify";
 import {
   queryMessageEvents,
   getMessageEvent,
@@ -76,7 +76,7 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
    */
   server.get("/hl7/pipeline/verify", async (_request, reply) => {
     const result = verifyMessageEventChain();
-    return reply.send({ ok: result.ok, ...result });
+    return reply.send({ ...result });
   });
 
   /* ── Enhanced Dead-Letter Queue ───────────────────────── */

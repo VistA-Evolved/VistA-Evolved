@@ -76,9 +76,9 @@ export async function supportToolkitV2Routes(
 
   /* ---- Add ticket correlation ---- */
   app.post(
-    "/admin/support/tickets/:ticketId/correlations",
+    "/admin/support/tickets/:id/correlations",
     async (request, reply) => {
-      const { ticketId } = request.params as any;
+      const { id } = request.params as any;
       const body = (request.body as any) || {};
       const { correlationType, correlationId, label } = body;
 
@@ -88,7 +88,7 @@ export async function supportToolkitV2Routes(
           .send({ ok: false, error: "correlationType and correlationId required" });
       }
 
-      const correlation = addCorrelation(ticketId, {
+      const correlation = addCorrelation(id, {
         correlationType,
         correlationId,
         label: label || `${correlationType}:${correlationId}`,
@@ -100,20 +100,20 @@ export async function supportToolkitV2Routes(
 
   /* ---- Get ticket correlations ---- */
   app.get(
-    "/admin/support/tickets/:ticketId/correlations",
+    "/admin/support/tickets/:id/correlations",
     async (request) => {
-      const { ticketId } = request.params as any;
-      const correlations = getCorrelations(ticketId);
+      const { id } = request.params as any;
+      const correlations = getCorrelations(id);
       return { ok: true, correlations, count: correlations.length };
     },
   );
 
   /* ---- Remove ticket correlation ---- */
   app.delete(
-    "/admin/support/tickets/:ticketId/correlations/:correlationId",
+    "/admin/support/tickets/:id/correlations/:correlationId",
     async (request, reply) => {
-      const { ticketId, correlationId } = request.params as any;
-      const removed = removeCorrelation(ticketId, correlationId);
+      const { id, correlationId } = request.params as any;
+      const removed = removeCorrelation(id, correlationId);
       if (!removed) {
         return reply
           .code(404)

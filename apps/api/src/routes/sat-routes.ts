@@ -7,7 +7,7 @@
  * All routes under /admin/pilot/sat/* and /admin/pilot/degraded-mode/*
  * — admin-only via AUTH_RULES.
  */
-import { FastifyInstance } from "fastify";
+import type { FastifyInstance } from "fastify";
 import {
   startSatRun,
   getSatRun,
@@ -47,9 +47,17 @@ export async function satRoutes(app: FastifyInstance): Promise<void> {
       return reply.code(400).send({ ok: false, error: "siteId and tenantId required" });
     }
 
-    const executedBy = (req as any).session?.duz || "system";
-    const run = startSatRun(siteId, tenantId, executedBy, scenarioIds);
-    return reply.code(201).send({ ok: true, run });
+    try {
+      const executedBy = (req as any).session?.duz || "system";
+      const run = startSatRun(siteId, tenantId, executedBy, scenarioIds);
+      return reply.code(201).send({ ok: true, run });
+    } catch (err: unknown) {
+      return reply.code(500).send({
+        ok: false,
+        error: "Failed to start SAT run",
+        detail: err instanceof Error ? err.message : "Unknown error",
+      });
+    }
   });
 
   app.get("/admin/pilot/sat/runs", async (req, reply) => {
@@ -81,13 +89,25 @@ export async function satRoutes(app: FastifyInstance): Promise<void> {
     const body = (req.body as any) || {};
     const { scenarioId, status, detail, evidence } = body;
 
+    const validStatuses = ["pass", "fail", "skip"];
     if (!scenarioId || !status) {
       return reply.code(400).send({ ok: false, error: "scenarioId and status required" });
     }
+    if (!validStatuses.includes(status)) {
+      return reply.code(400).send({ ok: false, error: `status must be one of: ${validStatuses.join(", ")}` });
+    }
 
-    const run = recordScenarioResult(id, scenarioId, status, detail || "", evidence);
-    if (!run) return reply.code(404).send({ ok: false, error: "Run or scenario not found" });
-    return reply.send({ ok: true, run });
+    try {
+      const run = recordScenarioResult(id, scenarioId, status, detail || "", evidence);
+      if (!run) return reply.code(404).send({ ok: false, error: "Run or scenario not found" });
+      return reply.send({ ok: true, run });
+    } catch (err: unknown) {
+      return reply.code(500).send({
+        ok: false,
+        error: "Failed to record scenario result",
+        detail: err instanceof Error ? err.message : "Unknown error",
+      });
+    }
   });
 
   // -----------------------------------------------------------------------
@@ -113,19 +133,43 @@ export async function satRoutes(app: FastifyInstance): Promise<void> {
   app.post("/admin/pilot/degraded-mode/report", async (req, reply) => {
     const body = (req.body as any) || {};
     const { source, level, message } = body;
+    const validSources = ["vista-rpc", "database", "oidc", "imaging", "hl7-engine", "payer-connector", "audit-shipping", "analytics"];
+    const validLevels = ["normal", "degraded", "critical", "offline"];
     if (!source || !level || !message) {
       return reply.code(400).send({ ok: false, error: "source, level, message required" });
     }
+    if (!validSources.includes(source)) {
+      return reply.code(400).send({ ok: false, error: `source must be one of: ${validSources.join(", ")}` });
+    }
+    if (!validLevels.includes(level)) {
+      return reply.code(400).send({ ok: false, error: `level must be one of: ${validLevels.join(", ")}` });
+    }
 
-    const event = reportDegradation(source, level, message);
-    return reply.code(201).send({ ok: true, event });
+    try {
+      const event = reportDegradation(source, level, message);
+      return reply.code(201).send({ ok: true, event });
+    } catch (err: unknown) {
+      return reply.code(500).send({
+        ok: false,
+        error: "Failed to report degradation",
+        detail: err instanceof Error ? err.message : "Unknown error",
+      });
+    }
   });
 
   app.post("/admin/pilot/degraded-mode/resolve/:eventId", async (req, reply) => {
     const { eventId } = req.params as any;
-    const event = resolveDegradation(eventId);
-    if (!event) return reply.code(404).send({ ok: false, error: "Degradation event not found" });
-    return reply.send({ ok: true, event });
+    try {
+      const event = resolveDegradation(eventId);
+      if (!event) return reply.code(404).send({ ok: false, error: "Degradation event not found" });
+      return reply.send({ ok: true, event });
+    } catch (err: unknown) {
+      return reply.code(500).send({
+        ok: false,
+        error: "Failed to resolve degradation",
+        detail: err instanceof Error ? err.message : "Unknown error",
+      });
+    }
   });
 
   // -----------------------------------------------------------------------

@@ -96,7 +96,7 @@ describe("Support Tooling v2 -- Phase 263", () => {
 
     it("has correlation add endpoint", () => {
       const c = fs.readFileSync(routePath, "utf-8");
-      expect(c).toContain("/admin/support/tickets/:ticketId/correlations");
+      expect(c).toContain("/admin/support/tickets/:id/correlations");
     });
 
     it("has posture summary endpoint", () => {

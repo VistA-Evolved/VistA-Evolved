@@ -158,6 +158,24 @@ import exportV2Routes from "../routes/export-routes.js";
 // Pilot Hospital Hardening (Phase 246)
 import pilotRoutes from "../routes/pilot-routes.js";
 
+// --- Wave 8: Enterprise Integrations + Customer Ops (Phases 258-265) ---
+// HL7v2 Tenant Endpoints (Phase 258)
+import hl7TenantEndpointRoutes from "../routes/hl7-tenant-endpoints.js";
+// HL7v2 Message Pipeline (Phase 259)
+import { hl7PipelineRoutes } from "../routes/hl7-pipeline.js";
+// HL7v2 Use Cases (Phase 260)
+import { hl7UseCaseRoutes } from "../routes/hl7-use-cases.js";
+// Payer Adapter SDK (Phase 261)
+import { adapterSdkRoutes } from "../routes/adapter-sdk-routes.js";
+// Onboarding Integration Steps (Phase 262)
+import { onboardingIntegrationRoutes } from "../routes/onboarding-integration-routes.js";
+// Support Toolkit v2 (Phase 263)
+import { supportToolkitV2Routes } from "../routes/support-toolkit-v2-routes.js";
+// Data Portability Exports (Phase 264)
+import { dataPortabilityRoutes } from "../routes/data-portability-routes.js";
+// SAT Suite + Degraded Mode (Phase 265)
+import { satRoutes } from "../routes/sat-routes.js";
+
 // Infrastructure routes
 import postureRoutes from "../posture/index.js";
 import { jobAdminRoutes } from "../routes/job-admin-routes.js";
@@ -435,6 +453,24 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Phase 246: Pilot Hospital Hardening
   server.register(pilotRoutes);
+
+  // --- Wave 8: Enterprise Integrations + Customer Ops (Phases 258-265) ---
+  // Phase 258: HL7v2 Tenant Endpoints
+  server.register(hl7TenantEndpointRoutes);
+  // Phase 259: HL7v2 Message Pipeline
+  server.register(hl7PipelineRoutes);
+  // Phase 260: HL7v2 Use Cases
+  server.register(hl7UseCaseRoutes);
+  // Phase 261: Payer Adapter SDK
+  server.register(adapterSdkRoutes);
+  // Phase 262: Onboarding Integration Steps
+  server.register(onboardingIntegrationRoutes);
+  // Phase 263: Support Toolkit v2
+  server.register(supportToolkitV2Routes);
+  // Phase 264: Data Portability Exports
+  server.register(dataPortabilityRoutes);
+  // Phase 265: SAT Suite + Degraded Mode
+  server.register(satRoutes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

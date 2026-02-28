@@ -6,7 +6,7 @@
  *
  * Extends existing /rcm/* routes; does not replace.
  */
-import { FastifyInstance } from "fastify";
+import type { FastifyInstance } from "fastify";
 import { listSandboxTestCases } from "../rcm/adapters/adapter-sdk.js";
 import {
   listPayerAdapters,
@@ -26,11 +26,11 @@ export async function adapterSdkRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({
       ok: true,
       adapters: adapters.map((a) => ({
-        id: a.config.id,
-        name: a.config.name,
-        enabled: a.config.enabled,
-        supportedModes: a.config.supportedModes,
-        rateLimits: a.config.rateLimits,
+        id: a.id,
+        name: a.name,
+        enabled: a.enabled,
+        supportedModes: a.supportedModes,
+        rateLimits: a.rateLimits,
       })),
       totalAdapters: adapters.length,
     });
@@ -45,7 +45,7 @@ export async function adapterSdkRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({
       ok: true,
       connectors: connectors,
-      registeredCount: all.length,
+      registeredCount: all.size,
     });
   });
 
@@ -117,9 +117,9 @@ export async function adapterSdkRoutes(server: FastifyInstance): Promise<void> {
   server.get("/rcm/sdk/rate-limits", async (_request, reply) => {
     const adapters = listPayerAdapters();
     const limits = adapters.map((a) => ({
-      id: a.config.id,
-      name: a.config.name,
-      rateLimits: a.config.rateLimits,
+      id: a.id,
+      name: a.name,
+      rateLimits: a.rateLimits,
     }));
     return reply.send({ ok: true, adapters: limits });
   });
@@ -130,9 +130,9 @@ export async function adapterSdkRoutes(server: FastifyInstance): Promise<void> {
   server.get("/rcm/sdk/capabilities", async (_request, reply) => {
     const adapters = listPayerAdapters();
     const capabilities = adapters.map((a) => ({
-      id: a.config.id,
-      name: a.config.name,
-      supportedModes: a.config.supportedModes,
+      id: a.id,
+      name: a.name,
+      supportedModes: a.supportedModes,
       methods: [
         "checkEligibility",
         "submitClaim",
@@ -140,7 +140,7 @@ export async function adapterSdkRoutes(server: FastifyInstance): Promise<void> {
         "handleDenial",
         "healthCheck",
       ],
-      enabled: a.config.enabled,
+      enabled: a.enabled,
     }));
     return reply.send({ ok: true, capabilities, totalAdapters: adapters.length });
   });

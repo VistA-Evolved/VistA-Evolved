@@ -585,7 +585,7 @@ export function getDegradedModeStatus(): DegradedModeStatus {
   let overallLevel: DegradationLevel = "normal";
   for (const e of active) {
     if (e.level === "offline") { overallLevel = "offline"; break; }
-    if (e.level === "critical" && overallLevel !== "offline") overallLevel = "critical";
+    if (e.level === "critical" && overallLevel !== "critical") overallLevel = "critical";
     if (e.level === "degraded" && overallLevel === "normal") overallLevel = "degraded";
   }
 
