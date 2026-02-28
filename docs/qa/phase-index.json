@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-28T06:40:25.320Z",
+  "generatedAt": "2026-02-28T06:45:11.655Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 184,
+  "phaseCount": 224,
   "phases": [
     {
       "phaseNumber": "1",
@@ -3250,34 +3250,6 @@
       "filesTouched": []
     },
     {
-      "phaseNumber": "173",
-      "title": "178: Production Convergence Wave 1",
-      "folder": "178-PHASE-173-178-PROD-CONVERGENCE",
-      "files": [
-        "173-01-IMPLEMENT.md",
-        "173-99-VERIFY.md"
-      ],
-      "implementFiles": [
-        "173-01-IMPLEMENT.md"
-      ],
-      "verifyFiles": [
-        "173-99-VERIFY.md"
-      ],
-      "routes": [],
-      "rpcs": [],
-      "uiComponents": [],
-      "filesTouched": [
-        "apps/api/src/index.ts",
-        "apps/api/src/server/*.ts",
-        "apps/api/src/fhir/*.ts",
-        "apps/api/src/platform/store-resolver.ts",
-        "apps/api/package.json",
-        "apps/api/tests/server-smoke.test.ts",
-        "apps/api/tests/rls-isolation.test.ts",
-        "apps/api/tests/fhir.test.ts"
-      ]
-    },
-    {
       "phaseNumber": "211",
       "title": "PromptOps Governance Upgrade",
       "folder": "179-PHASE-211-PROMPTOPS-GOVERNANCE",
@@ -3365,6 +3337,179 @@
       ]
     },
     {
+      "phaseNumber": "213",
+      "title": "Backfill Wave 1 into Real Phases 173-178",
+      "folder": "181-PHASE-213-BACKFILL-WAVE1",
+      "files": [
+        "213-01-IMPLEMENT.md",
+        "213-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "213-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "213-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "173",
+      "title": "API Bootstrap Decomposition",
+      "folder": "182-PHASE-173-API-BOOTSTRAP-DECOMPOSITION",
+      "files": [
+        "173-01-IMPLEMENT.md",
+        "173-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "173-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "173-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "174",
+      "title": "Postgres-Only Platform Dataplane",
+      "folder": "183-PHASE-174-PG-ONLY-DATAPLANE",
+      "files": [
+        "174-01-IMPLEMENT.md",
+        "174-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "174-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "174-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "175",
+      "title": "Schema + Migration Single Source of Truth",
+      "folder": "184-PHASE-175-SCHEMA-MIGRATION-SOT",
+      "files": [
+        "175-01-IMPLEMENT.md",
+        "175-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "175-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "175-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "176",
+      "title": "Tenant Context + RLS Enforcement",
+      "folder": "185-PHASE-176-TENANT-RLS-ENFORCEMENT",
+      "files": [
+        "176-01-IMPLEMENT.md",
+        "176-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "176-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "176-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "177",
+      "title": "Durability Audit + Restart Resilience",
+      "folder": "186-PHASE-177-DURABILITY-AUDIT",
+      "files": [
+        "177-01-IMPLEMENT.md",
+        "177-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "177-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "177-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "178",
+      "title": "FHIR R4 Gateway",
+      "folder": "187-PHASE-178-FHIR-R4-GATEWAY",
+      "files": [
+        "178-01-IMPLEMENT.md",
+        "178-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "178-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "178-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "214",
+      "title": "Convert Wave 2 into Real Phases 179-196",
+      "folder": "188-PHASE-214-CONVERT-WAVE2",
+      "files": [
+        "214-01-IMPLEMENT.md",
+        "214-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "214-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "214-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "docs/qa/phase-index.json"
+      ]
+    },
+    {
+      "phaseNumber": "179",
+      "title": "Helm Foundation Layout",
+      "folder": "189-PHASE-179-HELM-FOUNDATION",
+      "files": [
+        "179-01-IMPLEMENT.md",
+        "179-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "179-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "179-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
       "phaseNumber": "17",
       "title": "Multi-Tenant Control Plane IMPLEMENT",
       "folder": "19-PHASE-17-MULTITENANT-CONTROL-PLANE",
@@ -3392,6 +3537,196 @@
         "page.tsx",
         "tenant-context.tsx"
       ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "180",
+      "title": "Docker Image Contracts",
+      "folder": "190-PHASE-180-DOCKER-IMAGE-CONTRACTS",
+      "files": [
+        "180-01-IMPLEMENT.md",
+        "180-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "180-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "180-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "181",
+      "title": "Shared Layer Chart",
+      "folder": "191-PHASE-181-SHARED-LAYER-CHART",
+      "files": [
+        "181-01-IMPLEMENT.md",
+        "181-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "181-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "181-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "182",
+      "title": "Tenant Layer Chart",
+      "folder": "192-PHASE-182-TENANT-LAYER-CHART",
+      "files": [
+        "182-01-IMPLEMENT.md",
+        "182-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "182-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "182-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "183",
+      "title": "Tenant Provisioning Scripts",
+      "folder": "193-PHASE-183-TENANT-PROVISIONING",
+      "files": [
+        "183-01-IMPLEMENT.md",
+        "183-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "183-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "183-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "184",
+      "title": "Secrets Strategy (SOPS)",
+      "folder": "194-PHASE-184-SECRETS-STRATEGY",
+      "files": [
+        "184-01-IMPLEMENT.md",
+        "184-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "184-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "184-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "185",
+      "title": "PG Backup PITR",
+      "folder": "195-PHASE-185-PG-BACKUP-PITR",
+      "files": [
+        "185-01-IMPLEMENT.md",
+        "185-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "185-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "185-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "186",
+      "title": "YottaDB Backup",
+      "folder": "196-PHASE-186-YOTTADB-BACKUP",
+      "files": [
+        "186-01-IMPLEMENT.md",
+        "186-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "186-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "186-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "187",
+      "title": "DR Drill Automation",
+      "folder": "197-PHASE-187-DR-DRILL-AUTOMATION",
+      "files": [
+        "187-01-IMPLEMENT.md",
+        "187-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "187-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "187-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "188",
+      "title": "Observability Baseline",
+      "folder": "198-PHASE-188-OBSERVABILITY-BASELINE",
+      "files": [
+        "188-01-IMPLEMENT.md",
+        "188-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "188-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "188-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "189",
+      "title": "Performance Tuning Runbook",
+      "folder": "199-PHASE-189-PERF-TUNING-RUNBOOK",
+      "files": [
+        "189-01-IMPLEMENT.md",
+        "189-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "189-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "189-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
       "filesTouched": []
     },
     {
@@ -3446,6 +3781,198 @@
         "scripts/verify-latest.ps",
         "docs/runbooks/interop-imaging-phase18.md"
       ]
+    },
+    {
+      "phaseNumber": "190",
+      "title": "Load Test Harness (k6)",
+      "folder": "200-PHASE-190-LOAD-TEST-HARNESS",
+      "files": [
+        "190-01-IMPLEMENT.md",
+        "190-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "190-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "190-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "191",
+      "title": "Queue Backpressure (Graphile)",
+      "folder": "201-PHASE-191-QUEUE-BACKPRESSURE",
+      "files": [
+        "191-01-IMPLEMENT.md",
+        "191-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "191-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "191-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "192",
+      "title": "K8s Autoscaling (HPA+PDB)",
+      "folder": "202-PHASE-192-K8S-AUTOSCALING",
+      "files": [
+        "192-01-IMPLEMENT.md",
+        "192-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "192-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "192-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "193",
+      "title": "FHIR Encounter Resource",
+      "folder": "203-PHASE-193-FHIR-ENCOUNTER-RESOURCE",
+      "files": [
+        "193-01-IMPLEMENT.md",
+        "193-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "193-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "193-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "194",
+      "title": "FHIR Cache + ETag",
+      "folder": "204-PHASE-194-FHIR-CACHE-ETAG",
+      "files": [
+        "194-01-IMPLEMENT.md",
+        "194-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "194-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "194-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "195",
+      "title": "SMART-on-FHIR Posture",
+      "folder": "205-PHASE-195-SMART-ON-FHIR-POSTURE",
+      "files": [
+        "195-01-IMPLEMENT.md",
+        "195-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "195-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "195-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "196",
+      "title": "FHIR Conformance Suite",
+      "folder": "206-PHASE-196-FHIR-CONFORMANCE-SUITE",
+      "files": [
+        "196-01-IMPLEMENT.md",
+        "196-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "196-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "196-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "215",
+      "title": "Convert Wave 3 into Real Phases 197-210",
+      "folder": "207-PHASE-215-CONVERT-WAVE3",
+      "files": [
+        "215-01-IMPLEMENT.md",
+        "215-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "215-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "215-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "docs/qa/phase-index.json"
+      ]
+    },
+    {
+      "phaseNumber": "197",
+      "title": "GitOps ArgoCD Foundation",
+      "folder": "208-PHASE-197-GITOPS-ARGOCD",
+      "files": [
+        "197-01-IMPLEMENT.md",
+        "197-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "197-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "197-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "198",
+      "title": "Environment Model (dev/staging/prod)",
+      "folder": "209-PHASE-198-ENVIRONMENT-MODEL",
+      "files": [
+        "198-01-IMPLEMENT.md",
+        "198-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "198-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "198-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
     },
     {
       "phaseNumber": "19",
@@ -3505,6 +4032,196 @@
       ]
     },
     {
+      "phaseNumber": "199",
+      "title": "CI PR Gates",
+      "folder": "210-PHASE-199-CI-PR-GATES",
+      "files": [
+        "199-01-IMPLEMENT.md",
+        "199-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "199-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "199-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "200",
+      "title": "CD Pipeline (GHCR + Trivy)",
+      "folder": "211-PHASE-200-CD-PIPELINE",
+      "files": [
+        "200-01-IMPLEMENT.md",
+        "200-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "200-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "200-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "201",
+      "title": "Canary + Metric Gate",
+      "folder": "212-PHASE-201-CANARY-METRIC-GATE",
+      "files": [
+        "201-01-IMPLEMENT.md",
+        "201-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "201-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "201-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "202",
+      "title": "Auto Rollback + Incident Pack",
+      "folder": "213-PHASE-202-AUTO-ROLLBACK",
+      "files": [
+        "202-01-IMPLEMENT.md",
+        "202-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "202-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "202-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "203",
+      "title": "Policy as Code (Kyverno)",
+      "folder": "214-PHASE-203-POLICY-AS-CODE",
+      "files": [
+        "203-01-IMPLEMENT.md",
+        "203-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "203-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "203-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "204",
+      "title": "SBOM Attestation + Cosign",
+      "folder": "215-PHASE-204-SBOM-ATTESTATION",
+      "files": [
+        "204-01-IMPLEMENT.md",
+        "204-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "204-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "204-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "205",
+      "title": "SLOs + Burn-Rate Alerts",
+      "folder": "216-PHASE-205-SLO-BURN-RATE-ALERTS",
+      "files": [
+        "205-01-IMPLEMENT.md",
+        "205-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "205-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "205-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "206",
+      "title": "E2E Playwright Smoke + CI",
+      "folder": "217-PHASE-206-E2E-PLAYWRIGHT-SMOKE",
+      "files": [
+        "206-01-IMPLEMENT.md",
+        "206-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "206-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "206-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "207",
+      "title": "Fleet Rollout Orchestrator CLI",
+      "folder": "218-PHASE-207-FLEET-ROLLOUT-CLI",
+      "files": [
+        "207-01-IMPLEMENT.md",
+        "207-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "207-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "207-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "208",
+      "title": "Compliance Evidence Automation",
+      "folder": "219-PHASE-208-COMPLIANCE-EVIDENCE",
+      "files": [
+        "208-01-IMPLEMENT.md",
+        "208-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "208-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "208-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
       "phaseNumber": "20",
       "title": "VistA-First Grounding — IMPLEMENT",
       "folder": "22-PHASE-20-VISTA-FIRST-GROUNDING",
@@ -3538,6 +4255,44 @@
         "ops/summary.md",
         "ops/notion-update.json"
       ]
+    },
+    {
+      "phaseNumber": "209",
+      "title": "Cross-Region DR Posture",
+      "folder": "220-PHASE-209-CROSS-REGION-DR",
+      "files": [
+        "209-01-IMPLEMENT.md",
+        "209-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "209-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "209-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "210",
+      "title": "Go-Live Runbooks",
+      "folder": "221-PHASE-210-GO-LIVE-RUNBOOKS",
+      "files": [
+        "210-01-IMPLEMENT.md",
+        "210-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "210-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "210-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
     },
     {
       "phaseNumber": "21",
