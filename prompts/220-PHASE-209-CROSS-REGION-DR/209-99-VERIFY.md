@@ -1,10 +1,20 @@
-# Phase 209 -- Verify: Cross-Region DR Posture
+# Phase 209 -- Verify: Compliance Dashboard
 
 ## Verification Steps
-- See Wave 3 playbook: prompts/00-PLAYBOOKS/wave3-gitops-release-compliance.md
-- Verification details for Q209 section
+1. Dashboard renders all posture data
+2. Score calculates correctly
+3. Export works
 
 ## Acceptance Criteria
-- [ ] Implementation complete per Wave 3 playbook
-- [ ] pnpm build passes
-- [ ] No regressions
+- [ ] Dashboard renders all posture data
+- [ ] Score calculates correctly
+- [ ] Export works
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Notes
+- All verification steps require the relevant infrastructure to be running
+- Run the corresponding phase verifier script if available

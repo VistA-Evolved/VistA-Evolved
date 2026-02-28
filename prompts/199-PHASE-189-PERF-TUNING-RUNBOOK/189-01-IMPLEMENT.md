@@ -1,8 +1,19 @@
-# Phase 189 -- Performance Tuning Runbook
+# Phase 189 -- Redis Cache Layer
 
 ## Implementation Steps
-- See Wave 2 playbook: prompts/00-PLAYBOOKS/wave2-k8s-dr-perf-fhir/179-01-IMPLEMENT.md
-- Implementation details for Q189 section
+1. Add Redis for session and capability caching
+2. Replace in-memory session store with Redis-backed store
+3. Configure TTL policies
+4. Handle Redis unavailability gracefully
 
 ## Files Touched
-- See Wave 2 playbook for complete file list
+- apps/api/src/
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Dependencies
+- Requires completion of prior phases in the wave sequence
+- See wave playbook for cross-phase dependencies

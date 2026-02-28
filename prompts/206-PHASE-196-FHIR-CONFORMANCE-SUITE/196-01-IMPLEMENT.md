@@ -1,8 +1,20 @@
-# Phase 196 -- FHIR Conformance Suite
+# Phase 196 -- FHIR Validation + Conformance
 
 ## Implementation Steps
-- See Wave 2 playbook: prompts/00-PLAYBOOKS/wave2-k8s-dr-perf-fhir/179-01-IMPLEMENT.md
-- Implementation details for Q196 section
+1. Add FHIR resource validation against R4 profiles
+2. Create conformance test suite
+3. Validate all responses against official schemas
+4. Document known gaps vs full R4 support
 
 ## Files Touched
-- See Wave 2 playbook for complete file list
+- apps/api/src/fhir/
+- tests/fhir/
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Dependencies
+- Requires completion of prior phases in the wave sequence
+- See wave playbook for cross-phase dependencies

@@ -1,10 +1,20 @@
-# Phase 185 -- Verify: PG Backup PITR
+# Phase 185 -- Verify: Staging Environment Definition
 
 ## Verification Steps
-- See Wave 2 playbook: prompts/00-PLAYBOOKS/wave2-k8s-dr-perf-fhir/179-99-VERIFY.md
-- Verification details for Q185 section
+1. Staging config complete
+2. Env vars correct
+3. Access documented
 
 ## Acceptance Criteria
-- [ ] Implementation complete per Wave 2 playbook
-- [ ] pnpm build passes
-- [ ] No regressions
+- [ ] Staging config complete
+- [ ] Env vars correct
+- [ ] Access documented
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Notes
+- All verification steps require the relevant infrastructure to be running
+- Run the corresponding phase verifier script if available

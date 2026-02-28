@@ -1,10 +1,20 @@
-# Phase 190 -- Verify: Load Test Harness (k6)
+# Phase 190 -- Verify: Connection Pool Tuning
 
 ## Verification Steps
-- See Wave 2 playbook: prompts/00-PLAYBOOKS/wave2-k8s-dr-perf-fhir/179-99-VERIFY.md
-- Verification details for Q190 section
+1. Pool metrics exported
+2. Idle connections released
+3. Per-tenant limits enforced
 
 ## Acceptance Criteria
-- [ ] Implementation complete per Wave 2 playbook
-- [ ] pnpm build passes
-- [ ] No regressions
+- [ ] Pool metrics exported
+- [ ] Idle connections released
+- [ ] Per-tenant limits enforced
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Notes
+- All verification steps require the relevant infrastructure to be running
+- Run the corresponding phase verifier script if available

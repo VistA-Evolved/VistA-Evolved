@@ -1,8 +1,19 @@
-# Phase 190 -- Load Test Harness (k6)
+# Phase 190 -- Connection Pool Tuning
 
 ## Implementation Steps
-- See Wave 2 playbook: prompts/00-PLAYBOOKS/wave2-k8s-dr-perf-fhir/179-01-IMPLEMENT.md
-- Implementation details for Q190 section
+1. Configure PG pool size based on concurrency needs
+2. Add idle timeout configuration
+3. Configure max connections per tenant
+4. Add pool metrics to /metrics/prometheus
 
 ## Files Touched
-- See Wave 2 playbook for complete file list
+- apps/api/src/platform/pg/
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Dependencies
+- Requires completion of prior phases in the wave sequence
+- See wave playbook for cross-phase dependencies

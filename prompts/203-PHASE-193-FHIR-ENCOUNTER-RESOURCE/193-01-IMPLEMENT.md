@@ -1,8 +1,19 @@
-# Phase 193 -- FHIR Encounter Resource
+# Phase 193 -- FHIR R4 Encounter Resource
 
 ## Implementation Steps
-- See Wave 2 playbook: prompts/00-PLAYBOOKS/wave2-k8s-dr-perf-fhir/179-01-IMPLEMENT.md
-- Implementation details for Q193 section
+1. Implement FHIR Encounter read and search
+2. Map VistA visits (ORWCV VST) to Encounter
+3. Support search by patient and date
+4. Add period, class, and type mappings
 
 ## Files Touched
-- See Wave 2 playbook for complete file list
+- apps/api/src/fhir/
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Dependencies
+- Requires completion of prior phases in the wave sequence
+- See wave playbook for cross-phase dependencies

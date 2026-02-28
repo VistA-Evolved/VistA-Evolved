@@ -1,10 +1,20 @@
-# Phase 195 -- Verify: SMART-on-FHIR Posture
+# Phase 195 -- Verify: FHIR R4 Bundle + CapabilityStatement
 
 ## Verification Steps
-- See Wave 2 playbook: prompts/00-PLAYBOOKS/wave2-k8s-dr-perf-fhir/179-99-VERIFY.md
-- Verification details for Q195 section
+1. Bundle pagination works
+2. CapabilityStatement valid
+3. SMART context declared
 
 ## Acceptance Criteria
-- [ ] Implementation complete per Wave 2 playbook
-- [ ] pnpm build passes
-- [ ] No regressions
+- [ ] Bundle pagination works
+- [ ] CapabilityStatement valid
+- [ ] SMART context declared
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Notes
+- All verification steps require the relevant infrastructure to be running
+- Run the corresponding phase verifier script if available

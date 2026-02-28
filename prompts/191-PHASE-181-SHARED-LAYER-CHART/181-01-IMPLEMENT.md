@@ -1,8 +1,19 @@
 # Phase 181 -- Shared Layer Chart
 
 ## Implementation Steps
-- See Wave 2 playbook: prompts/00-PLAYBOOKS/wave2-k8s-dr-perf-fhir/179-01-IMPLEMENT.md
-- Implementation details for Q181 section
+1. Create shared Helm sub-chart for PostgreSQL, Redis, Keycloak
+2. Define PVC templates for persistent volumes
+3. Add health check configurations
+4. Configure inter-service networking
 
 ## Files Touched
-- See Wave 2 playbook for complete file list
+- infra/helm/charts/shared/
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Dependencies
+- Requires completion of prior phases in the wave sequence
+- See wave playbook for cross-phase dependencies

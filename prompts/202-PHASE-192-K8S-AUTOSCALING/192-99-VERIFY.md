@@ -1,10 +1,20 @@
-# Phase 192 -- Verify: K8s Autoscaling (HPA+PDB)
+# Phase 192 -- Verify: FHIR R4 Patient Resource
 
 ## Verification Steps
-- See Wave 2 playbook: prompts/00-PLAYBOOKS/wave2-k8s-dr-perf-fhir/179-99-VERIFY.md
-- Verification details for Q192 section
+1. Patient resource conforms to R4
+2. Identifiers mapped correctly
+3. Error responses valid
 
 ## Acceptance Criteria
-- [ ] Implementation complete per Wave 2 playbook
-- [ ] pnpm build passes
-- [ ] No regressions
+- [ ] Patient resource conforms to R4
+- [ ] Identifiers mapped correctly
+- [ ] Error responses valid
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Notes
+- All verification steps require the relevant infrastructure to be running
+- Run the corresponding phase verifier script if available

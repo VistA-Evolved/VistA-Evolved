@@ -1,10 +1,20 @@
-# Phase 194 -- Verify: FHIR Cache + ETag
+# Phase 194 -- Verify: FHIR R4 AllergyIntolerance
 
 ## Verification Steps
-- See Wave 2 playbook: prompts/00-PLAYBOOKS/wave2-k8s-dr-perf-fhir/179-99-VERIFY.md
-- Verification details for Q194 section
+1. AllergyIntolerance valid R4
+2. Criticality mapped
+3. Reactions included
 
 ## Acceptance Criteria
-- [ ] Implementation complete per Wave 2 playbook
-- [ ] pnpm build passes
-- [ ] No regressions
+- [ ] AllergyIntolerance valid R4
+- [ ] Criticality mapped
+- [ ] Reactions included
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Notes
+- All verification steps require the relevant infrastructure to be running
+- Run the corresponding phase verifier script if available

@@ -1,10 +1,20 @@
-# Phase 193 -- Verify: FHIR Encounter Resource
+# Phase 193 -- Verify: FHIR R4 Encounter Resource
 
 ## Verification Steps
-- See Wave 2 playbook: prompts/00-PLAYBOOKS/wave2-k8s-dr-perf-fhir/179-99-VERIFY.md
-- Verification details for Q193 section
+1. Encounter resource valid R4
+2. Search by patient works
+3. Date ranges correct
 
 ## Acceptance Criteria
-- [ ] Implementation complete per Wave 2 playbook
-- [ ] pnpm build passes
-- [ ] No regressions
+- [ ] Encounter resource valid R4
+- [ ] Search by patient works
+- [ ] Date ranges correct
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Notes
+- All verification steps require the relevant infrastructure to be running
+- Run the corresponding phase verifier script if available

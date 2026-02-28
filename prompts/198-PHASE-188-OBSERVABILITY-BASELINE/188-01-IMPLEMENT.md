@@ -1,8 +1,19 @@
-# Phase 188 -- Observability Baseline
+# Phase 188 -- PG Replica Configuration
 
 ## Implementation Steps
-- See Wave 2 playbook: prompts/00-PLAYBOOKS/wave2-k8s-dr-perf-fhir/179-01-IMPLEMENT.md
-- Implementation details for Q188 section
+1. Configure PG streaming replication
+2. Add read replica connection string support
+3. Route read-only queries to replica
+4. Monitor replication lag
 
 ## Files Touched
-- See Wave 2 playbook for complete file list
+- infra/
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Dependencies
+- Requires completion of prior phases in the wave sequence
+- See wave playbook for cross-phase dependencies

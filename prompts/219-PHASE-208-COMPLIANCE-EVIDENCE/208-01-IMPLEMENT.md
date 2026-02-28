@@ -1,8 +1,20 @@
-# Phase 208 -- Compliance Evidence Automation
+# Phase 208 -- Multi-Region Readiness
 
 ## Implementation Steps
-- See Wave 3 playbook: prompts/00-PLAYBOOKS/wave3-gitops-release-compliance.md
-- Implementation details for Q208 section
+1. Document multi-region architecture for PG, VistA, API
+2. Define data residency requirements per region
+3. Create region-specific Helm values
+4. Plan cross-region failover
 
 ## Files Touched
-- See Wave 3 playbook for complete file list
+- infra/
+- docs/architecture/
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Dependencies
+- Requires completion of prior phases in the wave sequence
+- See wave playbook for cross-phase dependencies

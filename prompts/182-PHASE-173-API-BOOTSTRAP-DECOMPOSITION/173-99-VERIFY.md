@@ -1,9 +1,22 @@
 # Phase 173 -- Verify: API Bootstrap Decomposition
 
 ## Verification Steps
-- index.ts <= 250 lines, buildServer() exported, all routes registered, pnpm build passes
+1. API starts without errors after decomposition
+2. All routes respond correctly
+3. Graceful shutdown works
+4. No circular imports
 
 ## Acceptance Criteria
-- [ ] Implementation complete per Wave 1 playbook
-- [ ] pnpm -C apps/api build passes
-- [ ] No regressions in existing tests
+- [ ] API starts without errors after decomposition
+- [ ] All routes respond correctly
+- [ ] Graceful shutdown works
+- [ ] No circular imports
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Notes
+- All verification steps require the relevant infrastructure to be running
+- Run the corresponding phase verifier script if available

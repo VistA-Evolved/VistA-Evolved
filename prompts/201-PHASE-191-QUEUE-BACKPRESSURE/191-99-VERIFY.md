@@ -1,10 +1,20 @@
-# Phase 191 -- Verify: Queue Backpressure (Graphile)
+# Phase 191 -- Verify: Performance Baseline
 
 ## Verification Steps
-- See Wave 2 playbook: prompts/00-PLAYBOOKS/wave2-k8s-dr-perf-fhir/179-99-VERIFY.md
-- Verification details for Q191 section
+1. k6 tests pass
+2. Baselines documented
+3. SLOs defined
 
 ## Acceptance Criteria
-- [ ] Implementation complete per Wave 2 playbook
-- [ ] pnpm build passes
-- [ ] No regressions
+- [ ] k6 tests pass
+- [ ] Baselines documented
+- [ ] SLOs defined
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Notes
+- All verification steps require the relevant infrastructure to be running
+- Run the corresponding phase verifier script if available

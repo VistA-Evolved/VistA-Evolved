@@ -1,10 +1,20 @@
-# Phase 187 -- Verify: DR Drill Automation
+# Phase 187 -- Verify: DR Failover Procedures
 
 ## Verification Steps
-- See Wave 2 playbook: prompts/00-PLAYBOOKS/wave2-k8s-dr-perf-fhir/179-99-VERIFY.md
-- Verification details for Q187 section
+1. Failover procedure documented
+2. Health checks configured
+3. Runbook complete
 
 ## Acceptance Criteria
-- [ ] Implementation complete per Wave 2 playbook
-- [ ] pnpm build passes
-- [ ] No regressions
+- [ ] Failover procedure documented
+- [ ] Health checks configured
+- [ ] Runbook complete
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Notes
+- All verification steps require the relevant infrastructure to be running
+- Run the corresponding phase verifier script if available

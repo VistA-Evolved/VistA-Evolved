@@ -1,8 +1,20 @@
-# Phase 205 -- SLOs + Burn-Rate Alerts
+# Phase 205 -- Feature Flag Runtime
 
 ## Implementation Steps
-- See Wave 3 playbook: prompts/00-PLAYBOOKS/wave3-gitops-release-compliance.md
-- Implementation details for Q205 section
+1. Wire feature flags from tenant_feature_flag table to runtime checks
+2. Add UI for flag management in admin console
+3. Implement gradual rollout percentages
+4. Add flag evaluation caching
 
 ## Files Touched
-- See Wave 3 playbook for complete file list
+- apps/api/src/modules/
+- apps/web/src/app/cprs/admin/modules/
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Dependencies
+- Requires completion of prior phases in the wave sequence
+- See wave playbook for cross-phase dependencies

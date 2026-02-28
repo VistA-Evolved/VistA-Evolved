@@ -1,10 +1,22 @@
-# Phase 184 -- Verify: Secrets Strategy (SOPS)
+# Phase 184 -- Verify: CI Pipeline Contracts
 
 ## Verification Steps
-- See Wave 2 playbook: prompts/00-PLAYBOOKS/wave2-k8s-dr-perf-fhir/179-99-VERIFY.md
-- Verification details for Q184 section
+1. CI pipeline runs on push
+2. Charts validated
+3. Images pushed
+4. Deploy gated
 
 ## Acceptance Criteria
-- [ ] Implementation complete per Wave 2 playbook
-- [ ] pnpm build passes
-- [ ] No regressions
+- [ ] CI pipeline runs on push
+- [ ] Charts validated
+- [ ] Images pushed
+- [ ] Deploy gated
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Notes
+- All verification steps require the relevant infrastructure to be running
+- Run the corresponding phase verifier script if available

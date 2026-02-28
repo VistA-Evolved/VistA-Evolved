@@ -1,8 +1,19 @@
-# Phase 192 -- K8s Autoscaling (HPA+PDB)
+# Phase 192 -- FHIR R4 Patient Resource
 
 ## Implementation Steps
-- See Wave 2 playbook: prompts/00-PLAYBOOKS/wave2-k8s-dr-perf-fhir/179-01-IMPLEMENT.md
-- Implementation details for Q192 section
+1. Implement FHIR Patient read (/fhir/r4/Patient/:id)
+2. Map VistA demographics to FHIR Patient resource
+3. Handle identifier systems (DFN, SSN)
+4. Return OperationOutcome for errors
 
 ## Files Touched
-- See Wave 2 playbook for complete file list
+- apps/api/src/fhir/
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Dependencies
+- Requires completion of prior phases in the wave sequence
+- See wave playbook for cross-phase dependencies

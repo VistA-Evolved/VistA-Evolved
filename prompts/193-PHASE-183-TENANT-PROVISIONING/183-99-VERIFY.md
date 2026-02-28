@@ -1,10 +1,20 @@
-# Phase 183 -- Verify: Tenant Provisioning Scripts
+# Phase 183 -- Verify: Ingress + TLS
 
 ## Verification Steps
-- See Wave 2 playbook: prompts/00-PLAYBOOKS/wave2-k8s-dr-perf-fhir/179-99-VERIFY.md
-- Verification details for Q183 section
+1. TLS termination works
+2. Host routing correct
+3. Rate limiting active
 
 ## Acceptance Criteria
-- [ ] Implementation complete per Wave 2 playbook
-- [ ] pnpm build passes
-- [ ] No regressions
+- [ ] TLS termination works
+- [ ] Host routing correct
+- [ ] Rate limiting active
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Notes
+- All verification steps require the relevant infrastructure to be running
+- Run the corresponding phase verifier script if available

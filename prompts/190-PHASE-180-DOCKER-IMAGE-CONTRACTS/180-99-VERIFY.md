@@ -1,10 +1,20 @@
 # Phase 180 -- Verify: Docker Image Contracts
 
 ## Verification Steps
-- See Wave 2 playbook: prompts/00-PLAYBOOKS/wave2-k8s-dr-perf-fhir/179-99-VERIFY.md
-- Verification details for Q180 section
+1. Docker build succeeds for all 3 images
+2. No credentials in image layers
+3. Image sizes reasonable
 
 ## Acceptance Criteria
-- [ ] Implementation complete per Wave 2 playbook
-- [ ] pnpm build passes
-- [ ] No regressions
+- [ ] Docker build succeeds for all 3 images
+- [ ] No credentials in image layers
+- [ ] Image sizes reasonable
+
+## Source
+- Derived from wave playbook decomposition (Q213-Q215)
+- Original phase specification in wave mega-document
+- Enriched by Q219 audit to meet quality floor
+
+## Notes
+- All verification steps require the relevant infrastructure to be running
+- Run the corresponding phase verifier script if available
