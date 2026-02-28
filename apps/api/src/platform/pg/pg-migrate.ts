@@ -2579,6 +2579,35 @@ CREATE INDEX IF NOT EXISTS idx_mal_tenant_created
   ON module_audit_log(tenant_id, created_at);
 `,
   },
+
+  // ── Phase 275: Tenant Config Control Plane ────────────────
+  {
+    version: 27,
+    name: "phase275_tenant_config",
+    sql: `
+-- tenant_config: persistent multi-tenant configuration (Phase 275)
+-- Replaces in-memory Map store from Phase 17A with DB-backed persistence.
+CREATE TABLE IF NOT EXISTS tenant_config (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id TEXT NOT NULL UNIQUE,
+  facility_name TEXT NOT NULL DEFAULT 'Development Facility',
+  facility_station TEXT NOT NULL DEFAULT '500',
+  vista_host TEXT NOT NULL DEFAULT '127.0.0.1',
+  vista_port INTEGER NOT NULL DEFAULT 9430,
+  vista_context TEXT NOT NULL DEFAULT 'OR CPRS GUI CHART',
+  enabled_modules JSONB NOT NULL DEFAULT '[]'::jsonb,
+  feature_flags JSONB NOT NULL DEFAULT '{}'::jsonb,
+  ui_defaults JSONB NOT NULL DEFAULT '{}'::jsonb,
+  note_templates JSONB NOT NULL DEFAULT '[]'::jsonb,
+  connectors JSONB NOT NULL DEFAULT '[]'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_tenant_config_station
+  ON tenant_config(facility_station);
+`,
+  },
 ];
 
 /**
@@ -2741,6 +2770,8 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   "tenant_module",
   "tenant_feature_flag",
   "module_audit_log",
+  // Phase 275: Tenant config control plane
+  "tenant_config",
 ] as const;
 
 /**

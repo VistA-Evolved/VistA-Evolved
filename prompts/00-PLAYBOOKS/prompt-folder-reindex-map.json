@@ -1,0 +1,36 @@
+{
+  "description": "Prompt folder prefix de-duplication map (Phase 274). Records all renames applied to eliminate duplicate folder numeric prefixes.",
+  "generatedAt": "2025-01-01T00:00:00.000Z",
+  "renames": [
+    {
+      "from": "99-PHASE-94-PH-HMO-WORKFLOW",
+      "to": "99B-PHASE-94-PH-HMO-WORKFLOW",
+      "reason": "Duplicate prefix 99 (4 folders). Kept 99 for Phase 93."
+    },
+    {
+      "from": "99-PHASE-95-PAYER-REGISTRY-PERSISTENCE",
+      "to": "99C-PHASE-95-PAYER-REGISTRY-PERSISTENCE",
+      "reason": "Duplicate prefix 99 (4 folders). Kept 99 for Phase 93."
+    },
+    {
+      "from": "99-PHASE-95B-PLATFORM-PERSISTENCE",
+      "to": "99D-PHASE-95B-PLATFORM-PERSISTENCE",
+      "reason": "Duplicate prefix 99 (4 folders). Kept 99 for Phase 93."
+    },
+    {
+      "from": "100-PHASE-100-ELIGIBILITY-CLAIMSTATUS",
+      "to": "100B-PHASE-100-ELIGIBILITY-CLAIMSTATUS",
+      "reason": "Duplicate prefix 100 (2 folders). Kept 100 for Phase 96."
+    },
+    {
+      "from": "101-PHASE-97-HMO-PORTAL-ADAPTER",
+      "to": "101B-PHASE-97-HMO-PORTAL-ADAPTER",
+      "reason": "Duplicate prefix 101 (2 folders). Kept 101 for Phase 96B."
+    },
+    {
+      "from": "115-PHASE-115-DURABILITY-WAVE2",
+      "to": "115B-PHASE-115-DURABILITY-WAVE2",
+      "reason": "Duplicate prefix 115 (2 folders). Kept 115 for Phase 111."
+    }
+  ]
+}

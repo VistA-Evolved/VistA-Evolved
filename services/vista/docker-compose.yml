@@ -1,3 +1,16 @@
+# =============================================================================
+# VistA Development Sandbox — Docker Compose
+# =============================================================================
+# Phase 277: Modernized with healthcheck, resource limits, named volumes.
+# Based on worldvista/worldvista-ehr image (WorldVistA Docker Hub).
+#
+# Usage:
+#   docker compose --profile dev up -d
+#
+# After starting, install VistA routines:
+#   pwsh scripts/install-vista-routines.ps1
+# =============================================================================
+
 services:
   wv:
     image: worldvista/worldvista-ehr:latest
@@ -12,3 +25,25 @@ services:
     stdin_open: true
     tty: true
     restart: unless-stopped
+    # Phase 277: Healthcheck — TCP probe on RPC Broker port
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/127.0.0.1/9430' 2>/dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      start_period: 45s
+      retries: 3
+    # Phase 277: Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "2.0"
+        reservations:
+          memory: 512M
+    # Phase 277: Named volume for VistA globals persistence
+    volumes:
+      - vista-globals:/home/wv
+
+volumes:
+  vista-globals:
+    name: vista-evolved-globals

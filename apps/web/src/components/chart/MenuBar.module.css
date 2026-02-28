@@ -1,8 +1,8 @@
 .menuBar {
   display: flex;
   align-items: stretch;
-  background: #f0f0f0;
-  border-bottom: 1px solid #c0c0c0;
+  background: var(--cprs-menu-bg, #f0f0f0);
+  border-bottom: 1px solid var(--cprs-border, #c0c0c0);
   height: 28px;
   font-size: 13px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -21,14 +21,14 @@
   cursor: pointer;
   font-size: 13px;
   font-family: inherit;
-  color: #1a1a1a;
+  color: var(--cprs-menu-text, #1a1a1a);
   height: 100%;
   white-space: nowrap;
 }
 
 .topButton:hover,
 .topButton.active {
-  background: #d8d8d8;
+  background: var(--cprs-menu-hover, #d8d8d8);
 }
 
 .dropdown {
@@ -36,9 +36,9 @@
   top: 100%;
   left: 0;
   min-width: 220px;
-  background: #ffffff;
-  border: 1px solid #b0b0b0;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
+  background: var(--cprs-dropdown-bg, #ffffff);
+  border: 1px solid var(--cprs-dropdown-border, #b0b0b0);
+  box-shadow: 2px 2px 6px var(--cprs-shadow, rgba(0, 0, 0, 0.15));
   z-index: 1000;
   padding: 2px 0;
 }
@@ -56,7 +56,7 @@
   background: none;
   font-size: 13px;
   font-family: inherit;
-  color: #1a1a1a;
+  color: var(--cprs-menu-text, #1a1a1a);
   cursor: pointer;
   text-align: left;
   gap: 12px;
@@ -64,8 +64,8 @@
 }
 
 .menuItem:hover {
-  background: #0078d4;
-  color: #ffffff;
+  background: var(--cprs-secondary, #0078d4);
+  color: var(--cprs-header-text, #ffffff);
 }
 
 .menuItem.disabled {
@@ -100,7 +100,7 @@
 .separator {
   height: 1px;
   margin: 3px 4px;
-  background: #d0d0d0;
+  background: var(--cprs-separator, #d0d0d0);
 }
 
 .submenu {
@@ -109,9 +109,9 @@
   top: 0;
   left: 100%;
   min-width: 180px;
-  background: #ffffff;
-  border: 1px solid #b0b0b0;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
+  background: var(--cprs-dropdown-bg, #ffffff);
+  border: 1px solid var(--cprs-dropdown-border, #b0b0b0);
+  box-shadow: 2px 2px 6px var(--cprs-shadow, rgba(0, 0, 0, 0.15));
   z-index: 1001;
   padding: 2px 0;
 }

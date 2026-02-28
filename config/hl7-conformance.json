@@ -1,0 +1,125 @@
+{
+  "$schema": "http://vista-evolved.org/schemas/hl7-conformance.json",
+  "profileName": "VistA-Evolved HL7v2 Conformance Profile",
+  "profileVersion": "1.0.0",
+  "hl7Version": "2.4",
+  "generatedAt": "2025-01-01T00:00:00Z",
+  "organization": {
+    "name": "VistA-Evolved",
+    "oid": "2.16.840.1.113883.3.7777"
+  },
+  "supportedMessageTypes": [
+    {
+      "messageCode": "ADT",
+      "triggerEvents": ["A01", "A02", "A03", "A08"],
+      "direction": ["inbound", "outbound"],
+      "description": "Admit/Discharge/Transfer",
+      "requiredSegments": ["MSH", "EVN", "PID", "PV1"],
+      "optionalSegments": ["NK1", "PD1", "AL1", "DG1", "IN1", "IN2", "GT1"],
+      "iheProfile": "ITI-31 (Patient Encounter Management)",
+      "oncCriteria": "170.315(a)(1) CCDS"
+    },
+    {
+      "messageCode": "ORU",
+      "triggerEvents": ["R01"],
+      "direction": ["inbound", "outbound"],
+      "description": "Unsolicited Observation/Result",
+      "requiredSegments": ["MSH", "PID", "ORC", "OBR", "OBX"],
+      "optionalSegments": ["NTE", "SPM"],
+      "iheProfile": "LAB-3 (Laboratory Result)",
+      "oncCriteria": "170.315(b)(3) Electronic Prescribing"
+    },
+    {
+      "messageCode": "ORM",
+      "triggerEvents": ["O01"],
+      "direction": ["inbound", "outbound"],
+      "description": "General Order",
+      "requiredSegments": ["MSH", "PID", "ORC", "OBR"],
+      "optionalSegments": ["NTE", "DG1"],
+      "iheProfile": "RAD-4 (Procedure Scheduled)/LAB-2 (Placer Order)",
+      "oncCriteria": "170.315(a)(1) CPOE"
+    },
+    {
+      "messageCode": "SIU",
+      "triggerEvents": ["S12", "S13", "S14", "S15", "S26"],
+      "direction": ["inbound", "outbound"],
+      "description": "Schedule Information Unsolicited",
+      "requiredSegments": ["MSH", "SCH", "PID"],
+      "optionalSegments": ["AIS", "AIL", "AIP", "NTE"],
+      "iheProfile": "ITI-39 (Cross-Community Access)",
+      "oncCriteria": "170.315(f)(1) Appointment"
+    },
+    {
+      "messageCode": "ACK",
+      "triggerEvents": ["*"],
+      "direction": ["outbound"],
+      "description": "General Acknowledgement",
+      "requiredSegments": ["MSH", "MSA"],
+      "optionalSegments": ["ERR"],
+      "iheProfile": "N/A",
+      "oncCriteria": "N/A"
+    }
+  ],
+  "transportProtocols": [
+    {
+      "protocol": "MLLP",
+      "version": "Release 1",
+      "defaultPort": 2575,
+      "tlsSupported": true,
+      "tlsPort": 2576,
+      "description": "Minimum Lower Layer Protocol over TCP"
+    }
+  ],
+  "encodingRules": {
+    "fieldSeparator": "|",
+    "componentSeparator": "^",
+    "subcomponentSeparator": "&",
+    "repetitionSeparator": "~",
+    "escapeCharacter": "\\",
+    "segmentTerminator": "\\r",
+    "characterSet": "ASCII"
+  },
+  "acknowledgementModes": [
+    {
+      "mode": "original",
+      "description": "Original mode ACK (AA/AE/AR)"
+    },
+    {
+      "mode": "enhanced",
+      "description": "Enhanced mode ACK (CA/CE/CR)",
+      "supported": false,
+      "note": "Future enhancement"
+    }
+  ],
+  "securityConsiderations": {
+    "phiSegments": ["PID", "NK1", "GT1", "IN1", "IN2", "ACC", "PD1", "DG1", "PR1", "AL1", "OBX", "NTE"],
+    "auditTrail": "hash-chained, PHI-redacted message event store",
+    "transportSecurity": "TLS 1.2+ required for production MLLP connections",
+    "messageIntegrity": "SHA-256 hash of each raw message stored in event log"
+  },
+  "integrationProfiles": {
+    "ihe": [
+      { "profile": "PIX", "status": "planned", "description": "Patient Identifier Cross-referencing" },
+      { "profile": "PDQ", "status": "planned", "description": "Patient Demographics Query" },
+      { "profile": "XDS.b", "status": "planned", "description": "Cross-Enterprise Document Sharing" },
+      { "profile": "PAM", "status": "supported", "description": "Patient Administration Management" },
+      { "profile": "LTW", "status": "supported", "description": "Laboratory Testing Workflow" }
+    ],
+    "onc": [
+      { "criterion": "170.315(a)(1)", "status": "partial", "description": "CCDS / CPOE" },
+      { "criterion": "170.315(b)(1)", "status": "partial", "description": "Transitions of Care" },
+      { "criterion": "170.315(b)(3)", "status": "partial", "description": "Electronic Prescribing" },
+      { "criterion": "170.315(f)(1)", "status": "partial", "description": "Transmission to Immunization Registries" }
+    ]
+  },
+  "fhirR4Bridge": {
+    "supported": true,
+    "conversions": [
+      { "hl7Type": "ADT", "fhirResources": ["Patient", "Encounter"] },
+      { "hl7Type": "ORU", "fhirResources": ["DiagnosticReport", "Observation"] },
+      { "hl7Type": "ORM", "fhirResources": ["ServiceRequest"] },
+      { "hl7Type": "SIU", "fhirResources": ["Appointment"] }
+    ],
+    "description": "Deterministic HL7v2 to FHIR R4 Bundle conversion via fhir-bridge.ts"
+  }
+}

@@ -1,12 +1,30 @@
 /**
- * Multi-tenant configuration — Phase 17A.
+ * Multi-tenant configuration — Phase 17A → Phase 275 (DB-backed).
  *
- * Defines TenantConfig, FeatureFlags, UIDefaults, and an in-memory TenantStore.
- * Default tenant is seeded from environment variables so existing single-tenant
- * deployments work without any config file changes.
+ * Defines TenantConfig, FeatureFlags, UIDefaults, and a tenant store
+ * that delegates to PostgreSQL when available, with in-memory fallback.
  *
- * Production would swap the in-memory store for a database or config service.
+ * Phase 275: All CRUD functions now write-through to PG via
+ * `tenant-config-repo.ts`. Reads are cache-first with 60s TTL.
+ * Synchronous signatures are preserved for backward compatibility;
+ * DB writes happen asynchronously (fire-and-forget on write path,
+ * awaited on explicit async variants).
+ *
+ * Default tenant is seeded from environment variables so existing
+ * single-tenant deployments work without any config file changes.
  */
+
+import {
+  dbGetTenant,
+  dbListTenants,
+  dbUpsertTenant,
+  dbDeleteTenant,
+  dbUpdateFeatureFlags,
+  dbUpdateUiDefaults,
+  dbUpdateEnabledModules,
+  seedDefaultTenantToDb,
+  type TenantConfigRow,
+} from "../platform/pg/repo/tenant-config-repo.js";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -137,10 +155,53 @@ export interface TenantConfig {
 }
 
 /* ------------------------------------------------------------------ */
-/* In-memory tenant store                                              */
+/* In-memory tenant store + DB write-through (Phase 275)               */
 /* ------------------------------------------------------------------ */
 
 const tenants = new Map<string, TenantConfig>();
+
+/** Convert TenantConfig → TenantConfigRow for DB persistence */
+function toRow(config: TenantConfig): TenantConfigRow {
+  return {
+    tenant_id: config.tenantId,
+    facility_name: config.facilityName,
+    facility_station: config.facilityStation,
+    vista_host: config.vistaHost,
+    vista_port: config.vistaPort,
+    vista_context: config.vistaContext,
+    enabled_modules: config.enabledModules,
+    feature_flags: config.featureFlags,
+    ui_defaults: config.uiDefaults as any,
+    note_templates: config.noteTemplates,
+    connectors: config.connectors,
+    created_at: config.createdAt,
+    updated_at: config.updatedAt,
+  };
+}
+
+/** Convert TenantConfigRow → TenantConfig from DB */
+function fromRow(row: TenantConfigRow): TenantConfig {
+  return {
+    tenantId: row.tenant_id,
+    facilityName: row.facility_name,
+    facilityStation: row.facility_station,
+    vistaHost: row.vista_host,
+    vistaPort: row.vista_port,
+    vistaContext: row.vista_context,
+    enabledModules: (row.enabled_modules || []) as ModuleId[],
+    featureFlags: row.feature_flags || {},
+    uiDefaults: { ...DEFAULT_UI_DEFAULTS, ...(row.ui_defaults || {}) } as UIDefaults,
+    noteTemplates: (row.note_templates || []) as NoteTemplate[],
+    connectors: (row.connectors || []) as ConnectorConfig[],
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+/** Fire-and-forget DB sync (non-blocking, logs errors silently) */
+function syncToDb(config: TenantConfig): void {
+  dbUpsertTenant(toRow(config)).catch(() => {});
+}
 
 /** Build the default tenant from environment variables. */
 function buildDefaultTenant(): TenantConfig {
@@ -174,6 +235,8 @@ function buildDefaultTenant(): TenantConfig {
 
 // Seed default tenant on module load
 tenants.set("default", buildDefaultTenant());
+// Phase 275: Also seed to DB (fire-and-forget)
+seedDefaultTenantToDb(toRow(buildDefaultTenant())).catch(() => {});
 
 /* ------------------------------------------------------------------ */
 /* Public API                                                          */
@@ -194,13 +257,16 @@ export function upsertTenant(config: TenantConfig): TenantConfig {
   config.updatedAt = new Date().toISOString();
   if (!config.createdAt) config.createdAt = config.updatedAt;
   tenants.set(config.tenantId, config);
+  syncToDb(config); // Phase 275: write-through
   return config;
 }
 
 /** Delete a tenant. Returns true if deleted. */
 export function deleteTenant(tenantId: string): boolean {
   if (tenantId === "default") return false; // cannot delete default
-  return tenants.delete(tenantId);
+  const result = tenants.delete(tenantId);
+  if (result) dbDeleteTenant(tenantId).catch(() => {}); // Phase 275: write-through
+  return result;
 }
 
 /** Update feature flags for a tenant (partial merge). */
@@ -209,6 +275,7 @@ export function updateFeatureFlags(tenantId: string, flags: FeatureFlags): Featu
   if (!tenant) return null;
   tenant.featureFlags = { ...tenant.featureFlags, ...flags };
   tenant.updatedAt = new Date().toISOString();
+  dbUpdateFeatureFlags(tenantId, flags).catch(() => {}); // Phase 275
   return tenant.featureFlags;
 }
 
@@ -218,6 +285,7 @@ export function updateUIDefaults(tenantId: string, defaults: Partial<UIDefaults>
   if (!tenant) return null;
   tenant.uiDefaults = { ...tenant.uiDefaults, ...defaults };
   tenant.updatedAt = new Date().toISOString();
+  dbUpdateUiDefaults(tenantId, defaults as Record<string, any>).catch(() => {}); // Phase 275
   return tenant.uiDefaults;
 }
 
@@ -227,6 +295,7 @@ export function updateEnabledModules(tenantId: string, modules: ModuleId[]): Mod
   if (!tenant) return null;
   tenant.enabledModules = modules;
   tenant.updatedAt = new Date().toISOString();
+  dbUpdateEnabledModules(tenantId, modules).catch(() => {}); // Phase 275
   return tenant.enabledModules;
 }
 
@@ -241,6 +310,7 @@ export function upsertNoteTemplate(tenantId: string, template: NoteTemplate): No
     tenant.noteTemplates.push(template);
   }
   tenant.updatedAt = new Date().toISOString();
+  syncToDb(tenant); // Phase 275
   return template;
 }
 
@@ -252,6 +322,7 @@ export function deleteNoteTemplate(tenantId: string, templateId: string): boolea
   if (idx < 0) return false;
   tenant.noteTemplates.splice(idx, 1);
   tenant.updatedAt = new Date().toISOString();
+  syncToDb(tenant); // Phase 275
   return true;
 }
 
@@ -268,6 +339,7 @@ export function updateConnectorStatus(
   connector.status = status;
   connector.lastChecked = new Date().toISOString();
   tenant.updatedAt = new Date().toISOString();
+  syncToDb(tenant); // Phase 275
   return connector;
 }
 
@@ -279,4 +351,20 @@ export function resolveTenantId(facilityStation?: string): string {
     if (tenants.has(key)) return key;
   }
   return "default";
+}
+
+/**
+ * Phase 275: Load all tenants from PG into the in-memory Map.
+ * Call once at API startup (after PG migrations). Non-fatal on failure.
+ */
+export async function loadTenantsFromDb(): Promise<number> {
+  try {
+    const rows = await dbListTenants();
+    for (const row of rows) {
+      tenants.set(row.tenant_id, fromRow(row));
+    }
+    return rows.length;
+  } catch {
+    return 0;
+  }
 }

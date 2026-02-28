@@ -1,0 +1,171 @@
+[
+  {
+    "id": "cert-001",
+    "name": "Outpatient Visit Complete Flow",
+    "domain": "clinical",
+    "description": "Full outpatient visit: login → patient select → vitals → note → orders → sign",
+    "steps": [
+      { "action": "login", "route": "POST /auth/login", "rpc": "XUS AV CODE" },
+      { "action": "patient-search", "route": "GET /vista/patients", "rpc": "ORWPT LIST ALL" },
+      { "action": "demographics", "route": "GET /vista/patient-demographics", "rpc": "ORWPT16 DEMOG" },
+      { "action": "vitals-read", "route": "GET /vista/vitals", "rpc": "ORQQVI VITALS" },
+      { "action": "note-create", "route": "POST /cprs/tiu/notes", "rpc": "TIU CREATE RECORD" },
+      { "action": "orders-view", "route": "GET /cprs/orders", "rpc": "ORWORB FASTUSER" },
+      { "action": "sign-order", "route": "POST /cprs/orders/sign", "rpc": "ORWOR1 SIG" }
+    ],
+    "expectedOutcome": "Patient visit documented with signed note and orders",
+    "regulatoryRef": ["ONC-170.315(a)(1)", "ONC-170.315(a)(2)"]
+  },
+  {
+    "id": "cert-002",
+    "name": "Patient Portal Session",
+    "domain": "portal",
+    "description": "Patient login → view records → request refill → secure message",
+    "steps": [
+      { "action": "portal-login", "route": "POST /portal/auth/login" },
+      { "action": "view-demographics", "route": "GET /portal/demographics" },
+      { "action": "view-medications", "route": "GET /portal/medications" },
+      { "action": "request-refill", "route": "POST /portal/refills" },
+      { "action": "send-message", "route": "POST /portal/messages" }
+    ],
+    "expectedOutcome": "Patient accessed records and submitted refill request",
+    "regulatoryRef": ["ONC-170.315(e)(1)", "HIPAA-164.312(d)"]
+  },
+  {
+    "id": "cert-003",
+    "name": "Imaging Study Lifecycle",
+    "domain": "imaging",
+    "description": "Order imaging → study performed → ingest from PACS → view in OHIF",
+    "steps": [
+      { "action": "order-imaging", "route": "POST /imaging/worklist" },
+      { "action": "ingest-callback", "route": "POST /imaging/ingest/callback" },
+      { "action": "view-studies", "route": "GET /imaging/proxy/studies" },
+      { "action": "view-audit", "route": "GET /imaging/audit" }
+    ],
+    "expectedOutcome": "DICOM study ingested and viewable with full audit trail",
+    "regulatoryRef": ["ONC-170.315(a)(11)"]
+  },
+  {
+    "id": "cert-004",
+    "name": "RCM Claim Submission",
+    "domain": "rcm",
+    "description": "Create claim → validate → submit → receive acknowledgement",
+    "steps": [
+      { "action": "create-claim", "route": "POST /rcm/claims" },
+      { "action": "validate-claim", "route": "POST /rcm/claims/:id/validate" },
+      { "action": "submit-claim", "route": "POST /rcm/claims/:id/submit" },
+      { "action": "check-ack", "route": "GET /rcm/edi/pipeline" }
+    ],
+    "expectedOutcome": "Claim validated and submitted with EDI pipeline tracking",
+    "regulatoryRef": ["HIPAA-837"]
+  },
+  {
+    "id": "cert-005",
+    "name": "Pharmacy Medication Management",
+    "domain": "pharmacy",
+    "description": "View active meds → new order → pharmacy verify → dispense",
+    "steps": [
+      { "action": "active-meds", "route": "GET /vista/meds", "rpc": "ORWPS ACTIVE" },
+      { "action": "allergy-check", "route": "GET /vista/allergies", "rpc": "ORQQAL LIST" },
+      { "action": "new-med-order", "route": "POST /cprs/orders", "rpc": "ORWDX SAVE" }
+    ],
+    "expectedOutcome": "Medication ordered with allergy interaction check",
+    "regulatoryRef": ["ONC-170.315(a)(4)", "ONC-170.315(a)(8)"]
+  },
+  {
+    "id": "cert-006",
+    "name": "Lab Order and Results",
+    "domain": "lab",
+    "description": "Order lab → view pending → results return → sign off",
+    "steps": [
+      { "action": "order-lab", "route": "POST /cprs/orders", "rpc": "ORWDX SAVE" },
+      { "action": "view-labs", "route": "GET /cprs/labs", "rpc": "ORWLR REPORT" },
+      { "action": "lab-results", "route": "GET /vista/labs", "rpc": "ORWLR CUMULATIVE REPORT" }
+    ],
+    "expectedOutcome": "Lab ordered and results viewable",
+    "regulatoryRef": ["ONC-170.315(a)(3)"]
+  },
+  {
+    "id": "cert-007",
+    "name": "Scheduling Appointment",
+    "domain": "scheduling",
+    "description": "Search availability → book → check-in → mark complete",
+    "steps": [
+      { "action": "availability", "route": "GET /scheduling/sdes-availability" },
+      { "action": "book", "route": "POST /scheduling/book" },
+      { "action": "check-in", "route": "POST /scheduling/check-in" },
+      { "action": "appointment-types", "route": "GET /scheduling/appointment-types" }
+    ],
+    "expectedOutcome": "Appointment booked and patient checked in",
+    "regulatoryRef": ["ONC-170.315(a)(14)"]
+  },
+  {
+    "id": "cert-008",
+    "name": "Telehealth Visit",
+    "domain": "telehealth",
+    "description": "Create room → device check → join → end visit",
+    "steps": [
+      { "action": "create-room", "route": "POST /telehealth/rooms" },
+      { "action": "device-check", "route": "POST /telehealth/device-check" },
+      { "action": "join-room", "route": "GET /telehealth/rooms/:id" },
+      { "action": "end-room", "route": "POST /telehealth/rooms/:id/end" }
+    ],
+    "expectedOutcome": "Telehealth room created, joined, and ended cleanly",
+    "regulatoryRef": []
+  },
+  {
+    "id": "cert-009",
+    "name": "Nursing Documentation",
+    "domain": "nursing",
+    "description": "Vitals entry → nursing note → medication administration → handoff",
+    "steps": [
+      { "action": "vitals-entry", "route": "POST /cprs/wave2/vitals" },
+      { "action": "nursing-note", "route": "POST /cprs/tiu/notes" },
+      { "action": "handoff-report", "route": "POST /cprs/handoff" }
+    ],
+    "expectedOutcome": "Nursing documentation complete with shift handoff",
+    "regulatoryRef": ["ONC-170.315(a)(1)"]
+  },
+  {
+    "id": "cert-010",
+    "name": "ADT Admission-Discharge-Transfer",
+    "domain": "adt",
+    "description": "Admit patient → transfer → discharge → bed management",
+    "steps": [
+      { "action": "patient-lookup", "route": "GET /vista/patients" },
+      { "action": "admit", "route": "POST /cprs/adt/admit" },
+      { "action": "transfer", "route": "POST /cprs/adt/transfer" },
+      { "action": "discharge", "route": "POST /cprs/adt/discharge" }
+    ],
+    "expectedOutcome": "Patient admitted, transferred, and discharged",
+    "regulatoryRef": ["ONC-170.315(a)(1)"]
+  },
+  {
+    "id": "cert-011",
+    "name": "Interop HL7 Message Flow",
+    "domain": "interop",
+    "description": "VistA HL7 event → parse → route → acknowledge",
+    "steps": [
+      { "action": "hl7-telemetry", "route": "GET /vista/interop/telemetry" },
+      { "action": "hl7-events", "route": "GET /vista/interop/events" },
+      { "action": "hl7-tenant-endpoints", "route": "GET /hl7/tenant-endpoints" }
+    ],
+    "expectedOutcome": "HL7 messages received and routed per tenant config",
+    "regulatoryRef": ["ONC-170.315(f)(5)"]
+  },
+  {
+    "id": "cert-012",
+    "name": "Admin Security & Audit",
+    "domain": "admin",
+    "description": "Admin login → view audit trail → policy check → break-glass",
+    "steps": [
+      { "action": "admin-login", "route": "POST /auth/login" },
+      { "action": "view-audit", "route": "GET /iam/audit" },
+      { "action": "verify-audit-chain", "route": "GET /iam/audit/verify" },
+      { "action": "policy-evaluate", "route": "POST /iam/policy/evaluate" },
+      { "action": "break-glass", "route": "POST /security/break-glass/start" }
+    ],
+    "expectedOutcome": "Admin verified audit chain integrity and policy enforcement",
+    "regulatoryRef": ["HIPAA-164.312(b)", "HIPAA-164.312(c)(1)"]
+  }
+]

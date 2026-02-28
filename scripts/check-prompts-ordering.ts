@@ -56,8 +56,8 @@ const entries = readdirSync(PROMPTS_DIR)
 
 // Separate meta folders (00-*) from phase folders (01+)
 const META_PATTERN = /^00-/;
-const PHASE_PATTERN = /^(\d{2})-PHASE-(\d+[A-Z]?)-(.+)$/;
-const NUMBERED_PATTERN = /^(\d{2})-(.+)$/;
+const PHASE_PATTERN = /^(\d+[A-Z]?)-PHASE-(\d+[A-Z]?)-(.+)$/;
+const NUMBERED_PATTERN = /^(\d+[A-Z]?)-(.+)$/;
 
 const metaFolders = entries.filter((e) => META_PATTERN.test(e));
 const phaseFolders = entries.filter((e) => !META_PATTERN.test(e));
@@ -84,7 +84,7 @@ if (badNames.length === 0) {
 
 const prefixMap = new Map<string, string[]>();
 for (const folder of entries) {
-  const match = folder.match(/^(\d{2})-/);
+  const match = folder.match(/^(\d+[A-Z]?)-/);
   if (match) {
     const prefix = match[1];
     // 00-* meta folders are allowed duplicates by convention

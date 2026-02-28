@@ -207,6 +207,34 @@ export function CPRSUIProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  // Phase 280 (BUG-071 fix): Apply data-theme attribute on DOM + system theme detection
+  useEffect(() => {
+    const resolveTheme = (mode: ThemeMode): 'light' | 'dark' => {
+      if (mode === 'system') {
+        if (typeof window !== 'undefined' && window.matchMedia) {
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        return 'light';
+      }
+      return mode;
+    };
+
+    const applyTheme = (mode: ThemeMode) => {
+      const resolved = resolveTheme(mode);
+      document.documentElement.setAttribute('data-theme', resolved);
+    };
+
+    applyTheme(preferences.theme);
+
+    // Listen for OS theme changes when mode is 'system'
+    if (preferences.theme === 'system' && typeof window !== 'undefined' && window.matchMedia) {
+      const mq = window.matchMedia('(prefers-color-scheme: dark)');
+      const handler = () => applyTheme('system');
+      mq.addEventListener('change', handler);
+      return () => mq.removeEventListener('change', handler);
+    }
+  }, [preferences.theme]);
+
   // Debounced server push (500ms after last layout change)
   const pushLayoutToServer = useCallback((layout: CoverSheetLayout) => {
     if (serverSyncTimerRef.current) clearTimeout(serverSyncTimerRef.current);
