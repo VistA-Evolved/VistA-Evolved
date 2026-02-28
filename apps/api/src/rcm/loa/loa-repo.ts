@@ -6,8 +6,8 @@
  */
 
 import { eq, and, desc, count } from "drizzle-orm";
-import { getDb } from "../../platform/db/db.js";
-import { loaRequest, loaAttachment } from "../../platform/db/schema.js";
+import { getPgDb } from "../../platform/pg/pg-db.js";
+import { loaRequest, loaAttachment } from "../../platform/pg/pg-schema.js";
 import { randomUUID } from "node:crypto";
 
 /* ------------------------------------------------------------------ */
@@ -150,13 +150,13 @@ function parseAttachment(row: any): LoaAttachmentRow {
 /* LOA Request CRUD                                                    */
 /* ------------------------------------------------------------------ */
 
-export function createLoaRequest(input: CreateLoaInput): LoaRequestRow {
-  const db = getDb();
+export async function createLoaRequest(input: CreateLoaInput): Promise<LoaRequestRow> {
+  const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
   const tenantId = input.tenantId || "default";
 
-  db.insert(loaRequest)
+  await db.insert(loaRequest)
     .values({
       id,
       tenantId,
@@ -178,43 +178,41 @@ export function createLoaRequest(input: CreateLoaInput): LoaRequestRow {
       metadataJson: "{}",
       createdAt: now,
       updatedAt: now,
-    })
-    .run();
+    });
 
-  return getLoaRequestById(tenantId, id)!;
+  return (await getLoaRequestById(tenantId, id))!;
 }
 
-export function getLoaRequestById(tenantId: string, id: string): LoaRequestRow | null {
-  const db = getDb();
-  const row = db
+export async function getLoaRequestById(tenantId: string, id: string): Promise<LoaRequestRow | null> {
+  const db = getPgDb();
+  const rows = await db
     .select()
     .from(loaRequest)
-    .where(and(eq(loaRequest.tenantId, tenantId), eq(loaRequest.id, id)))
-    .get();
+    .where(and(eq(loaRequest.tenantId, tenantId), eq(loaRequest.id, id)));
+  const row = rows[0] ?? null;
   return row ? parseLoaRequest(row) : null;
 }
 
-export function listLoaRequests(
+export async function listLoaRequests(
   tenantId: string,
   filters?: { patientDfn?: string; payerId?: string; status?: string; loaType?: string }
-): LoaRequestRow[] {
-  const db = getDb();
+): Promise<LoaRequestRow[]> {
+  const db = getPgDb();
   const conditions = [eq(loaRequest.tenantId, tenantId)];
   if (filters?.patientDfn) conditions.push(eq(loaRequest.patientDfn, filters.patientDfn));
   if (filters?.payerId) conditions.push(eq(loaRequest.payerId, filters.payerId));
   if (filters?.status) conditions.push(eq(loaRequest.status, filters.status));
   if (filters?.loaType) conditions.push(eq(loaRequest.loaType, filters.loaType));
 
-  return db
+  const rows = await db
     .select()
     .from(loaRequest)
     .where(and(...conditions))
-    .orderBy(desc(loaRequest.updatedAt))
-    .all()
-    .map(parseLoaRequest);
+    .orderBy(desc(loaRequest.updatedAt));
+  return rows.map(parseLoaRequest);
 }
 
-export function updateLoaRequest(
+export async function updateLoaRequest(
   tenantId: string,
   id: string,
   updates: Partial<{
@@ -228,8 +226,8 @@ export function updateLoaRequest(
     requestedServiceDesc: string;
     metadata: Record<string, unknown>;
   }>
-): LoaRequestRow | null {
-  const db = getDb();
+): Promise<LoaRequestRow | null> {
+  const db = getPgDb();
   const now = new Date().toISOString();
   const setClause: Record<string, any> = { updatedAt: now };
 
@@ -243,10 +241,9 @@ export function updateLoaRequest(
   if (updates.requestedServiceDesc !== undefined) setClause.requestedServiceDesc = updates.requestedServiceDesc;
   if (updates.metadata !== undefined) setClause.metadataJson = JSON.stringify(updates.metadata);
 
-  db.update(loaRequest)
+  await db.update(loaRequest)
     .set(setClause)
-    .where(and(eq(loaRequest.tenantId, tenantId), eq(loaRequest.id, id)))
-    .run();
+    .where(and(eq(loaRequest.tenantId, tenantId), eq(loaRequest.id, id)));
 
   return getLoaRequestById(tenantId, id);
 }
@@ -255,13 +252,13 @@ export function updateLoaRequest(
  * Transition LOA status according to the FSM:
  * draft -> pending_review -> submitted -> approved | denied -> appealed -> expired -> closed
  */
-export function transitionLoaStatus(
+export async function transitionLoaStatus(
   tenantId: string,
   id: string,
   newStatus: string,
   extra?: { authorizationNumber?: string; approvedUnits?: number; approvedFrom?: string; approvedThrough?: string; denialReason?: string }
-): LoaRequestRow | null {
-  const db = getDb();
+): Promise<LoaRequestRow | null> {
+  const db = getPgDb();
   const now = new Date().toISOString();
   const setClause: Record<string, any> = { status: newStatus, updatedAt: now };
 
@@ -273,45 +270,42 @@ export function transitionLoaStatus(
   if (extra?.approvedThrough) setClause.approvedThrough = extra.approvedThrough;
   if (extra?.denialReason) setClause.denialReason = extra.denialReason;
 
-  db.update(loaRequest)
+  await db.update(loaRequest)
     .set(setClause)
-    .where(and(eq(loaRequest.tenantId, tenantId), eq(loaRequest.id, id)))
-    .run();
+    .where(and(eq(loaRequest.tenantId, tenantId), eq(loaRequest.id, id)));
 
   return getLoaRequestById(tenantId, id);
 }
 
-export function markPacketGenerated(tenantId: string, id: string): LoaRequestRow | null {
-  const db = getDb();
+export async function markPacketGenerated(tenantId: string, id: string): Promise<LoaRequestRow | null> {
+  const db = getPgDb();
   const now = new Date().toISOString();
-  db.update(loaRequest)
+  await db.update(loaRequest)
     .set({ packetGeneratedAt: now, updatedAt: now })
-    .where(and(eq(loaRequest.tenantId, tenantId), eq(loaRequest.id, id)))
-    .run();
+    .where(and(eq(loaRequest.tenantId, tenantId), eq(loaRequest.id, id)));
   return getLoaRequestById(tenantId, id);
 }
 
-export function countLoaRequests(tenantId: string): number {
-  const db = getDb();
-  const result = db
+export async function countLoaRequests(tenantId: string): Promise<number> {
+  const db = getPgDb();
+  const rows = await db
     .select({ cnt: count() })
     .from(loaRequest)
-    .where(eq(loaRequest.tenantId, tenantId))
-    .get();
-  return (result as any)?.cnt ?? 0;
+    .where(eq(loaRequest.tenantId, tenantId));
+  return (rows[0] as any)?.cnt ?? 0;
 }
 
 /* ------------------------------------------------------------------ */
 /* LOA Attachment CRUD                                                 */
 /* ------------------------------------------------------------------ */
 
-export function addAttachment(input: AddAttachmentInput): LoaAttachmentRow {
-  const db = getDb();
+export async function addAttachment(input: AddAttachmentInput): Promise<LoaAttachmentRow> {
+  const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
   const tenantId = input.tenantId || "default";
 
-  db.insert(loaAttachment)
+  await db.insert(loaAttachment)
     .values({
       id,
       loaRequestId: input.loaRequestId,
@@ -324,25 +318,23 @@ export function addAttachment(input: AddAttachmentInput): LoaAttachmentRow {
       description: input.description || null,
       addedBy: input.addedBy,
       addedAt: now,
-    })
-    .run();
+    });
 
-  const row = db.select().from(loaAttachment).where(eq(loaAttachment.id, id)).get();
-  return parseAttachment(row);
+  const rows = await db.select().from(loaAttachment).where(eq(loaAttachment.id, id));
+  return parseAttachment(rows[0]);
 }
 
-export function listAttachments(loaRequestId: string): LoaAttachmentRow[] {
-  const db = getDb();
-  return db
+export async function listAttachments(loaRequestId: string): Promise<LoaAttachmentRow[]> {
+  const db = getPgDb();
+  const rows = await db
     .select()
     .from(loaAttachment)
-    .where(eq(loaAttachment.loaRequestId, loaRequestId))
-    .all()
-    .map(parseAttachment);
+    .where(eq(loaAttachment.loaRequestId, loaRequestId));
+  return rows.map(parseAttachment);
 }
 
-export function deleteAttachment(id: string): boolean {
-  const db = getDb();
-  const result = db.delete(loaAttachment).where(eq(loaAttachment.id, id)).run();
-  return result.changes > 0;
+export async function deleteAttachment(id: string): Promise<boolean> {
+  const db = getPgDb();
+  const result = await db.delete(loaAttachment).where(eq(loaAttachment.id, id));
+  return (result as any).rowCount > 0;
 }

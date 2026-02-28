@@ -8,8 +8,8 @@
 
 import { randomUUID } from "node:crypto";
 import { eq, and, desc, count } from "drizzle-orm";
-import { getDb } from "../../platform/db/db.js";
-import { scrubRule, scrubResult } from "../../platform/db/schema.js";
+import { getPgDb } from "../../platform/pg/pg-db.js";
+import { scrubRule, scrubResult } from "../../platform/pg/pg-schema.js";
 
 /* ── Types ─────────────────────────────────────────────────── */
 
@@ -117,13 +117,13 @@ function parseResult(row: any): ScrubResultRow {
 
 /* ── Scrub Rule CRUD ──────────────────────────────────────── */
 
-export function createScrubRule(input: CreateScrubRuleInput): ScrubRuleRow {
-  const db = getDb();
+export async function createScrubRule(input: CreateScrubRuleInput): Promise<ScrubRuleRow> {
+  const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
   const tenantId = input.tenantId || "default";
 
-  db.insert(scrubRule).values({
+  await db.insert(scrubRule).values({
     id,
     tenantId,
     payerId: input.payerId || null,
@@ -142,49 +142,48 @@ export function createScrubRule(input: CreateScrubRuleInput): ScrubRuleRow {
     createdAt: now,
     updatedAt: now,
     createdBy: input.createdBy,
-  }).run();
+  });
 
-  return getScrubRuleById(tenantId, id)!;
+  return (await getScrubRuleById(tenantId, id))!;
 }
 
-export function getScrubRuleById(tenantId: string, id: string): ScrubRuleRow | null {
-  const db = getDb();
-  const row = db
+export async function getScrubRuleById(tenantId: string, id: string): Promise<ScrubRuleRow | null> {
+  const db = getPgDb();
+  const rows = await db
     .select()
     .from(scrubRule)
-    .where(and(eq(scrubRule.tenantId, tenantId), eq(scrubRule.id, id)))
-    .get();
+    .where(and(eq(scrubRule.tenantId, tenantId), eq(scrubRule.id, id)));
+  const row = rows[0] ?? null;
   return row ? parseRule(row) : null;
 }
 
-export function listScrubRules(
+export async function listScrubRules(
   tenantId: string,
   filters?: { payerId?: string; category?: string; isActive?: boolean },
-): ScrubRuleRow[] {
-  const db = getDb();
+): Promise<ScrubRuleRow[]> {
+  const db = getPgDb();
   const conditions = [eq(scrubRule.tenantId, tenantId)];
   if (filters?.payerId) conditions.push(eq(scrubRule.payerId, filters.payerId));
   if (filters?.category) conditions.push(eq(scrubRule.category, filters.category));
   if (filters?.isActive !== undefined) conditions.push(eq(scrubRule.isActive, filters.isActive ? 1 : 0));
 
-  return db
+  const rows = await db
     .select()
     .from(scrubRule)
     .where(and(...conditions))
-    .orderBy(desc(scrubRule.updatedAt))
-    .all()
-    .map(parseRule);
+    .orderBy(desc(scrubRule.updatedAt));
+  return rows.map(parseRule);
 }
 
-export function updateScrubRule(
+export async function updateScrubRule(
   tenantId: string,
   id: string,
   updates: Partial<Pick<CreateScrubRuleInput,
     "description" | "condition" | "suggestedFix" | "severity" | "blocksSubmission" |
     "evidenceSource" | "evidenceDate"
   > & { isActive?: boolean }>,
-): ScrubRuleRow | null {
-  const db = getDb();
+): Promise<ScrubRuleRow | null> {
+  const db = getPgDb();
   const now = new Date().toISOString();
   const setClause: Record<string, any> = { updatedAt: now };
 
@@ -197,38 +196,36 @@ export function updateScrubRule(
   if (updates.evidenceDate !== undefined) setClause.evidenceDate = updates.evidenceDate;
   if (updates.isActive !== undefined) setClause.isActive = updates.isActive ? 1 : 0;
 
-  db.update(scrubRule)
+  await db.update(scrubRule)
     .set(setClause)
-    .where(and(eq(scrubRule.tenantId, tenantId), eq(scrubRule.id, id)))
-    .run();
+    .where(and(eq(scrubRule.tenantId, tenantId), eq(scrubRule.id, id)));
 
   return getScrubRuleById(tenantId, id);
 }
 
-export function deleteScrubRule(tenantId: string, id: string): boolean {
-  const db = getDb();
+export async function deleteScrubRule(tenantId: string, id: string): Promise<boolean> {
+  const db = getPgDb();
   // Soft delete: set isActive = 0
-  const result = db
+  const result = await db
     .update(scrubRule)
     .set({ isActive: 0, updatedAt: new Date().toISOString() })
     .where(and(eq(scrubRule.tenantId, tenantId), eq(scrubRule.id, id)))
-    .run();
-  return result.changes > 0;
+    .returning({ id: scrubRule.id });
+  return result.length > 0;
 }
 
-export function countScrubRules(tenantId: string): number {
-  const db = getDb();
-  const result = db
+export async function countScrubRules(tenantId: string): Promise<number> {
+  const db = getPgDb();
+  const rows = await db
     .select({ cnt: count() })
     .from(scrubRule)
-    .where(and(eq(scrubRule.tenantId, tenantId), eq(scrubRule.isActive, 1)))
-    .get();
-  return (result as any)?.cnt ?? 0;
+    .where(and(eq(scrubRule.tenantId, tenantId), eq(scrubRule.isActive, 1)));
+  return (rows[0] as any)?.cnt ?? 0;
 }
 
 /* ── Scrub Result CRUD ────────────────────────────────────── */
 
-export function storeScrubResults(
+export async function storeScrubResults(
   claimDraftId: string,
   tenantId: string,
   results: Array<{
@@ -242,19 +239,18 @@ export function storeScrubResults(
     blocksSubmission: boolean;
     score: number;
   }>,
-): ScrubResultRow[] {
-  const db = getDb();
+): Promise<ScrubResultRow[]> {
+  const db = getPgDb();
   const now = new Date().toISOString();
 
   // Clear previous results for this claim
-  db.delete(scrubResult)
-    .where(eq(scrubResult.claimDraftId, claimDraftId))
-    .run();
+  await db.delete(scrubResult)
+    .where(eq(scrubResult.claimDraftId, claimDraftId));
 
   const stored: ScrubResultRow[] = [];
   for (const r of results) {
     const id = randomUUID();
-    db.insert(scrubResult).values({
+    await db.insert(scrubResult).values({
       id,
       claimDraftId,
       tenantId,
@@ -268,35 +264,34 @@ export function storeScrubResults(
       blocksSubmission: r.blocksSubmission ? 1 : 0,
       score: r.score,
       scrubbedAt: now,
-    }).run();
-    const row = db.select().from(scrubResult).where(eq(scrubResult.id, id)).get();
+    });
+    const rows = await db.select().from(scrubResult).where(eq(scrubResult.id, id));
+    const row = rows[0] ?? null;
     if (row) stored.push(parseResult(row));
   }
   return stored;
 }
 
-export function getScrubResults(claimDraftId: string): ScrubResultRow[] {
-  const db = getDb();
-  return db
+export async function getScrubResults(claimDraftId: string): Promise<ScrubResultRow[]> {
+  const db = getPgDb();
+  const rows = await db
     .select()
     .from(scrubResult)
-    .where(eq(scrubResult.claimDraftId, claimDraftId))
-    .all()
-    .map(parseResult);
+    .where(eq(scrubResult.claimDraftId, claimDraftId));
+  return rows.map(parseResult);
 }
 
-export function getScrubResultStats(tenantId: string): {
+export async function getScrubResultStats(tenantId: string): Promise<{
   totalScrubs: number;
   errorCount: number;
   warningCount: number;
   suggestionCount: number;
-} {
-  const db = getDb();
-  const all = db
+}> {
+  const db = getPgDb();
+  const all = await db
     .select()
     .from(scrubResult)
-    .where(eq(scrubResult.tenantId, tenantId))
-    .all();
+    .where(eq(scrubResult.tenantId, tenantId));
 
   return {
     totalScrubs: all.length,

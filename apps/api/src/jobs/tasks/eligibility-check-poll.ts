@@ -39,7 +39,7 @@ export async function handleEligibilityCheckPoll(
   );
 
   // 1. Fetch pending checks
-  const { items: pending } = listEligibilityChecks({
+  const { items: pending } = await listEligibilityChecks({
     provenance: "job",
     tenantId,
     limit: batchSize,

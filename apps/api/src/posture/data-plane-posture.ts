@@ -4,16 +4,15 @@
  * Production readiness gates for the data plane:
  *   Gate 1: Runtime mode is set and recognized
  *   Gate 2: PG is connected (required in rc/prod)
- *   Gate 3: RLS is active on all tenant-scoped tables (required in rc/prod)
- *   Gate 4: Store backend resolves to "pg" (required in rc/prod)
- *   Gate 5: No SQLite runtime path active (required in rc/prod)
- *   Gate 6: JSON mutable file stores blocked (required in rc/prod)
- *   Gate 7: OIDC enforcement (Phase 150)
- *   Gate 8: AUTH_MODE alignment (Phase 153)
- *   Gate 9: OIDC config depth (Phase 153)
+ *   Gate 3: Store backend resolves to "pg" (required in rc/prod)
+ *   Gate 4: JSON mutable file stores blocked (required in rc/prod)
+ *   Gate 5: RLS enforcement alignment (required in rc/prod)
+ *   Gate 6: OIDC enforcement (Phase 150)
+ *   Gate 7: AUTH_MODE alignment (Phase 153)
+ *   Gate 8: OIDC config depth (Phase 153)
  */
 
-import { getRuntimeMode, requiresPg, allowsSqlite, blocksJsonStores, requiresOidc } from "../platform/runtime-mode.js";
+import { getRuntimeMode, requiresPg, blocksJsonStores, requiresOidc } from "../platform/runtime-mode.js";
 import { isPgConfigured } from "../platform/pg/pg-db.js";
 import { resolveBackend } from "../platform/store-resolver.js";
 
@@ -38,7 +37,6 @@ export function checkDataPlanePosture(): DataPlanePosture {
   const mode = getRuntimeMode();
   const pgRequired = requiresPg();
   const pgActive = isPgConfigured();
-  const sqliteAllowed = allowsSqlite();
   const jsonBlocked = blocksJsonStores();
 
   let storeBackend = "unknown";
@@ -71,7 +69,7 @@ export function checkDataPlanePosture(): DataPlanePosture {
   });
 
   // Gate 3: Store backend is PG (critical in rc/prod)
-  const backendOk = storeBackend === "pg" || (!pgRequired && storeBackend === "sqlite");
+  const backendOk = storeBackend === "pg" || !pgRequired;
   gates.push({
     name: "store_backend",
     pass: backendOk,
@@ -79,20 +77,7 @@ export function checkDataPlanePosture(): DataPlanePosture {
     severity: pgRequired && storeBackend !== "pg" ? "critical" : "info",
   });
 
-  // Gate 4: No SQLite in rc/prod
-  const noSqlite = !sqliteAllowed ? storeBackend !== "sqlite" : true;
-  gates.push({
-    name: "no_sqlite_runtime",
-    pass: noSqlite,
-    detail: sqliteAllowed
-      ? "SQLite allowed in " + mode + " mode (dev/test)"
-      : noSqlite
-        ? "SQLite runtime blocked in " + mode + " mode"
-        : "SQLite runtime ACTIVE -- not allowed in " + mode + " mode",
-    severity: !noSqlite ? "critical" : "info",
-  });
-
-  // Gate 5: JSON mutable stores blocked (critical in rc/prod)
+  // Gate 4: JSON mutable stores blocked (critical in rc/prod)
   gates.push({
     name: "json_stores_blocked",
     pass: jsonBlocked || !pgRequired,
@@ -104,7 +89,7 @@ export function checkDataPlanePosture(): DataPlanePosture {
     severity: pgRequired && !jsonBlocked ? "critical" : "info",
   });
 
-  // Gate 6: RLS enforcement alignment
+  // Gate 5: RLS enforcement alignment
   const rlsExplicit = process.env.PLATFORM_PG_RLS_ENABLED;
   const rlsAutoEnabled = pgActive && pgRequired;
   const rlsReady = rlsExplicit === "true" || rlsAutoEnabled || !pgRequired;
@@ -121,7 +106,7 @@ export function checkDataPlanePosture(): DataPlanePosture {
     severity: pgRequired && !rlsReady ? "critical" : "info",
   });
 
-  // Gate 7 (Phase 150): OIDC enforcement
+  // Gate 6 (Phase 150): OIDC enforcement
   const oidcRequired = requiresOidc();
   const oidcEnabled = (process.env.OIDC_ENABLED || "").toLowerCase().trim() === "true";
   const oidcIssuerSet = !!process.env.OIDC_ISSUER;
@@ -139,7 +124,7 @@ export function checkDataPlanePosture(): DataPlanePosture {
     severity: oidcRequired && !oidcOk ? "critical" : "info",
   });
 
-  // Gate 8 (Phase 153): AUTH_MODE alignment
+  // Gate 7 (Phase 153): AUTH_MODE alignment
   const authMode = (process.env.AUTH_MODE || "dev_local").toLowerCase().trim();
   const authModeOk = authMode === "oidc" || !pgRequired;
   gates.push({
@@ -153,7 +138,7 @@ export function checkDataPlanePosture(): DataPlanePosture {
     severity: pgRequired && !authModeOk ? "critical" : "info",
   });
 
-  // Gate 9 (Phase 153): OIDC config depth (client ID explicit, not default)
+  // Gate 8 (Phase 153): OIDC config depth (client ID explicit, not default)
   const oidcClientIdExplicit = !!process.env.OIDC_CLIENT_ID;
   const oidcConfigDepthOk = !oidcRequired || (oidcOk && oidcClientIdExplicit);
   gates.push({

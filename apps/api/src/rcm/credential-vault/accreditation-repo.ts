@@ -6,11 +6,11 @@
  */
 
 import { eq, and, desc, count } from "drizzle-orm";
-import { getDb } from "../../platform/db/db.js";
+import { getPgDb } from "../../platform/pg/pg-db.js";
 import {
   accreditationStatus,
   accreditationTask,
-} from "../../platform/db/schema.js";
+} from "../../platform/pg/pg-schema.js";
 import { randomUUID } from "node:crypto";
 
 /* ------------------------------------------------------------------ */
@@ -121,13 +121,13 @@ function parseTask(row: any): AccreditationTaskRow {
 /* Accreditation Status CRUD                                           */
 /* ------------------------------------------------------------------ */
 
-export function createAccreditation(input: CreateAccreditationInput): AccreditationStatusRow {
-  const db = getDb();
+export async function createAccreditation(input: CreateAccreditationInput): Promise<AccreditationStatusRow> {
+  const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
   const tenantId = input.tenantId || "default";
 
-  db.insert(accreditationStatus)
+  await db.insert(accreditationStatus)
     .values({
       id,
       tenantId,
@@ -141,47 +141,45 @@ export function createAccreditation(input: CreateAccreditationInput): Accreditat
       createdAt: now,
       updatedAt: now,
       createdBy: input.createdBy,
-    })
-    .run();
+    });
 
-  return getAccreditationById(tenantId, id)!;
+  return (await getAccreditationById(tenantId, id))!;
 }
 
-export function getAccreditationById(tenantId: string, id: string): AccreditationStatusRow | null {
-  const db = getDb();
-  const row = db
+export async function getAccreditationById(tenantId: string, id: string): Promise<AccreditationStatusRow | null> {
+  const db = getPgDb();
+  const rows = await db
     .select()
     .from(accreditationStatus)
-    .where(and(eq(accreditationStatus.tenantId, tenantId), eq(accreditationStatus.id, id)))
-    .get();
+    .where(and(eq(accreditationStatus.tenantId, tenantId), eq(accreditationStatus.id, id)));
+  const row = rows[0] ?? null;
   return row ? parseAccreditation(row) : null;
 }
 
-export function listAccreditations(
+export async function listAccreditations(
   tenantId: string,
   filters?: { payerId?: string; providerEntityId?: string; status?: string }
-): AccreditationStatusRow[] {
-  const db = getDb();
+): Promise<AccreditationStatusRow[]> {
+  const db = getPgDb();
   const conditions = [eq(accreditationStatus.tenantId, tenantId)];
   if (filters?.payerId) conditions.push(eq(accreditationStatus.payerId, filters.payerId));
   if (filters?.providerEntityId) conditions.push(eq(accreditationStatus.providerEntityId, filters.providerEntityId));
   if (filters?.status) conditions.push(eq(accreditationStatus.status, filters.status));
 
-  return db
+  const rows = await db
     .select()
     .from(accreditationStatus)
     .where(and(...conditions))
-    .orderBy(desc(accreditationStatus.updatedAt))
-    .all()
-    .map(parseAccreditation);
+    .orderBy(desc(accreditationStatus.updatedAt));
+  return rows.map(parseAccreditation);
 }
 
-export function updateAccreditation(
+export async function updateAccreditation(
   tenantId: string,
   id: string,
   updates: Partial<Pick<CreateAccreditationInput, "payerName" | "status" | "effectiveDate" | "expirationDate">>
-): AccreditationStatusRow | null {
-  const db = getDb();
+): Promise<AccreditationStatusRow | null> {
+  const db = getPgDb();
   const now = new Date().toISOString();
   const setClause: Record<string, any> = { updatedAt: now };
 
@@ -190,44 +188,41 @@ export function updateAccreditation(
   if (updates.effectiveDate !== undefined) setClause.effectiveDate = updates.effectiveDate;
   if (updates.expirationDate !== undefined) setClause.expirationDate = updates.expirationDate;
 
-  db.update(accreditationStatus)
+  await db.update(accreditationStatus)
     .set(setClause)
-    .where(and(eq(accreditationStatus.tenantId, tenantId), eq(accreditationStatus.id, id)))
-    .run();
+    .where(and(eq(accreditationStatus.tenantId, tenantId), eq(accreditationStatus.id, id)));
 
   return getAccreditationById(tenantId, id);
 }
 
-export function verifyAccreditation(tenantId: string, id: string, verifiedBy: string): AccreditationStatusRow | null {
-  const db = getDb();
+export async function verifyAccreditation(tenantId: string, id: string, verifiedBy: string): Promise<AccreditationStatusRow | null> {
+  const db = getPgDb();
   const now = new Date().toISOString();
-  db.update(accreditationStatus)
+  await db.update(accreditationStatus)
     .set({ lastVerifiedAt: now, lastVerifiedBy: verifiedBy, updatedAt: now })
-    .where(and(eq(accreditationStatus.tenantId, tenantId), eq(accreditationStatus.id, id)))
-    .run();
+    .where(and(eq(accreditationStatus.tenantId, tenantId), eq(accreditationStatus.id, id)));
   return getAccreditationById(tenantId, id);
 }
 
-export function addNote(tenantId: string, id: string, author: string, text: string): AccreditationStatusRow | null {
-  const current = getAccreditationById(tenantId, id);
+export async function addNote(tenantId: string, id: string, author: string, text: string): Promise<AccreditationStatusRow | null> {
+  const current = await getAccreditationById(tenantId, id);
   if (!current) return null;
   const notes = [...current.notes, { date: new Date().toISOString(), author, text }];
-  const db = getDb();
+  const db = getPgDb();
   const now = new Date().toISOString();
-  db.update(accreditationStatus)
+  await db.update(accreditationStatus)
     .set({ notesJson: JSON.stringify(notes), updatedAt: now })
-    .where(and(eq(accreditationStatus.tenantId, tenantId), eq(accreditationStatus.id, id)))
-    .run();
+    .where(and(eq(accreditationStatus.tenantId, tenantId), eq(accreditationStatus.id, id)));
   return getAccreditationById(tenantId, id);
 }
 
-export function countAccreditations(tenantId: string): number {
-  const db = getDb();
-  const result = db
+export async function countAccreditations(tenantId: string): Promise<number> {
+  const db = getPgDb();
+  const rows = await db
     .select({ cnt: count() })
     .from(accreditationStatus)
-    .where(eq(accreditationStatus.tenantId, tenantId))
-    .get();
+    .where(eq(accreditationStatus.tenantId, tenantId));
+  const result = rows[0] ?? null;
   return (result as any)?.cnt ?? 0;
 }
 
@@ -235,13 +230,13 @@ export function countAccreditations(tenantId: string): number {
 /* Accreditation Task CRUD                                             */
 /* ------------------------------------------------------------------ */
 
-export function createTask(input: CreateTaskInput): AccreditationTaskRow {
-  const db = getDb();
+export async function createTask(input: CreateTaskInput): Promise<AccreditationTaskRow> {
+  const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
   const tenantId = input.tenantId || "default";
 
-  db.insert(accreditationTask)
+  await db.insert(accreditationTask)
     .values({
       id,
       accreditationId: input.accreditationId,
@@ -254,38 +249,36 @@ export function createTask(input: CreateTaskInput): AccreditationTaskRow {
       assignedTo: input.assignedTo || null,
       createdAt: now,
       updatedAt: now,
-    })
-    .run();
+    });
 
-  return getTaskById(id)!;
+  return (await getTaskById(id))!;
 }
 
-export function getTaskById(id: string): AccreditationTaskRow | null {
-  const db = getDb();
-  const row = db
+export async function getTaskById(id: string): Promise<AccreditationTaskRow | null> {
+  const db = getPgDb();
+  const rows = await db
     .select()
     .from(accreditationTask)
-    .where(eq(accreditationTask.id, id))
-    .get();
+    .where(eq(accreditationTask.id, id));
+  const row = rows[0] ?? null;
   return row ? parseTask(row) : null;
 }
 
-export function listTasks(accreditationId: string): AccreditationTaskRow[] {
-  const db = getDb();
-  return db
+export async function listTasks(accreditationId: string): Promise<AccreditationTaskRow[]> {
+  const db = getPgDb();
+  const rows = await db
     .select()
     .from(accreditationTask)
     .where(eq(accreditationTask.accreditationId, accreditationId))
-    .orderBy(desc(accreditationTask.updatedAt))
-    .all()
-    .map(parseTask);
+    .orderBy(desc(accreditationTask.updatedAt));
+  return rows.map(parseTask);
 }
 
-export function updateTask(
+export async function updateTask(
   id: string,
   updates: Partial<Pick<CreateTaskInput, "title" | "description" | "priority" | "dueDate" | "assignedTo"> & { status: string }>
-): AccreditationTaskRow | null {
-  const db = getDb();
+): Promise<AccreditationTaskRow | null> {
+  const db = getPgDb();
   const now = new Date().toISOString();
   const setClause: Record<string, any> = { updatedAt: now };
 
@@ -299,26 +292,24 @@ export function updateTask(
     if (updates.status === "completed") setClause.completedAt = now;
   }
 
-  db.update(accreditationTask)
+  await db.update(accreditationTask)
     .set(setClause)
-    .where(eq(accreditationTask.id, id))
-    .run();
+    .where(eq(accreditationTask.id, id));
 
   return getTaskById(id);
 }
 
-export function completeTask(id: string, completedBy: string): AccreditationTaskRow | null {
-  const db = getDb();
+export async function completeTask(id: string, completedBy: string): Promise<AccreditationTaskRow | null> {
+  const db = getPgDb();
   const now = new Date().toISOString();
-  db.update(accreditationTask)
+  await db.update(accreditationTask)
     .set({ status: "completed", completedAt: now, completedBy, updatedAt: now })
-    .where(eq(accreditationTask.id, id))
-    .run();
+    .where(eq(accreditationTask.id, id));
   return getTaskById(id);
 }
 
-export function deleteTask(id: string): boolean {
-  const db = getDb();
-  const result = db.delete(accreditationTask).where(eq(accreditationTask.id, id)).run();
-  return result.changes > 0;
+export async function deleteTask(id: string): Promise<boolean> {
+  const db = getPgDb();
+  const result = await db.delete(accreditationTask).where(eq(accreditationTask.id, id)).returning();
+  return result.length > 0;
 }

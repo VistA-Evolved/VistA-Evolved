@@ -17,10 +17,9 @@ import { createHash, randomUUID } from "node:crypto";
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { insertEvidence, findEvidenceById, updateEvidenceStatus, listEvidenceByStatus } from "../db/repo/evidence-repo.js";
-import { findPayerById, insertPayer, updatePayer, listPayers, getPayerCount } from "../db/repo/payer-repo.js";
-import { bulkSetCapabilities } from "../db/repo/capability-repo.js";
-import type { EvidenceRow } from "../db/repo/evidence-repo.js";
+import { insertEvidence, findEvidenceById, updateEvidenceStatus, listEvidenceByStatus, type EvidenceRow } from "../pg/repo/evidence-repo.js";
+import { findPayerById, insertPayer, updatePayer, listPayers, getPayerCount, type PayerRow } from "../pg/repo/payer-repo.js";
+import { bulkSetCapabilities } from "../pg/repo/capability-repo.js";
 
 const __dirname_resolved = typeof __dirname !== "undefined"
   ? __dirname
@@ -65,12 +64,12 @@ export interface SnapshotDiff {
  * Creates an evidence_snapshot record and computes diff vs current DB state.
  * Does NOT modify payer table — use promoteSnapshot() for that.
  */
-export function ingestJsonSnapshot(params: {
+export async function ingestJsonSnapshot(params: {
   jsonContent: string;
   sourceUrl?: string;
   asOfDate: string;
   actor?: string;
-}): IngestResult {
+}): Promise<IngestResult> {
   try {
     let raw = params.jsonContent;
     // Strip BOM (BUG-064)
@@ -96,9 +95,9 @@ export function ingestJsonSnapshot(params: {
     writeFileSync(storedPath, raw, "utf-8");
 
     // Create evidence record
-    const evidence = insertEvidence({
+    const evidence = await insertEvidence({
       sourceType: "json_snapshot",
-      sourceUrl: params.sourceUrl ?? null,
+      sourceUrl: params.sourceUrl ?? undefined,
       asOfDate: params.asOfDate,
       sha256,
       storedPath: `data/evidence/${snapshotFilename}`,
@@ -107,7 +106,7 @@ export function ingestJsonSnapshot(params: {
     });
 
     // Compute diff vs current DB state
-    const diff = computeSnapshotDiff(payerList);
+    const diff = await computeSnapshotDiff(payerList);
 
     return {
       ok: true,
@@ -144,12 +143,12 @@ export interface PdfIngestResult {
  * Store a PDF evidence artifact. Does NOT parse PDF content —
  * that's a future enhancement. The PDF is stored and hashed.
  */
-export function ingestPdfEvidence(params: {
+export async function ingestPdfEvidence(params: {
   buffer: Buffer;
   filename: string;
   asOfDate: string;
   actor?: string;
-}): PdfIngestResult {
+}): Promise<PdfIngestResult> {
   try {
     if (!existsSync(EVIDENCE_DIR)) {
       mkdirSync(EVIDENCE_DIR, { recursive: true });
@@ -160,7 +159,7 @@ export function ingestPdfEvidence(params: {
     const storedPath = join(EVIDENCE_DIR, storedFilename);
     writeFileSync(storedPath, params.buffer);
 
-    const evidence = insertEvidence({
+    const evidence = await insertEvidence({
       sourceType: "pdf_upload",
       asOfDate: params.asOfDate,
       sha256,
@@ -194,10 +193,10 @@ export function ingestPdfEvidence(params: {
  * Compute structured diff between a snapshot's payer list and
  * the current DB state.
  */
-export function computeSnapshotDiff(snapshotPayers: SnapshotPayer[]): SnapshotDiff {
-  const { rows: dbPayers } = listPayers({ limit: 10000 });
-  const dbPayerIds = new Set(dbPayers.map(p => p.id));
-  const snapshotPayerIds = new Set(snapshotPayers.map(p => p.payerId));
+export async function computeSnapshotDiff(snapshotPayers: SnapshotPayer[]): Promise<SnapshotDiff> {
+  const { rows: dbPayers } = await listPayers({ limit: 10000 });
+  const dbPayerIds = new Set(dbPayers.map((p: PayerRow) => p.id));
+  const snapshotPayerIds = new Set(snapshotPayers.map((p: SnapshotPayer) => p.payerId));
 
   const added: string[] = [];
   const removed: string[] = [];
@@ -209,7 +208,7 @@ export function computeSnapshotDiff(snapshotPayers: SnapshotPayer[]): SnapshotDi
     if (!dbPayerIds.has(sp.payerId)) {
       added.push(sp.payerId);
     } else {
-      const dbPayer = dbPayers.find(p => p.id === sp.payerId);
+      const dbPayer = dbPayers.find((p: PayerRow) => p.id === sp.payerId);
       if (dbPayer) {
         const changes: string[] = [];
         if (dbPayer.canonicalName !== sp.name) changes.push(`name: "${dbPayer.canonicalName}" → "${sp.name}"`);
@@ -251,9 +250,9 @@ export interface PromoteResult {
  * Reads the stored JSON file, applies adds/updates to payer table,
  * then marks the snapshot as "promoted".
  */
-export function promoteSnapshot(snapshotId: string, actor?: string): PromoteResult {
+export async function promoteSnapshot(snapshotId: string, actor?: string): Promise<PromoteResult> {
   try {
-    const evidence = findEvidenceById(snapshotId);
+    const evidence = await findEvidenceById(snapshotId);
     if (!evidence) {
       return { ok: false, inserted: 0, updated: 0, skipped: 0, error: "Snapshot not found" };
     }
@@ -284,17 +283,17 @@ export function promoteSnapshot(snapshotId: string, actor?: string): PromoteResu
     for (const sp of payerList) {
       if (!sp.payerId || !sp.name) { skipped++; continue; }
 
-      const existing = findPayerById(sp.payerId);
+      const existing = await findPayerById(sp.payerId);
       if (!existing) {
-        insertPayer({
+        await insertPayer({
           id: sp.payerId,
           canonicalName: sp.name,
           aliases: JSON.stringify(sp.aliases ?? []),
           countryCode: sp.country ?? "PH",
-          category: sp.category ?? null,
-          integrationMode: sp.integrationMode ?? null,
+          category: (sp.category ?? null) as string,
+          integrationMode: (sp.integrationMode ?? null) as string,
           active: true,
-        }, actor);
+        }, `Promoted from evidence snapshot ${snapshotId}`, actor);
         inserted++;
       } else {
         // Only update if something changed
@@ -312,7 +311,7 @@ export function promoteSnapshot(snapshotId: string, actor?: string): PromoteResu
         }
 
         if (Object.keys(changes).length > 0) {
-          updatePayer(existing.id, changes as any, `Promoted from evidence snapshot ${snapshotId}`, actor);
+          await updatePayer(existing.id, changes as any, `Promoted from evidence snapshot ${snapshotId}`, actor);
           updated++;
         } else {
           skipped++;
@@ -327,7 +326,7 @@ export function promoteSnapshot(snapshotId: string, actor?: string): PromoteResu
           confidence: "inferred" as const,
         }));
         if (caps.length > 0) {
-          bulkSetCapabilities(
+          await bulkSetCapabilities(
             sp.payerId,
             caps,
             snapshotId,
@@ -339,7 +338,7 @@ export function promoteSnapshot(snapshotId: string, actor?: string): PromoteResu
     }
 
     // Mark snapshot as promoted
-    updateEvidenceStatus(snapshotId, "promoted", `Promoted by ${actor ?? "system"}: ${inserted} inserted, ${updated} updated`, actor);
+    await updateEvidenceStatus(snapshotId, "promoted", `Promoted by ${actor ?? "system"}: ${inserted} inserted, ${updated} updated`, actor);
 
     return { ok: true, inserted, updated, skipped };
   } catch (err) {

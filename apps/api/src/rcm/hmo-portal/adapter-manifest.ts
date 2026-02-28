@@ -10,8 +10,8 @@
 
 import { listPortalAdapters } from "./types.js";
 import { initPhHmoRegistry, getPhHmo, listPhHmos } from "../payers/ph-hmo-registry.js";
-import { listCapabilities } from "../../platform/db/repo/capability-repo.js";
-import { STANDARD_CAPABILITY_KEYS } from "../../platform/db/repo/capability-repo.js";
+import { listCapabilities } from "../../platform/pg/repo/capability-repo.js";
+import { STANDARD_CAPABILITY_KEYS } from "../../platform/pg/repo/capability-repo.js";
 
 /* ── Payer type classification for all 27 HMOs ──────────────── */
 
@@ -140,7 +140,7 @@ let registryInited = false;
 let _manifestCache: { data: HmoManifest; ts: number } | null = null;
 const MANIFEST_CACHE_TTL_MS = 10_000;
 
-export function generateHmoManifest(): HmoManifest {
+export async function generateHmoManifest(): Promise<HmoManifest> {
   const now = Date.now();
   if (_manifestCache && now - _manifestCache.ts < MANIFEST_CACHE_TTL_MS) {
     return _manifestCache.data;
@@ -190,7 +190,7 @@ export function generateHmoManifest(): HmoManifest {
 
     // Also try DB capabilities (if DB is initialized)
     try {
-      const dbCaps = listCapabilities(hmo.payerId);
+      const dbCaps = await listCapabilities(hmo.payerId);
       for (const c of dbCaps) {
         caps[c.capabilityKey] = c.value;
       }
@@ -238,7 +238,7 @@ export function generateHmoManifest(): HmoManifest {
 /**
  * Get manifest entry for a single HMO.
  */
-export function getHmoManifestEntry(payerId: string): HmoManifestEntry | null {
-  const manifest = generateHmoManifest();
+export async function getHmoManifestEntry(payerId: string): Promise<HmoManifestEntry | null> {
+  const manifest = await generateHmoManifest();
   return manifest.entries.find(e => e.payerId === payerId) ?? null;
 }

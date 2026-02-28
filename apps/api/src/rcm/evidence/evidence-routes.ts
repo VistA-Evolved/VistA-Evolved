@@ -25,11 +25,11 @@ const evidenceRoutes: FastifyPluginAsync = async (server) => {
     let rows: repo.IntegrationEvidenceRow[];
 
     if (q.status) {
-      rows = repo.listByStatus(q.status);
+      rows = await repo.listByStatus(q.status);
     } else if (q.method) {
-      rows = repo.listByMethod(q.method);
+      rows = await repo.listByMethod(q.method);
     } else {
-      rows = repo.listAll(q.tenantId);
+      rows = await repo.listAll(q.tenantId);
     }
 
     return { ok: true, evidence: rows, total: rows.length };
@@ -38,14 +38,14 @@ const evidenceRoutes: FastifyPluginAsync = async (server) => {
   /* ── GET evidence by payer (BEFORE :id to avoid param collision) ── */
   server.get("/rcm/evidence/by-payer/:payerId", async (request) => {
     const { payerId } = request.params as { payerId: string };
-    const rows = repo.listByPayer(payerId);
+    const rows = await repo.listByPayer(payerId);
     return { ok: true, payerId, evidence: rows, total: rows.length };
   });
 
   /* ── COVERAGE: cross-ref payers vs evidence (BEFORE :id) ── */
   server.get("/rcm/evidence/coverage", async () => {
     const { payers } = listPayers();
-    const allEvidence = repo.listAll();
+    const allEvidence = await repo.listAll();
 
     // Group evidence by payerId
     const evidenceByPayer = new Map<string, repo.IntegrationEvidenceRow[]>();
@@ -97,7 +97,7 @@ const evidenceRoutes: FastifyPluginAsync = async (server) => {
   /* ── GAPS: payers needing evidence but missing it (BEFORE :id) ── */
   server.get("/rcm/evidence/gaps", async () => {
     const { payers } = listPayers();
-    const allEvidence = repo.listAll();
+    const allEvidence = await repo.listAll();
 
     const evidenceByPayer = new Map<string, repo.IntegrationEvidenceRow[]>();
     for (const ev of allEvidence) {
@@ -125,14 +125,14 @@ const evidenceRoutes: FastifyPluginAsync = async (server) => {
 
   /* ── STATS (BEFORE :id) ────────────────────────── */
   server.get("/rcm/evidence/stats", async () => {
-    const stats = repo.getEvidenceStats();
+    const stats = await repo.getEvidenceStats();
     return { ok: true, ...stats };
   });
 
   /* ── GET single evidence entry ─────────────────── */
   server.get("/rcm/evidence/:id", async (request, reply) => {
     const { id } = request.params as { id: string };
-    const row = repo.findById(id);
+    const row = await repo.findById(id);
     if (!row) return reply.code(404).send({ ok: false, error: "Evidence entry not found" });
     return { ok: true, evidence: row };
   });
@@ -157,7 +157,7 @@ const evidenceRoutes: FastifyPluginAsync = async (server) => {
       });
     }
 
-    const row = repo.insertEvidence({
+    const row = await repo.insertEvidence({
       tenantId: body.tenantId,
       payerId,
       method,
@@ -184,7 +184,7 @@ const evidenceRoutes: FastifyPluginAsync = async (server) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
 
-    const row = repo.updateEvidence(id, {
+    const row = await repo.updateEvidence(id, {
       method: body.method,
       channel: body.channel,
       source: body.source,
@@ -208,7 +208,7 @@ const evidenceRoutes: FastifyPluginAsync = async (server) => {
   /* ── DELETE (archive) evidence entry ────────────── */
   server.delete("/rcm/evidence/:id", async (request, reply) => {
     const { id } = request.params as { id: string };
-    const ok = repo.archiveEvidence(id);
+    const ok = await repo.archiveEvidence(id);
     if (!ok) return reply.code(404).send({ ok: false, error: "Evidence entry not found" });
     return { ok: true, archived: true };
   });

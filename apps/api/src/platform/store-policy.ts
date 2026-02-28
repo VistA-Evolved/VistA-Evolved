@@ -15,7 +15,6 @@
  *
  * Durability status:
  *   pg_backed       â€” Has a PG repo via store-resolver; Map is write-through cache
- *   sqlite_backed   â€” Has a SQLite repo; Map is write-through cache
  *   jsonl_backed    â€” Append-only with JSONL file sink (audit trails)
  *   file_seeded     â€” Loaded from JSON seed files at startup
  *   vista_passthrough â€” Data comes from VistA RPC calls; not locally persisted
@@ -35,7 +34,6 @@ export type StoreClassification =
 
 export type DurabilityStatus =
   | "pg_backed"
-  | "sqlite_backed"
   | "jsonl_backed"
   | "file_seeded"
   | "vista_passthrough"
@@ -227,11 +225,11 @@ export const STORE_INVENTORY: StoreEntry[] = [
     id: "rcm-durable-job-queue",
     file: "rcm/jobs/durable-queue.ts",
     variable: "DurableJobQueue",
-    description: "Durable job queue for RCM background jobs (SQLite-backed)",
+    description: "Durable job queue for RCM background jobs (DB-backed)",
     classification: "critical",
-    durability: "sqlite_backed",
+    durability: "pg_backed",
     domain: "rcm",
-    notes: "Phase 142: SQLite-backed job queue with idempotency, retry+backoff, dead-letter. Falls back to InMemoryJobQueue if DB unavailable.",
+    notes: "Phase 142: DB-backed job queue with idempotency, retry+backoff, dead-letter. Falls back to InMemoryJobQueue if DB unavailable.",
   },
   {
     id: "rcm-remit-processor",
@@ -1446,7 +1444,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     classification: "critical",
     durability: "pg_backed",
     domain: "clinical",
-    notes: "Phase 158: in-memory cache with DB write-through. PG/SQLite tables: clinical_template.",
+    notes: "Phase 158: in-memory cache with DB write-through. PG table: clinical_template.",
   },
   {
     id: "template-version-events",
@@ -1456,7 +1454,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     classification: "audit",
     durability: "pg_backed",
     domain: "clinical",
-    notes: "Phase 158: append-only version events. PG/SQLite table: template_version_event.",
+    notes: "Phase 158: append-only version events. PG table: template_version_event.",
   },
   {
     id: "quick-text-store",
@@ -1466,7 +1464,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     classification: "registry",
     durability: "pg_backed",
     domain: "clinical",
-    notes: "Phase 158: in-memory cache with DB write-through. PG/SQLite table: quick_text.",
+    notes: "Phase 158: in-memory cache with DB write-through. PG table: quick_text.",
   },
 
   // Phase 159: Patient Queue / Waiting / Numbering / Calling
@@ -1478,7 +1476,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     classification: "critical",
     durability: "pg_backed",
     domain: "clinical",
-    notes: "Phase 159: in-memory Map with PG/SQLite backing. Tables: queue_ticket.",
+    notes: "Phase 159: in-memory Map with PG backing. Tables: queue_ticket.",
   },
   {
     id: "queue-event-store",
@@ -1521,7 +1519,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     classification: "registry",
     durability: "pg_backed",
     domain: "clinical",
-    notes: "Phase 160: seeded from department packs. SQLite + PG backed.",
+    notes: "Phase 160: seeded from department packs. PG backed.",
   },
   {
     id: "workflow-instance-store",

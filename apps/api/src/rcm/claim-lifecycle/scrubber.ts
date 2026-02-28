@@ -22,8 +22,8 @@ import {
   type ScrubResultRow,
 } from "./scrub-rule-repo.js";
 import { updateScrubScore, transitionClaimDraft } from "./claim-draft-repo.js";
-import { getDb } from "../../platform/db/db.js";
-import { scrubResult as srTable, claimDraft as cdTable } from "../../platform/db/schema.js";
+import { getPgDb } from "../../platform/pg/pg-db.js";
+import { scrubResult as srTable, claimDraft as cdTable } from "../../platform/pg/pg-schema.js";
 import { eq, desc, count as countFn } from "drizzle-orm";
 
 /* ------------------------------------------------------------------ */
@@ -133,15 +133,16 @@ function evaluateCondition(draft: ClaimDraftRow, condition: any): boolean {
  * 4. Updates the claim's scrub score.
  * 5. Optionally transitions to "scrubbed" status.
  */
-export function scrubClaimDraft(
+export async function scrubClaimDraft(
   draft: ClaimDraftRow,
   opts?: { autoTransition?: boolean },
-): ScrubOutcome {
+): Promise<ScrubOutcome> {
   const tenantId = draft.tenantId;
 
   // Load rules: payer-specific + global (payerId = null treated as all)
-  const payerRules = listScrubRules(tenantId, { payerId: draft.payerId, isActive: true });
-  const globalRules = listScrubRules(tenantId, { isActive: true }).filter(
+  const payerRules = await listScrubRules(tenantId, { payerId: draft.payerId, isActive: true });
+  const allRules = await listScrubRules(tenantId, { isActive: true });
+  const globalRules = allRules.filter(
     (r) => !r.payerId
   );
 
@@ -200,10 +201,10 @@ export function scrubClaimDraft(
   const score = Math.max(0, 100 - totalDeductions);
 
   // Store results
-  const stored = storeScrubResults(draft.id, tenantId, findings);
+  const stored = await storeScrubResults(draft.id, tenantId, findings);
 
   // Update scrub score on the claim
-  updateScrubScore(tenantId, draft.id, score);
+  await updateScrubScore(tenantId, draft.id, score);
 
   const blockingCount = findings.filter(f => f.blocksSubmission).length;
   const warningCount = findings.filter(f => f.severity === "warning").length;
@@ -213,7 +214,7 @@ export function scrubClaimDraft(
   // Auto-transition to scrubbed if requested and claim is in draft
   if (opts?.autoTransition && (draft.status === "draft" || draft.status === "scrubbed")) {
     try {
-      transitionClaimDraft(tenantId, draft.id, "scrubbed", "scrubber", {
+      await transitionClaimDraft(tenantId, draft.id, "scrubbed", "scrubber", {
         reason: `Scrubbed: score=${score}, blocking=${blockingCount}, warnings=${warningCount}`,
       });
     } catch {
@@ -249,11 +250,11 @@ export interface ScrubDashboardMetrics {
  * Aggregate scrub metrics for dashboard display.
  * Operates on the claim_draft + scrub_result tables.
  */
-export function getScrubDashboardMetrics(tenantId: string): ScrubDashboardMetrics {
-  const stats = getScrubResultStats(tenantId);
+export async function getScrubDashboardMetrics(tenantId: string): Promise<ScrubDashboardMetrics> {
+  const stats = await getScrubResultStats(tenantId);
 
-  const db = getDb();
-  const topRules = db
+  const db = getPgDb();
+  const topRulesRows = await db
     .select({
       ruleCode: srTable.ruleCode,
       cnt: countFn(),
@@ -262,21 +263,22 @@ export function getScrubDashboardMetrics(tenantId: string): ScrubDashboardMetric
     .where(eq(srTable.tenantId, tenantId))
     .groupBy(srTable.ruleCode)
     .orderBy(desc(countFn()))
-    .limit(10)
-    .all()
+    .limit(10);
+  const topRules = topRulesRows
     .map((r: any) => ({ ruleCode: r.ruleCode, count: r.cnt }));
 
   // Rules with contracting_needed evidenceSource
-  const contractingRules = listScrubRules(tenantId, { isActive: true }).filter(
+  const contractingRulesAll = await listScrubRules(tenantId, { isActive: true });
+  const contractingRules = contractingRulesAll.filter(
     r => r.evidenceSource === "contracting_needed"
   );
 
   // Pass rate: claims with scrubScore >= 80 / total scrubbed
-  const scrubbedClaims = db
+  const allClaims = await db
     .select()
     .from(cdTable)
-    .where(eq(cdTable.tenantId, tenantId))
-    .all()
+    .where(eq(cdTable.tenantId, tenantId));
+  const scrubbedClaims = allClaims
     .filter((r: any) => r.scrubScore !== null);
 
   const totalScrubbed = scrubbedClaims.length;

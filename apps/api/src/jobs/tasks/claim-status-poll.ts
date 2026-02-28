@@ -38,7 +38,7 @@ export async function handleClaimStatusPoll(
   );
 
   // 1. Fetch pending status checks
-  const { items: pending } = listClaimStatusChecks({
+  const { items: pending } = await listClaimStatusChecks({
     claimRef,
     tenantId,
     limit: batchSize,

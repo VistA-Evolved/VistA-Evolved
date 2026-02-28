@@ -9,73 +9,68 @@
 
 import { randomUUID } from "node:crypto";
 import { eq, and, desc } from "drizzle-orm";
-import { getDb } from "../../platform/db/db.js";
-import { integrationEvidence } from "../../platform/db/schema.js";
+import { getPgDb } from "../../platform/pg/pg-db.js";
+import { integrationEvidence } from "../../platform/pg/pg-schema.js";
 
 export type IntegrationEvidenceRow = typeof integrationEvidence.$inferSelect;
 
 /* ── Queries ─────────────────────────────────────────── */
 
-export function findById(id: string): IntegrationEvidenceRow | undefined {
-  return getDb()
+export async function findById(id: string): Promise<IntegrationEvidenceRow | undefined> {
+  const rows = await getPgDb()
     .select()
     .from(integrationEvidence)
-    .where(eq(integrationEvidence.id, id))
-    .get();
+    .where(eq(integrationEvidence.id, id));
+  return rows[0] ?? undefined;
 }
 
-export function listAll(tenantId?: string): IntegrationEvidenceRow[] {
-  const db = getDb();
+export async function listAll(tenantId?: string): Promise<IntegrationEvidenceRow[]> {
+  const db = getPgDb();
   if (tenantId) {
-    return db
+    return await db
       .select()
       .from(integrationEvidence)
       .where(eq(integrationEvidence.tenantId, tenantId))
-      .orderBy(desc(integrationEvidence.updatedAt))
-      .all();
+      .orderBy(desc(integrationEvidence.updatedAt));
   }
-  return db
+  return await db
     .select()
     .from(integrationEvidence)
-    .orderBy(desc(integrationEvidence.updatedAt))
-    .all();
+    .orderBy(desc(integrationEvidence.updatedAt));
 }
 
-export function listByPayer(payerId: string): IntegrationEvidenceRow[] {
-  return getDb()
+export async function listByPayer(payerId: string): Promise<IntegrationEvidenceRow[]> {
+  return await getPgDb()
     .select()
     .from(integrationEvidence)
     .where(eq(integrationEvidence.payerId, payerId))
-    .orderBy(desc(integrationEvidence.updatedAt))
-    .all();
+    .orderBy(desc(integrationEvidence.updatedAt));
 }
 
-export function listByStatus(status: string): IntegrationEvidenceRow[] {
-  return getDb()
+export async function listByStatus(status: string): Promise<IntegrationEvidenceRow[]> {
+  return await getPgDb()
     .select()
     .from(integrationEvidence)
     .where(eq(integrationEvidence.status, status))
-    .orderBy(desc(integrationEvidence.updatedAt))
-    .all();
+    .orderBy(desc(integrationEvidence.updatedAt));
 }
 
-export function listByMethod(method: string): IntegrationEvidenceRow[] {
-  return getDb()
+export async function listByMethod(method: string): Promise<IntegrationEvidenceRow[]> {
+  return await getPgDb()
     .select()
     .from(integrationEvidence)
     .where(eq(integrationEvidence.method, method))
-    .orderBy(desc(integrationEvidence.updatedAt))
-    .all();
+    .orderBy(desc(integrationEvidence.updatedAt));
 }
 
 /**
  * Find evidence for a specific payer + method combination.
  */
-export function findByPayerAndMethod(
+export async function findByPayerAndMethod(
   payerId: string,
   method: string,
-): IntegrationEvidenceRow | undefined {
-  return getDb()
+): Promise<IntegrationEvidenceRow | undefined> {
+  const rows = await getPgDb()
     .select()
     .from(integrationEvidence)
     .where(
@@ -83,8 +78,8 @@ export function findByPayerAndMethod(
         eq(integrationEvidence.payerId, payerId),
         eq(integrationEvidence.method, method),
       ),
-    )
-    .get();
+    );
+  return rows[0] ?? undefined;
 }
 
 /* ── Mutations ───────────────────────────────────────── */
@@ -106,12 +101,12 @@ export interface CreateEvidenceInput {
   notes?: string;
 }
 
-export function insertEvidence(data: CreateEvidenceInput): IntegrationEvidenceRow {
-  const db = getDb();
+export async function insertEvidence(data: CreateEvidenceInput): Promise<IntegrationEvidenceRow> {
+  const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
 
-  db.insert(integrationEvidence)
+  await db.insert(integrationEvidence)
     .values({
       id,
       tenantId: data.tenantId ?? "default",
@@ -130,22 +125,21 @@ export function insertEvidence(data: CreateEvidenceInput): IntegrationEvidenceRo
       notes: data.notes ?? null,
       createdAt: now,
       updatedAt: now,
-    })
-    .run();
+    });
 
-  return findById(id)!;
+  return (await findById(id))!;
 }
 
-export function updateEvidence(
+export async function updateEvidence(
   id: string,
   data: Partial<Omit<CreateEvidenceInput, "payerId">>,
-): IntegrationEvidenceRow | undefined {
-  const existing = findById(id);
+): Promise<IntegrationEvidenceRow | undefined> {
+  const existing = await findById(id);
   if (!existing) return undefined;
 
   const now = new Date().toISOString();
 
-  getDb()
+  await getPgDb()
     .update(integrationEvidence)
     .set({
       ...(data.method !== undefined && { method: data.method }),
@@ -168,25 +162,23 @@ export function updateEvidence(
       ...(data.notes !== undefined && { notes: data.notes }),
       updatedAt: now,
     })
-    .where(eq(integrationEvidence.id, id))
-    .run();
+    .where(eq(integrationEvidence.id, id));
 
-  return findById(id);
+  return await findById(id);
 }
 
 /**
  * Soft-delete: set status to 'archived'.
  */
-export function archiveEvidence(id: string): boolean {
-  const existing = findById(id);
+export async function archiveEvidence(id: string): Promise<boolean> {
+  const existing = await findById(id);
   if (!existing) return false;
 
   const now = new Date().toISOString();
-  getDb()
+  await getPgDb()
     .update(integrationEvidence)
     .set({ status: "archived", updatedAt: now })
-    .where(eq(integrationEvidence.id, id))
-    .run();
+    .where(eq(integrationEvidence.id, id));
 
   return true;
 }
@@ -205,12 +197,12 @@ export interface EvidenceCoverage {
 /**
  * Count evidence entries by status.
  */
-export function getEvidenceStats(): {
+export async function getEvidenceStats(): Promise<{
   total: number;
   byStatus: Record<string, number>;
   byMethod: Record<string, number>;
-} {
-  const all = listAll();
+}> {
+  const all = await listAll();
   const byStatus: Record<string, number> = {};
   const byMethod: Record<string, number> = {};
 

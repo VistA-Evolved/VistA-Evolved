@@ -4,14 +4,14 @@
  * Single source of truth for the deployment runtime mode.
  *
  * PLATFORM_RUNTIME_MODE env var controls behaviour:
- *   "dev"  (default) — SQLite OK, PG optional, RLS optional
+ *   "dev"  (default) — PG optional, RLS optional
  *   "test" — Same as dev (CI unit tests)
- *   "rc"   — PG required, SQLite blocked, RLS auto-enabled
- *   "prod" — PG required, SQLite blocked, RLS auto-enabled
+ *   "rc"   — PG required, RLS auto-enabled
+ *   "prod" — PG required, RLS auto-enabled
  *
  * rc/prod modes enforce:
  *   - PLATFORM_PG_URL must be set
- *   - STORE_BACKEND must resolve to "pg" (never "sqlite")
+ *   - STORE_BACKEND must resolve to "pg"
  *   - RLS policies applied automatically
  *   - JSON mutable file stores disabled
  */
@@ -53,11 +53,6 @@ export function requiresPg(): boolean {
   return mode === "rc" || mode === "prod";
 }
 
-/** True when runtime mode allows SQLite as a backend. */
-export function allowsSqlite(): boolean {
-  return !requiresPg();
-}
-
 /** True when RLS should be auto-enabled (rc or prod). */
 export function requiresRls(): boolean {
   return requiresPg();
@@ -87,7 +82,7 @@ export function validateRuntimeMode(): void {
       throw new Error(
         `PLATFORM_RUNTIME_MODE=${mode} requires PostgreSQL. ` +
         `Set PLATFORM_PG_URL or PLATFORM_PG_HOST. ` +
-        `Use PLATFORM_RUNTIME_MODE=dev for SQLite-only local development.`
+        `Use PLATFORM_RUNTIME_MODE=dev for local development without PG.`
       );
     }
   }

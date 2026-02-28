@@ -88,19 +88,19 @@ export function clearKnownClaims(): void {
  * Attempt to match a single payment record.
  * Returns match result and optionally creates underpayment.
  */
-export function matchPayment(payment: PaymentRecord): SingleMatchResult {
+export async function matchPayment(payment: PaymentRecord): Promise<SingleMatchResult> {
   try {
     // Tier 1: Exact claimRef match
     const exactClaim = knownClaims.get(payment.claimRef);
     if (exactClaim) {
-      return createMatchAndCheck(payment, exactClaim, "EXACT_CLAIM_REF", 100);
+      return await createMatchAndCheck(payment, exactClaim, "EXACT_CLAIM_REF", 100);
     }
 
     // Tier 2: Match by trace number if available
     if (payment.traceNumber) {
       for (const claim of knownClaims.values()) {
         if (claim.claimRef === payment.traceNumber) {
-          return createMatchAndCheck(payment, claim, "TRACE_NUMBER", 90);
+          return await createMatchAndCheck(payment, claim, "TRACE_NUMBER", 90);
         }
       }
     }
@@ -114,14 +114,14 @@ export function matchPayment(payment: PaymentRecord): SingleMatchResult {
         if (claim.totalChargeCents !== undefined) {
           const diff = Math.abs(claim.totalChargeCents - payment.billedAmountCents);
           if (diff <= AMOUNT_TOLERANCE_CENTS) {
-            return createMatchAndCheck(payment, claim, "PATIENT_DOS_AMOUNT", 60);
+            return await createMatchAndCheck(payment, claim, "PATIENT_DOS_AMOUNT", 60);
           }
         }
       }
     }
 
     // No match found — mark as unmatched
-    updatePaymentStatus(payment.id, "UNMATCHED");
+    await updatePaymentStatus(payment.id, "UNMATCHED");
     return {
       paymentId: payment.id,
       matched: false,
@@ -142,8 +142,8 @@ export function matchPayment(payment: PaymentRecord): SingleMatchResult {
 /**
  * Run matching for all payment records in an import batch.
  */
-export function matchImportBatch(importId: string): BatchMatchResult {
-  const payments = listPaymentsByImport(importId);
+export async function matchImportBatch(importId: string): Promise<BatchMatchResult> {
+  const payments = await listPaymentsByImport(importId);
   const results: SingleMatchResult[] = [];
   let matched = 0;
   let needsReview = 0;
@@ -154,7 +154,7 @@ export function matchImportBatch(importId: string): BatchMatchResult {
   for (const payment of payments) {
     if (payment.status !== "IMPORTED") continue; // skip already processed
 
-    const result = matchPayment(payment);
+    const result = await matchPayment(payment);
     results.push(result);
 
     if (result.error) errors.push(result.error);
@@ -188,8 +188,8 @@ export function matchImportBatch(importId: string): BatchMatchResult {
  * Run batch matching for a given import and return a simplified result.
  * Used by remittance-import-job.ts for background processing.
  */
-export function runBatchMatch(importId: string): { attempted: number; matched: number; errors: string[] } {
-  const batch = matchImportBatch(importId);
+export async function runBatchMatch(importId: string): Promise<{ attempted: number; matched: number; errors: string[] }> {
+  const batch = await matchImportBatch(importId);
   return {
     attempted: batch.totalLines,
     matched: batch.matched + batch.needsReview,
@@ -199,17 +199,17 @@ export function runBatchMatch(importId: string): { attempted: number; matched: n
 
 /* ── Internal Helpers ──────────────────────────────────────── */
 
-function createMatchAndCheck(
+async function createMatchAndCheck(
   payment: PaymentRecord,
   claim: KnownClaim,
   method: string,
   confidence: number,
-): SingleMatchResult {
+): Promise<SingleMatchResult> {
   const matchStatus = confidence >= AUTO_MATCH_CONFIDENCE ? "AUTO_MATCHED" : "REVIEW_REQUIRED";
   const paymentStatus = confidence >= AUTO_MATCH_CONFIDENCE ? "MATCHED" : "IMPORTED";
 
   // Create reconciliation match record
-  const match = createMatch({
+  const match = await createMatch({
     paymentId: payment.id,
     claimRef: claim.claimRef,
     matchConfidence: confidence,
@@ -218,7 +218,7 @@ function createMatchAndCheck(
   });
 
   // Update payment status
-  updatePaymentStatus(payment.id, paymentStatus as any);
+  await updatePaymentStatus(payment.id, paymentStatus as any);
 
   // Check for underpayment
   let underpaymentCreated = false;
@@ -226,7 +226,7 @@ function createMatchAndCheck(
 
   const expectedCents = claim.totalChargeCents ?? payment.billedAmountCents;
   if (payment.paidAmountCents < expectedCents * UNDERPAYMENT_THRESHOLD) {
-    const up = createUnderpaymentCase({
+    const up = await createUnderpaymentCase({
       claimRef: claim.claimRef,
       paymentId: payment.id,
       payerId: payment.payerId,

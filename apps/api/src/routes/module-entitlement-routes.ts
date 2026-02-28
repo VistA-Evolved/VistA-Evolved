@@ -31,7 +31,7 @@ import {
   listModuleAuditLog,
   countModuleAuditLog,
   isModuleEnabledForTenant,
-} from "../platform/db/repo/module-repo.js";
+} from "../platform/pg/repo/module-repo.js";
 import {
   getActiveSkuProfile,
   getModuleDefinitions,
@@ -59,7 +59,7 @@ export default async function moduleEntitlementRoutes(
       const session = await requireSession(request, reply);
       if (!session) return;
 
-      const catalog = listModuleCatalog();
+      const catalog = await listModuleCatalog();
       return { ok: true, modules: catalog, count: catalog.length };
     }
   );
@@ -77,8 +77,8 @@ export default async function moduleEntitlementRoutes(
 
       const tenantId =
         (request.query as any)?.tenantId || session.tenantId || "default";
-      const entitlements = listTenantModules(tenantId);
-      const enabledIds = getEnabledModuleIds(tenantId);
+      const entitlements = await listTenantModules(tenantId);
+      const enabledIds = await getEnabledModuleIds(tenantId);
 
       return {
         ok: true,
@@ -113,7 +113,7 @@ export default async function moduleEntitlementRoutes(
       }
 
       // Validate module exists in catalog
-      const catalogEntry = getModuleCatalogEntry(moduleId);
+      const catalogEntry = await getModuleCatalogEntry(moduleId);
       if (!catalogEntry) {
         return reply.code(404).send({
           ok: false,
@@ -130,10 +130,10 @@ export default async function moduleEntitlementRoutes(
       }
 
       // Capture before state
-      const before = isModuleEnabledForTenant(tenantId, moduleId);
+      const before = await isModuleEnabledForTenant(tenantId, moduleId);
 
       // Apply change
-      const result = setModuleEnabled(
+      const result = await setModuleEnabled(
         tenantId,
         moduleId,
         enabled,
@@ -142,7 +142,7 @@ export default async function moduleEntitlementRoutes(
       );
 
       // Audit log
-      appendModuleAudit({
+      await appendModuleAudit({
         tenantId,
         actorId: session.duz,
         actorType: "user",
@@ -184,10 +184,10 @@ export default async function moduleEntitlementRoutes(
         const skuProfile = getActiveSkuProfile();
         skuModules = skuProfile?.modules || Object.keys(getModuleDefinitions());
       }
-      const seeded = seedTenantModules(tenantId, skuModules, session.duz);
+      const seeded = await seedTenantModules(tenantId, skuModules, session.duz);
 
       // Audit
-      appendModuleAudit({
+      await appendModuleAudit({
         tenantId,
         actorId: session.duz,
         actorType: "user",
@@ -203,7 +203,7 @@ export default async function moduleEntitlementRoutes(
         ok: true,
         tenantId,
         modulesSeeded: seeded,
-        totalEnabled: getEnabledModuleIds(tenantId).length,
+        totalEnabled: (await getEnabledModuleIds(tenantId)).length,
       };
     }
   );
@@ -221,7 +221,7 @@ export default async function moduleEntitlementRoutes(
 
       const tenantId =
         (request.query as any)?.tenantId || session.tenantId || "default";
-      const flags = listTenantFeatureFlags(tenantId);
+      const flags = await listTenantFeatureFlags(tenantId);
 
       return { ok: true, tenantId, flags, count: flags.length };
     }
@@ -252,11 +252,11 @@ export default async function moduleEntitlementRoutes(
       }
 
       // Capture before state
-      const before = listTenantFeatureFlags(tenantId).find(
+      const before = (await listTenantFeatureFlags(tenantId)).find(
         (f) => f.flagKey === flagKey
       );
 
-      const result = upsertTenantFeatureFlag(
+      const result = await upsertTenantFeatureFlag(
         tenantId,
         flagKey,
         String(flagValue),
@@ -265,7 +265,7 @@ export default async function moduleEntitlementRoutes(
       );
 
       // Audit
-      appendModuleAudit({
+      await appendModuleAudit({
         tenantId,
         actorId: session.duz,
         actorType: "user",
@@ -302,14 +302,14 @@ export default async function moduleEntitlementRoutes(
         });
       }
 
-      const before = listTenantFeatureFlags(tenantId).find(
+      const before = (await listTenantFeatureFlags(tenantId)).find(
         (f) => f.flagKey === flagKey
       );
 
-      const deleted = deleteTenantFeatureFlag(tenantId, flagKey);
+      const deleted = await deleteTenantFeatureFlag(tenantId, flagKey);
 
       if (deleted) {
-        appendModuleAudit({
+        await appendModuleAudit({
           tenantId,
           actorId: session.duz,
           actorType: "user",
@@ -342,8 +342,8 @@ export default async function moduleEntitlementRoutes(
       const limit = Math.min(parseInt(query.limit) || 100, 500);
       const offset = parseInt(query.offset) || 0;
 
-      const entries = listModuleAuditLog(tenantId, limit, offset);
-      const total = countModuleAuditLog(tenantId);
+      const entries = await listModuleAuditLog(tenantId, limit, offset);
+      const total = await countModuleAuditLog(tenantId);
 
       return {
         ok: true,

@@ -1111,3 +1111,382 @@ export const pgPatientPortalPref = pgTable("patient_portal_pref", {
   index("idx_ppp_patient").on(table.patientDfn),
   index("idx_ppp_tenant_patient").on(table.tenantId, table.patientDfn),
 ]);
+
+/* ================================================================
+ *  Phase 174: RCM Domain Tables — PG parity with SQLite
+ *  Mirrors the 12 tables from db/schema.ts that previously only
+ *  lived in SQLite.  Same export names for minimal import-path-only
+ *  migration in consuming RCM modules.
+ * ================================================================ */
+
+/** Integration evidence — payer connectivity research artifacts. */
+export const integrationEvidence = pgTable("integration_evidence", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  payerId: text("payer_id").notNull(),
+  method: text("method").notNull(),
+  channel: text("channel"),
+  source: text("source").notNull(),
+  sourceType: text("source_type").notNull().default("url"),
+  contactInfo: text("contact_info"),
+  submissionRequirements: text("submission_requirements"),
+  supportedChannelsJson: text("supported_channels_json").default("[]"),
+  lastVerifiedAt: text("last_verified_at"),
+  verifiedBy: text("verified_by"),
+  status: text("status").notNull().default("unverified"),
+  confidence: text("confidence").notNull().default("unknown"),
+  notes: text("notes"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_ie_tenant").on(table.tenantId),
+  index("idx_ie_payer").on(table.payerId),
+]);
+
+/** LOA (Letter of Authorization) request — prior auth / referral workflows. */
+export const loaRequest = pgTable("loa_request", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  patientDfn: text("patient_dfn").notNull(),
+  patientName: text("patient_name"),
+  payerId: text("payer_id").notNull(),
+  payerName: text("payer_name"),
+  encounterIen: text("encounter_ien"),
+  orderIen: text("order_ien"),
+  loaType: text("loa_type").notNull(),
+  status: text("status").notNull().default("draft"),
+  urgency: text("urgency").notNull().default("standard"),
+  diagnosisCodesJson: text("diagnosis_codes_json").default("[]"),
+  procedureCodesJson: text("procedure_codes_json").default("[]"),
+  clinicalSummary: text("clinical_summary"),
+  requestedServiceDesc: text("requested_service_desc"),
+  requestedBy: text("requested_by").notNull(),
+  requestedAt: text("requested_at").notNull(),
+  authorizationNumber: text("authorization_number"),
+  approvedUnits: integer("approved_units"),
+  approvedFrom: text("approved_from"),
+  approvedThrough: text("approved_through"),
+  denialReason: text("denial_reason"),
+  packetGeneratedAt: text("packet_generated_at"),
+  submittedAt: text("submitted_at"),
+  resolvedAt: text("resolved_at"),
+  metadataJson: text("metadata_json").default("{}"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_loa_tenant").on(table.tenantId),
+  index("idx_loa_patient").on(table.patientDfn),
+  index("idx_loa_payer").on(table.payerId),
+  index("idx_loa_status").on(table.status),
+]);
+
+/** LOA attachment — supporting documents for LOA requests. */
+export const loaAttachment = pgTable("loa_attachment", {
+  id: text("id").primaryKey(),
+  loaRequestId: text("loa_request_id").notNull(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  attachmentType: text("attachment_type").notNull(),
+  fileName: text("file_name").notNull(),
+  mimeType: text("mime_type").notNull(),
+  storagePath: text("storage_path"),
+  inlineContent: text("inline_content"),
+  description: text("description"),
+  addedBy: text("added_by").notNull(),
+  addedAt: text("added_at").notNull(),
+}, (table) => [
+  index("idx_la_tenant").on(table.tenantId),
+  index("idx_la_loa").on(table.loaRequestId),
+]);
+
+/** Accreditation status — payer enrollment/credentialing status. */
+export const accreditationStatus = pgTable("accreditation_status", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  payerId: text("payer_id").notNull(),
+  payerName: text("payer_name").notNull(),
+  providerEntityId: text("provider_entity_id").notNull(),
+  status: text("status").notNull().default("pending"),
+  effectiveDate: text("effective_date"),
+  expirationDate: text("expiration_date"),
+  lastVerifiedAt: text("last_verified_at"),
+  lastVerifiedBy: text("last_verified_by"),
+  notesJson: text("notes_json").default("[]"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+  createdBy: text("created_by").notNull(),
+}, (table) => [
+  index("idx_as_tenant").on(table.tenantId),
+  index("idx_as_payer").on(table.payerId),
+  index("idx_as_entity").on(table.providerEntityId),
+]);
+
+/** Accreditation task — action items for credentialing workflows. */
+export const accreditationTask = pgTable("accreditation_task", {
+  id: text("id").primaryKey(),
+  accreditationId: text("accreditation_id").notNull(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  title: text("title").notNull(),
+  description: text("description"),
+  status: text("status").notNull().default("pending"),
+  priority: text("priority").notNull().default("medium"),
+  dueDate: text("due_date"),
+  assignedTo: text("assigned_to"),
+  completedAt: text("completed_at"),
+  completedBy: text("completed_by"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_at_tenant").on(table.tenantId),
+  index("idx_at_accred").on(table.accreditationId),
+]);
+
+/** Credential artifact — provider/facility credentials (NPI, DEA, etc.). */
+export const credentialArtifact = pgTable("credential_artifact", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  entityType: text("entity_type").notNull(),
+  entityId: text("entity_id").notNull(),
+  entityName: text("entity_name").notNull(),
+  credentialType: text("credential_type").notNull(),
+  credentialValue: text("credential_value").notNull(),
+  issuingAuthority: text("issuing_authority"),
+  state: text("state"),
+  status: text("status").notNull().default("active"),
+  issuedAt: text("issued_at"),
+  expiresAt: text("expires_at"),
+  renewalReminderDays: integer("renewal_reminder_days").default(90),
+  verifiedAt: text("verified_at"),
+  verifiedBy: text("verified_by"),
+  metadataJson: text("metadata_json").default("{}"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+  createdBy: text("created_by").notNull(),
+}, (table) => [
+  index("idx_ca_tenant").on(table.tenantId),
+  index("idx_ca_entity").on(table.entityType, table.entityId),
+  index("idx_ca_type").on(table.credentialType),
+]);
+
+/** Credential document — file attachments for credential artifacts. */
+export const credentialDocument = pgTable("credential_document", {
+  id: text("id").primaryKey(),
+  credentialId: text("credential_id").notNull(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  fileName: text("file_name").notNull(),
+  mimeType: text("mime_type").notNull(),
+  storagePath: text("storage_path").notNull(),
+  fileSizeBytes: integer("file_size_bytes"),
+  sha256Hash: text("sha256_hash"),
+  uploadedBy: text("uploaded_by").notNull(),
+  uploadedAt: text("uploaded_at").notNull(),
+}, (table) => [
+  index("idx_cd_tenant").on(table.tenantId),
+  index("idx_cd_cred").on(table.credentialId),
+]);
+
+/** Claim draft — full claim lifecycle entity. */
+export const claimDraft = pgTable("claim_draft", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  idempotencyKey: text("idempotency_key"),
+  status: text("status").notNull().default("draft"),
+  claimType: text("claim_type").notNull().default("professional"),
+  encounterId: text("encounter_id"),
+  patientId: text("patient_id").notNull(),
+  patientName: text("patient_name"),
+  providerId: text("provider_id").notNull(),
+  billingProviderId: text("billing_provider_id"),
+  payerId: text("payer_id").notNull(),
+  payerName: text("payer_name"),
+  dateOfService: text("date_of_service").notNull(),
+  diagnosesJson: text("diagnoses_json").default("[]"),
+  linesJson: text("lines_json").default("[]"),
+  attachmentsJson: text("attachments_json").default("[]"),
+  totalChargeCents: integer("total_charge_cents").default(0),
+  denialCode: text("denial_code"),
+  denialReason: text("denial_reason"),
+  appealPacketRef: text("appeal_packet_ref"),
+  resubmissionOf: text("resubmission_of"),
+  resubmissionCount: integer("resubmission_count").default(0),
+  paidAmountCents: integer("paid_amount_cents"),
+  adjustmentCents: integer("adjustment_cents"),
+  patientRespCents: integer("patient_resp_cents"),
+  scrubScore: integer("scrub_score"),
+  lastScrubAt: text("last_scrub_at"),
+  submittedAt: text("submitted_at"),
+  paidAt: text("paid_at"),
+  deniedAt: text("denied_at"),
+  closedAt: text("closed_at"),
+  vistaChargeIen: text("vista_charge_ien"),
+  vistaArIen: text("vista_ar_ien"),
+  metadataJson: text("metadata_json").default("{}"),
+  auditJson: text("audit_json").default("[]"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+  createdBy: text("created_by").notNull(),
+}, (table) => [
+  index("idx_cd2_tenant").on(table.tenantId),
+  index("idx_cd2_patient").on(table.patientId),
+  index("idx_cd2_payer").on(table.payerId),
+  index("idx_cd2_status").on(table.status),
+  index("idx_cd2_dos").on(table.dateOfService),
+]);
+
+/** Claim lifecycle event — status transitions for claim drafts. */
+export const claimLifecycleEvent = pgTable("claim_lifecycle_event", {
+  id: text("id").primaryKey(),
+  claimDraftId: text("claim_draft_id").notNull(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  fromStatus: text("from_status"),
+  toStatus: text("to_status").notNull(),
+  actor: text("actor").notNull(),
+  reason: text("reason"),
+  denialCode: text("denial_code"),
+  resubmissionRef: text("resubmission_ref"),
+  detailJson: text("detail_json").default("{}"),
+  occurredAt: text("occurred_at").notNull(),
+}, (table) => [
+  index("idx_cle_tenant").on(table.tenantId),
+  index("idx_cle_claim").on(table.claimDraftId),
+]);
+
+/** Scrub rule — payer-specific and universal claim validation rules. */
+export const scrubRule = pgTable("scrub_rule", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  payerId: text("payer_id"),
+  serviceType: text("service_type"),
+  ruleCode: text("rule_code").notNull(),
+  category: text("category").notNull(),
+  severity: text("severity").notNull().default("error"),
+  field: text("field").notNull(),
+  description: text("description").notNull(),
+  conditionJson: text("condition_json").notNull(),
+  suggestedFix: text("suggested_fix"),
+  evidenceSource: text("evidence_source"),
+  evidenceDate: text("evidence_date"),
+  blocksSubmission: integer("blocks_submission").notNull().default(1),
+  isActive: integer("is_active").notNull().default(1),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+  createdBy: text("created_by").notNull(),
+}, (table) => [
+  index("idx_sr_tenant").on(table.tenantId),
+  index("idx_sr_payer").on(table.payerId),
+  index("idx_sr_code").on(table.ruleCode),
+]);
+
+/** Scrub result — individual scrub findings for a claim draft. */
+export const scrubResult = pgTable("scrub_result", {
+  id: text("id").primaryKey(),
+  claimDraftId: text("claim_draft_id").notNull(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  ruleId: text("rule_id"),
+  ruleCode: text("rule_code").notNull(),
+  severity: text("severity").notNull(),
+  category: text("category").notNull(),
+  field: text("field").notNull(),
+  message: text("message").notNull(),
+  suggestedFix: text("suggested_fix"),
+  blocksSubmission: integer("blocks_submission").notNull().default(1),
+  score: integer("score").notNull().default(100),
+  scrubbedAt: text("scrubbed_at").notNull(),
+}, (table) => [
+  index("idx_sres_tenant").on(table.tenantId),
+  index("idx_sres_claim").on(table.claimDraftId),
+]);
+
+/** RCM durable job — persistent job queue for RCM background tasks. */
+export const rcmDurableJob = pgTable("rcm_durable_job", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  type: text("type").notNull(),
+  status: text("status").notNull().default("queued"),
+  payloadJson: text("payload_json").notNull().default("{}"),
+  resultJson: text("result_json"),
+  error: text("error"),
+  attempts: integer("attempts").notNull().default(0),
+  maxAttempts: integer("max_attempts").notNull().default(3),
+  idempotencyKey: text("idempotency_key"),
+  priority: integer("priority").notNull().default(5),
+  scheduledAt: text("scheduled_at").notNull(),
+  startedAt: text("started_at"),
+  completedAt: text("completed_at"),
+  nextRetryAt: text("next_retry_at"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_rdj_tenant").on(table.tenantId),
+  index("idx_rdj_type").on(table.type),
+  index("idx_rdj_status").on(table.status),
+]);
+
+/* ================================================================
+ *  Phase 174: Module Entitlement Tables — PG parity with SQLite
+ * ================================================================ */
+
+/** Module catalog — registered system modules. */
+export const moduleCatalog = pgTable("module_catalog", {
+  moduleId: text("module_id").primaryKey(),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  version: text("version").notNull().default("1.0.0"),
+  alwaysEnabled: integer("always_enabled").notNull().default(0),
+  dependenciesJson: text("dependencies_json").notNull().default("[]"),
+  routePatternsJson: text("route_patterns_json").notNull().default("[]"),
+  adaptersJson: text("adapters_json").notNull().default("[]"),
+  permissionsJson: text("permissions_json").notNull().default("[]"),
+  dataStoresJson: text("data_stores_json").notNull().default("[]"),
+  healthCheckEndpoint: text("health_check_endpoint"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/** Tenant module — per-tenant module enablement. */
+export const tenantModule = pgTable("tenant_module", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  moduleId: text("module_id").notNull(),
+  enabled: integer("enabled").notNull().default(0),
+  planTier: text("plan_tier").notNull().default("base"),
+  enabledAt: text("enabled_at"),
+  disabledAt: text("disabled_at"),
+  enabledBy: text("enabled_by"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_tm_tenant").on(table.tenantId),
+  uniqueIndex("idx_tm_tenant_module").on(table.tenantId, table.moduleId),
+]);
+
+/** Tenant feature flag — per-tenant configuration overrides. */
+export const tenantFeatureFlag = pgTable("tenant_feature_flag", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  flagKey: text("flag_key").notNull(),
+  flagValue: text("flag_value").notNull().default("true"),
+  moduleId: text("module_id"),
+  description: text("description"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+}, (table) => [
+  index("idx_tff_tenant2").on(table.tenantId),
+  uniqueIndex("idx_tff_tenant_key").on(table.tenantId, table.flagKey),
+]);
+
+/** Module audit log — append-only change history. */
+export const moduleAuditLog = pgTable("module_audit_log", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  actorId: text("actor_id").notNull(),
+  actorType: text("actor_type").notNull().default("user"),
+  entityType: text("entity_type").notNull(),
+  entityId: text("entity_id").notNull(),
+  action: text("action").notNull(),
+  beforeJson: text("before_json"),
+  afterJson: text("after_json"),
+  reason: text("reason"),
+  createdAt: text("created_at").notNull(),
+}, (table) => [
+  index("idx_mal_tenant_created2").on(table.tenantId, table.createdAt),
+]);

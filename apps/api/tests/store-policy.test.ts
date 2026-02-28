@@ -56,7 +56,6 @@ describe("Store Policy — Phase 136", () => {
     it("uses valid durability values", () => {
       const validDurabilities = [
         "pg_backed",
-        "sqlite_backed",
         "jsonl_backed",
         "file_seeded",
         "vista_passthrough",

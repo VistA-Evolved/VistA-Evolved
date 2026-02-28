@@ -71,7 +71,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
   server.get("/rcm/credential-vault", async (request, _reply) => {
     const q = (request.query as any) || {};
     const tenantId = q.tenantId || "default";
-    const items = listCredentials(tenantId, {
+    const items = await listCredentials(tenantId, {
       entityType: q.entityType,
       entityId: q.entityId,
       credentialType: q.credentialType,
@@ -86,7 +86,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     if (!body.entityType || !body.entityId || !body.entityName || !body.credentialType || !body.credentialValue) {
       return reply.code(400).send({ ok: false, error: "Missing required fields: entityType, entityId, entityName, credentialType, credentialValue" });
     }
-    const item = createCredential({
+    const item = await createCredential({
       tenantId: body.tenantId,
       entityType: body.entityType,
       entityId: body.entityId,
@@ -114,7 +114,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     const q = (request.query as any) || {};
     const tenantId = q.tenantId || "default";
     const withinDays = parseInt(q.withinDays, 10) || 90;
-    const items = getExpiringCredentials(tenantId, withinDays);
+    const items = await getExpiringCredentials(tenantId, withinDays);
     return { ok: true, items, count: items.length };
   });
 
@@ -122,8 +122,8 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
   server.get("/rcm/credential-vault/stats", async (request, _reply) => {
     const q = (request.query as any) || {};
     const tenantId = q.tenantId || "default";
-    const total = countCredentials(tenantId);
-    const expiring = getExpiringCredentials(tenantId, 90).length;
+    const total = await countCredentials(tenantId);
+    const expiring = (await getExpiringCredentials(tenantId, 90)).length;
     return { ok: true, stats: { total, expiringSoon: expiring } };
   });
 
@@ -132,9 +132,9 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     const { id } = request.params as any;
     const q = (request.query as any) || {};
     const tenantId = q.tenantId || "default";
-    const item = getCredentialById(tenantId, id);
+    const item = await getCredentialById(tenantId, id);
     if (!item) return reply.code(404).send({ ok: false, error: "Credential not found" });
-    const documents = listDocuments(id);
+    const documents = await listDocuments(id);
     return { ok: true, item, documents };
   });
 
@@ -143,7 +143,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     const { id } = request.params as any;
     const body = (request.body as any) || {};
     const tenantId = body.tenantId || "default";
-    const item = updateCredential(tenantId, id, body);
+    const item = await updateCredential(tenantId, id, body);
     if (!item) return reply.code(404).send({ ok: false, error: "Credential not found" });
     appendRcmAudit("credential_vault_update" as any, {
       userId: body.updatedBy,
@@ -158,7 +158,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     const body = (request.body as any) || {};
     const tenantId = body.tenantId || "default";
     const verifiedBy = body.verifiedBy || "system";
-    const item = verifyCredential(tenantId, id, verifiedBy);
+    const item = await verifyCredential(tenantId, id, verifiedBy);
     if (!item) return reply.code(404).send({ ok: false, error: "Credential not found" });
     appendRcmAudit("credential_vault_verify" as any, {
       userId: verifiedBy,
@@ -174,7 +174,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     if (!body.fileName || !body.mimeType || !body.storagePath) {
       return reply.code(400).send({ ok: false, error: "Missing required fields: fileName, mimeType, storagePath" });
     }
-    const doc = addDocument({
+    const doc = await addDocument({
       credentialId: id,
       tenantId: body.tenantId,
       fileName: body.fileName,
@@ -194,14 +194,14 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
   /* ── GET /rcm/credential-vault/:id/documents — list docs ── */
   server.get("/rcm/credential-vault/:id/documents", async (request, _reply) => {
     const { id } = request.params as any;
-    const documents = listDocuments(id);
+    const documents = await listDocuments(id);
     return { ok: true, documents, count: documents.length };
   });
 
   /* ── DELETE /rcm/credential-vault/documents/:docId ─────── */
   server.delete("/rcm/credential-vault/documents/:docId", async (request, reply) => {
     const { docId } = request.params as any;
-    const deleted = deleteDocument(docId);
+    const deleted = await deleteDocument(docId);
     if (!deleted) return reply.code(404).send({ ok: false, error: "Document not found" });
     appendRcmAudit("credential_document_delete" as any, {
       detail: { documentId: docId },
@@ -217,7 +217,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
   server.get("/rcm/accreditation", async (request, _reply) => {
     const q = (request.query as any) || {};
     const tenantId = q.tenantId || "default";
-    const items = listAccreditations(tenantId, {
+    const items = await listAccreditations(tenantId, {
       payerId: q.payerId,
       providerEntityId: q.providerEntityId,
       status: q.status,
@@ -231,7 +231,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     if (!body.payerId || !body.payerName || !body.providerEntityId) {
       return reply.code(400).send({ ok: false, error: "Missing required fields: payerId, payerName, providerEntityId" });
     }
-    const item = createAccreditation({
+    const item = await createAccreditation({
       tenantId: body.tenantId,
       payerId: body.payerId,
       payerName: body.payerName,
@@ -253,8 +253,8 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
   server.get("/rcm/accreditation/stats", async (request, _reply) => {
     const q = (request.query as any) || {};
     const tenantId = q.tenantId || "default";
-    const total = countAccreditations(tenantId);
-    const all = listAccreditations(tenantId);
+    const total = await countAccreditations(tenantId);
+    const all = await listAccreditations(tenantId);
     const byStatus: Record<string, number> = {};
     for (const a of all) { byStatus[a.status] = (byStatus[a.status] || 0) + 1; }
     return { ok: true, stats: { total, byStatus } };
@@ -265,9 +265,9 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     const { id } = request.params as any;
     const q = (request.query as any) || {};
     const tenantId = q.tenantId || "default";
-    const item = getAccreditationById(tenantId, id);
+    const item = await getAccreditationById(tenantId, id);
     if (!item) return reply.code(404).send({ ok: false, error: "Accreditation not found" });
-    const tasks = listTasks(id);
+    const tasks = await listTasks(id);
     return { ok: true, item, tasks };
   });
 
@@ -276,7 +276,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     const { id } = request.params as any;
     const body = (request.body as any) || {};
     const tenantId = body.tenantId || "default";
-    const item = updateAccreditation(tenantId, id, body);
+    const item = await updateAccreditation(tenantId, id, body);
     if (!item) return reply.code(404).send({ ok: false, error: "Accreditation not found" });
     appendRcmAudit("accreditation_update" as any, {
       payerId: item.payerId,
@@ -292,7 +292,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     const body = (request.body as any) || {};
     const tenantId = body.tenantId || "default";
     const verifiedBy = body.verifiedBy || "system";
-    const item = verifyAccreditation(tenantId, id, verifiedBy);
+    const item = await verifyAccreditation(tenantId, id, verifiedBy);
     if (!item) return reply.code(404).send({ ok: false, error: "Accreditation not found" });
     appendRcmAudit("accreditation_verify" as any, {
       payerId: item.payerId,
@@ -308,7 +308,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     const body = (request.body as any) || {};
     const tenantId = body.tenantId || "default";
     if (!body.text) return reply.code(400).send({ ok: false, error: "Missing required field: text" });
-    const item = addNote(tenantId, id, body.author || "system", body.text);
+    const item = await addNote(tenantId, id, body.author || "system", body.text);
     if (!item) return reply.code(404).send({ ok: false, error: "Accreditation not found" });
     return { ok: true, item };
   });
@@ -316,7 +316,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
   /* ── GET /rcm/accreditation/:id/tasks — list tasks ─────── */
   server.get("/rcm/accreditation/:id/tasks", async (request, _reply) => {
     const { id } = request.params as any;
-    const tasks = listTasks(id);
+    const tasks = await listTasks(id);
     return { ok: true, tasks, count: tasks.length };
   });
 
@@ -325,7 +325,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     const { id } = request.params as any;
     const body = (request.body as any) || {};
     if (!body.title) return reply.code(400).send({ ok: false, error: "Missing required field: title" });
-    const task = createTask({
+    const task = await createTask({
       accreditationId: id,
       tenantId: body.tenantId,
       title: body.title,
@@ -344,7 +344,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
   server.patch("/rcm/accreditation/tasks/:taskId", async (request, reply) => {
     const { taskId } = request.params as any;
     const body = (request.body as any) || {};
-    const task = updateTask(taskId, body);
+    const task = await updateTask(taskId, body);
     if (!task) return reply.code(404).send({ ok: false, error: "Task not found" });
     appendRcmAudit("accreditation_task_update" as any, {
       detail: { taskId, fields: Object.keys(body) },
@@ -356,7 +356,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
   server.post("/rcm/accreditation/tasks/:taskId/complete", async (request, reply) => {
     const { taskId } = request.params as any;
     const body = (request.body as any) || {};
-    const task = completeTask(taskId, body.completedBy || "system");
+    const task = await completeTask(taskId, body.completedBy || "system");
     if (!task) return reply.code(404).send({ ok: false, error: "Task not found" });
     appendRcmAudit("accreditation_task_complete" as any, {
       userId: body.completedBy,
@@ -368,7 +368,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
   /* ── DELETE /rcm/accreditation/tasks/:taskId ────────────── */
   server.delete("/rcm/accreditation/tasks/:taskId", async (request, reply) => {
     const { taskId } = request.params as any;
-    const deleted = deleteTask(taskId);
+    const deleted = await deleteTask(taskId);
     if (!deleted) return reply.code(404).send({ ok: false, error: "Task not found" });
     appendRcmAudit("accreditation_task_delete" as any, {
       detail: { taskId },

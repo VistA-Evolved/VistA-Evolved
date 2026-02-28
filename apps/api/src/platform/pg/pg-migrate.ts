@@ -2198,6 +2198,386 @@ CREATE INDEX IF NOT EXISTS idx_workflow_inst_status
   ON workflow_instance(tenant_id, status);
 `,
   },
+
+  // ── Phase 174: RCM SQLite-to-PG parity tables ────────────────
+  {
+    version: 26,
+    name: "phase174_rcm_pg_parity",
+    sql: `
+-- integration_evidence (Phase 112)
+CREATE TABLE IF NOT EXISTS integration_evidence (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  payer_id TEXT NOT NULL,
+  method TEXT NOT NULL,
+  channel TEXT,
+  source TEXT NOT NULL,
+  source_type TEXT NOT NULL DEFAULT 'url',
+  contact_info TEXT,
+  submission_requirements TEXT,
+  supported_channels_json TEXT DEFAULT '[]',
+  last_verified_at TEXT,
+  verified_by TEXT,
+  status TEXT NOT NULL DEFAULT 'unverified',
+  confidence TEXT NOT NULL DEFAULT 'unknown',
+  notes TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_int_evidence_tenant_payer
+  ON integration_evidence(tenant_id, payer_id);
+CREATE INDEX IF NOT EXISTS idx_int_evidence_status
+  ON integration_evidence(tenant_id, status);
+
+-- loa_request (Phase 110) -- separate from rcm_loa_request (durability)
+CREATE TABLE IF NOT EXISTS loa_request (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  patient_name TEXT,
+  payer_id TEXT NOT NULL,
+  payer_name TEXT,
+  encounter_ien TEXT,
+  order_ien TEXT,
+  loa_type TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'draft',
+  urgency TEXT NOT NULL DEFAULT 'standard',
+  diagnosis_codes_json TEXT DEFAULT '[]',
+  procedure_codes_json TEXT DEFAULT '[]',
+  clinical_summary TEXT,
+  requested_service_desc TEXT,
+  requested_by TEXT NOT NULL,
+  requested_at TEXT NOT NULL,
+  authorization_number TEXT,
+  approved_units INTEGER,
+  approved_from TEXT,
+  approved_through TEXT,
+  denial_reason TEXT,
+  packet_generated_at TEXT,
+  submitted_at TEXT,
+  resolved_at TEXT,
+  metadata_json TEXT DEFAULT '{}',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_loa_request_tenant_status
+  ON loa_request(tenant_id, status);
+CREATE INDEX IF NOT EXISTS idx_loa_request_tenant_payer
+  ON loa_request(tenant_id, payer_id);
+CREATE INDEX IF NOT EXISTS idx_loa_request_tenant_patient
+  ON loa_request(tenant_id, patient_dfn);
+
+-- loa_attachment (Phase 110)
+CREATE TABLE IF NOT EXISTS loa_attachment (
+  id TEXT PRIMARY KEY,
+  loa_request_id TEXT NOT NULL,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  attachment_type TEXT NOT NULL,
+  file_name TEXT NOT NULL,
+  mime_type TEXT NOT NULL,
+  storage_path TEXT,
+  inline_content TEXT,
+  description TEXT,
+  added_by TEXT NOT NULL,
+  added_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_loa_attachment_req
+  ON loa_attachment(tenant_id, loa_request_id);
+
+-- accreditation_status (Phase 110)
+CREATE TABLE IF NOT EXISTS accreditation_status (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  payer_id TEXT NOT NULL,
+  payer_name TEXT NOT NULL,
+  provider_entity_id TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending',
+  effective_date TEXT,
+  expiration_date TEXT,
+  last_verified_at TEXT,
+  last_verified_by TEXT,
+  notes_json TEXT DEFAULT '[]',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  created_by TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_accred_status_tenant_payer
+  ON accreditation_status(tenant_id, payer_id);
+CREATE INDEX IF NOT EXISTS idx_accred_status_tenant_entity
+  ON accreditation_status(tenant_id, provider_entity_id);
+
+-- accreditation_task (Phase 110)
+CREATE TABLE IF NOT EXISTS accreditation_task (
+  id TEXT PRIMARY KEY,
+  accreditation_id TEXT NOT NULL,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  title TEXT NOT NULL,
+  description TEXT,
+  status TEXT NOT NULL DEFAULT 'pending',
+  priority TEXT NOT NULL DEFAULT 'medium',
+  due_date TEXT,
+  assigned_to TEXT,
+  completed_at TEXT,
+  completed_by TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_accred_task_tenant_accred
+  ON accreditation_task(tenant_id, accreditation_id);
+CREATE INDEX IF NOT EXISTS idx_accred_task_tenant_status
+  ON accreditation_task(tenant_id, status);
+
+-- credential_artifact (Phase 110)
+CREATE TABLE IF NOT EXISTS credential_artifact (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  entity_type TEXT NOT NULL,
+  entity_id TEXT NOT NULL,
+  entity_name TEXT NOT NULL,
+  credential_type TEXT NOT NULL,
+  credential_value TEXT NOT NULL,
+  issuing_authority TEXT,
+  state TEXT,
+  status TEXT NOT NULL DEFAULT 'active',
+  issued_at TEXT,
+  expires_at TEXT,
+  renewal_reminder_days INTEGER DEFAULT 90,
+  verified_at TEXT,
+  verified_by TEXT,
+  metadata_json TEXT DEFAULT '{}',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  created_by TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_cred_artifact_tenant_entity
+  ON credential_artifact(tenant_id, entity_id);
+CREATE INDEX IF NOT EXISTS idx_cred_artifact_tenant_type
+  ON credential_artifact(tenant_id, credential_type);
+
+-- credential_document (Phase 110)
+CREATE TABLE IF NOT EXISTS credential_document (
+  id TEXT PRIMARY KEY,
+  credential_id TEXT NOT NULL,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  file_name TEXT NOT NULL,
+  mime_type TEXT NOT NULL,
+  storage_path TEXT NOT NULL,
+  file_size_bytes INTEGER,
+  sha256_hash TEXT,
+  uploaded_by TEXT NOT NULL,
+  uploaded_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_cred_doc_tenant_cred
+  ON credential_document(tenant_id, credential_id);
+
+-- claim_draft (Phase 111)
+CREATE TABLE IF NOT EXISTS claim_draft (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  idempotency_key TEXT,
+  status TEXT NOT NULL DEFAULT 'draft',
+  claim_type TEXT NOT NULL DEFAULT 'professional',
+  encounter_id TEXT,
+  patient_id TEXT NOT NULL,
+  patient_name TEXT,
+  provider_id TEXT NOT NULL,
+  billing_provider_id TEXT,
+  payer_id TEXT NOT NULL,
+  payer_name TEXT,
+  date_of_service TEXT NOT NULL,
+  diagnoses_json TEXT DEFAULT '[]',
+  lines_json TEXT DEFAULT '[]',
+  attachments_json TEXT DEFAULT '[]',
+  total_charge_cents INTEGER DEFAULT 0,
+  denial_code TEXT,
+  denial_reason TEXT,
+  appeal_packet_ref TEXT,
+  resubmission_of TEXT,
+  resubmission_count INTEGER DEFAULT 0,
+  paid_amount_cents INTEGER,
+  adjustment_cents INTEGER,
+  patient_resp_cents INTEGER,
+  scrub_score INTEGER,
+  last_scrub_at TEXT,
+  submitted_at TEXT,
+  paid_at TEXT,
+  denied_at TEXT,
+  closed_at TEXT,
+  vista_charge_ien TEXT,
+  vista_ar_ien TEXT,
+  metadata_json TEXT DEFAULT '{}',
+  audit_json TEXT DEFAULT '[]',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  created_by TEXT NOT NULL
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_claim_draft_idemp
+  ON claim_draft(tenant_id, idempotency_key) WHERE idempotency_key IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_claim_draft_tenant_status
+  ON claim_draft(tenant_id, status);
+CREATE INDEX IF NOT EXISTS idx_claim_draft_tenant_payer
+  ON claim_draft(tenant_id, payer_id);
+CREATE INDEX IF NOT EXISTS idx_claim_draft_tenant_patient
+  ON claim_draft(tenant_id, patient_id);
+
+-- claim_lifecycle_event (Phase 111)
+CREATE TABLE IF NOT EXISTS claim_lifecycle_event (
+  id TEXT PRIMARY KEY,
+  claim_draft_id TEXT NOT NULL,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  from_status TEXT,
+  to_status TEXT NOT NULL,
+  actor TEXT NOT NULL,
+  reason TEXT,
+  denial_code TEXT,
+  resubmission_ref TEXT,
+  detail_json TEXT DEFAULT '{}',
+  occurred_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_claim_lce_tenant_draft
+  ON claim_lifecycle_event(tenant_id, claim_draft_id);
+
+-- scrub_rule (Phase 111)
+CREATE TABLE IF NOT EXISTS scrub_rule (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  payer_id TEXT,
+  service_type TEXT,
+  rule_code TEXT NOT NULL,
+  category TEXT NOT NULL,
+  severity TEXT NOT NULL DEFAULT 'error',
+  field TEXT NOT NULL,
+  description TEXT NOT NULL,
+  condition_json TEXT NOT NULL,
+  suggested_fix TEXT,
+  evidence_source TEXT,
+  evidence_date TEXT,
+  blocks_submission INTEGER NOT NULL DEFAULT 1,
+  is_active INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  created_by TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_scrub_rule_tenant
+  ON scrub_rule(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_scrub_rule_tenant_payer
+  ON scrub_rule(tenant_id, payer_id);
+
+-- scrub_result (Phase 111)
+CREATE TABLE IF NOT EXISTS scrub_result (
+  id TEXT PRIMARY KEY,
+  claim_draft_id TEXT NOT NULL,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  rule_id TEXT,
+  rule_code TEXT NOT NULL,
+  severity TEXT NOT NULL,
+  category TEXT NOT NULL,
+  field TEXT NOT NULL,
+  message TEXT NOT NULL,
+  suggested_fix TEXT,
+  blocks_submission INTEGER NOT NULL DEFAULT 1,
+  score INTEGER NOT NULL DEFAULT 100,
+  scrubbed_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_scrub_result_tenant_draft
+  ON scrub_result(tenant_id, claim_draft_id);
+
+-- rcm_durable_job (Phase 142)
+CREATE TABLE IF NOT EXISTS rcm_durable_job (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  type TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'queued',
+  payload_json TEXT NOT NULL DEFAULT '{}',
+  result_json TEXT,
+  error TEXT,
+  attempts INTEGER NOT NULL DEFAULT 0,
+  max_attempts INTEGER NOT NULL DEFAULT 3,
+  idempotency_key TEXT,
+  priority INTEGER NOT NULL DEFAULT 5,
+  scheduled_at TEXT NOT NULL,
+  started_at TEXT,
+  completed_at TEXT,
+  next_retry_at TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_rcm_job_idemp
+  ON rcm_durable_job(tenant_id, idempotency_key) WHERE idempotency_key IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_rcm_job_tenant_status
+  ON rcm_durable_job(tenant_id, status);
+CREATE INDEX IF NOT EXISTS idx_rcm_job_tenant_type
+  ON rcm_durable_job(tenant_id, type);
+
+-- module_catalog (Phase 109)
+CREATE TABLE IF NOT EXISTS module_catalog (
+  module_id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  version TEXT NOT NULL DEFAULT '1.0.0',
+  always_enabled INTEGER NOT NULL DEFAULT 0,
+  dependencies_json TEXT NOT NULL DEFAULT '[]',
+  route_patterns_json TEXT NOT NULL DEFAULT '[]',
+  adapters_json TEXT NOT NULL DEFAULT '[]',
+  permissions_json TEXT NOT NULL DEFAULT '[]',
+  data_stores_json TEXT NOT NULL DEFAULT '[]',
+  health_check_endpoint TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+-- tenant_module (Phase 109)
+CREATE TABLE IF NOT EXISTS tenant_module (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  module_id TEXT NOT NULL,
+  enabled INTEGER NOT NULL DEFAULT 0,
+  plan_tier TEXT NOT NULL DEFAULT 'base',
+  enabled_at TEXT,
+  disabled_at TEXT,
+  enabled_by TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_tenant_module_tid
+  ON tenant_module(tenant_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_tenant_module_uniq
+  ON tenant_module(tenant_id, module_id);
+
+-- tenant_feature_flag (Phase 109)
+CREATE TABLE IF NOT EXISTS tenant_feature_flag (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  flag_key TEXT NOT NULL,
+  flag_value TEXT NOT NULL DEFAULT 'true',
+  module_id TEXT,
+  description TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_tff_tenant
+  ON tenant_feature_flag(tenant_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_tff_uniq
+  ON tenant_feature_flag(tenant_id, flag_key);
+
+-- module_audit_log (Phase 109)
+CREATE TABLE IF NOT EXISTS module_audit_log (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  actor_id TEXT NOT NULL,
+  actor_type TEXT NOT NULL DEFAULT 'user',
+  entity_type TEXT NOT NULL,
+  entity_id TEXT NOT NULL,
+  action TEXT NOT NULL,
+  before_json TEXT,
+  after_json TEXT,
+  reason TEXT,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_mal_tenant_created
+  ON module_audit_log(tenant_id, created_at);
+`,
+  },
 ];
 
 /**
@@ -2383,6 +2763,24 @@ export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: s
     // Phase 160: Department Workflows
     "workflow_definition",
     "workflow_instance",
+    // Phase 174: RCM SQLite-to-PG parity
+    "integration_evidence",
+    "loa_request",
+    "loa_attachment",
+    "accreditation_status",
+    "accreditation_task",
+    "credential_artifact",
+    "credential_document",
+    "claim_draft",
+    "claim_lifecycle_event",
+    "scrub_rule",
+    "scrub_result",
+    "rcm_durable_job",
+    // Phase 174: Module entitlements (SQLite → PG)
+    "module_catalog",
+    "tenant_module",
+    "tenant_feature_flag",
+    "module_audit_log",
   ];
 
   const applied: string[] = [];

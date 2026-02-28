@@ -1,23 +1,18 @@
 /**
- * tenant-guard.ts -- Phase 122: Tenant Isolation Enforcement
+ * tenant-guard.ts -- Phase 122/174: Tenant Isolation Enforcement
  *
- * Shared helper that enforces tenant_id scoping in all SQLite repo operations.
- * SQLite has no Row Level Security, so we enforce at the application layer.
+ * Application-layer tenant isolation guards. In PG-only mode, RLS enforces
+ * tenant isolation at the database level, but these guards provide defense-
+ * in-depth at the application layer.
  *
  * Usage:
  *   import { requireTenantId, assertTenantMatch } from "./tenant-guard.js";
  *
  *   function findFoo(tenantId: string, id: string) {
  *     requireTenantId(tenantId);
- *     const row = db.select()...get();
+ *     const row = db.select()...;
  *     return row ? assertTenantMatch(row, tenantId) : null;
  *   }
- *
- * Rules:
- * - Every tenant-scoped read MUST call requireTenantId() before querying.
- * - Every PK lookup MUST call assertTenantMatch() on the result row.
- * - Write operations MUST include tenantId and call requireTenantId().
- * - Global/admin operations are exempt but must be documented.
  */
 
 /**
@@ -53,18 +48,6 @@ export function assertTenantMatch<T extends { tenantId?: string | null }>(
 }
 
 /**
- * Create a tenant_id WHERE condition for drizzle-orm queries.
- * Returns the eq() condition to include in query builders.
- */
-export function tenantEq<TColumn>(column: TColumn, tenantId: string) {
-  requireTenantId(tenantId);
-  // We import eq lazily to avoid circular deps -- callers pass the column
-  // and use the returned condition in their query chain.
-  // This is a type-safe wrapper that ensures requireTenantId() is always called.
-  return { column, tenantId } as const;
-}
-
-/**
  * Dedicated error class for tenant isolation violations.
  * HTTP handlers should catch this and return 403.
  */
@@ -88,8 +71,8 @@ export const GLOBAL_TABLES = [
 
 /**
  * List of repos/tables that HAVE a tenant_id column and MUST use tenant guards.
- * assertTenantMatch() enforces isolation on these tables at the application layer.
- * Used by the CI gate to verify enforcement.
+ * PG RLS enforces isolation at the database level; these lists provide
+ * documentation and CI gate verification.
  */
 export const TENANT_SCOPED_TABLES = [
   "tenant_payer",
@@ -123,12 +106,7 @@ export const TENANT_SCOPED_TABLES = [
 
 /**
  * Tables that NEED a tenant_id column but don't have one yet.
- * These are tracked separately because assertTenantMatch() cannot enforce
- * isolation on rows without a tenantId field (it silently passes through).
- * Migration to add tenant_id is a follow-up task.
- *
- * WARNING: Until these tables gain a tenant_id column, they have NO
- * application-layer tenant isolation. PG RLS does not cover them either.
+ * PG RLS does not cover these until they gain a tenant_id column.
  */
 export const PENDING_TENANT_ID_TABLES = [
   "portal_access_log",

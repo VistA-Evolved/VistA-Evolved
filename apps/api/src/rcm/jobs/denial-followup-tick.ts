@@ -17,8 +17,8 @@
  * No external payer calls — this is purely internal workflow automation.
  */
 
-import { getDb } from "../../platform/db/db.js";
-import { denialCase } from "../../platform/db/schema.js";
+import { getPgDb } from "../../platform/pg/pg-db.js";
+import { denialCase } from "../../platform/pg/pg-schema.js";
 import { and, sql, lte, notInArray } from "drizzle-orm";
 import { appendRcmAudit } from "../audit/rcm-audit.js";
 import { log } from "../../lib/logger.js";
@@ -76,21 +76,20 @@ export async function handleDenialFollowupTick(
   };
 
   try {
-    const db = getDb();
+    const db = getPgDb();
 
     // Find open denials with deadline within horizon or already overdue
-    const openDenials = db
+    const openDenials = await db
       .select()
       .from(denialCase)
       .where(
         and(
           notInArray(denialCase.denialStatus, TERMINAL_STATUSES),
-          lte(denialCase.deadlineDate, horizonIso),
+          lte(denialCase.deadlineDate, horizonDate),
           sql`${denialCase.deadlineDate} IS NOT NULL`,
         ),
       )
-      .limit(FOLLOWUP_BATCH_SIZE)
-      .all();
+      .limit(FOLLOWUP_BATCH_SIZE);
 
     result.totalScanned = openDenials.length;
 

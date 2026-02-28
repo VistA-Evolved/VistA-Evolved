@@ -63,10 +63,18 @@ export interface Appointment {
 }
 
 /* ------------------------------------------------------------------ */
-/* DB repo -- lazy-wired after initPlatformDb() (Phase 115)              */
+/* DB repo -- lazy-wired (PG-backed, Phase 174)                          */
 /* ------------------------------------------------------------------ */
 
-type ApptRepo = typeof import("../platform/db/repo/portal-appointment-repo.js");
+interface ApptRepo {
+  insertAppointment(data: any): any;
+  findAppointmentById(id: string): any;
+  findUpcoming(dfn: string): any[];
+  findPast(dfn: string): any[];
+  findByDfn(dfn: string): any[];
+  updateAppointment(id: string, updates: any): any;
+  countAppointments(): number;
+}
 let _repo: ApptRepo | null = null;
 
 /** Wire the portal appointment repo. Called from index.ts. */

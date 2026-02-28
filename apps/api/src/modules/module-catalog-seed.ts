@@ -3,7 +3,7 @@
  *
  * Reads config/modules.json + config/skus.json and seeds the platform DB
  * module_catalog table + default tenant entitlements. Called once during
- * startup after initPlatformDb().
+ * startup after initPgSchema().
  *
  * Idempotent: upsertModuleCatalog does INSERT or UPDATE, and
  * seedTenantModules only inserts rows that don't yet exist.
@@ -19,7 +19,7 @@ import {
   listModuleCatalog,
   getEnabledModuleIds,
   appendModuleAudit,
-} from "../platform/db/repo/module-repo.js";
+} from "../platform/pg/repo/module-repo.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -35,7 +35,7 @@ export interface SeedResult {
  * Seed the module catalog from config/modules.json and create default
  * tenant entitlements from the active SKU profile.
  */
-export function seedModuleCatalogFromConfig(): SeedResult {
+export async function seedModuleCatalogFromConfig(): Promise<SeedResult> {
   const modulesPath = join(CONFIG_ROOT, "modules.json");
   const modulesData = JSON.parse(readFileSync(modulesPath, "utf-8"));
   const modules: Record<string, any> = modulesData.modules || {};
@@ -47,7 +47,7 @@ export function seedModuleCatalogFromConfig(): SeedResult {
   // 1. Seed module catalog
   let catalogCount = 0;
   for (const [moduleId, def] of Object.entries(modules)) {
-    upsertModuleCatalog({
+    await upsertModuleCatalog({
       moduleId,
       name: def.name || moduleId,
       description: def.description || "",
@@ -68,11 +68,11 @@ export function seedModuleCatalogFromConfig(): SeedResult {
   const skuProfile = skus[activeSku];
   const skuModules: string[] = skuProfile?.modules || Object.keys(modules);
 
-  const defaultTenantSeeded = seedTenantModules("default", skuModules, "system");
+  const defaultTenantSeeded = await seedTenantModules("default", skuModules, "system");
 
   // 3. Audit the seed event (only if we actually seeded new rows)
   if (defaultTenantSeeded > 0) {
-    appendModuleAudit({
+    await appendModuleAudit({
       tenantId: "default",
       actorId: "system",
       actorType: "system",
@@ -89,7 +89,7 @@ export function seedModuleCatalogFromConfig(): SeedResult {
     });
   }
 
-  const defaultTenantEnabled = getEnabledModuleIds("default").length;
+  const defaultTenantEnabled = (await getEnabledModuleIds("default")).length;
 
   log.info("Module catalog seed complete", {
     catalogCount,

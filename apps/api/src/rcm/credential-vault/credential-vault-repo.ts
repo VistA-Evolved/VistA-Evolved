@@ -7,11 +7,11 @@
  */
 
 import { eq, and, desc, count, lte } from "drizzle-orm";
-import { getDb } from "../../platform/db/db.js";
+import { getPgDb } from "../../platform/pg/pg-db.js";
 import {
   credentialArtifact,
   credentialDocument,
-} from "../../platform/db/schema.js";
+} from "../../platform/pg/pg-schema.js";
 import { randomUUID } from "node:crypto";
 
 /* ------------------------------------------------------------------ */
@@ -133,13 +133,13 @@ function parseDocument(row: any): CredentialDocumentRow {
 /* Credential Artifact CRUD                                            */
 /* ------------------------------------------------------------------ */
 
-export function createCredential(input: CreateCredentialInput): CredentialArtifactRow {
-  const db = getDb();
+export async function createCredential(input: CreateCredentialInput): Promise<CredentialArtifactRow> {
+  const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
   const tenantId = input.tenantId || "default";
 
-  db.insert(credentialArtifact)
+  await db.insert(credentialArtifact)
     .values({
       id,
       tenantId,
@@ -158,48 +158,46 @@ export function createCredential(input: CreateCredentialInput): CredentialArtifa
       createdAt: now,
       updatedAt: now,
       createdBy: input.createdBy,
-    })
-    .run();
+    });
 
-  return getCredentialById(tenantId, id)!;
+  return (await getCredentialById(tenantId, id))!;
 }
 
-export function getCredentialById(tenantId: string, id: string): CredentialArtifactRow | null {
-  const db = getDb();
-  const row = db
+export async function getCredentialById(tenantId: string, id: string): Promise<CredentialArtifactRow | null> {
+  const db = getPgDb();
+  const rows = await db
     .select()
     .from(credentialArtifact)
-    .where(and(eq(credentialArtifact.tenantId, tenantId), eq(credentialArtifact.id, id)))
-    .get();
+    .where(and(eq(credentialArtifact.tenantId, tenantId), eq(credentialArtifact.id, id)));
+  const row = rows[0] ?? null;
   return row ? parseCredential(row) : null;
 }
 
-export function listCredentials(
+export async function listCredentials(
   tenantId: string,
   filters?: { entityType?: string; entityId?: string; credentialType?: string; status?: string }
-): CredentialArtifactRow[] {
-  const db = getDb();
+): Promise<CredentialArtifactRow[]> {
+  const db = getPgDb();
   const conditions = [eq(credentialArtifact.tenantId, tenantId)];
   if (filters?.entityType) conditions.push(eq(credentialArtifact.entityType, filters.entityType));
   if (filters?.entityId) conditions.push(eq(credentialArtifact.entityId, filters.entityId));
   if (filters?.credentialType) conditions.push(eq(credentialArtifact.credentialType, filters.credentialType));
   if (filters?.status) conditions.push(eq(credentialArtifact.status, filters.status));
 
-  const rows = db
+  const rows = await db
     .select()
     .from(credentialArtifact)
     .where(and(...conditions))
-    .orderBy(desc(credentialArtifact.updatedAt))
-    .all();
+    .orderBy(desc(credentialArtifact.updatedAt));
   return rows.map(parseCredential);
 }
 
-export function updateCredential(
+export async function updateCredential(
   tenantId: string,
   id: string,
   updates: Partial<Pick<CreateCredentialInput, "entityName" | "credentialValue" | "issuingAuthority" | "state" | "status" | "issuedAt" | "expiresAt" | "renewalReminderDays" | "metadata">>
-): CredentialArtifactRow | null {
-  const db = getDb();
+): Promise<CredentialArtifactRow | null> {
+  const db = getPgDb();
   const now = new Date().toISOString();
   const setClause: Record<string, any> = { updatedAt: now };
 
@@ -213,50 +211,47 @@ export function updateCredential(
   if (updates.renewalReminderDays !== undefined) setClause.renewalReminderDays = updates.renewalReminderDays;
   if (updates.metadata !== undefined) setClause.metadataJson = JSON.stringify(updates.metadata);
 
-  db.update(credentialArtifact)
+  await db.update(credentialArtifact)
     .set(setClause)
-    .where(and(eq(credentialArtifact.tenantId, tenantId), eq(credentialArtifact.id, id)))
-    .run();
+    .where(and(eq(credentialArtifact.tenantId, tenantId), eq(credentialArtifact.id, id)));
 
   return getCredentialById(tenantId, id);
 }
 
-export function verifyCredential(tenantId: string, id: string, verifiedBy: string): CredentialArtifactRow | null {
-  const db = getDb();
+export async function verifyCredential(tenantId: string, id: string, verifiedBy: string): Promise<CredentialArtifactRow | null> {
+  const db = getPgDb();
   const now = new Date().toISOString();
-  db.update(credentialArtifact)
+  await db.update(credentialArtifact)
     .set({ verifiedAt: now, verifiedBy, updatedAt: now })
-    .where(and(eq(credentialArtifact.tenantId, tenantId), eq(credentialArtifact.id, id)))
-    .run();
+    .where(and(eq(credentialArtifact.tenantId, tenantId), eq(credentialArtifact.id, id)));
   return getCredentialById(tenantId, id);
 }
 
 /** Get credentials expiring within the given number of days. */
-export function getExpiringCredentials(tenantId: string, withinDays: number = 90): CredentialArtifactRow[] {
-  const db = getDb();
+export async function getExpiringCredentials(tenantId: string, withinDays: number = 90): Promise<CredentialArtifactRow[]> {
+  const db = getPgDb();
   const cutoff = new Date(Date.now() + withinDays * 86400000).toISOString();
-  const rows = db
+  const rows = await db
     .select()
     .from(credentialArtifact)
     .where(and(
       eq(credentialArtifact.tenantId, tenantId),
       lte(credentialArtifact.expiresAt, cutoff),
     ))
-    .orderBy(credentialArtifact.expiresAt)
-    .all();
+    .orderBy(credentialArtifact.expiresAt);
   // Filter out null expiresAt and already-revoked
   return rows
     .filter((r: any) => r.expiresAt && r.status !== "revoked")
     .map(parseCredential);
 }
 
-export function countCredentials(tenantId: string): number {
-  const db = getDb();
-  const result = db
+export async function countCredentials(tenantId: string): Promise<number> {
+  const db = getPgDb();
+  const rows = await db
     .select({ cnt: count() })
     .from(credentialArtifact)
-    .where(eq(credentialArtifact.tenantId, tenantId))
-    .get();
+    .where(eq(credentialArtifact.tenantId, tenantId));
+  const result = rows[0] ?? null;
   return (result as any)?.cnt ?? 0;
 }
 
@@ -264,13 +259,13 @@ export function countCredentials(tenantId: string): number {
 /* Credential Document CRUD                                            */
 /* ------------------------------------------------------------------ */
 
-export function addDocument(input: CreateDocumentInput): CredentialDocumentRow {
-  const db = getDb();
+export async function addDocument(input: CreateDocumentInput): Promise<CredentialDocumentRow> {
+  const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
   const tenantId = input.tenantId || "default";
 
-  db.insert(credentialDocument)
+  await db.insert(credentialDocument)
     .values({
       id,
       credentialId: input.credentialId,
@@ -282,25 +277,23 @@ export function addDocument(input: CreateDocumentInput): CredentialDocumentRow {
       sha256Hash: input.sha256Hash || null,
       uploadedBy: input.uploadedBy,
       uploadedAt: now,
-    })
-    .run();
+    });
 
-  const row = db.select().from(credentialDocument).where(eq(credentialDocument.id, id)).get();
-  return parseDocument(row);
+  const rows = await db.select().from(credentialDocument).where(eq(credentialDocument.id, id));
+  return parseDocument(rows[0]);
 }
 
-export function listDocuments(credentialId: string): CredentialDocumentRow[] {
-  const db = getDb();
-  return db
+export async function listDocuments(credentialId: string): Promise<CredentialDocumentRow[]> {
+  const db = getPgDb();
+  const rows = await db
     .select()
     .from(credentialDocument)
-    .where(eq(credentialDocument.credentialId, credentialId))
-    .all()
-    .map(parseDocument);
+    .where(eq(credentialDocument.credentialId, credentialId));
+  return rows.map(parseDocument);
 }
 
-export function deleteDocument(id: string): boolean {
-  const db = getDb();
-  const result = db.delete(credentialDocument).where(eq(credentialDocument.id, id)).run();
-  return result.changes > 0;
+export async function deleteDocument(id: string): Promise<boolean> {
+  const db = getPgDb();
+  const result = await db.delete(credentialDocument).where(eq(credentialDocument.id, id));
+  return (result as any).rowCount > 0;
 }

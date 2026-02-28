@@ -2,15 +2,13 @@
  * Server — Lifecycle: Startup & Shutdown
  *
  * Phase 173: Extracted from index.ts — all post-listen startup logic including
- * SQLite init, PG init, repo wiring (both SQLite and PG phases),
- * Phase 146 durability wave, analytics, ETL, background jobs, and shutdown.
+ * PG init, repo wiring, Phase 146 durability wave, analytics, ETL,
+ * background jobs, and shutdown.
  */
 
 import { log } from "../lib/logger.js";
 import { audit } from "../lib/audit.js";
 import { isPgConfigured, initPlatformPg, pgHealthCheck, getPgPool } from "../platform/pg/index.js";
-import { initPlatformDb } from "../platform/db/init.js";
-import { setDbEntitlementProvider } from "../modules/module-registry.js";
 import { startAggregationJob, stopAggregationJob } from "../services/analytics-aggregator.js";
 import { initEtl } from "../services/analytics-etl.js";
 import { initAnalyticsStore } from "../services/analytics-store.js";
@@ -20,177 +18,17 @@ import { dbPoolInUse, dbPoolTotal, dbPoolWaiting } from "../telemetry/metrics.js
 import { getRuntimeMode } from "../platform/runtime-mode.js";
 
 /**
- * Initialize SQLite platform DB and wire all SQLite-backed repos.
- * Returns true if DB init succeeded.
- */
-async function initSqliteLayer(): Promise<boolean> {
-  const dbResult = initPlatformDb();
-  if (!dbResult.ok) {
-    log.warn("Platform DB init failed", { ok: false, error: dbResult.error });
-    return false;
-  }
-
-  log.info("Platform DB init", { ok: dbResult.ok, migrated: dbResult.migrated, seeded: dbResult.seeded });
-
-  // Phase 114: Wire DB-backed durable session store
-  try {
-    const sessionRepoMod = await import("../platform/db/repo/session-repo.js");
-    const { initSessionRepo } = await import("../auth/session-store.js");
-    initSessionRepo(sessionRepoMod);
-    log.info("Session store wired to DB");
-  } catch (sessErr: any) {
-    log.warn("Session repo wire failed (cache-only fallback)", { error: sessErr.message });
-  }
-
-  // Phase 114: Wire DB-backed durable workqueue store
-  try {
-    const wqRepoMod = await import("../platform/db/repo/workqueue-repo.js");
-    const { initWorkqueueRepo } = await import("../rcm/workqueues/workqueue-store.js");
-    initWorkqueueRepo(wqRepoMod);
-    log.info("Workqueue store wired to DB");
-  } catch (wqErr: any) {
-    log.warn("Workqueue repo wire failed (non-fatal)", { error: wqErr.message });
-  }
-
-  // Phase 114: Wire capability matrix audit to DB
-  try {
-    const { getDb } = await import("../platform/db/db.js");
-    const { payerAuditEvent } = await import("../platform/db/schema.js");
-    const { initCapabilityAudit } = await import("../rcm/payerOps/capability-matrix.js");
-    initCapabilityAudit({ getDb, payerAuditEvent });
-    log.info("Capability matrix audit wired to DB");
-  } catch (capErr: any) {
-    log.warn("Capability audit wire failed (non-fatal)", { error: capErr.message });
-  }
-
-  // Phase 115: Wire DB-backed portal messaging store
-  try {
-    const pmRepo = await import("../platform/db/repo/portal-message-repo.js");
-    const { initMessageRepo } = await import("../services/portal-messaging.js");
-    await initMessageRepo(pmRepo);
-    log.info("Portal messaging store wired to DB");
-  } catch (pmErr: any) {
-    log.warn("Portal message repo wire failed (non-fatal)", { error: pmErr.message });
-  }
-
-  // Phase 115: Wire DB-backed portal appointments store
-  try {
-    const paRepo = await import("../platform/db/repo/portal-appointment-repo.js");
-    const { initAppointmentRepo } = await import("../services/portal-appointments.js");
-    initAppointmentRepo(paRepo);
-    log.info("Portal appointments store wired to DB");
-  } catch (paErr: any) {
-    log.warn("Portal appointment repo wire failed (non-fatal)", { error: paErr.message });
-  }
-
-  // Phase 115: Wire DB-backed telehealth room store
-  try {
-    const trRepo = await import("../platform/db/repo/telehealth-room-repo.js");
-    const { initTelehealthRoomRepo } = await import("../telehealth/room-store.js");
-    initTelehealthRoomRepo(trRepo);
-    log.info("Telehealth room store wired to DB");
-  } catch (trErr: any) {
-    log.warn("Telehealth room repo wire failed (non-fatal)", { error: trErr.message });
-  }
-
-  // Phase 115: Wire DB-backed imaging worklist store
-  try {
-    const iwRepo = await import("../platform/db/repo/imaging-worklist-repo.js");
-    const { initWorklistRepo } = await import("../services/imaging-worklist.js");
-    await initWorklistRepo(iwRepo);
-    log.info("Imaging worklist store wired to DB");
-  } catch (iwErr: any) {
-    log.warn("Imaging worklist repo wire failed (non-fatal)", { error: iwErr.message });
-  }
-
-  // Phase 115: Wire DB-backed imaging ingest store
-  try {
-    const iiRepo = await import("../platform/db/repo/imaging-ingest-repo.js");
-    const { initIngestRepo } = await import("../services/imaging-ingest.js");
-    await initIngestRepo(iiRepo);
-    log.info("Imaging ingest store wired to DB");
-  } catch (iiErr: any) {
-    log.warn("Imaging ingest repo wire failed (non-fatal)", { error: iiErr.message });
-  }
-
-  // Phase 115: Wire DB-backed idempotency store
-  try {
-    const idRepo = await import("../platform/db/repo/idempotency-repo.js");
-    const { initIdempotencyRepo } = await import("../middleware/idempotency.js");
-    initIdempotencyRepo(idRepo);
-    log.info("Idempotency store wired to DB");
-  } catch (idErr: any) {
-    log.warn("Idempotency repo wire failed (non-fatal)", { error: idErr.message });
-  }
-
-  // Phase 121: Wire DB-backed RCM claim store
-  try {
-    const rcRepo = await import("../platform/db/repo/rcm-claim-repo.js");
-    const { initClaimStoreRepo } = await import("../rcm/domain/claim-store.js");
-    initClaimStoreRepo(rcRepo);
-    log.info("RCM claim store wired to DB");
-  } catch (rcErr: any) {
-    log.warn("RCM claim repo wire failed (non-fatal)", { error: rcErr.message });
-  }
-
-  // Phase 121: Wire DB-backed RCM claim case store
-  try {
-    const ccRepo = await import("../platform/db/repo/rcm-claim-case-repo.js");
-    const { initClaimCaseRepo } = await import("../rcm/claims/claim-store.js");
-    initClaimCaseRepo(ccRepo);
-    log.info("RCM claim case store wired to DB");
-  } catch (ccErr: any) {
-    log.warn("RCM claim case repo wire failed (non-fatal)", { error: ccErr.message });
-  }
-
-  // Phase 121: Wire DB-backed portal access log store
-  try {
-    const alRepo = await import("../platform/db/repo/access-log-repo.js");
-    const { initAccessLogRepo } = await import("../portal-iam/access-log-store.js");
-    initAccessLogRepo(alRepo);
-    log.info("Portal access log store wired to DB");
-  } catch (alErr: any) {
-    log.warn("Portal access log repo wire failed (non-fatal)", { error: alErr.message });
-  }
-
-  // Phase 121: Wire DB-backed scheduling request store
-  try {
-    const srRepo = await import("../platform/db/repo/scheduling-request-repo.js");
-    const { initSchedulingRepo } = await import("../adapters/scheduling/vista-adapter.js");
-    await initSchedulingRepo(srRepo);
-    log.info("Scheduling request store wired to DB");
-  } catch (srErr: any) {
-    log.warn("Scheduling request repo wire failed (non-fatal)", { error: srErr.message });
-  }
-
-  // Phase 109: Seed module catalog + default tenant entitlements from modules.json
-  try {
-    const { seedModuleCatalogFromConfig } = await import("../modules/module-catalog-seed.js");
-    const seedResult = seedModuleCatalogFromConfig();
-    log.info("Module catalog seeded", { ...seedResult });
-    // Wire DB-backed entitlement provider into module-registry
-    const { getEnabledModuleIds } = await import("../platform/db/repo/module-repo.js");
-    setDbEntitlementProvider((tenantId: string) => getEnabledModuleIds(tenantId));
-  } catch (seedErr: any) {
-    log.warn("Module catalog seed failed (non-fatal)", { error: seedErr.message });
-  }
-
-  return true;
-}
-
-/**
- * Initialize Postgres platform DB and re-wire repos.
- * This overrides the SQLite wiring when STORE_BACKEND=pg.
+ * Initialize Postgres platform DB and wire all repos.
  */
 async function initPostgresLayer(): Promise<void> {
   if (!isPgConfigured()) {
-    log.info("Platform PG not configured (SQLite-only mode)", { hint: "Set PLATFORM_PG_URL to enable Postgres" });
+    log.info("Platform PG not configured (in-memory only)", { hint: "Set PLATFORM_PG_URL to enable Postgres" });
     return;
   }
 
   const pgResult = await initPlatformPg();
   if (!pgResult.ok) {
-    log.warn("Platform PG init failed (SQLite fallback active)", {
+    log.warn("Platform PG init failed", {
       ok: false,
       reason: pgResult.reason,
       error: pgResult.error,
@@ -205,52 +43,52 @@ async function initPostgresLayer(): Promise<void> {
     latencyMs: pgResult.healthCheck?.latencyMs,
   });
 
-  // Phase 117: Re-wire repos to PG when STORE_BACKEND resolves to "pg"
+  // Phase 117: Wire repos to PG when STORE_BACKEND resolves to "pg"
   const { resolveBackend } = await import("../platform/store-resolver.js");
   const backend = resolveBackend();
   if (backend !== "pg") return;
 
-  // Session repo -> PG (overrides SQLite wiring above)
+  // Session repo -> PG
   try {
     const pgSessionRepoMod = await import("../platform/pg/repo/session-repo.js");
     const { initSessionRepo } = await import("../auth/session-store.js");
     initSessionRepo(pgSessionRepoMod);
-    log.info("Session store re-wired to PG (multi-instance safe)");
+    log.info("Session store wired to PG");
   } catch (psErr: any) {
-    log.warn("PG session repo wire failed (SQLite fallback)", { error: psErr.message });
+    log.warn("PG session repo wire failed (in-memory fallback)", { error: psErr.message });
   }
 
-  // Workqueue repo -> PG (overrides SQLite wiring above)
+  // Workqueue repo -> PG
   try {
     const pgWqRepoMod = await import("../platform/pg/repo/workqueue-repo.js");
     const { initWorkqueueRepo } = await import("../rcm/workqueues/workqueue-store.js");
     initWorkqueueRepo(pgWqRepoMod);
-    log.info("Workqueue store re-wired to PG (multi-instance safe)");
+    log.info("Workqueue store wired to PG");
   } catch (pwqErr: any) {
-    log.warn("PG workqueue repo wire failed (SQLite fallback)", { error: pwqErr.message });
+    log.warn("PG workqueue repo wire failed (in-memory fallback)", { error: pwqErr.message });
   }
 
-  // Phase 126: RCM claim store -> PG (overrides SQLite wiring above)
+  // Phase 126: RCM claim store -> PG
   try {
     const pgClaimRepoMod = await import("../platform/pg/repo/rcm-claim-repo.js");
     const { initClaimStoreRepo } = await import("../rcm/domain/claim-store.js");
     initClaimStoreRepo(pgClaimRepoMod);
-    log.info("RCM claim store re-wired to PG");
+    log.info("RCM claim store wired to PG");
   } catch (rcErr: any) {
-    log.warn("PG RCM claim repo wire failed (SQLite fallback)", { error: rcErr.message });
+    log.warn("PG RCM claim repo wire failed (in-memory fallback)", { error: rcErr.message });
   }
 
-  // Phase 126: RCM claim case store -> PG (overrides SQLite wiring above)
+  // Phase 126: RCM claim case store -> PG
   try {
     const pgCaseRepoMod = await import("../platform/pg/repo/rcm-claim-case-repo.js");
     const { initClaimCaseRepo } = await import("../rcm/claims/claim-store.js");
     initClaimCaseRepo(pgCaseRepoMod);
-    log.info("RCM claim case store re-wired to PG");
+    log.info("RCM claim case store wired to PG");
   } catch (ccErr: any) {
-    log.warn("PG RCM claim case repo wire failed (SQLite fallback)", { error: ccErr.message });
+    log.warn("PG RCM claim case repo wire failed (in-memory fallback)", { error: ccErr.message });
   }
 
-  // Phase 126: EDI ack/status store -> PG (new -- no SQLite predecessor)
+  // Phase 126: EDI ack/status store -> PG
   try {
     const pgAckRepoMod = await import("../platform/pg/repo/edi-ack-repo.js");
     const { initAckStatusRepo } = await import("../rcm/edi/ack-status-processor.js");
@@ -260,7 +98,7 @@ async function initPostgresLayer(): Promise<void> {
     log.warn("PG EDI ack repo wire failed (cache-only fallback)", { error: ackErr.message });
   }
 
-  // Phase 126: EDI pipeline store -> PG (new -- no SQLite predecessor)
+  // Phase 126: EDI pipeline store -> PG
   try {
     const pgPipeRepoMod = await import("../platform/pg/repo/edi-pipeline-repo.js");
     const { initPipelineRepo } = await import("../rcm/edi/pipeline.js");
@@ -270,27 +108,27 @@ async function initPostgresLayer(): Promise<void> {
     log.warn("PG EDI pipeline repo wire failed (cache-only fallback)", { error: pipeErr.message });
   }
 
-  // Phase 127: Portal message store -> PG (overrides SQLite wiring above)
+  // Phase 127: Portal message store -> PG
   try {
     const pgMsgRepoMod = await import("../platform/pg/repo/pg-portal-message-repo.js");
     const { initMessageRepo } = await import("../services/portal-messaging.js");
     await initMessageRepo(pgMsgRepoMod);
-    log.info("Portal messaging store re-wired to PG");
+    log.info("Portal messaging store wired to PG");
   } catch (pmErr: any) {
-    log.warn("PG portal message repo wire failed (SQLite fallback)", { error: pmErr.message });
+    log.warn("PG portal message repo wire failed (in-memory fallback)", { error: pmErr.message });
   }
 
-  // Phase 127: Portal access log store -> PG (overrides SQLite wiring above)
+  // Phase 127: Portal access log store -> PG
   try {
     const pgAlogRepoMod = await import("../platform/pg/repo/pg-portal-access-log-repo.js");
     const { initAccessLogRepo } = await import("../portal-iam/access-log-store.js");
     initAccessLogRepo(pgAlogRepoMod);
-    log.info("Portal access log store re-wired to PG");
+    log.info("Portal access log store wired to PG");
   } catch (alErr: any) {
-    log.warn("PG portal access log repo wire failed (SQLite fallback)", { error: alErr.message });
+    log.warn("PG portal access log repo wire failed (in-memory fallback)", { error: alErr.message });
   }
 
-  // Phase 127: Portal patient settings store -> PG (new -- no SQLite predecessor)
+  // Phase 127: Portal patient settings store -> PG
   try {
     const pgSettingsRepoMod = await import("../platform/pg/repo/pg-portal-patient-setting-repo.js");
     const { initSettingsRepo } = await import("../services/portal-settings.js");
@@ -300,47 +138,47 @@ async function initPostgresLayer(): Promise<void> {
     log.warn("PG portal settings repo wire failed (cache-only fallback)", { error: psErr.message });
   }
 
-  // Phase 127: Telehealth room store -> PG (overrides SQLite wiring above)
+  // Phase 127: Telehealth room store -> PG
   try {
     const pgRoomRepoMod = await import("../platform/pg/repo/pg-telehealth-room-repo.js");
     const { initTelehealthRoomRepo } = await import("../telehealth/room-store.js");
     initTelehealthRoomRepo(pgRoomRepoMod);
-    log.info("Telehealth room store re-wired to PG");
+    log.info("Telehealth room store wired to PG");
   } catch (trErr: any) {
-    log.warn("PG telehealth room repo wire failed (SQLite fallback)", { error: trErr.message });
+    log.warn("PG telehealth room repo wire failed (in-memory fallback)", { error: trErr.message });
   }
 
-  // Phase 128: Imaging worklist store -> PG (overrides SQLite wiring above)
+  // Phase 128: Imaging worklist store -> PG
   try {
     const pgIwRepo = await import("../platform/pg/repo/pg-imaging-worklist-repo.js");
     const { initWorklistRepo } = await import("../services/imaging-worklist.js");
     await initWorklistRepo(pgIwRepo);
-    log.info("Imaging worklist store re-wired to PG");
+    log.info("Imaging worklist store wired to PG");
   } catch (iwErr: any) {
-    log.warn("PG imaging worklist repo wire failed (SQLite fallback)", { error: iwErr.message });
+    log.warn("PG imaging worklist repo wire failed (in-memory fallback)", { error: iwErr.message });
   }
 
-  // Phase 128: Imaging ingest store -> PG (overrides SQLite wiring above)
+  // Phase 128: Imaging ingest store -> PG
   try {
     const pgIiRepo = await import("../platform/pg/repo/pg-imaging-ingest-repo.js");
     const { initIngestRepo } = await import("../services/imaging-ingest.js");
     await initIngestRepo(pgIiRepo);
-    log.info("Imaging ingest store re-wired to PG");
+    log.info("Imaging ingest store wired to PG");
   } catch (iiErr: any) {
-    log.warn("PG imaging ingest repo wire failed (SQLite fallback)", { error: iiErr.message });
+    log.warn("PG imaging ingest repo wire failed (in-memory fallback)", { error: iiErr.message });
   }
 
-  // Phase 128: Scheduling request store -> PG (overrides SQLite wiring above)
+  // Phase 128: Scheduling request store -> PG
   try {
     const pgSrRepo = await import("../platform/pg/repo/pg-scheduling-request-repo.js");
     const { initSchedulingRepo: initSchedPgRepo } = await import("../adapters/scheduling/vista-adapter.js");
     await initSchedPgRepo(pgSrRepo);
-    log.info("Scheduling request store re-wired to PG");
+    log.info("Scheduling request store wired to PG");
   } catch (srErr: any) {
-    log.warn("PG scheduling request repo wire failed (SQLite fallback)", { error: srErr.message });
+    log.warn("PG scheduling request repo wire failed (in-memory fallback)", { error: srErr.message });
   }
 
-  // Phase 128: Scheduling booking lock store -> PG (new -- no SQLite predecessor)
+  // Phase 128: Scheduling booking lock store -> PG
   try {
     const pgSlRepo = await import("../platform/pg/repo/pg-scheduling-lock-repo.js");
     const { initSchedulingLockRepo } = await import("../adapters/scheduling/vista-adapter.js");
@@ -532,10 +370,7 @@ export async function runLifecycle(opts: {
     detail: { host: opts.host, port: opts.port, phase: "25-bi-analytics", commitSha: process.env.BUILD_SHA || "dev" },
   });
 
-  // Phase 95B: Initialize SQLite platform DB (migrate + seed)
-  await initSqliteLayer();
-
-  // Phase 101: Initialize Postgres platform DB (if configured)
+  // Initialize Postgres platform DB and wire repos
   await initPostgresLayer();
 
   // Start background jobs

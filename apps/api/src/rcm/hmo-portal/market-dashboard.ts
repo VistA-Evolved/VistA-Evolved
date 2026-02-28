@@ -67,11 +67,11 @@ export interface MarketSummary {
 
 /* ── Generate market summary ────────────────────────────────── */
 
-export function generateMarketSummary(tenantId?: string): MarketSummary {
-  const manifest = generateHmoManifest();
+export async function generateMarketSummary(tenantId?: string): Promise<MarketSummary> {
+  const manifest = await generateHmoManifest();
   let contracting: ContractingDashboard;
   try {
-    contracting = getContractingDashboard(tenantId);
+    contracting = await getContractingDashboard(tenantId);
   } catch {
     // DB not available — provide defaults
     contracting = {

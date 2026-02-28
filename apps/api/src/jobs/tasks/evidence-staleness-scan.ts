@@ -40,7 +40,7 @@ export async function handleEvidenceStalenessScan(
   );
 
   // 1. Fetch all evidence for tenant
-  const allEvidence = listAll(tenantId !== "default" ? tenantId : undefined);
+  const allEvidence = await listAll(tenantId !== "default" ? tenantId : undefined);
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - staleAfterDays);
   const cutoffIso = cutoffDate.toISOString();
@@ -70,7 +70,7 @@ export async function handleEvidenceStalenessScan(
     let flagged = 0;
     for (const ev of staleEntries) {
       try {
-        updateEvidence(ev.id, { status: "stale" });
+        await updateEvidence(ev.id, { status: "stale" });
         flagged++;
       } catch (err) {
         const errMsg = err instanceof Error ? err.message : String(err);

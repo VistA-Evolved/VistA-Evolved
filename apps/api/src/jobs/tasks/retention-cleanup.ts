@@ -2,8 +2,8 @@
  * Task: retention_cleanup — Phase 116
  *
  * Purges expired / stale data across multiple stores:
- *  - Expired sessions (SQLite session store)
- *  - Expired idempotency keys (SQLite + PG)
+ *  - Expired sessions (PG session store)
+ *  - Expired idempotency keys (PG)
  *  - Completed jobs older than threshold (PG job_run_log)
  *
  * Payload (no PHI):
@@ -21,8 +21,8 @@ import { isPgConfigured, getPgPool } from "../../platform/pg/index.js";
  * Run retention cleanup across multiple data stores.
  *
  * Strategy:
- *  1. Purge expired sessions from SQLite
- *  2. Purge expired idempotency keys from SQLite + PG
+ *  1. Purge expired sessions from PG
+ *  2. Purge expired idempotency keys from PG
  *  3. Purge old completed job run log entries from PG
  *  4. Report results
  */
@@ -50,35 +50,29 @@ export async function handleRetentionCleanup(
     sessionsDeleted: 0,
     idempotencyKeysDeleted: 0,
     jobRunLogsDeleted: 0,
-    pgIdempotencyKeysDeleted: 0,
   };
 
-  // 1. Purge expired sessions from SQLite
+  if (!isPgConfigured()) {
+    log.warn("retention_cleanup: PG not configured, skipping all cleanup");
+    return;
+  }
+
+  const pool = getPgPool();
+
+  // 1. Purge expired sessions from PG
   try {
-    const { getDb } = await import("../../platform/db/db.js");
-    const db = getDb();
     const sessionCutoff = new Date();
     sessionCutoff.setDate(sessionCutoff.getDate() - expiredSessionsMaxAgeDays);
     const cutoffIso = sessionCutoff.toISOString();
 
     if (dryRun) {
-      const countResult = db.all(
-        // Use raw SQL for count query
-        (db as any).run?.constructor
-          ? undefined as any
-          : undefined as any,
-      );
-      // In dry-run mode, just count — don't delete
       log.info("retention_cleanup: dry-run sessions", { cutoff: cutoffIso });
     } else {
-      // Use raw better-sqlite3 to delete expired sessions
-      const { getRawDb } = await import("../../platform/db/db.js");
-      const rawDb = getRawDb();
-      const stmt = rawDb.prepare(
-        "DELETE FROM session WHERE expires_at < ?",
+      const res = await pool.query(
+        "DELETE FROM session WHERE expires_at < $1",
+        [cutoffIso],
       );
-      const result = stmt.run(cutoffIso);
-      results.sessionsDeleted = result.changes;
+      results.sessionsDeleted = res.rowCount ?? 0;
     }
   } catch (err) {
     const errMsg = err instanceof Error ? err.message : String(err);
@@ -87,20 +81,18 @@ export async function handleRetentionCleanup(
     });
   }
 
-  // 2. Purge expired idempotency keys from SQLite
+  // 2. Purge expired idempotency keys from PG
   try {
-    const { getRawDb } = await import("../../platform/db/db.js");
-    const rawDb = getRawDb();
     const idemCutoff = new Date();
     idemCutoff.setDate(idemCutoff.getDate() - idempotencyKeysMaxAgeDays);
     const cutoffIso = idemCutoff.toISOString();
 
     if (!dryRun) {
-      const stmt = rawDb.prepare(
-        "DELETE FROM idempotency_key WHERE expires_at < ?",
+      const res = await pool.query(
+        "DELETE FROM idempotency_key WHERE expires_at < $1",
+        [cutoffIso],
       );
-      const result = stmt.run(cutoffIso);
-      results.idempotencyKeysDeleted = result.changes;
+      results.idempotencyKeysDeleted = res.rowCount ?? 0;
     }
   } catch (err) {
     const errMsg = err instanceof Error ? err.message : String(err);
@@ -109,48 +101,23 @@ export async function handleRetentionCleanup(
     });
   }
 
-  // 3. Purge expired idempotency keys from PG
-  if (isPgConfigured()) {
-    try {
-      const pool = getPgPool();
-      const idemCutoff = new Date();
-      idemCutoff.setDate(idemCutoff.getDate() - idempotencyKeysMaxAgeDays);
+  // 3. Purge old completed job run log entries from PG
+  try {
+    const jobCutoff = new Date();
+    jobCutoff.setDate(jobCutoff.getDate() - completedJobsMaxAgeDays);
 
-      if (!dryRun) {
-        const res = await pool.query(
-          "DELETE FROM idempotency_key WHERE expires_at < $1",
-          [idemCutoff.toISOString()],
-        );
-        results.pgIdempotencyKeysDeleted = res.rowCount ?? 0;
-      }
-    } catch (err) {
-      const errMsg = err instanceof Error ? err.message : String(err);
-      log.warn("retention_cleanup: PG idempotency purge failed (non-fatal)", {
-        error: errMsg,
-      });
+    if (!dryRun) {
+      const res = await pool.query(
+        "DELETE FROM job_run_log WHERE ok = true AND finished_at < $1",
+        [jobCutoff.toISOString()],
+      );
+      results.jobRunLogsDeleted = res.rowCount ?? 0;
     }
-  }
-
-  // 4. Purge old completed job run log entries from PG
-  if (isPgConfigured()) {
-    try {
-      const pool = getPgPool();
-      const jobCutoff = new Date();
-      jobCutoff.setDate(jobCutoff.getDate() - completedJobsMaxAgeDays);
-
-      if (!dryRun) {
-        const res = await pool.query(
-          "DELETE FROM job_run_log WHERE ok = true AND finished_at < $1",
-          [jobCutoff.toISOString()],
-        );
-        results.jobRunLogsDeleted = res.rowCount ?? 0;
-      }
-    } catch (err) {
-      const errMsg = err instanceof Error ? err.message : String(err);
-      log.warn("retention_cleanup: job run log purge failed (non-fatal)", {
-        error: errMsg,
-      });
-    }
+  } catch (err) {
+    const errMsg = err instanceof Error ? err.message : String(err);
+    log.warn("retention_cleanup: job run log purge failed (non-fatal)", {
+      error: errMsg,
+    });
   }
 
   log.info("retention_cleanup: complete", {

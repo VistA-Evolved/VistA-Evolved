@@ -32,7 +32,6 @@ import {
   errorsTotal, sanitizeRoute, recordSloSample, auditEventsTotal,
 } from "../telemetry/metrics.js";
 import { shutdownTracing } from "../telemetry/tracing.js";
-import { closeDb } from "../platform/db/db.js";
 import { closePgDb } from "../platform/pg/pg-db.js";
 
 /* ================================================================== */
@@ -515,8 +514,6 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
         try { stopShipperJob(); } catch { /* timer may already be cleared */ }
         // Phase 169: stop identity link request cleanup
         try { stopLinkRequestCleanup(); } catch { /* timer may already be cleared */ }
-        // Phase 95B: close platform SQLite DB
-        try { closeDb(); } catch { /* DB may already be closed */ }
         // Phase 101: close platform Postgres pool
         try { await closePgDb(); } catch { /* pool may already be closed */ }
         // Phase 116: stop Graphile Worker job runner

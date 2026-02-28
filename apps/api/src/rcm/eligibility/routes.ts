@@ -82,7 +82,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
     // MANUAL provenance: user enters result directly
     if (provenance === "MANUAL") {
       const manual = body.manualResult || {};
-      const record = insertEligibilityCheck({
+      const record = await insertEligibilityCheck({
         patientDfn: String(body.patientDfn),
         payerId: String(body.payerId),
         subscriberId: body.subscriberId ?? null,
@@ -109,7 +109,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
 
     // EDI stub provenances: return integration-pending without external call
     if (provenance === "EDI_270_271" || provenance === "CLEARINGHOUSE") {
-      const record = insertEligibilityCheck({
+      const record = await insertEligibilityCheck({
         patientDfn: String(body.patientDfn),
         payerId: String(body.payerId),
         subscriberId: body.subscriberId ?? null,
@@ -147,7 +147,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
     try {
       const adapter = getPayerAdapterForMode(provenance === "SANDBOX" ? "sandbox" : "portal");
       if (!adapter) {
-        const record = insertEligibilityCheck({
+        const record = await insertEligibilityCheck({
           patientDfn: String(body.patientDfn),
           payerId: String(body.payerId),
           subscriberId: body.subscriberId ?? null,
@@ -174,7 +174,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         tenantId,
       });
 
-      const record = insertEligibilityCheck({
+      const record = await insertEligibilityCheck({
         patientDfn: String(body.patientDfn),
         payerId: String(body.payerId),
         subscriberId: body.subscriberId ?? null,
@@ -199,7 +199,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
       return reply.status(201).send({ ok: true, check: record });
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : String(err);
-      const record = insertEligibilityCheck({
+      const record = await insertEligibilityCheck({
         patientDfn: String(body.patientDfn),
         payerId: String(body.payerId),
         subscriberId: body.subscriberId ?? null,
@@ -223,7 +223,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
   /** GET /rcm/eligibility/history — Paginated history */
   server.get("/rcm/eligibility/history", async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
-    const result = listEligibilityChecks({
+    const result = await listEligibilityChecks({
       patientDfn: q.patientDfn,
       payerId: q.payerId,
       provenance: q.provenance,
@@ -237,14 +237,14 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
   /** GET /rcm/eligibility/stats — Aggregate statistics */
   server.get("/rcm/eligibility/stats", async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
-    const stats = getEligibilityStats(q.tenantId);
+    const stats = await getEligibilityStats(q.tenantId);
     return reply.send({ ok: true, stats });
   });
 
   /** GET /rcm/eligibility/:id — Get single check */
   server.get("/rcm/eligibility/:id", async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
-    const check = getEligibilityCheckById(id);
+    const check = await getEligibilityCheckById(id);
     if (!check) {
       return reply.status(404).send({ ok: false, error: "Eligibility check not found" });
     }
@@ -274,7 +274,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
     // MANUAL provenance
     if (provenance === "MANUAL") {
       const manual = body.manualResult || {};
-      const record = insertClaimStatusCheck({
+      const record = await insertClaimStatusCheck({
         claimRef: String(body.claimRef),
         payerId: String(body.payerId),
         payerClaimId: body.payerClaimId ?? null,
@@ -302,7 +302,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
 
     // EDI stub provenances
     if (provenance === "EDI_276_277" || provenance === "CLEARINGHOUSE") {
-      const record = insertClaimStatusCheck({
+      const record = await insertClaimStatusCheck({
         claimRef: String(body.claimRef),
         payerId: String(body.payerId),
         payerClaimId: body.payerClaimId ?? null,
@@ -341,7 +341,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
     try {
       const adapter = getPayerAdapterForMode(provenance === "SANDBOX" ? "sandbox" : "portal");
       if (!adapter) {
-        const record = insertClaimStatusCheck({
+        const record = await insertClaimStatusCheck({
           claimRef: String(body.claimRef),
           payerId: String(body.payerId),
           payerClaimId: body.payerClaimId ?? null,
@@ -370,7 +370,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         ? Math.round(response.paidAmount * 100)
         : null;
 
-      const record = insertClaimStatusCheck({
+      const record = await insertClaimStatusCheck({
         claimRef: String(body.claimRef),
         payerId: String(body.payerId),
         payerClaimId: body.payerClaimId ?? response.payerClaimId ?? null,
@@ -396,7 +396,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
       return reply.status(201).send({ ok: true, check: record });
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : String(err);
-      const record = insertClaimStatusCheck({
+      const record = await insertClaimStatusCheck({
         claimRef: String(body.claimRef),
         payerId: String(body.payerId),
         payerClaimId: body.payerClaimId ?? null,
@@ -457,7 +457,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
   /** GET /rcm/claim-status/history — Paginated history */
   server.get("/rcm/claim-status/history", async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
-    const result = listClaimStatusChecks({
+    const result = await listClaimStatusChecks({
       claimRef: q.claimRef,
       payerId: q.payerId,
       provenance: q.provenance,
@@ -474,21 +474,21 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
     if (!q.claimRef) {
       return reply.status(400).send({ ok: false, error: "claimRef query parameter required" });
     }
-    const timeline = getClaimStatusTimeline(q.claimRef, q.tenantId);
+    const timeline = await getClaimStatusTimeline(q.claimRef, q.tenantId);
     return reply.send({ ok: true, claimRef: q.claimRef, timeline, total: timeline.length });
   });
 
   /** GET /rcm/claim-status/stats — Aggregate statistics */
   server.get("/rcm/claim-status/stats", async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
-    const stats = getClaimStatusStats(q.tenantId);
+    const stats = await getClaimStatusStats(q.tenantId);
     return reply.send({ ok: true, stats });
   });
 
   /** GET /rcm/claim-status/:id — Get single check */
   server.get("/rcm/claim-status/:id", async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
-    const check = getClaimStatusCheckById(id);
+    const check = await getClaimStatusCheckById(id);
     if (!check) {
       return reply.status(404).send({ ok: false, error: "Claim status check not found" });
     }

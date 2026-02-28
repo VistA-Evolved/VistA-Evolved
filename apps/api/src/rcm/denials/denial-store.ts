@@ -1,16 +1,16 @@
 /**
- * Denial Store — Phase 98: Durable SQLite Persistence
+ * Denial Store — PG Drizzle Persistence
  *
  * CRUD operations for denial_case, denial_action, denial_attachment,
- * and resubmission_attempt tables using the platform DB.
+ * and resubmission_attempt tables using PG.
  *
  * All amounts stored in cents. Dates as ISO 8601 strings.
  * Patient DFN is stored but NEVER included in audit or logs.
  */
 
 import { randomUUID } from "node:crypto";
-import { getDb } from "../../platform/db/db.js";
-import { denialCase, denialAction, denialAttachment, resubmissionAttempt } from "../../platform/db/schema.js";
+import { getPgDb } from "../../platform/pg/pg-db.js";
+import { denialCase, denialAction, denialAttachment, resubmissionAttempt } from "../../platform/pg/pg-schema.js";
 import { eq, desc, asc, and, sql, lte, gte } from "drizzle-orm";
 import type {
   DenialCase,
@@ -109,8 +109,8 @@ function rowToResubmission(row: any): ResubmissionAttempt {
 
 /* ── Denial Case CRUD ───────────────────────────────────────── */
 
-export function createDenialCase(input: CreateDenialInput, actor?: string): DenialCase {
-  const db = getDb();
+export async function createDenialCase(input: CreateDenialInput, actor?: string): Promise<DenialCase> {
+  const db = getPgDb();
   const now = new Date().toISOString();
   const id = randomUUID();
 
@@ -124,8 +124,8 @@ export function createDenialCase(input: CreateDenialInput, actor?: string): Deni
     denialSource: input.denialSource ?? "MANUAL",
     denialCodesJson: JSON.stringify(input.denialCodes ?? []),
     denialNarrative: input.denialNarrative ?? null,
-    receivedDate: input.receivedDate ?? now,
-    deadlineDate: input.deadlineDate ?? null,
+    receivedDate: new Date(input.receivedDate ?? now),
+    deadlineDate: input.deadlineDate ? new Date(input.deadlineDate) : null,
     assignedTo: input.assignedTo ?? null,
     assignedTeam: input.assignedTeam ?? null,
     billedAmountCents: toCents(input.billedAmount) ?? 0,
@@ -137,14 +137,14 @@ export function createDenialCase(input: CreateDenialInput, actor?: string): Deni
     importFileHash: null,
     importTimestamp: null,
     importParserVersion: null,
-    createdAt: now,
-    updatedAt: now,
+    createdAt: new Date(now),
+    updatedAt: new Date(now),
   };
 
-  db.insert(denialCase).values(row).run();
+  await db.insert(denialCase).values(row);
 
   // Record initial action
-  insertAction(id, actor ?? "system", "NOTE", {}, null, "NEW");
+  await insertAction(id, actor ?? "system", "NOTE", {}, null, "NEW");
 
   return rowToDenialCase(row);
 }
@@ -153,7 +153,7 @@ export function createDenialCase(input: CreateDenialInput, actor?: string): Deni
  * Create a denial case with import provenance (used by EDI 835 import).
  * Sets importFileHash, importTimestamp, importParserVersion at creation time.
  */
-export function createDenialCaseWithProvenance(
+export async function createDenialCaseWithProvenance(
   input: CreateDenialInput,
   provenance: {
     importFileHash: string;
@@ -161,8 +161,8 @@ export function createDenialCaseWithProvenance(
     importParserVersion: string;
   },
   actor?: string,
-): DenialCase {
-  const db = getDb();
+): Promise<DenialCase> {
+  const db = getPgDb();
   const now = new Date().toISOString();
   const id = randomUUID();
 
@@ -176,8 +176,8 @@ export function createDenialCaseWithProvenance(
     denialSource: input.denialSource ?? "EDI_835",
     denialCodesJson: JSON.stringify(input.denialCodes ?? []),
     denialNarrative: input.denialNarrative ?? null,
-    receivedDate: input.receivedDate ?? now,
-    deadlineDate: input.deadlineDate ?? null,
+    receivedDate: new Date(input.receivedDate ?? now),
+    deadlineDate: input.deadlineDate ? new Date(input.deadlineDate) : null,
     assignedTo: input.assignedTo ?? null,
     assignedTeam: input.assignedTeam ?? null,
     billedAmountCents: toCents(input.billedAmount) ?? 0,
@@ -187,16 +187,16 @@ export function createDenialCaseWithProvenance(
     adjustmentAmountCents: toCents(input.adjustmentAmount) ?? null,
     evidenceRefsJson: "[]",
     importFileHash: provenance.importFileHash,
-    importTimestamp: provenance.importTimestamp,
+    importTimestamp: new Date(provenance.importTimestamp),
     importParserVersion: provenance.importParserVersion,
-    createdAt: now,
-    updatedAt: now,
+    createdAt: new Date(now),
+    updatedAt: new Date(now),
   };
 
-  db.insert(denialCase).values(row).run();
+  await db.insert(denialCase).values(row);
 
   // Record initial action
-  insertAction(id, actor ?? "system", "IMPORT", {
+  await insertAction(id, actor ?? "system", "IMPORT", {
     source: input.denialSource ?? "EDI_835",
     importFileHash: provenance.importFileHash,
   }, null, "NEW");
@@ -204,13 +204,13 @@ export function createDenialCaseWithProvenance(
   return rowToDenialCase(row);
 }
 
-export function getDenialById(id: string): DenialCase | null {
-  const db = getDb();
-  const row = db.select().from(denialCase).where(eq(denialCase.id, id)).get();
-  return row ? rowToDenialCase(row) : null;
+export async function getDenialById(id: string): Promise<DenialCase | null> {
+  const db = getPgDb();
+  const rows = await db.select().from(denialCase).where(eq(denialCase.id, id));
+  return rows[0] ? rowToDenialCase(rows[0]) : null;
 }
 
-export function updateDenialCase(
+export async function updateDenialCase(
   id: string,
   updates: {
     denialStatus?: DenialStatus;
@@ -222,9 +222,9 @@ export function updateDenialCase(
   },
   actor: string,
   reason: string,
-): DenialCase | null {
-  const db = getDb();
-  const existing = getDenialById(id);
+): Promise<DenialCase | null> {
+  const db = getPgDb();
+  const existing = await getDenialById(id);
   if (!existing) return null;
 
   const now = new Date().toISOString();
@@ -239,12 +239,12 @@ export function updateDenialCase(
   if (updates.assignedTeam !== undefined) setClause.assignedTeam = updates.assignedTeam;
   if (updates.denialCodes) setClause.denialCodesJson = JSON.stringify(updates.denialCodes);
 
-  db.update(denialCase).set(setClause).where(eq(denialCase.id, id)).run();
+  await db.update(denialCase).set(setClause).where(eq(denialCase.id, id));
 
   // Record action
   const actionType = updates.denialStatus && updates.denialStatus !== previousStatus
     ? "STATUS_CHANGE" : "NOTE";
-  insertAction(id, actor, actionType, { reason, changes: Object.keys(setClause) }, previousStatus, newStatus);
+  await insertAction(id, actor, actionType, { reason, changes: Object.keys(setClause) }, previousStatus, newStatus);
 
   return getDenialById(id);
 }
@@ -257,8 +257,8 @@ export interface DenialListResult {
   totalPages: number;
 }
 
-export function listDenials(query: DenialListQuery): DenialListResult {
-  const db = getDb();
+export async function listDenials(query: DenialListQuery): Promise<DenialListResult> {
+  const db = getPgDb();
   const conditions: any[] = [];
 
   if (query.status) conditions.push(eq(denialCase.denialStatus, query.status));
@@ -273,17 +273,16 @@ export function listDenials(query: DenialListQuery): DenialListResult {
   if (query.slaDueWithinDays !== undefined) {
     const future = new Date();
     future.setDate(future.getDate() + query.slaDueWithinDays);
-    conditions.push(lte(denialCase.deadlineDate, future.toISOString()));
+    conditions.push(lte(denialCase.deadlineDate, future));
   }
 
   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
   // Count total
-  const countResult = db.select({ count: sql<number>`count(*)` })
+  const countRows = await db.select({ count: sql<number>`count(*)` })
     .from(denialCase)
-    .where(whereClause)
-    .get();
-  const total = (countResult as any)?.count ?? 0;
+    .where(whereClause);
+  const total = (countRows[0] as any)?.count ?? 0;
 
   // Determine sort column
   const sortCol = query.sort === "deadlineDate" ? denialCase.deadlineDate
@@ -294,12 +293,11 @@ export function listDenials(query: DenialListQuery): DenialListResult {
 
   // Paginated query
   const offset = (query.page - 1) * query.limit;
-  const rows = db.select().from(denialCase)
+  const rows = await db.select().from(denialCase)
     .where(whereClause)
     .orderBy(orderFn(sortCol))
     .limit(query.limit)
-    .offset(offset)
-    .all();
+    .offset(offset);
 
   return {
     items: rows.map(rowToDenialCase),
@@ -312,15 +310,15 @@ export function listDenials(query: DenialListQuery): DenialListResult {
 
 /* ── Denial Actions ─────────────────────────────────────────── */
 
-function insertAction(
+async function insertAction(
   denialId: string,
   actor: string,
   actionType: string,
   payload: Record<string, unknown>,
   previousStatus: DenialStatus | null,
   newStatus: DenialStatus | null,
-): DenialAction {
-  const db = getDb();
+): Promise<DenialAction> {
+  const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
 
@@ -328,48 +326,47 @@ function insertAction(
     id,
     denialId,
     actor,
-    timestamp: now,
+    timestamp: new Date(now),
     actionType,
     payloadJson: JSON.stringify(payload),
     previousStatus: previousStatus ?? null,
     newStatus: newStatus ?? null,
   };
 
-  db.insert(denialAction).values(row).run();
+  await db.insert(denialAction).values(row);
   return rowToAction(row);
 }
 
-export function addDenialAction(
+export async function addDenialAction(
   denialId: string,
   actor: string,
   actionType: string,
   payload: Record<string, unknown>,
-): DenialAction {
-  const existing = getDenialById(denialId);
+): Promise<DenialAction> {
+  const existing = await getDenialById(denialId);
   if (!existing) throw new Error(`Denial not found: ${denialId}`);
   return insertAction(denialId, actor, actionType, payload, existing.denialStatus, existing.denialStatus);
 }
 
-export function listDenialActions(denialId: string): DenialAction[] {
-  const db = getDb();
-  const rows = db.select().from(denialAction)
+export async function listDenialActions(denialId: string): Promise<DenialAction[]> {
+  const db = getPgDb();
+  const rows = await db.select().from(denialAction)
     .where(eq(denialAction.denialId, denialId))
-    .orderBy(asc(denialAction.timestamp))
-    .all();
+    .orderBy(asc(denialAction.timestamp));
   return rows.map(rowToAction);
 }
 
 /* ── Attachments ────────────────────────────────────────────── */
 
-export function addAttachment(
+export async function addAttachment(
   denialId: string,
   label: string,
   refType: string,
   storedPath: string | null,
   sha256: string | null,
   actor: string,
-): DenialAttachment {
-  const db = getDb();
+): Promise<DenialAttachment> {
+  const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
 
@@ -380,73 +377,71 @@ export function addAttachment(
     refType,
     storedPath: storedPath ?? null,
     sha256: sha256 ?? null,
-    addedAt: now,
+    addedAt: new Date(now),
     addedBy: actor,
   };
 
-  db.insert(denialAttachment).values(row).run();
+  await db.insert(denialAttachment).values(row);
   return rowToAttachment(row);
 }
 
-export function listAttachments(denialId: string): DenialAttachment[] {
-  const db = getDb();
-  return db.select().from(denialAttachment)
+export async function listAttachments(denialId: string): Promise<DenialAttachment[]> {
+  const db = getPgDb();
+  const rows = await db.select().from(denialAttachment)
     .where(eq(denialAttachment.denialId, denialId))
-    .orderBy(asc(denialAttachment.addedAt))
-    .all()
-    .map(rowToAttachment);
+    .orderBy(asc(denialAttachment.addedAt));
+  return rows.map(rowToAttachment);
 }
 
 /* ── Resubmission Attempts ──────────────────────────────────── */
 
-export function createResubmission(
+export async function createResubmission(
   denialId: string,
   method: string,
   referenceNumber: string | null,
   followUpDate: string | null,
   notes: string | null,
   actor: string,
-): ResubmissionAttempt {
-  const db = getDb();
+): Promise<ResubmissionAttempt> {
+  const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
 
   const row = {
     id,
     denialId,
-    createdAt: now,
+    createdAt: new Date(now),
     method,
     referenceNumber: referenceNumber ?? null,
-    followUpDate: followUpDate ?? null,
+    followUpDate: followUpDate ? new Date(followUpDate) : null,
     notes: notes ?? null,
     actor,
   };
 
-  db.insert(resubmissionAttempt).values(row).run();
+  await db.insert(resubmissionAttempt).values(row);
 
   // Record action
-  insertAction(denialId, actor, "SUBMIT_APPEAL", { method, referenceNumber }, null, null);
+  await insertAction(denialId, actor, "SUBMIT_APPEAL", { method, referenceNumber }, null, null);
 
   return rowToResubmission(row);
 }
 
-export function listResubmissions(denialId: string): ResubmissionAttempt[] {
-  const db = getDb();
-  return db.select().from(resubmissionAttempt)
+export async function listResubmissions(denialId: string): Promise<ResubmissionAttempt[]> {
+  const db = getPgDb();
+  const rows = await db.select().from(resubmissionAttempt)
     .where(eq(resubmissionAttempt.denialId, denialId))
-    .orderBy(desc(resubmissionAttempt.createdAt))
-    .all()
-    .map(rowToResubmission);
+    .orderBy(desc(resubmissionAttempt.createdAt));
+  return rows.map(rowToResubmission);
 }
 
 /* ── Stats (for dashboard) ──────────────────────────────────── */
 
-export function getDenialStats(): Record<string, number> {
-  const db = getDb();
-  const rows = db.select({
+export async function getDenialStats(): Promise<Record<string, number>> {
+  const db = getPgDb();
+  const rows = await db.select({
     status: denialCase.denialStatus,
     count: sql<number>`count(*)`,
-  }).from(denialCase).groupBy(denialCase.denialStatus).all();
+  }).from(denialCase).groupBy(denialCase.denialStatus);
 
   const stats: Record<string, number> = {};
   for (const row of rows) {

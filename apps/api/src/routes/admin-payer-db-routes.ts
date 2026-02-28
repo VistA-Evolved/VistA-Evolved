@@ -2,7 +2,7 @@
  * Admin Payer DB Routes — Phase 102: Registry Migration to PlatformStore
  * Phase 104: Security posture — admin role enforcement + audit endpoints
  *
- * Uses store-resolver to auto-select PG or SQLite backend.
+ * Uses store-resolver to select PG backend.
  * All repo calls are now async (await).
  *
  * Endpoints:
@@ -42,7 +42,6 @@
  */
 
 import type { FastifyInstance, FastifyPluginAsync } from "fastify";
-import { initPlatformDb } from "../platform/db/init.js";
 import { resolveStore } from "../platform/store-resolver.js";
 import { isPgConfigured, pgHealthCheck } from "../platform/pg/pg-db.js";
 import { initPlatformPg } from "../platform/pg/pg-init.js";
@@ -61,7 +60,6 @@ const __dirname_resolved = typeof __dirname !== "undefined"
 
 const REPO_ROOT = join(__dirname_resolved, "..", "..", "..", "..");
 
-let dbReady = false;
 let pgReady = false;
 
 const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
@@ -71,26 +69,13 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
   server.addHook("onSend", idempotencyOnSend);
 
   async function ensureDb(): Promise<void> {
-    // Always init SQLite as fallback
-    if (!dbReady) {
-      const result = initPlatformDb();
-      dbReady = true;
-      if (!result.ok) {
-        server.log.warn(`Platform DB init failed: ${result.error}`);
-      } else {
-        if (result.seeded) {
-          server.log.info(`Platform DB seeded: ${result.seeded.inserted} inserted, ${result.seeded.skipped} skipped`);
-        }
-      }
-    }
-    // Also init PG if configured
     if (!pgReady && isPgConfigured()) {
       const pgResult = await initPlatformPg();
       pgReady = true;
       if (pgResult.ok) {
         server.log.info(`Platform PG initialized (migrations: ${pgResult.migrations?.applied ?? 0} applied)`);
       } else {
-        server.log.warn(`Platform PG init failed: ${pgResult.error} -- falling back to SQLite`);
+        server.log.warn(`Platform PG init failed: ${pgResult.error}`);
       }
     }
   }
@@ -177,7 +162,7 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
       return reply.code(400).send({ ok: false, error: "Provide 'filePath' or 'json' in request body" });
     }
 
-    const result = ingestJsonSnapshot({
+    const result = await ingestJsonSnapshot({
       jsonContent,
       sourceUrl: body.sourceUrl,
       asOfDate: body.asOfDate ?? new Date().toISOString().split("T")[0],
@@ -200,7 +185,7 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     }
 
     const buffer = Buffer.from(body.base64, "base64");
-    const result = ingestPdfEvidence({
+    const result = await ingestPdfEvidence({
       buffer,
       filename: body.filename ?? "evidence.pdf",
       asOfDate: body.asOfDate ?? new Date().toISOString().split("T")[0],
@@ -254,7 +239,7 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     if (raw.charCodeAt(0) === 0xfeff) raw = raw.slice(1);
     const data = JSON.parse(raw);
     const payerList = Array.isArray(data.payers) ? data.payers : Array.isArray(data) ? data : [];
-    const diff = computeSnapshotDiff(payerList);
+    const diff = await computeSnapshotDiff(payerList);
 
     return reply.send({ ok: true, snapshotId: id, diff });
   });
@@ -267,7 +252,7 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     await ensureDb();
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const result = promoteSnapshot(id, body.actor);
+    const result = await promoteSnapshot(id, body.actor);
     return reply.code(result.ok ? 200 : 400).send(result);
   });
 

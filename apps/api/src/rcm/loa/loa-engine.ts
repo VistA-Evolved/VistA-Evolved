@@ -62,8 +62,8 @@ export interface TransitionResult {
   error?: string;
 }
 
-export function transitionLoa(input: TransitionInput): TransitionResult {
-  const loa = getLoaRequestById(input.tenantId, input.loaId);
+export async function transitionLoa(input: TransitionInput): Promise<TransitionResult> {
+  const loa = await getLoaRequestById(input.tenantId, input.loaId);
   if (!loa) return { ok: false, error: "LOA request not found" };
 
   if (!isValidTransition(loa.status, input.newStatus)) {
@@ -73,7 +73,7 @@ export function transitionLoa(input: TransitionInput): TransitionResult {
     };
   }
 
-  const updated = transitionLoaStatus(input.tenantId, input.loaId, input.newStatus, {
+  const updated = await transitionLoaStatus(input.tenantId, input.loaId, input.newStatus, {
     authorizationNumber: input.authorizationNumber,
     approvedUnits: input.approvedUnits,
     approvedFrom: input.approvedFrom,
@@ -111,8 +111,8 @@ export interface LoaPacket {
   }>;
 }
 
-export function generatePacket(tenantId: string, loaId: string): { ok: boolean; packet?: LoaPacket; error?: string } {
-  const loa = getLoaRequestById(tenantId, loaId);
+export async function generatePacket(tenantId: string, loaId: string): Promise<{ ok: boolean; packet?: LoaPacket; error?: string }> {
+  const loa = await getLoaRequestById(tenantId, loaId);
   if (!loa) return { ok: false, error: "LOA request not found" };
 
   // Only draft and pending_review can generate packets
@@ -120,7 +120,7 @@ export function generatePacket(tenantId: string, loaId: string): { ok: boolean; 
     return { ok: false, error: `Cannot generate packet in status '${loa.status}'. Must be draft or pending_review.` };
   }
 
-  const attachments = listAttachments(loaId);
+  const attachments = await listAttachments(loaId);
 
   const packet: LoaPacket = {
     loaId: loa.id,
@@ -145,7 +145,7 @@ export function generatePacket(tenantId: string, loaId: string): { ok: boolean; 
     })),
   };
 
-  markPacketGenerated(tenantId, loaId);
+  await markPacketGenerated(tenantId, loaId);
 
   return { ok: true, packet };
 }
@@ -159,7 +159,7 @@ export function generatePacket(tenantId: string, loaId: string): { ok: boolean; 
  * Transitions status from pending_review -> submitted on success.
  */
 export async function submitLoa(tenantId: string, loaId: string): Promise<TransitionResult> {
-  const loa = getLoaRequestById(tenantId, loaId);
+  const loa = await getLoaRequestById(tenantId, loaId);
   if (!loa) return { ok: false, error: "LOA request not found" };
 
   if (loa.status !== "pending_review") {
@@ -173,7 +173,7 @@ export async function submitLoa(tenantId: string, loaId: string): Promise<Transi
     return { ok: false, error: result.error || "Adapter submission failed" };
   }
 
-  const updated = transitionLoaStatus(tenantId, loaId, "submitted", {
+  const updated = await transitionLoaStatus(tenantId, loaId, "submitted", {
     authorizationNumber: result.trackingNumber,
   });
 
@@ -184,7 +184,7 @@ export async function submitLoa(tenantId: string, loaId: string): Promise<Transi
  * Check LOA status with payer via the configured adapter.
  */
 export async function checkLoaStatus(tenantId: string, loaId: string): Promise<{ ok: boolean; adapterStatus?: string; error?: string }> {
-  const loa = getLoaRequestById(tenantId, loaId);
+  const loa = await getLoaRequestById(tenantId, loaId);
   if (!loa) return { ok: false, error: "LOA request not found" };
 
   if (!["submitted", "appealed"].includes(loa.status)) {

@@ -14,7 +14,7 @@ import {
   updateTaskStatus,
   findTaskById,
   type TaskRow,
-} from "../../platform/db/repo/task-repo.js";
+} from "../../platform/pg/repo/task-repo.js";
 import { PH_HMO_PAYER_TYPES, type PayerTypeClassification } from "./adapter-manifest.js";
 import { getPhHmo } from "../payers/ph-hmo-registry.js";
 
@@ -112,14 +112,14 @@ export interface ContractingDashboard {
  * Initialize contracting tasks for a payer based on its type.
  * Skips tasks that already exist (idempotent).
  */
-export function initContractingTasks(
+export async function initContractingTasks(
   payerId: string,
   payerName: string,
   tenantId?: string,
   actor?: string,
-): { created: number; skipped: number } {
+): Promise<{ created: number; skipped: number }> {
   const payerType = PH_HMO_PAYER_TYPES[payerId] ?? "hmo_l3";
-  const existing = listTasks(payerId, tenantId);
+  const existing = await listTasks(payerId, tenantId);
   const existingTitles = new Set(existing.map(t => t.title));
 
   let created = 0;
@@ -133,7 +133,7 @@ export function initContractingTasks(
       skipped++;
       continue;
     }
-    createTask({
+    await createTask({
       payerId,
       tenantId: tenantId ?? null,
       title: template.title,
@@ -148,13 +148,13 @@ export function initContractingTasks(
 /**
  * Get contracting summary for a single payer.
  */
-export function getContractingSummary(
+export async function getContractingSummary(
   payerId: string,
   payerName: string,
   tenantId?: string,
-): ContractingSummary {
+): Promise<ContractingSummary> {
   const payerType = PH_HMO_PAYER_TYPES[payerId] ?? "hmo_l3";
-  const tasks = listTasks(payerId, tenantId);
+  const tasks = await listTasks(payerId, tenantId);
 
   const open = tasks.filter(t => t.status === "open").length;
   const inProgress = tasks.filter(t => t.status === "in_progress").length;
@@ -181,7 +181,7 @@ export function getContractingSummary(
 /**
  * Get contracting dashboard across all PH HMOs.
  */
-export function getContractingDashboard(tenantId?: string): ContractingDashboard {
+export async function getContractingDashboard(tenantId?: string): Promise<ContractingDashboard> {
   const payerIds = Object.keys(PH_HMO_PAYER_TYPES);
   const payers: ContractingSummary[] = [];
   const byStatus: Record<string, number> = {
@@ -193,7 +193,7 @@ export function getContractingDashboard(tenantId?: string): ContractingDashboard
     // Resolve legal name from PH HMO registry
     const hmo = getPhHmo(payerId);
     const payerName = hmo?.legalName ?? payerId;
-    const summary = getContractingSummary(payerId, payerName, tenantId);
+    const summary = await getContractingSummary(payerId, payerName, tenantId);
     payers.push(summary);
     totalTasks += summary.progress.total;
     byStatus.open += summary.progress.open;
@@ -215,18 +215,18 @@ export function getContractingDashboard(tenantId?: string): ContractingDashboard
  * Update a contracting task status.
  * Delegates to task-repo with reason enforcement.
  */
-export function updateContractingTask(
+export async function updateContractingTask(
   taskId: string,
   status: "open" | "in_progress" | "blocked" | "done",
   reason: string,
   actor?: string,
-): TaskRow | null {
-  return updateTaskStatus(taskId, status, reason, actor);
+): Promise<TaskRow | null> {
+  return await updateTaskStatus(taskId, status, reason, actor);
 }
 
 /**
  * Get a single contracting task by ID.
  */
-export function getContractingTask(taskId: string): TaskRow | undefined {
-  return findTaskById(taskId);
+export async function getContractingTask(taskId: string): Promise<TaskRow | undefined> {
+  return await findTaskById(taskId);
 }

@@ -43,7 +43,6 @@ export async function run(opts = {}) {
   const requiredExports = [
     "getRuntimeMode",
     "requiresPg",
-    "allowsSqlite",
     "blocksJsonStores",
     "validateRuntimeMode",
   ];

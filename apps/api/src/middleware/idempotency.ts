@@ -25,10 +25,22 @@ function dbWarn(op: string, err: unknown): void {
 }
 
 /* ------------------------------------------------------------------ */
-/* DB repo -- lazy-wired after initPlatformDb() (Phase 115)              */
+/* DB repo -- lazy-wired (PG-backed, Phase 174)                          */
 /* ------------------------------------------------------------------ */
 
-type IdempotencyRepo = typeof import("../platform/db/repo/idempotency-repo.js");
+interface IdempotencyKeyData {
+  compositeKey: string;
+  statusCode: number;
+  responseBody: string | null;
+  createdAt: number;
+  expiresAt: number;
+}
+interface IdempotencyRepo {
+  upsertKey(data: IdempotencyKeyData): any;
+  findByKey(compositeKey: string): IdempotencyKeyData | undefined | Promise<IdempotencyKeyData | undefined>;
+  deleteKey(compositeKey: string): any;
+  pruneExpiredKeys(): any;
+}
 let _repo: IdempotencyRepo | null = null;
 
 /** Wire the idempotency repo. Called from index.ts. */
@@ -130,7 +142,7 @@ export function idempotencyGuard() {
     // Check DB if not in cache
     if (!cached && _repo) {
       try {
-        const row = _repo.findByKey(cKey);
+        const row = await _repo.findByKey(cKey);
         if (row && row.expiresAt > Date.now()) {
           let body: unknown = null;
           try { body = JSON.parse(row.responseBody ?? ""); } catch { body = row.responseBody; }

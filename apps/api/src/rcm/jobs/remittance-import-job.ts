@@ -109,7 +109,7 @@ export async function handleRemittanceImportJob(
     const totalPaid = entries.reduce((sum, e) => sum + (e.paidAmount ?? 0), 0);
     const totalBilled = entries.reduce((sum, e) => sum + (e.billedAmount ?? 0), 0);
 
-    const importRecord = createRemittanceImport({
+    const importRecord = await createRemittanceImport({
       sourceType: sourceType as any,
       lineCount: entries.length,
       totalPaidCents: Math.round(totalPaid * 100),
@@ -124,7 +124,7 @@ export async function handleRemittanceImportJob(
     for (let i = 0; i < entries.length; i++) {
       const entry = entries[i];
       try {
-        createPaymentRecord({
+        await createPaymentRecord({
           remittanceImportId: importRecord.id,
           claimRef: entry.claimRef,
           payerId: entry.payerId,
@@ -212,7 +212,7 @@ async function detectUnderpayments(importId: string): Promise<number> {
       "../reconciliation/recon-store.js"
     );
 
-    const payments = listPaymentsByImport(importId);
+    const payments = await listPaymentsByImport(importId);
     let created = 0;
 
     for (const payment of payments) {
@@ -222,7 +222,7 @@ async function detectUnderpayments(importId: string): Promise<number> {
         payment.paidAmountCents < payment.billedAmountCents * UNDERPAYMENT_THRESHOLD
       ) {
         try {
-          createUnderpaymentCase({
+          await createUnderpaymentCase({
             claimRef: payment.claimRef,
             paymentId: payment.id,
             payerId: payment.payerId,

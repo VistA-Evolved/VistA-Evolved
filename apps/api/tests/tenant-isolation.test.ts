@@ -16,7 +16,7 @@ import {
   TENANT_SCOPED_TABLES,
   GLOBAL_TABLES,
   PENDING_TENANT_ID_TABLES,
-} from "../src/platform/db/repo/tenant-guard.js";
+} from "../src/platform/pg/repo/tenant-guard.js";
 
 describe("Phase 122: Tenant Isolation Guards", () => {
   /* ── requireTenantId ─────────────────────────────── */

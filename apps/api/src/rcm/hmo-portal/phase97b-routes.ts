@@ -29,13 +29,13 @@ export default async function phase97bRoutes(server: FastifyInstance): Promise<v
   /* ── Adapter Manifest ─────────────────────────────────────── */
 
   server.get("/rcm/hmo/manifest", async (_request, reply) => {
-    const manifest = generateHmoManifest();
+    const manifest = await generateHmoManifest();
     return reply.send({ ok: true, manifest });
   });
 
   server.get("/rcm/hmo/manifest/:payerId", async (request, reply) => {
     const { payerId } = request.params as { payerId: string };
-    const entry = getHmoManifestEntry(payerId);
+    const entry = await getHmoManifestEntry(payerId);
     if (!entry) {
       return reply.status(404).send({ ok: false, error: `HMO not found: ${payerId}` });
     }
@@ -93,14 +93,14 @@ export default async function phase97bRoutes(server: FastifyInstance): Promise<v
 
   server.get("/rcm/hmo/contracting", async (request, reply) => {
     const { tenantId } = (request.query as any) || {};
-    const dashboard = getContractingDashboard(tenantId);
+    const dashboard = await getContractingDashboard(tenantId);
     return reply.send({ ok: true, dashboard });
   });
 
   server.get("/rcm/hmo/contracting/:payerId", async (request, reply) => {
     const { payerId } = request.params as { payerId: string };
     const { tenantId } = (request.query as any) || {};
-    const summary = getContractingSummary(payerId, payerId, tenantId);
+    const summary = await getContractingSummary(payerId, payerId, tenantId);
     return reply.send({ ok: true, summary });
   });
 
@@ -108,7 +108,7 @@ export default async function phase97bRoutes(server: FastifyInstance): Promise<v
     const { payerId } = request.params as { payerId: string };
     const body = (request.body as any) || {};
     const { tenantId, actor } = body;
-    const result = initContractingTasks(payerId, payerId, tenantId, actor);
+    const result = await initContractingTasks(payerId, payerId, tenantId, actor);
     return reply.send({ ok: true, ...result });
   });
 
@@ -126,7 +126,7 @@ export default async function phase97bRoutes(server: FastifyInstance): Promise<v
       return reply.status(400).send({ ok: false, error: `Invalid status. Must be one of: ${validStatuses.join(", ")}` });
     }
 
-    const task = updateContractingTask(taskId, status, reason, actor);
+    const task = await updateContractingTask(taskId, status, reason, actor);
     if (!task) {
       return reply.status(404).send({ ok: false, error: `Task not found: ${taskId}` });
     }
@@ -135,7 +135,7 @@ export default async function phase97bRoutes(server: FastifyInstance): Promise<v
 
   server.get("/rcm/hmo/contracting/tasks/:taskId", async (request, reply) => {
     const { taskId } = request.params as { taskId: string };
-    const task = getContractingTask(taskId);
+    const task = await getContractingTask(taskId);
     if (!task) {
       return reply.status(404).send({ ok: false, error: `Task not found: ${taskId}` });
     }
@@ -146,7 +146,7 @@ export default async function phase97bRoutes(server: FastifyInstance): Promise<v
 
   server.get("/rcm/hmo/market-summary", async (request, reply) => {
     const { tenantId } = (request.query as any) || {};
-    const summary = generateMarketSummary(tenantId);
+    const summary = await generateMarketSummary(tenantId);
     return reply.send({ ok: true, summary });
   });
 }

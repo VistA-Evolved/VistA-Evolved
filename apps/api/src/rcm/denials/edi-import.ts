@@ -33,10 +33,10 @@ export interface ImportResult {
  * Each entry with denial codes creates a DenialCase with source=EDI_835.
  * Entries without denial codes are skipped (they are normal payments).
  */
-export function importRemittanceDenials(
+export async function importRemittanceDenials(
   input: Import835BatchInput,
   actor: string,
-): ImportResult {
+): Promise<ImportResult> {
   const result: ImportResult = {
     ok: true,
     imported: 0,
@@ -63,7 +63,7 @@ export function importRemittanceDenials(
         continue;
       }
 
-      const denial = createDenialCaseWithProvenance({
+      const denial = await createDenialCaseWithProvenance({
         claimRef: entry.claimRef,
         payerId: entry.payerId,
         patientDfn: entry.patientDfn,
@@ -81,7 +81,7 @@ export function importRemittanceDenials(
       }, actor);
 
       // Add supplementary import action with entry-level detail
-      addDenialAction(denial.id, actor, "IMPORT", {
+      await addDenialAction(denial.id, actor, "IMPORT", {
         source: "EDI_835",
         importFileHash: contentHash,
         entryIndex: i,
