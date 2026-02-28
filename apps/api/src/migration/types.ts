@@ -43,6 +43,12 @@ export type SourceFormat =
   | "generic-csv"
   | "openemr-csv"
   | "fhir-bundle"
+  | "ccda"
+  | "epic-ccda"
+  | "cerner-ccda"
+  | "athena-ccda"
+  | "ecw-ccda"
+  | "practicefusion-ccda"
   | "custom";
 
 /* ------------------------------------------------------------------ */
