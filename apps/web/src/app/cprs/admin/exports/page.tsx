@@ -1,6 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { getCsrfToken } from "@/lib/csrf";
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -39,15 +42,15 @@ interface ExportStats {
 /* ------------------------------------------------------------------ */
 
 async function apiFetch(path: string) {
-  const res = await fetch(`/api${path}`, { credentials: "include" });
+  const res = await fetch(`${API_BASE}${path}`, { credentials: "include" });
   return res.json();
 }
 
 async function apiPost(path: string, body: unknown) {
-  const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+  const csrf = await getCsrfToken();
   const headers: Record<string, string> = { "Content-Type": "application/json" };
-  if (csrfMeta) headers["X-CSRF-Token"] = csrfMeta.getAttribute("content") || "";
-  const res = await fetch(`/api${path}`, {
+  if (csrf) headers["X-CSRF-Token"] = csrf;
+  const res = await fetch(`${API_BASE}${path}`, {
     method: "POST",
     credentials: "include",
     headers,
@@ -128,8 +131,25 @@ export default function ExportsPage() {
     setLoading(false);
   };
 
-  const handleDownload = (jobId: string) => {
-    window.open(`/api/admin/exports/jobs/${jobId}?download=true`, "_blank");
+  const handleDownload = async (jobId: string) => {
+    try {
+      const res = await fetch(`${API_BASE}/admin/exports/jobs/${jobId}?download=true`, {
+        credentials: "include",
+      });
+      if (!res.ok) { setError("Download failed"); return; }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `export-${jobId}.dat`;
+      const disposition = res.headers.get("Content-Disposition");
+      if (disposition) {
+        const match = disposition.match(/filename="?([^"]+)"?/);
+        if (match) a.download = match[1];
+      }
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch { setError("Download failed"); }
   };
 
   const TABS = [

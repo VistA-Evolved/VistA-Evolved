@@ -7,9 +7,7 @@
 
 import { log } from "../lib/logger.js";
 import { MllpServer } from "./mllp-server.js";
-import { ackAccept, ackError } from "./ack-generator.js";
-import { messageSummary } from "./parser.js";
-import type { Hl7EngineStatus, Hl7Message, MllpConnection } from "./types.js";
+import type { Hl7EngineStatus } from "./types.js";
 import { routingMessageHandler, shutdownDispatcher } from "./routing/index.js";
 
 // Re-exports
@@ -126,26 +124,4 @@ export function getHl7EngineStatus(): Hl7EngineStatus {
  */
 export function getHl7Engine(): MllpServer | null {
   return engineInstance;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Default Message Handler                                            */
-/* ------------------------------------------------------------------ */
-
-/**
- * Default message handler — logs message metadata and returns ACK.
- * Phase 240 (P3) will replace this with the routing layer.
- */
-async function defaultMessageHandler(
-  message: Hl7Message,
-  connection: MllpConnection,
-) {
-  log.info("HL7 message processed (default handler)", {
-    component: "hl7-engine",
-    connectionId: connection.id,
-    ...messageSummary(message),
-  });
-
-  // Default: accept all well-formed messages
-  return ackAccept(message);
 }

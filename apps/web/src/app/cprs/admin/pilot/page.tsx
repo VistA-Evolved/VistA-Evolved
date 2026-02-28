@@ -1,6 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { getCsrfToken } from "@/lib/csrf";
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -45,15 +48,15 @@ interface PreflightResult {
 /* ------------------------------------------------------------------ */
 
 async function apiFetch(path: string) {
-  const res = await fetch(`/api${path}`, { credentials: "include" });
+  const res = await fetch(`${API_BASE}${path}`, { credentials: "include" });
   return res.json();
 }
 
 async function apiPost(path: string, body?: unknown) {
-  const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+  const csrf = await getCsrfToken();
   const headers: Record<string, string> = { "Content-Type": "application/json" };
-  if (csrfMeta) headers["X-CSRF-Token"] = csrfMeta.getAttribute("content") || "";
-  const res = await fetch(`/api${path}`, {
+  if (csrf) headers["X-CSRF-Token"] = csrf;
+  const res = await fetch(`${API_BASE}${path}`, {
     method: "POST",
     credentials: "include",
     headers,

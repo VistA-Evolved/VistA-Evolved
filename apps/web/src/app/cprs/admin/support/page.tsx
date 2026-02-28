@@ -63,6 +63,7 @@ export default function SupportPage() {
   const [diag, setDiag] = useState<DiagnosticReport | null>(null);
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // New ticket form
   const [title, setTitle] = useState('');
@@ -72,18 +73,20 @@ export default function SupportPage() {
 
   const loadDiagnostics = useCallback(async () => {
     setLoading(true);
+    setError(null);
     try {
       const data = await apiFetch('/admin/support/diagnostics');
       if (data.ok) setDiag(data.report);
-    } catch { /* ignore */ }
+    } catch { setError('Failed to load diagnostics'); }
     setLoading(false);
   }, []);
 
   const loadTickets = useCallback(async () => {
+    setError(null);
     try {
       const data = await apiFetch('/admin/support/tickets');
       if (data.ok) setTickets(data.tickets);
-    } catch { /* ignore */ }
+    } catch { setError('Failed to load tickets'); }
   }, []);
 
   useEffect(() => {
@@ -98,13 +101,19 @@ export default function SupportPage() {
       await apiPost('/admin/support/tickets', { title, description, category, priority });
       setTitle(''); setDescription('');
       loadTickets();
-    } catch { /* ignore */ }
+    } catch { setError('Failed to create ticket'); }
     setLoading(false);
   };
 
   return (
     <div className={styles.cprsPage} style={{ padding: 24 }}>
       <h2 style={{ marginTop: 0 }}>Support Tooling</h2>
+
+      {error && (
+        <div style={{ background: '#fee', color: '#c00', padding: '8px 12px', borderRadius: 4, marginBottom: 12 }}>
+          {error}
+        </div>
+      )}
 
       <div style={{ display: 'flex', gap: 4, marginBottom: 16 }}>
         {(['diagnostics', 'tickets'] as Tab[]).map((t) => (

@@ -366,6 +366,10 @@ export default function OnboardingPage() {
               </table>
             </div>
           )}
+
+          {sessions.length === 0 && !loading && (
+            <p style={{ color: '#666', fontStyle: 'italic' }}>No onboarding sessions yet. Click above to start one.</p>
+          )}
         </div>
       ) : (
         <div>
