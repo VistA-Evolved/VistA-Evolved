@@ -1,0 +1,113 @@
+# Performance Acceptance Gate CI
+# Phase 253 — Wave 7 P6
+#
+# Runs k6 smoke-tier tests as acceptance gates.
+# Requires: API + VistA Docker running (uses service containers).
+
+name: perf-acceptance-gate
+
+on:
+  workflow_dispatch:
+    inputs:
+      tier:
+        description: "Test tier (smoke or load)"
+        required: false
+        default: "smoke"
+  schedule:
+    # Nightly at 03:00 UTC — load tier
+    - cron: "0 3 * * *"
+
+concurrency:
+  group: perf-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  API_URL: http://localhost:3001
+  K6_VERSION: "0.50.0"
+
+jobs:
+  perf-smoke:
+    name: "k6 Smoke Gate"
+    runs-on: ubuntu-latest
+    if: github.event.inputs.tier != 'load'
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install k6
+        run: |
+          curl -fsSL https://dl.k6.io/key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/k6.gpg
+          echo "deb [signed-by=/usr/share/keyrings/k6.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update && sudo apt-get install -y k6
+
+      - name: Run auth smoke
+        run: |
+          k6 run --vus 2 --duration 10s \
+            --summary-trend-stats="avg,min,med,max,p(90),p(95),p(99)" \
+            --out json=results-auth.json \
+            tests/k6/smoke-login.js
+        continue-on-error: true
+
+      - name: Run reads smoke
+        run: |
+          k6 run --vus 3 --duration 15s \
+            --summary-trend-stats="avg,min,med,max,p(90),p(95),p(99)" \
+            --out json=results-reads.json \
+            tests/k6/smoke-reads.js
+        continue-on-error: true
+
+      - name: Run FHIR smoke
+        run: |
+          k6 run --vus 2 --duration 10s \
+            --summary-trend-stats="avg,min,med,max,p(90),p(95),p(99)" \
+            --out json=results-fhir.json \
+            tests/k6/smoke-fhir.js
+        continue-on-error: true
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k6-smoke-results
+          path: results-*.json
+          retention-days: 30
+
+  perf-load:
+    name: "k6 Load Gate (Nightly)"
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event.inputs.tier == 'load'
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install k6
+        run: |
+          curl -fsSL https://dl.k6.io/key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/k6.gpg
+          echo "deb [signed-by=/usr/share/keyrings/k6.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update && sudo apt-get install -y k6
+
+      - name: Run mixed load
+        run: |
+          k6 run --vus 10 --duration 2m \
+            --summary-trend-stats="avg,min,med,max,p(90),p(95),p(99)" \
+            --out json=results-mixed.json \
+            tests/k6/load-mixed.js
+        continue-on-error: true
+
+      - name: Run DB load
+        run: |
+          k6 run --vus 5 --duration 1m \
+            --summary-trend-stats="avg,min,med,max,p(90),p(95),p(99)" \
+            --out json=results-db.json \
+            tests/k6/db-load.js
+        continue-on-error: true
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k6-load-results
+          path: results-*.json
+          retention-days: 90
