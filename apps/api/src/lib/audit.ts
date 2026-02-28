@@ -73,6 +73,7 @@ export type AuditAction =
   | "config.template-upsert"
   | "config.template-delete"
   | "config.connector-update"
+  | "config.branding-update"
   | "config.rpc-catalog"
   | "security.rbac-denied"
   | "security.rate-limited"

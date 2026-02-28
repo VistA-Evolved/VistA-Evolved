@@ -2608,6 +2608,15 @@ CREATE INDEX IF NOT EXISTS idx_tenant_config_station
   ON tenant_config(facility_station);
 `,
   },
+  {
+    version: 28,
+    name: "phase282_tenant_branding",
+    sql: `
+-- tenant branding: JSONB column for per-tenant visual branding (Phase 282)
+ALTER TABLE tenant_config
+  ADD COLUMN IF NOT EXISTS branding JSONB NOT NULL DEFAULT '{}'::jsonb;
+`,
+  },
 ];
 
 /**

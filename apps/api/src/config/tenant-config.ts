@@ -102,6 +102,115 @@ export const DEFAULT_UI_DEFAULTS: UIDefaults = {
   themePack: "modern-default",
 };
 
+/* ------------------------------------------------------------------ */
+/* Tenant Branding Config — Phase 282                                  */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Per-tenant visual branding configuration.
+ * Controls facility logo, accent colors, header/footer text.
+ * All values are sanitized server-side before storage.
+ */
+export interface BrandingConfig {
+  /** Logo URL (https only, max 2048 chars). Empty = system default. */
+  logoUrl: string;
+  /** Favicon URL (https only, max 2048 chars). Empty = system default. */
+  faviconUrl: string;
+  /** Primary brand color (hex 6-digit, e.g. "#003366"). */
+  primaryColor: string;
+  /** Secondary/accent brand color (hex 6-digit, e.g. "#0078d4"). */
+  secondaryColor: string;
+  /** Header text override (max 100 chars, plain text only). */
+  headerText: string;
+  /** Footer text override (max 200 chars, plain text only). */
+  footerText: string;
+  /** Whether branding overrides are active (false = use theme defaults). */
+  enabled: boolean;
+}
+
+export const DEFAULT_BRANDING: BrandingConfig = {
+  logoUrl: "",
+  faviconUrl: "",
+  primaryColor: "",
+  secondaryColor: "",
+  headerText: "",
+  footerText: "",
+  enabled: false,
+};
+
+/* ── Branding Sanitization ──────────────────────────────────────── */
+
+const HEX_COLOR_RE = /^#[0-9a-fA-F]{6}$/;
+const HTTPS_URL_RE = /^https:\/\/.{1,2040}$/;
+
+/** Strip HTML tags and control characters from plain text. */
+function sanitizeText(text: string, maxLen: number): string {
+  return text
+    .replace(/<[^>]*>/g, "")             // strip HTML tags
+    .replace(/[^\x20-\x7E\u00A0-\uFFFF]/g, "") // strip control chars
+    .slice(0, maxLen)
+    .trim();
+}
+
+/** Validate and sanitize a branding config. Returns sanitized copy + errors. */
+export function sanitizeBranding(
+  input: Partial<BrandingConfig>,
+): { branding: BrandingConfig; errors: string[] } {
+  const errors: string[] = [];
+  const branding: BrandingConfig = { ...DEFAULT_BRANDING };
+
+  // logoUrl
+  if (input.logoUrl) {
+    if (HTTPS_URL_RE.test(input.logoUrl)) {
+      branding.logoUrl = input.logoUrl;
+    } else if (input.logoUrl.trim() !== "") {
+      errors.push("logoUrl must be a valid HTTPS URL (max 2048 chars)");
+    }
+  }
+
+  // faviconUrl
+  if (input.faviconUrl) {
+    if (HTTPS_URL_RE.test(input.faviconUrl)) {
+      branding.faviconUrl = input.faviconUrl;
+    } else if (input.faviconUrl.trim() !== "") {
+      errors.push("faviconUrl must be a valid HTTPS URL (max 2048 chars)");
+    }
+  }
+
+  // primaryColor
+  if (input.primaryColor) {
+    if (HEX_COLOR_RE.test(input.primaryColor)) {
+      branding.primaryColor = input.primaryColor;
+    } else if (input.primaryColor.trim() !== "") {
+      errors.push("primaryColor must be a 6-digit hex color (e.g. #003366)");
+    }
+  }
+
+  // secondaryColor
+  if (input.secondaryColor) {
+    if (HEX_COLOR_RE.test(input.secondaryColor)) {
+      branding.secondaryColor = input.secondaryColor;
+    } else if (input.secondaryColor.trim() !== "") {
+      errors.push("secondaryColor must be a 6-digit hex color (e.g. #0078d4)");
+    }
+  }
+
+  // headerText
+  if (input.headerText !== undefined) {
+    branding.headerText = sanitizeText(input.headerText, 100);
+  }
+
+  // footerText
+  if (input.footerText !== undefined) {
+    branding.footerText = sanitizeText(input.footerText, 200);
+  }
+
+  // enabled
+  branding.enabled = input.enabled === true;
+
+  return { branding, errors };
+}
+
 /** Note template definition. */
 export interface NoteTemplate {
   id: string;
@@ -151,6 +260,8 @@ export interface TenantConfig {
   noteTemplates: NoteTemplate[];
   /** Integration connectors */
   connectors: ConnectorConfig[];
+  /** Phase 282: Tenant visual branding overrides */
+  branding: BrandingConfig;
   /** Created timestamp */
   createdAt: string;
   /** Last modified timestamp */
@@ -177,6 +288,7 @@ function toRow(config: TenantConfig): TenantConfigRow {
     ui_defaults: config.uiDefaults as any,
     note_templates: config.noteTemplates,
     connectors: config.connectors,
+    branding: config.branding as any,
     created_at: config.createdAt,
     updated_at: config.updatedAt,
   };
@@ -196,6 +308,7 @@ function fromRow(row: TenantConfigRow): TenantConfig {
     uiDefaults: { ...DEFAULT_UI_DEFAULTS, ...(row.ui_defaults || {}) } as UIDefaults,
     noteTemplates: (row.note_templates || []) as NoteTemplate[],
     connectors: (row.connectors || []) as ConnectorConfig[],
+    branding: { ...DEFAULT_BRANDING, ...((row as any).branding || {}) } as BrandingConfig,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -220,6 +333,7 @@ function buildDefaultTenant(): TenantConfig {
     featureFlags: { ...DEFAULT_FEATURE_FLAGS },
     uiDefaults: { ...DEFAULT_UI_DEFAULTS },
     noteTemplates: [],
+    branding: { ...DEFAULT_BRANDING },
     connectors: [
       {
         id: "vista-primary",
@@ -290,6 +404,16 @@ export function updateUIDefaults(tenantId: string, defaults: Partial<UIDefaults>
   tenant.updatedAt = new Date().toISOString();
   dbUpdateUiDefaults(tenantId, defaults as Record<string, any>).catch(() => {}); // Phase 275
   return tenant.uiDefaults;
+}
+
+/** Phase 282: Update branding config for a tenant (full replace after sanitization). */
+export function updateBranding(tenantId: string, branding: BrandingConfig): BrandingConfig | null {
+  const tenant = tenants.get(tenantId);
+  if (!tenant) return null;
+  tenant.branding = branding;
+  tenant.updatedAt = new Date().toISOString();
+  syncToDb(tenant); // full sync (branding is a top-level field)
+  return tenant.branding;
 }
 
 /** Update enabled modules for a tenant. */

@@ -25,6 +25,7 @@ export interface TenantConfigRow {
   ui_defaults: Record<string, any>;
   note_templates: any[];
   connectors: any[];
+  branding: Record<string, any>;    // Phase 282: JSONB parsed
   created_at: string;
   updated_at: string;
 }
@@ -76,6 +77,7 @@ function rowFromDb(r: any): TenantConfigRow {
     ui_defaults: typeof r.ui_defaults === "string" ? JSON.parse(r.ui_defaults) : (r.ui_defaults || {}),
     note_templates: typeof r.note_templates === "string" ? JSON.parse(r.note_templates) : (r.note_templates || []),
     connectors: typeof r.connectors === "string" ? JSON.parse(r.connectors) : (r.connectors || []),
+    branding: typeof r.branding === "string" ? JSON.parse(r.branding) : (r.branding || {}),
     created_at: r.created_at?.toISOString?.() || r.created_at || new Date().toISOString(),
     updated_at: r.updated_at?.toISOString?.() || r.updated_at || new Date().toISOString(),
   };
@@ -137,8 +139,8 @@ export async function dbUpsertTenant(row: TenantConfigRow): Promise<TenantConfig
       `INSERT INTO tenant_config
         (tenant_id, facility_name, facility_station, vista_host, vista_port,
          vista_context, enabled_modules, feature_flags, ui_defaults,
-         note_templates, connectors, created_at, updated_at)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12::timestamptz,$13::timestamptz)
+         note_templates, connectors, branding, created_at, updated_at)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13::timestamptz,$14::timestamptz)
        ON CONFLICT (tenant_id) DO UPDATE SET
          facility_name = EXCLUDED.facility_name,
          facility_station = EXCLUDED.facility_station,
@@ -150,6 +152,7 @@ export async function dbUpsertTenant(row: TenantConfigRow): Promise<TenantConfig
          ui_defaults = EXCLUDED.ui_defaults,
          note_templates = EXCLUDED.note_templates,
          connectors = EXCLUDED.connectors,
+         branding = EXCLUDED.branding,
          updated_at = EXCLUDED.updated_at`,
       [
         row.tenant_id,
@@ -163,6 +166,7 @@ export async function dbUpsertTenant(row: TenantConfigRow): Promise<TenantConfig
         JSON.stringify(row.ui_defaults),
         JSON.stringify(row.note_templates),
         JSON.stringify(row.connectors),
+        JSON.stringify(row.branding || {}),
         row.created_at,
         row.updated_at,
       ],

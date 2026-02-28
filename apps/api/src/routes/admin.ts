@@ -17,14 +17,17 @@ import {
   updateFeatureFlags,
   updateUIDefaults,
   updateEnabledModules,
+  updateBranding,
   upsertNoteTemplate,
   deleteNoteTemplate,
   updateConnectorStatus,
+  sanitizeBranding,
   type TenantConfig,
   type FeatureFlags,
   type UIDefaults,
   type ModuleId,
   type NoteTemplate,
+  type BrandingConfig,
 } from "../config/tenant-config.js";
 import { probeConnect } from "../vista/rpcBroker.js";
 import { getEnabledModules } from "../modules/module-registry.js";
@@ -85,6 +88,10 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
       },
       noteTemplates: body.noteTemplates ?? [],
       connectors: body.connectors ?? [],
+      branding: body.branding ?? {
+        logoUrl: "", faviconUrl: "", primaryColor: "", secondaryColor: "",
+        headerText: "", footerText: "", enabled: false,
+      },
       createdAt: body.createdAt ?? new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -302,6 +309,42 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     return { ok: true, tenantId, results };
   });
 
+  // ── Tenant Branding — Phase 282 ────────────────────────────────
+
+  /** GET /admin/branding/:tenantId — get branding config */
+  server.get("/admin/branding/:tenantId", async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requireRole(session, ["admin"], reply);
+    const { tenantId } = request.params as { tenantId: string };
+    const tenant = getTenant(tenantId);
+    if (!tenant) return reply.code(404).send({ ok: false, error: "Tenant not found" });
+    return { ok: true, tenantId, branding: tenant.branding };
+  });
+
+  /** PUT /admin/branding/:tenantId — update branding config (full replace, sanitized) */
+  server.put("/admin/branding/:tenantId", async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requireRole(session, ["admin"], reply);
+    const { tenantId } = request.params as { tenantId: string };
+    const body = (request.body as Partial<BrandingConfig>) || {};
+
+    const { branding, errors } = sanitizeBranding(body);
+    if (errors.length > 0) {
+      return reply.code(400).send({ ok: false, errors });
+    }
+
+    const result = updateBranding(tenantId, branding);
+    if (!result) return reply.code(404).send({ ok: false, error: "Tenant not found" });
+
+    audit("config.branding-update", "success", auditActor(request), {
+      requestId: (request as any).requestId,
+      sourceIp: request.ip,
+      detail: { tenantId, enabled: branding.enabled },
+    });
+    log.info("Tenant branding updated", { tenantId });
+    return { ok: true, tenantId, branding: result };
+  });
+
   // ── Tenant config for client (read-only, session-based) ─────────
 
   /** GET /admin/my-tenant — get current user's tenant config (non-admin). */
@@ -324,6 +367,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
         systemModules,
         featureFlags: tenant.featureFlags,
         uiDefaults: tenant.uiDefaults,
+        branding: tenant.branding,
         noteTemplates: tenant.noteTemplates.filter((t) => t.active),
       },
     };
