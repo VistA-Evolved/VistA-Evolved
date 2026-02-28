@@ -14,12 +14,12 @@
  *   - VistA Radiology RPCs (RA ASSIGN ACC#) are integration-pending
  */
 
-import type { ClinicalCommand, RpcExecutor, DryRunTranscript } from "../writeback/types.js";
-import { optionalRpc } from "../vista/rpcCapabilities.js";
-import { safeCallRpc } from "../lib/rpc-resilience.js";
-import { validateCredentials } from "../vista/config.js";
-import { connect, disconnect, getDuz } from "../vista/rpcBrokerClient.js";
-import { log } from "../lib/logger.js";
+import type { ClinicalCommand, RpcExecutor, DryRunTranscript } from "../types.js";
+import { optionalRpc } from "../../vista/rpcCapabilities.js";
+import { safeCallRpc } from "../../lib/rpc-resilience.js";
+import { validateCredentials } from "../../vista/config.js";
+import { connect, disconnect, getDuz } from "../../vista/rpcBrokerClient.js";
+import { log } from "../../lib/logger.js";
 
 /* ------------------------------------------------------------------ */
 /* Intent → RPC mapping                                                */
@@ -104,7 +104,7 @@ async function execPlaceImagingOrder(cmd: ClinicalCommand): Promise<{
     const check = optionalRpc(rpcName);
     if (!check.available) {
       throw Object.assign(
-        new Error(`RPC ${rpcName} not available: ${check.reason}`),
+        new Error(`RPC ${rpcName} not available: ${check.error}`),
         { errorClass: "permanent" },
       );
     }

@@ -32,6 +32,7 @@ import {
 } from "./command-store.js";
 import { checkWritebackGate } from "./gates.js";
 import { log } from "../lib/logger.js";
+import { immutableAudit } from "../lib/immutable-audit.js";
 
 /* ------------------------------------------------------------------ */
 /* Executor registry                                                   */
@@ -83,6 +84,10 @@ export function submitCommand(req: SubmitCommandRequest): CommandExecutionResult
   const gate = checkWritebackGate(req.domain, req.tenantId, req.forceDryRun);
   if (!gate.allowed) {
     log.info(`Writeback rejected: domain=${req.domain} reason=${gate.reason}`);
+    immutableAudit("writeback.reject", "failure", { sub: req.createdBy, name: req.createdBy }, {
+      tenantId: req.tenantId,
+      detail: { domain: req.domain, intent: req.intent, reason: gate.reason },
+    });
     return {
       commandId: "",
       status: "rejected",
@@ -112,6 +117,10 @@ export function submitCommand(req: SubmitCommandRequest): CommandExecutionResult
 
   // 5. Return pending (worker will pick up)
   log.info(`Writeback command submitted: id=${command.id} domain=${req.domain} intent=${req.intent}`);
+  immutableAudit("writeback.submit", "success", { sub: req.createdBy, name: req.createdBy }, {
+    tenantId: req.tenantId,
+    detail: { commandId: command.id, domain: req.domain, intent: req.intent },
+  });
   return {
     commandId: command.id,
     status: "pending",
@@ -179,6 +188,10 @@ export async function processCommand(commandId: string): Promise<CommandExecutio
     updateCommandStatus(commandId, "completed");
 
     log.info(`Writeback completed: id=${commandId} domain=${cmd.domain} intent=${cmd.intent}`);
+    immutableAudit("writeback.execute", "success", { sub: cmd.createdBy, name: cmd.createdBy }, {
+      tenantId: cmd.tenantId,
+      detail: { commandId, domain: cmd.domain, intent: cmd.intent },
+    });
 
     return {
       commandId,
@@ -197,6 +210,12 @@ export async function processCommand(commandId: string): Promise<CommandExecutio
 
     const newStatus = isTransient && attemptNo < 3 ? "retrying" : "failed";
     updateCommandStatus(commandId, newStatus, attempt.errorDetailRedacted);
+
+    const auditAction = newStatus === "retrying" ? "writeback.retry" as const : "writeback.fail" as const;
+    immutableAudit(auditAction, "failure", { sub: cmd.createdBy, name: cmd.createdBy }, {
+      tenantId: cmd.tenantId,
+      detail: { commandId, domain: cmd.domain, intent: cmd.intent, errorClass, attempt: attemptNo },
+    });
 
     log.warn(
       `Writeback ${newStatus}: id=${commandId} domain=${cmd.domain} error=${errorClass} attempt=${attemptNo}`,
@@ -232,6 +251,10 @@ function processDryRun(cmd: ClinicalCommand): CommandExecutionResult {
   setDryRunTranscript(cmd.id, transcript);
 
   log.info(`Writeback dry-run: id=${cmd.id} domain=${cmd.domain} intent=${cmd.intent} rpc=${transcript.rpcName}`);
+  immutableAudit("writeback.dry_run", "success", { sub: cmd.createdBy, name: cmd.createdBy }, {
+    tenantId: cmd.tenantId,
+    detail: { commandId: cmd.id, domain: cmd.domain, intent: cmd.intent, rpcName: transcript.rpcName },
+  });
 
   return {
     commandId: cmd.id,

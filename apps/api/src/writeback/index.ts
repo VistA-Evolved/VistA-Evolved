@@ -43,6 +43,8 @@ export {
   getWritebackGateSummary,
 } from "./gates.js";
 
+export { bootstrapWritebackExecutors } from "./executor-bootstrap.js";
+
 export {
   runCertification,
   getCertificationSummary,

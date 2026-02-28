@@ -21,6 +21,8 @@ import { startHealthMonitor, stopHealthMonitor } from "../rcm/connectors/health-
 import { initBillingProvider } from "../billing/index.js";
 import { startMeteringFlush } from "../billing/metering.js";
 import { initFeatureFlagProvider } from "../flags/index.js";
+import { bootstrapWritebackExecutors } from "../writeback/executor-bootstrap.js";
+import { startSessionSweeper, stopSessionSweeper } from "../telehealth/session-hardening.js";
 /**
  * Initialize Postgres platform DB and wire all repos.
  */
@@ -317,6 +319,21 @@ async function initPostgresLayer(): Promise<void> {
  * Start all background jobs and services after the server is listening.
  */
 async function startBackgroundServices(): Promise<void> {
+  // Phase 300: Bootstrap writeback domain executors (6 domains)
+  try {
+    bootstrapWritebackExecutors();
+  } catch (wbErr: any) {
+    log.warn("Writeback executor bootstrap failed (non-fatal)", { error: wbErr.message });
+  }
+
+  // Phase 307: Start telehealth session sweeper (detects abandoned rooms)
+  try {
+    startSessionSweeper();
+    log.info("Telehealth session sweeper started (Phase 307)");
+  } catch (ssErr: any) {
+    log.warn("Telehealth session sweeper failed to start (non-fatal)", { error: ssErr.message });
+  }
+
   // Phase 96B: Load QA flow catalog
   const flowResult = loadFlowCatalog();
   log.info("QA flow catalog loaded", { loaded: flowResult.loaded, errors: flowResult.errors.length });

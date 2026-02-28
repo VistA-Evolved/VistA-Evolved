@@ -270,7 +270,7 @@ export function sweepStaleSessions(): AutoEndCandidate[] {
         log.info(`Telehealth disconnected: room=${roomId} participant=${hb.participantId}`);
       }
 
-      if (hb.state !== "disconnected" && hb.state !== "ended") {
+      if (hb.state !== "disconnected") {
         allDisconnected = false;
       }
 

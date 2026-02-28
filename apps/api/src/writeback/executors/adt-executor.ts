@@ -21,7 +21,7 @@
  *   - File 42 (Ward Location) for bed assignments
  */
 
-import type { ClinicalCommand, RpcExecutor, DryRunTranscript } from "../writeback/types.js";
+import type { ClinicalCommand, RpcExecutor, DryRunTranscript } from "../types.js";
 
 /* ------------------------------------------------------------------ */
 /* Intent → target RPC/routine mapping (integration-pending)           */

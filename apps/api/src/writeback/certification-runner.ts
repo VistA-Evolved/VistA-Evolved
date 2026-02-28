@@ -119,7 +119,7 @@ function checkCommandBus(): CertificationCheck {
     const stats = getCommandStoreStats();
     return {
       status: "pass",
-      message: `Command store operational: ${stats.total} commands tracked`,
+      message: `Command store operational: ${stats.commands} commands tracked`,
     };
   });
 }

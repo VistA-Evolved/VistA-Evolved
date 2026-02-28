@@ -571,6 +571,11 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
         try { await stopHl7Engine(); } catch { /* engine may not be running */ }
         // Phase 242: stop payer connector health monitor
         try { stopHealthMonitor(); } catch { /* timer may already be cleared */ }
+        // Phase 307: stop telehealth session sweeper
+        try {
+          const { stopSessionSweeper } = await import("../telehealth/session-hardening.js");
+          stopSessionSweeper();
+        } catch { /* sweeper may not be started */ }
         // Phase 284: stop billing metering flush timer
         try { stopMeteringFlush(); } catch { /* timer may already be cleared */ }
         // Phase 285: destroy feature flag provider (stop Unleash polling)
