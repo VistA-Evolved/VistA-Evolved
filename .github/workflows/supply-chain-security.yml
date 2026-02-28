@@ -1,0 +1,219 @@
+name: Supply Chain Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 4 * * 1"   # Weekly Monday 04:00 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: supply-chain-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  security-events: write    # For SARIF upload
+  id-token: write           # For Scorecard
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ${{ github.repository_owner }}/vista-evolved
+
+jobs:
+  # ---- OpenSSF Scorecard ----
+  scorecard:
+    name: OpenSSF Scorecard
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: ossf/scorecard-action@v2
+        with:
+          results_file: scorecard-results.json
+          results_format: json
+          publish_results: true
+
+      - name: Upload Scorecard JSON
+        uses: actions/upload-artifact@v4
+        with:
+          name: scorecard-results
+          path: scorecard-results.json
+          retention-days: 90
+
+      - name: Convert to SARIF
+        run: |
+          # Scorecard action also supports SARIF output
+          echo "Scorecard results saved as JSON artifact"
+
+  # ---- SBOM Generation ----
+  sbom:
+    name: SBOM Generation
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Syft
+        uses: anchore/sbom-action/download-syft@v0
+
+      - name: Generate API SBOM (filesystem)
+        run: |
+          syft dir:apps/api -o cyclonedx-json=sbom-api.cdx.json
+          echo "API SBOM generated ($(wc -c < sbom-api.cdx.json) bytes)"
+
+      - name: Generate Web SBOM (filesystem)
+        run: |
+          syft dir:apps/web -o cyclonedx-json=sbom-web.cdx.json
+          echo "Web SBOM generated ($(wc -c < sbom-web.cdx.json) bytes)"
+
+      - name: Generate Portal SBOM (filesystem)
+        run: |
+          syft dir:apps/portal -o cyclonedx-json=sbom-portal.cdx.json
+          echo "Portal SBOM generated ($(wc -c < sbom-portal.cdx.json) bytes)"
+
+      - name: Upload SBOMs
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-artifacts
+          path: |
+            sbom-api.cdx.json
+            sbom-web.cdx.json
+            sbom-portal.cdx.json
+          retention-days: 90
+
+  # ---- Vulnerability Scanning (Trivy) ----
+  trivy-scan:
+    name: Trivy Vulnerability Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Trivy filesystem scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          scan-ref: .
+          format: sarif
+          output: trivy-results.sarif
+          severity: CRITICAL,HIGH
+          exit-code: 0    # report-only; set to 1 to enforce
+
+      - name: Upload Trivy SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: trivy-results.sarif
+          category: trivy-fs
+
+      - name: Run Trivy license scan
+        run: |
+          # Trivy license scan with policy
+          docker run --rm -v "$PWD:/src" aquasec/trivy:latest \
+            fs /src --scanners license \
+            --severity HIGH,CRITICAL \
+            --format json \
+            --output /src/trivy-license.json || true
+
+      - name: Upload Trivy results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: trivy-results
+          path: |
+            trivy-results.sarif
+            trivy-license.json
+          retention-days: 90
+
+  # ---- Vulnerability Scanning (Grype from SBOM) ----
+  grype-scan:
+    name: Grype SBOM Vulnerability Scan
+    needs: sbom
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download SBOMs
+        uses: actions/download-artifact@v4
+        with:
+          name: sbom-artifacts
+
+      - name: Install Grype
+        uses: anchore/scan-action/download-grype@v4
+
+      - name: Scan API SBOM
+        run: |
+          grype sbom:sbom-api.cdx.json -o json > grype-api.json
+          echo "API scan complete"
+
+      - name: Scan Web SBOM
+        run: |
+          grype sbom:sbom-web.cdx.json -o json > grype-web.json
+          echo "Web scan complete"
+
+      - name: Scan Portal SBOM
+        run: |
+          grype sbom:sbom-portal.cdx.json -o json > grype-portal.json
+          echo "Portal scan complete"
+
+      - name: Check for CRITICAL vulns
+        run: |
+          for f in grype-api.json grype-web.json grype-portal.json; do
+            CRITS=$(jq '[.matches[] | select(.vulnerability.severity == "Critical")] | length' "$f" 2>/dev/null || echo 0)
+            echo "$f: $CRITS critical vulnerabilities"
+            # Enforce: fail on critical (configurable)
+            # if [ "$CRITS" -gt 0 ]; then exit 1; fi
+          done
+
+      - name: Upload Grype results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: grype-results
+          path: |
+            grype-api.json
+            grype-web.json
+            grype-portal.json
+          retention-days: 90
+
+  # ---- License Policy Check ----
+  license-check:
+    name: License Policy
+    needs: sbom
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download SBOMs
+        uses: actions/download-artifact@v4
+        with:
+          name: sbom-artifacts
+
+      - name: Check denied licenses
+        run: |
+          DENIED="GPL-2.0-only|GPL-3.0-only|AGPL-3.0-only|AGPL-3.0-or-later|SSPL"
+          echo "Checking SBOMs for denied licenses: $DENIED"
+          FOUND=0
+          for f in sbom-api.cdx.json sbom-web.cdx.json sbom-portal.cdx.json; do
+            if [ -f "$f" ]; then
+              MATCHES=$(jq -r '[.components[]? | select(.licenses[]?.license?.id? | test("'"$DENIED"'"))] | length' "$f" 2>/dev/null || echo 0)
+              echo "  $f: $MATCHES denied-license components"
+              if [ "$MATCHES" -gt 0 ]; then
+                jq -r '.components[] | select(.licenses[]?.license?.id? | test("'"$DENIED"'")) | "\(.name) \(.version) \(.licenses[].license.id)"' "$f"
+                FOUND=$((FOUND + MATCHES))
+              fi
+            fi
+          done
+          if [ "$FOUND" -gt 0 ]; then
+            echo "::warning::Found $FOUND components with denied licenses"
+            # Set to exit 1 to enforce
+          fi
