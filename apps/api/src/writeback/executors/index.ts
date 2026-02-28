@@ -7,3 +7,4 @@
 
 export { tiuExecutor } from "./tiu-executor.js";
 export { ordersExecutor } from "./orders-executor.js";
+export { pharmExecutor } from "./pharm-executor.js";
