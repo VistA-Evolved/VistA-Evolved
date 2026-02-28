@@ -1,0 +1,126 @@
+/**
+ * HL7v2 Use-Case Routes — Phase 260 (Wave 8 P4)
+ *
+ * Endpoints for HL7v2 use-case operations:
+ * - POST /hl7/ingest — Accept raw HL7 and map to domain event
+ * - GET /hl7/use-cases — List supported message type → domain event mappings
+ * - GET /hl7/use-cases/fixtures — List available test fixtures
+ */
+import { FastifyInstance } from "fastify";
+import {
+  mapHl7ToDomainEvent,
+  listSupportedMappings,
+} from "../hl7/domain-mapper.js";
+import { recordMessageEvent } from "../hl7/message-event-store.js";
+import { addEnhancedDeadLetter } from "../hl7/dead-letter-enhanced.js";
+import * as fs from "fs";
+import * as path from "path";
+
+export async function hl7UseCaseRoutes(server: FastifyInstance): Promise<void> {
+  /**
+   * POST /hl7/ingest — Accept raw HL7 message, parse, map to domain event.
+   * Body: { rawMessage: string, tenantId?: string }
+   */
+  server.post("/hl7/ingest", async (request, reply) => {
+    const body = (request.body as { rawMessage?: string; tenantId?: string }) || {};
+    const raw = body.rawMessage;
+    if (!raw || typeof raw !== "string") {
+      return reply.code(400).send({ ok: false, error: "rawMessage is required" });
+    }
+
+    const tenantId = body.tenantId || "default";
+
+    // Extract MSH fields for event recording
+    const firstLine = raw.split(/\r?\n|\r/)[0] ?? "";
+    const mshParts = firstLine.split("|");
+    const sendingApp = mshParts[2] ?? "";
+    const sendingFac = mshParts[3] ?? "";
+    const messageType = mshParts[8] ?? "";
+    const controlId = mshParts[9] ?? "";
+
+    // Attempt domain mapping
+    const domainEvent = mapHl7ToDomainEvent(raw);
+
+    if (domainEvent) {
+      // Record successful processing
+      recordMessageEvent({
+        tenantId,
+        direction: "inbound",
+        messageType,
+        messageControlId: controlId,
+        sendingApplication: sendingApp,
+        sendingFacility: sendingFac,
+        receivingApplication: "VISTA_EVOLVED",
+        receivingFacility: tenantId,
+        status: "routed",
+        rawMessage: raw,
+      });
+
+      return reply.send({
+        ok: true,
+        domainEvent,
+        sourceMessageType: messageType,
+        sourceControlId: controlId,
+      });
+    } else {
+      // Dead-letter unmappable messages
+      addEnhancedDeadLetter({
+        messageType,
+        messageControlId: controlId,
+        sendingApplication: sendingApp,
+        sendingFacility: sendingFac,
+        reason: `Unsupported message type: ${messageType}`,
+        rawMessage: raw,
+        tenantId,
+      });
+
+      return reply.code(422).send({
+        ok: false,
+        error: "Unsupported message type",
+        messageType,
+        controlId,
+        detail: "Message added to dead-letter queue for review",
+      });
+    }
+  });
+
+  /**
+   * GET /hl7/use-cases — List supported HL7 → domain event mappings
+   */
+  server.get("/hl7/use-cases", async (_request, reply) => {
+    const mappings = listSupportedMappings();
+    return reply.send({
+      ok: true,
+      mappings,
+      totalMappings: mappings.length,
+    });
+  });
+
+  /**
+   * GET /hl7/use-cases/fixtures — List available HL7 test fixture files
+   */
+  server.get("/hl7/use-cases/fixtures", async (_request, reply) => {
+    const fixturesDir = path.resolve(
+      process.cwd(),
+      "../../services/hl7/fixtures"
+    );
+    try {
+      if (!fs.existsSync(fixturesDir)) {
+        return reply.send({ ok: true, fixtures: [], note: "Fixtures directory not found" });
+      }
+      const files = fs
+        .readdirSync(fixturesDir)
+        .filter((f) => f.endsWith(".hl7"));
+      return reply.send({
+        ok: true,
+        fixtures: files.map((f) => ({
+          name: f,
+          messageType: f.replace(/_/g, "^").split("^")[0] + "^" + f.split("_")[1],
+        })),
+        totalFixtures: files.length,
+      });
+    } catch {
+      return reply.send({ ok: true, fixtures: [], note: "Could not read fixtures directory" });
+    }
+  });
+}
