@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-28T06:50:01.792Z",
+  "generatedAt": "2026-02-28T06:54:33.700Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 225,
+  "phaseCount": 226,
   "phases": [
     {
       "phaseNumber": "1",
@@ -4316,6 +4316,27 @@
         "docs/vista-alignment/route-rpc-map.json",
         "docs/vista-alignment/route-rpc-map.md",
         "package.json"
+      ]
+    },
+    {
+      "phaseNumber": "217",
+      "title": "Live RPC Communication Verification Suite",
+      "folder": "223-PHASE-217-LIVE-RPC-VERIFICATION",
+      "files": [
+        "217-01-IMPLEMENT.md",
+        "217-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "217-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "217-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/verify-rpc-communication.mjs"
       ]
     },
     {

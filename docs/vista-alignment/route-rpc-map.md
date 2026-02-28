@@ -1,6 +1,6 @@
 # Route-to-RPC Map
 
-> Generated: 2026-02-28T06:49:44.970Z
+> Generated: 2026-02-28T06:54:17.073Z
 > Tool: `tools/rpc-extract/build-route-rpc-map.mjs`
 
 ## Summary
@@ -785,7 +785,7 @@
 - `ORQQAL LIST` (allergies/read)
 - `ORQQPL PROBLEM LIST` (problems/read)
 - `ORQQVI VITALS` (vitals/read)
-- `ORWCV VST` (unknown/unknown)
+- `ORWCV VST` (scheduling/read)
 - `ORWLRR INTERIM` (labs/read)
 - `ORWPS ACTIVE` (medications/read)
 - `ORWPT LIST ALL` (patients/read)

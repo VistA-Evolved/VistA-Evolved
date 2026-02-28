@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-28T06:49:44.970Z",
+    "generatedAt": "2026-02-28T06:54:17.073Z",
     "tool": "tools/rpc-extract/build-route-rpc-map.mjs",
     "summary": {
       "totalRoutes": 907,
@@ -9512,9 +9512,9 @@
       },
       {
         "name": "ORWCV VST",
-        "domain": "unknown",
-        "tag": "unknown",
-        "registered": false,
+        "domain": "scheduling",
+        "tag": "read",
+        "registered": true,
         "isException": false
       },
       {

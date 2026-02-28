@@ -188,6 +188,7 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "ZVE MAIL MANAGE",          domain: "messaging",  tag: "write", description: "Mark read/delete/move MailMan message (ZVEMSGR.m)" },
 
   // --- Scheduling (Phase 37C: VistA scheduling adapter, enhanced Phase 123) ---
+  { name: "ORWCV VST",                      domain: "scheduling",  tag: "read",  description: "Cover sheet visit list for patient (VISIT #9000010)" },
   { name: "SDOE LIST ENCOUNTERS FOR PAT",   domain: "scheduling",  tag: "read",  description: "List encounters/appointments for patient" },
   { name: "SD W/L RETRIVE HOSP LOC(#44)",   domain: "scheduling",  tag: "read",  description: "Retrieve hospital locations for scheduling" },
   { name: "SD W/L RETRIVE PERSON(200)",      domain: "scheduling",  tag: "read",  description: "Retrieve person file entries for scheduling" },
