@@ -152,6 +152,9 @@ import onboardingRoutes from "../routes/onboarding-routes.js";
 // Support Tooling (Phase 244)
 import supportRoutes from "../routes/support-routes.js";
 
+// Data Exports v2 (Phase 245)
+import exportV2Routes from "../routes/export-routes.js";
+
 // Infrastructure routes
 import postureRoutes from "../posture/index.js";
 import { jobAdminRoutes } from "../routes/job-admin-routes.js";
@@ -423,6 +426,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Phase 244: Support tooling
   server.register(supportRoutes);
+
+  // Phase 245: Data Exports v2
+  server.register(exportV2Routes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);
