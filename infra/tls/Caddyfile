@@ -72,6 +72,24 @@ ehr.local {
 	handle /version {
 		reverse_proxy host.docker.internal:3001
 	}
+	handle /fhir/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /hl7/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /.well-known/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /security/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /hardening/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /audit/* {
+		reverse_proxy host.docker.internal:3001
+	}
 
 	# --- Web frontend (catch-all) ---
 	handle {

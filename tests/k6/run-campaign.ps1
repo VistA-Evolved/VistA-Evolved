@@ -125,6 +125,6 @@ $campaignSummary = @{
     totalFail = $totalFail
 } | ConvertTo-Json -Depth 5
 
-$campaignSummary | Set-Content (Join-Path $OutputDir "campaign-summary.json") -Encoding UTF8
+$campaignSummary | Set-Content (Join-Path $OutputDir "campaign-summary.json") -Encoding ascii
 
 exit $totalFail

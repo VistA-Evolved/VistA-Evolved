@@ -16,7 +16,7 @@
 
 import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, statSync } from "node:fs";
-import { join, relative, basename, dirname } from "node:path";
+import { join, relative } from "node:path";
 
 const ROOT = join(import.meta.dirname, "..");
 const args = process.argv.slice(2);

@@ -107,13 +107,13 @@ async function testValidateMessage() {
     "PV1|1|I|WARD^ROOM^BED||||ATT^ATTENDING^DOCTOR",
   ].join("\r");
 
-  const res = await safeFetch(`${API_URL}/hl7/packs/validate`, {
+  const res = await safeFetch(`${API_URL}/hl7/packs/ADT_A01/validate`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ message: hl7Msg }),
   });
 
-  const result = await assertJsonResponse("POST /hl7/packs/validate returns 2xx", res);
+  const result = await assertJsonResponse("POST /hl7/packs/ADT_A01/validate returns 2xx", res);
   results.push(result);
 
   if (result.passed && result.body) {
@@ -161,8 +161,8 @@ async function testTemplateGeneration(packId) {
 async function testPipelineStatus() {
   log("\n=== HL7 Pipeline Status ===");
 
-  const res = await safeFetch(`${API_URL}/hl7/pipeline/status`);
-  const result = await assertJsonResponse("GET /hl7/pipeline/status returns 2xx", res);
+  const res = await safeFetch(`${API_URL}/hl7/pipeline/stats`);
+  const result = await assertJsonResponse("GET /hl7/pipeline/stats returns 2xx", res);
   results.push(result);
 
   if (result.passed && result.body) {
@@ -189,7 +189,7 @@ async function testSegmentOrdering() {
     "PV1|1|O|CLINIC||||PROV^DOC^FIRST",
   ].join("\r");
 
-  const res = await safeFetch(`${API_URL}/hl7/packs/validate`, {
+  const res = await safeFetch(`${API_URL}/hl7/packs/ADT_A01/validate`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ message: hl7Msg }),
@@ -224,7 +224,7 @@ async function testSegmentOrdering() {
     "PV1|1|O|CLINIC",
   ].join("\r");
 
-  const badRes = await safeFetch(`${API_URL}/hl7/packs/validate`, {
+  const badRes = await safeFetch(`${API_URL}/hl7/packs/ADT_A01/validate`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ message: badMsg }),

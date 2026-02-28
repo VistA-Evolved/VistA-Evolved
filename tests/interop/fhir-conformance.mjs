@@ -47,15 +47,13 @@ async function safeFetch(url, opts = {}) {
 async function testCapabilityStatement() {
   log("\n=== FHIR CapabilityStatement ===");
 
-  const res = await safeFetch(`${API_URL}/fhir/r4/metadata`);
-  const csResult = await assertJsonResponse("GET /fhir/r4/metadata returns 200", res, 200);
+  const res = await safeFetch(`${API_URL}/fhir/metadata`);
+  const csResult = await assertJsonResponse("GET /fhir/metadata returns 200", res, 200);
 
   if (!csResult.passed) {
-    // Try alternative paths
-    const alt = await safeFetch(`${API_URL}/fhir/metadata`);
-    const altResult = await assertJsonResponse("GET /fhir/metadata (alt) returns 2xx", alt);
-    results.push(altResult.passed ? altResult : csResult);
-    return altResult.body;
+    // If FHIR not yet implemented, record the failure
+    results.push(csResult);
+    return null;
   }
 
   results.push(csResult);
@@ -84,8 +82,8 @@ async function testCapabilityStatement() {
 async function testPatientSearch() {
   log("\n=== Patient Search ===");
 
-  const res = await safeFetch(`${API_URL}/fhir/r4/Patient?_count=5`);
-  const result = await assertJsonResponse("GET /fhir/r4/Patient returns 2xx", res);
+  const res = await safeFetch(`${API_URL}/fhir/Patient?_count=5`);
+  const result = await assertJsonResponse("GET /fhir/Patient returns 2xx", res);
 
   if (result.passed && result.body) {
     const bundleResults = assertBundle(result.body);
@@ -105,8 +103,8 @@ async function testPatientSearch() {
 async function testAllergySearch() {
   log("\n=== AllergyIntolerance Search ===");
 
-  const res = await safeFetch(`${API_URL}/fhir/r4/AllergyIntolerance?patient=3`);
-  const result = await assertJsonResponse("GET /fhir/r4/AllergyIntolerance returns 2xx", res);
+  const res = await safeFetch(`${API_URL}/fhir/AllergyIntolerance?patient=3`);
+  const result = await assertJsonResponse("GET /fhir/AllergyIntolerance returns 2xx", res);
 
   if (result.passed && result.body) {
     const bundleResults = assertBundle(result.body);
@@ -122,7 +120,7 @@ async function testAllergySearch() {
 async function testContentType() {
   log("\n=== Content-Type Header ===");
 
-  const res = await safeFetch(`${API_URL}/fhir/r4/metadata`);
+  const res = await safeFetch(`${API_URL}/fhir/metadata`);
   const ct = res.headers?.get?.("content-type") || "";
   results.push(assert(
     "FHIR content-type is application/fhir+json or application/json",

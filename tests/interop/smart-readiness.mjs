@@ -43,8 +43,8 @@ async function safeFetch(url, opts = {}) {
 async function testSmartConfiguration() {
   log("\n=== SMART Configuration Discovery ===");
 
-  // STU2 path: /fhir/r4/.well-known/smart-configuration
-  const stu2 = await safeFetch(`${API_URL}/fhir/r4/.well-known/smart-configuration`);
+  // SMART App Launch discovery endpoint (top-level .well-known)
+  const stu2 = await safeFetch(`${API_URL}/.well-known/smart-configuration`);
   const stu2Result = await assertJsonResponse("GET /.well-known/smart-configuration returns JSON", stu2);
 
   if (stu2Result.passed && stu2Result.body) {
@@ -155,7 +155,7 @@ async function testLaunchParams() {
   log("\n=== Launch Parameter Structure ===");
 
   // Verify the API can handle EHR launch context
-  const res = await safeFetch(`${API_URL}/fhir/r4/metadata`);
+  const res = await safeFetch(`${API_URL}/fhir/metadata`);
   let body;
   try {
     body = await res.json();
