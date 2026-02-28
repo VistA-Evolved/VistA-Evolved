@@ -2,6 +2,7 @@
  * Clinical Writeback Command Bus — Barrel Export
  *
  * Phase 300 (W12-P2): Re-exports for clean imports.
+ * Phase 308 (W12-P10): Added certification runner exports.
  */
 
 export type {
@@ -41,3 +42,14 @@ export {
   checkWritebackGate,
   getWritebackGateSummary,
 } from "./gates.js";
+
+export {
+  runCertification,
+  getCertificationSummary,
+} from "./certification-runner.js";
+
+export type {
+  CertificationCheck,
+  CertificationReport,
+  CheckStatus,
+} from "./certification-runner.js";

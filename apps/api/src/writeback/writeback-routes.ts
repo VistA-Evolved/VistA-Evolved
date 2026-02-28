@@ -17,6 +17,7 @@ import { createHash } from "crypto";
 import { submitCommand, processCommand, getCommandDetail } from "./command-bus.js";
 import { listCommands, getCommandStoreStats } from "./command-store.js";
 import { getWritebackGateSummary } from "./gates.js";
+import { runCertification, getCertificationSummary } from "./certification-runner.js";
 import type { WritebackDomain, WritebackIntent, SubmitCommandRequest } from "./types.js";
 import { INTENT_DOMAIN_MAP } from "./types.js";
 
@@ -163,5 +164,22 @@ export default async function writebackRoutes(server: FastifyInstance): Promise<
   server.get("/writeback/stats", async (request, reply) => {
     const stats = getCommandStoreStats();
     return reply.send({ ok: true, ...stats });
+  });
+
+  /**
+   * GET /writeback/certification — Run full departmental certification (admin only).
+   * Non-destructive: all checks are read-only or dry-run mode.
+   */
+  server.get("/writeback/certification", async (request, reply) => {
+    const report = runCertification();
+    return reply.send({ ok: report.overallStatus !== "not_certified", ...report });
+  });
+
+  /**
+   * GET /writeback/certification/summary — Quick health check (lightweight).
+   */
+  server.get("/writeback/certification/summary", async (request, reply) => {
+    const summary = getCertificationSummary();
+    return reply.send({ ok: true, ...summary });
   });
 }
