@@ -1,21 +1,21 @@
-# Phase 199 -- Verify: Secret Management
+# Phase 199 -- Verify: CI PR Gates
 
 ## Verification Steps
-1. Secrets not in plain text in repo
-2. External store accessible
-3. Rotation works
-4. Audit logged
+1. CI runs on every PR
+2. All gate steps execute
+3. Failed gates block merge
+4. Charts validated in CI
 
 ## Acceptance Criteria
-- [ ] Secrets not in plain text in repo
-- [ ] External store accessible
-- [ ] Rotation works
-- [ ] Audit logged
+- [ ] CI runs on every PR
+- [ ] All gate steps execute
+- [ ] Failed gates block merge
+- [ ] Charts validated in CI
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Notes
 - All verification steps require the relevant infrastructure to be running

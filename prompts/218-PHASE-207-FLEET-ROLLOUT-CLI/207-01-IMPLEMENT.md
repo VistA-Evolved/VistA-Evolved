@@ -1,18 +1,19 @@
-# Phase 207 -- Canary Release Pipeline
+# Phase 207 -- Fleet Rollout CLI
 
 ## Implementation Steps
-1. Configure canary deployment with progressive traffic shift
-2. Add metrics-based promotion criteria
-3. Define automatic rollback on error rate spike
-4. Integrate with Prometheus alerts
+1. Create CLI tool for multi-tenant fleet-wide rollouts
+2. Implement progressive rollout strategy (canary, ring, full)
+3. Add dry-run mode for rollout preview before execution
+4. Configure rollout status tracking and reporting dashboard
 
 ## Files Touched
+- scripts/
 - infra/
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Dependencies
 - Requires completion of prior phases in the wave sequence

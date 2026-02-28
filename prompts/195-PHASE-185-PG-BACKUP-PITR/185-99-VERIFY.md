@@ -1,19 +1,21 @@
-# Phase 185 -- Verify: Staging Environment Definition
+# Phase 185 -- Verify: PG Backup PITR
 
 ## Verification Steps
-1. Staging config complete
-2. Env vars correct
-3. Access documented
+1. WAL archiving active
+2. Base backup runs on schedule
+3. PITR restore succeeds
+4. RPO/RTO targets documented
 
 ## Acceptance Criteria
-- [ ] Staging config complete
-- [ ] Env vars correct
-- [ ] Access documented
+- [ ] WAL archiving active
+- [ ] Base backup runs on schedule
+- [ ] PITR restore succeeds
+- [ ] RPO/RTO targets documented
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Notes
 - All verification steps require the relevant infrastructure to be running

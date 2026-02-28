@@ -1,21 +1,21 @@
-# Phase 200 -- Verify: Audit Log Compliance
+# Phase 200 -- Verify: CD Pipeline
 
 ## Verification Steps
-1. Audit chain verifies clean
-2. Retention policy enforced
-3. S3 shipping works
-4. Compliance report generated
+1. CD triggers on merge to main
+2. Images pushed successfully
+3. Deployment proceeds automatically
+4. Rollback mechanism tested
 
 ## Acceptance Criteria
-- [ ] Audit chain verifies clean
-- [ ] Retention policy enforced
-- [ ] S3 shipping works
-- [ ] Compliance report generated
+- [ ] CD triggers on merge to main
+- [ ] Images pushed successfully
+- [ ] Deployment proceeds automatically
+- [ ] Rollback mechanism tested
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Notes
 - All verification steps require the relevant infrastructure to be running

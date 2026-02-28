@@ -1,19 +1,21 @@
-# Phase 195 -- Verify: FHIR R4 Bundle + CapabilityStatement
+# Phase 195 -- Verify: SMART on FHIR Posture
 
 ## Verification Steps
-1. Bundle pagination works
-2. CapabilityStatement valid
-3. SMART context declared
+1. CapabilityStatement valid R4
+2. SMART launch context works
+3. Scopes declared correctly
+4. Well-known endpoint accessible
 
 ## Acceptance Criteria
-- [ ] Bundle pagination works
-- [ ] CapabilityStatement valid
-- [ ] SMART context declared
+- [ ] CapabilityStatement valid R4
+- [ ] SMART launch context works
+- [ ] Scopes declared correctly
+- [ ] Well-known endpoint accessible
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Notes
 - All verification steps require the relevant infrastructure to be running

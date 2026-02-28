@@ -1,19 +1,21 @@
-# Phase 194 -- Verify: FHIR R4 AllergyIntolerance
+# Phase 194 -- Verify: FHIR Cache ETag
 
 ## Verification Steps
-1. AllergyIntolerance valid R4
-2. Criticality mapped
-3. Reactions included
+1. ETag present on FHIR responses
+2. Conditional GET returns 304 when unchanged
+3. Cache headers correct
+4. Stale cache detected and refreshed
 
 ## Acceptance Criteria
-- [ ] AllergyIntolerance valid R4
-- [ ] Criticality mapped
-- [ ] Reactions included
+- [ ] ETag present on FHIR responses
+- [ ] Conditional GET returns 304 when unchanged
+- [ ] Cache headers correct
+- [ ] Stale cache detected and refreshed
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Notes
 - All verification steps require the relevant infrastructure to be running

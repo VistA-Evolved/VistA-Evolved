@@ -1,7 +1,7 @@
 # Wave 4 Convergence Snapshot
 
 > Generated: 2026-02-28
-> HEAD: 664da21 (main)
+> HEAD: 8c6e90f (main)
 > Queue: Q211-Q220 complete
 
 ## Wave 4 Summary (Q211-Q220)
@@ -25,23 +25,24 @@
 |------|--------|
 | Prompts tree health | 6 PASS, 0 WARN, 0 FAIL |
 | Prompts quality | PASS (231 legacy WARN, 0 FAIL) |
-| Phase index integrity | 6/6 PASS (228 phases) |
+| Phase index integrity | 6/6 PASS (230 phases) |
 | RPC verification | 3 PASS, 0 WARN, 0 FAIL |
 
 ## Key Metrics
 
 | Metric | Value |
 |--------|-------|
-| Total phases | 228 |
-| Phase folders with IMPLEMENT+VERIFY | 228 |
+| Total phases | 230 |
+| Phase folders with IMPLEMENT+VERIFY | 230 |
 | Wave phases enriched (Q219) | 76 files |
 | Quality warnings eliminated | 76 (307 -> 231) |
 | RPC registry entries | 138 (137 registered + ORWCV VST) |
-| Unique RPCs in routes | 111 |
+| Unique RPCs across routes + services | 111 |
 | Unregistered RPCs | 0 |
 | Total routes | 907 |
-| Live RPC routes | 115 |
+| RPC-active routes | 115 |
 | Stub routes | 686 |
+| Non-RPC routes | 106 |
 
 ## New Tooling Created
 
@@ -68,6 +69,7 @@
 - **3-digit prefix support** in PromptOS auditPrompts.ts + fixPrompts.ts
 - **qa-runner.mjs** switched from tsx to native node for prompts suite
 - **Phase 199 IMPLEMENT** content corrected (had VERIFY template)
+- **27 wave phase titles** corrected (WAVE2/WAVE3 dictionary misalignment in enrich script, 56 files rewritten)
 - **Phase 43** IMPLEMENT/VERIFY merged from split folders
 - **Duplicate phases** resolved with B-suffixes (87B, 120B, 132B)
 - **Wave mega-phases** moved to 00-PLAYBOOKS/

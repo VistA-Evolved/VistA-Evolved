@@ -1,18 +1,19 @@
-# Phase 203 -- Load Test Suite
+# Phase 203 -- Policy as Code
 
 ## Implementation Steps
-1. Create comprehensive k6 load test scenarios
-2. Define concurrent user thresholds
-3. Test circuit breaker under load
-4. Verify rate limiting under sustained traffic
+1. Define organizational policies in OPA Rego format
+2. Configure policy enforcement in CI/CD pipeline
+3. Add admission controller policies for K8s namespaces
+4. Create policy test suite with expected outcomes
 
 ## Files Touched
-- tests/k6/
+- infra/opa/
+- .github/workflows/
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Dependencies
 - Requires completion of prior phases in the wave sequence

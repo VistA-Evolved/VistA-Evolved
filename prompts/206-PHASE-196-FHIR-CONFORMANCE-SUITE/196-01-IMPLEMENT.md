@@ -1,9 +1,9 @@
-# Phase 196 -- FHIR Validation + Conformance
+# Phase 196 -- FHIR Conformance Suite
 
 ## Implementation Steps
-1. Add FHIR resource validation against R4 profiles
-2. Create conformance test suite
-3. Validate all responses against official schemas
+1. Create FHIR R4 conformance test suite against official profiles
+2. Validate all resource responses against R4 schemas
+3. Test search parameter combinations for each resource
 4. Document known gaps vs full R4 support
 
 ## Files Touched
@@ -13,7 +13,7 @@
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Dependencies
 - Requires completion of prior phases in the wave sequence

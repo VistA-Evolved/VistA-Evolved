@@ -1,21 +1,21 @@
-# Phase 208 -- Verify: Multi-Region Readiness
+# Phase 208 -- Verify: Compliance Evidence
 
 ## Verification Steps
-1. Architecture documented
-2. Data residency accounted for
-3. Regional configs exist
-4. Failover planned
+1. Evidence artifacts generated
+2. Regulatory mapping complete
+3. Collection pipeline runs on schedule
+4. Archive integrity verifiable
 
 ## Acceptance Criteria
-- [ ] Architecture documented
-- [ ] Data residency accounted for
-- [ ] Regional configs exist
-- [ ] Failover planned
+- [ ] Evidence artifacts generated
+- [ ] Regulatory mapping complete
+- [ ] Collection pipeline runs on schedule
+- [ ] Archive integrity verifiable
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Notes
 - All verification steps require the relevant infrastructure to be running

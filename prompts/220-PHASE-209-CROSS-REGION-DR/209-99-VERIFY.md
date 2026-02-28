@@ -1,19 +1,21 @@
-# Phase 209 -- Verify: Compliance Dashboard
+# Phase 209 -- Verify: Cross Region DR
 
 ## Verification Steps
-1. Dashboard renders all posture data
-2. Score calculates correctly
-3. Export works
+1. Architecture documented
+2. Data residency accounted for
+3. Regional configs exist
+4. Failover planned and tested
 
 ## Acceptance Criteria
-- [ ] Dashboard renders all posture data
-- [ ] Score calculates correctly
-- [ ] Export works
+- [ ] Architecture documented
+- [ ] Data residency accounted for
+- [ ] Regional configs exist
+- [ ] Failover planned and tested
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Notes
 - All verification steps require the relevant infrastructure to be running

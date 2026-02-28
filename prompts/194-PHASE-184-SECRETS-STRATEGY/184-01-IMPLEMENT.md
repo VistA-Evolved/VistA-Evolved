@@ -1,18 +1,20 @@
-# Phase 184 -- CI Pipeline Contracts
+# Phase 184 -- Secrets Strategy
 
 ## Implementation Steps
-1. Define GitHub Actions workflows for build, test, deploy
-2. Add Helm chart validation step
-3. Configure image push to registry
-4. Add deployment gates (QA must pass)
+1. Integrate with external secret store (Vault or sealed-secrets)
+2. Replace inline env vars with external secret references
+3. Configure auto-rotation for database credentials
+4. Add secret audit logging for access tracking
+5. Document secret management procedures
 
 ## Files Touched
-- .github/workflows/
+- infra/secrets/
+- infra/helm/templates/
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Dependencies
 - Requires completion of prior phases in the wave sequence

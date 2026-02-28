@@ -1,18 +1,19 @@
-# Phase 191 -- Performance Baseline
+# Phase 191 -- Queue Backpressure
 
 ## Implementation Steps
-1. Run k6 smoke tests against staging
-2. Establish p50/p95/p99 latency baselines
-3. Document throughput limits
-4. Create performance budget SLOs
+1. Implement queue depth monitoring for async task workers
+2. Add backpressure mechanisms to prevent worker overload
+3. Configure worker scaling policies based on queue depth
+4. Add dead-letter handling for failed tasks
+5. Document queue capacity planning guidelines
 
 ## Files Touched
-- tests/k6/
+- apps/api/src/
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Dependencies
 - Requires completion of prior phases in the wave sequence

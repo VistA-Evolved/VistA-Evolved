@@ -1,18 +1,20 @@
-# Phase 187 -- DR Failover Procedures
+# Phase 187 -- DR Drill Automation
 
 ## Implementation Steps
-1. Document manual failover procedure
-2. Define health check thresholds for auto-failover
-3. Create failover runbook
-4. Test PG replica promotion
+1. Create automated disaster recovery drill playbook
+2. Implement failover testing scripts for PG and VistA
+3. Define health check thresholds for auto-failover triggers
+4. Schedule periodic DR drills with result tracking
+5. Document manual escalation procedures
 
 ## Files Touched
+- scripts/
 - docs/runbooks/
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Dependencies
 - Requires completion of prior phases in the wave sequence

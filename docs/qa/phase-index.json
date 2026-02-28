@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-28T07:05:43.078Z",
+  "generatedAt": "2026-02-28T07:28:21.104Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 229,
+  "phaseCount": 230,
   "phases": [
     {
       "phaseNumber": "1",
@@ -3615,7 +3615,7 @@
     },
     {
       "phaseNumber": "183",
-      "title": "Ingress + TLS",
+      "title": "Tenant Provisioning",
       "folder": "193-PHASE-183-TENANT-PROVISIONING",
       "files": [
         "183-01-IMPLEMENT.md",
@@ -3630,13 +3630,11 @@
       "routes": [],
       "rpcs": [],
       "uiComponents": [],
-      "filesTouched": [
-        "infra/helm/templates/ingress.yaml"
-      ]
+      "filesTouched": []
     },
     {
       "phaseNumber": "184",
-      "title": "CI Pipeline Contracts",
+      "title": "Secrets Strategy",
       "folder": "194-PHASE-184-SECRETS-STRATEGY",
       "files": [
         "184-01-IMPLEMENT.md",
@@ -3655,7 +3653,7 @@
     },
     {
       "phaseNumber": "185",
-      "title": "Staging Environment Definition",
+      "title": "PG Backup PITR",
       "folder": "195-PHASE-185-PG-BACKUP-PITR",
       "files": [
         "185-01-IMPLEMENT.md",
@@ -3671,12 +3669,12 @@
       "rpcs": [],
       "uiComponents": [],
       "filesTouched": [
-        "infra/helm/values-staging.yaml"
+        "scripts/backup-restore.mjs"
       ]
     },
     {
       "phaseNumber": "186",
-      "title": "DR Backup Contracts",
+      "title": "YottaDB Backup",
       "folder": "196-PHASE-186-YOTTADB-BACKUP",
       "files": [
         "186-01-IMPLEMENT.md",
@@ -3697,7 +3695,7 @@
     },
     {
       "phaseNumber": "187",
-      "title": "DR Failover Procedures",
+      "title": "DR Drill Automation",
       "folder": "197-PHASE-187-DR-DRILL-AUTOMATION",
       "files": [
         "187-01-IMPLEMENT.md",
@@ -3716,7 +3714,7 @@
     },
     {
       "phaseNumber": "188",
-      "title": "PG Replica Configuration",
+      "title": "Observability Baseline",
       "folder": "198-PHASE-188-OBSERVABILITY-BASELINE",
       "files": [
         "188-01-IMPLEMENT.md",
@@ -3735,7 +3733,7 @@
     },
     {
       "phaseNumber": "189",
-      "title": "Redis Cache Layer",
+      "title": "Perf Tuning Runbook",
       "folder": "199-PHASE-189-PERF-TUNING-RUNBOOK",
       "files": [
         "189-01-IMPLEMENT.md",
@@ -3807,7 +3805,7 @@
     },
     {
       "phaseNumber": "190",
-      "title": "Connection Pool Tuning",
+      "title": "Load Test Harness",
       "folder": "200-PHASE-190-LOAD-TEST-HARNESS",
       "files": [
         "190-01-IMPLEMENT.md",
@@ -3826,7 +3824,7 @@
     },
     {
       "phaseNumber": "191",
-      "title": "Performance Baseline",
+      "title": "Queue Backpressure",
       "folder": "201-PHASE-191-QUEUE-BACKPRESSURE",
       "files": [
         "191-01-IMPLEMENT.md",
@@ -3845,7 +3843,7 @@
     },
     {
       "phaseNumber": "192",
-      "title": "FHIR R4 Patient Resource",
+      "title": "K8s Autoscaling",
       "folder": "202-PHASE-192-K8S-AUTOSCALING",
       "files": [
         "192-01-IMPLEMENT.md",
@@ -3864,7 +3862,7 @@
     },
     {
       "phaseNumber": "193",
-      "title": "FHIR R4 Encounter Resource",
+      "title": "FHIR Encounter Resource",
       "folder": "203-PHASE-193-FHIR-ENCOUNTER-RESOURCE",
       "files": [
         "193-01-IMPLEMENT.md",
@@ -3883,7 +3881,7 @@
     },
     {
       "phaseNumber": "194",
-      "title": "FHIR R4 AllergyIntolerance",
+      "title": "FHIR Cache ETag",
       "folder": "204-PHASE-194-FHIR-CACHE-ETAG",
       "files": [
         "194-01-IMPLEMENT.md",
@@ -3902,7 +3900,7 @@
     },
     {
       "phaseNumber": "195",
-      "title": "FHIR R4 Bundle + CapabilityStatement",
+      "title": "SMART on FHIR Posture",
       "folder": "205-PHASE-195-SMART-ON-FHIR-POSTURE",
       "files": [
         "195-01-IMPLEMENT.md",
@@ -3921,7 +3919,7 @@
     },
     {
       "phaseNumber": "196",
-      "title": "FHIR Validation + Conformance",
+      "title": "FHIR Conformance Suite",
       "folder": "206-PHASE-196-FHIR-CONFORMANCE-SUITE",
       "files": [
         "196-01-IMPLEMENT.md",
@@ -3961,7 +3959,7 @@
     },
     {
       "phaseNumber": "197",
-      "title": "GitOps Agent Bootstrap",
+      "title": "GitOps ArgoCD",
       "folder": "208-PHASE-197-GITOPS-ARGOCD",
       "files": [
         "197-01-IMPLEMENT.md",
@@ -3980,7 +3978,7 @@
     },
     {
       "phaseNumber": "198",
-      "title": "Environment Promotion Pipeline",
+      "title": "Environment Model",
       "folder": "209-PHASE-198-ENVIRONMENT-MODEL",
       "files": [
         "198-01-IMPLEMENT.md",
@@ -4056,7 +4054,7 @@
     },
     {
       "phaseNumber": "199",
-      "title": "CI PR Gates",
+      "title": "Verify: CI PR Gates",
       "folder": "210-PHASE-199-CI-PR-GATES",
       "files": [
         "199-01-IMPLEMENT.md",
@@ -4071,14 +4069,11 @@
       "routes": [],
       "rpcs": [],
       "uiComponents": [],
-      "filesTouched": [
-        ".github/workflows/ci.yml",
-        ".github/workflows/ci-gates.yml"
-      ]
+      "filesTouched": []
     },
     {
       "phaseNumber": "200",
-      "title": "Audit Log Compliance",
+      "title": "CD Pipeline",
       "folder": "211-PHASE-200-CD-PIPELINE",
       "files": [
         "200-01-IMPLEMENT.md",
@@ -4093,13 +4088,11 @@
       "routes": [],
       "rpcs": [],
       "uiComponents": [],
-      "filesTouched": [
-        "apps/api/src/lib/immutable-audit.ts"
-      ]
+      "filesTouched": []
     },
     {
       "phaseNumber": "201",
-      "title": "HIPAA Technical Safeguards",
+      "title": "Canary Metric Gate",
       "folder": "212-PHASE-201-CANARY-METRIC-GATE",
       "files": [
         "201-01-IMPLEMENT.md",
@@ -4118,7 +4111,7 @@
     },
     {
       "phaseNumber": "202",
-      "title": "Penetration Test Prep",
+      "title": "Auto Rollback",
       "folder": "213-PHASE-202-AUTO-ROLLBACK",
       "files": [
         "202-01-IMPLEMENT.md",
@@ -4137,7 +4130,7 @@
     },
     {
       "phaseNumber": "203",
-      "title": "Load Test Suite",
+      "title": "Policy as Code",
       "folder": "214-PHASE-203-POLICY-AS-CODE",
       "files": [
         "203-01-IMPLEMENT.md",
@@ -4156,7 +4149,7 @@
     },
     {
       "phaseNumber": "204",
-      "title": "Release Candidate Pipeline",
+      "title": "SBOM Attestation",
       "folder": "215-PHASE-204-SBOM-ATTESTATION",
       "files": [
         "204-01-IMPLEMENT.md",
@@ -4175,7 +4168,7 @@
     },
     {
       "phaseNumber": "205",
-      "title": "Feature Flag Runtime",
+      "title": "SLO Burn Rate Alerts",
       "folder": "216-PHASE-205-SLO-BURN-RATE-ALERTS",
       "files": [
         "205-01-IMPLEMENT.md",
@@ -4194,7 +4187,7 @@
     },
     {
       "phaseNumber": "206",
-      "title": "Blue-Green Deploy Strategy",
+      "title": "E2E Playwright Smoke",
       "folder": "217-PHASE-206-E2E-PLAYWRIGHT-SMOKE",
       "files": [
         "206-01-IMPLEMENT.md",
@@ -4213,7 +4206,7 @@
     },
     {
       "phaseNumber": "207",
-      "title": "Canary Release Pipeline",
+      "title": "Fleet Rollout CLI",
       "folder": "218-PHASE-207-FLEET-ROLLOUT-CLI",
       "files": [
         "207-01-IMPLEMENT.md",
@@ -4232,7 +4225,7 @@
     },
     {
       "phaseNumber": "208",
-      "title": "Multi-Region Readiness",
+      "title": "Compliance Evidence",
       "folder": "219-PHASE-208-COMPLIANCE-EVIDENCE",
       "files": [
         "208-01-IMPLEMENT.md",
@@ -4286,7 +4279,7 @@
     },
     {
       "phaseNumber": "209",
-      "title": "Compliance Dashboard",
+      "title": "Cross Region DR",
       "folder": "220-PHASE-209-CROSS-REGION-DR",
       "files": [
         "209-01-IMPLEMENT.md",
@@ -4305,7 +4298,7 @@
     },
     {
       "phaseNumber": "210",
-      "title": "Release Convergence Snapshot",
+      "title": "Go Live Runbooks",
       "folder": "221-PHASE-210-GO-LIVE-RUNBOOKS",
       "files": [
         "210-01-IMPLEMENT.md",
@@ -4435,6 +4428,32 @@
         "docs/wave4-convergence-snapshot.md",
         "prompts/226-PHASE-220-CONVERGENCE-SNAPSHOT/220-01-IMPLEMENT.md",
         "prompts/226-PHASE-220-CONVERGENCE-SNAPSHOT/220-99-VERIFY.md"
+      ]
+    },
+    {
+      "phaseNumber": "221",
+      "title": "Wave 4 Comprehensive Audit",
+      "folder": "227-PHASE-221-WAVE4-AUDIT",
+      "files": [
+        "221-01-IMPLEMENT.md",
+        "221-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "221-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "221-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/verify-rpc-communication.mjs",
+        "scripts/enrich-wave-phases.mjs",
+        "scripts/fix-wave-titles.mjs",
+        "docs/wave4-convergence-snapshot.md",
+        "docs/vista-alignment/rpc-verification-report.md",
+        "docs/qa/phase-index.json"
       ]
     },
     {

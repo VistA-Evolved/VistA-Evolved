@@ -1,19 +1,21 @@
-# Phase 186 -- Verify: DR Backup Contracts
+# Phase 186 -- Verify: YottaDB Backup
 
 ## Verification Steps
-1. PG backup/restore works
-2. Audit log backup works
-3. RPO/RTO documented
+1. YottaDB journal backup completes
+2. Global export verifiable
+3. Backup files archived
+4. Retention policy enforced
 
 ## Acceptance Criteria
-- [ ] PG backup/restore works
-- [ ] Audit log backup works
-- [ ] RPO/RTO documented
+- [ ] YottaDB journal backup completes
+- [ ] Global export verifiable
+- [ ] Backup files archived
+- [ ] Retention policy enforced
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Notes
 - All verification steps require the relevant infrastructure to be running

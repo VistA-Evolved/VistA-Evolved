@@ -1,19 +1,21 @@
-# Phase 191 -- Verify: Performance Baseline
+# Phase 191 -- Verify: Queue Backpressure
 
 ## Verification Steps
-1. k6 tests pass
-2. Baselines documented
-3. SLOs defined
+1. Queue depth metrics exported
+2. Backpressure activates under load
+3. Worker scaling responds to depth
+4. Dead letters captured
 
 ## Acceptance Criteria
-- [ ] k6 tests pass
-- [ ] Baselines documented
-- [ ] SLOs defined
+- [ ] Queue depth metrics exported
+- [ ] Backpressure activates under load
+- [ ] Worker scaling responds to depth
+- [ ] Dead letters captured
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Notes
 - All verification steps require the relevant infrastructure to be running

@@ -1,18 +1,19 @@
-# Phase 201 -- HIPAA Technical Safeguards
+# Phase 201 -- Canary Metric Gate
 
 ## Implementation Steps
-1. Audit all PHI access paths for encryption at rest
-2. Verify TLS for all inter-service communication
-3. Review access control matrix against HIPAA requirements
-4. Document technical safeguard implementations
+1. Configure canary deployment with progressive traffic shifting
+2. Define metrics-based promotion criteria (error rate, latency)
+3. Add automatic rollback on SLO violation during canary
+4. Integrate canary metrics with Prometheus alerts
 
 ## Files Touched
-- docs/security/
+- infra/
+- services/observability/
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Dependencies
 - Requires completion of prior phases in the wave sequence

@@ -117,7 +117,7 @@ function runStaticAnalysis() {
   // Gate 3: Route-RPC map is fresh (generated within last 24h)
   const genDate = new Date(routeMap._meta.generatedAt);
   const ageHours = (Date.now() - genDate.getTime()) / (1000 * 60 * 60);
-  if (ageHours < 24) {
+  if (ageHours >= 0 && ageHours < 24) {
     console.log(`  PASS  Route-RPC map is fresh (${ageHours.toFixed(1)}h old)`);
     passed++;
   } else {
@@ -130,16 +130,10 @@ function runStaticAnalysis() {
   console.log(`  INFO  ${unusedRegistry.length}/${registry.registered.size} registered RPCs not directly in routes (may be in adapters/services)`);
 
   // Gate 5: Coverage stats
-  const liveRoutes = routeMap.routes.filter(r => r.rpcCount > 0 && !r.isStub);
+  const rpcActiveRoutes = routeMap.routes.filter(r => r.rpcCount > 0 && !r.isStub);
   const stubRoutes = routeMap.routes.filter(r => r.isStub);
-  console.log(`  INFO  ${liveRoutes.length} live routes, ${stubRoutes.length} stub routes, ${routeMap.routes.length} total`);
-
-  // Gate 6: Read vs Write RPC safety
-  const writeRpcs = [...routeRpcs].filter(n => {
-    const regEntry = [...registry.registered].includes(n);
-    // Check registry for write tag
-    return false; // We'd need full registry data here
-  });
+  const nonRpcRoutes = routeMap.routes.filter(r => r.rpcCount === 0 && !r.isStub);
+  console.log(`  INFO  ${rpcActiveRoutes.length} RPC-active, ${stubRoutes.length} stubs, ${nonRpcRoutes.length} non-RPC, ${routeMap.routes.length} total`);
 
   console.log(`\n=== Summary: ${passed} PASS, ${warned} WARN, ${failed} FAIL ===`);
 
@@ -150,20 +144,23 @@ function runStaticAnalysis() {
 /* Live Probing (requires running API)                                 */
 /* ------------------------------------------------------------------ */
 
-async function runLiveProbe(staticResult) {
+async function runLiveProbe() {
   console.log('\n=== RPC Communication Verification (Live) ===\n');
 
   const API_BASE = process.env.API_BASE || 'http://127.0.0.1:3001';
+  let passed = 0, warned = 0, failed = 0;
+  const findings = [];
 
   // Check if API is reachable
   try {
     const res = await fetch(`${API_BASE}/health`, { signal: AbortSignal.timeout(5000) });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     console.log(`  PASS  API reachable at ${API_BASE}`);
+    passed++;
   } catch (e) {
     console.log(`  SKIP  API not reachable at ${API_BASE}: ${e.message}`);
     console.log('         Start API with: cd apps/api && npx tsx --env-file=.env.local src/index.ts');
-    return;
+    return { passed, warned, failed, findings, skipped: true };
   }
 
   // Check VistA connectivity
@@ -172,12 +169,14 @@ async function runLiveProbe(staticResult) {
     const data = await res.json();
     if (data.ok) {
       console.log(`  PASS  VistA reachable via /vista/ping`);
+      passed++;
     } else {
       console.log(`  WARN  VistA ping returned ok:false`);
+      warned++;
     }
   } catch (e) {
     console.log(`  SKIP  VistA not reachable: ${e.message}`);
-    return;
+    return { passed, warned, failed, findings, skipped: true };
   }
 
   // Check provisioning status (admin endpoint - needs auth)
@@ -205,19 +204,25 @@ async function runLiveProbe(staticResult) {
     const data = await res.json();
     if (data.ok) {
       console.log(`  PASS  Live RPC call succeeded: /vista/default-patient-list`);
+      passed++;
     } else {
       console.log(`  WARN  /vista/default-patient-list returned ok:false`);
+      warned++;
     }
   } catch (e) {
     console.log(`  WARN  Could not test live RPC: ${e.message}`);
+    warned++;
   }
+
+  console.log(`\n=== Live Summary: ${passed} PASS, ${warned} WARN, ${failed} FAIL ===`);
+  return { passed, warned, failed, findings, skipped: false };
 }
 
 /* ------------------------------------------------------------------ */
 /* Report Generation                                                   */
 /* ------------------------------------------------------------------ */
 
-function generateReport(result) {
+function generateReport(result, liveResult) {
   const lines = [
     '# RPC Communication Verification Report',
     '',
@@ -255,9 +260,20 @@ function generateReport(result) {
   if (result.routeRpcs) {
     lines.push(`## Coverage`);
     lines.push('');
-    lines.push(`- **${result.routeRpcs.size}** unique RPCs used in routes`);
-    lines.push(`- **${result.registry?.registered.size || 0}** RPCs in registry`);
-    lines.push(`- **${result.unusedRegistry?.length || 0}** registered RPCs not directly used in routes`);
+    lines.push(`- **${result.routeRpcs.size}** unique RPCs across routes and services`);
+    lines.push(`- **${result.registry?.registered.size || 0}** RPCs in RPC_REGISTRY`);
+    lines.push(`- **${result.unusedRegistry?.length || 0}** registered RPCs not directly used in route handlers`);
+    lines.push('');
+  }
+
+  if (liveResult && !liveResult.skipped) {
+    lines.push(`## Live Probe Results`);
+    lines.push('');
+    lines.push(`| Check | Result |`);
+    lines.push(`|-------|--------|`);
+    lines.push(`| Passed | ${liveResult.passed} |`);
+    lines.push(`| Warned | ${liveResult.warned} |`);
+    lines.push(`| Failed | ${liveResult.failed} |`);
     lines.push('');
   }
 
@@ -272,14 +288,17 @@ function generateReport(result) {
 /* ------------------------------------------------------------------ */
 
 async function main() {
-  const result = runStaticAnalysis();
-  generateReport(result);
+  const staticResult = runStaticAnalysis();
+  let liveResult = null;
 
   if (isLive) {
-    await runLiveProbe(result);
+    liveResult = await runLiveProbe();
   }
 
-  process.exit(result.failed > 0 ? 1 : 0);
+  generateReport(staticResult, liveResult);
+
+  const totalFailed = staticResult.failed + (liveResult?.failed || 0);
+  process.exit(totalFailed > 0 ? 1 : 0);
 }
 
 main();

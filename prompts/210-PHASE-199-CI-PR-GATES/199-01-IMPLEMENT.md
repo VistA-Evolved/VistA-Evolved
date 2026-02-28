@@ -1,22 +1,22 @@
-# Phase 199 -- CI PR Gates
+# Phase 199 -- Verify: CI PR Gates
 
-## Implementation Steps
-1. Define required CI checks for every pull request
-2. Add lint, type-check, and unit test gates
-3. Configure branch protection rules requiring all gates to pass
-4. Add Helm chart validation as a CI step
-5. Add prompts tree-health and phase-index integrity gates
-6. Configure merge queue with auto-rebase
+## Verification Steps
+1. CI runs on every PR
+2. All gate steps execute
+3. Failed gates block merge
+4. Charts validated in CI
 
-## Files Touched
-- .github/workflows/ci.yml
-- .github/workflows/ci-gates.yml
+## Acceptance Criteria
+- [ ] CI runs on every PR
+- [ ] All gate steps execute
+- [ ] Failed gates block merge
+- [ ] Charts validated in CI
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
-## Dependencies
-- Requires completion of prior phases in the wave sequence
-- See wave playbook for cross-phase dependencies
+## Notes
+- All verification steps require the relevant infrastructure to be running
+- Run the corresponding phase verifier script if available

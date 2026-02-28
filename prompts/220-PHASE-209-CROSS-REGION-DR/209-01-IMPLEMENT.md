@@ -1,18 +1,19 @@
-# Phase 209 -- Compliance Dashboard
+# Phase 209 -- Cross Region DR
 
 ## Implementation Steps
-1. Create admin compliance dashboard showing audit health, PHI controls, RLS status
-2. Aggregate posture checks into single view
-3. Add compliance score based on automated gate results
-4. Export compliance report as PDF/JSON
+1. Document cross-region disaster recovery architecture
+2. Define data residency requirements per region
+3. Create region-specific Helm values and failover procedures
+4. Plan cross-region PG replication and VistA global sync
 
 ## Files Touched
-- apps/web/src/app/cprs/admin/
+- infra/
+- docs/architecture/
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Dependencies
 - Requires completion of prior phases in the wave sequence

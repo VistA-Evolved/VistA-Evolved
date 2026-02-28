@@ -13,7 +13,7 @@
 
 ## Coverage
 
-- **111** unique RPCs used in routes
-- **138** RPCs in registry
-- **29** registered RPCs not directly used in routes
+- **111** unique RPCs referenced across routes and services (74 in route handlers, 37 in adapters/services)
+- **138** RPCs in RPC_REGISTRY (+ 59 in RPC_EXCEPTIONS, not counted)
+- **29** registered RPCs not directly referenced in code (27 adapter/service-only, 2 pre-registered for planned features)
 

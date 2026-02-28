@@ -1,21 +1,21 @@
-# Phase 204 -- Verify: Release Candidate Pipeline
+# Phase 204 -- Verify: SBOM Attestation
 
 ## Verification Steps
-1. RC tags created correctly
-2. Release notes generated
-3. Changelog accurate
-4. Approval flow works
+1. SBOM generated for each image
+2. Attestations signed and verifiable
+3. Verification passes before deploy
+4. SBOM queryable for dependency audit
 
 ## Acceptance Criteria
-- [ ] RC tags created correctly
-- [ ] Release notes generated
-- [ ] Changelog accurate
-- [ ] Approval flow works
+- [ ] SBOM generated for each image
+- [ ] Attestations signed and verifiable
+- [ ] Verification passes before deploy
+- [ ] SBOM queryable for dependency audit
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Notes
 - All verification steps require the relevant infrastructure to be running

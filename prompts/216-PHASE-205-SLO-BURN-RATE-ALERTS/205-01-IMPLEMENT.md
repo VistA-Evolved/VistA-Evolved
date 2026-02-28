@@ -1,19 +1,19 @@
-# Phase 205 -- Feature Flag Runtime
+# Phase 205 -- SLO Burn Rate Alerts
 
 ## Implementation Steps
-1. Wire feature flags from tenant_feature_flag table to runtime checks
-2. Add UI for flag management in admin console
-3. Implement gradual rollout percentages
-4. Add flag evaluation caching
+1. Define SLOs for API availability, latency, and error budget
+2. Implement burn rate alerting with fast and slow windows
+3. Configure multi-window alert thresholds per SLO
+4. Create runbook links in alert annotations for responders
 
 ## Files Touched
-- apps/api/src/modules/
-- apps/web/src/app/cprs/admin/modules/
+- services/observability/
+- docs/runbooks/
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Dependencies
 - Requires completion of prior phases in the wave sequence

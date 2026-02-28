@@ -1,10 +1,10 @@
-# Phase 195 -- FHIR R4 Bundle + CapabilityStatement
+# Phase 195 -- SMART on FHIR Posture
 
 ## Implementation Steps
-1. Implement Bundle response wrapper for search results
-2. Create CapabilityStatement (/fhir/r4/metadata)
-3. Declare supported resources, interactions, search params
-4. Add SMART on FHIR launch context
+1. Implement SMART launch context for EHR launch flow
+2. Add CapabilityStatement endpoint (/fhir/r4/metadata)
+3. Declare supported authorization scopes per SMART spec
+4. Configure SMART well-known endpoint for discovery
 
 ## Files Touched
 - apps/api/src/fhir/
@@ -12,7 +12,7 @@
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Dependencies
 - Requires completion of prior phases in the wave sequence

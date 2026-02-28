@@ -1,18 +1,19 @@
-# Phase 202 -- Penetration Test Prep
+# Phase 202 -- Auto Rollback
 
 ## Implementation Steps
-1. Review OWASP Top 10 against codebase
-2. Run automated security scanning (npm audit, dependency check)
-3. Create threat model document
-4. Fix any critical/high findings
+1. Implement automatic rollback triggered by health check failures
+2. Define rollback policy (revision count, timeout thresholds)
+3. Add rollback event notification and audit logging
+4. Test rollback under various failure scenarios
 
 ## Files Touched
-- docs/security/
+- infra/
+- apps/api/
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Dependencies
 - Requires completion of prior phases in the wave sequence

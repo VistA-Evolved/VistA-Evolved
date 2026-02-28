@@ -1,19 +1,21 @@
-# Phase 206 -- Verify: Blue-Green Deploy Strategy
+# Phase 206 -- Verify: E2E Playwright Smoke
 
 ## Verification Steps
-1. Blue-green switch works
-2. Health checks gate cutover
-3. Rollback documented and tested
+1. E2E tests pass against staging
+2. Critical paths covered
+3. Portal flows tested
+4. CI integration works
 
 ## Acceptance Criteria
-- [ ] Blue-green switch works
-- [ ] Health checks gate cutover
-- [ ] Rollback documented and tested
+- [ ] E2E tests pass against staging
+- [ ] Critical paths covered
+- [ ] Portal flows tested
+- [ ] CI integration works
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Notes
 - All verification steps require the relevant infrastructure to be running

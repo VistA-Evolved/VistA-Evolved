@@ -1,18 +1,20 @@
-# Phase 185 -- Staging Environment Definition
+# Phase 185 -- PG Backup PITR
 
 ## Implementation Steps
-1. Define staging environment configuration
-2. Create Helm values-staging.yaml overlay
-3. Configure staging-specific env vars
-4. Document staging access patterns
+1. Configure PostgreSQL continuous WAL archiving
+2. Set up automated pg_basebackup schedule
+3. Implement point-in-time recovery (PITR) procedures
+4. Define RPO/RTO targets for PG data
+5. Test restore to specific timestamp
 
 ## Files Touched
-- infra/helm/values-staging.yaml
+- scripts/backup-restore.mjs
+- infra/
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Dependencies
 - Requires completion of prior phases in the wave sequence

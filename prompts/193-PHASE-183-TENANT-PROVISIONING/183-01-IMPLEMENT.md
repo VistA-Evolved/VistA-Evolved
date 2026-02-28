@@ -1,18 +1,20 @@
-# Phase 183 -- Ingress + TLS
+# Phase 183 -- Tenant Provisioning
 
 ## Implementation Steps
-1. Configure ingress controller templates
-2. Add cert-manager integration for TLS
-3. Define host-based routing rules
-4. Add rate limiting annotations
+1. Design tenant provisioning API and onboarding flow
+2. Create tenant registration endpoint with validation
+3. Implement database schema isolation per tenant
+4. Configure default tenant settings and feature flags
+5. Add provisioning audit trail for compliance
 
 ## Files Touched
-- infra/helm/templates/ingress.yaml
+- apps/api/src/platform/
+- infra/helm/charts/tenant/
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Dependencies
 - Requires completion of prior phases in the wave sequence

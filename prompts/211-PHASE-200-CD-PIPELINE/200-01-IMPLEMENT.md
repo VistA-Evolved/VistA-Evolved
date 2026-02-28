@@ -1,19 +1,19 @@
-# Phase 200 -- Audit Log Compliance
+# Phase 200 -- CD Pipeline
 
 ## Implementation Steps
-1. Verify immutable audit chain integrity
-2. Add audit log retention policies
-3. Configure audit shipping to S3
-4. Create compliance report generator
+1. Define continuous deployment pipeline from main branch
+2. Configure image build and push to registry on merge
+3. Add deployment stages with automatic rollback support
+4. Integrate with ArgoCD for GitOps-driven deployment
 
 ## Files Touched
-- apps/api/src/lib/immutable-audit.ts
-- apps/api/src/audit-shipping/
+- .github/workflows/
+- infra/gitops/
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Dependencies
 - Requires completion of prior phases in the wave sequence

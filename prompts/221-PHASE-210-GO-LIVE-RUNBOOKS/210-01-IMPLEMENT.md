@@ -1,20 +1,20 @@
-# Phase 210 -- Release Convergence Snapshot
+# Phase 210 -- Go Live Runbooks
 
 ## Implementation Steps
-1. Run all QA gates and document results
-2. Create release candidate tag
-3. Generate full system health report
-4. Document known issues and follow-ups
-5. Archive all verification artifacts
+1. Create comprehensive go-live runbook with pre-flight checklist
+2. Document rollback procedures for each service component
+3. Define go/no-go criteria based on QA gate results
+4. Create post-launch monitoring checklist and escalation contacts
+5. Archive all verification artifacts for audit trail
 
 ## Files Touched
-- docs/
+- docs/runbooks/
 - scripts/
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Dependencies
 - Requires completion of prior phases in the wave sequence

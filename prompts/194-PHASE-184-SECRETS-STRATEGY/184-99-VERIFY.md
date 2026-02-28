@@ -1,21 +1,21 @@
-# Phase 184 -- Verify: CI Pipeline Contracts
+# Phase 184 -- Verify: Secrets Strategy
 
 ## Verification Steps
-1. CI pipeline runs on push
-2. Charts validated
-3. Images pushed
-4. Deploy gated
+1. Secrets not in plain text in repo
+2. External store accessible
+3. Rotation works
+4. Audit logged
 
 ## Acceptance Criteria
-- [ ] CI pipeline runs on push
-- [ ] Charts validated
-- [ ] Images pushed
-- [ ] Deploy gated
+- [ ] Secrets not in plain text in repo
+- [ ] External store accessible
+- [ ] Rotation works
+- [ ] Audit logged
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Notes
 - All verification steps require the relevant infrastructure to be running

@@ -1,19 +1,21 @@
-# Phase 193 -- Verify: FHIR R4 Encounter Resource
+# Phase 193 -- Verify: FHIR Encounter Resource
 
 ## Verification Steps
-1. Encounter resource valid R4
+1. Encounter resource conforms to R4 spec
 2. Search by patient works
-3. Date ranges correct
+3. Date range filtering correct
+4. All required fields populated
 
 ## Acceptance Criteria
-- [ ] Encounter resource valid R4
+- [ ] Encounter resource conforms to R4 spec
 - [ ] Search by patient works
-- [ ] Date ranges correct
+- [ ] Date range filtering correct
+- [ ] All required fields populated
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Notes
 - All verification steps require the relevant infrastructure to be running

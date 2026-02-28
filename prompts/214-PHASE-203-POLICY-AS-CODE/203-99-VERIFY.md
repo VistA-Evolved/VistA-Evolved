@@ -1,21 +1,21 @@
-# Phase 203 -- Verify: Load Test Suite
+# Phase 203 -- Verify: Policy as Code
 
 ## Verification Steps
-1. Load tests run to completion
-2. Thresholds met
-3. Circuit breaker trips correctly
-4. Rate limiter holds
+1. Policies evaluate correctly
+2. CI enforces policies
+3. K8s admission controller active
+4. Policy tests pass
 
 ## Acceptance Criteria
-- [ ] Load tests run to completion
-- [ ] Thresholds met
-- [ ] Circuit breaker trips correctly
-- [ ] Rate limiter holds
+- [ ] Policies evaluate correctly
+- [ ] CI enforces policies
+- [ ] K8s admission controller active
+- [ ] Policy tests pass
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Notes
 - All verification steps require the relevant infrastructure to be running

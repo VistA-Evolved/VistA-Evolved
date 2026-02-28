@@ -1,19 +1,21 @@
-# Phase 190 -- Verify: Connection Pool Tuning
+# Phase 190 -- Verify: Load Test Harness
 
 ## Verification Steps
-1. Pool metrics exported
-2. Idle connections released
-3. Per-tenant limits enforced
+1. Load tests run to completion
+2. Thresholds met
+3. Circuit breaker trips correctly
+4. Rate limiter holds
 
 ## Acceptance Criteria
-- [ ] Pool metrics exported
-- [ ] Idle connections released
-- [ ] Per-tenant limits enforced
+- [ ] Load tests run to completion
+- [ ] Thresholds met
+- [ ] Circuit breaker trips correctly
+- [ ] Rate limiter holds
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Notes
 - All verification steps require the relevant infrastructure to be running

@@ -1,19 +1,21 @@
-# Phase 187 -- Verify: DR Failover Procedures
+# Phase 187 -- Verify: DR Drill Automation
 
 ## Verification Steps
-1. Failover procedure documented
-2. Health checks configured
-3. Runbook complete
+1. DR drill runs to completion
+2. Failover tested successfully
+3. Health checks trigger correctly
+4. Results tracked and reported
 
 ## Acceptance Criteria
-- [ ] Failover procedure documented
-- [ ] Health checks configured
-- [ ] Runbook complete
+- [ ] DR drill runs to completion
+- [ ] Failover tested successfully
+- [ ] Health checks trigger correctly
+- [ ] Results tracked and reported
 
 ## Source
 - Derived from wave playbook decomposition (Q213-Q215)
 - Original phase specification in wave mega-document
-- Enriched by Q219 audit to meet quality floor
+- Corrected by audit fix (title alignment with folder name)
 
 ## Notes
 - All verification steps require the relevant infrastructure to be running
