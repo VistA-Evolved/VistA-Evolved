@@ -2011,6 +2011,38 @@ export const STORE_INVENTORY: StoreEntry[] = [
     domain: "pilot",
     notes: "Phase 265: seeded with 8 default mitigations at module load; append-only",
   },
+
+  // ─── SaaS Billing / Metering (Phase 284) ───────────────────────
+  {
+    id: "billing-subscriptions",
+    file: "billing/mock-provider.ts",
+    variable: "subscriptions",
+    description: "Mock billing subscription store (Map<tenantId, Subscription>)",
+    classification: "cache",
+    durability: "in_memory_only",
+    domain: "billing",
+    notes: "Phase 284: mock provider only; Lago provider uses Lago DB. Resets on restart.",
+  },
+  {
+    id: "billing-usage-counters",
+    file: "billing/mock-provider.ts",
+    variable: "usageCounters",
+    description: "Mock billing usage counters (Map<tenantId, Map<MeterEvent, number>>)",
+    classification: "cache",
+    durability: "in_memory_only",
+    domain: "billing",
+    notes: "Phase 284: mock provider only; Lago provider uses Lago API. Resets on restart.",
+  },
+  {
+    id: "metering-counters",
+    file: "billing/metering.ts",
+    variable: "store",
+    description: "Per-tenant metering counters (Map<tenantId, TenantCounters>), flushed periodically to billing provider",
+    classification: "cache",
+    durability: "in_memory_only",
+    domain: "billing",
+    notes: "Phase 284: accumulated between flushes; billing provider is durable store. Max 10K tenants.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

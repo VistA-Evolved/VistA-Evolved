@@ -100,6 +100,9 @@ import credentialVaultRoutes from "../rcm/credential-vault/credential-vault-rout
 import claimLifecycle111Routes from "../rcm/claim-lifecycle/claim-lifecycle-routes.js";
 import evidenceRoutes from "../rcm/evidence/evidence-routes.js";
 
+// SaaS Billing/Metering (Phase 284)
+import billingRoutes from "../billing/billing-routes.js";
+
 // Migration toolkit
 import migrationRoutes from "../migration/migration-routes.js";
 
@@ -235,6 +238,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Admin/tenant routes (Phase 17B)
   server.register(adminRoutes);
+
+  // SaaS Billing/Metering (Phase 284)
+  server.register(billingRoutes);
 
   // Schema status (Phase 175)
   server.register(schemaStatusRoutes);
