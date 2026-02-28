@@ -69,6 +69,24 @@ needed. Just set them in the Helm values or .env.local.
 | `ANALYTICS_AGGREGATION_INTERVAL_MS` | 3600000 | Aggregation job interval |
 | `AUDIT_SHIP_INTERVAL_MS` | 300000 | Audit shipping interval |
 | `TELEHEALTH_ROOM_TTL_MS` | 14400000 | Room auto-expiry (4h) |
+| `JOB_BACKPRESSURE_MAX_PENDING` | 1000 | Max pending jobs before backpressure blocks new work |
+| `JOB_BACKPRESSURE_MAX_PER_TASK` | 200 | Max pending per task type |
+| `JOB_WORKER_SCHEMA` | graphile_worker | Graphile Worker PG schema name |
+
+## FHIR Cache
+
+| Env Var | Default | Notes |
+|---------|---------|-------|
+| `FHIR_CACHE_ENABLED` | true | Master switch for FHIR response cache |
+| `FHIR_CACHE_TTL_MS` | 30000 | Cache entry time-to-live |
+| `FHIR_CACHE_MAX_ENTRIES` | 500 | Max cached responses before eviction |
+
+## VistA Capability Cache
+
+| Env Var | Default | Notes |
+|---------|---------|-------|
+| `VISTA_CAPABILITY_TTL_MS` | 300000 | RPC capability probe cache (5 min) |
+| `CLINICAL_REPORT_CACHE_TTL_MS` | 30000 | ORWRP REPORT TEXT result cache |
 
 ## Graceful Shutdown
 

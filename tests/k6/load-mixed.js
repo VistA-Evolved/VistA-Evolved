@@ -69,6 +69,16 @@ export function setup() {
 }
 
 export function readWorkflow(data) {
+  // Propagate session cookies from setup() into this VU's cookie jar
+  const jar = http.cookieJar();
+  if (data && data.cookies) {
+    for (const [name, values] of Object.entries(data.cookies)) {
+      if (Array.isArray(values) && values.length > 0) {
+        jar.set(BASE_URL, name, values[0].value || values[0]);
+      }
+    }
+  }
+
   const endpoints = [
     "/vista/default-patient-list",
     "/vista/patient-search?q=PATIENT",
@@ -85,11 +95,22 @@ export function readWorkflow(data) {
 }
 
 export function fhirWorkflow(data) {
+  // Propagate session cookies from setup() into this VU's cookie jar
+  const jar = http.cookieJar();
+  if (data && data.cookies) {
+    for (const [name, values] of Object.entries(data.cookies)) {
+      if (Array.isArray(values) && values.length > 0) {
+        jar.set(BASE_URL, name, values[0].value || values[0]);
+      }
+    }
+  }
+
   const endpoints = [
-    "/fhir/r4/metadata",
-    "/fhir/r4/Patient?name=ZZ",
-    "/fhir/r4/Patient/3",
-    "/fhir/r4/AllergyIntolerance?patient=3",
+    "/fhir/metadata",
+    "/fhir/Patient?name=ZZ",
+    "/fhir/Patient/3",
+    "/fhir/AllergyIntolerance?patient=3",
+    "/fhir/Encounter?patient=3",
   ];
   const url = endpoints[Math.floor(Math.random() * endpoints.length)];
   const res = http.get(`${BASE_URL}${url}`);
@@ -100,10 +121,11 @@ export function fhirWorkflow(data) {
 }
 
 export function writeWorkflow(data) {
-  // Light write: just hit health endpoint (safe, doesn't mutate)
+  // Smoke-test write path: POST to health check (safe, read-only POST stub)
+  // Real write tests require order/allergy data seeding and are in smoke-write.js
   const res = http.get(`${BASE_URL}/health`);
   check(res, {
-    "write-proxy ok": (r) => r.status === 200,
+    "health ok": (r) => r.status === 200,
   });
   sleep(0.5);
 }

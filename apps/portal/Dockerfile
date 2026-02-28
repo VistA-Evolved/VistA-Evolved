@@ -8,7 +8,8 @@ WORKDIR /app
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-COPY apps/portal/package.json apps/portal/pnpm-lock.yaml* ./
+COPY apps/portal/package.json ./
+COPY pnpm-lock.yaml* ./
 RUN pnpm install --frozen-lockfile || pnpm install
 
 # ---- Stage 2: Build ----
@@ -18,12 +19,16 @@ WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 COPY --from=deps /app/node_modules ./node_modules
-COPY apps/portal/package.json apps/portal/pnpm-lock.yaml* ./
+COPY apps/portal/package.json ./
+COPY pnpm-lock.yaml* ./
 COPY apps/portal/tsconfig.json apps/portal/next.config.ts apps/portal/next-env.d.ts ./
 COPY apps/portal/src ./src
 COPY apps/portal/public ./public
 
-ARG NEXT_PUBLIC_API_URL=http://api:3001
+# NEXT_PUBLIC_API_URL is baked at build time into the client bundle.
+# For Docker-to-Docker SSR use "http://api:3001"; for browser access, override
+# at build time with the publicly reachable URL (e.g., --build-arg NEXT_PUBLIC_API_URL=/api).
+ARG NEXT_PUBLIC_API_URL=""
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 
 RUN pnpm build

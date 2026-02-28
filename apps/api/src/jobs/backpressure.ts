@@ -22,7 +22,9 @@ import { log } from "../lib/logger.js";
 const MAX_PENDING = parseInt(process.env.JOB_BACKPRESSURE_MAX_PENDING ?? "1000", 10) || 1000;
 const MAX_PER_TASK = parseInt(process.env.JOB_BACKPRESSURE_MAX_PER_TASK ?? "200", 10) || 200;
 
-const SCHEMA = process.env.JOB_WORKER_SCHEMA ?? "graphile_worker";
+const RAW_SCHEMA = process.env.JOB_WORKER_SCHEMA ?? "graphile_worker";
+// Sanitize schema name to prevent SQL injection (only allow lowercase identifier chars)
+const SCHEMA = /^[a-z_][a-z0-9_]*$/.test(RAW_SCHEMA) ? RAW_SCHEMA : "graphile_worker";
 
 // ── Types ─────────────────────────────────────────────────
 

@@ -45,12 +45,22 @@ export function setup() {
 }
 
 export default function (data) {
+  // Propagate session cookies from setup() into this VU's cookie jar
+  const jar = http.cookieJar();
+  if (data && data.cookies) {
+    for (const [name, values] of Object.entries(data.cookies)) {
+      if (Array.isArray(values) && values.length > 0) {
+        jar.set(BASE_URL, name, values[0].value || values[0]);
+      }
+    }
+  }
+
   const params = { tags: { name: "" } };
 
-  // 1. FHIR CapabilityStatement (metadata)
+  // 1. FHIR CapabilityStatement (metadata — public, no auth)
   group("fhir-metadata", function () {
     params.tags.name = "fhir-metadata";
-    const res = http.get(`${BASE_URL}/fhir/r4/metadata`, params);
+    const res = http.get(`${BASE_URL}/fhir/metadata`, params);
     check(res, {
       "metadata 200": (r) => r.status === 200,
       "metadata is CapabilityStatement": (r) => {
@@ -68,7 +78,7 @@ export default function (data) {
   // 2. FHIR Patient search
   group("fhir-patient-search", function () {
     params.tags.name = "fhir-patient-search";
-    const res = http.get(`${BASE_URL}/fhir/r4/Patient?name=ZZ`, params);
+    const res = http.get(`${BASE_URL}/fhir/Patient?name=ZZ`, params);
     check(res, {
       "patient-search 200": (r) => r.status === 200,
       "patient-search is Bundle": (r) => {
@@ -83,10 +93,10 @@ export default function (data) {
 
   sleep(0.3);
 
-  // 3. FHIR Patient read (DFN 3 - common sandbox patient)
+  // 3. FHIR Patient read (DFN 3 — common sandbox patient)
   group("fhir-patient-read", function () {
     params.tags.name = "fhir-patient-read";
-    const res = http.get(`${BASE_URL}/fhir/r4/Patient/3`, params);
+    const res = http.get(`${BASE_URL}/fhir/Patient/3`, params);
     check(res, {
       "patient-read 200 or 404": (r) =>
         r.status === 200 || r.status === 404,
@@ -107,7 +117,7 @@ export default function (data) {
   group("fhir-allergy-search", function () {
     params.tags.name = "fhir-allergy-search";
     const res = http.get(
-      `${BASE_URL}/fhir/r4/AllergyIntolerance?patient=3`,
+      `${BASE_URL}/fhir/AllergyIntolerance?patient=3`,
       params
     );
     check(res, {
@@ -124,16 +134,22 @@ export default function (data) {
 
   sleep(0.3);
 
-  // 5. FHIR Encounter search (may not exist yet - test readiness)
+  // 5. FHIR Encounter search
   group("fhir-encounter-search", function () {
     params.tags.name = "fhir-encounter-search";
     const res = http.get(
-      `${BASE_URL}/fhir/r4/Encounter?patient=3`,
+      `${BASE_URL}/fhir/Encounter?patient=3`,
       params
     );
     check(res, {
-      "encounter-search 2xx or 501": (r) =>
-        r.status === 200 || r.status === 501,
+      "encounter-search 200": (r) => r.status === 200,
+      "encounter-search is Bundle": (r) => {
+        try {
+          return r.json("resourceType") === "Bundle";
+        } catch (e) {
+          return false;
+        }
+      },
     });
   });
 

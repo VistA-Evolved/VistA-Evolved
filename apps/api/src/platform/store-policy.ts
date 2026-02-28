@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Store Policy â€” Phase 136: Store Policy Gate + Durability Sweep
  *
  * Machine-readable registry of ALL in-memory stores in the API.
@@ -546,6 +546,25 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: "Read-through cache from VistA scheduling RPCs. Loss = refetch from VistA.",
   },
 
+
+  // ═══════════════════════════════════════════════════════
+  // FHIR
+  // ═══════════════════════════════════════════════════════
+  {
+    id: "fhir-response-cache",
+    file: "fhir/fhir-cache.ts",
+    variable: "cache (Map<string, CacheEntry>)",
+    description: "FHIR R4 response cache with SHA-256 ETag",
+    classification: "cache",
+    durability: "in_memory_only",
+    domain: "fhir",
+    ttlMs: 30_000,
+    maxSize: 500,
+    notes:
+      "Phase 179: In-memory cache for FHIR R4 responses keyed by user+resource+query. " +
+      "SHA-256 content hash drives ETag/If-None-Match 304 responses. " +
+      "Loss on restart = next request refetches from VistA via clinical-engine adapter.",
+  },
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // IMAGING
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•

@@ -92,8 +92,10 @@ minio:
   storage:
     size: 5Gi
     storageClass: ""
+  # Credentials: override via --set or existingSecret in staging/prod.
+  # Defaults below are for local dev only.
   rootUser: minioadmin
-  # Password read from secret or default for dev
+  # Password: set via --set minio.rootPassword=xxx or use existingSecret in prod
   rootPassword: ""
 
 # ---------- Network Policies ----------
