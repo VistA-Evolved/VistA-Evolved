@@ -61,6 +61,10 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
     const body = (req.body as any) || {};
     const { tenantId = defaultTenant, title, severity = "sev3", commander = "system", affectedServices = [] } = body;
     if (!title) return reply.code(400).send({ ok: false, error: "title required" });
+    const validSeverities = ["sev1", "sev2", "sev3", "sev4"];
+    if (!validSeverities.includes(severity)) {
+      return reply.code(400).send({ ok: false, error: `Invalid severity. Must be one of: ${validSeverities.join(", ")}` });
+    }
     const incident = declareIncident(tenantId, title, severity, commander, affectedServices);
     return reply.code(201).send({ ok: true, incident });
   });
@@ -70,6 +74,10 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
     const body = (req.body as any) || {};
     const { status, actor = "system", detail = "" } = body;
     if (!status) return reply.code(400).send({ ok: false, error: "status required" });
+    const validStatuses = ["declared", "investigating", "identified", "mitigating", "resolved", "postmortem"];
+    if (!validStatuses.includes(status)) {
+      return reply.code(400).send({ ok: false, error: `Invalid status. Must be one of: ${validStatuses.join(", ")}` });
+    }
     const inc = updateIncidentStatus(id, status, actor, detail);
     if (!inc) return reply.code(404).send({ ok: false, error: "Incident not found" });
     return reply.send({ ok: true, incident: inc });
@@ -126,6 +134,10 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
     const body = (req.body as any) || {};
     const { state, actor = "system" } = body;
     if (!state) return reply.code(400).send({ ok: false, error: "state required" });
+    const validStates = ["scheduled", "in_progress", "completed", "cancelled"];
+    if (!validStates.includes(state)) {
+      return reply.code(400).send({ ok: false, error: `Invalid state. Must be one of: ${validStates.join(", ")}` });
+    }
     const mw = updateMaintenanceState(id, state, actor);
     if (!mw) return reply.code(404).send({ ok: false, error: "Maintenance window not found" });
     return reply.send({ ok: true, maintenanceWindow: mw });
@@ -205,6 +217,14 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
     if (!name || !metric || targetValue === undefined) {
       return reply.code(400).send({ ok: false, error: "name, metric, targetValue required" });
     }
+    const validMetrics = ["uptime", "response_time", "resolution_time", "first_response"];
+    if (!validMetrics.includes(metric)) {
+      return reply.code(400).send({ ok: false, error: `Invalid metric. Must be one of: ${validMetrics.join(", ")}` });
+    }
+    const validWindows = ["monthly", "quarterly", "annual"];
+    if (!validWindows.includes(window)) {
+      return reply.code(400).send({ ok: false, error: `Invalid window. Must be one of: ${validWindows.join(", ")}` });
+    }
     const sla = createSlaDefinition(tenantId, name, metric, targetValue, unit, window, actor);
     return reply.code(201).send({ ok: true, slaDefinition: sla });
   });
@@ -232,6 +252,10 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
     const body = (req.body as any) || {};
     const { tenantId = defaultTenant, subject, description = "", priority = "medium", category = "general", createdBy = "system", relatedIncidentId } = body;
     if (!subject) return reply.code(400).send({ ok: false, error: "subject required" });
+    const validPriorities = ["critical", "high", "medium", "low"];
+    if (!validPriorities.includes(priority)) {
+      return reply.code(400).send({ ok: false, error: `Invalid priority. Must be one of: ${validPriorities.join(", ")}` });
+    }
     const ticket = createSupportTicket(tenantId, subject, description, priority, category, createdBy, relatedIncidentId);
     return reply.code(201).send({ ok: true, ticket });
   });
@@ -241,6 +265,10 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
     const body = (req.body as any) || {};
     const { status, actor = "system" } = body;
     if (!status) return reply.code(400).send({ ok: false, error: "status required" });
+    const validStatuses = ["open", "triaged", "in_progress", "waiting_on_customer", "resolved", "closed"];
+    if (!validStatuses.includes(status)) {
+      return reply.code(400).send({ ok: false, error: `Invalid status. Must be one of: ${validStatuses.join(", ")}` });
+    }
     const t = updateTicketStatus(id, status, actor);
     if (!t) return reply.code(404).send({ ok: false, error: "Ticket not found" });
     return reply.send({ ok: true, ticket: t });

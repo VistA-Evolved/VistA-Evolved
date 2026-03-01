@@ -59,11 +59,15 @@ export default async function drGamedayRoutes(server: FastifyInstance): Promise<
 
   // ── Drills ──────────────────────────────────────────────────────
 
-  /** POST /platform/dr/drills — schedule a DR drill */
+  /** POST /platform/dr/drills -- schedule a DR drill */
   server.post("/platform/dr/drills", async (request, reply) => {
     const b = (request.body as any) || {};
     if (!b.name || !b.type || !b.primaryRegion || !b.failoverRegion) {
       return reply.code(400).send({ ok: false, error: "name, type, primaryRegion, failoverRegion required" });
+    }
+    const validTypes = ["failover", "switchback", "full_cycle", "tabletop", "chaos"];
+    if (!validTypes.includes(b.type)) {
+      return reply.code(400).send({ ok: false, error: `Invalid drill type. Must be one of: ${validTypes.join(", ")}` });
     }
     const drill = scheduleDrill(b, "admin");
     return reply.code(201).send({ ok: true, drill });
@@ -111,6 +115,10 @@ export default async function drGamedayRoutes(server: FastifyInstance): Promise<
     const b = (request.body as any) || {};
     if (!b.severity || !b.category || !b.description || !b.recommendation) {
       return reply.code(400).send({ ok: false, error: "severity, category, description, recommendation required" });
+    }
+    const validSeverities = ["low", "medium", "high", "critical"];
+    if (!validSeverities.includes(b.severity)) {
+      return reply.code(400).send({ ok: false, error: `Invalid severity. Must be one of: ${validSeverities.join(", ")}` });
     }
     try {
       const drill = addDrillFinding(id, b, "admin");

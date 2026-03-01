@@ -307,7 +307,15 @@ export function upsertDepartmentConfig(config: Partial<DepartmentQueueConfig> & 
   const now = new Date().toISOString();
 
   if (existing) {
-    const updated = { ...existing, ...config, tenantId, updatedAt: now };
+    const updated = {
+      ...existing,
+      ...config,
+      // Pin immutable fields — cannot be overwritten by config
+      id: existing.id,
+      tenantId,
+      createdAt: existing.createdAt,
+      updatedAt: now,
+    };
     departmentConfigs.set(key, updated);
     return updated;
   }
@@ -318,9 +326,9 @@ export function upsertDepartmentConfig(config: Partial<DepartmentQueueConfig> & 
     department: config.department,
     displayName: config.displayName || config.department,
     prefix: config.prefix || config.department.toUpperCase().slice(0, 4),
-    maxActive: config.maxActive || 30,
+    maxActive: config.maxActive ?? 30,
     autoCallEnabled: config.autoCallEnabled ?? true,
-    estimatedServiceMinutes: config.estimatedServiceMinutes || 15,
+    estimatedServiceMinutes: config.estimatedServiceMinutes ?? 15,
     windows: config.windows || ["Window-1"],
     enabled: config.enabled ?? true,
     createdAt: now,

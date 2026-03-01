@@ -73,14 +73,22 @@ export default async function costAttributionRoutes(server: FastifyInstance): Pr
 
   // ── Budget Management ───────────────────────────────────────────
 
-  /** POST /platform/budgets — set a tenant budget */
+  /** POST /platform/budgets -- set a tenant budget */
   server.post("/platform/budgets", async (request, reply) => {
     const b = (request.body as any) || {};
     if (!b.tenantId || !b.tier) {
       return reply.code(400).send({ ok: false, error: "tenantId, tier required" });
     }
-    const budget = setBudget(b, "admin");
-    return reply.code(201).send({ ok: true, budget });
+    const validTiers = ["starter", "professional", "enterprise", "custom"];
+    if (!validTiers.includes(b.tier)) {
+      return reply.code(400).send({ ok: false, error: `Invalid tier. Must be one of: ${validTiers.join(", ")}` });
+    }
+    try {
+      const budget = setBudget(b, "admin");
+      return reply.code(201).send({ ok: true, budget });
+    } catch (e: any) {
+      return reply.code(e.statusCode || 500).send({ ok: false, error: e.message });
+    }
   });
 
   /** GET /platform/budgets/:tenantId — get tenant budget */

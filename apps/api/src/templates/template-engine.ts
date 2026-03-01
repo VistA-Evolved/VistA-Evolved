@@ -52,13 +52,14 @@ export async function createTemplate(
 ): Promise<ClinicalTemplate> {
   const now = new Date().toISOString();
   const template: ClinicalTemplate = {
+    ...input,
+    // Pin system fields after spread — cannot be overwritten by input
     id: randomUUID(),
     tenantId,
     version: 1,
     status: "draft",
     createdAt: now,
     updatedAt: now,
-    ...input,
   };
 
   templateStore.set(template.id, template);
@@ -201,12 +202,13 @@ export async function createQuickText(
 ): Promise<QuickText> {
   const now = new Date().toISOString();
   const qt: QuickText = {
+    ...input,
+    // Pin system fields after spread — cannot be overwritten by input
     id: randomUUID(),
     tenantId,
     version: 1,
     createdAt: now,
     updatedAt: now,
-    ...input,
   };
   quickTextStore.set(qt.id, qt);
   if (dbRepo) void dbRepo.upsertQuickText(qt);

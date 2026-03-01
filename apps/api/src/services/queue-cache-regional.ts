@@ -8,7 +8,7 @@
  * (jobs can be re-queued to another region without duplication).
  */
 
-import { randomUUID, createHash } from "node:crypto";
+import { randomUUID } from "node:crypto";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -283,18 +283,21 @@ export function transferJobs(input: {
     const job = jobStore.get(jobId);
     if (!job || (job.status !== "pending" && job.status !== "failed")) continue;
 
-    // Check idempotency — if job already exists in target region, skip
-    const targetKey = `${input.toRegion}:${job.idempotencyKey}`;
-    if (idempotencyIndex.has(job.idempotencyKey)) {
-      const existingJob = jobStore.get(idempotencyIndex.get(job.idempotencyKey)!);
-      if (existingJob && existingJob.region === input.toRegion) {
+    // Check if job already exists in target region (duplicate detection)
+    const existingMappedId = idempotencyIndex.get(job.idempotencyKey);
+    if (existingMappedId) {
+      const existingJob = jobStore.get(existingMappedId);
+      if (existingJob && existingJob.region === input.toRegion && existingJob.id !== job.id) {
         transfer.duplicatesSkipped++;
         continue;
       }
     }
 
-    // Re-enqueue in target region
-    const newJob = enqueueJob({
+    // Remove original idempotency entry so re-enqueue can create a new job
+    idempotencyIndex.delete(job.idempotencyKey);
+
+    // Re-enqueue in target region (gets a new ID, same idempotency key)
+    enqueueJob({
       region: input.toRegion,
       tenantId: job.tenantId,
       queue: job.queue,
@@ -395,12 +398,16 @@ export function registerCachePartition(input: {
 export function updateCacheStats(
   region: string,
   name: string,
-  stats: { currentEntries: number; hitRate: number; missRate: number; evictions: number },
+  stats: { currentEntries?: number; hitRate?: number; missRate?: number; evictions?: number },
 ): RegionalCachePartition | undefined {
   const id = `${region}:${name}`;
   const partition = cachePartitionStore.get(id);
   if (!partition) return undefined;
-  Object.assign(partition, stats);
+  // Whitelist only valid stats fields to prevent data corruption
+  if (stats.currentEntries !== undefined) partition.currentEntries = stats.currentEntries;
+  if (stats.hitRate !== undefined) partition.hitRate = stats.hitRate;
+  if (stats.missRate !== undefined) partition.missRate = stats.missRate;
+  if (stats.evictions !== undefined) partition.evictions = stats.evictions;
   cachePartitionStore.set(id, partition);
   return partition;
 }

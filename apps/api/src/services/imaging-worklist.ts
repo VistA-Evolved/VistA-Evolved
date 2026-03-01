@@ -230,7 +230,15 @@ export async function findByPatientDfn(dfn: string): Promise<WorklistItem[]> {
 export async function updateWorklistItem(id: string, updates: Partial<WorklistItem>): Promise<WorklistItem | undefined> {
   const item = await getWorklistItem(id);
   if (!item) return undefined;
-  const updated = { ...item, ...updates, updatedAt: new Date().toISOString() };
+  const updated = {
+    ...item,
+    ...updates,
+    // Pin immutable fields — cannot be overwritten by updates
+    id: item.id,
+    patientDfn: item.patientDfn,
+    createdAt: item.createdAt,
+    updatedAt: new Date().toISOString(),
+  };
   worklistCache.set(id, updated);
   if (_repo) {
     Promise.resolve(_repo.updateWorkOrder(id, {

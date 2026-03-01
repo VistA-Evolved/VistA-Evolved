@@ -97,6 +97,9 @@ export function updateJob(id: string, updates: Partial<MigrationJob>): Migration
   const updated = {
     ...job,
     ...updates,
+    // Pin immutable fields — cannot be overwritten by updates
+    id: job.id,
+    createdAt: job.createdAt,
     updatedAt: new Date().toISOString(),
   };
   jobStore.set(id, updated);

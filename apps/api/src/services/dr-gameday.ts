@@ -286,9 +286,9 @@ function gradeDrill(drill: DrDrill): DrillGrade {
   // Immediate F for critical findings or >50% failed steps
   if (criticalFindings > 0 || failedSteps > totalSteps / 2) return "F";
 
-  // RTO/RPO check
-  const rtoMet = drill.rtoActualSec !== null && drill.rtoActualSec <= drill.rtoTargetSec;
-  const rpoMet = drill.rpoActualSec !== null && drill.rpoActualSec <= drill.rpoTargetSec;
+  // RTO/RPO check — null means not measured, treat as N/A (skip check)
+  const rtoMet = drill.rtoActualSec === null || drill.rtoActualSec <= drill.rtoTargetSec;
+  const rpoMet = drill.rpoActualSec === null || drill.rpoActualSec <= drill.rpoTargetSec;
 
   if (!rtoMet || !rpoMet) {
     // D if RTO/RPO missed but steps mostly passed

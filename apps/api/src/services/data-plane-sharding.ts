@@ -119,7 +119,7 @@ export function registerShard(input: {
     connectionRef: input.connectionRef,
     replicationRole: input.replicationRole || "primary",
     status: "active",
-    maxTenants: input.maxTenants || 500,
+    maxTenants: input.maxTenants ?? 500,
     currentTenantCount: 0,
     replicationLagMs: null,
     lastHealthCheck: null,

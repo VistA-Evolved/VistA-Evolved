@@ -420,7 +420,14 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     if (!existing) return reply.code(404).send({ ok: false, error: 'Payer not found' });
 
     const body = (request.body as any) || {};
-    const merged = { ...existing, ...body, payerId: id };
+    const merged = {
+      ...existing,
+      ...body,
+      // Pin immutable fields — cannot be overwritten by user input
+      payerId: id,
+      createdAt: existing.createdAt,
+      country: existing.country,
+    };
     upsertPayer(merged);
     appendRcmAudit('payer.updated', { payerId: id, detail: { fields: Object.keys(body) } });
     return { ok: true, payer: getPayer(id) };

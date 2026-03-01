@@ -156,13 +156,13 @@ export function ingestCostRecord(input: {
   otherCostUsd?: number;
   source: CostSource;
 }, actor: string): TenantCostDaily {
-  const cpu = input.cpuCostUsd || 0;
-  const ram = input.ramCostUsd || 0;
-  const pv = input.pvCostUsd || 0;
-  const network = input.networkCostUsd || 0;
-  const vista = input.vistaCostUsd || 0;
-  const storage = input.storageCostUsd || 0;
-  const other = input.otherCostUsd || 0;
+  const cpu = input.cpuCostUsd ?? 0;
+  const ram = input.ramCostUsd ?? 0;
+  const pv = input.pvCostUsd ?? 0;
+  const network = input.networkCostUsd ?? 0;
+  const vista = input.vistaCostUsd ?? 0;
+  const storage = input.storageCostUsd ?? 0;
+  const other = input.otherCostUsd ?? 0;
 
   const record: TenantCostDaily = {
     id: randomUUID(),
@@ -273,6 +273,10 @@ export function setBudget(input: {
   hardLimitPct?: number;
   metadata?: Record<string, string>;
 }, actor: string): TenantBudget {
+  const validTiers: BudgetTier[] = ["starter", "professional", "enterprise", "custom"];
+  if (!validTiers.includes(input.tier)) {
+    throw Object.assign(new Error(`Invalid tier: ${input.tier}. Must be one of: ${validTiers.join(", ")}`), { statusCode: 400 });
+  }
   const defaults = TIER_DEFAULTS[input.tier];
   const budget: TenantBudget = {
     id: randomUUID(),

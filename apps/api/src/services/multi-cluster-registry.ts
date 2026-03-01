@@ -124,7 +124,7 @@ export function registerCluster(
     status: "active",
     pgConnectionRef: input.pgConnectionRef || "",
     vistaPlacementMode: input.vistaPlacementMode || "per_tenant",
-    maxTenants: input.maxTenants || 200,
+    maxTenants: input.maxTenants ?? 200,
     currentTenantCount: 0,
     metadata: input.metadata || {},
     createdAt: new Date().toISOString(),

@@ -184,6 +184,10 @@ export default async function scalePerformanceRoutes(server: FastifyInstance): P
     const { id } = request.params as any;
     const b = (request.body as any) || {};
     if (!b.status) return reply.code(400).send({ ok: false, error: "status required" });
+    const validStatuses = ["planning", "active", "completed", "paused"];
+    if (!validStatuses.includes(b.status)) {
+      return reply.code(400).send({ ok: false, error: `Invalid status. Must be one of: ${validStatuses.join(", ")}` });
+    }
     try {
       const campaign = updateCampaignStatus(id, b.status, "admin");
       return { ok: true, campaign };
