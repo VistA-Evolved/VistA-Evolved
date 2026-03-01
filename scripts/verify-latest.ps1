@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 398: Wave 22 Specialty Clinical Content + CDS Certification
-& "$PSScriptRoot\verify-wave22-specialty.ps1" @args
+# Phase 408: Wave 23 Longitudinal Interop + HIE Certification
+& "$PSScriptRoot\verify-wave23-hie.ps1" @args
