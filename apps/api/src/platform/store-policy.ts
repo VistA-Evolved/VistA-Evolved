@@ -2160,6 +2160,21 @@ export const STORE_INVENTORY: StoreEntry[] = [
   },
 
   // ─── Wave 13: Regulatory/Compliance + Multi-Country (Phases 311-315) ───
+
+  // ─── W28: Regulatory/Compliance Phase 440 ───
+  {
+    id: "compliance-attestation-store",
+    file: "regulatory/attestation-store.ts",
+    variable: "attestations",
+    description: "Hash-chained compliance attestation records (who, what, when, evidence)",
+    classification: "audit",
+    durability: "in_memory_only",
+    domain: "compliance",
+    maxSize: 5_000,
+    migrationTarget: "pg: compliance_attestation table",
+    notes: "Phase 440: In-memory with FIFO eviction. Hash-chained for tamper detection. Resets on restart.",
+  },
+
   {
     id: "consent-records",
     file: "services/consent-engine.ts",
