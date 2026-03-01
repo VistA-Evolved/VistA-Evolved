@@ -38,8 +38,8 @@ import {
 
 const DEFAULT_TENANT = "default";
 
-function getTenantId(_request: any): string {
-  return DEFAULT_TENANT;
+function getTenantId(request: { headers: Record<string, string | string[] | undefined> }): string {
+  return (request.headers["x-tenant-id"] as string) || DEFAULT_TENANT;
 }
 
 export default async function releaseTrainRoutes(server: FastifyInstance): Promise<void> {
@@ -145,8 +145,14 @@ export default async function releaseTrainRoutes(server: FastifyInstance): Promi
     const { id } = request.params as any;
     const r = promoteRelease(id);
     if (!r) return reply.code(400).send({ ok: false, error: "invalid transition" });
-    const completed = completePromotion(id);
-    return { ok: true, release: completed || r };
+    return { ok: true, release: r };
+  });
+
+  server.post("/release-train/releases/:id/complete-promotion", async (request, reply) => {
+    const { id } = request.params as any;
+    const r = completePromotion(id);
+    if (!r) return reply.code(400).send({ ok: false, error: "invalid transition" });
+    return { ok: true, release: r };
   });
 
   server.post("/release-train/releases/:id/rollback", async (request, reply) => {
@@ -154,8 +160,14 @@ export default async function releaseTrainRoutes(server: FastifyInstance): Promi
     const body = (request.body as any) || {};
     const r = rollbackRelease(id, body.reason || "Rollback requested");
     if (!r) return reply.code(400).send({ ok: false, error: "invalid transition" });
-    const completed = completeRollback(id);
-    return { ok: true, release: completed || r };
+    return { ok: true, release: r };
+  });
+
+  server.post("/release-train/releases/:id/complete-rollback", async (request, reply) => {
+    const { id } = request.params as any;
+    const r = completeRollback(id);
+    if (!r) return reply.code(400).send({ ok: false, error: "invalid transition" });
+    return { ok: true, release: r };
   });
 
   server.post("/release-train/releases/:id/cancel", async (request, reply) => {

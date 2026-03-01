@@ -165,6 +165,24 @@ ehr.local {
 	handle /payerops/* {
 		reverse_proxy host.docker.internal:3001
 	}
+	handle /release-train/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /customer-success/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /support-ops/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /external-validation/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /data-rights/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /ga/* {
+		reverse_proxy host.docker.internal:3001
+	}
 
 	# --- Web frontend (catch-all) ---
 	handle {

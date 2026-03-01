@@ -154,7 +154,8 @@ $storeChecks = @(
     "customer-success",
     "support-ops",
     "external-validation",
-    "data-rights"
+    "data-rights",
+    "ga-evidence"
 )
 $storeMissing = 0
 $storeResults = @()

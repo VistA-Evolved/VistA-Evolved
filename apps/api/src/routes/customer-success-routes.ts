@@ -23,8 +23,8 @@ import {
 
 const DEFAULT_TENANT = "default";
 
-function getTenantId(_request: any): string {
-  return DEFAULT_TENANT;
+function getTenantId(request: { headers: Record<string, string | string[] | undefined> }): string {
+  return (request.headers["x-tenant-id"] as string) || DEFAULT_TENANT;
 }
 
 export default async function customerSuccessRoutes(server: FastifyInstance): Promise<void> {

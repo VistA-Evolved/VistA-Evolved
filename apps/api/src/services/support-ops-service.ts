@@ -76,7 +76,7 @@ export interface RunbookEntry {
 /* SLA Targets (configurable per priority)                            */
 /* ================================================================== */
 
-export const SLA_TARGETS: Record<TicketPriority, { ackMinutes: number; resolveMinutes: number }> = {
+const SLA_TARGETS: Record<TicketPriority, { ackMinutes: number; resolveMinutes: number }> = {
   critical: { ackMinutes: 15, resolveMinutes: 240 },
   high: { ackMinutes: 60, resolveMinutes: 480 },
   medium: { ackMinutes: 240, resolveMinutes: 1440 },
@@ -236,7 +236,7 @@ export function listTickets(tenantId: string, status?: TicketStatus): SupportTic
   return all;
 }
 
-export function attachDiagnostics(ticketId: string, bundleId: string): SupportTicket | null {
+function attachDiagnostics(ticketId: string, bundleId: string): SupportTicket | null {
   const ticket = ticketStore.get(ticketId);
   if (!ticket) return null;
   const updated: SupportTicket = {
