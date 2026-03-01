@@ -1,0 +1,17 @@
+Prompts prefix scan — Wave 14 Phase Resolution
+================================================
+Date: 2026-03-01
+Command: Get-ChildItem -Path prompts -Directory | ForEach-Object { if ($_.Name -match '^(\d+)-') { [int]$Matches[1] } } | Sort-Object -Descending | Select-Object -First 5
+
+Output:
+317
+316
+315
+314
+313
+
+Max prefix BEFORE W14: 316
+Computed BASE_PHASE: 317
+Wave 14 range: 317-325 (9 phases)
+
+No collisions detected.
