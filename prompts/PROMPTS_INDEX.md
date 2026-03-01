@@ -1,7 +1,7 @@
 # Prompts Index
 
 Generated: 2026-03-01
-Total prompt folders: 432
+Total prompt folders: 433
 
 | # | Folder | Phase | Files |
 |---|--------|-------|-------|
@@ -437,3 +437,4 @@ Total prompt folders: 432
 | 430 | 430-PHASE-430-W26-INTEGRITY-AUDIT | 430 | 3 |
 | 431 | 431-PHASE-431-ADT-ADAPTER-WRITES | 431 | 3 |
 | 432 | 432-PHASE-432-PHARMACY-MAR-SCAFFOLD | 432 | 3 |
+| 433 | 433-PHASE-433-LAB-HL7-INBOUND | 433 | 3 |

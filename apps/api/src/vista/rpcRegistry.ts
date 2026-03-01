@@ -298,6 +298,9 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
   { name: "PSJ VERIFY", reason: "Inpatient pharmacy order verification — requires PSJ package not available in WorldVistA Docker (Phase 432)" },
   { name: "PSJ ORDER STATUS", reason: "Inpatient pharmacy order status lookup — requires PSJ package (Phase 432)" },
   { name: "PSB VALIDATE ORDER", reason: "BCMA order validation at scan time — requires PSB package (Phase 432)" },
+  // Phase 433: Lab filing RPCs — target RPCs for HL7 ORU^R01 inbound lab result filing (not available via RPC)
+  { name: "LRFZX", reason: "Lab result filing routine — not an RPC, requires direct M call or custom ZVE wrapper (Phase 433)" },
+  { name: "LR VERIFY", reason: "Lab result verification — LR package not exposed via OR CPRS GUI CHART context (Phase 433)" },
 ];
 
 /* ------------------------------------------------------------------ */
