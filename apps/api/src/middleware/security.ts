@@ -229,6 +229,14 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/localization\/config$/, auth: "session" },          // Phase 397: tenant config (session)
   { pattern: /^\/localization\/resolve$/, auth: "session" },         // Phase 397: translation resolve (session)
   { pattern: /^\/localization\//, auth: "session" },                 // Phase 397: localization
+  // Wave 23: Longitudinal Interop + HIE + Multi-Country Exchange Packs (Phases 399-408)
+  { pattern: /^\/interop-gateway\//, auth: "session" },  // Phase 400: Interop Gateway Layer
+  { pattern: /^\/mpi\//, auth: "session" },              // Phase 401: MPI / Client Registry
+  { pattern: /^\/provider-directory\//, auth: "session" }, // Phase 402: Provider Directory
+  { pattern: /^\/document-exchange\//, auth: "session" }, // Phase 403: Document Exchange
+  { pattern: /^\/bulk-data\//, auth: "session" },        // Phase 404: Bulk Data
+  { pattern: /^\/consent-pou\//, auth: "session" },      // Phase 405: Consent + Purpose of Use
+  { pattern: /^\/exchange-packs\//, auth: "session" },   // Phase 406-407: Exchange Packs
   // Default: session required for anything else
 ];
 

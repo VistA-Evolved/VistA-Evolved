@@ -215,6 +215,15 @@ import vistaProvisionRoutes from "../routes/vista-provision.js";
 // Wave 21: Device + Modality Integration (Phases 378-388)
 import { edgeGatewayRoutes, deviceRegistryRoutes, hl7v2IngestRoutes, astmPoct1aIngestRoutes, sdcIngestRoutes, alarmRoutes, infusionBcmaRoutes, imagingModalityRoutes, normalizationRoutes, startGatewayCleanup } from "../devices/index.js";
 
+// Wave 23: Longitudinal Interop + HIE + Multi-Country Exchange Packs (Phases 399-408)
+import { interopGatewayRoutes } from "../interop-gateway/index.js";
+import { mpiRoutes } from "../mpi/index.js";
+import { providerDirectoryRoutes } from "../provider-directory/index.js";
+import { documentExchangeRoutes } from "../document-exchange/index.js";
+import { bulkDataRoutes } from "../bulk-data/index.js";
+import { consentPouRoutes } from "../consent-pou/index.js";
+import { exchangePackRoutes } from "../exchange-packs/index.js";
+
 // Inline routes + domain auto-stubs
 import { registerInlineRoutes } from "./inline-routes.js";
 import { registerDomainRoutes } from "../routes/index.js";
@@ -698,6 +707,15 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(infusionBcmaRoutes);
   server.register(imagingModalityRoutes);
   server.register(normalizationRoutes);
+
+  // Wave 23: Longitudinal Interop + HIE + Multi-Country Exchange Packs (Phases 399-408)
+  server.register(interopGatewayRoutes);    // Phase 400: Interop Gateway Layer
+  server.register(mpiRoutes);               // Phase 401: MPI / Client Registry
+  server.register(providerDirectoryRoutes); // Phase 402: Provider Directory
+  server.register(documentExchangeRoutes);  // Phase 403: Document Exchange
+  server.register(bulkDataRoutes);          // Phase 404: Bulk Data
+  server.register(consentPouRoutes);        // Phase 405: Consent + Purpose of Use
+  server.register(exchangePackRoutes);      // Phase 406-407: Exchange Packs (US + Global)
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);
