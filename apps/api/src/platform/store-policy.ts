@@ -4178,6 +4178,40 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: alarm_audit_log (v70)",
     notes: "Phase 384: Alarm audit trail (20K max, FIFO).",
   },
+  // -------- Phase 385: Infusion / BCMA Safety Bridge --------
+  {
+    id: "infusion-pump-events",
+    file: "devices/infusion-bcma-store.ts",
+    variable: "pumpEvents",
+    description: "In-memory infusion pump event store",
+    classification: "cache" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "devices",
+    migrationTarget: "pg: infusion_pump_events (v70)",
+    notes: "Phase 385: Pump event staging (20K max, FIFO).",
+  },
+  {
+    id: "bcma-sessions",
+    file: "devices/infusion-bcma-store.ts",
+    variable: "bcmaSessions",
+    description: "In-memory BCMA session store",
+    classification: "cache" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "devices",
+    migrationTarget: "pg: bcma_sessions (v70)",
+    notes: "Phase 385: BCMA sessions with right-6 checks (10K max, FIFO).",
+  },
+  {
+    id: "infusion-bcma-audit-log",
+    file: "devices/infusion-bcma-store.ts",
+    variable: "auditLog",
+    description: "In-memory infusion/BCMA audit trail",
+    classification: "cache" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "devices",
+    migrationTarget: "pg: infusion_bcma_audit (v70)",
+    notes: "Phase 385: Infusion/BCMA audit trail (20K max, FIFO).",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

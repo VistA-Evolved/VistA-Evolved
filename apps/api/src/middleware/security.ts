@@ -201,6 +201,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/devices\/astm\/ingest$/, auth: "service" },  // Phase 382: ASTM ingest (gateway)
   { pattern: /^\/devices\/poct1a\/ingest$/, auth: "service" }, // Phase 382: POCT1-A ingest (gateway)
   { pattern: /^\/devices\/sdc\/ingest$/, auth: "service" },    // Phase 383: SDC ingest (sidecar)
+  { pattern: /^\/devices\/infusion\/pump-events$/, auth: "service" }, // Phase 385: pump event ingest
   { pattern: /^\/devices\//, auth: "admin" },                  // Phase 380: device registry
   // Default: session required for anything else
 ];
