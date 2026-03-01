@@ -2350,6 +2350,54 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "n/a (runtime registry)",
     notes: "Phase 321: Pluggable handler per TX set (837, 835, 999, etc.).",
   },
+
+  // ═══════════════════════════════════════════════════════
+  // CLEARINGHOUSE TRANSPORT (Phase 322)
+  // ═══════════════════════════════════════════════════════
+  {
+    id: "ch-transport-registry",
+    file: "rcm/connectors/clearinghouse-transport.ts",
+    variable: "transportRegistry",
+    description: "Pluggable transport providers (SFTP, AS2, HTTPS-REST)",
+    classification: "registry",
+    durability: "in_memory_only",
+    domain: "interop",
+    migrationTarget: "n/a (runtime registry)",
+    notes: "Phase 322: 3 built-in transports (sftp, https-rest, as2).",
+  },
+  {
+    id: "ch-vault-providers",
+    file: "rcm/connectors/clearinghouse-transport.ts",
+    variable: "vaultProviders",
+    description: "Credential vault provider registry (env-var, in-memory, external)",
+    classification: "registry",
+    durability: "in_memory_only",
+    domain: "interop",
+    migrationTarget: "n/a (runtime registry)",
+    notes: "Phase 322: 2 built-in providers (env-var, in-memory). External vault adapters can be registered.",
+  },
+  {
+    id: "ch-rate-limit-buckets",
+    file: "rcm/connectors/clearinghouse-transport.ts",
+    variable: "rateLimitBuckets",
+    description: "Per-connector token bucket rate limiters",
+    classification: "cache",
+    durability: "in_memory_only",
+    domain: "interop",
+    migrationTarget: "redis or pg for distributed rate limiting",
+    notes: "Phase 322: Token bucket with configurable max tokens + refill rate.",
+  },
+  {
+    id: "ch-transport-profiles",
+    file: "rcm/connectors/clearinghouse-transport.ts",
+    variable: "transportProfiles",
+    description: "Transport profiles linking connectors to transport+vault+rate config",
+    classification: "registry",
+    durability: "in_memory_only",
+    domain: "interop",
+    migrationTarget: "pg: ch_transport_profile table",
+    notes: "Phase 322: Connects connectorId to TransportConfig + RateLimitConfig.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
