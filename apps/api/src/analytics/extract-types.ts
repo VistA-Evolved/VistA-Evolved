@@ -197,9 +197,6 @@ export interface DatasetPermission {
   actions: Array<"read" | "export" | "admin">;
   grantedBy: string;
   grantedAt: string;
-  canRead?: boolean;
-  canExport?: boolean;
-  maskedColumns?: string[];
 }
 
 export interface ColumnMaskRule {

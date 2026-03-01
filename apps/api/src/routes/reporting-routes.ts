@@ -29,7 +29,6 @@ import {
 import {
   getDatasets,
   getDataset,
-  checkDatasetPermission,
   grantDatasetPermission,
   revokeDatasetPermission,
   listDatasetPermissions,

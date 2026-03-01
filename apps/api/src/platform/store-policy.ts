@@ -3744,7 +3744,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
   {
     id: "analytics-deid-configs",
     file: "analytics/deid-service.ts",
-    variable: "deidConfigStore",
+    variable: "tenantDeidConfigs",
     description: "In-memory per-tenant de-identification configs",
     classification: "configuration" as StoreClassification,
     durability: "in_memory_only" as DurabilityStatus,

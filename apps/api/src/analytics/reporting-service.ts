@@ -7,7 +7,6 @@
  * ADR: docs/decisions/ADR-REPORTING-MODEL.md
  */
 
-import { randomUUID } from "node:crypto";
 import { log } from "../lib/logger.js";
 import type {
   ReportId,
