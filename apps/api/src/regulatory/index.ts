@@ -1,5 +1,5 @@
 /**
- * Regulatory module barrel export — Phase 439 + 440 + 441 + 442.
+ * Regulatory module barrel export — Phase 439-443.
  */
 
 export type {
@@ -72,3 +72,19 @@ export {
   getExportAudit,
   verifyExportAuditChain,
 } from "./export-pipeline.js";
+
+export type {
+  ValidationDomain,
+  ValidationSeverity,
+  CountryValidationResult,
+  CountryValidator,
+  ValidationSummary,
+} from "./country-validation.js";
+
+export {
+  registerCountryValidator,
+  getCountryValidator,
+  listCountryValidators,
+  validateForCountry,
+  validateAllDomains,
+} from "./country-validation.js";
