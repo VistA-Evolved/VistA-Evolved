@@ -17,6 +17,13 @@
 
 import { log } from "../lib/logger.js";
 import { immutableAudit, type ImmutableAuditAction } from "../lib/immutable-audit.js";
+import {
+  evaluateAbac,
+  buildAbacContext,
+  type AbacResult,
+  type AbacDenial,
+} from "./abac-engine.js";
+import { type ResourceAttributes } from "./abac-attributes.js";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -422,4 +429,122 @@ export function canPerform(roles: PolicyRole[], action: string): boolean {
   const allowedRoles = ROLE_ACTION_MAP[action];
   if (!allowedRoles) return false;
   return roles.some((r) => allowedRoles.includes(r));
+}
+
+/* ------------------------------------------------------------------ */
+/* RBAC → ABAC chained evaluation (Phase 340)                         */
+/* ------------------------------------------------------------------ */
+
+/** Extended decision with ABAC details. */
+export interface PolicyDecisionWithAbac extends PolicyDecision {
+  /** ABAC evaluation result (present only when RBAC allowed and ABAC ran). */
+  abac?: AbacResult;
+}
+
+/**
+ * Evaluate policy with ABAC refinement.
+ *
+ * Flow: RBAC first → if allowed → ABAC conditions checked → final decision.
+ * ABAC can only DENY what RBAC allowed, never grant what RBAC denied.
+ */
+export function evaluatePolicyWithAbac(
+  input: PolicyInput,
+  request: {
+    ip?: string;
+    headers: Record<string, string | string[] | undefined>;
+    method?: string;
+    url?: string;
+  },
+  resourceOverrides?: Partial<ResourceAttributes>,
+): PolicyDecisionWithAbac {
+  // Step 1: RBAC evaluation
+  const rbacDecision = evaluatePolicy(input);
+
+  if (!rbacDecision.allowed) {
+    // RBAC denied — skip ABAC entirely
+    return { ...rbacDecision, abac: undefined };
+  }
+
+  // Step 2: ABAC evaluation (post-RBAC refinement)
+  const abacCtx = buildAbacContext(
+    request,
+    {
+      role: input.user.roles[0] ?? "clerk",
+      duz: input.user.sub,
+      facilityStation: input.user.facilityStation,
+      tenantId: input.user.tenantId,
+    },
+    input.action,
+    resourceOverrides,
+  );
+
+  const abacResult = evaluateAbac(abacCtx);
+
+  if (!abacResult.allowed) {
+    const denial = abacResult as AbacDenial;
+    return {
+      allowed: false,
+      reason: denial.reason || "ABAC policy denied",
+      matchedRule: `abac:${denial.violations.map((v) => v.conditionName).join("+")}`,
+      evaluationTimeMs: rbacDecision.evaluationTimeMs,
+      abac: abacResult,
+    };
+  }
+
+  // Both RBAC and ABAC allowed
+  return { ...rbacDecision, abac: abacResult };
+}
+
+/**
+ * Middleware-style policy check with ABAC.
+ * Same as `checkPolicy` but runs the ABAC chain post-RBAC.
+ */
+export function checkPolicyWithAbac(
+  action: string,
+  user: PolicyUser,
+  request: {
+    ip?: string;
+    headers: Record<string, string | string[] | undefined>;
+    method?: string;
+    url?: string;
+  },
+  resource?: PolicyResource,
+  resourceOverrides?: Partial<ResourceAttributes>,
+  requestMeta?: { requestId?: string; sourceIp?: string },
+): PolicyDecisionWithAbac {
+  const decision = evaluatePolicyWithAbac(
+    { action, user, resource },
+    request,
+    resourceOverrides,
+  );
+
+  if (!decision.allowed) {
+    immutableAudit("policy.denied" as ImmutableAuditAction, "denied", {
+      sub: user.sub,
+      name: user.name,
+      roles: user.roles,
+    }, {
+      requestId: requestMeta?.requestId,
+      sourceIp: requestMeta?.sourceIp,
+      detail: {
+        action,
+        reason: decision.reason,
+        matchedRule: decision.matchedRule,
+        evaluationTimeMs: decision.evaluationTimeMs,
+        abacViolations: decision.abac && !decision.abac.allowed
+          ? (decision.abac as AbacDenial).violations.map((v) => v.conditionName)
+          : undefined,
+      },
+    });
+
+    log.warn("Policy denied (RBAC+ABAC)", {
+      action,
+      user: user.sub,
+      roles: user.roles,
+      reason: decision.reason,
+      rule: decision.matchedRule,
+    });
+  }
+
+  return decision;
 }
