@@ -252,6 +252,7 @@ import globalRoutingRoutes from "../routes/global-routing-routes.js";
 // Wave 15: Data Plane Sharding (Phase 330)
 import dataPlaneShardingRoutes from "../routes/data-plane-sharding-routes.js";
 import queueCacheRegionalRoutes from "../routes/queue-cache-regional-routes.js";
+import costAttributionRoutes from "../routes/cost-attribution-routes.js";
 
 /**
  * Register all route plugins in the exact order from the original index.ts.
@@ -575,6 +576,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Wave 15: Queue & Cache Regionalization (Phase 331)
   server.register(queueCacheRegionalRoutes);
+
+  // Wave 15: Cost Attribution & Budgets (Phase 332)
+  server.register(costAttributionRoutes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

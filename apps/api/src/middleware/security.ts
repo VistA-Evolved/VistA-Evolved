@@ -153,6 +153,8 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/platform\/queues\//, auth: "admin" },     // Phase 331: Queue regionalization
   { pattern: /^\/platform\/workers\//, auth: "admin" },    // Phase 331: Regional workers
   { pattern: /^\/platform\/cache\//, auth: "admin" },      // Phase 331: Cache partitions
+  { pattern: /^\/platform\/costs\//, auth: "admin" },      // Phase 332: Cost attribution
+  { pattern: /^\/platform\/budgets\//, auth: "admin" },    // Phase 332: Budget management
   // Default: session required for anything else
 ];
 
