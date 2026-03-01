@@ -220,6 +220,9 @@ const AUTH_RULES: AuthRule[] = [
   // ── Wave 22, Phase 394: Imaging/Radiology Deep Workflows ──
   { pattern: /^\/radiology\/critical-alerts\/[^\/]+\/resolve$/, auth: "admin" }, // Phase 394: resolve rad critical alert
   { pattern: /^\/radiology\//, auth: "session" },                 // Phase 394: radiology reads + writes
+  // ── Wave 22, Phase 395: CDS Hooks + SMART Launch ──
+  { pattern: /^\/cds\/cqf\/config$/, auth: "admin" },              // Phase 395: CQF Ruler config (admin)
+  { pattern: /^\/cds\//, auth: "session" },                        // Phase 395: CDS hooks + SMART launch
   // Default: session required for anything else
 ];
 
