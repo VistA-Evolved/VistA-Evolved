@@ -15,6 +15,8 @@ import type { FastifyInstance } from "fastify";
 import {
   discoverCapabilities,
   getDomainCapabilities,
+  buildRuntimeMatrix,
+  compareToBaseline,
   KNOWN_RPCS,
 } from "../vista/rpcCapabilities.js";
 
@@ -82,6 +84,47 @@ export default async function capabilityRoutes(server: FastifyInstance): Promise
       };
     } catch (err: any) {
       return reply.code(500).send({ ok: false, error: "Capability probe failed" });
+    }
+  });
+
+  /**
+   * GET /vista/runtime-matrix — Phase 425
+   *
+   * Returns combined domain capability view with adapter + RPC readiness.
+   * Requires prior capability discovery (calls discoverCapabilities if needed).
+   */
+  server.get("/vista/runtime-matrix", async (_request, reply) => {
+    try {
+      // Ensure we have discovered capabilities
+      await discoverCapabilities();
+      const matrix = buildRuntimeMatrix();
+      return { ok: true, ...matrix };
+    } catch (err: any) {
+      return reply.code(500).send({ ok: false, error: "Runtime matrix build failed" });
+    }
+  });
+
+  /**
+   * POST /vista/runtime-matrix/drift — Phase 425
+   *
+   * Compare current capabilities against provided baseline.
+   * Body: { availableList: string[], missingList: string[], instanceId?: string }
+   */
+  server.post("/vista/runtime-matrix/drift", async (request, reply) => {
+    const body = (request.body as any) || {};
+    if (!body.availableList || !Array.isArray(body.availableList)) {
+      return reply.code(400).send({ ok: false, error: "Request body must include availableList array" });
+    }
+
+    try {
+      await discoverCapabilities();
+      const report = compareToBaseline(body);
+      if (!report) {
+        return reply.code(503).send({ ok: false, error: "No capability data available" });
+      }
+      return { ok: true, ...report };
+    } catch (err: any) {
+      return reply.code(500).send({ ok: false, error: "Drift comparison failed" });
     }
   });
 }
