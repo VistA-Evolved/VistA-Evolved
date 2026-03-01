@@ -253,6 +253,7 @@ import globalRoutingRoutes from "../routes/global-routing-routes.js";
 import dataPlaneShardingRoutes from "../routes/data-plane-sharding-routes.js";
 import queueCacheRegionalRoutes from "../routes/queue-cache-regional-routes.js";
 import costAttributionRoutes from "../routes/cost-attribution-routes.js";
+import drGamedayRoutes from "../routes/dr-gameday-routes.js";
 
 /**
  * Register all route plugins in the exact order from the original index.ts.
@@ -579,6 +580,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Wave 15: Cost Attribution & Budgets (Phase 332)
   server.register(costAttributionRoutes);
+
+  // Wave 15: Multi-Region DR & GameDay (Phase 333)
+  server.register(drGamedayRoutes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

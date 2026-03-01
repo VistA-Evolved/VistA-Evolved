@@ -155,6 +155,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/platform\/cache\//, auth: "admin" },      // Phase 331: Cache partitions
   { pattern: /^\/platform\/costs\//, auth: "admin" },      // Phase 332: Cost attribution
   { pattern: /^\/platform\/budgets\//, auth: "admin" },    // Phase 332: Budget management
+  { pattern: /^\/platform\/dr\//, auth: "admin" },         // Phase 333: DR & GameDay
   // Default: session required for anything else
 ];
 
