@@ -1,62 +1,72 @@
 [
-    {
-        "wave":  "16",
-        "start":  337,
-        "end":  345,
-        "count":  9,
-        "branch":  "main",
-        "owner":  "copilot-agent",
-        "status":  "reserved",
-        "reservedAt":  "2026-03-01T02:38:00.275Z"
-    },
-    {
-        "wave":  "17",
-        "start":  346,
-        "end":  353,
-        "count":  8,
-        "branch":  "main",
-        "owner":  "copilot-agent",
-        "status":  "reserved",
-        "reservedAt":  "2026-03-01T12:00:00.000Z"
-    },
-    {
-        "wave":  "18",
-        "start":  354,
-        "end":  361,
-        "count":  8,
-        "branch":  "main",
-        "owner":  "copilot-agent",
-        "status":  "reserved",
-        "reservedAt":  "2026-03-01T18:00:00.000Z"
-    },
-    {
-        "wave":  "21",
-        "start":  378,
-        "end":  388,
-        "count":  11,
-        "branch":  "main",
-        "owner":  "copilot-agent",
-        "status":  "reserved",
-        "reservedAt":  "2026-03-01T08:25:32.879Z"
-    },
-    {
-        "wave":  "22",
-        "start":  389,
-        "end":  398,
-        "count":  10,
-        "branch":  "main",
-        "owner":  "copilot-agent",
-        "status":  "reserved",
-        "reservedAt":  "2026-03-01T12:00:00.000Z"
-    },
-    {
-        "wave":  "24",
-        "start":  409,
-        "end":  417,
-        "count":  9,
-        "branch":  "main",
-        "owner":  "copilot-agent",
-        "status":  "reserved",
-        "reservedAt":  "2026-03-01T20:05:33.954Z"
-    }
+  {
+    "wave": "16",
+    "start": 337,
+    "end": 345,
+    "count": 9,
+    "branch": "main",
+    "owner": "copilot-agent",
+    "status": "reserved",
+    "reservedAt": "2026-03-01T02:38:00.275Z"
+  },
+  {
+    "wave": "17",
+    "start": 346,
+    "end": 353,
+    "count": 8,
+    "branch": "main",
+    "owner": "copilot-agent",
+    "status": "reserved",
+    "reservedAt": "2026-03-01T12:00:00.000Z"
+  },
+  {
+    "wave": "18",
+    "start": 354,
+    "end": 361,
+    "count": 8,
+    "branch": "main",
+    "owner": "copilot-agent",
+    "status": "reserved",
+    "reservedAt": "2026-03-01T18:00:00.000Z"
+  },
+  {
+    "wave": "21",
+    "start": 378,
+    "end": 388,
+    "count": 11,
+    "branch": "main",
+    "owner": "copilot-agent",
+    "status": "reserved",
+    "reservedAt": "2026-03-01T08:25:32.879Z"
+  },
+  {
+    "wave": "22",
+    "start": 389,
+    "end": 398,
+    "count": 10,
+    "branch": "main",
+    "owner": "copilot-agent",
+    "status": "reserved",
+    "reservedAt": "2026-03-01T12:00:00.000Z"
+  },
+  {
+    "wave": "24",
+    "start": 409,
+    "end": 417,
+    "count": 9,
+    "branch": "main",
+    "owner": "copilot-agent",
+    "status": "reserved",
+    "reservedAt": "2026-03-01T20:05:33.954Z"
+  },
+  {
+    "wave": "25",
+    "start": 418,
+    "end": 422,
+    "count": 5,
+    "branch": "main",
+    "owner": "ai-agent",
+    "status": "reserved",
+    "reservedAt": "2026-03-01T15:19:14.504Z"
+  }
 ]

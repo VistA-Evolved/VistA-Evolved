@@ -1,0 +1,134 @@
+{
+  "generatedAt": "2026-03-01T15:19:41.710Z",
+  "totalFolders": 413,
+  "totalPhases": 411,
+  "collisions": [
+    {
+      "prefix": "299",
+      "count": 2,
+      "folders": [
+        "299-PHASE-299-W12-MANIFEST-SCOPE-MATRIX",
+        "299-WAVE-12"
+      ]
+    },
+    {
+      "prefix": "308",
+      "count": 2,
+      "folders": [
+        "308-PHASE-308-CERTIFICATION-RUNNER",
+        "308-PHASE-308-DEPT-CERTIFICATION-RUNNER"
+      ]
+    },
+    {
+      "prefix": "412",
+      "count": 2,
+      "folders": [
+        "412-W24-P4-CERT-RUNS",
+        "412-W24-P4-CERTIFICATION-RUNS"
+      ]
+    },
+    {
+      "prefix": "415",
+      "count": 2,
+      "folders": [
+        "415-W24-P7-CUTOVER-ROLLBACK",
+        "415-W24-P7-CUTOVER-ROLLBACK-DR"
+      ]
+    }
+  ],
+  "collisionCount": 4,
+  "gaps": [
+    {
+      "after": 47,
+      "before": 49,
+      "missingPrefixes": [
+        48
+      ]
+    },
+    {
+      "after": 177,
+      "before": 179,
+      "missingPrefixes": [
+        178
+      ]
+    },
+    {
+      "after": 327,
+      "before": 337,
+      "missingPrefixes": [
+        328,
+        329,
+        330,
+        331,
+        332,
+        333,
+        334,
+        335,
+        336
+      ]
+    }
+  ],
+  "gapCount": 11,
+  "incomplete": [
+    {
+      "name": "234-PHASE-237-PROMPT-LINTER-MANIFEST",
+      "hasImplement": false,
+      "hasVerify": false
+    },
+    {
+      "name": "299-WAVE-12",
+      "hasImplement": false,
+      "hasVerify": false
+    },
+    {
+      "name": "302-PHASE-302-ORDERS-WRITEBACK-CORE",
+      "hasImplement": false,
+      "hasVerify": false
+    },
+    {
+      "name": "303-PHASE-303-PHARMACY-DEEP-WRITEBACK",
+      "hasImplement": false,
+      "hasVerify": false
+    },
+    {
+      "name": "304-PHASE-304-LAB-DEEP-WRITEBACK",
+      "hasImplement": false,
+      "hasVerify": false
+    },
+    {
+      "name": "305-PHASE-305-INPATIENT-ADT-WRITEBACK",
+      "hasImplement": false,
+      "hasVerify": false
+    },
+    {
+      "name": "306-PHASE-306-IMAGING-PACS-VALIDATION",
+      "hasImplement": false,
+      "hasVerify": false
+    },
+    {
+      "name": "308-PHASE-308-DEPT-CERTIFICATION-RUNNER",
+      "hasImplement": false,
+      "hasVerify": false
+    },
+    {
+      "name": "412-W24-P4-CERT-RUNS",
+      "hasImplement": false,
+      "hasVerify": false
+    },
+    {
+      "name": "415-W24-P7-CUTOVER-ROLLBACK-DR",
+      "hasImplement": false,
+      "hasVerify": false
+    },
+    {
+      "name": "418-W25-P1-MANIFEST-BASELINE",
+      "hasImplement": false,
+      "hasVerify": false
+    }
+  ],
+  "incompleteCount": 11,
+  "prefixRange": {
+    "min": 1,
+    "max": 418
+  }
+}
