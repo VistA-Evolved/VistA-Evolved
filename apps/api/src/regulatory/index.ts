@@ -1,5 +1,5 @@
 /**
- * Regulatory module barrel export — Phase 439 + 440 + 441.
+ * Regulatory module barrel export — Phase 439 + 440 + 441 + 442.
  */
 
 export type {
@@ -29,6 +29,16 @@ export type {
   CountryAssignmentAudit,
 } from "./country-config.js";
 
+export type {
+  ExportFormat,
+  ExportStatus,
+  ExportRequest,
+  ExportConstraintCheck,
+  ExportManifest,
+  ExportPackage,
+  ExportAuditEntry,
+} from "./export-pipeline.js";
+
 export { classify, setTenantCountry, getTenantCountry } from "./classification-engine.js";
 export { getFramework, getAllFrameworks, resolveFrameworksByCountry, registerFramework } from "./framework-registry.js";
 
@@ -54,3 +64,11 @@ export {
   getCountryAssignmentAudit,
   verifyCountryAuditChain,
 } from "./country-config.js";
+
+export {
+  createExportPackage,
+  getExportPackage,
+  listExportPackages,
+  getExportAudit,
+  verifyExportAuditChain,
+} from "./export-pipeline.js";
