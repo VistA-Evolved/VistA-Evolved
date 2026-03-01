@@ -68,5 +68,35 @@
     "owner": "copilot-agent",
     "status": "reserved",
     "reservedAt": "2026-03-01T15:19:14.504Z"
+  },
+  {
+    "wave": "26",
+    "start": 423,
+    "end": 430,
+    "count": 8,
+    "branch": "main",
+    "owner": "copilot-agent",
+    "status": "reserved",
+    "reservedAt": "2026-03-01T22:17:20.980Z"
+  },
+  {
+    "wave": "27",
+    "start": 431,
+    "end": 438,
+    "count": 8,
+    "branch": "main",
+    "owner": "agent",
+    "status": "reserved",
+    "reservedAt": "2026-03-01T22:20:13.749Z"
+  },
+  {
+    "wave": "28",
+    "start": 439,
+    "end": 446,
+    "count": 8,
+    "branch": "main",
+    "owner": "agent",
+    "status": "reserved",
+    "reservedAt": "2026-03-01T22:20:18.804Z"
   }
 ]

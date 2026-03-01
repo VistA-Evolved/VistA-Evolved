@@ -1,4 +1,4 @@
-# Wave 9 Integrity Audit — Implementation
+# 290 — Wave 9 Integrity Audit — Implementation
 
 ## User Request
 Comprehensive 3-tier "progressive sanity and integrity check" on Wave 9 (Phases 274-281, commit 9792fc6).

@@ -51,7 +51,8 @@ const allEntries = readdirSync(PROMPTS_DIR);
 //   "42-PHASE-38-RCM-..."    (classic)
 //   "01-BOOTSTRAP"           (bootstrap)
 //   "327-W15-P1-MANIFEST-*"  (wave-phase naming, W25 onwards)
-const PHASE_FOLDER_RE = /^\d+-(?:PHASE-\d+\w?-|W\d+-P\d+-|BOOTSTRAP|PLAYBOOKS?)/;
+//   "263-WAVE-8-*"           (wave-level integrity audits)
+const PHASE_FOLDER_RE = /^\d+-(?:PHASE-\d+\w?-|W\d+-P\d+-|WAVE-\d+-|BOOTSTRAP|PLAYBOOKS?)/;
 const phaseFolders = allEntries.filter(
   (e) =>
     statSync(join(PROMPTS_DIR, e)).isDirectory() && PHASE_FOLDER_RE.test(e)
@@ -121,7 +122,7 @@ if (orphanFlats.length > 0) {
 
 // ── Gate 2: Folder naming convention ──────────────────
 
-const FOLDER_CONVENTION_RE = /^\d{1,3}-(?:PHASE-\d+\w?-[A-Z0-9-]+|W\d+-P\d+-[A-Z0-9-]+|BOOTSTRAP|PLAYBOOKS?)$/;
+const FOLDER_CONVENTION_RE = /^\d{1,3}-(?:PHASE-\d+\w?-[A-Z0-9-]+|W\d+-P\d+-[A-Z0-9-]+|WAVE-\d+-[A-Z0-9-]+|BOOTSTRAP|PLAYBOOKS?)$/;
 const badNames = [];
 
 for (const folder of phaseFolders) {
@@ -264,6 +265,45 @@ for (const folder of phaseFolders) {
 
 if (nestedCount === 0) {
   pass("nested-phase", "No nested numbered subdirectories in phase folders");
+}
+
+// ── Gate 7: No shadow numbered directories (unscanned) ───
+
+const ALLOWED_NON_PHASE_DIRS = new Set(["00-ARCHIVE", "00-PLAYBOOKS"]);
+const allNumberedDirs = allEntries.filter(
+  (e) =>
+    /^\d+/.test(e) &&
+    statSync(join(PROMPTS_DIR, e)).isDirectory() &&
+    !ALLOWED_NON_PHASE_DIRS.has(e)
+);
+
+const shadowDirs = allNumberedDirs.filter((d) => !phaseFolders.includes(d));
+if (shadowDirs.length > 0) {
+  for (const d of shadowDirs) {
+    fail(
+      "shadow-folder",
+      `"${d}" is a numbered directory not matching phase folder convention -- rename to NNN-PHASE-NNN-SLUG`
+    );
+  }
+} else {
+  pass("shadow-folder", `No shadow numbered directories (${allNumberedDirs.length} dirs all recognized)`);
+}
+
+// ── Gate 8: NOTES.md presence (WARN only -- many legacy gaps) ──
+
+let missingNotes = 0;
+for (const folder of phaseFolders) {
+  if (folder === "00-ARCHIVE" || folder.startsWith("00-")) continue;
+  const folderPath = join(PROMPTS_DIR, folder);
+  const files = readdirSync(folderPath);
+  if (!files.some((f) => f.includes("NOTES"))) {
+    missingNotes++;
+  }
+}
+if (missingNotes > 0) {
+  warn("notes-present", `${missingNotes} phase folders missing NOTES.md (legacy)`);
+} else {
+  pass("notes-present", "All phase folders have NOTES.md");
 }
 
 // ── Summary ──────────────────────────────────────────

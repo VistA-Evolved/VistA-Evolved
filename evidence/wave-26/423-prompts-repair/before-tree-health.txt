@@ -1,0 +1,17 @@
+﻿
+=== QA Gate: Prompts Tree Health (Phase 113B) ===
+
+  PASS  no-duplicate-flat: No flat files duplicating existing phase folders
+  PASS  orphan-flat: No orphan flat files at root
+  PASS  naming-convention: All 414 folders follow convention
+  PASS  impl-verify-pair: All 413 folders have IMPLEMENT + VERIFY
+  PASS  phase-mismatch: All file headings match their folder phase numbers
+  PASS  duplicate-phase: No duplicate phase numbers across folders
+  PASS  nested-phase: No nested numbered subdirectories in phase folders
+
+=== Summary ===
+  PASS: 7
+  WARN: 0
+  FAIL: 0
+
+Exit code: 0
