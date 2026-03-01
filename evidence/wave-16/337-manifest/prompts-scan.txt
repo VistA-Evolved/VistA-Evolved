@@ -1,0 +1,8 @@
+﻿{
+  "maxFromFolders": 337,
+  "maxFromManifests": 345,
+  "maxFromReservations": 345,
+  "maxUsed": 345,
+  "nextBasephase": 346,
+  "scannedAt": "2026-03-01T02:40:49.220Z"
+}
