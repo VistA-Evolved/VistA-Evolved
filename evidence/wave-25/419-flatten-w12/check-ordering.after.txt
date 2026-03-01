@@ -1,0 +1,10 @@
+﻿
+=== Prompts Ordering Gate (Phase 47) ===
+
+  [PASS] folder-naming: All 408 phase folders follow NN-* naming
+  [PASS] no-duplicate-prefixes: No duplicate numeric prefixes across 408 folders
+  [WARN] no-gaps: Gaps in prefix sequence at: 48, 178, 328 (non-blocking)
+  [FAIL] has-content: Empty phase folders (no .md): 234-PHASE-237-PROMPT-LINTER-MANIFEST, 419-W25-P2-FLATTEN-W12-REMOVE-COLLISION
+  [PASS] phase-numbers: All phase numbers in folder names are valid
+
+Total: 3 pass, 1 fail, 1 warn

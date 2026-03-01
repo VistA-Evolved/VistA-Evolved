@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-28T22:06:44.729Z",
-  "totalFolders": 293,
-  "totalPhases": 291,
+  "generatedAt": "2026-03-01T15:26:27.077Z",
+  "totalFolders": 410,
+  "totalPhases": 408,
   "collisions": [],
   "collisionCount": 0,
   "gaps": [
@@ -18,9 +18,24 @@
       "missingPrefixes": [
         178
       ]
+    },
+    {
+      "after": 327,
+      "before": 337,
+      "missingPrefixes": [
+        328,
+        329,
+        330,
+        331,
+        332,
+        333,
+        334,
+        335,
+        336
+      ]
     }
   ],
-  "gapCount": 2,
+  "gapCount": 11,
   "incomplete": [
     {
       "name": "234-PHASE-237-PROMPT-LINTER-MANIFEST",
@@ -31,6 +46,6 @@
   "incompleteCount": 1,
   "prefixRange": {
     "min": 1,
-    "max": 293
+    "max": 419
   }
 }

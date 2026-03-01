@@ -13,9 +13,9 @@ Write-Host "`n=== Phase 302: Orders Writeback Core ===" -ForegroundColor Cyan
 $executor = "apps/api/src/writeback/executors/orders-executor.ts"
 $barrel   = "apps/api/src/writeback/executors/index.ts"
 $tests    = "apps/api/src/writeback/__tests__/orders-contract.test.ts"
-$prompt   = "prompts/299-WAVE-12/302-ORDERS-WRITEBACK/302-01-IMPLEMENT.md"
-$verify   = "prompts/299-WAVE-12/302-ORDERS-WRITEBACK/302-99-VERIFY.md"
-$notes    = "prompts/299-WAVE-12/302-ORDERS-WRITEBACK/302-NOTES.md"
+$prompt   = "prompts/302-PHASE-302-ORDERS-WRITEBACK-CORE/302-01-IMPLEMENT.md"
+$verify   = "prompts/302-PHASE-302-ORDERS-WRITEBACK-CORE/302-99-VERIFY.md"
+$notes    = "prompts/302-PHASE-302-ORDERS-WRITEBACK-CORE/302-NOTES.md"
 $evidence = "evidence/wave-12/302-orders-writeback/evidence.md"
 
 # Gate 1: executor exists
