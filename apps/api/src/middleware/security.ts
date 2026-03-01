@@ -211,6 +211,9 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/inpatient\/beds$/, auth: "admin" },             // Phase 391: bed create (admin)
   { pattern: /^\/inpatient\/beds\/[^\/]+$/, auth: "admin" },     // Phase 391: bed update (admin)
   { pattern: /^\/inpatient\//, auth: "session" },                // Phase 391: inpatient reads
+  // ── Wave 22, Phase 392: Pharmacy Deep Workflows ──
+  { pattern: /^\/pharmacy\/orders\/[^\/]+\/override$/, auth: "admin" }, // Phase 392: clinical check override
+  { pattern: /^\/pharmacy\//, auth: "session" },                  // Phase 392: pharmacy reads + writes
   // Default: session required for anything else
 ];
 

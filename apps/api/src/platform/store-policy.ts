@@ -4380,6 +4380,40 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: inpatient_vitals (future)",
     notes: "Phase 391: Vitals with VistA writeback status tracking.",
   },
+  // ── Phase 392: Pharmacy Deep Workflows (W22-P4) ───────────
+  {
+    id: "pharmacy-orders",
+    file: "pharmacy/pharmacy-store.ts",
+    variable: "pharmOrderStore",
+    description: "In-memory pharmacy order lifecycle store",
+    classification: "clinical_data" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "pharmacy",
+    migrationTarget: "pg: pharmacy_order (future)",
+    notes: "Phase 392: Full pharmacy order lifecycle FSM.",
+  },
+  {
+    id: "pharmacy-dispense-events",
+    file: "pharmacy/pharmacy-store.ts",
+    variable: "dispenseEventStore",
+    description: "In-memory pharmacy dispensing event log",
+    classification: "clinical_data" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "pharmacy",
+    migrationTarget: "pg: pharmacy_dispense (future)",
+    notes: "Phase 392: Dispensing lifecycle (pick -> check -> deliver).",
+  },
+  {
+    id: "pharmacy-admin-records",
+    file: "pharmacy/pharmacy-store.ts",
+    variable: "adminRecordStore",
+    description: "In-memory medication administration records",
+    classification: "clinical_data" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "pharmacy",
+    migrationTarget: "pg: pharmacy_admin_record (future)",
+    notes: "Phase 392: Admin records with BCMA session linking and writeback tracking.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
