@@ -2,7 +2,10 @@
  * Plugin Marketplace routes — Phase 360 (W18-P7)
  *
  * REST endpoints for marketplace catalog, approval workflow, installs, reviews.
- * Prefix: /marketplace
+ * Prefix: /plugin-marketplace
+ *
+ * NOTE: /marketplace/ is already used by Phase 324 Integration Marketplace.
+ * W18 plugin marketplace uses /plugin-marketplace/ to avoid route collisions.
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
@@ -27,18 +30,18 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
   const TENANT = "default";
 
   // ── Health ──────────────────────────────────────────────────────────
-  server.get("/marketplace/health", async (_req: FastifyRequest, reply: FastifyReply) => {
+  server.get("/plugin-marketplace/health", async (_req: FastifyRequest, reply: FastifyReply) => {
     const stats = getMarketplaceStats();
     return reply.send({ ok: true, phase: 360, ...stats });
   });
 
   // ── Categories ─────────────────────────────────────────────────────
-  server.get("/marketplace/categories", async (_req: FastifyRequest, reply: FastifyReply) => {
+  server.get("/plugin-marketplace/categories", async (_req: FastifyRequest, reply: FastifyReply) => {
     return reply.send({ ok: true, categories: LISTING_CATEGORIES });
   });
 
   // ── Create listing ─────────────────────────────────────────────────
-  server.post("/marketplace/listings", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post("/plugin-marketplace/listings", async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     const { pluginId, name, version, description, summary, category, tags, manifestHash } = body;
 
@@ -63,7 +66,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
   });
 
   // ── Get listing ────────────────────────────────────────────────────
-  server.get("/marketplace/listings/:id", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.get("/plugin-marketplace/listings/:id", async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as any;
     const listing = getListing(id);
     if (!listing) return reply.code(404).send({ ok: false, error: "Listing not found" });
@@ -71,7 +74,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
   });
 
   // ── Update listing ─────────────────────────────────────────────────
-  server.patch("/marketplace/listings/:id", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.patch("/plugin-marketplace/listings/:id", async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as any;
     const body = (req.body as any) || {};
     try {
@@ -84,7 +87,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
   });
 
   // ── Transition listing status ──────────────────────────────────────
-  server.post("/marketplace/listings/:id/transition", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post("/plugin-marketplace/listings/:id/transition", async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as any;
     const body = (req.body as any) || {};
     const { status, notes } = body;
@@ -102,7 +105,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
   });
 
   // ── Search listings ────────────────────────────────────────────────
-  server.get("/marketplace/search", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.get("/plugin-marketplace/search", async (req: FastifyRequest, reply: FastifyReply) => {
     const query = (req.query as any) || {};
     const results = searchListings({
       status: query.status,
@@ -114,7 +117,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
   });
 
   // ── Install from marketplace ───────────────────────────────────────
-  server.post("/marketplace/listings/:id/install", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post("/plugin-marketplace/listings/:id/install", async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as any;
     try {
       const install = installFromMarketplace(TENANT, id, "admin");
@@ -125,7 +128,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
   });
 
   // ── Uninstall ──────────────────────────────────────────────────────
-  server.delete("/marketplace/installs/:installId", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.delete("/plugin-marketplace/installs/:installId", async (req: FastifyRequest, reply: FastifyReply) => {
     const { installId } = req.params as any;
     const removed = uninstallFromMarketplace(TENANT, installId, "admin");
     if (!removed) return reply.code(404).send({ ok: false, error: "Install not found" });
@@ -133,16 +136,16 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
   });
 
   // ── List tenant installs ───────────────────────────────────────────
-  server.get("/marketplace/installs", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.get("/plugin-marketplace/installs", async (req: FastifyRequest, reply: FastifyReply) => {
     const query = (req.query as any) || {};
     const list = getInstalls(TENANT, {
-      active: query.active === "true",
+      active: query.active !== undefined ? query.active === "true" : undefined,
     });
     return reply.send({ ok: true, installs: list, count: list.length });
   });
 
   // ── Add review ─────────────────────────────────────────────────────
-  server.post("/marketplace/listings/:id/reviews", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post("/plugin-marketplace/listings/:id/reviews", async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as any;
     const body = (req.body as any) || {};
     const { rating, comment } = body;
@@ -160,7 +163,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
   });
 
   // ── Get listing reviews ────────────────────────────────────────────
-  server.get("/marketplace/listings/:id/reviews", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.get("/plugin-marketplace/listings/:id/reviews", async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as any;
     const query = (req.query as any) || {};
     const revs = getListingReviews(id, query.limit ? parseInt(query.limit, 10) : 50);
@@ -168,7 +171,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
   });
 
   // ── Audit log ──────────────────────────────────────────────────────
-  server.get("/marketplace/audit", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.get("/plugin-marketplace/audit", async (req: FastifyRequest, reply: FastifyReply) => {
     const query = (req.query as any) || {};
     const entries = getMarketplaceAudit({
       listingId: query.listingId,
@@ -178,7 +181,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
   });
 
   // ── Stats ──────────────────────────────────────────────────────────
-  server.get("/marketplace/stats", async (_req: FastifyRequest, reply: FastifyReply) => {
+  server.get("/plugin-marketplace/stats", async (_req: FastifyRequest, reply: FastifyReply) => {
     const stats = getMarketplaceStats();
     return reply.send({ ok: true, ...stats });
   });

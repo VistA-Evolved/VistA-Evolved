@@ -164,17 +164,20 @@ export function listSubscriptions(tenantId: string): WebhookSubscription[] {
 }
 
 export function updateSubscription(
+  tenantId: string,
   id: string,
   updates: Partial<Pick<WebhookSubscription, "name" | "url" | "eventFilters" | "enabled" | "retryPolicy" | "metadata">>,
 ): WebhookSubscription | null {
   const sub = subscriptions.get(id);
-  if (!sub) return null;
+  if (!sub || sub.tenantId !== tenantId) return null;
   const updated = { ...sub, ...updates, updatedAt: new Date().toISOString() };
   subscriptions.set(id, updated);
   return updated;
 }
 
-export function deleteSubscription(id: string): boolean {
+export function deleteSubscription(tenantId: string, id: string): boolean {
+  const sub = subscriptions.get(id);
+  if (!sub || sub.tenantId !== tenantId) return false;
   return subscriptions.delete(id);
 }
 

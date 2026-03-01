@@ -235,8 +235,8 @@ Gate "G9d" "/plugins/ auth rule" {
 Gate "G9e" "/ui-extensions/ auth rule" {
   $security -match "ui-extensions.*session"
 }
-Gate "G9f" "/marketplace/ auth rule" {
-  $security -match "marketplace.*admin"
+Gate "G9f" "/plugin-marketplace/ auth rule" {
+  $security -match "plugin-marketplace.*admin"
 }
 
 # ── G10: PG Migrations ──────────────────────────────────────────────

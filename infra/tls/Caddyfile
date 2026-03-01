@@ -90,6 +90,81 @@ ehr.local {
 	handle /audit/* {
 		reverse_proxy host.docker.internal:3001
 	}
+	# Wave 17: facility/dept/workflow routes
+	handle /facilities/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /departments/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /locations/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /dept-rbac/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /dept-packs/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /workflow/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /patient-comms/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /dept-scheduling/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	# Wave 18: event bus / webhooks / FHIR subs / plugins / marketplace
+	handle /events/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /webhooks/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /fhir-subscriptions/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /plugins/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /ui-extensions/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /plugin-marketplace/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	# Other API routes that need proxying
+	handle /marketplace/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /messaging/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /consent/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /platform/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /onboarding/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /compliance/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /queue/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /i18n/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /scim/* {
+		reverse_proxy host.docker.internal:3001
+	}
+	handle /payerops/* {
+		reverse_proxy host.docker.internal:3001
+	}
 
 	# --- Web frontend (catch-all) ---
 	handle {

@@ -324,8 +324,8 @@ export function uninstallPlugin(
   for (const [stage, vals] of validators) {
     validators.set(stage, vals.filter((v) => v.pluginId !== pluginId));
   }
-  for (const [key, trs] of transformers) {
-    transformers.set(key, trs.filter((t) => t.pluginId !== pluginId));
+  for (const [tKey, trs] of transformers) {
+    transformers.set(tKey, trs.filter((t) => t.pluginId !== pluginId));
   }
 
   plugins.delete(key);

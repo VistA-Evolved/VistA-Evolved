@@ -9,8 +9,7 @@
  * Raw PHI never appears in event payloads.
  */
 
-import { randomUUID } from "node:crypto";
-import { createHash } from "node:crypto";
+import { randomUUID, createHash } from "node:crypto";
 
 // ─── Event Schema ────────────────────────────────────────
 
@@ -153,12 +152,13 @@ async function dispatchEvent(event: DomainEvent): Promise<void> {
     if (!matches) continue;
 
     try {
-      await Promise.race([
-        consumer.handler(event),
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("Consumer timeout (5s)")), 5000)
-        ),
-      ]);
+      await new Promise<void>((resolve, reject) => {
+        const timer = setTimeout(() => reject(new Error("Consumer timeout (5s)")), 5000);
+        consumer.handler(event).then(
+          () => { clearTimeout(timer); resolve(); },
+          (err) => { clearTimeout(timer); reject(err); },
+        );
+      });
       deliveryLog.push({
         eventId: event.eventId,
         consumerId: consumer.id,
@@ -245,12 +245,8 @@ export function unregisterConsumer(consumerId: string): boolean {
 }
 
 /** List registered consumers */
-export function listConsumers(): EventConsumer[] {
-  return Array.from(consumers.values()).map((c) => ({
-    ...c,
-    // Strip handler from serialization
-    handler: c.handler,
-  }));
+export function listConsumers(): Omit<EventConsumer, "handler">[] {
+  return Array.from(consumers.values()).map(({ handler, ...rest }) => rest);
 }
 
 // ─── Replay ──────────────────────────────────────────────

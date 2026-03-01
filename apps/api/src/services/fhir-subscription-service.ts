@@ -7,9 +7,8 @@
  * ADR: ADR-EVENT-BUS.md — events routed through canonical bus, not direct FHIR polling.
  */
 
-import { randomBytes, createHash } from "node:crypto";
+import { randomBytes } from "node:crypto";
 import {
-  publishEvent,
   registerConsumer,
   unregisterConsumer,
   type DomainEvent,

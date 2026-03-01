@@ -67,8 +67,14 @@ export async function webhookRoutes(server: FastifyInstance): Promise<void> {
 
   server.patch("/webhooks/:id", async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as { id: string };
-    const body = (req.body as any) || {};
-    const updated = updateSubscription(id, body);
+    const raw = (req.body as any) || {};
+    // Sanitize: only allow safe fields — never accept secret, tenantId, id, createdAt
+    const { name, url, eventFilters, enabled, retryPolicy, metadata } = raw;
+    const safeUpdates = Object.fromEntries(
+      Object.entries({ name, url, eventFilters, enabled, retryPolicy, metadata })
+        .filter(([, v]) => v !== undefined),
+    );
+    const updated = updateSubscription(tenantId, id, safeUpdates);
     if (!updated) {
       return reply.code(404).send({ ok: false, error: "Subscription not found" });
     }
@@ -77,7 +83,7 @@ export async function webhookRoutes(server: FastifyInstance): Promise<void> {
 
   server.delete("/webhooks/:id", async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as { id: string };
-    const deleted = deleteSubscription(id);
+    const deleted = deleteSubscription(tenantId, id);
     if (!deleted) {
       return reply.code(404).send({ ok: false, error: "Subscription not found" });
     }
