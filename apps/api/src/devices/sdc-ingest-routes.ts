@@ -127,33 +127,21 @@ export default async function sdcIngestRoutes(server: FastifyInstance): Promise<
         const obs: DeviceObservation = {
           id: generateId("obs"),
           gatewayId: `sdc-sidecar-${body.mdsHandle || "unknown"}`,
-          deviceSerial: body.serialNumber,
-          observationType: metric.category === "alert" ? "device-alert" : "sdc-metric",
+          deviceId: body.serialNumber,
+          patientId: body.patientId || undefined,
           code: metric.code,
-          codingSystem: metric.codingSystem || "MDC",
-          displayName: metric.displayName || metric.code,
+          codeSystem: metric.codingSystem || "MDC",
           value: metric.value,
           unit: metric.unit,
+          flag: metric.alertPriority || undefined,
           referenceRange: undefined,
-          abnormalFlag: metric.alertPriority || undefined,
-          status: "final",
+          sourceProtocol: "sdc",
           observedAt: metric.timestamp || body.capturedAt,
-          receivedAt: now(),
-          patientId: body.patientId || undefined,
-          metadata: {
-            protocol: "IEEE-11073-SDC",
-            mdsHandle: body.mdsHandle,
-            metricHandle: metric.handle,
-            category: metric.category,
-            determinationPeriod: metric.determinationPeriod,
-            alertCondition: metric.alertCondition,
-            alertPriority: metric.alertPriority,
-            locationContext: body.locationContext,
-            manufacturer: body.manufacturer,
-            modelName: body.modelName,
-          },
+          ingestedAt: now(),
+          normalized: false,
+          tenantId: tenant,
         };
-        storeObservation(tenant, obs);
+        storeObservation(obs);
         storedCount++;
       }
 

@@ -86,11 +86,6 @@ function now(): string {
   return new Date().toISOString();
 }
 
-function dbWarn(op: string, err: unknown): void {
-  // Placeholder for DB persistence failure logging
-  // Will wire to structured logger when DB repo is ready
-}
-
 function evictOldest<K, V>(map: Map<K, V>, max: number): void {
   while (map.size > max) {
     const firstKey = map.keys().next().value;

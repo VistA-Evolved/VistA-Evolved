@@ -95,26 +95,22 @@ export default async function astmPoct1aIngestRoutes(server: FastifyInstance): P
         const deviceObs: DeviceObservation = {
           id: generateId("obs"),
           gatewayId: gatewayId || "direct-astm",
-          deviceSerial: result.message?.senderId || "unknown",
-          observationType: "lab-result",
+          deviceId: result.message?.senderId || "unknown",
+          patientId: obs.patientId || undefined,
           code: obs.testCode,
-          codingSystem: "ASTM",
-          displayName: obs.testName || obs.testCode,
+          codeSystem: "ASTM",
           value: obs.value,
           unit: obs.units,
+          flag: obs.abnormalFlag,
           referenceRange: obs.referenceRange,
-          abnormalFlag: obs.abnormalFlag,
-          status: "final",
+          specimen: obs.specimenId,
+          sourceProtocol: "astm",
           observedAt: result.message?.timestamp || now(),
-          receivedAt: now(),
-          patientId: obs.patientId || undefined,
-          metadata: {
-            protocol: "ASTM-E1381",
-            specimenId: obs.specimenId,
-            resultStatus: obs.resultStatus,
-          },
+          ingestedAt: now(),
+          normalized: false,
+          tenantId: tenant,
         };
-        storeObservation(tenant, deviceObs);
+        storeObservation(deviceObs);
         storedCount++;
       }
     }
@@ -197,28 +193,21 @@ export default async function astmPoct1aIngestRoutes(server: FastifyInstance): P
           const deviceObs: DeviceObservation = {
             id: generateId("obs"),
             gatewayId: gatewayId || "direct-poct1a",
-            deviceSerial: obs.device.serialNumber || "unknown",
-            observationType: "poct-result",
+            deviceId: obs.device.serialNumber || "unknown",
+            patientId: obs.patient.patientId || undefined,
             code: r.analyteCode,
-            codingSystem: "POCT1A",
-            displayName: r.analyteName || r.analyteCode,
+            codeSystem: "POCT1A",
             value: r.value,
             unit: r.unit,
+            flag: r.flag,
             referenceRange: r.referenceRange,
-            abnormalFlag: r.flag,
-            status: "final",
+            sourceProtocol: "poct1a",
             observedAt: r.timestamp || obs.timestamp,
-            receivedAt: now(),
-            patientId: obs.patient.patientId || undefined,
-            metadata: {
-              protocol: "POCT1-A",
-              deviceManufacturer: obs.device.manufacturer,
-              deviceModel: obs.device.model,
-              operatorId: obs.operatorId,
-              observationId: obs.observationId,
-            },
+            ingestedAt: now(),
+            normalized: false,
+            tenantId: tenant,
           };
-          storeObservation(tenant, deviceObs);
+          storeObservation(deviceObs);
           storedCount++;
         }
       }

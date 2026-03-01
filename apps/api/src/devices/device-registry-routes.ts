@@ -119,7 +119,12 @@ export default async function deviceRegistryRoutes(
   server.patch("/devices/:id", async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const dev = updateDevice(id, body, "admin");
+    // Allowlist only safe fields to prevent injection of id/tenantId/serialNumber
+    const allowed: Record<string, unknown> = {};
+    for (const key of ["name", "manufacturer", "model", "firmwareVersion", "protocols", "gatewayId", "metadata", "status", "lastCalibration", "nextCalibration"]) {
+      if (body[key] !== undefined) allowed[key] = body[key];
+    }
+    const dev = updateDevice(id, allowed, "admin");
     if (!dev) return reply.code(404).send({ ok: false, error: "not_found" });
     return { ok: true, device: dev };
   });
