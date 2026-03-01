@@ -21,7 +21,6 @@ import type {
   X12TransactionSet,
   IsaEnvelope,
   GsEnvelope,
-  EdiResponseError,
 } from "./types.js";
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -395,20 +394,18 @@ export function generate999(
     // GS for 999 response
     lines.push(`GS${sep}FA${sep}${options.senderId}${sep}${group.envelope.senderId}${sep}${formatGSDate(now)}${sep}${formatGSTime(now)}${sep}${gsCtrl}${sep}X${sep}005010X231A1`);
 
-    let stCounter = 0;
+    // One ST per functional group (correct X12 999 structure)
+    const stCtrl = padST(String(gsCounter));
+    let segCount = 2; // ST + SE (counted below)
+
+    lines.push(`ST${sep}999${sep}${stCtrl}${sep}005010X231A1`);
+
+    // AK1: functional group header acknowledgment (once per group)
+    lines.push(`AK1${sep}${group.envelope.functionalCode}${sep}${group.envelope.controlNumber}${sep}${group.envelope.versionCode}`);
+    segCount++;
+
+    // AK2/IK5 pairs for each transaction set in this group
     for (const tx of group.transactionSets) {
-      stCounter++;
-      const stCtrl = padST(String(stCounter));
-      let segCount = 2; // ST + SE
-
-      lines.push(`ST${sep}999${sep}${stCtrl}${sep}005010X231A1`);
-      segCount++;
-
-      // AK1: acknowledge which functional group
-      lines.push(`AK1${sep}${group.envelope.functionalCode}${sep}${group.envelope.controlNumber}${sep}${group.envelope.versionCode}`);
-      segCount++;
-
-      // AK2: acknowledge each transaction set
       const override = options.overrides?.get(tx.controlNumber);
       const txAccepted = override ? override.accepted : validationResult.valid;
 
@@ -421,26 +418,27 @@ export function generate999(
         segCount++;
       }
 
-      // IK5: transaction set ack
+      // IK5: transaction set ack trailer
       const ik5Code = txAccepted ? "A" : "R";
       lines.push(`IK5${sep}${ik5Code}`);
       segCount++;
-
-      // AK9: functional group response trailer
-      const ak9Code = txAccepted ? "A" : "R";
-      const txTotal = group.transactionSets.length;
-      const accepted999 = group.transactionSets.filter((t) => {
-        const ov = options.overrides?.get(t.controlNumber);
-        return ov ? ov.accepted : validationResult.valid;
-      }).length;
-
-      lines.push(`AK9${sep}${ak9Code}${sep}${txTotal}${sep}${txTotal}${sep}${accepted999}`);
-      segCount++;
-
-      lines.push(`SE${sep}${segCount}${sep}${stCtrl}`);
     }
 
-    lines.push(`GE${sep}${stCounter}${sep}${gsCtrl}`);
+    // AK9: functional group response trailer (once per group, outside TX loop)
+    const txTotal = group.transactionSets.length;
+    const accepted999 = group.transactionSets.filter((t) => {
+      const ov = options.overrides?.get(t.controlNumber);
+      return ov ? ov.accepted : validationResult.valid;
+    }).length;
+    const ak9AllAccepted = accepted999 === txTotal;
+    const ak9Code = ak9AllAccepted ? "A" : (accepted999 === 0 ? "R" : "P");
+    lines.push(`AK9${sep}${ak9Code}${sep}${txTotal}${sep}${txTotal}${sep}${accepted999}`);
+    segCount++;
+
+    lines.push(`SE${sep}${segCount}${sep}${stCtrl}`);
+
+    // One ST per GS means GE count is always 1
+    lines.push(`GE${sep}1${sep}${gsCtrl}`);
   }
 
   lines.push(`IEA${sep}${gsCounter}${sep}${padControlNumber(ctrlNum)}`);
@@ -664,7 +662,8 @@ export async function processInboundX12(
     }
   }
 
-  // Validate envelope
+  // Validate envelope (after recording — failed validation still burns the control number
+  // to prevent replay, but we record AFTER duplicate check above which is the important guard)
   const validationResult = validateEnvelope(interchange);
 
   // Route transactions
@@ -694,9 +693,10 @@ export function findFirstSegment(tx: X12TransactionSetParsed, segId: string): X1
 }
 
 /** Map transaction set identifier to X12TransactionSet type */
-export function mapTransactionSetType(stCode: string): X12TransactionSet | undefined {
+export function mapTransactionSetType(stCode: string, gsVersionCode?: string): X12TransactionSet | undefined {
   const MAP: Record<string, X12TransactionSet> = {
-    "837": "837P", // Ambiguous — caller should check GS08 for P vs I
+    "837P": "837P",
+    "837I": "837I",
     "835": "835",
     "270": "270",
     "271": "271",
@@ -708,6 +708,12 @@ export function mapTransactionSetType(stCode: string): X12TransactionSet | undef
     "997": "997",
     "TA1": "TA1",
   };
+  // Bare "837" — disambiguate via GS08 version code (HP=professional, HI=institutional)
+  if (stCode === "837") {
+    if (gsVersionCode?.includes("HP") || gsVersionCode?.includes("837P")) return "837P";
+    if (gsVersionCode?.includes("HI") || gsVersionCode?.includes("837I")) return "837I";
+    return "837P"; // default to professional when ambiguous
+  }
   return MAP[stCode];
 }
 

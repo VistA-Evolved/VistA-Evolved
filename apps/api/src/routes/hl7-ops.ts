@@ -24,6 +24,7 @@ import {
   getThroughput,
   createSlaConfig,
   listSlaConfigs,
+  getSlaConfig,
   deleteSlaConfig,
   evaluateSlas,
   listSlaViolations,
@@ -32,6 +33,9 @@ import {
   listRetryQueue,
   getRetryQueueStats,
   getRetryDueEntries,
+  getRetryState,
+  recordRetryResult,
+  getOpsStoreStats,
   DEFAULT_RETRY_POLICY,
 } from "../hl7/hl7-ops-monitor.js";
 
@@ -88,9 +92,19 @@ export async function hl7OpsRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, count: configs.length, slaConfigs: configs };
   });
 
+  app.get("/hl7/ops/sla/:id", async (request, reply) => {
+    const { id } = request.params as { id: string };
+    const config = getSlaConfig(id);
+    if (!config) {
+      reply.code(404);
+      return { ok: false, error: "sla_config_not_found" };
+    }
+    return { ok: true, sla: config };
+  });
+
   app.delete("/hl7/ops/sla/:id", async (request, reply) => {
     const { id } = request.params as { id: string };
-    const deleted = deleteSlaConfig(id);
+    const deleted = deleteSlaConfig(id, getTenantId(request));
     if (!deleted) {
       reply.code(404);
       return { ok: false, error: "sla_config_not_found" };
@@ -125,7 +139,7 @@ export async function hl7OpsRoutes(app: FastifyInstance): Promise<void> {
 
   app.post("/hl7/ops/sla/violations/:id/ack", async (request, reply) => {
     const { id } = request.params as { id: string };
-    const success = acknowledgeSlaViolation(id);
+    const success = acknowledgeSlaViolation(id, getTenantId(request));
     if (!success) {
       reply.code(404);
       return { ok: false, error: "violation_not_found" };
@@ -157,5 +171,30 @@ export async function hl7OpsRoutes(app: FastifyInstance): Promise<void> {
   app.get("/hl7/ops/retry/due", async () => {
     const due = getRetryDueEntries();
     return { ok: true, count: due.length, dueEntries: due };
+  });
+
+  // ─── Retry State per DLQ entry ──────────────────────────────────
+
+  app.get("/hl7/ops/retry/:dlqId", async (request, reply) => {
+    const { dlqId } = request.params as { dlqId: string };
+    const entry = getRetryState(dlqId);
+    if (!entry) {
+      reply.code(404);
+      return { ok: false, error: "retry_entry_not_found" };
+    }
+    return { ok: true, retryEntry: entry };
+  });
+
+  app.post("/hl7/ops/retry/:dlqId/result", async (request) => {
+    const { dlqId } = request.params as { dlqId: string };
+    const body = (request.body as any) || {};
+    recordRetryResult(dlqId, !!body.success, body.error);
+    return { ok: true };
+  });
+
+  // ─── Store Stats ────────────────────────────────────────────────
+
+  app.get("/hl7/ops/store-stats", async () => {
+    return { ok: true, ...getOpsStoreStats() };
   });
 }

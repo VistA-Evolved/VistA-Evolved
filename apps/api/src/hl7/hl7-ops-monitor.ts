@@ -81,10 +81,11 @@ export function calculatePercentiles(latencies: number[]): {
   }
   const sorted = [...latencies].sort((a, b) => a - b);
   const n = sorted.length;
+  const pIdx = (p: number) => Math.min(Math.ceil(n * p), n) - 1;
   return {
-    p50: sorted[Math.floor(n * 0.5)] || 0,
-    p95: sorted[Math.floor(n * 0.95)] || 0,
-    p99: sorted[Math.floor(n * 0.99)] || 0,
+    p50: sorted[pIdx(0.5)] || 0,
+    p95: sorted[pIdx(0.95)] || 0,
+    p99: sorted[pIdx(0.99)] || 0,
     min: sorted[0] || 0,
     max: sorted[n - 1] || 0,
     avg: Math.round(sorted.reduce((s, v) => s + v, 0) / n),
@@ -231,8 +232,12 @@ export function getSlaConfig(id: string): Hl7SlaConfig | undefined {
   return slaConfigs.get(id);
 }
 
-/** Delete SLA config */
-export function deleteSlaConfig(id: string): boolean {
+/** Delete SLA config (tenant-scoped) */
+export function deleteSlaConfig(id: string, tenantId?: string): boolean {
+  if (tenantId) {
+    const config = slaConfigs.get(id);
+    if (!config || config.tenantId !== tenantId) return false;
+  }
   return slaConfigs.delete(id);
 }
 
@@ -308,10 +313,14 @@ export function listSlaViolations(filters?: {
   return result.slice(0, filters?.limit || 100);
 }
 
-/** Acknowledge a violation */
-export function acknowledgeSlaViolation(id: string): boolean {
+/** Acknowledge a violation (tenant-scoped via SLA config lookup) */
+export function acknowledgeSlaViolation(id: string, tenantId?: string): boolean {
   const v = slaViolations.find((v) => v.id === id);
   if (!v) return false;
+  if (tenantId) {
+    const config = slaConfigs.get(v.slaId);
+    if (!config || config.tenantId !== tenantId) return false;
+  }
   v.acknowledged = true;
   return true;
 }

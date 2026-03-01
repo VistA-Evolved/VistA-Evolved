@@ -234,6 +234,12 @@ export function addReview(listingId: string, tenantId: string, rating: number, c
   if (!listing) return null;
   if (rating < 1 || rating > 5) return null;
 
+  // Prevent duplicate reviews from the same tenant for the same listing
+  const existing = [...reviewStore.values()].find(
+    (r) => r.listingId === listingId && r.tenantId === tenantId,
+  );
+  if (existing) return null;
+
   const id = crypto.randomUUID();
   const review: ListingReview = {
     id,

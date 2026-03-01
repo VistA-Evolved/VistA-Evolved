@@ -220,7 +220,7 @@ export function completeCertificationRun(runId: string): CertificationRun | unde
       const tc = suite.testCases.find((t) => t.id === r.testCaseId);
       return tc?.blocking;
     })
-    .every((r) => r.result === "pass" || r.result === "skip");
+    .every((r) => r.result === "pass");
 
   run.passed = overallPasses && categoryPasses && blockingPasses;
   run.status = "completed";

@@ -149,7 +149,7 @@ class EnvVarVaultProvider implements CredentialVaultProvider {
   }
 
   async setCredential(_cred: VaultCredential): Promise<void> {
-    // Env vars are read-only in this provider
+    throw new Error("env-var vault is read-only; switch to in-memory or external vault provider");
   }
 
   async deleteCredential(_key: string): Promise<boolean> {
@@ -379,7 +379,9 @@ class HttpsRestTransport implements TransportProvider {
       } else if (cred && this.config.authMethod === "bearer") {
         headers["Authorization"] = `Bearer ${cred.value}`;
       } else if (cred && this.config.authMethod === "basic") {
-        const [user, pass] = cred.value.split(":");
+        const colonIdx = cred.value.indexOf(":");
+        const user = colonIdx >= 0 ? cred.value.slice(0, colonIdx) : cred.value;
+        const pass = colonIdx >= 0 ? cred.value.slice(colonIdx + 1) : "";
         headers["Authorization"] = `Basic ${Buffer.from(`${user}:${pass}`).toString("base64")}`;
       }
 
@@ -396,7 +398,6 @@ class HttpsRestTransport implements TransportProvider {
           body: payload,
           signal: controller.signal,
         });
-        clearTimeout(timeout);
 
         const responsePayload = await resp.text();
         return {

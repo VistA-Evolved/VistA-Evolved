@@ -28,7 +28,6 @@ import {
   reinstateCertificate,
   getCertificationStats,
   seedBuiltInSuites,
-  type SuiteCategory,
   type TestResult,
 } from "../services/certification-pipeline.js";
 

@@ -138,12 +138,17 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
     }
 
     const vault = getActiveVault();
-    await vault.setCredential({
-      key: body.key,
-      value: body.value,
-      type: body.type,
-      metadata: body.metadata,
-    });
+    try {
+      await vault.setCredential({
+        key: body.key,
+        value: body.value,
+        type: body.type,
+        metadata: body.metadata,
+      });
+    } catch (err: any) {
+      reply.code(422);
+      return { ok: false, error: err.message || "vault_write_failed" };
+    }
 
     reply.code(201);
     return { ok: true, stored: true, key: body.key };

@@ -133,7 +133,7 @@ export default async function marketplaceRoutes(server: FastifyInstance): Promis
       return reply.code(400).send({ ok: false, error: "tenantId and rating required" });
     }
     const review = addReview(id, tenantId, Number(rating), comment);
-    if (!review) return reply.code(400).send({ ok: false, error: "invalid_listing_or_rating" });
+    if (!review) return reply.code(400).send({ ok: false, error: "invalid_listing_or_rating_or_duplicate_review" });
     return reply.code(201).send({ ok: true, review });
   });
 
