@@ -12,6 +12,7 @@ export { default as sdcIngestRoutes } from "./sdc-ingest-routes.js";
 export { default as alarmRoutes } from "./alarm-routes.js";
 export { default as infusionBcmaRoutes } from "./infusion-bcma-routes.js";
 export { default as imagingModalityRoutes } from "./imaging-modality-routes.js";
+export { default as normalizationRoutes } from "./normalization-routes.js";
 export { startGatewayCleanup, stopGatewayCleanup } from "./gateway-store.js";
 export type {
   EdgeGateway,
