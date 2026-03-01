@@ -3521,6 +3521,40 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: event_bus_delivery_log (v44)",
     notes: "Phase 355: Max 10K entries; success/failure tracking.",
   },
+  // ── Phase 356: Webhooks ──
+  {
+    id: "webhook-subscriptions",
+    file: "services/webhook-service.ts",
+    variable: "subscriptions",
+    description: "In-memory webhook subscription registry",
+    classification: "critical" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "webhooks",
+    migrationTarget: "pg: webhook_subscription (v45)",
+    notes: "Phase 356: HMAC-signed webhook subscriptions.",
+  },
+  {
+    id: "webhook-deliveries",
+    file: "services/webhook-service.ts",
+    variable: "deliveries",
+    description: "In-memory webhook delivery log",
+    classification: "audit" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "webhooks",
+    migrationTarget: "pg: webhook_delivery_log (v45)",
+    notes: "Phase 356: Max 10K entries; delivery tracking.",
+  },
+  {
+    id: "webhook-dlq",
+    file: "services/webhook-service.ts",
+    variable: "webhookDlq",
+    description: "In-memory webhook dead letter queue",
+    classification: "audit" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "webhooks",
+    migrationTarget: "pg: webhook_delivery_log (v45, status=dlq)",
+    notes: "Phase 356: Max 5K entries; failed deliveries.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

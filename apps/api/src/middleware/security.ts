@@ -106,6 +106,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/dept-scheduling\//, auth: "session" }, // Phase 352: dept scheduling (admin checks in handler)
   // Wave 18: Extensibility + Event Bus + Webhooks + Plugins (Phases 354-361)
   { pattern: /^\/events\//, auth: "admin" }, // Phase 355: event bus management (admin only)
+  { pattern: /^\/webhooks\//, auth: "admin" }, // Phase 356: webhook management (admin only)
   { pattern: /^\/imaging\/ingest\/callback$/, auth: "service" }, // Phase 23: Orthanc webhook (X-Service-Key)
   { pattern: /^\/imaging\/health$/, auth: "session" }, // Phase 24: imaging health check
   { pattern: /^\/imaging\/devices/, auth: "session" }, // Phase 24: device registry (imaging_admin checked in handler)

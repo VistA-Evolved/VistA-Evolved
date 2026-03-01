@@ -3438,6 +3438,47 @@ CREATE INDEX IF NOT EXISTS idx_ebdl_tenant ON event_bus_delivery_log(tenant_id);
 CREATE INDEX IF NOT EXISTS idx_ebdl_event ON event_bus_delivery_log(tenant_id, event_id);
 `,
   },
+  // -- Phase 356: Webhooks --
+  {
+    version: 45,
+    name: "phase356_webhooks",
+    sql: `
+CREATE TABLE IF NOT EXISTS webhook_subscription (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  name TEXT NOT NULL,
+  url TEXT NOT NULL,
+  secret_hash TEXT NOT NULL,
+  event_filters JSONB NOT NULL DEFAULT '[]'::jsonb,
+  enabled BOOLEAN NOT NULL DEFAULT true,
+  retry_policy JSONB NOT NULL DEFAULT '{}'::jsonb,
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_ws_tenant ON webhook_subscription(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_ws_enabled ON webhook_subscription(tenant_id, enabled);
+
+CREATE TABLE IF NOT EXISTS webhook_delivery_log (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  subscription_id UUID NOT NULL,
+  event_id UUID NOT NULL,
+  url TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending',
+  http_status INTEGER,
+  attempt INTEGER NOT NULL DEFAULT 1,
+  max_attempts INTEGER NOT NULL DEFAULT 4,
+  signature TEXT NOT NULL,
+  delivered_at TIMESTAMPTZ,
+  error TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_wdl_tenant ON webhook_delivery_log(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_wdl_sub ON webhook_delivery_log(tenant_id, subscription_id);
+CREATE INDEX IF NOT EXISTS idx_wdl_status ON webhook_delivery_log(tenant_id, status);
+`,
+  },
 ];
 
 /**
@@ -3642,6 +3683,9 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   "event_bus_outbox",
   "event_bus_dlq",
   "event_bus_delivery_log",
+  // Phase 356: Webhooks
+  "webhook_subscription",
+  "webhook_delivery_log",
 ] as const;
 
 /**
