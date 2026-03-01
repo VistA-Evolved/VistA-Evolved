@@ -189,6 +189,7 @@ import hardeningRoutes from "../routes/hardening-routes.js";
 import { auditShippingRoutes } from "../routes/audit-shipping-routes.js";
 import i18nRoutes from "../routes/i18n-routes.js";
 import { templateRoutes } from "../templates/index.js";
+import { contentPackRoutes } from "../content-packs/index.js";
 import { queueRoutes } from "../queue/index.js";
 import { workflowRoutes } from "../workflows/index.js";
 import alignmentRoutes from "../routes/alignment-routes.js";
@@ -502,6 +503,7 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Templates + Queue + Workflows (Phase 158-160)
   server.register(templateRoutes);
+  server.register(contentPackRoutes); // Phase 390: Content Pack Framework v2
   server.register(queueRoutes);
   server.register(workflowRoutes);
 

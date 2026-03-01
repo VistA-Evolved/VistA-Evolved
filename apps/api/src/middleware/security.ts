@@ -203,6 +203,10 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/devices\/sdc\/ingest$/, auth: "service" },    // Phase 383: SDC ingest (sidecar)
   { pattern: /^\/devices\/infusion\/pump-events$/, auth: "service" }, // Phase 385: pump event ingest
   { pattern: /^\/devices\//, auth: "admin" },                  // Phase 380: device registry
+  // Wave 22: Specialty Clinical Content + CDS + Deep VistA Writeback (Phases 389-398)
+  { pattern: /^\/content-packs\/install$/, auth: "admin" },      // Phase 390: pack install
+  { pattern: /^\/content-packs\/rollback$/, auth: "admin" },     // Phase 390: pack rollback
+  { pattern: /^\/content-packs\//, auth: "session" },            // Phase 390: pack reads
   // Default: session required for anything else
 ];
 
