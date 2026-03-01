@@ -383,3 +383,112 @@ export function getDomainCapabilities(domain: string): {
     rpcs: checks,
   };
 }
+
+/* ------------------------------------------------------------------ */
+/* Phase 424: Drift detection — compare live vs baseline               */
+/* ------------------------------------------------------------------ */
+
+export interface DriftReport {
+  /** Timestamp of comparison */
+  comparedAt: string;
+  /** Instance being compared */
+  instanceId: string;
+  /** RPCs that were in baseline but are now missing */
+  regressions: string[];
+  /** RPCs that are now available but were not in baseline */
+  newlyAvailable: string[];
+  /** RPCs that match baseline */
+  unchanged: string[];
+  /** Whether any regressions were found */
+  hasDrift: boolean;
+  /** Summary message */
+  summary: string;
+}
+
+/**
+ * Compare current discovered capabilities against a baseline snapshot.
+ * Baseline format: { availableList: string[], missingList: string[] }
+ *
+ * Use this to detect when a VistA instance loses RPCs after an update,
+ * or gains new ones after routine installation.
+ */
+export function compareToBaseline(baseline: {
+  availableList: string[];
+  missingList: string[];
+  instanceId?: string;
+}): DriftReport | null {
+  if (!cachedCapabilities) return null;
+
+  const baselineSet = new Set(baseline.availableList);
+  const currentSet = new Set(cachedCapabilities.availableList);
+
+  const regressions: string[] = [];
+  const newlyAvailable: string[] = [];
+  const unchanged: string[] = [];
+
+  // Check each baseline-available RPC against current
+  for (const rpc of baseline.availableList) {
+    if (currentSet.has(rpc)) {
+      unchanged.push(rpc);
+    } else {
+      regressions.push(rpc);
+    }
+  }
+
+  // Check for newly available RPCs
+  for (const rpc of cachedCapabilities.availableList) {
+    if (!baselineSet.has(rpc)) {
+      newlyAvailable.push(rpc);
+    }
+  }
+
+  const hasDrift = regressions.length > 0;
+  const parts: string[] = [];
+  if (regressions.length > 0) parts.push(`${regressions.length} regression(s)`);
+  if (newlyAvailable.length > 0) parts.push(`${newlyAvailable.length} newly available`);
+  if (parts.length === 0) parts.push("no drift detected");
+
+  return {
+    comparedAt: new Date().toISOString(),
+    instanceId: baseline.instanceId ?? cachedCapabilities.instanceId,
+    regressions,
+    newlyAvailable,
+    unchanged,
+    hasDrift,
+    summary: parts.join(", "),
+  };
+}
+
+/**
+ * Get all unique domains from the KNOWN_RPCS list.
+ */
+export function getAllDomains(): string[] {
+  return [...new Set(KNOWN_RPCS.map((r) => r.domain))];
+}
+
+/**
+ * Build a full runtime matrix combining capabilities, adapter status,
+ * and domain requirements. Used by the /vista/runtime-matrix endpoint.
+ */
+export function buildRuntimeMatrix(): {
+  instanceId: string;
+  discoveredAt: string | null;
+  domains: Record<string, ReturnType<typeof getDomainCapabilities>>;
+  totalAvailable: number;
+  totalMissing: number;
+  totalKnown: number;
+} {
+  const domains: Record<string, ReturnType<typeof getDomainCapabilities>> = {};
+  for (const domain of getAllDomains()) {
+    domains[domain] = getDomainCapabilities(domain);
+  }
+
+  return {
+    instanceId: cachedCapabilities?.instanceId ?? "unknown",
+    discoveredAt: cachedCapabilities?.discoveredAt ?? null,
+    domains,
+    totalAvailable: cachedCapabilities?.availableList.length ?? 0,
+    totalMissing: cachedCapabilities?.missingList.length ?? 0,
+    totalKnown: [...new Set(KNOWN_RPCS.map((r) => r.rpc))].length,
+  };
+}

@@ -1,0 +1,223 @@
+{
+  "contractVersion": "2.0.0",
+  "generatedAt": "GENERATED_AT_RUNTIME",
+  "description": "VistA Runtime Strategy Matrix — correlates VistA environments, RPC availability, adapter status, and runtime mode requirements",
+  "environments": {
+    "worldvista-docker": {
+      "label": "WorldVistA Docker Sandbox",
+      "image": "worldvista/worldvista-ehr:latest",
+      "port": 9430,
+      "dbEngine": "YottaDB/GT.M",
+      "purpose": "development",
+      "knownLimitations": [
+        "No IB/PRCA billing data (charges, claims, AR transactions empty)",
+        "SDES scheduling slots require ZVESDSEED.m seeding",
+        "Custom ZVE* RPCs require install-vista-routines.ps1 provisioning",
+        "No Rad/Nuc Med data for imaging integration",
+        "ORQQPL EDIT SAVE genuinely absent"
+      ],
+      "credentials": {
+        "source": "docker-hub-defaults",
+        "accounts": ["PROV123", "PHARM123", "NURSE123"]
+      }
+    },
+    "vista-distro": {
+      "label": "VistA-Evolved Distro Lane",
+      "image": "vista-evolved-distro (local build)",
+      "port": 9431,
+      "dbEngine": "YottaDB",
+      "purpose": "staging/pre-production",
+      "knownLimitations": [
+        "Custom build — RPC availability depends on VistA-M ref pinned in build.env",
+        "No default credentials baked in (injected at runtime)",
+        "Read-only root filesystem"
+      ],
+      "credentials": {
+        "source": "env-vars",
+        "accounts": ["VISTA_DISTRO_ACCESS / VISTA_DISTRO_VERIFY"]
+      }
+    },
+    "production-vista": {
+      "label": "Production VistA Instance",
+      "image": "site-specific",
+      "port": 9430,
+      "dbEngine": "Caché/IRIS or YottaDB",
+      "purpose": "production",
+      "knownLimitations": [
+        "Site-specific configuration — must probe at deployment time",
+        "May have restricted RPC contexts",
+        "SSH access typically disabled"
+      ],
+      "credentials": {
+        "source": "secrets-manager",
+        "accounts": ["site-configured"]
+      }
+    }
+  },
+  "runtimeModes": {
+    "dev": {
+      "vistaRequired": false,
+      "pgRequired": false,
+      "oidcRequired": false,
+      "stubAdaptersAllowed": true,
+      "description": "Local development — VistA optional, stubs OK"
+    },
+    "test": {
+      "vistaRequired": false,
+      "pgRequired": false,
+      "oidcRequired": false,
+      "stubAdaptersAllowed": true,
+      "description": "Automated testing — may use stubs"
+    },
+    "rc": {
+      "vistaRequired": true,
+      "pgRequired": true,
+      "oidcRequired": true,
+      "stubAdaptersAllowed": false,
+      "description": "Release candidate — full stack required"
+    },
+    "prod": {
+      "vistaRequired": true,
+      "pgRequired": true,
+      "oidcRequired": true,
+      "stubAdaptersAllowed": false,
+      "description": "Production — all systems must be live"
+    }
+  },
+  "domainRequirements": {
+    "patient": {
+      "requiredInProd": true,
+      "minimumRpcs": ["ORWPT LIST ALL", "ORWPT SELECT"],
+      "writeRpcs": [],
+      "degradesGracefully": false
+    },
+    "allergies": {
+      "requiredInProd": true,
+      "minimumRpcs": ["ORQQAL LIST"],
+      "writeRpcs": ["ORWDAL32 SAVE ALLERGY"],
+      "degradesGracefully": true
+    },
+    "vitals": {
+      "requiredInProd": true,
+      "minimumRpcs": ["ORQQVI VITALS"],
+      "writeRpcs": ["GMV ADD VM"],
+      "degradesGracefully": true
+    },
+    "notes": {
+      "requiredInProd": true,
+      "minimumRpcs": ["TIU DOCUMENTS BY CONTEXT", "TIU GET RECORD TEXT"],
+      "writeRpcs": ["TIU CREATE RECORD", "TIU SET RECORD TEXT"],
+      "degradesGracefully": true
+    },
+    "medications": {
+      "requiredInProd": true,
+      "minimumRpcs": ["ORWPS ACTIVE"],
+      "writeRpcs": ["ORWDXM AUTOACK"],
+      "degradesGracefully": true
+    },
+    "problems": {
+      "requiredInProd": true,
+      "minimumRpcs": ["ORQQPL PROBLEM LIST"],
+      "writeRpcs": ["ORQQPL ADD SAVE", "ORQQPL EDIT SAVE"],
+      "degradesGracefully": true
+    },
+    "orders": {
+      "requiredInProd": true,
+      "minimumRpcs": [],
+      "writeRpcs": ["ORWDX SAVE", "ORWDXA DC", "ORWDXA VERIFY"],
+      "degradesGracefully": true
+    },
+    "consults": {
+      "requiredInProd": false,
+      "minimumRpcs": ["ORQQCN LIST"],
+      "writeRpcs": [],
+      "degradesGracefully": true
+    },
+    "surgery": {
+      "requiredInProd": false,
+      "minimumRpcs": ["ORWSR LIST"],
+      "writeRpcs": [],
+      "degradesGracefully": true
+    },
+    "labs": {
+      "requiredInProd": true,
+      "minimumRpcs": ["ORWLRR INTERIM"],
+      "writeRpcs": ["ORWLRR ACK"],
+      "degradesGracefully": true
+    },
+    "reports": {
+      "requiredInProd": false,
+      "minimumRpcs": ["ORWRP REPORT LISTS"],
+      "writeRpcs": [],
+      "degradesGracefully": true
+    },
+    "billing": {
+      "requiredInProd": false,
+      "minimumRpcs": ["ORWPCE VISIT"],
+      "writeRpcs": [],
+      "degradesGracefully": true
+    },
+    "interop": {
+      "requiredInProd": false,
+      "minimumRpcs": [],
+      "writeRpcs": [],
+      "degradesGracefully": true
+    },
+    "messaging": {
+      "requiredInProd": false,
+      "minimumRpcs": [],
+      "writeRpcs": [],
+      "degradesGracefully": true
+    },
+    "imaging": {
+      "requiredInProd": false,
+      "minimumRpcs": [],
+      "writeRpcs": [],
+      "degradesGracefully": true
+    },
+    "adt": {
+      "requiredInProd": false,
+      "minimumRpcs": [],
+      "writeRpcs": [],
+      "degradesGracefully": true
+    },
+    "scheduling": {
+      "requiredInProd": false,
+      "minimumRpcs": [],
+      "writeRpcs": [],
+      "degradesGracefully": true
+    }
+  },
+  "adapterMatrix": {
+    "clinical-engine": {
+      "vistaAdapter": "apps/api/src/adapters/clinical-engine/vista-adapter.ts",
+      "stubAdapter": "apps/api/src/adapters/clinical-engine/stub-adapter.ts",
+      "envVar": "ADAPTER_CLINICAL_ENGINE",
+      "requiredDomains": ["patient", "allergies", "vitals", "notes", "medications", "problems", "orders", "labs"]
+    },
+    "scheduling": {
+      "vistaAdapter": "apps/api/src/adapters/scheduling/vista-adapter.ts",
+      "stubAdapter": "apps/api/src/adapters/scheduling/stub-adapter.ts",
+      "envVar": "ADAPTER_SCHEDULING",
+      "requiredDomains": ["scheduling"]
+    },
+    "billing": {
+      "vistaAdapter": "apps/api/src/adapters/billing/vista-adapter.ts",
+      "stubAdapter": "apps/api/src/adapters/billing/stub-adapter.ts",
+      "envVar": "ADAPTER_BILLING",
+      "requiredDomains": ["billing"]
+    },
+    "imaging": {
+      "vistaAdapter": "apps/api/src/adapters/imaging/vista-adapter.ts",
+      "stubAdapter": "apps/api/src/adapters/imaging/stub-adapter.ts",
+      "envVar": "ADAPTER_IMAGING",
+      "requiredDomains": ["imaging"]
+    },
+    "messaging": {
+      "vistaAdapter": "apps/api/src/adapters/messaging/vista-adapter.ts",
+      "stubAdapter": "apps/api/src/adapters/messaging/stub-adapter.ts",
+      "envVar": "ADAPTER_MESSAGING",
+      "requiredDomains": ["messaging", "interop"]
+    }
+  }
+}
