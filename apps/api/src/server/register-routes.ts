@@ -242,6 +242,7 @@ import { terminologyRoutes } from "../routes/terminology-routes.js";
 import { initTerminologyResolvers } from "../services/terminology-registry.js";
 import { countryPackRoutes } from "../routes/country-pack-routes.js";
 import { complianceRoutes } from "../routes/compliance-routes.js";
+import regulatoryRoutes from "../routes/regulatory-routes.js";
 
 // Wave 14: Enterprise Interop (Phase 318)
 import { integrationControlPlaneRoutes } from "../routes/integration-control-plane-routes.js";
@@ -612,6 +613,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(terminologyRoutes);
   server.register(countryPackRoutes);
   server.register(complianceRoutes);
+
+  // Wave 28: Regulatory Reporting (Phase 444)
+  server.register(regulatoryRoutes);
 
   // Wave 14: Enterprise Interop (Phase 318)
   server.register(integrationControlPlaneRoutes);

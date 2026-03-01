@@ -162,6 +162,8 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/terminology\//, auth: "session" },    // Phase 313: terminology resolution
   { pattern: /^\/country-packs\//, auth: "session" },  // Phase 314: country pack config
   { pattern: /^\/compliance\//, auth: "admin" },       // Phase 315: compliance matrix
+  // Wave 28: Regulatory Reporting (Phase 444)
+  { pattern: /^\/regulatory\//, auth: "admin" },       // Phase 444: regulatory classification, attestation, export
   // Wave 14: Enterprise Interop (Phases 317-325)
   { pattern: /^\/api\/platform\/integrations\//, auth: "admin" }, // Phase 318: integration control plane
   { pattern: /^\/hl7\/templates\//, auth: "session" }, // Phase 319: HL7v2 message template library
