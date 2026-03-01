@@ -1,5 +1,5 @@
 /**
- * External Stub Clinical Engine Adapter — Phase 37C, extended Phase 431.
+ * External Stub Clinical Engine Adapter — Phase 37C, extended Phase 432.
  *
  * Safe placeholder that returns "pending" for every method.
  * Used when the clinical-engine module is enabled but no real adapter is configured.
@@ -10,6 +10,7 @@ import type {
   AdapterResult, PatientRecord, AllergyRecord, VitalRecord, NoteRecord,
   MedicationRecord, ProblemRecord, LabResult, EncounterRecord,
   WardRecord, MovementRecord, WriteResult,
+  InpatientMedOrder, MAREntry, BarcodeScanResult, PharmacyVerifyResult,
 } from "../types.js";
 
 const STUB_RESULT = Object.freeze({ ok: false as const, pending: true, error: "Clinical engine adapter not configured" });
@@ -48,4 +49,12 @@ export class StubClinicalAdapter implements ClinicalEngineAdapter {
   async admitPatient(): Promise<AdapterResult<WriteResult>> { return STUB_RESULT; }
   async transferPatient(): Promise<AdapterResult<WriteResult>> { return STUB_RESULT; }
   async dischargePatient(): Promise<AdapterResult<WriteResult>> { return STUB_RESULT; }
+
+  /* Pharmacy / MAR / BCMA methods (Phase 432) */
+  async getInpatientMeds(): Promise<AdapterResult<InpatientMedOrder[]>> { return STUB_RESULT; }
+  async getMAR(): Promise<AdapterResult<MAREntry[]>> { return STUB_RESULT; }
+  async recordAdministration(): Promise<AdapterResult<WriteResult>> { return STUB_RESULT; }
+  async scanBarcode(): Promise<AdapterResult<BarcodeScanResult>> { return STUB_RESULT; }
+  async getAdminHistory(): Promise<AdapterResult<MAREntry[]>> { return STUB_RESULT; }
+  async verifyOrder(): Promise<AdapterResult<PharmacyVerifyResult>> { return STUB_RESULT; }
 }

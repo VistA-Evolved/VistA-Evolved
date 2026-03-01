@@ -294,6 +294,10 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
   { name: "DGPM NEW ADMISSION", reason: "ADT admission write — DGPM package RPCs not exposed in OR CPRS GUI CHART context in WorldVistA Docker (Phase 431)" },
   { name: "DGPM NEW TRANSFER", reason: "ADT transfer write — DGPM package RPCs not exposed in OR CPRS GUI CHART context in WorldVistA Docker (Phase 431)" },
   { name: "DGPM NEW DISCHARGE", reason: "ADT discharge write — DGPM package RPCs not exposed in OR CPRS GUI CHART context in WorldVistA Docker (Phase 431)" },
+  // Phase 432: PSJ pharmacy verification RPCs — target RPCs for inpatient pharmacy verification (not in WorldVistA sandbox)
+  { name: "PSJ VERIFY", reason: "Inpatient pharmacy order verification — requires PSJ package not available in WorldVistA Docker (Phase 432)" },
+  { name: "PSJ ORDER STATUS", reason: "Inpatient pharmacy order status lookup — requires PSJ package (Phase 432)" },
+  { name: "PSB VALIDATE ORDER", reason: "BCMA order validation at scan time — requires PSB package (Phase 432)" },
 ];
 
 /* ------------------------------------------------------------------ */

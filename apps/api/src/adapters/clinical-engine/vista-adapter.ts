@@ -1,5 +1,5 @@
 /**
- * VistA Clinical Engine Adapter — Phase 37C, extended Phase 431.
+ * VistA Clinical Engine Adapter — Phase 37C, extended Phase 432.
  *
  * Default implementation that calls VistA RPCs via the RPC Broker client.
  * This is the production adapter for VA and WorldVistA environments.
@@ -23,6 +23,12 @@ import type {
   TransferRequest,
   DischargeRequest,
   WriteResult,
+  InpatientMedOrder,
+  MAREntry,
+  MedAdminRequest,
+  BarcodeScanResult,
+  PharmacyVerifyRequest,
+  PharmacyVerifyResult,
 } from "../types.js";
 
 export class VistaClinicalAdapter implements ClinicalEngineAdapter {
@@ -364,6 +370,115 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
         rpc: "DGPM NEW DISCHARGE", vistaPackage: "DG",
         vistaFiles: ["405"], sandboxNote: "Not available in WorldVistA Docker",
         migrationPath: "Wire via ZVEADT.m custom wrapper or DG ADT context",
+      },
+    };
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Pharmacy / MAR / BCMA methods (Phase 432)                         */
+  /* ---------------------------------------------------------------- */
+
+  async getInpatientMeds(dfn: string): Promise<AdapterResult<InpatientMedOrder[]>> {
+    // ORWPS ACTIVE returns all active meds — filter for inpatient types (UD, IV)
+    try {
+      const { safeCallRpc } = await import("../../lib/rpc-resilience.js");
+      const rawLines = await safeCallRpc("ORWPS ACTIVE", [dfn]);
+      const meds: InpatientMedOrder[] = [];
+      for (const line of rawLines) {
+        if (line.startsWith("~")) {
+          const typeEnd = line.indexOf("^");
+          const medType = line.substring(1, typeEnd);
+          // UD = Unit Dose, IV = IV meds — these are inpatient
+          if (medType === "UD" || medType === "IV") {
+            const parts = line.substring(typeEnd + 1).split("^");
+            meds.push({
+              orderIen: parts[7]?.trim() || parts[0]?.split(";")[0] || "",
+              drugName: parts[1]?.trim() || "",
+              dose: parts[2]?.trim() || "",
+              route: "",
+              schedule: "",
+              type: medType === "IV" ? "iv" : "unit-dose",
+              status: "active",
+              startDate: parts[4]?.trim() || undefined,
+              prescriber: parts[5]?.trim() || undefined,
+              pharmacistVerified: undefined,
+            });
+          }
+        }
+      }
+      return { ok: true, data: meds };
+    } catch (err: any) {
+      log.warn("getInpatientMeds failed", { error: err.message });
+      return { ok: false, error: err.message };
+    }
+  }
+
+  async getMAR(_dfn: string, _dateRange?: { from?: string; to?: string }): Promise<AdapterResult<MAREntry[]>> {
+    return {
+      ok: false, pending: true,
+      target: "PSB MED LOG",
+      error: "MAR data requires BCMA/PSB package — not available in WorldVistA sandbox",
+      vistaGrounding: {
+        rpc: "PSB MED LOG", vistaPackage: "PSB",
+        vistaFiles: ["53.79", "53.795"],
+        sandboxNote: "PSB package not installed in WorldVistA Docker. eMAR schedule endpoint uses heuristic due-time derivation from ORWPS ACTIVE sig text as interim.",
+        migrationPath: "Install PSB (BCMA) package -> wire PSB MED LOG for real MAR data with actual admin times, nurse attestation, and witness tracking",
+      },
+    };
+  }
+
+  async recordAdministration(_request: MedAdminRequest): Promise<AdapterResult<WriteResult>> {
+    return {
+      ok: false, pending: true,
+      target: "PSB MED LOG",
+      error: "Recording medication administration requires BCMA/PSB package — not available in WorldVistA sandbox",
+      vistaGrounding: {
+        rpc: "PSB MED LOG", vistaPackage: "PSB",
+        vistaFiles: ["53.79"],
+        sandboxNote: "PSB MED LOG is a bidirectional RPC: reads admin history and writes new admin events. Write mode requires action code + order IEN + datetime + administered-by DUZ.",
+        migrationPath: "Install PSB package -> wire PSB MED LOG write mode -> add witness validation -> integrate 5-rights barcode verification",
+      },
+    };
+  }
+
+  async scanBarcode(_barcode: string, _patientDfn?: string): Promise<AdapterResult<BarcodeScanResult>> {
+    return {
+      ok: false, pending: true,
+      target: "PSJBCMA",
+      error: "Barcode medication lookup requires PSJ/PSB BCMA package — not available in WorldVistA sandbox",
+      vistaGrounding: {
+        rpc: "PSJBCMA", vistaPackage: "PSJ",
+        vistaFiles: ["53.45", "50"],
+        sandboxNote: "PSJBCMA resolves NDC/UPC barcodes to drug IEN + order IEN. Also validates medication-patient match. Required for BCMA 5-rights verification.",
+        migrationPath: "Install PSJ + PSB packages -> wire PSJBCMA -> integrate with formulary (File 50) -> add NDC cross-reference (File 50.67)",
+      },
+    };
+  }
+
+  async getAdminHistory(_dfn: string, _orderIen?: string): Promise<AdapterResult<MAREntry[]>> {
+    return {
+      ok: false, pending: true,
+      target: "PSB MED LOG",
+      error: "Administration history requires BCMA/PSB package — not available in WorldVistA sandbox",
+      vistaGrounding: {
+        rpc: "PSB MED LOG", vistaPackage: "PSB",
+        vistaFiles: ["53.79"],
+        sandboxNote: "PSB MED LOG read mode returns chronological admin events: who gave what, when, witnessed by whom, refused/held reasons.",
+        migrationPath: "Install PSB package -> wire PSB MED LOG read mode -> parse multi-line grouped records (similar to ORWPS ACTIVE ~prefix pattern)",
+      },
+    };
+  }
+
+  async verifyOrder(_request: PharmacyVerifyRequest): Promise<AdapterResult<PharmacyVerifyResult>> {
+    return {
+      ok: false, pending: true,
+      target: "PSJ VERIFY",
+      error: "Pharmacist order verification requires PSJ package — not available in WorldVistA sandbox",
+      vistaGrounding: {
+        rpc: "PSJ VERIFY", vistaPackage: "PSJ",
+        vistaFiles: ["53.1", "55"],
+        sandboxNote: "PSJ VERIFY marks an inpatient pharmacy order as pharmacist-verified. Until verified, unit dose orders cannot be dispensed. IV orders require separate IV room verification.",
+        migrationPath: "Install PSJ package -> wire PSJ VERIFY -> add pharmacy action profile (File 53.1) -> integrate with dispensing workflow",
       },
     };
   }

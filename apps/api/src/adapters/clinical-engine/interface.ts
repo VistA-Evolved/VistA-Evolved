@@ -23,6 +23,12 @@ import type {
   TransferRequest,
   DischargeRequest,
   WriteResult,
+  InpatientMedOrder,
+  MAREntry,
+  MedAdminRequest,
+  BarcodeScanResult,
+  PharmacyVerifyRequest,
+  PharmacyVerifyResult,
 } from "../types.js";
 
 export interface ClinicalEngineAdapter extends BaseAdapter {
@@ -99,4 +105,26 @@ export interface ClinicalEngineAdapter extends BaseAdapter {
 
   /** Discharge a patient from a ward. */
   dischargePatient(request: DischargeRequest): Promise<AdapterResult<WriteResult>>;
+
+  /* ---------------------------------------------------------------- */
+  /* Pharmacy / MAR / BCMA methods (Phase 432)                         */
+  /* ---------------------------------------------------------------- */
+
+  /** Get inpatient medication orders (unit dose + IV). */
+  getInpatientMeds(dfn: string): Promise<AdapterResult<InpatientMedOrder[]>>;
+
+  /** Get MAR (Medication Administration Record) entries for a patient. */
+  getMAR(dfn: string, dateRange?: { from?: string; to?: string }): Promise<AdapterResult<MAREntry[]>>;
+
+  /** Record a medication administration (given/refused/held/not-given). */
+  recordAdministration(request: MedAdminRequest): Promise<AdapterResult<WriteResult>>;
+
+  /** Scan a barcode to resolve medication identity (BCMA). */
+  scanBarcode(barcode: string, patientDfn?: string): Promise<AdapterResult<BarcodeScanResult>>;
+
+  /** Get medication administration history for a patient. */
+  getAdminHistory(dfn: string, orderIen?: string): Promise<AdapterResult<MAREntry[]>>;
+
+  /** Pharmacist verification of an inpatient order. */
+  verifyOrder(request: PharmacyVerifyRequest): Promise<AdapterResult<PharmacyVerifyResult>>;
 }

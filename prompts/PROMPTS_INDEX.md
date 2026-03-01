@@ -1,7 +1,7 @@
 # Prompts Index
 
 Generated: 2026-03-01
-Total prompt folders: 431
+Total prompt folders: 432
 
 | # | Folder | Phase | Files |
 |---|--------|-------|-------|
@@ -436,3 +436,4 @@ Total prompt folders: 431
 | 429 | 429-PHASE-429-RUNTIME-MODE-TESTS | 429 | 3 |
 | 430 | 430-PHASE-430-W26-INTEGRITY-AUDIT | 430 | 3 |
 | 431 | 431-PHASE-431-ADT-ADAPTER-WRITES | 431 | 3 |
+| 432 | 432-PHASE-432-PHARMACY-MAR-SCAFFOLD | 432 | 3 |

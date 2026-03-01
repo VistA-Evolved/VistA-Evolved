@@ -195,3 +195,88 @@ export interface WriteResult {
   ien?: string;
   message?: string;
 }
+
+/* ================================================================== */
+/* Pharmacy / MAR / BCMA types — Phase 432                             */
+/* ================================================================== */
+
+/** Inpatient medication order (unit dose / IV). */
+export interface InpatientMedOrder {
+  orderIen: string;
+  drugName: string;
+  dose: string;
+  route: string;
+  schedule: string;
+  type: 'unit-dose' | 'iv' | 'other';
+  status: 'active' | 'pending' | 'discontinued' | 'expired' | 'hold';
+  startDate?: string;
+  stopDate?: string;
+  prescriber?: string;
+  pharmacistVerified?: boolean;
+  verifiedBy?: string;
+  verifiedAt?: string;
+}
+
+/** Single MAR entry (one scheduled administration time slot). */
+export interface MAREntry {
+  id: string;
+  orderIen: string;
+  drugName: string;
+  dose: string;
+  route: string;
+  scheduledTime: string;      // ISO datetime
+  status: 'due' | 'given' | 'refused' | 'held' | 'missed' | 'not-given';
+  administeredTime?: string;  // ISO datetime when actually given
+  administeredBy?: string;    // nurse/provider name
+  administeredByDuz?: string;
+  witnessedBy?: string;
+  reason?: string;            // if refused/held/not-given
+  site?: string;              // injection site
+  comments?: string;
+}
+
+/** Medication administration record request (recording a given/refused/held). */
+export interface MedAdminRequest {
+  dfn: string;
+  orderIen: string;
+  action: 'given' | 'refused' | 'held' | 'not-given';
+  administeredTime?: string;
+  dose?: string;
+  route?: string;
+  site?: string;
+  reason?: string;
+  comments?: string;
+  witnessDuz?: string;
+}
+
+/** Barcode scan result — resolved medication from BCMA barcode. */
+export interface BarcodeScanResult {
+  found: boolean;
+  orderIen?: string;
+  drugName?: string;
+  dose?: string;
+  route?: string;
+  ndc?: string;
+  lotNumber?: string;
+  expirationDate?: string;
+  matchedPatientDfn?: string;
+  warnings?: string[];
+}
+
+/** Pharmacy verification request shape. */
+export interface PharmacyVerifyRequest {
+  orderIen: string;
+  action: 'verify' | 'reject' | 'modify';
+  pharmacistDuz: string;
+  comments?: string;
+}
+
+/** Pharmacy verification result. */
+export interface PharmacyVerifyResult {
+  success: boolean;
+  orderIen: string;
+  verificationStatus: 'verified' | 'rejected' | 'modified' | 'pending';
+  verifiedBy?: string;
+  verifiedAt?: string;
+  message?: string;
+}
