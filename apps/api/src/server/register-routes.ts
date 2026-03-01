@@ -256,6 +256,7 @@ import costAttributionRoutes from "../routes/cost-attribution-routes.js";
 import drGamedayRoutes from "../routes/dr-gameday-routes.js";
 import scalePerformanceRoutes from "../routes/scale-performance-routes.js";
 import sreSupportPostureRoutes from "../routes/sre-support-posture-routes.js";
+import scaleCertRunnerRoutes from "../routes/scale-cert-runner-routes.js";
 
 /**
  * Register all route plugins in the exact order from the original index.ts.
@@ -591,6 +592,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Wave 15: Enterprise SRE / Support Posture (Phase 335)
   server.register(sreSupportPostureRoutes);
+
+  // Wave 15: Scale Certification Runner (Phase 336)
+  server.register(scaleCertRunnerRoutes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

@@ -158,6 +158,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/platform\/dr\//, auth: "admin" },         // Phase 333: DR & GameDay
   { pattern: /^\/platform\/perf\//, auth: "admin" },       // Phase 334: Scale performance
   { pattern: /^\/platform\/sre\//, auth: "admin" },        // Phase 335: SRE / support posture
+  { pattern: /^\/platform\/cert\//, auth: "admin" },       // Phase 336: Scale certification
   // Default: session required for anything else
 ];
 

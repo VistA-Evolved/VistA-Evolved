@@ -2993,6 +2993,52 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: sre_audit_log or JSONL",
     notes: "Phase 335: 10K ring buffer.",
   },
+
+  // -- Phase 336: Scale Certification Runner -------------------
+  {
+    id: "cert-runs",
+    file: "services/scale-cert-runner.ts",
+    variable: "certRuns",
+    description: "Scale certification run results",
+    classification: "critical",
+    durability: "in_memory_only",
+    domain: "platform",
+    migrationTarget: "pg: cert_run table",
+    notes: "Phase 336: Full gate results + evidence hash.",
+  },
+  {
+    id: "cert-profiles",
+    file: "services/scale-cert-runner.ts",
+    variable: "certProfiles",
+    description: "Certification profile templates",
+    classification: "registry",
+    durability: "in_memory_only",
+    domain: "platform",
+    migrationTarget: "pg: cert_profile table",
+    notes: "Phase 336: Required gates + score thresholds.",
+  },
+  {
+    id: "cert-schedules",
+    file: "services/scale-cert-runner.ts",
+    variable: "certSchedules",
+    description: "Scheduled certification runs",
+    classification: "registry",
+    durability: "in_memory_only",
+    domain: "platform",
+    migrationTarget: "pg: cert_schedule table",
+    notes: "Phase 336: Cron-based recurring certification.",
+  },
+  {
+    id: "cert-audit-log",
+    file: "services/scale-cert-runner.ts",
+    variable: "auditLog",
+    description: "Certification audit trail",
+    classification: "audit",
+    durability: "in_memory_only",
+    domain: "platform",
+    migrationTarget: "pg: cert_audit_log or JSONL",
+    notes: "Phase 336: 10K ring buffer.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
