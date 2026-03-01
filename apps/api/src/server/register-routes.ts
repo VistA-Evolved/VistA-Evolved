@@ -222,6 +222,9 @@ import { complianceRoutes } from "../routes/compliance-routes.js";
 // Wave 14: Enterprise Interop (Phase 318)
 import { integrationControlPlaneRoutes } from "../routes/integration-control-plane-routes.js";
 
+// Wave 14: HL7v2 Message Templates (Phase 319)
+import { hl7TemplateRoutes } from "../routes/hl7-templates.js";
+
 /**
  * Register all route plugins in the exact order from the original index.ts.
  * Also starts cleanup jobs that were previously co-located with route registration.
@@ -511,6 +514,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Wave 14: Enterprise Interop (Phase 318)
   server.register(integrationControlPlaneRoutes);
+
+  // Wave 14: HL7v2 Message Templates (Phase 319)
+  server.register(hl7TemplateRoutes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

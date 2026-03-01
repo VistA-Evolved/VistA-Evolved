@@ -2262,6 +2262,20 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: integration_test_run table (v31)",
     notes: "Phase 318: Test runs with 4 checks. Results are transient.",
   },
+  // ═══════════════════════════════════════════════════════
+  // HL7v2 MESSAGE TEMPLATES (Phase 319)
+  // ═══════════════════════════════════════════════════════
+  {
+    id: "hl7-message-templates",
+    file: "hl7/templates/template-store.ts",
+    variable: "templates",
+    description: "Versioned HL7v2 message templates with conformance profiles",
+    classification: "registry",
+    durability: "in_memory_only",
+    domain: "interop",
+    migrationTarget: "pg: hl7_message_template table",
+    notes: "Phase 319: Templates with segment/field constraints, IHE profiles, versioning.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
