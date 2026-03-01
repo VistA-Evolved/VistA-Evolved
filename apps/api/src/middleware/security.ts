@@ -186,6 +186,8 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/platform\/perf\//, auth: "admin" },       // Phase 334: Scale performance
   { pattern: /^\/platform\/sre\//, auth: "admin" },        // Phase 335: SRE / support posture
   { pattern: /^\/platform\/cert\//, auth: "admin" },       // Phase 336: Scale certification
+  // Wave 20: GA Launch Program + Customer Success + External Validation (Phases 370-377)
+  { pattern: /^\/release-train\//, auth: "admin" },    // Phase 371: release train governance
   // Default: session required for anything else
 ];
 

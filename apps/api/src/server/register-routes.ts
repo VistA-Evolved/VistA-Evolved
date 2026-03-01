@@ -286,6 +286,9 @@ import { marketplaceRoutes as pluginMarketplaceRoutes } from "../routes/marketpl
 import analyticsExtractRoutes from "../routes/analytics-extract-routes.js";
 import w19ReportingRoutes from "../routes/reporting-routes.js";
 
+// Wave 20: GA Launch Program + External Validation + Customer Success (Phases 370-377)
+import releaseTrainRoutes from "../routes/release-train-routes.js";
+
 /**
  * Register all route plugins in the exact order from the original index.ts.
  * Also starts cleanup jobs that were previously co-located with route registration.
@@ -651,6 +654,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   // Wave 19: Data Platform + Analytics + De-Id + Reporting (Phases 362-369)
   server.register(analyticsExtractRoutes);                   // Phase 363-367: extract, de-id, quality, RCM metrics
   server.register(w19ReportingRoutes);                            // Phase 365-368: reporting API, dataset access controls
+
+  // Wave 20: GA Launch Program + Customer Success + External Validation (Phases 370-377)
+  server.register(releaseTrainRoutes);                              // Phase 371: release train governance
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);
