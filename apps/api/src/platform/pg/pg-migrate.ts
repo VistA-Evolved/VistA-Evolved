@@ -2902,6 +2902,43 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_sgm_pair ON scim_group_member(group_id, us
 CREATE INDEX IF NOT EXISTS idx_sgm_user ON scim_group_member(user_id);
 `,
   },
+  {
+    version: 35,
+    name: "phase341_secrets_key_management",
+    sql: `
+-- Encrypted Key Store (Phase 341)
+CREATE TABLE IF NOT EXISTS encryption_key (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  key_id TEXT NOT NULL,
+  version INTEGER NOT NULL DEFAULT 1,
+  provider TEXT NOT NULL DEFAULT 'env',
+  algorithm TEXT NOT NULL DEFAULT 'aes-256-gcm',
+  status TEXT NOT NULL DEFAULT 'active',
+  fingerprint TEXT NOT NULL,
+  encrypted_material TEXT,
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  rotated_at TIMESTAMPTZ,
+  expires_at TIMESTAMPTZ
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_ek_key_ver ON encryption_key(tenant_id, key_id, version);
+CREATE INDEX IF NOT EXISTS idx_ek_status ON encryption_key(tenant_id, status);
+
+-- Key Rotation Event Log (Phase 341)
+CREATE TABLE IF NOT EXISTS key_rotation_event (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  key_id TEXT NOT NULL,
+  old_version INTEGER,
+  new_version INTEGER NOT NULL,
+  reason TEXT NOT NULL DEFAULT 'scheduled',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_kre_key ON key_rotation_event(tenant_id, key_id);
+CREATE INDEX IF NOT EXISTS idx_kre_time ON key_rotation_event(tenant_id, created_at);
+`,
+  },
 ];
 
 /**
