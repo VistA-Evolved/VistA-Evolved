@@ -1,0 +1,58 @@
+# infra/environments/dr-validate.yaml - DR validation environment overlay
+# Usage: helm upgrade --install ve-shared infra/helm/ve-shared -f infra/environments/dr-validate.yaml
+# Purpose: Spin up a DR replica, restore from backup, validate, then tear down.
+
+global:
+  namespace: ve-dr-validate
+  environment: dr-validate
+
+postgres:
+  enabled: true
+  storage:
+    size: 50Gi
+  password: ""  # must be supplied via --set or SOPS-encrypted secret
+  restoreFromBackup:
+    enabled: true
+    source: ""  # must be supplied: S3 URI or PVC snapshot ref
+
+redis:
+  enabled: true
+  maxMemory: "256Mi"
+
+ingress:
+  enabled: true
+  replicas: 1
+  tls:
+    enabled: true
+    certManager: true
+    issuer: letsencrypt-staging  # use staging certs for DR validation
+
+keycloak:
+  enabled: true
+  url: ""  # must be supplied
+  realm: vista-evolved
+
+observability:
+  enabled: true
+  otelCollectorEndpoint: "http://otel-collector.ve-dr-validate:4318"
+  jaeger:
+    enabled: false
+  prometheus:
+    enabled: true
+    retention: 7d
+
+minio:
+  enabled: false  # DR does not ship audit; it validates restore
+
+networkPolicies:
+  enabled: true
+
+vista:
+  enabled: true
+  port: 9430
+  instanceId: "dr-validate"
+
+imaging:
+  enabled: false
+
+runtimeMode: rc

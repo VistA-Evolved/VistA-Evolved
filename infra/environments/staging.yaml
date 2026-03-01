@@ -16,6 +16,10 @@ redis:
 ingress:
   enabled: true
   replicas: 2
+  tls:
+    enabled: true
+    certManager: true
+    issuer: letsencrypt-staging
 
 keycloak:
   enabled: true
@@ -30,3 +34,10 @@ minio:
 
 networkPolicies:
   enabled: true
+
+vista:
+  enabled: true
+  port: 9430
+  instanceId: "staging-primary"
+
+runtimeMode: rc

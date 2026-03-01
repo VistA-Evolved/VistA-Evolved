@@ -1,0 +1,62 @@
+# infra/environments/pilot.yaml - Pilot environment overlay for ve-shared
+# Usage: helm upgrade --install ve-shared infra/helm/ve-shared -f infra/environments/pilot.yaml
+
+global:
+  namespace: ve-pilot
+  environment: pilot
+
+postgres:
+  enabled: true
+  storage:
+    size: 50Gi
+  password: ""  # must be supplied via --set or SOPS-encrypted secret
+  backup:
+    enabled: true
+    schedule: "0 */6 * * *"  # every 6 hours
+    retention: 30
+
+redis:
+  enabled: true
+  maxMemory: "512Mi"
+
+ingress:
+  enabled: true
+  replicas: 2
+  tls:
+    enabled: true
+    certManager: true
+    issuer: letsencrypt-prod
+
+keycloak:
+  enabled: true
+  url: ""  # must be supplied: https://auth.pilot.example.com
+  realm: vista-evolved
+
+observability:
+  enabled: true
+  otelCollectorEndpoint: "http://otel-collector.ve-pilot:4318"
+  jaeger:
+    enabled: true
+  prometheus:
+    enabled: true
+    retention: 30d
+
+minio:
+  enabled: true
+  storage:
+    size: 20Gi
+  auditShipping:
+    enabled: true
+
+networkPolicies:
+  enabled: true
+
+vista:
+  enabled: true
+  port: 9430
+  instanceId: "pilot-primary"
+
+imaging:
+  enabled: false  # opt-in per archetype
+
+runtimeMode: rc  # release-candidate: enforces PG, RLS, OIDC
