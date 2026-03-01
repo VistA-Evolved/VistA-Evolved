@@ -17,15 +17,15 @@ export default async function consentPouRoutes(server: FastifyInstance): Promise
   server.get("/consent-pou/directives", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const qs = (request.query || {}) as Record<string, string>;
-    return listDirectives(session.tenantId, { patientDfn: qs.patientDfn, status: qs.status, scope: qs.scope });
+    return { ok: true, directives: listDirectives(session.tenantId, { patientDfn: qs.patientDfn, status: qs.status, scope: qs.scope }) };
   });
 
   server.get("/consent-pou/directives/:id", async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const rec = getDirective(id);
-    if (!rec) return reply.code(404).send({ error: "Not found" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found" });
+    return { ok: true, directive: rec };
   });
 
   server.post("/consent-pou/directives", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -47,9 +47,9 @@ export default async function consentPouRoutes(server: FastifyInstance): Promise
         verifiedBy: body.verifiedBy,
         metadata: body.metadata,
       });
-      return reply.code(201).send(rec);
+      return reply.code(201).send({ ok: true, directive: rec });
     } catch (err: any) {
-      return reply.code(400).send({ error: err.message || "Create failed" });
+      return reply.code(400).send({ ok: false, error: err.message || "Create failed" });
     }
   });
 
@@ -58,16 +58,16 @@ export default async function consentPouRoutes(server: FastifyInstance): Promise
     const { id } = request.params as { id: string };
     const body = (request.body || {}) as Record<string, any>;
     const rec = updateDirective(id, { ...body, tenantId: session.tenantId });
-    if (!rec) return reply.code(404).send({ error: "Not found" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found" });
+    return { ok: true, directive: rec };
   });
 
   server.post("/consent-pou/directives/:id/revoke", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const rec = revokeDirective(id, session.duz || "unknown");
-    if (!rec) return reply.code(404).send({ error: "Not found or already revoked" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found or already revoked" });
+    return { ok: true, directive: rec };
   });
 
   // ─── POU Enforcement ──────────────────────────────────────
@@ -97,7 +97,7 @@ export default async function consentPouRoutes(server: FastifyInstance): Promise
       reason: result.reason,
     });
 
-    return result;
+    return { ok: true, evaluation: result };
   });
 
   // ─── Disclosure Log ────────────────────────────────────────
@@ -105,17 +105,17 @@ export default async function consentPouRoutes(server: FastifyInstance): Promise
   server.get("/consent-pou/disclosures", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const qs = (request.query || {}) as Record<string, string>;
-    return listDisclosures(session.tenantId, {
+    return { ok: true, disclosures: listDisclosures(session.tenantId, {
       patientDfn: qs.patientDfn,
       purposeOfUse: qs.purposeOfUse,
       limit: Number(qs.limit) || 200,
-    });
+    }) };
   });
 
   // ─── Dashboard ─────────────────────────────────────────────
 
   server.get("/consent-pou/dashboard", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
-    return getConsentDashboardStats(session.tenantId);
+    return { ok: true, stats: getConsentDashboardStats(session.tenantId) };
   });
 }

@@ -16,15 +16,15 @@ export default async function bulkDataRoutes(server: FastifyInstance): Promise<v
   server.get("/bulk-data/jobs", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const qs = (request.query || {}) as Record<string, string>;
-    return listBulkJobs(session.tenantId, { direction: qs.direction, status: qs.status });
+    return { ok: true, jobs: listBulkJobs(session.tenantId, { direction: qs.direction, status: qs.status }) };
   });
 
   server.get("/bulk-data/jobs/:id", async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const rec = getBulkJob(id);
-    if (!rec) return reply.code(404).send({ error: "Not found" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found" });
+    return { ok: true, job: rec };
   });
 
   server.post("/bulk-data/export", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -43,9 +43,9 @@ export default async function bulkDataRoutes(server: FastifyInstance): Promise<v
         requestedBy: session.duz || "unknown",
         metadata: body.metadata,
       });
-      return reply.code(202).send(job);
+      return reply.code(202).send({ ok: true, job });
     } catch (err: any) {
-      return reply.code(400).send({ error: err.message || "Export failed" });
+      return reply.code(400).send({ ok: false, error: err.message || "Export failed" });
     }
   });
 
@@ -63,9 +63,9 @@ export default async function bulkDataRoutes(server: FastifyInstance): Promise<v
         requestedBy: session.duz || "unknown",
         metadata: body.metadata,
       });
-      return reply.code(202).send(job);
+      return reply.code(202).send({ ok: true, job });
     } catch (err: any) {
-      return reply.code(400).send({ error: err.message || "Import failed" });
+      return reply.code(400).send({ ok: false, error: err.message || "Import failed" });
     }
   });
 
@@ -73,8 +73,8 @@ export default async function bulkDataRoutes(server: FastifyInstance): Promise<v
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const rec = cancelBulkJob(id);
-    if (!rec) return reply.code(404).send({ error: "Not found or already terminal" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found or already terminal" });
+    return { ok: true, job: rec };
   });
 
   // Kick / simulate job progress (dev/sandbox use)
@@ -82,14 +82,14 @@ export default async function bulkDataRoutes(server: FastifyInstance): Promise<v
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const rec = simulateJobProgress(id);
-    if (!rec) return reply.code(404).send({ error: "Not found" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found" });
+    return { ok: true, job: rec };
   });
 
   // ─── Dashboard ─────────────────────────────────────────────
 
   server.get("/bulk-data/dashboard", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
-    return getBulkDataDashboardStats(session.tenantId);
+    return { ok: true, stats: getBulkDataDashboardStats(session.tenantId) };
   });
 }

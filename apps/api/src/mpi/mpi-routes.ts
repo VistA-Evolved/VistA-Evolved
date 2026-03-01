@@ -22,15 +22,15 @@ export default async function mpiRoutes(server: FastifyInstance): Promise<void> 
   server.get("/mpi/identities", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const qs = (request.query || {}) as Record<string, string>;
-    return listIdentities(session.tenantId, { goldenRecordId: qs.goldenRecordId });
+    return { ok: true, identities: listIdentities(session.tenantId, { goldenRecordId: qs.goldenRecordId }) };
   });
 
   server.get("/mpi/identities/:id", async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const rec = getIdentity(id);
-    if (!rec) return reply.code(404).send({ error: "Not found" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found" });
+    return { ok: true, identity: rec };
   });
 
   server.post("/mpi/identities", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -50,9 +50,9 @@ export default async function mpiRoutes(server: FastifyInstance): Promise<void> 
         phoneNumber: body.phoneNumber || null,
         provenanceSource: body.provenanceSource || "manual",
       });
-      return reply.code(201).send(rec);
+      return reply.code(201).send({ ok: true, identity: rec });
     } catch (err: any) {
-      return reply.code(400).send({ error: err.message || "Create failed" });
+      return reply.code(400).send({ ok: false, error: err.message || "Create failed" });
     }
   });
 
@@ -61,8 +61,8 @@ export default async function mpiRoutes(server: FastifyInstance): Promise<void> 
     const { id } = request.params as { id: string };
     const body = (request.body || {}) as Record<string, any>;
     const rec = updateIdentity(id, { ...body, tenantId: session.tenantId });
-    if (!rec) return reply.code(404).send({ error: "Not found" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found" });
+    return { ok: true, identity: rec };
   });
 
   // ─── Matching ──────────────────────────────────────────────
@@ -99,13 +99,13 @@ export default async function mpiRoutes(server: FastifyInstance): Promise<void> 
   server.get("/mpi/merge-events", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const qs = (request.query || {}) as Record<string, string>;
-    return listMergeEvents(session.tenantId, Number(qs.limit) || 100);
+    return { ok: true, events: listMergeEvents(session.tenantId, Number(qs.limit) || 100) };
   });
 
   // ─── Dashboard ─────────────────────────────────────────────
 
   server.get("/mpi/dashboard", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
-    return getMpiDashboardStats(session.tenantId);
+    return { ok: true, stats: getMpiDashboardStats(session.tenantId) };
   });
 }

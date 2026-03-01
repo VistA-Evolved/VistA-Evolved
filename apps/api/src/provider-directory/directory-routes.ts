@@ -18,21 +18,21 @@ export default async function providerDirectoryRoutes(server: FastifyInstance): 
   server.get("/provider-directory/practitioners", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const qs = (request.query || {}) as Record<string, string>;
-    return listPractitioners(session.tenantId, { specialty: qs.specialty, status: qs.status, organizationId: qs.organizationId });
+    return { ok: true, practitioners: listPractitioners(session.tenantId, { specialty: qs.specialty, status: qs.status, organizationId: qs.organizationId }) };
   });
 
   server.get("/provider-directory/practitioners/search", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const qs = (request.query || {}) as Record<string, string>;
-    return searchPractitioners(session.tenantId, qs.q || "");
+    return { ok: true, practitioners: searchPractitioners(session.tenantId, qs.q || "") };
   });
 
   server.get("/provider-directory/practitioners/:id", async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const rec = getPractitioner(id);
-    if (!rec) return reply.code(404).send({ error: "Not found" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found" });
+    return { ok: true, practitioner: rec };
   });
 
   server.post("/provider-directory/practitioners", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -55,9 +55,9 @@ export default async function providerDirectoryRoutes(server: FastifyInstance): 
         telecom: body.telecom || [],
         metadata: body.metadata,
       });
-      return reply.code(201).send(rec);
+      return reply.code(201).send({ ok: true, practitioner: rec });
     } catch (err: any) {
-      return reply.code(400).send({ error: err.message || "Create failed" });
+      return reply.code(400).send({ ok: false, error: err.message || "Create failed" });
     }
   });
 
@@ -66,8 +66,8 @@ export default async function providerDirectoryRoutes(server: FastifyInstance): 
     const { id } = request.params as { id: string };
     const body = (request.body || {}) as Record<string, any>;
     const rec = updatePractitioner(id, { ...body, tenantId: session.tenantId });
-    if (!rec) return reply.code(404).send({ error: "Not found" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found" });
+    return { ok: true, practitioner: rec };
   });
 
   // ─── Organization ──────────────────────────────────────────
@@ -75,15 +75,15 @@ export default async function providerDirectoryRoutes(server: FastifyInstance): 
   server.get("/provider-directory/organizations", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const qs = (request.query || {}) as Record<string, string>;
-    return listOrganizations(session.tenantId, { type: qs.type, active: qs.active === "true" ? true : qs.active === "false" ? false : undefined });
+    return { ok: true, organizations: listOrganizations(session.tenantId, { type: qs.type, active: qs.active === "true" ? true : qs.active === "false" ? false : undefined }) };
   });
 
   server.get("/provider-directory/organizations/:id", async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const rec = getOrganization(id);
-    if (!rec) return reply.code(404).send({ error: "Not found" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found" });
+    return { ok: true, organization: rec };
   });
 
   server.post("/provider-directory/organizations", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -102,9 +102,9 @@ export default async function providerDirectoryRoutes(server: FastifyInstance): 
         parentOrganizationId: body.parentOrganizationId,
         metadata: body.metadata,
       });
-      return reply.code(201).send(rec);
+      return reply.code(201).send({ ok: true, organization: rec });
     } catch (err: any) {
-      return reply.code(400).send({ error: err.message || "Create failed" });
+      return reply.code(400).send({ ok: false, error: err.message || "Create failed" });
     }
   });
 
@@ -113,8 +113,8 @@ export default async function providerDirectoryRoutes(server: FastifyInstance): 
     const { id } = request.params as { id: string };
     const body = (request.body || {}) as Record<string, any>;
     const rec = updateOrganization(id, { ...body, tenantId: session.tenantId });
-    if (!rec) return reply.code(404).send({ error: "Not found" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found" });
+    return { ok: true, organization: rec };
   });
 
   // ─── Location ──────────────────────────────────────────────
@@ -122,15 +122,15 @@ export default async function providerDirectoryRoutes(server: FastifyInstance): 
   server.get("/provider-directory/locations", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const qs = (request.query || {}) as Record<string, string>;
-    return listLocations(session.tenantId, { organizationId: qs.organizationId, status: qs.status });
+    return { ok: true, locations: listLocations(session.tenantId, { organizationId: qs.organizationId, status: qs.status }) };
   });
 
   server.get("/provider-directory/locations/:id", async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const rec = getLocation(id);
-    if (!rec) return reply.code(404).send({ error: "Not found" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found" });
+    return { ok: true, location: rec };
   });
 
   server.post("/provider-directory/locations", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -148,9 +148,9 @@ export default async function providerDirectoryRoutes(server: FastifyInstance): 
         position: body.position,
         metadata: body.metadata,
       });
-      return reply.code(201).send(rec);
+      return reply.code(201).send({ ok: true, location: rec });
     } catch (err: any) {
-      return reply.code(400).send({ error: err.message || "Create failed" });
+      return reply.code(400).send({ ok: false, error: err.message || "Create failed" });
     }
   });
 
@@ -159,14 +159,14 @@ export default async function providerDirectoryRoutes(server: FastifyInstance): 
     const { id } = request.params as { id: string };
     const body = (request.body || {}) as Record<string, any>;
     const rec = updateLocation(id, { ...body, tenantId: session.tenantId });
-    if (!rec) return reply.code(404).send({ error: "Not found" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found" });
+    return { ok: true, location: rec };
   });
 
   // ─── Dashboard ─────────────────────────────────────────────
 
   server.get("/provider-directory/dashboard", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
-    return getDirectoryDashboardStats(session.tenantId);
+    return { ok: true, stats: getDirectoryDashboardStats(session.tenantId) };
   });
 }

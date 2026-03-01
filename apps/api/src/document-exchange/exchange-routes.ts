@@ -17,21 +17,21 @@ export default async function documentExchangeRoutes(server: FastifyInstance): P
   server.get("/document-exchange/documents", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const qs = (request.query || {}) as Record<string, string>;
-    return listDocuments(session.tenantId, { dfn: qs.dfn, category: qs.category, status: qs.status });
+    return { ok: true, documents: listDocuments(session.tenantId, { dfn: qs.dfn, category: qs.category, status: qs.status }) };
   });
 
   server.get("/document-exchange/documents/search", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const qs = (request.query || {}) as Record<string, string>;
-    return searchDocuments(session.tenantId, qs.q || "");
+    return { ok: true, documents: searchDocuments(session.tenantId, qs.q || "") };
   });
 
   server.get("/document-exchange/documents/:id", async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const rec = getDocument(id);
-    if (!rec) return reply.code(404).send({ error: "Not found" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found" });
+    return { ok: true, document: rec };
   });
 
   server.post("/document-exchange/documents", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -57,9 +57,9 @@ export default async function documentExchangeRoutes(server: FastifyInstance): P
         relatesTo: body.relatesTo,
         metadata: body.metadata,
       });
-      return reply.code(201).send(rec);
+      return reply.code(201).send({ ok: true, document: rec });
     } catch (err: any) {
-      return reply.code(400).send({ error: err.message || "Create failed" });
+      return reply.code(400).send({ ok: false, error: err.message || "Create failed" });
     }
   });
 
@@ -68,23 +68,23 @@ export default async function documentExchangeRoutes(server: FastifyInstance): P
     const { id } = request.params as { id: string };
     const body = (request.body || {}) as Record<string, any>;
     const rec = updateDocument(id, { ...body, tenantId: session.tenantId });
-    if (!rec) return reply.code(404).send({ error: "Not found" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found" });
+    return { ok: true, document: rec };
   });
 
   // ─── Submission Sets ───────────────────────────────────────
 
   server.get("/document-exchange/submissions", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
-    return listSubmissionSets(session.tenantId);
+    return { ok: true, submissions: listSubmissionSets(session.tenantId) };
   });
 
   server.get("/document-exchange/submissions/:id", async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const rec = getSubmissionSet(id);
-    if (!rec) return reply.code(404).send({ error: "Not found" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found" });
+    return { ok: true, submission: rec };
   });
 
   server.post("/document-exchange/submissions", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -100,9 +100,9 @@ export default async function documentExchangeRoutes(server: FastifyInstance): P
         status: body.status || "submitted",
         metadata: body.metadata,
       });
-      return reply.code(201).send(rec);
+      return reply.code(201).send({ ok: true, submission: rec });
     } catch (err: any) {
-      return reply.code(400).send({ error: err.message || "Create failed" });
+      return reply.code(400).send({ ok: false, error: err.message || "Create failed" });
     }
   });
 
@@ -110,6 +110,6 @@ export default async function documentExchangeRoutes(server: FastifyInstance): P
 
   server.get("/document-exchange/dashboard", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
-    return getDocumentExchangeDashboardStats(session.tenantId);
+    return { ok: true, stats: getDocumentExchangeDashboardStats(session.tenantId) };
   });
 }

@@ -17,15 +17,15 @@ export default async function exchangePackRoutes(server: FastifyInstance): Promi
 
   server.get("/exchange-packs/profiles", async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
-    return getPackProfiles();
+    return { ok: true, profiles: getPackProfiles() };
   });
 
   server.get("/exchange-packs/profiles/:id", async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const rec = getPackProfile(id as any);
-    if (!rec) return reply.code(404).send({ error: "Pack profile not found" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Pack profile not found" });
+    return { ok: true, profile: rec };
   });
 
   // ─── Connectors ────────────────────────────────────────────
@@ -33,15 +33,15 @@ export default async function exchangePackRoutes(server: FastifyInstance): Promi
   server.get("/exchange-packs/connectors", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const qs = (request.query || {}) as Record<string, string>;
-    return listConnectors(session.tenantId, { packId: qs.packId, status: qs.status });
+    return { ok: true, connectors: listConnectors(session.tenantId, { packId: qs.packId, status: qs.status }) };
   });
 
   server.get("/exchange-packs/connectors/:id", async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const rec = getConnector(id);
-    if (!rec) return reply.code(404).send({ error: "Not found" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found" });
+    return { ok: true, connector: rec };
   });
 
   server.post("/exchange-packs/connectors", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -63,9 +63,9 @@ export default async function exchangePackRoutes(server: FastifyInstance): Promi
         retryAttempts: body.retryAttempts || 3,
         metadata: body.metadata,
       });
-      return reply.code(201).send(rec);
+      return reply.code(201).send({ ok: true, connector: rec });
     } catch (err: any) {
-      return reply.code(400).send({ error: err.message || "Create failed" });
+      return reply.code(400).send({ ok: false, error: err.message || "Create failed" });
     }
   });
 
@@ -74,15 +74,15 @@ export default async function exchangePackRoutes(server: FastifyInstance): Promi
     const { id } = request.params as { id: string };
     const body = (request.body || {}) as Record<string, any>;
     const rec = updateConnector(id, { ...body, tenantId: session.tenantId });
-    if (!rec) return reply.code(404).send({ error: "Not found" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found" });
+    return { ok: true, connector: rec };
   });
 
   server.delete("/exchange-packs/connectors/:id", async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const ok = deleteConnector(id);
-    if (!ok) return reply.code(404).send({ error: "Not found" });
+    if (!ok) return reply.code(404).send({ ok: false, error: "Not found" });
     return { ok: true };
   });
 
@@ -91,34 +91,34 @@ export default async function exchangePackRoutes(server: FastifyInstance): Promi
   server.get("/exchange-packs/transactions", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const qs = (request.query || {}) as Record<string, string>;
-    return listExchangeTransactions(session.tenantId, {
+    return { ok: true, transactions: listExchangeTransactions(session.tenantId, {
       connectorId: qs.connectorId,
       packId: qs.packId,
       status: qs.status,
       limit: Number(qs.limit) || 200,
-    });
+    }) };
   });
 
   server.get("/exchange-packs/transactions/:id", async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const rec = getExchangeTransaction(id);
-    if (!rec) return reply.code(404).send({ error: "Not found" });
-    return rec;
+    if (!rec) return reply.code(404).send({ ok: false, error: "Not found" });
+    return { ok: true, transaction: rec };
   });
 
   server.post("/exchange-packs/exchange", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const body = (request.body || {}) as Record<string, any>;
     const result = simulateExchange(session.tenantId, body.connectorId || "", body.payload || "");
-    if ("error" in result) return reply.code(400).send(result);
-    return reply.code(201).send(result);
+    if ("error" in result) return reply.code(400).send({ ok: false, ...result });
+    return reply.code(201).send({ ok: true, transaction: result });
   });
 
   // ─── Dashboard ─────────────────────────────────────────────
 
   server.get("/exchange-packs/dashboard", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
-    return getExchangePackDashboardStats(session.tenantId);
+    return { ok: true, stats: getExchangePackDashboardStats(session.tenantId) };
   });
 }
