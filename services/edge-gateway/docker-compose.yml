@@ -1,0 +1,42 @@
+# Edge Device Gateway Sidecar — Docker Compose
+#
+# Phase 379 (W21-P2): Lightweight Node.js sidecar that runs on-premises
+# alongside medical devices. Connects outbound to the cloud API via
+# WebSocket/gRPC tunnel (outbound-only, no inbound ports).
+#
+# Usage:
+#   docker compose --profile gateway up -d
+#
+# The gateway container is a scaffold — the actual gateway runtime
+# will be built in subsequent phases. This compose defines the
+# deployment pattern, networking, and volume structure.
+
+services:
+  edge-gateway:
+    image: node:20-alpine
+    container_name: vista-edge-gateway
+    profiles: ["gateway"]
+    working_dir: /app
+    command: ["node", "gateway.mjs"]
+    environment:
+      - GATEWAY_ID=${GATEWAY_ID:-eg-dev-001}
+      - GATEWAY_NAME=${GATEWAY_NAME:-Dev Gateway}
+      - API_UPLINK_URL=${API_UPLINK_URL:-http://host.docker.internal:3001}
+      - GATEWAY_SERVICE_KEY=${GATEWAY_SERVICE_KEY:-dev-gateway-key-change-in-production}
+      - HEARTBEAT_INTERVAL_MS=${HEARTBEAT_INTERVAL_MS:-30000}
+      - OBSERVATION_INTERVAL_MS=${OBSERVATION_INTERVAL_MS:-5000}
+      - ENABLED_ADAPTERS=${ENABLED_ADAPTERS:-hl7v2,astm}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    volumes:
+      - gateway-data:/app/data
+      - ./gateway.mjs:/app/gateway.mjs:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "process.exit(0)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  gateway-data:
+    name: vista-edge-gateway-data

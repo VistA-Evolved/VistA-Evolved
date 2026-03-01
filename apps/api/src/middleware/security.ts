@@ -193,6 +193,10 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/external-validation\//, auth: "admin" }, // Phase 374: external validation harness
   { pattern: /^\/data-rights\//, auth: "admin" },         // Phase 375: data rights operations
   { pattern: /^\/ga\//, auth: "admin" },                   // Phase 377: GA evidence + trust center
+  // Wave 21: Device + Modality Integration (Phases 378-388)
+  { pattern: /^\/edge-gateways\/uplink/, auth: "service" },  // Phase 379: gateway uplink ingest
+  { pattern: /^\/edge-gateways\/[^/]+\/heartbeat/, auth: "service" }, // Phase 379: gateway heartbeat
+  { pattern: /^\/edge-gateways\//, auth: "admin" },          // Phase 379: gateway management
   // Default: session required for anything else
 ];
 

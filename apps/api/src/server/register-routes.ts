@@ -204,6 +204,9 @@ import opsAdminRoutes from "../routes/ops-admin.js";
 import certificationEvidenceRoutes from "../routes/certification-evidence.js";
 import vistaProvisionRoutes from "../routes/vista-provision.js";
 
+// Wave 21: Device + Modality Integration (Phases 378-388)
+import { edgeGatewayRoutes, startGatewayCleanup } from "../devices/index.js";
+
 // Inline routes + domain auto-stubs
 import { registerInlineRoutes } from "./inline-routes.js";
 import { registerDomainRoutes } from "../routes/index.js";
@@ -667,6 +670,10 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(externalValidationRoutes);                             // Phase 374: external validation harness
   server.register(dataRightsRoutes);                                      // Phase 375: data rights operations
   server.register(gaEvidenceRoutes);                                       // Phase 377: GA evidence + trust center
+
+  // Wave 21: Device + Modality Integration (Phases 378-388)
+  startGatewayCleanup();
+  server.register(edgeGatewayRoutes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);
