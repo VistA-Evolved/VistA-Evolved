@@ -2852,6 +2852,56 @@ CREATE INDEX IF NOT EXISTS idx_sms_session ON session_mfa_state(session_id);
 CREATE INDEX IF NOT EXISTS idx_sms_user ON session_mfa_state(tenant_id, user_id);
 `,
   },
+  {
+    version: 34,
+    name: "phase339_scim_provisioning",
+    sql: `
+-- SCIM Users (Phase 339)
+CREATE TABLE IF NOT EXISTS scim_user (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  external_id TEXT,
+  user_name TEXT NOT NULL,
+  display_name TEXT NOT NULL DEFAULT '',
+  given_name TEXT NOT NULL DEFAULT '',
+  family_name TEXT NOT NULL DEFAULT '',
+  emails JSONB NOT NULL DEFAULT '[]'::jsonb,
+  active BOOLEAN NOT NULL DEFAULT true,
+  vista_duz TEXT,
+  vista_role TEXT,
+  vista_facility_station TEXT,
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_su_ext ON scim_user(tenant_id, external_id) WHERE external_id IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_su_tenant ON scim_user(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_su_username ON scim_user(tenant_id, user_name);
+
+-- SCIM Groups (Phase 339)
+CREATE TABLE IF NOT EXISTS scim_group (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  external_id TEXT,
+  display_name TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_sg_ext ON scim_group(tenant_id, external_id) WHERE external_id IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_sg_tenant ON scim_group(tenant_id);
+
+-- SCIM Group Membership (Phase 339)
+CREATE TABLE IF NOT EXISTS scim_group_member (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  group_id TEXT NOT NULL REFERENCES scim_group(id) ON DELETE CASCADE,
+  user_id TEXT NOT NULL REFERENCES scim_user(id) ON DELETE CASCADE,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_sgm_pair ON scim_group_member(group_id, user_id);
+CREATE INDEX IF NOT EXISTS idx_sgm_user ON scim_group_member(user_id);
+`,
+  },
 ];
 
 /**

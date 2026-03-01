@@ -88,6 +88,8 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/auth\/step-up\//, auth: "session" }, // Phase 338: step-up status (session required)
   { pattern: /^\/auth\/mfa\//, auth: "session" }, // Phase 338: MFA status (session required)
   { pattern: /^\/auth\//, auth: "none" },
+  { pattern: /^\/scim\/v2\/ServiceProviderConfig$/, auth: "none" }, // Phase 339: SCIM discovery (public)
+  { pattern: /^\/scim\//, auth: "none" }, // Phase 339: SCIM endpoints (bearer token auth in handler)
   { pattern: /^\/imaging\/ingest\/callback$/, auth: "service" }, // Phase 23: Orthanc webhook (X-Service-Key)
   { pattern: /^\/imaging\/health$/, auth: "session" }, // Phase 24: imaging health check
   { pattern: /^\/imaging\/devices/, auth: "session" }, // Phase 24: device registry (imaging_admin checked in handler)
