@@ -240,6 +240,9 @@ import certificationPipelineRoutes from "../routes/certification-pipeline.js";
 // Wave 14: Marketplace/Registry (Phase 324)
 import marketplaceRoutes from "../routes/marketplace.js";
 
+// Wave 14: Onboarding UX (Phase 325)
+import integrationOnboardingRoutes from "../routes/onboarding.js";
+
 /**
  * Register all route plugins in the exact order from the original index.ts.
  * Also starts cleanup jobs that were previously co-located with route registration.
@@ -547,6 +550,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Wave 14: Marketplace/Registry (Phase 324)
   server.register(marketplaceRoutes);
+
+  // Wave 14: Onboarding UX (Phase 325)
+  server.register(integrationOnboardingRoutes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

@@ -143,6 +143,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/clearinghouse\//, auth: "admin" }, // Phase 322: Clearinghouse transport (SFTP, AS2, REST, vault)
   { pattern: /^\/certification\//, auth: "admin" }, // Phase 323: Certification pipeline (suites, runs, certificates)
   { pattern: /^\/marketplace\//, auth: "session" }, // Phase 324: Integration marketplace (read=session, write=admin inline)
+  { pattern: /^\/onboarding\//, auth: "admin" }, // Phase 325: Integration onboarding wizard (templates, sessions, readiness)
   // Default: session required for anything else
 ];
 

@@ -2477,6 +2477,40 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: listing_install table",
     notes: "Phase 324: Install state lost on restart. Needs PG for production.",
   },
+  // ── Phase 325: Integration Onboarding ───────────────────────────────
+  {
+    id: "onboarding-templates",
+    file: "services/integration-onboarding.ts",
+    variable: "templateStore",
+    description: "Reusable onboarding step-by-step templates per integration type",
+    classification: "registry",
+    durability: "in_memory_only",
+    domain: "interop",
+    migrationTarget: "pg: onboarding_template table",
+    notes: "Phase 325: 3 built-in templates seeded (HL7v2, X12, FHIR).",
+  },
+  {
+    id: "onboarding-sessions",
+    file: "services/integration-onboarding.ts",
+    variable: "sessionStore",
+    description: "Active partner onboarding sessions with step progress",
+    classification: "critical",
+    durability: "in_memory_only",
+    domain: "interop",
+    migrationTarget: "pg: onboarding_session + step_progress tables",
+    notes: "Phase 325: Session progress lost on restart. Needs PG.",
+  },
+  {
+    id: "onboarding-readiness",
+    file: "services/integration-onboarding.ts",
+    variable: "readinessStore",
+    description: "Go-live readiness reports per onboarding session",
+    classification: "cache",
+    durability: "in_memory_only",
+    domain: "interop",
+    migrationTarget: "pg: readiness_report table",
+    notes: "Phase 325: Readiness reports regenerated on demand.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
