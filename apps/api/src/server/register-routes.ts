@@ -228,6 +228,9 @@ import { hl7TemplateRoutes } from "../routes/hl7-templates.js";
 // Wave 14: HL7v2 Ops Maturity (Phase 320)
 import { hl7OpsRoutes } from "../routes/hl7-ops.js";
 
+// Wave 14: X12 Gateway Service (Phase 321)
+import { x12GatewayRoutes } from "../routes/x12-gateway.js";
+
 /**
  * Register all route plugins in the exact order from the original index.ts.
  * Also starts cleanup jobs that were previously co-located with route registration.
@@ -523,6 +526,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Wave 14: HL7v2 Ops Maturity (Phase 320)
   server.register(hl7OpsRoutes);
+
+  // Wave 14: X12 Gateway Service (Phase 321)
+  server.register(x12GatewayRoutes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

@@ -139,6 +139,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/api\/platform\/integrations\//, auth: "admin" }, // Phase 318: integration control plane
   { pattern: /^\/hl7\/templates\//, auth: "session" }, // Phase 319: HL7v2 message template library
   { pattern: /^\/hl7\/ops\//, auth: "admin" }, // Phase 320: HL7v2 ops maturity (SLA, retry, dashboard)
+  { pattern: /^\/x12\/gateway\//, auth: "admin" }, // Phase 321: X12 inbound gateway (parse, validate, route)
   // Default: session required for anything else
 ];
 

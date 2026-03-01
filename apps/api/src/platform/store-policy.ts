@@ -2324,6 +2324,32 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: hl7_retry_entry table",
     notes: "Phase 320: Exponential backoff, max 3 retries. References DLQ entry IDs.",
   },
+
+  // ═══════════════════════════════════════════════════════
+  // X12 GATEWAY SERVICE (Phase 321)
+  // ═══════════════════════════════════════════════════════
+  {
+    id: "x12-control-number-store",
+    file: "rcm/edi/x12-gateway.ts",
+    variable: "controlNumberStore",
+    description: "ISA/GS/ST control number tracking for duplicate detection",
+    classification: "cache",
+    durability: "in_memory_only",
+    domain: "interop",
+    migrationTarget: "pg: x12_control_number table",
+    notes: "Phase 321: Max 100K entries with FIFO eviction. Resets on restart.",
+  },
+  {
+    id: "x12-transaction-handlers",
+    file: "rcm/edi/x12-gateway.ts",
+    variable: "txHandlers",
+    description: "Registry of inbound X12 transaction set handlers",
+    classification: "registry",
+    durability: "in_memory_only",
+    domain: "interop",
+    migrationTarget: "n/a (runtime registry)",
+    notes: "Phase 321: Pluggable handler per TX set (837, 835, 999, etc.).",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
