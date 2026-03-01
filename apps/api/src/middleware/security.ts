@@ -138,6 +138,7 @@ const AUTH_RULES: AuthRule[] = [
   // Wave 14: Enterprise Interop (Phases 317-325)
   { pattern: /^\/api\/platform\/integrations\//, auth: "admin" }, // Phase 318: integration control plane
   { pattern: /^\/hl7\/templates\//, auth: "session" }, // Phase 319: HL7v2 message template library
+  { pattern: /^\/hl7\/ops\//, auth: "admin" }, // Phase 320: HL7v2 ops maturity (SLA, retry, dashboard)
   // Default: session required for anything else
 ];
 

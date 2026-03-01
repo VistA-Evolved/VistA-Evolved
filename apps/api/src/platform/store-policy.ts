@@ -2276,6 +2276,54 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: hl7_message_template table",
     notes: "Phase 319: Templates with segment/field constraints, IHE profiles, versioning.",
   },
+
+  // ═══════════════════════════════════════════════════════
+  // HL7v2 OPS MATURITY (Phase 320)
+  // ═══════════════════════════════════════════════════════
+  {
+    id: "hl7-throughput-buckets",
+    file: "hl7/hl7-ops-monitor.ts",
+    variable: "throughputStore",
+    description: "Per-endpoint per-minute throughput counters (success/fail/latency)",
+    classification: "cache",
+    durability: "in_memory_only",
+    domain: "interop",
+    migrationTarget: "pg: hl7_throughput_bucket table or time-series DB",
+    notes: "Phase 320: 24h rolling window (1440 buckets/endpoint). Resets on restart.",
+  },
+  {
+    id: "hl7-sla-configs",
+    file: "hl7/hl7-ops-monitor.ts",
+    variable: "slaConfigs",
+    description: "SLA threshold configurations per endpoint/channel",
+    classification: "registry",
+    durability: "in_memory_only",
+    domain: "interop",
+    migrationTarget: "pg: hl7_sla_config table",
+    notes: "Phase 320: Defines delivery rate and latency percentile targets.",
+  },
+  {
+    id: "hl7-sla-violations",
+    file: "hl7/hl7-ops-monitor.ts",
+    variable: "slaViolations",
+    description: "SLA violation events with acknowledgement tracking",
+    classification: "audit",
+    durability: "in_memory_only",
+    domain: "interop",
+    migrationTarget: "pg: hl7_sla_violation table",
+    notes: "Phase 320: Max 5000 retained with FIFO eviction. Ack support.",
+  },
+  {
+    id: "hl7-retry-queue",
+    file: "hl7/hl7-ops-monitor.ts",
+    variable: "retryQueue",
+    description: "Auto-retry queue for failed HL7 messages with backoff",
+    classification: "cache",
+    durability: "in_memory_only",
+    domain: "interop",
+    migrationTarget: "pg: hl7_retry_entry table",
+    notes: "Phase 320: Exponential backoff, max 3 retries. References DLQ entry IDs.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
