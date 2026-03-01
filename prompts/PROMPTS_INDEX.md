@@ -1,7 +1,7 @@
 # Prompts Index
 
 Generated: 2026-03-01
-Total prompt folders: 438
+Total prompt folders: 439
 
 | # | Folder | Phase | Files |
 |---|--------|-------|-------|
@@ -443,3 +443,4 @@ Total prompt folders: 438
 | 436 | 436-PHASE-436-WRITE-BACK-AUDIT-TRAIL | 436 | 3 |
 | 437 | 437-PHASE-437-SUPERVISED-MODE-UI | 437 | 3 |
 | 438 | 438-PHASE-438-W27-INTEGRITY-AUDIT | 438 | 3 |
+| 439 | 439-PHASE-439-REGULATORY-CLASSIFICATION-ENGINE | 439 | 3 |
