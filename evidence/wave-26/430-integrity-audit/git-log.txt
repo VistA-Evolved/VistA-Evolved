@@ -1,0 +1,10 @@
+3b62abf phase(429): Runtime-Mode Integration Tests (W26 P7)
+e890290 phase(428): Adapter Health Dashboard Panel (W26 P6)
+6053f43 phase(427): Write-Back Feasibility Report (W26 P5)
+4cb3145 phase(426): RPC Safe-Harbor List v2 (W26 P4)
+12b1164 phase(425): Container-Probe Script + Capability Snapshot (W26 P3)
+2e98c49 phase(424): VistA Runtime Strategy + Baseline Matrix (W26 P2)
+6a67d2b chore: Add Wave 26/27/28 manifests
+cf9b876 phase(423): Prompts Drift Repair + Lint Hardening (W26 P1)
+f392935 fix: resolve 9 phase-mismatch FAILs, rename P1 files, fix 234 empty folder, update secret-scan allow list
+8f315d5 phase(422): Fix verify-latest + prompts-index + final re-audit (W25 P5)
