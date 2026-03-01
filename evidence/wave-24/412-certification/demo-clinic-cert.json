@@ -1,0 +1,10 @@
+{
+    "skip":  3,
+    "timestamp":  "2026-03-01T20:16:51.1298013+08:00",
+    "pass":  20,
+    "archetype":  "clinic",
+    "fail":  0,
+    "customer":  "demo-clinic",
+    "certified":  true,
+    "total":  23
+}
