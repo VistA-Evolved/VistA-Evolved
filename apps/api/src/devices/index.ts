@@ -11,6 +11,7 @@ export { default as astmPoct1aIngestRoutes } from "./astm-poct1a-ingest-routes.j
 export { default as sdcIngestRoutes } from "./sdc-ingest-routes.js";
 export { default as alarmRoutes } from "./alarm-routes.js";
 export { default as infusionBcmaRoutes } from "./infusion-bcma-routes.js";
+export { default as imagingModalityRoutes } from "./imaging-modality-routes.js";
 export { startGatewayCleanup, stopGatewayCleanup } from "./gateway-store.js";
 export type {
   EdgeGateway,
