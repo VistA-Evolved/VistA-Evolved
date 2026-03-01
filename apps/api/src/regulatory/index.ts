@@ -1,5 +1,5 @@
 /**
- * Regulatory module barrel export — Phase 439 + 440.
+ * Regulatory module barrel export — Phase 439 + 440 + 441.
  */
 
 export type {
@@ -23,6 +23,12 @@ export type {
   AttestationSummary,
 } from "./attestation-store.js";
 
+export type {
+  TenantCountryAssignment,
+  TenantRegulatoryConfig,
+  CountryAssignmentAudit,
+} from "./country-config.js";
+
 export { classify, setTenantCountry, getTenantCountry } from "./classification-engine.js";
 export { getFramework, getAllFrameworks, resolveFrameworksByCountry, registerFramework } from "./framework-registry.js";
 
@@ -35,3 +41,16 @@ export {
   getAttestationSummary,
   verifyAttestationChain,
 } from "./attestation-store.js";
+
+export {
+  assignCountryToTenant,
+  getTenantCountryAssignment,
+  listTenantCountryAssignments,
+  getTenantAssignmentHistory,
+  clearTenantCountry,
+  resolveTenantRegulatoryConfig,
+  getSupportedCountries,
+  addSupportedCountry,
+  getCountryAssignmentAudit,
+  verifyCountryAuditChain,
+} from "./country-config.js";
