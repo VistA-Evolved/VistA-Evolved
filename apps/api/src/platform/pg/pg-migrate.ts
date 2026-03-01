@@ -2801,6 +2801,57 @@ CREATE INDEX IF NOT EXISTS idx_tp_region ON tenant_placement(region);
 CREATE INDEX IF NOT EXISTS idx_tp_active ON tenant_placement(tenant_id) WHERE active = true;
 `,
   },
+  {
+    version: 33,
+    name: "phase338_identity_hardening",
+    sql: `
+-- Session device fingerprints (Phase 338)
+CREATE TABLE IF NOT EXISTS session_device_fingerprint (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  session_id TEXT NOT NULL,
+  user_id TEXT NOT NULL,
+  fingerprint_hash TEXT NOT NULL,
+  user_agent_hash TEXT NOT NULL,
+  ip_prefix TEXT NOT NULL,
+  lang_hash TEXT NOT NULL,
+  first_seen_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_sdf_session ON session_device_fingerprint(session_id);
+CREATE INDEX IF NOT EXISTS idx_sdf_user ON session_device_fingerprint(tenant_id, user_id);
+CREATE INDEX IF NOT EXISTS idx_sdf_fingerprint ON session_device_fingerprint(fingerprint_hash);
+
+-- Session security events (Phase 338)
+CREATE TABLE IF NOT EXISTS session_security_event (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  user_id TEXT NOT NULL,
+  session_id TEXT NOT NULL DEFAULT '',
+  event_type TEXT NOT NULL,
+  detail JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_sse_tenant_time ON session_security_event(tenant_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_sse_user ON session_security_event(tenant_id, user_id);
+CREATE INDEX IF NOT EXISTS idx_sse_type ON session_security_event(event_type);
+
+-- Session MFA state (Phase 338)
+CREATE TABLE IF NOT EXISTS session_mfa_state (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  session_id TEXT NOT NULL,
+  user_id TEXT NOT NULL,
+  mfa_method TEXT NOT NULL DEFAULT '',
+  enrolled BOOLEAN NOT NULL DEFAULT false,
+  verified_at TIMESTAMPTZ,
+  expires_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_sms_session ON session_mfa_state(session_id);
+CREATE INDEX IF NOT EXISTS idx_sms_user ON session_mfa_state(tenant_id, user_id);
+`,
+  },
 ];
 
 /**

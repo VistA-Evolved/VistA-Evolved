@@ -179,3 +179,24 @@ export const LOCKOUT_CONFIG = {
   /** Window for counting failures (ms). Default: 15 minutes */
   windowMs: Number(process.env.LOGIN_LOCKOUT_WINDOW_MS || 15 * 60 * 1000),
 } as const;
+
+/* ------------------------------------------------------------------ */
+/* Identity hardening (Phase 338)                                      */
+/* ------------------------------------------------------------------ */
+
+export const IDENTITY_HARDENING_CONFIG = {
+  /** Step-up auth: recent-auth window to count as "elevated" (ms). Default: 5 min */
+  stepUpRecentAuthWindowMs: Number(process.env.STEP_UP_RECENT_AUTH_WINDOW_MS || 5 * 60 * 1000),
+  /** Step-up auth: MFA verification validity window (ms). Default: 15 min */
+  stepUpMfaValidityMs: Number(process.env.STEP_UP_MFA_VALIDITY_MS || 15 * 60 * 1000),
+  /** MFA enforcement enabled. Default: false (opt-in). */
+  mfaEnforcementEnabled: process.env.MFA_ENFORCEMENT_ENABLED === "true",
+  /** MFA grace period for newly required users (ms). Default: 7 days */
+  mfaGracePeriodMs: Number(process.env.MFA_GRACE_PERIOD_MS || 7 * 24 * 60 * 60 * 1000),
+  /** MFA verification window (ms). Default: 15 min */
+  mfaVerificationWindowMs: Number(process.env.MFA_VERIFICATION_WINDOW_MS || 15 * 60 * 1000),
+  /** Max concurrent sessions per user. Default: 5 */
+  maxConcurrentSessions: Number(process.env.MAX_CONCURRENT_SESSIONS || 5),
+  /** Max security events in ring buffer. Default: 5000 */
+  maxSecurityEvents: Number(process.env.MAX_SECURITY_EVENTS || 5000),
+} as const;

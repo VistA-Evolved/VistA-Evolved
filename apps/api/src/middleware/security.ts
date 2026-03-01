@@ -83,6 +83,10 @@ interface AuthRule {
  */
 const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/(health|ready|vista\/ping|vista\/swap-boundary|metrics(\/prometheus)?|version)$/, auth: "none" },
+  { pattern: /^\/auth\/sessions/, auth: "session" }, // Phase 338: session management (own session check in handler)
+  { pattern: /^\/auth\/security-events/, auth: "session" }, // Phase 338: security events (admin checked in handler)
+  { pattern: /^\/auth\/step-up\//, auth: "session" }, // Phase 338: step-up status (session required)
+  { pattern: /^\/auth\/mfa\//, auth: "session" }, // Phase 338: MFA status (session required)
   { pattern: /^\/auth\//, auth: "none" },
   { pattern: /^\/imaging\/ingest\/callback$/, auth: "service" }, // Phase 23: Orthanc webhook (X-Service-Key)
   { pattern: /^\/imaging\/health$/, auth: "session" }, // Phase 24: imaging health check
