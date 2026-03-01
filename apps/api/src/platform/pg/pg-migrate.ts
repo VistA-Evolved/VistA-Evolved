@@ -3277,6 +3277,117 @@ CREATE INDEX IF NOT EXISTS idx_nr_tenant ON notification_record(tenant_id);
 CREATE INDEX IF NOT EXISTS idx_nr_patient ON notification_record(tenant_id, patient_dfn_hash);
 `,
   },
+  // -- v43 -- Phase 352: Department Scheduling & Resources --
+  {
+    version: 43,
+    name: "phase352_dept_scheduling",
+    sql: `
+-- Schedule Template (Phase 352)
+CREATE TABLE IF NOT EXISTS schedule_template (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  department_id TEXT NOT NULL,
+  facility_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL DEFAULT '',
+  effective_from DATE NOT NULL,
+  effective_to DATE,
+  blocks JSONB NOT NULL DEFAULT '[]'::jsonb,
+  holidays JSONB NOT NULL DEFAULT '[]'::jsonb,
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_st_tenant ON schedule_template(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_st_dept ON schedule_template(tenant_id, department_id);
+
+-- Department Resource (Phase 352)
+CREATE TABLE IF NOT EXISTS dept_resource (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  department_id TEXT NOT NULL,
+  facility_id TEXT NOT NULL,
+  type TEXT NOT NULL,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'available',
+  capacity INTEGER NOT NULL DEFAULT 1,
+  capabilities JSONB NOT NULL DEFAULT '[]'::jsonb,
+  location TEXT NOT NULL DEFAULT '',
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_dr_tenant ON dept_resource(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_dr_dept ON dept_resource(tenant_id, department_id);
+CREATE INDEX IF NOT EXISTS idx_dr_type ON dept_resource(tenant_id, type);
+
+-- Resource Allocation (Phase 352)
+CREATE TABLE IF NOT EXISTS resource_allocation (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  resource_id TEXT NOT NULL,
+  department_id TEXT NOT NULL,
+  scheduled_start TIMESTAMPTZ NOT NULL,
+  scheduled_end TIMESTAMPTZ NOT NULL,
+  appointment_ref TEXT,
+  patient_dfn TEXT,
+  allocated_by TEXT NOT NULL,
+  reason TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'pending',
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_ra_tenant ON resource_allocation(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_ra_resource ON resource_allocation(tenant_id, resource_id);
+CREATE INDEX IF NOT EXISTS idx_ra_dept ON resource_allocation(tenant_id, department_id);
+CREATE INDEX IF NOT EXISTS idx_ra_time ON resource_allocation(scheduled_start, scheduled_end);
+
+-- Scheduling Rule (Phase 352)
+CREATE TABLE IF NOT EXISTS scheduling_rule (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  department_id TEXT NOT NULL,
+  facility_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL DEFAULT '',
+  priority INTEGER NOT NULL DEFAULT 100,
+  condition JSONB NOT NULL DEFAULT '{}'::jsonb,
+  action TEXT NOT NULL,
+  active BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_sr_tenant ON scheduling_rule(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_sr_dept ON scheduling_rule(tenant_id, department_id);
+
+-- Cross-Department Referral (Phase 352)
+CREATE TABLE IF NOT EXISTS cross_dept_referral (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  from_department_id TEXT NOT NULL,
+  to_department_id TEXT NOT NULL,
+  from_facility_id TEXT NOT NULL,
+  to_facility_id TEXT NOT NULL,
+  patient_dfn TEXT NOT NULL,
+  referred_by TEXT NOT NULL,
+  reason TEXT NOT NULL,
+  clinical_notes TEXT NOT NULL DEFAULT '',
+  urgency TEXT NOT NULL DEFAULT 'routine',
+  status TEXT NOT NULL DEFAULT 'pending',
+  appointment_ref TEXT,
+  requested_date DATE,
+  expires_at TIMESTAMPTZ,
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_cdr_tenant ON cross_dept_referral(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_cdr_from ON cross_dept_referral(tenant_id, from_department_id);
+CREATE INDEX IF NOT EXISTS idx_cdr_to ON cross_dept_referral(tenant_id, to_department_id);
+CREATE INDEX IF NOT EXISTS idx_cdr_status ON cross_dept_referral(tenant_id, status);
+`,
+  },
 ];
 
 /**
@@ -3471,6 +3582,12 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   "patient_consent",
   "notification_template",
   "notification_record",
+  // Phase 352: Department Scheduling & Resources
+  "schedule_template",
+  "dept_resource",
+  "resource_allocation",
+  "scheduling_rule",
+  "cross_dept_referral",
 ] as const;
 
 /**

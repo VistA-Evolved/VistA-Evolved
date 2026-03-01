@@ -272,6 +272,7 @@ import { deptRbacRoutes } from "../routes/dept-rbac-routes.js";
 import { deptPackRoutes } from "../routes/dept-pack-routes.js";
 import { workflowInboxRoutes } from "../routes/workflow-inbox-routes.js";
 import { patientCommsRoutes } from "../routes/patient-comms-routes.js";
+import { deptSchedulingRoutes } from "../routes/dept-scheduling-routes.js";
 
 /**
  * Register all route plugins in the exact order from the original index.ts.
@@ -625,6 +626,7 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(deptPackRoutes);               // Phase 349: department packs catalog + install
   server.register(workflowInboxRoutes);           // Phase 350: unified workflow inbox
   server.register(patientCommsRoutes);              // Phase 351: patient communications
+  server.register(deptSchedulingRoutes);             // Phase 352: dept scheduling & resource layer
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);
