@@ -3909,6 +3909,18 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: diagnostics_bundle (v52)",
     notes: "Phase 373: Auto-generated diagnostics bundles.",
   },
+  // Phase 374: External Validation Harness (W20-P5)
+  {
+    id: "external-validation-vulns",
+    file: "services/external-validation-service.ts",
+    variable: "vulnStore",
+    description: "In-memory vulnerability triage records",
+    classification: "operational" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "external-validation",
+    migrationTarget: "pg: vulnerability (v53)",
+    notes: "Phase 374: Vulnerability triage workflow for pre-GA pen-test.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

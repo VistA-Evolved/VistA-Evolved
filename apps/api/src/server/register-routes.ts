@@ -290,6 +290,7 @@ import w19ReportingRoutes from "../routes/reporting-routes.js";
 import releaseTrainRoutes from "../routes/release-train-routes.js";
 import customerSuccessRoutes from "../routes/customer-success-routes.js";
 import supportOpsRoutes from "../routes/support-ops-routes.js";
+import externalValidationRoutes from "../routes/external-validation-routes.js";
 
 /**
  * Register all route plugins in the exact order from the original index.ts.
@@ -661,6 +662,7 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(releaseTrainRoutes);                              // Phase 371: release train governance
   server.register(customerSuccessRoutes);                             // Phase 372: customer success tooling
   server.register(supportOpsRoutes);                                    // Phase 373: support ops automation
+  server.register(externalValidationRoutes);                             // Phase 374: external validation harness
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);
