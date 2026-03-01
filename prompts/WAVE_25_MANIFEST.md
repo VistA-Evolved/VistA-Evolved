@@ -7,11 +7,11 @@
 
 | Wave Phase | Resolved ID | Title | Prompt Folder | Status |
 |------------|-------------|-------|---------------|--------|
-| W25-P1 | 418 | Manifest + Range Reservation + Baseline Audit | `418-W25-P1-MANIFEST-BASELINE` | Planned |
-| W25-P2 | 419 | Flatten W12 Nested Phases + Remove Collision | `419-W25-P2-FLATTEN-W12-REMOVE-COLLISION` | Planned |
-| W25-P3 | 420 | Recover W15 Prompt Folders (328-336) | `420-W25-P3-RECOVER-W15-PROMPTS` | Planned |
-| W25-P4 | 421 | Harden Prompt Gates (CI + Local) | `421-W25-P4-HARDEN-PROMPT-GATES` | Planned |
-| W25-P5 | 422 | Fix verify-latest + Regenerate Prompt Index | `422-W25-P5-VERIFY-LATEST-AND-REINDEX` | Planned |
+| W25-P1 | 418 | Manifest + Range Reservation + Baseline Audit | `418-W25-P1-MANIFEST-BASELINE` | Verified |
+| W25-P2 | 419 | Flatten W12 Nested Phases + Remove Collision | `419-W25-P2-FLATTEN-W12-REMOVE-COLLISION` | Verified |
+| W25-P3 | 420 | Recover W15 Prompt Folders (328-336) | `420-W25-P3-RECOVER-W15-FOLDERS` | Verified |
+| W25-P4 | 421 | Harden Prompt Gates (CI + Local) | `421-W25-P4-HARDEN-PROMPT-GATES` | Verified |
+| W25-P5 | 422 | Fix verify-latest + Regenerate Prompt Index | `422-W25-P5-VERIFY-LATEST-REINDEX` | Verified |
 
 ## Scope
 

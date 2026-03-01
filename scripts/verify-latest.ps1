@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 408: Wave 23 Longitudinal Interop + HIE Certification
-& "$PSScriptRoot\verify-wave23-hie.ps1" @args
+# Phase 422: Wave 25 Prompt-System Recovery + Anti-Drift Gates
+& "$PSScriptRoot\verify-wave24-pilots.ps1" @args
