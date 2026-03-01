@@ -61,6 +61,9 @@ jobs:
       - name: Prompts tree health gate
         run: node scripts/qa-gates/prompts-tree-health.mjs
 
+      - name: Prompts audit gate (no collisions)
+        run: node scripts/prompts-audit.mjs
+
       # --- Build ---
       - name: Build all packages
         run: pnpm -r build

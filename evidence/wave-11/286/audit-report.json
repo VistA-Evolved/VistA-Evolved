@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-01T15:29:06.488Z",
-  "totalFolders": 420,
-  "totalPhases": 418,
+  "generatedAt": "2026-03-01T15:31:48.871Z",
+  "totalFolders": 421,
+  "totalPhases": 419,
   "collisions": [],
   "collisionCount": 0,
   "gaps": [
@@ -26,11 +26,16 @@
       "name": "234-PHASE-237-PROMPT-LINTER-MANIFEST",
       "hasImplement": false,
       "hasVerify": false
+    },
+    {
+      "name": "421-W25-P4-HARDEN-PROMPT-GATES",
+      "hasImplement": false,
+      "hasVerify": false
     }
   ],
-  "incompleteCount": 1,
+  "incompleteCount": 2,
   "prefixRange": {
     "min": 1,
-    "max": 420
+    "max": 421
   }
 }

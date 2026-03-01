@@ -47,19 +47,28 @@ console.log("\n=== QA Gate: Prompts Tree Health (Phase 113B) ===\n");
 
 const allEntries = readdirSync(PROMPTS_DIR);
 
-// Phase folders: match pattern like "42-PHASE-38-RCM-..." or "01-BOOTSTRAP"
-const PHASE_FOLDER_RE = /^\d+-(?:PHASE-\d+\w?-|BOOTSTRAP|PLAYBOOKS?)/;
+// Phase folders: match patterns like:
+//   "42-PHASE-38-RCM-..."    (classic)
+//   "01-BOOTSTRAP"           (bootstrap)
+//   "327-W15-P1-MANIFEST-*"  (wave-phase naming, W25 onwards)
+const PHASE_FOLDER_RE = /^\d+-(?:PHASE-\d+\w?-|W\d+-P\d+-|BOOTSTRAP|PLAYBOOKS?)/;
 const phaseFolders = allEntries.filter(
   (e) =>
     statSync(join(PROMPTS_DIR, e)).isDirectory() && PHASE_FOLDER_RE.test(e)
 );
 
-// Flat markdown files (excluding 00-* meta files and README)
+// Flat markdown files (excluding 00-* meta files, manifests, and README)
+const ALLOWED_ROOT_FILES = new Set([
+  "README.md",
+  "PROMPTS_INDEX.md",
+  "00-ORDERING-RULES.md",
+]);
 const flatFiles = allEntries.filter(
   (e) =>
     e.endsWith(".md") &&
     !e.startsWith("00-") &&
-    e !== "README.md" &&
+    !e.startsWith("WAVE_") &&
+    !ALLOWED_ROOT_FILES.has(e) &&
     statSync(join(PROMPTS_DIR, e)).isFile()
 );
 
@@ -67,7 +76,8 @@ const flatFiles = allEntries.filter(
 
 const folderPhaseNumbers = new Map();
 for (const folder of phaseFolders) {
-  const m = folder.match(/PHASE-(\d+\w?)/i);
+  // Extract phase number from folder name: "42-PHASE-38-..." -> "38", "327-W15-P1-..." -> "327"
+  const m = folder.match(/PHASE-(\d+\w?)/i) || folder.match(/^(\d+)-W\d+-P\d+/);
   if (m) folderPhaseNumbers.set(m[1], folder);
 }
 
@@ -100,9 +110,9 @@ if (duplicateFlats.length > 0) {
 
 if (orphanFlats.length > 0) {
   for (const file of orphanFlats) {
-    warn(
+    fail(
       "orphan-flat",
-      `"${file}" at root has no corresponding phase folder -- should be moved`
+      `"${file}" at root has no corresponding phase folder -- must be moved into a folder`
     );
   }
 } else {
@@ -111,7 +121,7 @@ if (orphanFlats.length > 0) {
 
 // ── Gate 2: Folder naming convention ──────────────────
 
-const FOLDER_CONVENTION_RE = /^\d{1,3}-(?:PHASE-\d+\w?-[A-Z0-9-]+|BOOTSTRAP|PLAYBOOKS?)$/;
+const FOLDER_CONVENTION_RE = /^\d{1,3}-(?:PHASE-\d+\w?-[A-Z0-9-]+|W\d+-P\d+-[A-Z0-9-]+|BOOTSTRAP|PLAYBOOKS?)$/;
 const badNames = [];
 
 for (const folder of phaseFolders) {
@@ -164,7 +174,8 @@ if (missingPairs === 0) {
 let mismatches = 0;
 
 for (const folder of phaseFolders) {
-  const folderMatch = folder.match(/PHASE-(\d+\w?)/i);
+  // Extract phase number: "42-PHASE-38-..." -> "38", "327-W15-P1-..." -> "327"
+  const folderMatch = folder.match(/PHASE-(\d+\w?)/i) || folder.match(/^(\d+)-W\d+-P\d+/);
   if (!folderMatch) continue;
   const folderPhase = folderMatch[1];
 
@@ -206,7 +217,7 @@ if (mismatches === 0) {
 
 const phaseToFolders = new Map();
 for (const folder of phaseFolders) {
-  const m = folder.match(/PHASE-(\d+\w?)/i);
+  const m = folder.match(/PHASE-(\d+\w?)/i) || folder.match(/^(\d+)-W\d+-P\d+/);
   if (!m) continue;
   const num = m[1];
   if (!phaseToFolders.has(num)) phaseToFolders.set(num, []);
@@ -226,6 +237,33 @@ for (const [num, folders] of phaseToFolders) {
 
 if (dupeCount === 0) {
   pass("duplicate-phase", "No duplicate phase numbers across folders");
+}
+
+// ── Gate 6: No nested numbered subdirectories in phase folders ───
+
+let nestedCount = 0;
+
+for (const folder of phaseFolders) {
+  const folderPath = join(PROMPTS_DIR, folder);
+  try {
+    const children = readdirSync(folderPath);
+    for (const child of children) {
+      const childPath = join(folderPath, child);
+      if (statSync(childPath).isDirectory() && /^\d+/.test(child)) {
+        fail(
+          "nested-phase",
+          `"${folder}/${child}" is a nested numbered subdirectory -- phases must be top-level`
+        );
+        nestedCount++;
+      }
+    }
+  } catch {
+    // skip unreadable
+  }
+}
+
+if (nestedCount === 0) {
+  pass("nested-phase", "No nested numbered subdirectories in phase folders");
 }
 
 // ── Summary ──────────────────────────────────────────
