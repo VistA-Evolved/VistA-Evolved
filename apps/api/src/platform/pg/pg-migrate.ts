@@ -2677,6 +2677,83 @@ CREATE TABLE IF NOT EXISTS clinical_command_result (
 );
 `,
   },
+  {
+    version: 31,
+    name: "phase318_integration_control_plane",
+    sql: `
+-- Phase 318: Integration Control Plane v2 tables
+CREATE TABLE IF NOT EXISTS integration_partner (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  type TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'draft',
+  description TEXT,
+  contact_email TEXT,
+  tags TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  created_by TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_ip_tenant ON integration_partner(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_ip_tenant_status ON integration_partner(tenant_id, status);
+
+CREATE TABLE IF NOT EXISTS integration_endpoint (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL,
+  partner_id TEXT NOT NULL REFERENCES integration_partner(id),
+  direction TEXT NOT NULL,
+  protocol TEXT NOT NULL,
+  address TEXT NOT NULL,
+  port INTEGER,
+  path TEXT,
+  tls_mode TEXT DEFAULT 'required',
+  description TEXT,
+  enabled BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_iep_partner ON integration_endpoint(partner_id);
+CREATE INDEX IF NOT EXISTS idx_iep_tenant ON integration_endpoint(tenant_id);
+
+CREATE TABLE IF NOT EXISTS integration_credential_ref (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL,
+  partner_id TEXT NOT NULL REFERENCES integration_partner(id),
+  label TEXT NOT NULL,
+  secret_ref TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  rotated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_icr_partner ON integration_credential_ref(partner_id);
+CREATE INDEX IF NOT EXISTS idx_icr_tenant ON integration_credential_ref(tenant_id);
+
+CREATE TABLE IF NOT EXISTS integration_route (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL,
+  partner_id TEXT NOT NULL REFERENCES integration_partner(id),
+  message_type TEXT NOT NULL,
+  route_to TEXT NOT NULL,
+  priority INTEGER NOT NULL DEFAULT 0,
+  enabled BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_ir_partner ON integration_route(partner_id);
+CREATE INDEX IF NOT EXISTS idx_ir_tenant ON integration_route(tenant_id);
+
+CREATE TABLE IF NOT EXISTS integration_test_run (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL,
+  partner_id TEXT NOT NULL REFERENCES integration_partner(id),
+  started_by TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending',
+  checks_json JSONB NOT NULL DEFAULT '[]'::jsonb,
+  started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  completed_at TIMESTAMPTZ
+);
+CREATE INDEX IF NOT EXISTS idx_itr_partner ON integration_test_run(partner_id);
+CREATE INDEX IF NOT EXISTS idx_itr_tenant ON integration_test_run(tenant_id);
+`,
+  },
 ];
 
 /**
@@ -2845,6 +2922,12 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   "clinical_command",
   "clinical_command_attempt",
   "clinical_command_result",
+  // Phase 318: Integration Control Plane v2
+  "integration_partner",
+  "integration_endpoint",
+  "integration_credential_ref",
+  "integration_route",
+  "integration_test_run",
 ] as const;
 
 /**

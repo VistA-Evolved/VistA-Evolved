@@ -135,6 +135,8 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/terminology\//, auth: "session" },    // Phase 313: terminology resolution
   { pattern: /^\/country-packs\//, auth: "session" },  // Phase 314: country pack config
   { pattern: /^\/compliance\//, auth: "admin" },       // Phase 315: compliance matrix
+  // Wave 14: Enterprise Interop (Phases 317-325)
+  { pattern: /^\/api\/platform\/integrations\//, auth: "admin" }, // Phase 318: integration control plane
   // Default: session required for anything else
 ];
 

@@ -219,6 +219,9 @@ import { initTerminologyResolvers } from "../services/terminology-registry.js";
 import { countryPackRoutes } from "../routes/country-pack-routes.js";
 import { complianceRoutes } from "../routes/compliance-routes.js";
 
+// Wave 14: Enterprise Interop (Phase 318)
+import { integrationControlPlaneRoutes } from "../routes/integration-control-plane-routes.js";
+
 /**
  * Register all route plugins in the exact order from the original index.ts.
  * Also starts cleanup jobs that were previously co-located with route registration.
@@ -505,6 +508,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(terminologyRoutes);
   server.register(countryPackRoutes);
   server.register(complianceRoutes);
+
+  // Wave 14: Enterprise Interop (Phase 318)
+  server.register(integrationControlPlaneRoutes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);
