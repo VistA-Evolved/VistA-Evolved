@@ -3309,6 +3309,28 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: provider_facility_assignment (v38)",
     notes: "Phase 347: PG table exists; in-memory for dev speed.",
   },
+  {
+    id: "dept-role-template-store",
+    file: "auth/dept-rbac-templates.ts",
+    variable: "templateStore",
+    description: "In-memory department role templates",
+    classification: "registry",
+    durability: "in_memory_only",
+    domain: "auth",
+    migrationTarget: "pg: dept_role_template (v39)",
+    notes: "Phase 348: PG table exists; in-memory for dev speed.",
+  },
+  {
+    id: "dept-role-membership-store",
+    file: "auth/dept-rbac-templates.ts",
+    variable: "membershipStore",
+    description: "In-memory department role memberships",
+    classification: "registry",
+    durability: "in_memory_only",
+    domain: "auth",
+    migrationTarget: "pg: dept_role_membership (v39)",
+    notes: "Phase 348: PG table exists; in-memory for dev speed.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

@@ -3108,6 +3108,46 @@ CREATE INDEX IF NOT EXISTS idx_pfa_provider ON provider_facility_assignment(tena
 CREATE INDEX IF NOT EXISTS idx_pfa_facility ON provider_facility_assignment(tenant_id, facility_id);
 `,
   },
+  {
+    version: 39,
+    name: "phase348_dept_rbac_templates",
+    sql: `
+-- Department Role Templates (Phase 348)
+CREATE TABLE IF NOT EXISTS dept_role_template (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  name TEXT NOT NULL,
+  department_type TEXT NOT NULL,
+  role TEXT NOT NULL,
+  allowed_actions JSONB NOT NULL DEFAULT '[]'::jsonb,
+  denied_actions JSONB NOT NULL DEFAULT '[]'::jsonb,
+  constraints JSONB NOT NULL DEFAULT '{}'::jsonb,
+  is_default BOOLEAN NOT NULL DEFAULT false,
+  status TEXT NOT NULL DEFAULT 'active',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_drt_tenant ON dept_role_template(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_drt_dept ON dept_role_template(tenant_id, department_type);
+CREATE INDEX IF NOT EXISTS idx_drt_role ON dept_role_template(tenant_id, role);
+
+-- Department Role Membership (Phase 348)
+CREATE TABLE IF NOT EXISTS dept_role_membership (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  user_id TEXT NOT NULL,
+  department_id TEXT NOT NULL,
+  template_id TEXT NOT NULL,
+  granted_by TEXT NOT NULL,
+  granted_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  expires_at TIMESTAMPTZ,
+  status TEXT NOT NULL DEFAULT 'active'
+);
+CREATE INDEX IF NOT EXISTS idx_drm_tenant ON dept_role_membership(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_drm_user ON dept_role_membership(tenant_id, user_id);
+CREATE INDEX IF NOT EXISTS idx_drm_dept ON dept_role_membership(tenant_id, department_id);
+`,
+  },
 ];
 
 /**
@@ -3290,6 +3330,9 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   "department",
   "location",
   "provider_facility_assignment",
+  // Phase 348: Dept RBAC Templates
+  "dept_role_template",
+  "dept_role_membership",
 ] as const;
 
 /**
