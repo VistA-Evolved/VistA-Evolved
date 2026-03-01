@@ -3353,6 +3353,28 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: pack_installation (v40)",
     notes: "Phase 349: PG table exists; in-memory for dev speed.",
   },
+  {
+    id: "workflow-task-store",
+    file: "services/workflow-inbox-service.ts",
+    variable: "taskStore",
+    description: "In-memory workflow task registry",
+    classification: "registry",
+    durability: "in_memory_only",
+    domain: "workflow",
+    migrationTarget: "pg: workflow_task (v41)",
+    notes: "Phase 350: PG table exists; in-memory for dev speed.",
+  },
+  {
+    id: "workflow-task-event-log",
+    file: "services/workflow-inbox-service.ts",
+    variable: "eventStore",
+    description: "In-memory workflow task event log",
+    classification: "audit",
+    durability: "in_memory_only",
+    domain: "workflow",
+    migrationTarget: "pg: workflow_task_event (v41)",
+    notes: "Phase 350: Append-only event log for task transitions.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

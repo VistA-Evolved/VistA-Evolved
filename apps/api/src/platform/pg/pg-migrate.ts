@@ -3172,6 +3172,57 @@ CREATE INDEX IF NOT EXISTS idx_pi_pack ON pack_installation(tenant_id, pack_id);
 CREATE INDEX IF NOT EXISTS idx_pi_status ON pack_installation(tenant_id, status);
 `,
   },
+  {
+    version: 41,
+    name: "phase350_workflow_inbox",
+    sql: `
+-- Workflow Task (Phase 350)
+CREATE TABLE IF NOT EXISTS workflow_task (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  facility_id TEXT,
+  department_id TEXT,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL DEFAULT '',
+  category TEXT NOT NULL,
+  priority TEXT NOT NULL DEFAULT 'normal',
+  status TEXT NOT NULL DEFAULT 'pending',
+  assigned_to TEXT,
+  assigned_by TEXT,
+  created_by TEXT NOT NULL,
+  patient_dfn TEXT,
+  source_type TEXT,
+  source_id TEXT,
+  due_at TIMESTAMPTZ,
+  escalate_at TIMESTAMPTZ,
+  completed_at TIMESTAMPTZ,
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_wt_tenant ON workflow_task(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_wt_dept ON workflow_task(tenant_id, department_id);
+CREATE INDEX IF NOT EXISTS idx_wt_assigned ON workflow_task(tenant_id, assigned_to);
+CREATE INDEX IF NOT EXISTS idx_wt_status ON workflow_task(tenant_id, status);
+CREATE INDEX IF NOT EXISTS idx_wt_priority ON workflow_task(tenant_id, priority);
+CREATE INDEX IF NOT EXISTS idx_wt_due ON workflow_task(tenant_id, due_at);
+
+-- Workflow Task Event (Phase 350)
+CREATE TABLE IF NOT EXISTS workflow_task_event (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  task_id TEXT NOT NULL,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  action TEXT NOT NULL,
+  actor TEXT NOT NULL,
+  previous_status TEXT,
+  new_status TEXT,
+  comment TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_wte_task ON workflow_task_event(task_id);
+CREATE INDEX IF NOT EXISTS idx_wte_tenant ON workflow_task_event(tenant_id);
+`,
+  },
 ];
 
 /**
@@ -3359,6 +3410,9 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   "dept_role_membership",
   // Phase 349: Department Packs
   "pack_installation",
+  // Phase 350: Workflow Inbox
+  "workflow_task",
+  "workflow_task_event",
 ] as const;
 
 /**
