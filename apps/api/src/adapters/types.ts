@@ -127,3 +127,71 @@ export interface EncounterRecord {
   reason?: string;
   duration?: number;
 }
+
+/* ================================================================== */
+/* ADT (Admission/Discharge/Transfer) types — Phase 431               */
+/* ================================================================== */
+
+/** Ward record shape. */
+export interface WardRecord {
+  ien: string;
+  name: string;
+  abbreviation?: string;
+  service?: string;
+  bedsAuthorized?: number;
+  bedsOccupied?: number;
+  bedsAvailable?: number;
+}
+
+/** Patient movement record (admission, transfer, discharge). */
+export interface MovementRecord {
+  id: string;
+  patientDfn: string;
+  movementType: 'admission' | 'transfer' | 'discharge';
+  dateTime: string;
+  ward?: string;
+  wardIen?: string;
+  roomBed?: string;
+  attendingProvider?: string;
+  attendingDuz?: string;
+  treatingSpecialty?: string;
+  disposition?: string;
+}
+
+/** ADT admission request. */
+export interface AdmitRequest {
+  dfn: string;
+  wardIen: string;
+  roomBed?: string;
+  attendingDuz: string;
+  admitDateTime?: string;
+  treatingSpecialty?: string;
+  admissionType?: string;
+}
+
+/** ADT transfer request. */
+export interface TransferRequest {
+  dfn: string;
+  fromWardIen: string;
+  toWardIen: string;
+  roomBed?: string;
+  attendingDuz?: string;
+  transferDateTime?: string;
+  reason?: string;
+}
+
+/** ADT discharge request. */
+export interface DischargeRequest {
+  dfn: string;
+  wardIen: string;
+  dischargeDateTime?: string;
+  disposition?: string;
+  attendingDuz?: string;
+}
+
+/** Write operation result with optional IEN. */
+export interface WriteResult {
+  success: boolean;
+  ien?: string;
+  message?: string;
+}

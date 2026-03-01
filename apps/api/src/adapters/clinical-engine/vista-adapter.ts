@@ -1,5 +1,5 @@
 /**
- * VistA Clinical Engine Adapter — Phase 37C.
+ * VistA Clinical Engine Adapter — Phase 37C, extended Phase 431.
  *
  * Default implementation that calls VistA RPCs via the RPC Broker client.
  * This is the production adapter for VA and WorldVistA environments.
@@ -17,6 +17,12 @@ import type {
   ProblemRecord,
   LabResult,
   EncounterRecord,
+  WardRecord,
+  MovementRecord,
+  AdmitRequest,
+  TransferRequest,
+  DischargeRequest,
+  WriteResult,
 } from "../types.js";
 
 export class VistaClinicalAdapter implements ClinicalEngineAdapter {
@@ -237,5 +243,128 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
     } catch (err: any) {
       return { ok: false, error: err.message };
     }
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Write methods (Phase 431)                                         */
+  /* ---------------------------------------------------------------- */
+
+  async addAllergy(dfn: string, _allergen: string, _params: Record<string, unknown>): Promise<AdapterResult<WriteResult>> {
+    return {
+      ok: false, pending: true,
+      target: "ORWDAL32 SAVE ALLERGY",
+      error: "Write via adapter not yet wired — use route-direct safeCallRpcWithList",
+      vistaGrounding: { rpc: "ORWDAL32 SAVE ALLERGY", vistaPackage: "OR", vistaFiles: ["120.8"], sandboxNote: "Available and tested via route-direct path" },
+    };
+  }
+
+  async addVital(dfn: string, _type: string, _value: string, _params?: Record<string, unknown>): Promise<AdapterResult<WriteResult>> {
+    return {
+      ok: false, pending: true,
+      target: "GMV ADD VM",
+      error: "Write via adapter not yet wired — use route-direct safeCallRpc",
+      vistaGrounding: { rpc: "GMV ADD VM", vistaPackage: "GMV", vistaFiles: ["120.5"], sandboxNote: "Available and tested via route-direct path" },
+    };
+  }
+
+  async createNote(dfn: string, _titleIen: string, _text: string, _params?: Record<string, unknown>): Promise<AdapterResult<WriteResult>> {
+    return {
+      ok: false, pending: true,
+      target: "TIU CREATE RECORD",
+      error: "Write via adapter not yet wired — use route-direct safeCallRpc",
+      vistaGrounding: { rpc: "TIU CREATE RECORD", vistaPackage: "TIU", vistaFiles: ["8925"], sandboxNote: "Available and tested via route-direct path" },
+    };
+  }
+
+  async addProblem(dfn: string, _icdCode: string, _description: string, _params?: Record<string, unknown>): Promise<AdapterResult<WriteResult>> {
+    return {
+      ok: false, pending: true,
+      target: "ORQQPL ADD SAVE",
+      error: "Write via adapter not yet wired — use route-direct safeCallRpc",
+      vistaGrounding: { rpc: "ORQQPL ADD SAVE", vistaPackage: "OR", vistaFiles: ["9000011"], sandboxNote: "Available and tested via route-direct path" },
+    };
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* ADT methods (Phase 431)                                           */
+  /* ---------------------------------------------------------------- */
+
+  async getWards(): Promise<AdapterResult<WardRecord[]>> {
+    try {
+      const { safeCallRpc } = await import("../../lib/rpc-resilience.js");
+      const rawLines = await safeCallRpc("ORQPT WARDS", []);
+      const wards: WardRecord[] = rawLines
+        .filter((l: string) => l.trim())
+        .map((l: string) => {
+          const [ien, ...rest] = l.split("^");
+          return { ien: ien.trim(), name: rest.join("^").trim() || ien.trim() };
+        });
+      return { ok: true, data: wards };
+    } catch (err: any) {
+      log.warn("getWards failed", { error: err.message });
+      return { ok: false, error: err.message };
+    }
+  }
+
+  async getMovements(dfn: string): Promise<AdapterResult<MovementRecord[]>> {
+    try {
+      const { safeCallRpc } = await import("../../lib/rpc-resilience.js");
+      const rawLines = await safeCallRpc("ORWPT16 ADMITLST", [dfn]);
+      const movements: MovementRecord[] = rawLines
+        .filter((l: string) => l.trim())
+        .map((l: string) => {
+          const parts = l.split("^");
+          return {
+            id: parts[0] || "",
+            patientDfn: dfn,
+            movementType: "admission" as const,
+            dateTime: parts[1] || "",
+            ward: parts[2] || "",
+          };
+        });
+      return { ok: true, data: movements };
+    } catch (err: any) {
+      log.warn("getMovements failed", { error: err.message });
+      return { ok: false, error: err.message };
+    }
+  }
+
+  async admitPatient(_request: AdmitRequest): Promise<AdapterResult<WriteResult>> {
+    return {
+      ok: false, pending: true,
+      target: "DGPM NEW ADMISSION",
+      error: "ADT admission write not available in sandbox — DGPM RPCs not exposed in OR CPRS GUI CHART context",
+      vistaGrounding: {
+        rpc: "DGPM NEW ADMISSION", vistaPackage: "DG",
+        vistaFiles: ["405", "2"], sandboxNote: "Not available in WorldVistA Docker",
+        migrationPath: "Wire via ZVEADT.m custom wrapper or DG ADT context",
+      },
+    };
+  }
+
+  async transferPatient(_request: TransferRequest): Promise<AdapterResult<WriteResult>> {
+    return {
+      ok: false, pending: true,
+      target: "DGPM NEW TRANSFER",
+      error: "ADT transfer write not available in sandbox — DGPM RPCs not exposed",
+      vistaGrounding: {
+        rpc: "DGPM NEW TRANSFER", vistaPackage: "DG",
+        vistaFiles: ["405"], sandboxNote: "Not available in WorldVistA Docker",
+        migrationPath: "Wire via ZVEADT.m custom wrapper or DG ADT context",
+      },
+    };
+  }
+
+  async dischargePatient(_request: DischargeRequest): Promise<AdapterResult<WriteResult>> {
+    return {
+      ok: false, pending: true,
+      target: "DGPM NEW DISCHARGE",
+      error: "ADT discharge write not available in sandbox — DGPM RPCs not exposed",
+      vistaGrounding: {
+        rpc: "DGPM NEW DISCHARGE", vistaPackage: "DG",
+        vistaFiles: ["405"], sandboxNote: "Not available in WorldVistA Docker",
+        migrationPath: "Wire via ZVEADT.m custom wrapper or DG ADT context",
+      },
+    };
   }
 }

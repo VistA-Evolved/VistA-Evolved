@@ -290,6 +290,10 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
   { name: "PSJBCMA", reason: "Barcode-to-medication lookup via PSJ BCMA routines — requires PSJ/PSB packages (Phase 138)" },
   { name: "GMRIO RESULTS", reason: "I&O results from GMR(126) — RPC not exposed via OR CPRS GUI CHART context (Phase 138)" },
   { name: "GMRIO ADD", reason: "I&O entry add — requires GMR IO package configuration (Phase 138)" },
+  // Phase 431: DGPM ADT write RPCs — target RPCs for admission/transfer/discharge (not exposed in OR CPRS GUI CHART context)
+  { name: "DGPM NEW ADMISSION", reason: "ADT admission write — DGPM package RPCs not exposed in OR CPRS GUI CHART context in WorldVistA Docker (Phase 431)" },
+  { name: "DGPM NEW TRANSFER", reason: "ADT transfer write — DGPM package RPCs not exposed in OR CPRS GUI CHART context in WorldVistA Docker (Phase 431)" },
+  { name: "DGPM NEW DISCHARGE", reason: "ADT discharge write — DGPM package RPCs not exposed in OR CPRS GUI CHART context in WorldVistA Docker (Phase 431)" },
 ];
 
 /* ------------------------------------------------------------------ */
