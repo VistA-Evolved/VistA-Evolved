@@ -3018,6 +3018,96 @@ CREATE INDEX IF NOT EXISTS idx_ar_user ON access_reason(tenant_id, user_id);
 CREATE INDEX IF NOT EXISTS idx_ar_time ON access_reason(tenant_id, accessed_at);
 `,
   },
+  {
+    version: 38,
+    name: "phase347_facility_location_model",
+    sql: `
+-- Facility (Phase 347)
+CREATE TABLE IF NOT EXISTS facility (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  name TEXT NOT NULL,
+  facility_type TEXT NOT NULL DEFAULT 'clinic',
+  station_number TEXT,
+  vista_station_ien TEXT,
+  address TEXT,
+  city TEXT,
+  state TEXT,
+  postal_code TEXT,
+  country TEXT NOT NULL DEFAULT 'US',
+  timezone TEXT NOT NULL DEFAULT 'America/New_York',
+  parent_facility_id TEXT,
+  status TEXT NOT NULL DEFAULT 'active',
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_fac_tenant ON facility(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_fac_type ON facility(tenant_id, facility_type);
+CREATE INDEX IF NOT EXISTS idx_fac_status ON facility(tenant_id, status);
+CREATE INDEX IF NOT EXISTS idx_fac_station ON facility(tenant_id, station_number);
+
+-- Department (Phase 347)
+CREATE TABLE IF NOT EXISTS department (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  facility_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  department_type TEXT NOT NULL DEFAULT 'custom',
+  code TEXT NOT NULL,
+  vista_service_ien TEXT,
+  cost_center TEXT,
+  parent_department_id TEXT,
+  status TEXT NOT NULL DEFAULT 'active',
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_dept_tenant ON department(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_dept_facility ON department(tenant_id, facility_id);
+CREATE INDEX IF NOT EXISTS idx_dept_type ON department(tenant_id, department_type);
+CREATE INDEX IF NOT EXISTS idx_dept_code ON department(tenant_id, code);
+
+-- Location (Phase 347)
+CREATE TABLE IF NOT EXISTS location (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  department_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  location_type TEXT NOT NULL DEFAULT 'clinic',
+  vista_location_ien TEXT,
+  floor TEXT,
+  wing TEXT,
+  room_number TEXT,
+  bed_count INTEGER,
+  status TEXT NOT NULL DEFAULT 'active',
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_loc_tenant ON location(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_loc_dept ON location(tenant_id, department_id);
+CREATE INDEX IF NOT EXISTS idx_loc_type ON location(tenant_id, location_type);
+
+-- Provider Facility Assignment (Phase 347)
+CREATE TABLE IF NOT EXISTS provider_facility_assignment (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  provider_id TEXT NOT NULL,
+  facility_id TEXT NOT NULL,
+  department_id TEXT,
+  role TEXT NOT NULL,
+  is_primary BOOLEAN NOT NULL DEFAULT false,
+  start_date TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  end_date TIMESTAMPTZ,
+  status TEXT NOT NULL DEFAULT 'active',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_pfa_tenant ON provider_facility_assignment(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_pfa_provider ON provider_facility_assignment(tenant_id, provider_id);
+CREATE INDEX IF NOT EXISTS idx_pfa_facility ON provider_facility_assignment(tenant_id, facility_id);
+`,
+  },
 ];
 
 /**
@@ -3195,6 +3285,11 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   // Phase 328: Multi-Cluster Registry
   "platform_cluster",
   "tenant_placement",
+  // Phase 347: Facility/Location Model
+  "facility",
+  "department",
+  "location",
+  "provider_facility_assignment",
 ] as const;
 
 /**

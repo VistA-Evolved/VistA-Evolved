@@ -266,6 +266,9 @@ import { tenantSecurityRoutes } from "../routes/tenant-security-routes.js";
 import { privacyRoutes } from "../routes/privacy-routes.js";
 import { siemRoutes } from "../routes/siem-routes.js";
 
+// Wave 17: Multi-Facility + Dept Packs + Workflow Inbox + Patient Comms (Phases 346-353)
+import { facilityRoutes } from "../routes/facility-routes.js";
+
 /**
  * Register all route plugins in the exact order from the original index.ts.
  * Also starts cleanup jobs that were previously co-located with route registration.
@@ -611,6 +614,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(tenantSecurityRoutes);      // Phase 342: tenant security policies
   server.register(privacyRoutes);             // Phase 343: privacy segmentation
   server.register(siemRoutes);                // Phase 344: SIEM sink & alerts
+
+  // Wave 17: Multi-Facility + Dept Packs + Workflow Inbox + Patient Comms (Phases 346-353)
+  server.register(facilityRoutes);             // Phase 347: facility/department/location CRUD
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

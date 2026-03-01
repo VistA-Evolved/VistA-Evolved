@@ -94,6 +94,11 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/tenant-security\//, auth: "admin" }, // Phase 342: tenant security posture (admin only)
   { pattern: /^\/privacy\//, auth: "session" }, // Phase 343: privacy segmentation (session, fine-grained in handler)
   { pattern: /^\/siem\//, auth: "admin" }, // Phase 344: SIEM management (admin only)
+  // Wave 17: Multi-Facility + Dept Packs + Workflow Inbox + Patient Comms (Phases 346-353)
+  { pattern: /^\/facilities\//, auth: "admin" }, // Phase 347: facility management (admin only)
+  { pattern: /^\/departments\//, auth: "admin" }, // Phase 347: department management (admin only)
+  { pattern: /^\/locations\//, auth: "admin" }, // Phase 347: location management (admin only)
+  { pattern: /^\/provider-assignments\//, auth: "admin" }, // Phase 347: provider assignments (admin only)
   { pattern: /^\/imaging\/ingest\/callback$/, auth: "service" }, // Phase 23: Orthanc webhook (X-Service-Key)
   { pattern: /^\/imaging\/health$/, auth: "session" }, // Phase 24: imaging health check
   { pattern: /^\/imaging\/devices/, auth: "session" }, // Phase 24: device registry (imaging_admin checked in handler)
