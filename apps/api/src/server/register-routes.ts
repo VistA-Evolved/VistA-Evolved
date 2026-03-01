@@ -192,6 +192,7 @@ import { templateRoutes } from "../templates/index.js";
 import { contentPackRoutes } from "../content-packs/index.js";
 import { inpatientCoreRoutes } from "../inpatient/index.js";
 import { pharmacyDeepRoutes } from "../pharmacy/index.js";
+import { labDeepRoutes } from "../lab/index.js";
 import { queueRoutes } from "../queue/index.js";
 import { workflowRoutes } from "../workflows/index.js";
 import alignmentRoutes from "../routes/alignment-routes.js";
@@ -508,6 +509,7 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(contentPackRoutes); // Phase 390: Content Pack Framework v2
   server.register(inpatientCoreRoutes); // Phase 391: Inpatient Core (bedboard + flowsheets + vitals)
   server.register(pharmacyDeepRoutes); // Phase 392: Pharmacy Deep Workflows
+  server.register(labDeepRoutes); // Phase 393: Lab Deep Workflows
   server.register(queueRoutes);
   server.register(workflowRoutes);
 
