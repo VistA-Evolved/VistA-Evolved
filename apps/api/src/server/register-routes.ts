@@ -278,6 +278,7 @@ import { deptSchedulingRoutes } from "../routes/dept-scheduling-routes.js";
 import { eventBusRoutes } from "../routes/event-bus-routes.js";
 import { webhookRoutes } from "../routes/webhook-routes.js";
 import { fhirSubscriptionRoutes } from "../routes/fhir-subscription-routes.js";
+import { pluginRoutes } from "../routes/plugin-routes.js";
 
 /**
  * Register all route plugins in the exact order from the original index.ts.
@@ -637,6 +638,7 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(eventBusRoutes);                    // Phase 355: canonical domain event bus
   server.register(webhookRoutes);                      // Phase 356: webhook framework
   server.register(fhirSubscriptionRoutes);              // Phase 357: FHIR Subscriptions v1
+  server.register(pluginRoutes);                          // Phase 358: backend plugin SDK
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

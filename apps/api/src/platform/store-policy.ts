@@ -3590,6 +3590,52 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "derived from fhir_subscription (v46)",
     notes: "Phase 357: Maps subscription IDs to event bus consumer IDs.",
   },
+
+  // ── Phase 358: Plugin SDK ──
+  {
+    id: "plugin-registry",
+    file: "services/plugin-sdk.ts",
+    variable: "plugins",
+    description: "In-memory installed plugin registry",
+    classification: "critical" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "plugins",
+    migrationTarget: "pg: plugin_registry (v47)",
+    notes: "Phase 358: Signed plugin manifests with lifecycle states.",
+  },
+  {
+    id: "plugin-audit-log",
+    file: "services/plugin-sdk.ts",
+    variable: "auditLog",
+    description: "In-memory plugin audit trail",
+    classification: "audit" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "plugins",
+    migrationTarget: "pg: plugin_audit_log (v47)",
+    notes: "Phase 358: Max 10K entries; plugin lifecycle audit.",
+  },
+  {
+    id: "plugin-validators",
+    file: "services/plugin-sdk.ts",
+    variable: "validators",
+    description: "In-memory plugin validator registry",
+    classification: "registry" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "plugins",
+    migrationTarget: "derived from plugin_registry (v47)",
+    notes: "Phase 358: Stage-keyed validator pipeline.",
+  },
+  {
+    id: "plugin-transformers",
+    file: "services/plugin-sdk.ts",
+    variable: "transformers",
+    description: "In-memory plugin transformer registry",
+    classification: "registry" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "plugins",
+    migrationTarget: "derived from plugin_registry (v47)",
+    notes: "Phase 358: Key-keyed transformer pipeline.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

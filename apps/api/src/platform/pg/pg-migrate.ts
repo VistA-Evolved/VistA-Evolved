@@ -3522,6 +3522,47 @@ CREATE INDEX IF NOT EXISTS idx_fnot_sub ON fhir_notification(tenant_id, subscrip
 CREATE INDEX IF NOT EXISTS idx_fnot_status ON fhir_notification(tenant_id, status);
 `,
   },
+
+  // ── v47: Plugin SDK (Phase 358) ──
+  {
+    version: 47,
+    name: "plugin_sdk",
+    sql: `
+CREATE TABLE IF NOT EXISTS plugin_registry (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  plugin_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  version TEXT NOT NULL,
+  description TEXT,
+  author TEXT,
+  status TEXT NOT NULL DEFAULT 'installed',
+  manifest_json JSONB NOT NULL,
+  content_hash TEXT NOT NULL,
+  signature TEXT NOT NULL,
+  stats_json JSONB NOT NULL DEFAULT '{}',
+  installed_by TEXT NOT NULL,
+  installed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE(tenant_id, plugin_id)
+);
+CREATE INDEX IF NOT EXISTS idx_preg_tenant ON plugin_registry(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_preg_status ON plugin_registry(tenant_id, status);
+
+CREATE TABLE IF NOT EXISTS plugin_audit_log (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  plugin_id TEXT NOT NULL,
+  action TEXT NOT NULL,
+  actor TEXT NOT NULL,
+  detail JSONB,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_pal_tenant ON plugin_audit_log(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_pal_plugin ON plugin_audit_log(tenant_id, plugin_id);
+CREATE INDEX IF NOT EXISTS idx_pal_created ON plugin_audit_log(tenant_id, created_at);
+`,
+  },
 ];
 
 /**
@@ -3732,6 +3773,9 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   // Phase 357: FHIR Subscriptions
   "fhir_subscription",
   "fhir_notification",
+  // Phase 358: Plugin SDK
+  "plugin_registry",
+  "plugin_audit_log",
 ] as const;
 
 /**
