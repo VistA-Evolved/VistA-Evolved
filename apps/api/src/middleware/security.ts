@@ -207,6 +207,10 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/content-packs\/install$/, auth: "admin" },      // Phase 390: pack install
   { pattern: /^\/content-packs\/rollback$/, auth: "admin" },     // Phase 390: pack rollback
   { pattern: /^\/content-packs\//, auth: "session" },            // Phase 390: pack reads
+  // ── Wave 22, Phase 391: Inpatient Core ──
+  { pattern: /^\/inpatient\/beds$/, auth: "admin" },             // Phase 391: bed create (admin)
+  { pattern: /^\/inpatient\/beds\/[^\/]+$/, auth: "admin" },     // Phase 391: bed update (admin)
+  { pattern: /^\/inpatient\//, auth: "session" },                // Phase 391: inpatient reads
   // Default: session required for anything else
 ];
 
