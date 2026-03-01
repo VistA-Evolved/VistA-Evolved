@@ -8,5 +8,15 @@
     "owner": "copilot-agent",
     "status": "reserved",
     "reservedAt": "2026-03-01T02:38:00.275Z"
+  },
+  {
+    "wave": "17",
+    "start": 346,
+    "end": 353,
+    "count": 8,
+    "branch": "main",
+    "owner": "copilot-agent",
+    "status": "reserved",
+    "reservedAt": "2026-03-01T12:00:00.000Z"
   }
 ]
