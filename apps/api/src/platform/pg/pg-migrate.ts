@@ -2754,6 +2754,53 @@ CREATE INDEX IF NOT EXISTS idx_itr_partner ON integration_test_run(partner_id);
 CREATE INDEX IF NOT EXISTS idx_itr_tenant ON integration_test_run(tenant_id);
 `,
   },
+  // ─── v32: Phase 328 — Multi-Cluster Registry ───────────────────────────
+  {
+    version: 32,
+    name: "phase328_multi_cluster_registry",
+    sql: `
+-- Platform cluster registry
+CREATE TABLE IF NOT EXISTS platform_cluster (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  name TEXT NOT NULL,
+  region TEXT NOT NULL,
+  region_tier TEXT NOT NULL DEFAULT 'primary',
+  kube_context_ref TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'active',
+  pg_connection_ref TEXT NOT NULL DEFAULT '',
+  vista_placement_mode TEXT NOT NULL DEFAULT 'per_tenant',
+  max_tenants INTEGER NOT NULL DEFAULT 200,
+  current_tenant_count INTEGER NOT NULL DEFAULT 0,
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_pc_region ON platform_cluster(region);
+CREATE INDEX IF NOT EXISTS idx_pc_status ON platform_cluster(status);
+CREATE INDEX IF NOT EXISTS idx_pc_tenant ON platform_cluster(tenant_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_pc_name_active ON platform_cluster(name)
+  WHERE status != 'decommissioned';
+
+-- Tenant placement records
+CREATE TABLE IF NOT EXISTS tenant_placement (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL,
+  cluster_id TEXT NOT NULL REFERENCES platform_cluster(id),
+  region TEXT NOT NULL,
+  placement_reason TEXT NOT NULL DEFAULT 'initial',
+  data_residency_constraint TEXT,
+  plan_tier TEXT NOT NULL DEFAULT 'starter',
+  active BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_tp_tenant ON tenant_placement(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_tp_cluster ON tenant_placement(cluster_id);
+CREATE INDEX IF NOT EXISTS idx_tp_region ON tenant_placement(region);
+CREATE INDEX IF NOT EXISTS idx_tp_active ON tenant_placement(tenant_id) WHERE active = true;
+`,
+  },
 ];
 
 /**
@@ -2928,6 +2975,9 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   "integration_credential_ref",
   "integration_route",
   "integration_test_run",
+  // Phase 328: Multi-Cluster Registry
+  "platform_cluster",
+  "tenant_placement",
 ] as const;
 
 /**

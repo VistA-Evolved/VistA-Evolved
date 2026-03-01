@@ -144,6 +144,10 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/certification\//, auth: "admin" }, // Phase 323: Certification pipeline (suites, runs, certificates)
   { pattern: /^\/marketplace\//, auth: "session" }, // Phase 324: Integration marketplace (read=session, write=admin inline)
   { pattern: /^\/onboarding\//, auth: "admin" }, // Phase 325: Integration onboarding wizard (templates, sessions, readiness)
+  // Wave 15: Scale + Cost + Multi-Region (Phase 328+)
+  { pattern: /^\/platform\/clusters\//, auth: "admin" },  // Phase 328: Multi-cluster registry
+  { pattern: /^\/platform\/tenants\//, auth: "admin" },   // Phase 328: Tenant placement
+  { pattern: /^\/platform\/placements/, auth: "admin" },   // Phase 328: Placement queries
   // Default: session required for anything else
 ];
 

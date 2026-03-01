@@ -243,6 +243,9 @@ import marketplaceRoutes from "../routes/marketplace.js";
 // Wave 14: Onboarding UX (Phase 325)
 import integrationOnboardingRoutes from "../routes/onboarding.js";
 
+// Wave 15: Multi-Cluster Registry (Phase 328)
+import multiClusterRoutes from "../routes/multi-cluster-routes.js";
+
 /**
  * Register all route plugins in the exact order from the original index.ts.
  * Also starts cleanup jobs that were previously co-located with route registration.
@@ -553,6 +556,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Wave 14: Onboarding UX (Phase 325)
   server.register(integrationOnboardingRoutes);
+
+  // Wave 15: Multi-Cluster Registry (Phase 328)
+  server.register(multiClusterRoutes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);
