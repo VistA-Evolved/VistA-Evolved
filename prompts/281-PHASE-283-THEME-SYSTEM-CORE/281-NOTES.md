@@ -1,4 +1,4 @@
-# Phase 281 — Notes
+# Phase 283 — Notes
 
 - Existing ThemeMode (light/dark/system) coexists with ThemePackId
   - ThemeMode controls data-theme attribute (light/dark)

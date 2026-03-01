@@ -1,4 +1,4 @@
-# Phase 282 — Theme Packs + Tenant Branding Admin (IMPLEMENT)
+# Phase 284 — Theme Packs + Tenant Branding Admin (IMPLEMENT)
 
 ## Objective
 Extend the P281 theme system with a per-tenant branding admin surface.

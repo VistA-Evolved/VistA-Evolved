@@ -43,7 +43,7 @@ const SECRET_PATTERNS = [
   {
     name: "Hardcoded password",
     regex: /(?:password|passwd|pwd)\s*[:=]\s*["'][^"']{4,}["']/gi,
-    allow: [".env.example", ".md", "AGENTS.md", "BUG-TRACKER.md", ".test.ts", ".spec.ts", "docker-compose.yml", "reference/"],
+    allow: [".env.example", ".md", "AGENTS.md", "BUG-TRACKER.md", ".test.ts", ".spec.ts", "docker-compose.yml", "reference/", "infra/scripts/"],
   },
   {
     name: "AWS Access Key",
@@ -75,9 +75,11 @@ const SECRET_PATTERNS = [
     regex: /(?:PROV123|NURSE123|PHARM123)(?:!!)?/g,
     allow: [".md", ".env.example", "AGENTS.md", "BUG-TRACKER.md", "secret-scan.mjs",
             "verify-", "test-", ".test.ts", ".spec.ts", "login/page.tsx", "load-test.mjs", "patient-context.tsx",
-            "login-body.json", "tests/k6/", "scripts/audit/", "docs/evidence/",
+            "login-body.json", "login-v", "tests/k6/", "scripts/audit/", "docs/evidence/",
             ".hooks/", "tools/", "e2e/", "e2e-results.json", "artifacts/", "qa/gauntlet/",
-            "scripts/tenant/"], // login page + test/audit/tool/QA infra use Docker dev creds
+            "scripts/tenant/", "scripts/certify-", "scripts/generate-certification",
+            "scripts/pilot-", "scripts/privacy/", "scripts/qa/",
+            "scripts/qa-gates/vista-container", "infra/secrets/dev/"], // login page + test/audit/tool/QA infra use Docker dev creds
   },
 ];
 

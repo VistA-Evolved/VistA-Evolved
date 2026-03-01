@@ -1,4 +1,4 @@
-# Phase 282 — Notes
+# Phase 284 — Notes
 
 ## Design Decisions
 - Branding stored as dedicated JSONB column (migration v28) rather than inside ui_defaults.

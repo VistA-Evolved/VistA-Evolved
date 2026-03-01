@@ -1,4 +1,4 @@
-# Phase 280 — Wave 10 Manifest + Phase-ID Resolver + OSS Decision ADRs
+# Phase 282 — Wave 10 Manifest + Phase-ID Resolver + OSS Decision ADRs
 
 ## Implementation Steps
 
