@@ -225,6 +225,10 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/cds\//, auth: "session" },                        // Phase 395: CDS hooks + SMART launch
   // ── Wave 22, Phase 396: Clinical Reasoning + Quality Measures ──
   { pattern: /^\/clinical-reasoning\//, auth: "session" },          // Phase 396: clinical reasoning
+  // ── Wave 22, Phase 397: Localization + Multi-Country Packs + Theming ──
+  { pattern: /^\/localization\/config$/, auth: "session" },          // Phase 397: tenant config (session)
+  { pattern: /^\/localization\/resolve$/, auth: "session" },         // Phase 397: translation resolve (session)
+  { pattern: /^\/localization\//, auth: "session" },                 // Phase 397: localization
   // Default: session required for anything else
 ];
 
