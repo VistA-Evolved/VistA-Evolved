@@ -57,15 +57,23 @@ export async function complianceRoutes(app: FastifyInstance): Promise<void> {
   // Filter by category and/or status
   app.get('/compliance/requirements', async (request, _reply) => {
     const { category, status } = request.query as { category?: string; status?: string };
-    let results = buildComplianceMatrix().requirements;
 
+    // Use service functions instead of inline filtering
+    if (category && status && VALID_STATUSES.includes(status as ComplianceStatus)) {
+      const byCat = getRequirementsByCategory(category);
+      const results = byCat.filter((r) => r.status === status);
+      return { ok: true, count: results.length, requirements: results };
+    }
     if (category) {
-      results = results.filter((r) => r.category === category);
+      const results = getRequirementsByCategory(category);
+      return { ok: true, count: results.length, requirements: results };
     }
     if (status && VALID_STATUSES.includes(status as ComplianceStatus)) {
-      results = results.filter((r) => r.status === status);
+      const results = getRequirementsByStatus(status as ComplianceStatus);
+      return { ok: true, count: results.length, requirements: results };
     }
 
+    const results = buildComplianceMatrix().requirements;
     return { ok: true, count: results.length, requirements: results };
   });
 
@@ -83,9 +91,10 @@ export async function complianceRoutes(app: FastifyInstance): Promise<void> {
 
   // Gaps: planned + partial requirements
   app.get('/compliance/gaps', async (_request, _reply) => {
-    const planned = buildComplianceMatrix().requirements.filter(
-      (r) => r.status === 'planned' || r.status === 'partial'
-    );
+    const planned = [
+      ...getRequirementsByStatus('planned'),
+      ...getRequirementsByStatus('partial'),
+    ];
     return {
       ok: true,
       count: planned.length,

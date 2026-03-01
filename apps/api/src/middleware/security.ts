@@ -129,6 +129,12 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/fhir\/metadata$/, auth: "none" }, // Phase 178: FHIR CapabilityStatement (public per FHIR spec)
   { pattern: /^\/\.well-known\/smart-configuration$/, auth: "none" }, // Phase 179: SMART on FHIR discovery (public per spec)
   { pattern: /^\/fhir\//, auth: "fhir" }, // Phase 231: FHIR R4 gateway (session OR SMART bearer)
+  // Wave 13: Regulatory/Compliance + Multi-Country (Phases 311-315)
+  { pattern: /^\/residency\//, auth: "admin" },       // Phase 311: data residency management
+  { pattern: /^\/consent\//, auth: "session" },        // Phase 312: consent management
+  { pattern: /^\/terminology\//, auth: "session" },    // Phase 313: terminology resolution
+  { pattern: /^\/country-packs\//, auth: "session" },  // Phase 314: country pack config
+  { pattern: /^\/compliance\//, auth: "admin" },       // Phase 315: compliance matrix
   // Default: session required for anything else
 ];
 

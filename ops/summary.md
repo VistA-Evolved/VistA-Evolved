@@ -1,8 +1,27 @@
-# Phase 157: Audit JSONL Shipping to Object Store
+# Wave 13 Integrity Audit Fix
 
 ## What Changed
 
-Implemented an audit JSONL shipper that replicates immutable audit trail entries
+### Critical Wiring Fixes
+1. **Route Registration** (`register-routes.ts`):
+   - Added imports + `server.register()` for all 5 W13 route files
+   - Added `initTerminologyResolvers()` call at startup
+
+2. **AUTH_RULES** (`security.ts`):
+   - `/residency/` → admin, `/consent/` → session, `/terminology/` → session, `/country-packs/` → session, `/compliance/` → admin
+
+### Contract Fixes
+3. **Compliance Routes** — replaced dead imports with actual usage of `getRequirementsByCategory`/`getRequirementsByStatus`
+
+### Store Policy
+4. **5 W13 stores** registered in `store-policy.ts`: consent-records, terminology-resolvers, transfer-agreements, tenant-regions, country-pack-cache
+
+### Dev Dependency Fix
+5. **locale-utils** — added `@types/node` + `vitest` to devDependencies
+
+## Verifier Output
+- `apps/api`: `tsc --noEmit` — 0 errors
+- `packages/locale-utils`: `tsc --noEmit` — 0 errors
 to S3/MinIO-compatible object storage with SHA-256 integrity manifests.
 
 ### New Files (7)
