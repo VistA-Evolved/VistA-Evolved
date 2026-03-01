@@ -274,6 +274,9 @@ import { workflowInboxRoutes } from "../routes/workflow-inbox-routes.js";
 import { patientCommsRoutes } from "../routes/patient-comms-routes.js";
 import { deptSchedulingRoutes } from "../routes/dept-scheduling-routes.js";
 
+// Wave 18: Extensibility + Event Bus + Webhooks + FHIR Subscriptions + Plugins (Phases 354-361)
+import { eventBusRoutes } from "../routes/event-bus-routes.js";
+
 /**
  * Register all route plugins in the exact order from the original index.ts.
  * Also starts cleanup jobs that were previously co-located with route registration.
@@ -627,6 +630,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(workflowInboxRoutes);           // Phase 350: unified workflow inbox
   server.register(patientCommsRoutes);              // Phase 351: patient communications
   server.register(deptSchedulingRoutes);             // Phase 352: dept scheduling & resource layer
+
+  // Wave 18: Extensibility + Event Bus + Webhooks + FHIR Subscriptions + Plugins (Phases 354-361)
+  server.register(eventBusRoutes);                    // Phase 355: canonical domain event bus
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

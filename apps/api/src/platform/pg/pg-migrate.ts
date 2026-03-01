@@ -3388,6 +3388,56 @@ CREATE INDEX IF NOT EXISTS idx_cdr_to ON cross_dept_referral(tenant_id, to_depar
 CREATE INDEX IF NOT EXISTS idx_cdr_status ON cross_dept_referral(tenant_id, status);
 `,
   },
+  // ── Phase 355: Event Bus ──
+  {
+    version: 44,
+    name: "phase355_event_bus",
+    sql: `
+CREATE TABLE IF NOT EXISTS event_bus_outbox (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  event_type TEXT NOT NULL,
+  version INTEGER NOT NULL DEFAULT 1,
+  subject_ref_hash TEXT NOT NULL,
+  occurred_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  payload JSONB NOT NULL DEFAULT '{}'::jsonb,
+  source TEXT NOT NULL,
+  correlation_id TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_ebo_tenant ON event_bus_outbox(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_ebo_type ON event_bus_outbox(tenant_id, event_type);
+CREATE INDEX IF NOT EXISTS idx_ebo_occurred ON event_bus_outbox(tenant_id, occurred_at);
+
+CREATE TABLE IF NOT EXISTS event_bus_dlq (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  event_id UUID NOT NULL,
+  event_type TEXT NOT NULL,
+  consumer_id TEXT NOT NULL,
+  error TEXT NOT NULL,
+  retry_count INTEGER NOT NULL DEFAULT 0,
+  max_retries INTEGER NOT NULL DEFAULT 3,
+  failed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  event_payload JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_ebdlq_tenant ON event_bus_dlq(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_ebdlq_consumer ON event_bus_dlq(tenant_id, consumer_id);
+
+CREATE TABLE IF NOT EXISTS event_bus_delivery_log (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  event_id UUID NOT NULL,
+  consumer_id TEXT NOT NULL,
+  delivered_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  success BOOLEAN NOT NULL DEFAULT true,
+  error TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_ebdl_tenant ON event_bus_delivery_log(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_ebdl_event ON event_bus_delivery_log(tenant_id, event_id);
+`,
+  },
 ];
 
 /**
@@ -3588,6 +3638,10 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   "resource_allocation",
   "scheduling_rule",
   "cross_dept_referral",
+  // Phase 355: Event Bus
+  "event_bus_outbox",
+  "event_bus_dlq",
+  "event_bus_delivery_log",
 ] as const;
 
 /**
