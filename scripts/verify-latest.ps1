@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 353: Wave 17 Pack Certification
-& "$PSScriptRoot\verify-wave17-packs.ps1" @args
+# Phase 361: Wave 18 Ecosystem Certification
+& "$PSScriptRoot\verify-wave18-ecosystem.ps1" @args
