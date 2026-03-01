@@ -88,7 +88,7 @@ const CRITICAL_THRESHOLDS: CritThreshold[] = [
 // ─── FIFO Eviction Helper ───────────────────────────────────
 
 function enforceMax<T>(store: Map<string, T>): void {
-  if (store.size > MAX_ITEMS) {
+  if (store.size >= MAX_ITEMS) {
     const firstKey = store.keys().next().value;
     if (firstKey) store.delete(firstKey);
   }

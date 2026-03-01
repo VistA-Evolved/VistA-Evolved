@@ -153,23 +153,27 @@ export default async function clinicalReasoningRoutes(server: FastifyInstance) {
     if (!measureId || !name || !scoring || !populations) {
       return reply.code(400).send({ ok: false, error: "measureId, name, scoring, and populations required" });
     }
-    const measure = createQualityMeasure({
-      tenantId: session.tenantId,
-      measureId,
-      name,
-      description: description || "",
-      scoring,
-      type: type || "process",
-      program: program || "custom",
-      cqlLibraryId: cqlLibraryId || "",
-      populations,
-      measurementPeriodStart: measurementPeriodStart || new Date().toISOString(),
-      measurementPeriodEnd: measurementPeriodEnd || new Date().toISOString(),
-      improvementNotation: improvementNotation || "increase",
-      status: status || "draft",
-      contentPackId: contentPackId || null,
-    });
-    return reply.code(201).send({ ok: true, measure });
+    try {
+      const measure = createQualityMeasure({
+        tenantId: session.tenantId,
+        measureId,
+        name,
+        description: description || "",
+        scoring,
+        type: type || "process",
+        program: program || "custom",
+        cqlLibraryId: cqlLibraryId || "",
+        populations,
+        measurementPeriodStart: measurementPeriodStart || new Date().toISOString(),
+        measurementPeriodEnd: measurementPeriodEnd || new Date().toISOString(),
+        improvementNotation: improvementNotation || "increase",
+        status: status || "draft",
+        contentPackId: contentPackId || null,
+      });
+      return reply.code(201).send({ ok: true, measure });
+    } catch (err: any) {
+      return reply.code(409).send({ ok: false, error: err.message });
+    }
   });
 
   server.get("/clinical-reasoning/measures/:id", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -245,16 +249,20 @@ export default async function clinicalReasoningRoutes(server: FastifyInstance) {
     if (!measureId || !patientDfn || !populationMembership) {
       return reply.code(400).send({ ok: false, error: "measureId, patientDfn, and populationMembership required" });
     }
-    const result = createPatientMeasureResult({
-      tenantId: session.tenantId,
-      measureId,
-      patientDfn,
-      populationMembership,
-      periodStart: periodStart || new Date().toISOString(),
-      periodEnd: periodEnd || new Date().toISOString(),
-      notes: notes || null,
-    });
-    return reply.code(201).send({ ok: true, result });
+    try {
+      const result = createPatientMeasureResult({
+        tenantId: session.tenantId,
+        measureId,
+        patientDfn,
+        populationMembership,
+        periodStart: periodStart || new Date().toISOString(),
+        periodEnd: periodEnd || new Date().toISOString(),
+        notes: notes || null,
+      });
+      return reply.code(201).send({ ok: true, result });
+    } catch (err: any) {
+      return reply.code(409).send({ ok: false, error: err.message });
+    }
   });
 
   // ---- Plan Definitions ----
@@ -271,17 +279,21 @@ export default async function clinicalReasoningRoutes(server: FastifyInstance) {
     if (!name || !title) {
       return reply.code(400).send({ ok: false, error: "name and title required" });
     }
-    const plan = createPlanDefinition({
-      tenantId: session.tenantId,
-      name,
-      title,
-      description: description || "",
-      status: status || "draft",
-      cqlLibraryId: cqlLibraryId || null,
-      actions: actions || [],
-      goals: goals || [],
-    });
-    return reply.code(201).send({ ok: true, planDefinition: plan });
+    try {
+      const plan = createPlanDefinition({
+        tenantId: session.tenantId,
+        name,
+        title,
+        description: description || "",
+        status: status || "draft",
+        cqlLibraryId: cqlLibraryId || null,
+        actions: actions || [],
+        goals: goals || [],
+      });
+      return reply.code(201).send({ ok: true, planDefinition: plan });
+    } catch (err: any) {
+      return reply.code(409).send({ ok: false, error: err.message });
+    }
   });
 
   server.get("/clinical-reasoning/plan-definitions/:id", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -322,17 +334,21 @@ export default async function clinicalReasoningRoutes(server: FastifyInstance) {
     if (!name || !title || !kind) {
       return reply.code(400).send({ ok: false, error: "name, title, and kind required" });
     }
-    const def = createActivityDefinition({
-      tenantId: session.tenantId,
-      name,
-      title,
-      description: description || "",
-      status: status || "draft",
-      kind,
-      cqlLibraryId: cqlLibraryId || null,
-      dynamicValues: dynamicValues || [],
-    });
-    return reply.code(201).send({ ok: true, activityDefinition: def });
+    try {
+      const def = createActivityDefinition({
+        tenantId: session.tenantId,
+        name,
+        title,
+        description: description || "",
+        status: status || "draft",
+        kind,
+        cqlLibraryId: cqlLibraryId || null,
+        dynamicValues: dynamicValues || [],
+      });
+      return reply.code(201).send({ ok: true, activityDefinition: def });
+    } catch (err: any) {
+      return reply.code(409).send({ ok: false, error: err.message });
+    }
   });
 
   server.get("/clinical-reasoning/activity-definitions/:id", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -373,16 +389,20 @@ export default async function clinicalReasoningRoutes(server: FastifyInstance) {
     if (!evalResultId) {
       return reply.code(400).send({ ok: false, error: "evalResultId required" });
     }
-    const report = generateMeasureReport(
-      session.tenantId,
-      evalResultId,
-      reportType || "summary",
-      qrdaVersion || null
-    );
-    if (!report) {
-      return reply.code(400).send({ ok: false, error: "Evaluation not found or not completed" });
+    try {
+      const report = generateMeasureReport(
+        session.tenantId,
+        evalResultId,
+        reportType || "summary",
+        qrdaVersion || null
+      );
+      if (!report) {
+        return reply.code(400).send({ ok: false, error: "Evaluation not found or not completed" });
+      }
+      return reply.code(201).send({ ok: true, report });
+    } catch (err: any) {
+      return reply.code(409).send({ ok: false, error: err.message });
     }
-    return reply.code(201).send({ ok: true, report });
   });
 
   server.get("/clinical-reasoning/reports/:id", async (request: FastifyRequest, reply: FastifyReply) => {

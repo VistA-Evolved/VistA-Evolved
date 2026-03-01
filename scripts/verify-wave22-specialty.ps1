@@ -17,7 +17,6 @@ param(
 
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
-$apiSrc = Join-Path (Join-Path (Join-Path $root "apps") "api") "src"
 
 $pass = 0
 $fail = 0
@@ -259,7 +258,7 @@ Write-Host "--- Section 13: TypeScript Compilation ---" -ForegroundColor Yellow
 Gate "tsc --noEmit clean" {
   Push-Location (Join-Path (Join-Path $root "apps") "api")
   try {
-    $output = & pnpm exec tsc --noEmit 2>&1
+    $null = & pnpm exec tsc --noEmit 2>&1
     $exitOk = $LASTEXITCODE -eq 0
     return $exitOk
   } finally {

@@ -22,6 +22,7 @@ export type PharmOrderStatus =
   | "dispensed"
   | "ready_for_admin"
   | "administered"
+  | "returned"
   | "discontinued"
   | "cancelled"
   | "on_hold"

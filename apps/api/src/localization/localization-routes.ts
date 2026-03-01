@@ -149,15 +149,19 @@ export default async function localizationRoutes(server: FastifyInstance) {
     if (!languageTag || !namespace || !translations) {
       return reply.code(400).send({ ok: false, error: "languageTag, namespace, and translations required" });
     }
-    const bundle = createTranslationBundle({
-      tenantId: session.tenantId,
-      languageTag,
-      namespace,
-      translations,
-      source: source || "manual",
-      contentPackId: contentPackId || null,
-    });
-    return reply.code(201).send({ ok: true, bundle });
+    try {
+      const bundle = createTranslationBundle({
+        tenantId: session.tenantId,
+        languageTag,
+        namespace,
+        translations,
+        source: source || "manual",
+        contentPackId: contentPackId || null,
+      });
+      return reply.code(201).send({ ok: true, bundle });
+    } catch (err: any) {
+      return reply.code(409).send({ ok: false, error: err.message });
+    }
   });
 
   server.get("/localization/translations/:id", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -208,14 +212,18 @@ export default async function localizationRoutes(server: FastifyInstance) {
     if (!name || !preferredUnits) {
       return reply.code(400).send({ ok: false, error: "name and preferredUnits required" });
     }
-    const profile = createUnitProfile({
-      name,
-      description: description || "",
-      preferredUnits,
-      conversions: conversions || [],
-      region: region || "Custom",
-    });
-    return reply.code(201).send({ ok: true, profile });
+    try {
+      const profile = createUnitProfile({
+        name,
+        description: description || "",
+        preferredUnits,
+        conversions: conversions || [],
+        region: region || "Custom",
+      });
+      return reply.code(201).send({ ok: true, profile });
+    } catch (err: any) {
+      return reply.code(409).send({ ok: false, error: err.message });
+    }
   });
 
   server.get("/localization/unit-profiles/:id", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -240,20 +248,24 @@ export default async function localizationRoutes(server: FastifyInstance) {
     if (!countryCode || !name || !icdVersion) {
       return reply.code(400).send({ ok: false, error: "countryCode, name, and icdVersion required" });
     }
-    const pack = createCountryPack({
-      tenantId: session.tenantId,
-      countryCode,
-      name,
-      description: description || "",
-      icdVersion,
-      defaultLocale: defaultLocale || "en-US",
-      formularyReference: formularyReference || null,
-      labRangeProfileId: labRangeProfileId || null,
-      documentTemplateIds: documentTemplateIds || [],
-      contentPackId: contentPackId || null,
-      enabled: enabled !== false,
-    });
-    return reply.code(201).send({ ok: true, countryPack: pack });
+    try {
+      const pack = createCountryPack({
+        tenantId: session.tenantId,
+        countryCode,
+        name,
+        description: description || "",
+        icdVersion,
+        defaultLocale: defaultLocale || "en-US",
+        formularyReference: formularyReference || null,
+        labRangeProfileId: labRangeProfileId || null,
+        documentTemplateIds: documentTemplateIds || [],
+        contentPackId: contentPackId || null,
+        enabled: enabled !== false,
+      });
+      return reply.code(201).send({ ok: true, countryPack: pack });
+    } catch (err: any) {
+      return reply.code(409).send({ ok: false, error: err.message });
+    }
   });
 
   server.get("/localization/country-packs/:id", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -294,18 +306,22 @@ export default async function localizationRoutes(server: FastifyInstance) {
     if (!name) {
       return reply.code(400).send({ ok: false, error: "name required" });
     }
-    const theme = createTheme({
-      name,
-      preset: preset || "custom",
-      description: description || "",
-      variables: variables || [],
-      darkModeVariables: darkModeVariables || null,
-      fontFamily: fontFamily || "'Inter', sans-serif",
-      baseFontSize: baseFontSize || 14,
-      borderRadius: borderRadius ?? 8,
-      isSystem: false,
-    });
-    return reply.code(201).send({ ok: true, theme });
+    try {
+      const theme = createTheme({
+        name,
+        preset: preset || "custom",
+        description: description || "",
+        variables: variables || [],
+        darkModeVariables: darkModeVariables || null,
+        fontFamily: fontFamily || "'Inter', sans-serif",
+        baseFontSize: baseFontSize || 14,
+        borderRadius: borderRadius ?? 8,
+        isSystem: false,
+      });
+      return reply.code(201).send({ ok: true, theme });
+    } catch (err: any) {
+      return reply.code(409).send({ ok: false, error: err.message });
+    }
   });
 
   server.get("/localization/themes/:id", async (request: FastifyRequest, reply: FastifyReply) => {

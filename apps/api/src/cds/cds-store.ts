@@ -23,7 +23,7 @@ import type {
   SmartApp,
   SmartLaunchContext,
 } from "./types.js";
-import { randomBytes, createHash } from "crypto";
+import { randomBytes } from "crypto";
 
 const MAX_ITEMS = 10_000;
 

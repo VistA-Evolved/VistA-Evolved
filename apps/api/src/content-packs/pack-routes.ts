@@ -24,72 +24,73 @@ import {
   listInboxRules,
 } from "./pack-store.js";
 import type { ContentPackV2 } from "./types.js";
-
-const DEFAULT_TENANT = "default";
-
-function tenantId(request: FastifyRequest): string {
-  return (request.headers["x-tenant-id"] as string) || DEFAULT_TENANT;
-}
+import { requireSession } from "../auth/auth-routes.js";
 
 export default async function contentPackRoutes(server: FastifyInstance): Promise<void> {
   // ── Pack Management ──────────────────────────────────────
 
   /** Preview what a pack install would do */
   server.post("/content-packs/preview", async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(request, reply);
     const pack = (request.body as ContentPackV2) || {};
     if (!pack.packId || !pack.version) {
       return reply.code(400).send({ ok: false, error: "packId and version required" });
     }
-    const preview = previewPackInstall(tenantId(request), pack);
+    const preview = previewPackInstall(session.tenantId, pack);
     return { ok: true, preview };
   });
 
   /** Install a content pack */
   server.post("/content-packs/install", async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(request, reply);
     const pack = (request.body as ContentPackV2) || {};
     if (!pack.packId || !pack.version) {
       return reply.code(400).send({ ok: false, error: "packId and version required" });
     }
-    const actor = ((request as any).session?.duz as string) || "system";
-    const event = installPack(tenantId(request), pack, actor);
+    const event = installPack(session.tenantId, pack, session.duz);
     return { ok: true, event };
   });
 
   /** Rollback (uninstall) a content pack */
   server.post("/content-packs/rollback", async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(request, reply);
     const body = (request.body as { packId?: string }) || {};
     if (!body.packId) {
       return reply.code(400).send({ ok: false, error: "packId required" });
     }
-    const actor = ((request as any).session?.duz as string) || "system";
-    const event = rollbackPack(tenantId(request), body.packId, actor);
+    const event = rollbackPack(session.tenantId, body.packId, session.duz);
     return { ok: true, event };
   });
 
   /** List installed packs */
-  server.get("/content-packs", async (request: FastifyRequest) => {
-    return { ok: true, packs: listInstalledPacks(tenantId(request)) };
+  server.get("/content-packs", async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(request, reply);
+    return { ok: true, packs: listInstalledPacks(session.tenantId) };
   });
 
   /** Pack install history */
-  server.get("/content-packs/history", async (request: FastifyRequest) => {
+  server.get("/content-packs/history", async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(request, reply);
     const limit = parseInt((request.query as any).limit || "50", 10);
-    return { ok: true, events: listInstallEvents(tenantId(request), limit) };
+    return { ok: true, events: listInstallEvents(session.tenantId, limit) };
   });
 
   /** Pack statistics */
-  server.get("/content-packs/stats", async (request: FastifyRequest) => {
-    return { ok: true, stats: getPackStats(tenantId(request)) };
+  server.get("/content-packs/stats", async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(request, reply);
+    return { ok: true, stats: getPackStats(session.tenantId) };
   });
 
   // ── Order Set Endpoints ──────────────────────────────────
 
-  server.get("/content-packs/order-sets", async (request: FastifyRequest) => {
+  server.get("/content-packs/order-sets", async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(request, reply);
     const specialty = (request.query as any).specialty;
-    return { ok: true, orderSets: listOrderSets(tenantId(request), specialty) };
+    return { ok: true, orderSets: listOrderSets(session.tenantId, specialty) };
   });
 
   server.get("/content-packs/order-sets/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const os = getOrderSet(id);
     if (!os) return reply.code(404).send({ ok: false, error: "Order set not found" });
@@ -97,6 +98,7 @@ export default async function contentPackRoutes(server: FastifyInstance): Promis
   });
 
   server.patch("/content-packs/order-sets/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const body = (request.body as Record<string, unknown>) || {};
     const ALLOWED = ["name", "description", "items", "tags", "status"] as const;
@@ -111,12 +113,14 @@ export default async function contentPackRoutes(server: FastifyInstance): Promis
 
   // ── Flowsheet Endpoints ──────────────────────────────────
 
-  server.get("/content-packs/flowsheets", async (request: FastifyRequest) => {
+  server.get("/content-packs/flowsheets", async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(request, reply);
     const specialty = (request.query as any).specialty;
-    return { ok: true, flowsheets: listFlowsheets(tenantId(request), specialty) };
+    return { ok: true, flowsheets: listFlowsheets(session.tenantId, specialty) };
   });
 
   server.get("/content-packs/flowsheets/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const fs = getFlowsheet(id);
     if (!fs) return reply.code(404).send({ ok: false, error: "Flowsheet not found" });
@@ -124,6 +128,7 @@ export default async function contentPackRoutes(server: FastifyInstance): Promis
   });
 
   server.patch("/content-packs/flowsheets/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const body = (request.body as Record<string, unknown>) || {};
     const ALLOWED = ["name", "description", "columns", "defaultFrequency", "tags", "status"] as const;
@@ -138,21 +143,24 @@ export default async function contentPackRoutes(server: FastifyInstance): Promis
 
   // ── CDS Rules Endpoints ──────────────────────────────────
 
-  server.get("/content-packs/cds-rules", async (request: FastifyRequest) => {
+  server.get("/content-packs/cds-rules", async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(request, reply);
     const hook = (request.query as any).hook;
-    return { ok: true, cdsRules: listCdsRules(tenantId(request), hook) };
+    return { ok: true, cdsRules: listCdsRules(session.tenantId, hook) };
   });
 
   // ── Dashboard Endpoints ──────────────────────────────────
 
-  server.get("/content-packs/dashboards", async (request: FastifyRequest) => {
+  server.get("/content-packs/dashboards", async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(request, reply);
     const specialty = (request.query as any).specialty;
-    return { ok: true, dashboards: listDashboards(tenantId(request), specialty) };
+    return { ok: true, dashboards: listDashboards(session.tenantId, specialty) };
   });
 
   // ── Inbox Rules Endpoints ────────────────────────────────
 
-  server.get("/content-packs/inbox-rules", async (request: FastifyRequest) => {
-    return { ok: true, inboxRules: listInboxRules(tenantId(request)) };
+  server.get("/content-packs/inbox-rules", async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(request, reply);
+    return { ok: true, inboxRules: listInboxRules(session.tenantId) };
   });
 }

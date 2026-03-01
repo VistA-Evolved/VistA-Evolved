@@ -154,21 +154,25 @@ export default async function cdsHooksRoutes(server: FastifyInstance) {
     if (!name || !hook || !conditions || !cardTemplate) {
       return reply.code(400).send({ ok: false, error: "name, hook, conditions, and cardTemplate required" });
     }
-    const rule = createCdsRule({
-      tenantId: session.tenantId,
-      name,
-      description: description || "",
-      hook,
-      priority: priority ?? 100,
-      conditions,
-      cardTemplate,
-      enabled: enabled !== false,
-      engine: engine || "native",
-      cqlLibraryName: cqlLibraryName || null,
-      cqlLibraryVersion: cqlLibraryVersion || null,
-      contentPackId: contentPackId || null,
-    });
-    return reply.code(201).send({ ok: true, rule });
+    try {
+      const rule = createCdsRule({
+        tenantId: session.tenantId,
+        name,
+        description: description || "",
+        hook,
+        priority: priority ?? 100,
+        conditions,
+        cardTemplate,
+        enabled: enabled !== false,
+        engine: engine || "native",
+        cqlLibraryName: cqlLibraryName || null,
+        cqlLibraryVersion: cqlLibraryVersion || null,
+        contentPackId: contentPackId || null,
+      });
+      return reply.code(201).send({ ok: true, rule });
+    } catch (err: any) {
+      return reply.code(409).send({ ok: false, error: err.message });
+    }
   });
 
   server.get("/cds/rules/:id", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -231,17 +235,21 @@ export default async function cdsHooksRoutes(server: FastifyInstance) {
     if (!name || !launchUrl) {
       return reply.code(400).send({ ok: false, error: "name and launchUrl required" });
     }
-    const app = createSmartApp({
-      tenantId: session.tenantId,
-      name,
-      description: description || "",
-      launchUrl,
-      scopes: scopes || ["launch", "patient/Patient.read"],
-      iconUrl: iconUrl || null,
-      allowedHooks: allowedHooks || [],
-      enabled: enabled !== false,
-    });
-    return reply.code(201).send({ ok: true, app });
+    try {
+      const app = createSmartApp({
+        tenantId: session.tenantId,
+        name,
+        description: description || "",
+        launchUrl,
+        scopes: scopes || ["launch", "patient/Patient.read"],
+        iconUrl: iconUrl || null,
+        allowedHooks: allowedHooks || [],
+        enabled: enabled !== false,
+      });
+      return reply.code(201).send({ ok: true, app });
+    } catch (err: any) {
+      return reply.code(409).send({ ok: false, error: err.message });
+    }
   });
 
   server.get("/cds/smart/apps/:id", async (request: FastifyRequest, reply: FastifyReply) => {

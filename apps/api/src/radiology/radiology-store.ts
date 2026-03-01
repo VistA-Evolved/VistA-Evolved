@@ -100,7 +100,7 @@ const DRL_THRESHOLDS: DrlThreshold[] = [
 // -- FIFO Helper --
 
 function enforceMax<T>(store: Map<string, T>): void {
-  if (store.size > MAX_ITEMS) {
+  if (store.size >= MAX_ITEMS) {
     const firstKey = store.keys().next().value;
     if (firstKey) store.delete(firstKey);
   }
