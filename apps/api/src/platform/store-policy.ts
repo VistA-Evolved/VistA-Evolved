@@ -2398,6 +2398,40 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: ch_transport_profile table",
     notes: "Phase 322: Connects connectorId to TransportConfig + RateLimitConfig.",
   },
+  // ── Phase 323: Certification Pipeline ────────────────────────────────
+  {
+    id: "certification-suites",
+    file: "services/certification-pipeline.ts",
+    variable: "suiteStore",
+    description: "Certification test suite definitions (HL7, X12, FHIR)",
+    classification: "registry",
+    durability: "in_memory_only",
+    domain: "interop",
+    migrationTarget: "pg: certification_suite table",
+    notes: "Phase 323: Includes built-in seed suites. Reseeded on restart.",
+  },
+  {
+    id: "certification-runs",
+    file: "services/certification-pipeline.ts",
+    variable: "runStore",
+    description: "Certification run executions with test results and scores",
+    classification: "cache",
+    durability: "in_memory_only",
+    domain: "interop",
+    migrationTarget: "pg: certification_run + certification_test_result tables",
+    notes: "Phase 323: Run data lost on restart. Historical runs need PG.",
+  },
+  {
+    id: "certification-certificates",
+    file: "services/certification-pipeline.ts",
+    variable: "certStore",
+    description: "Issued integration certificates with fingerprints and expiry",
+    classification: "critical",
+    durability: "in_memory_only",
+    domain: "interop",
+    migrationTarget: "pg: integration_certificate table",
+    notes: "Phase 323: Certificate validity resets on restart. Needs PG for production.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

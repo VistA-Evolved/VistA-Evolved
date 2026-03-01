@@ -141,6 +141,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/hl7\/ops\//, auth: "admin" }, // Phase 320: HL7v2 ops maturity (SLA, retry, dashboard)
   { pattern: /^\/x12\/gateway\//, auth: "admin" }, // Phase 321: X12 inbound gateway (parse, validate, route)
   { pattern: /^\/clearinghouse\//, auth: "admin" }, // Phase 322: Clearinghouse transport (SFTP, AS2, REST, vault)
+  { pattern: /^\/certification\//, auth: "admin" }, // Phase 323: Certification pipeline (suites, runs, certificates)
   // Default: session required for anything else
 ];
 
