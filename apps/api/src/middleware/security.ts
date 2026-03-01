@@ -237,6 +237,8 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/bulk-data\//, auth: "session" },        // Phase 404: Bulk Data
   { pattern: /^\/consent-pou\//, auth: "session" },      // Phase 405: Consent + Purpose of Use
   { pattern: /^\/exchange-packs\//, auth: "session" },   // Phase 406-407: Exchange Packs
+  // Wave 24: Pilot Go-Lives + Stabilization (Phases 409-417)
+  { pattern: /^\/pilots\//, auth: "admin" },              // Phase 411+: Pilot intake/ops (admin only)
   // Default: session required for anything else
 ];
 
