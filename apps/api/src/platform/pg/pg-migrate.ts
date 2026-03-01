@@ -3479,6 +3479,49 @@ CREATE INDEX IF NOT EXISTS idx_wdl_sub ON webhook_delivery_log(tenant_id, subscr
 CREATE INDEX IF NOT EXISTS idx_wdl_status ON webhook_delivery_log(tenant_id, status);
 `,
   },
+
+  // ── v46: FHIR Subscriptions (Phase 357) ──
+  {
+    version: 46,
+    name: "fhir_subscriptions",
+    sql: `
+CREATE TABLE IF NOT EXISTS fhir_subscription (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  status TEXT NOT NULL DEFAULT 'active',
+  criteria TEXT NOT NULL,
+  resource_type TEXT NOT NULL,
+  channel_type TEXT NOT NULL DEFAULT 'rest-hook',
+  channel_endpoint TEXT NOT NULL,
+  channel_payload TEXT NOT NULL DEFAULT 'application/fhir+json',
+  channel_headers TEXT,
+  end_time TIMESTAMPTZ,
+  reason TEXT,
+  error TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_fsub_tenant ON fhir_subscription(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_fsub_status ON fhir_subscription(tenant_id, status);
+CREATE INDEX IF NOT EXISTS idx_fsub_resource ON fhir_subscription(tenant_id, resource_type);
+
+CREATE TABLE IF NOT EXISTS fhir_notification (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  subscription_id TEXT NOT NULL,
+  event_id TEXT NOT NULL,
+  resource_type TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending',
+  http_status INTEGER,
+  attempt INTEGER NOT NULL DEFAULT 1,
+  delivered_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_fnot_tenant ON fhir_notification(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_fnot_sub ON fhir_notification(tenant_id, subscription_id);
+CREATE INDEX IF NOT EXISTS idx_fnot_status ON fhir_notification(tenant_id, status);
+`,
+  },
 ];
 
 /**
@@ -3686,6 +3729,9 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   // Phase 356: Webhooks
   "webhook_subscription",
   "webhook_delivery_log",
+  // Phase 357: FHIR Subscriptions
+  "fhir_subscription",
+  "fhir_notification",
 ] as const;
 
 /**

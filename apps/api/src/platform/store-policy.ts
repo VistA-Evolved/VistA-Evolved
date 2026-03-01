@@ -3555,6 +3555,41 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: webhook_delivery_log (v45, status=dlq)",
     notes: "Phase 356: Max 5K entries; failed deliveries.",
   },
+
+  // ── Phase 357: FHIR Subscriptions ──
+  {
+    id: "fhir-subscriptions",
+    file: "services/fhir-subscription-service.ts",
+    variable: "subscriptions",
+    description: "In-memory FHIR subscription registry",
+    classification: "critical" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "fhir-subscriptions",
+    migrationTarget: "pg: fhir_subscription (v46)",
+    notes: "Phase 357: R4 Subscription resources with rest-hook delivery.",
+  },
+  {
+    id: "fhir-notifications",
+    file: "services/fhir-subscription-service.ts",
+    variable: "notifications",
+    description: "In-memory FHIR notification delivery log",
+    classification: "audit" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "fhir-subscriptions",
+    migrationTarget: "pg: fhir_notification (v46)",
+    notes: "Phase 357: Max 10K entries; rest-hook delivery tracking.",
+  },
+  {
+    id: "fhir-consumer-ids",
+    file: "services/fhir-subscription-service.ts",
+    variable: "consumerIds",
+    description: "In-memory event bus consumer ID mapping for FHIR subscriptions",
+    classification: "registry" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "fhir-subscriptions",
+    migrationTarget: "derived from fhir_subscription (v46)",
+    notes: "Phase 357: Maps subscription IDs to event bus consumer IDs.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
