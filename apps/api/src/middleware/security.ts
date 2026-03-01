@@ -191,6 +191,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/customer-success\//, auth: "admin" },  // Phase 372: customer success tooling
   { pattern: /^\/support-ops\//, auth: "admin" },       // Phase 373: support ops automation
   { pattern: /^\/external-validation\//, auth: "admin" }, // Phase 374: external validation harness
+  { pattern: /^\/data-rights\//, auth: "admin" },         // Phase 375: data rights operations
   // Default: session required for anything else
 ];
 
