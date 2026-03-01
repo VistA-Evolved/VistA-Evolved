@@ -223,6 +223,8 @@ const AUTH_RULES: AuthRule[] = [
   // ── Wave 22, Phase 395: CDS Hooks + SMART Launch ──
   { pattern: /^\/cds\/cqf\/config$/, auth: "admin" },              // Phase 395: CQF Ruler config (admin)
   { pattern: /^\/cds\//, auth: "session" },                        // Phase 395: CDS hooks + SMART launch
+  // ── Wave 22, Phase 396: Clinical Reasoning + Quality Measures ──
+  { pattern: /^\/clinical-reasoning\//, auth: "session" },          // Phase 396: clinical reasoning
   // Default: session required for anything else
 ];
 

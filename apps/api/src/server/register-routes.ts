@@ -195,6 +195,7 @@ import { pharmacyDeepRoutes } from "../pharmacy/index.js";
 import { labDeepRoutes } from "../lab/index.js";
 import { radiologyDeepRoutes } from "../radiology/index.js";
 import { cdsHooksRoutes } from "../cds/index.js";
+import { clinicalReasoningRoutes } from "../clinical-reasoning/index.js";
 import { queueRoutes } from "../queue/index.js";
 import { workflowRoutes } from "../workflows/index.js";
 import alignmentRoutes from "../routes/alignment-routes.js";
@@ -514,6 +515,7 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(labDeepRoutes); // Phase 393: Lab Deep Workflows
   server.register(radiologyDeepRoutes); // Phase 394: Imaging/Radiology Deep Workflows
   server.register(cdsHooksRoutes); // Phase 395: CDS Hooks + SMART Launch
+  server.register(clinicalReasoningRoutes); // Phase 396: Clinical Reasoning + Quality Measures
   server.register(queueRoutes);
   server.register(workflowRoutes);
 
