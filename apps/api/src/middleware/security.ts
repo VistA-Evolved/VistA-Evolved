@@ -192,6 +192,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/support-ops\//, auth: "admin" },       // Phase 373: support ops automation
   { pattern: /^\/external-validation\//, auth: "admin" }, // Phase 374: external validation harness
   { pattern: /^\/data-rights\//, auth: "admin" },         // Phase 375: data rights operations
+  { pattern: /^\/ga\//, auth: "admin" },                   // Phase 377: GA evidence + trust center
   // Default: session required for anything else
 ];
 

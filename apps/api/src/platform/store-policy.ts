@@ -3966,6 +3966,29 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: data_rights_audit (v54)",
     notes: "Phase 375: SHA-256 hash-chained audit for compliance.",
   },
+  // Phase 377: GA Evidence Bundle + Trust Center (W20-P8)
+  {
+    id: "ga-evidence-bundles",
+    file: "services/ga-evidence-service.ts",
+    variable: "bundleStore",
+    description: "In-memory GA evidence bundle records",
+    classification: "cache" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "ga-evidence",
+    migrationTarget: "pg: ga_evidence_bundle (v55)",
+    notes: "Phase 377: GA evidence collection for certification.",
+  },
+  {
+    id: "ga-trust-center-exports",
+    file: "services/ga-evidence-service.ts",
+    variable: "exportStore",
+    description: "In-memory trust center export records",
+    classification: "cache" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "ga-evidence",
+    migrationTarget: "pg: trust_center_export (v55)",
+    notes: "Phase 377: Trust center export packs for external sharing.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

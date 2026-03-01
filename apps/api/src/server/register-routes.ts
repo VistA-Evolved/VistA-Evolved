@@ -292,6 +292,7 @@ import customerSuccessRoutes from "../routes/customer-success-routes.js";
 import supportOpsRoutes from "../routes/support-ops-routes.js";
 import externalValidationRoutes from "../routes/external-validation-routes.js";
 import dataRightsRoutes from "../routes/data-rights-routes.js";
+import gaEvidenceRoutes from "../routes/ga-evidence-routes.js";
 
 /**
  * Register all route plugins in the exact order from the original index.ts.
@@ -665,6 +666,7 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(supportOpsRoutes);                                    // Phase 373: support ops automation
   server.register(externalValidationRoutes);                             // Phase 374: external validation harness
   server.register(dataRightsRoutes);                                      // Phase 375: data rights operations
+  server.register(gaEvidenceRoutes);                                       // Phase 377: GA evidence + trust center
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);
