@@ -4123,6 +4123,17 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "none (transient diagnostics)",
     notes: "Phase 382: POCT1-A ingest log for POC device diagnostics.",
   },
+  {
+    id: "sdc-ingest-log",
+    file: "devices/sdc-ingest-routes.ts",
+    variable: "sdcIngestLog",
+    description: "In-memory IEEE 11073 SDC ingest diagnostic log",
+    classification: "cache" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "devices",
+    migrationTarget: "none (transient diagnostics)",
+    notes: "Phase 383: SDC sidecar ingest log diagnostics.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

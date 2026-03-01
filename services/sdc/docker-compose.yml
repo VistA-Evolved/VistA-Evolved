@@ -1,0 +1,30 @@
+# IEEE 11073 SDC Sidecar — Docker Compose
+#
+# Phase 383 (W21-P6): Optional SDC consumer sidecar using sdc11073 Python library.
+# Subscribes to SDC devices on the local network, normalizes BICEPS metrics
+# to JSON, and POSTs to the API /devices/sdc/ingest endpoint.
+#
+# Usage: docker compose --profile sdc up -d
+# The sidecar is behind a compose profile — it won't start unless explicitly requested.
+
+services:
+  sdc-consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    profiles: [sdc]
+    container_name: ve-sdc-consumer
+    restart: unless-stopped
+    environment:
+      - API_INGEST_URL=${API_INGEST_URL:-http://host.docker.internal:3001/devices/sdc/ingest}
+      - SDC_INGEST_SERVICE_KEY=${SDC_INGEST_SERVICE_KEY:-dev-sdc-ingest-key-change-in-production}
+      - SDC_POLL_INTERVAL_MS=${SDC_POLL_INTERVAL_MS:-5000}
+      - SDC_DISCOVERY_TIMEOUT_S=${SDC_DISCOVERY_TIMEOUT_S:-10}
+      - SDC_WAVEFORM_DOWNSAMPLE=${SDC_WAVEFORM_DOWNSAMPLE:-true}
+      - SDC_LOG_LEVEL=${SDC_LOG_LEVEL:-INFO}
+    network_mode: host  # Required for WS-Discovery multicast on local network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sdc11073; print('ok')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
