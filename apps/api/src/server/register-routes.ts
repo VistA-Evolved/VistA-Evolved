@@ -269,6 +269,7 @@ import { siemRoutes } from "../routes/siem-routes.js";
 // Wave 17: Multi-Facility + Dept Packs + Workflow Inbox + Patient Comms (Phases 346-353)
 import { facilityRoutes } from "../routes/facility-routes.js";
 import { deptRbacRoutes } from "../routes/dept-rbac-routes.js";
+import { deptPackRoutes } from "../routes/dept-pack-routes.js";
 
 /**
  * Register all route plugins in the exact order from the original index.ts.
@@ -619,6 +620,7 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   // Wave 17: Multi-Facility + Dept Packs + Workflow Inbox + Patient Comms (Phases 346-353)
   server.register(facilityRoutes);             // Phase 347: facility/department/location CRUD
   server.register(deptRbacRoutes);              // Phase 348: dept RBAC templates + memberships
+  server.register(deptPackRoutes);               // Phase 349: department packs catalog + install
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

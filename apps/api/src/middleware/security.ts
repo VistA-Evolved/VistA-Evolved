@@ -100,6 +100,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/locations\//, auth: "admin" }, // Phase 347: location management (admin only)
   { pattern: /^\/provider-assignments\//, auth: "admin" }, // Phase 347: provider assignments (admin only)
   { pattern: /^\/dept-rbac\//, auth: "admin" }, // Phase 348: department RBAC templates (admin only)
+  { pattern: /^\/dept-packs\//, auth: "session" }, // Phase 349: department packs (read=session, write=admin in handler)
   { pattern: /^\/imaging\/ingest\/callback$/, auth: "service" }, // Phase 23: Orthanc webhook (X-Service-Key)
   { pattern: /^\/imaging\/health$/, auth: "session" }, // Phase 24: imaging health check
   { pattern: /^\/imaging\/devices/, auth: "session" }, // Phase 24: device registry (imaging_admin checked in handler)

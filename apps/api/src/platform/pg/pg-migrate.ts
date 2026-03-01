@@ -3148,6 +3148,30 @@ CREATE INDEX IF NOT EXISTS idx_drm_user ON dept_role_membership(tenant_id, user_
 CREATE INDEX IF NOT EXISTS idx_drm_dept ON dept_role_membership(tenant_id, department_id);
 `,
   },
+  {
+    version: 40,
+    name: "phase349_department_packs",
+    sql: `
+-- Pack Installation Tracking (Phase 349)
+CREATE TABLE IF NOT EXISTS pack_installation (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  department_id TEXT NOT NULL,
+  pack_id TEXT NOT NULL,
+  pack_version TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'installed',
+  installed_by TEXT NOT NULL,
+  installed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  uninstalled_at TIMESTAMPTZ,
+  flag_overrides JSONB NOT NULL DEFAULT '{}'::jsonb,
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb
+);
+CREATE INDEX IF NOT EXISTS idx_pi_tenant ON pack_installation(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_pi_dept ON pack_installation(tenant_id, department_id);
+CREATE INDEX IF NOT EXISTS idx_pi_pack ON pack_installation(tenant_id, pack_id);
+CREATE INDEX IF NOT EXISTS idx_pi_status ON pack_installation(tenant_id, status);
+`,
+  },
 ];
 
 /**
@@ -3333,6 +3357,8 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   // Phase 348: Dept RBAC Templates
   "dept_role_template",
   "dept_role_membership",
+  // Phase 349: Department Packs
+  "pack_installation",
 ] as const;
 
 /**

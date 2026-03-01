@@ -3331,6 +3331,28 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: dept_role_membership (v39)",
     notes: "Phase 348: PG table exists; in-memory for dev speed.",
   },
+  {
+    id: "pack-registry",
+    file: "services/dept-pack-service.ts",
+    variable: "packRegistry",
+    description: "Department pack manifest registry (loaded from config/packs/)",
+    classification: "registry",
+    durability: "file_seeded",
+    domain: "facility",
+    migrationTarget: "none (config-driven, read-only)",
+    notes: "Phase 349: Loaded from config/packs/department-packs.json at startup.",
+  },
+  {
+    id: "pack-installation-store",
+    file: "services/dept-pack-service.ts",
+    variable: "installationStore",
+    description: "In-memory pack installation tracker",
+    classification: "registry",
+    durability: "in_memory_only",
+    domain: "facility",
+    migrationTarget: "pg: pack_installation (v40)",
+    notes: "Phase 349: PG table exists; in-memory for dev speed.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

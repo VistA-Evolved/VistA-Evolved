@@ -1,0 +1,235 @@
+[
+  {
+    "id": "pack-emergency",
+    "name": "Emergency Department Pack",
+    "version": "1.0.0",
+    "description": "Full emergency department configuration including triage, trauma, and fast-track workflows",
+    "departmentType": "emergency",
+    "modules": ["clinical", "imaging", "scheduling", "telehealth"],
+    "featureFlags": {
+      "triage_enabled": true,
+      "trauma_workflow": true,
+      "fast_track": true,
+      "bed_board": true,
+      "emar_enabled": true,
+      "critical_alerts": true
+    },
+    "roleTemplates": ["emergency-provider-default", "emergency-nurse-default"],
+    "prerequisites": ["kernel", "clinical"],
+    "countryPacks": [],
+    "metadata": {
+      "category": "clinical",
+      "complexity": "high",
+      "estimatedSetupMinutes": 30
+    }
+  },
+  {
+    "id": "pack-inpatient",
+    "name": "Inpatient Ward Pack",
+    "version": "1.0.0",
+    "description": "Inpatient ward configuration with admission, discharge, transfer, and bed management",
+    "departmentType": "inpatient",
+    "modules": ["clinical", "scheduling"],
+    "featureFlags": {
+      "adt_workflow": true,
+      "bed_management": true,
+      "emar_enabled": true,
+      "handoff_reports": true,
+      "fall_risk_alerts": true
+    },
+    "roleTemplates": ["inpatient-provider-default", "inpatient-nurse-default"],
+    "prerequisites": ["kernel", "clinical"],
+    "countryPacks": [],
+    "metadata": {
+      "category": "clinical",
+      "complexity": "medium",
+      "estimatedSetupMinutes": 20
+    }
+  },
+  {
+    "id": "pack-outpatient",
+    "name": "Outpatient Clinic Pack",
+    "version": "1.0.0",
+    "description": "Outpatient clinic with scheduling, check-in, telehealth, and chronic care management",
+    "departmentType": "outpatient",
+    "modules": ["clinical", "scheduling", "telehealth", "portal"],
+    "featureFlags": {
+      "patient_checkin": true,
+      "telehealth_enabled": true,
+      "chronic_care": true,
+      "patient_portal": true,
+      "appointment_reminders": true
+    },
+    "roleTemplates": ["outpatient-provider-default"],
+    "prerequisites": ["kernel", "clinical", "scheduling"],
+    "countryPacks": [],
+    "metadata": {
+      "category": "clinical",
+      "complexity": "medium",
+      "estimatedSetupMinutes": 15
+    }
+  },
+  {
+    "id": "pack-primary-care",
+    "name": "Primary Care Pack",
+    "version": "1.0.0",
+    "description": "Primary care with preventive health, chronic disease management, and referral coordination",
+    "departmentType": "primary_care",
+    "modules": ["clinical", "scheduling", "telehealth", "portal"],
+    "featureFlags": {
+      "preventive_health": true,
+      "chronic_care": true,
+      "referral_coordination": true,
+      "patient_portal": true,
+      "telehealth_enabled": true,
+      "health_maintenance": true
+    },
+    "roleTemplates": ["primary_care-provider-default"],
+    "prerequisites": ["kernel", "clinical", "scheduling"],
+    "countryPacks": [],
+    "metadata": {
+      "category": "clinical",
+      "complexity": "medium",
+      "estimatedSetupMinutes": 15
+    }
+  },
+  {
+    "id": "pack-radiology",
+    "name": "Radiology Department Pack",
+    "version": "1.0.0",
+    "description": "Radiology with imaging worklist, PACS integration, and report management",
+    "departmentType": "radiology",
+    "modules": ["clinical", "imaging"],
+    "featureFlags": {
+      "imaging_worklist": true,
+      "pacs_integration": true,
+      "report_templates": true,
+      "critical_results": true,
+      "peer_review": false
+    },
+    "roleTemplates": ["radiology-provider-default"],
+    "prerequisites": ["kernel", "clinical", "imaging"],
+    "countryPacks": [],
+    "metadata": {
+      "category": "diagnostic",
+      "complexity": "high",
+      "estimatedSetupMinutes": 45
+    }
+  },
+  {
+    "id": "pack-laboratory",
+    "name": "Laboratory Pack",
+    "version": "1.0.0",
+    "description": "Laboratory with order management, result reporting, and quality control",
+    "departmentType": "laboratory",
+    "modules": ["clinical"],
+    "featureFlags": {
+      "lab_orders": true,
+      "result_reporting": true,
+      "quality_control": true,
+      "critical_values": true,
+      "auto_verification": false
+    },
+    "roleTemplates": ["laboratory-provider-default"],
+    "prerequisites": ["kernel", "clinical"],
+    "countryPacks": [],
+    "metadata": {
+      "category": "diagnostic",
+      "complexity": "medium",
+      "estimatedSetupMinutes": 30
+    }
+  },
+  {
+    "id": "pack-pharmacy",
+    "name": "Pharmacy Pack",
+    "version": "1.0.0",
+    "description": "Pharmacy with dispensing, drug interaction checking, and formulary management",
+    "departmentType": "pharmacy",
+    "modules": ["clinical"],
+    "featureFlags": {
+      "dispensing": true,
+      "drug_interaction_check": true,
+      "formulary_management": true,
+      "controlled_substance_tracking": true,
+      "iv_compounding": false
+    },
+    "roleTemplates": ["pharmacy-pharmacist-default"],
+    "prerequisites": ["kernel", "clinical"],
+    "countryPacks": [],
+    "metadata": {
+      "category": "clinical",
+      "complexity": "high",
+      "estimatedSetupMinutes": 40
+    }
+  },
+  {
+    "id": "pack-surgery",
+    "name": "Surgery Pack",
+    "version": "1.0.0",
+    "description": "Surgical services with OR scheduling, pre-op assessment, and post-op management",
+    "departmentType": "surgery",
+    "modules": ["clinical", "scheduling", "imaging"],
+    "featureFlags": {
+      "or_scheduling": true,
+      "pre_op_assessment": true,
+      "surgical_safety_checklist": true,
+      "post_op_management": true,
+      "anesthesia_record": false
+    },
+    "roleTemplates": ["surgery-provider-default"],
+    "prerequisites": ["kernel", "clinical", "scheduling"],
+    "countryPacks": [],
+    "metadata": {
+      "category": "clinical",
+      "complexity": "high",
+      "estimatedSetupMinutes": 45
+    }
+  },
+  {
+    "id": "pack-mental-health",
+    "name": "Mental Health Pack",
+    "version": "1.0.0",
+    "description": "Mental health with assessment tools, treatment planning, and crisis management",
+    "departmentType": "mental_health",
+    "modules": ["clinical", "scheduling", "telehealth"],
+    "featureFlags": {
+      "assessment_tools": true,
+      "treatment_planning": true,
+      "crisis_management": true,
+      "telehealth_enabled": true,
+      "group_therapy_scheduling": true,
+      "substance_abuse_tracking": false
+    },
+    "roleTemplates": ["mental_health-provider-default"],
+    "prerequisites": ["kernel", "clinical"],
+    "countryPacks": [],
+    "metadata": {
+      "category": "clinical",
+      "complexity": "medium",
+      "estimatedSetupMinutes": 20
+    }
+  },
+  {
+    "id": "pack-administration",
+    "name": "Administration Pack",
+    "version": "1.0.0",
+    "description": "Administrative functions with scheduling management, reporting, and billing oversight",
+    "departmentType": "administration",
+    "modules": ["scheduling", "rcm", "analytics"],
+    "featureFlags": {
+      "scheduling_management": true,
+      "reporting_dashboard": true,
+      "billing_oversight": true,
+      "staff_management": true,
+      "quality_metrics": true
+    },
+    "roleTemplates": ["administration-clerk-default"],
+    "prerequisites": ["kernel"],
+    "countryPacks": [],
+    "metadata": {
+      "category": "administrative",
+      "complexity": "low",
+      "estimatedSetupMinutes": 10
+    }
+  }
+]
