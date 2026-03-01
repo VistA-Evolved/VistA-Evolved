@@ -252,43 +252,142 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
   }
 
   /* ---------------------------------------------------------------- */
-  /* Write methods (Phase 431)                                         */
+  /* Write methods — wired to RPCs (Phase 435)                         */
   /* ---------------------------------------------------------------- */
 
-  async addAllergy(dfn: string, _allergen: string, _params: Record<string, unknown>): Promise<AdapterResult<WriteResult>> {
-    return {
-      ok: false, pending: true,
-      target: "ORWDAL32 SAVE ALLERGY",
-      error: "Write via adapter not yet wired — use route-direct safeCallRpcWithList",
-      vistaGrounding: { rpc: "ORWDAL32 SAVE ALLERGY", vistaPackage: "OR", vistaFiles: ["120.8"], sandboxNote: "Available and tested via route-direct path" },
-    };
+  async addAllergy(dfn: string, allergen: string, params: Record<string, unknown>): Promise<AdapterResult<WriteResult>> {
+    try {
+      const { safeCallRpcWithList } = await import("../../lib/rpc-resilience.js");
+      const { getDuz } = await import("../../vista/rpcBrokerClient.js");
+      const duz = getDuz();
+
+      // ORWDAL32 SAVE ALLERGY requires OREDITED LIST params
+      const listParams: Record<string, string> = {
+        '"GMRAGNT"': String(allergen),                    // NAME^IEN;file_root
+        '"GMRATYPE"': String(params.type || "D"),         // D=Drug, F=Food, O=Other
+        '"GMRANATR"': String(params.nature || "A^Allergy"),
+        '"GMRAORIG"': String(duz),
+        '"GMRACHT"': new Date().toISOString(),
+        '"GMRAOBHX"': String(params.observedHistorical || "h^HISTORICAL"),
+      };
+      if (params.severity) listParams['"GMRASEVR"'] = String(params.severity);
+      if (params.comments) listParams['"GMRACMTS"'] = String(params.comments);
+      if (Array.isArray(params.reactions)) {
+        (params.reactions as string[]).forEach((r, i) => {
+          listParams[`"GMRASYMP",${i}`] = String(r);
+        });
+      }
+
+      const resp = await safeCallRpcWithList("ORWDAL32 SAVE ALLERGY", [
+        { type: "literal", value: dfn },
+        { type: "list", value: listParams },
+      ]);
+      const result = resp.join("\n").trim();
+      const ien = result.split("^")[0];
+      const failed = ien.startsWith("-1") || ien === "0";
+
+      return {
+        ok: !failed,
+        data: { success: !failed, ien: failed ? undefined : ien, message: failed ? result : "Allergy saved" },
+        vistaGrounding: { rpc: "ORWDAL32 SAVE ALLERGY", vistaPackage: "OR", vistaFiles: ["120.8"] },
+      };
+    } catch (err: any) {
+      log.warn("addAllergy via adapter failed", { error: err.message });
+      return { ok: false, error: err.message, vistaGrounding: { rpc: "ORWDAL32 SAVE ALLERGY", vistaPackage: "OR", vistaFiles: ["120.8"] } };
+    }
   }
 
-  async addVital(dfn: string, _type: string, _value: string, _params?: Record<string, unknown>): Promise<AdapterResult<WriteResult>> {
-    return {
-      ok: false, pending: true,
-      target: "GMV ADD VM",
-      error: "Write via adapter not yet wired — use route-direct safeCallRpc",
-      vistaGrounding: { rpc: "GMV ADD VM", vistaPackage: "GMV", vistaFiles: ["120.5"], sandboxNote: "Available and tested via route-direct path" },
-    };
+  async addVital(dfn: string, vitalType: string, value: string, params?: Record<string, unknown>): Promise<AdapterResult<WriteResult>> {
+    try {
+      const { safeCallRpc } = await import("../../lib/rpc-resilience.js");
+      const { getDuz } = await import("../../vista/rpcBrokerClient.js");
+      const duz = getDuz();
+
+      // GMV ADD VM param format: DFN^datetime^vitalTypeIEN^value^units^qualifier^DUZ^location
+      const now = new Date().toISOString().replace(/[-:T]/g, "").slice(0, 14);
+      const units = String(params?.units || "");
+      const qualifier = String(params?.qualifier || "");
+      const location = String(params?.location || "1");
+      const paramStr = `${dfn}^${now}^${vitalType}^${value}^${units}^${qualifier}^${duz}^${location}`;
+
+      const resp = await safeCallRpc("GMV ADD VM", [paramStr]);
+      const result = resp.join("\n").trim();
+      const failed = result.toUpperCase().includes("ERROR");
+
+      return {
+        ok: !failed,
+        data: { success: !failed, message: failed ? result : "Vital added" },
+        vistaGrounding: { rpc: "GMV ADD VM", vistaPackage: "GMV", vistaFiles: ["120.5"] },
+      };
+    } catch (err: any) {
+      log.warn("addVital via adapter failed", { error: err.message });
+      return { ok: false, error: err.message, vistaGrounding: { rpc: "GMV ADD VM", vistaPackage: "GMV", vistaFiles: ["120.5"] } };
+    }
   }
 
-  async createNote(dfn: string, _titleIen: string, _text: string, _params?: Record<string, unknown>): Promise<AdapterResult<WriteResult>> {
-    return {
-      ok: false, pending: true,
-      target: "TIU CREATE RECORD",
-      error: "Write via adapter not yet wired — use route-direct safeCallRpc",
-      vistaGrounding: { rpc: "TIU CREATE RECORD", vistaPackage: "TIU", vistaFiles: ["8925"], sandboxNote: "Available and tested via route-direct path" },
-    };
+  async createNote(dfn: string, titleIen: string, text: string, params?: Record<string, unknown>): Promise<AdapterResult<WriteResult>> {
+    try {
+      const { safeCallRpc } = await import("../../lib/rpc-resilience.js");
+      const { getDuz } = await import("../../vista/rpcBrokerClient.js");
+      const duz = getDuz();
+
+      const visitLocation = String(params?.visitLocation || "");
+      const visitDate = String(params?.visitDate || "");
+
+      // Step 1: TIU CREATE RECORD
+      const createResp = await safeCallRpc("TIU CREATE RECORD", [
+        dfn, titleIen, duz, visitLocation, visitDate,
+      ]);
+      const docIen = createResp[0]?.split("^")[0]?.trim();
+      if (!docIen || docIen.startsWith("-1") || docIen === "0") {
+        return {
+          ok: false,
+          data: { success: false, message: createResp.join("\n") },
+          vistaGrounding: { rpc: "TIU CREATE RECORD", vistaPackage: "TIU", vistaFiles: ["8925"] },
+        };
+      }
+
+      // Step 2: TIU SET DOCUMENT TEXT
+      const noteLines = text.split("\n");
+      const textParam = noteLines.join("\r\n");
+      await safeCallRpc("TIU SET DOCUMENT TEXT", [docIen, textParam, "1"]);
+
+      return {
+        ok: true,
+        data: { success: true, ien: docIen, message: "Note created" },
+        vistaGrounding: { rpc: "TIU CREATE RECORD", vistaPackage: "TIU", vistaFiles: ["8925"] },
+      };
+    } catch (err: any) {
+      log.warn("createNote via adapter failed", { error: err.message });
+      return { ok: false, error: err.message, vistaGrounding: { rpc: "TIU CREATE RECORD", vistaPackage: "TIU", vistaFiles: ["8925"] } };
+    }
   }
 
-  async addProblem(dfn: string, _icdCode: string, _description: string, _params?: Record<string, unknown>): Promise<AdapterResult<WriteResult>> {
-    return {
-      ok: false, pending: true,
-      target: "ORQQPL ADD SAVE",
-      error: "Write via adapter not yet wired — use route-direct safeCallRpc",
-      vistaGrounding: { rpc: "ORQQPL ADD SAVE", vistaPackage: "OR", vistaFiles: ["9000011"], sandboxNote: "Available and tested via route-direct path" },
-    };
+  async addProblem(dfn: string, icdCode: string, description: string, params?: Record<string, unknown>): Promise<AdapterResult<WriteResult>> {
+    try {
+      const { safeCallRpc } = await import("../../lib/rpc-resilience.js");
+      const { getDuz } = await import("../../vista/rpcBrokerClient.js");
+      const duz = getDuz();
+
+      const onset = String(params?.onset || "");
+      const status = String(params?.status || "A");  // A=Active
+
+      const resp = await safeCallRpc("ORQQPL ADD SAVE", [
+        dfn, duz, description, icdCode, onset, status,
+      ]);
+      const result = resp.join("\n").trim();
+      const ien = result.split("^")[0];
+      const failed = ien.startsWith("-1") || ien === "0";
+
+      return {
+        ok: !failed,
+        data: { success: !failed, ien: failed ? undefined : ien, message: failed ? result : "Problem added" },
+        vistaGrounding: { rpc: "ORQQPL ADD SAVE", vistaPackage: "OR", vistaFiles: ["9000011"] },
+      };
+    } catch (err: any) {
+      log.warn("addProblem via adapter failed", { error: err.message });
+      return { ok: false, error: err.message, vistaGrounding: { rpc: "ORQQPL ADD SAVE", vistaPackage: "OR", vistaFiles: ["9000011"] } };
+    }
   }
 
   /* ---------------------------------------------------------------- */
