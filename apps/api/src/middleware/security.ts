@@ -197,6 +197,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/edge-gateways\/uplink/, auth: "service" },  // Phase 379: gateway uplink ingest
   { pattern: /^\/edge-gateways\/[^/]+\/heartbeat/, auth: "service" }, // Phase 379: gateway heartbeat
   { pattern: /^\/edge-gateways\//, auth: "admin" },          // Phase 379: gateway management
+  { pattern: /^\/devices\//, auth: "admin" },                  // Phase 380: device registry
   // Default: session required for anything else
 ];
 
