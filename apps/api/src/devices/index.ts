@@ -9,6 +9,7 @@ export { default as deviceRegistryRoutes } from "./device-registry-routes.js";
 export { default as hl7v2IngestRoutes } from "./hl7v2-ingest-routes.js";
 export { default as astmPoct1aIngestRoutes } from "./astm-poct1a-ingest-routes.js";
 export { default as sdcIngestRoutes } from "./sdc-ingest-routes.js";
+export { default as alarmRoutes } from "./alarm-routes.js";
 export { startGatewayCleanup, stopGatewayCleanup } from "./gateway-store.js";
 export type {
   EdgeGateway,
