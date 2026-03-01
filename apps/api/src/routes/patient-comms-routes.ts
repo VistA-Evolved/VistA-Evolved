@@ -17,7 +17,6 @@ import {
   getNotificationLog,
   listProviders,
   isPhiAllowed,
-  hashPatientDfn,
 } from "../services/patient-comms-service.js";
 import type {
   NotificationChannel,

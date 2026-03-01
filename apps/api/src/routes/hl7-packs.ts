@@ -11,7 +11,7 @@
  */
 
 import type { FastifyInstance } from "fastify";
-import { listPacks, getPack, findPackByMessageType } from "../hl7/packs/index.js";
+import { listPacks, getPack } from "../hl7/packs/index.js";
 import { parseMessage } from "../hl7/parser.js";
 
 export default async function hl7PackRoutes(server: FastifyInstance): Promise<void> {

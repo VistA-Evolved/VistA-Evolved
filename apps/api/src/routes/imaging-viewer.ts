@@ -24,7 +24,7 @@ import { audit } from "../lib/audit.js";
 import { log } from "../lib/logger.js";
 import { getLinkagesForPatient, getLinkageByStudyUid } from "../services/imaging-ingest.js";
 import { findByPatientDfn as findOrdersByPatient } from "../services/imaging-worklist.js";
-import { resolveImagingConfig, getViewerUrl as getTenantViewerUrl, getOrthancUrl as getTenantOrthancUrl } from "../config/imaging-tenant.js";
+import { getViewerUrl as getTenantViewerUrl, getOrthancUrl as getTenantOrthancUrl } from "../config/imaging-tenant.js";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */

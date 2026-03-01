@@ -19,7 +19,7 @@ import {
   ANALYTICS_ROLE_PERMISSIONS,
   type AnalyticsPermission,
 } from "../config/analytics-config.js";
-import type { ExtractRunConfig, DeidConfig, QualityMeasureId } from "../analytics/extract-types.js";
+import type { ExtractRunConfig, QualityMeasureId } from "../analytics/extract-types.js";
 import {
   runExtract,
   getExtractRuns,

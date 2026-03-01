@@ -45,7 +45,6 @@ import {
   type PartnerStatus,
   type EndpointDirection,
   type EndpointProtocol,
-  type TlsMode,
 } from "../services/integration-control-plane.js";
 
 const VALID_TYPES: IntegrationPartnerType[] = ["HL7", "X12", "FHIR", "PACS", "OTHER"];

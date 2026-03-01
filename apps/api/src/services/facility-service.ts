@@ -162,8 +162,7 @@ export function updateFacility(
 export function decommissionFacility(id: string): boolean {
   const existing = facilityStore.get(id);
   if (!existing) return false;
-  existing.status = "decommissioned";
-  existing.updatedAt = new Date().toISOString();
+  facilityStore.set(id, { ...existing, status: "decommissioned", updatedAt: new Date().toISOString() });
   return true;
 }
 
@@ -216,8 +215,7 @@ export function updateDepartment(
 export function decommissionDepartment(id: string): boolean {
   const existing = departmentStore.get(id);
   if (!existing) return false;
-  existing.status = "decommissioned";
-  existing.updatedAt = new Date().toISOString();
+  departmentStore.set(id, { ...existing, status: "decommissioned", updatedAt: new Date().toISOString() });
   return true;
 }
 
@@ -270,8 +268,7 @@ export function updateLocation(
 export function decommissionLocation(id: string): boolean {
   const existing = locationStore.get(id);
   if (!existing) return false;
-  existing.status = "decommissioned";
-  existing.updatedAt = new Date().toISOString();
+  locationStore.set(id, { ...existing, status: "decommissioned", updatedAt: new Date().toISOString() });
   return true;
 }
 

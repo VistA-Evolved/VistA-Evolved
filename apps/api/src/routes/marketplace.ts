@@ -27,7 +27,6 @@ import {
   getInstall,
   getMarketplaceStats,
   seedMarketplace,
-  type ListingType,
   type ListingStatus,
 } from "../services/integration-marketplace.js";
 

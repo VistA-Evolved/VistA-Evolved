@@ -45,7 +45,6 @@ import {
   toggleIntegration,
   updateIntegrationStatus,
   getIntegrationHealthSummary,
-  recordIntegrationError,
   type IntegrationEntry,
   type IntegrationType,
   type IntegrationStatus,

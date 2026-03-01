@@ -97,6 +97,25 @@ export interface TaskCounts {
 
 const taskStore = new Map<string, WorkflowTask>();
 const eventStore: TaskEvent[] = [];
+const MAX_EVENT_STORE_SIZE = 50_000;
+
+/** Valid source states for each transition action */
+const VALID_TRANSITION_SOURCES: Record<string, ReadonlySet<TaskStatus>> = {
+  assign:   new Set(["pending", "assigned", "deferred", "escalated"]),
+  start:    new Set(["assigned"]),
+  complete: new Set(["pending", "assigned", "in_progress", "escalated"]),
+  cancel:   new Set(["pending", "assigned", "in_progress", "deferred", "escalated"]),
+  escalate: new Set(["pending", "assigned", "in_progress", "deferred"]),
+  defer:    new Set(["pending", "assigned", "in_progress"]),
+};
+
+function pushEvent(evt: TaskEvent): void {
+  eventStore.push(evt);
+  // FIFO eviction when cap exceeded
+  if (eventStore.length > MAX_EVENT_STORE_SIZE) {
+    eventStore.splice(0, eventStore.length - MAX_EVENT_STORE_SIZE);
+  }
+}
 
 // ─── Task CRUD ───────────────────────────────────────────
 
@@ -116,7 +135,7 @@ export function createTask(
   };
   taskStore.set(task.id, task);
 
-  eventStore.push({
+  pushEvent({
     id: randomUUID(),
     taskId: task.id,
     tenantId,
@@ -172,7 +191,7 @@ export function assignTask(
   assignedBy: string,
 ): WorkflowTask | undefined {
   const task = taskStore.get(taskId);
-  if (!task) return undefined;
+  if (!task || !VALID_TRANSITION_SOURCES.assign.has(task.status)) return undefined;
 
   const prev = task.status;
   task.assignedTo = assignedTo;
@@ -180,7 +199,7 @@ export function assignTask(
   task.status = "assigned";
   task.updatedAt = new Date().toISOString();
 
-  eventStore.push({
+  pushEvent({
     id: randomUUID(),
     taskId,
     tenantId: task.tenantId,
@@ -197,13 +216,13 @@ export function assignTask(
 
 export function startTask(taskId: string, actor: string): WorkflowTask | undefined {
   const task = taskStore.get(taskId);
-  if (!task || task.status !== "assigned") return undefined;
+  if (!task || !VALID_TRANSITION_SOURCES.start.has(task.status)) return undefined;
 
   const prev = task.status;
   task.status = "in_progress";
   task.updatedAt = new Date().toISOString();
 
-  eventStore.push({
+  pushEvent({
     id: randomUUID(),
     taskId,
     tenantId: task.tenantId,
@@ -224,14 +243,14 @@ export function completeTask(
   comment?: string,
 ): WorkflowTask | undefined {
   const task = taskStore.get(taskId);
-  if (!task) return undefined;
+  if (!task || !VALID_TRANSITION_SOURCES.complete.has(task.status)) return undefined;
 
   const prev = task.status;
   task.status = "completed";
   task.completedAt = new Date().toISOString();
   task.updatedAt = task.completedAt;
 
-  eventStore.push({
+  pushEvent({
     id: randomUUID(),
     taskId,
     tenantId: task.tenantId,
@@ -252,13 +271,13 @@ export function cancelTask(
   comment?: string,
 ): WorkflowTask | undefined {
   const task = taskStore.get(taskId);
-  if (!task) return undefined;
+  if (!task || !VALID_TRANSITION_SOURCES.cancel.has(task.status)) return undefined;
 
   const prev = task.status;
   task.status = "cancelled";
   task.updatedAt = new Date().toISOString();
 
-  eventStore.push({
+  pushEvent({
     id: randomUUID(),
     taskId,
     tenantId: task.tenantId,
@@ -279,14 +298,14 @@ export function escalateTask(
   comment?: string,
 ): WorkflowTask | undefined {
   const task = taskStore.get(taskId);
-  if (!task) return undefined;
+  if (!task || !VALID_TRANSITION_SOURCES.escalate.has(task.status)) return undefined;
 
   const prev = task.status;
   task.status = "escalated";
   task.priority = "critical";
   task.updatedAt = new Date().toISOString();
 
-  eventStore.push({
+  pushEvent({
     id: randomUUID(),
     taskId,
     tenantId: task.tenantId,
@@ -308,14 +327,14 @@ export function deferTask(
   comment?: string,
 ): WorkflowTask | undefined {
   const task = taskStore.get(taskId);
-  if (!task) return undefined;
+  if (!task || !VALID_TRANSITION_SOURCES.defer.has(task.status)) return undefined;
 
   const prev = task.status;
   task.status = "deferred";
   task.dueAt = dueAt;
   task.updatedAt = new Date().toISOString();
 
-  eventStore.push({
+  pushEvent({
     id: randomUUID(),
     taskId,
     tenantId: task.tenantId,

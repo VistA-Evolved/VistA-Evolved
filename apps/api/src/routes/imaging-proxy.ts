@@ -66,15 +66,6 @@ function requireSession(request: FastifyRequest, reply: FastifyReply): SessionDa
   return s;
 }
 
-/** Require admin role — sends 403 if not admin. RBAC-tight (AGENTS.md #24). */
-function requireAdmin(session: SessionData, reply: FastifyReply): boolean {
-  if (session.role !== "admin") {
-    reply.code(403).send({ ok: false, error: "Admin access required" });
-    return false;
-  }
-  return true;
-}
-
 /**
  * Require imaging_view permission — sends 403 if not authorized.
  * Checks role-based imaging RBAC + active break-glass grants.

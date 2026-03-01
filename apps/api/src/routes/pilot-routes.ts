@@ -23,7 +23,6 @@ import {
   type CreateSiteRequest,
 } from "../pilot/site-config.js";
 import { runPreflightChecks } from "../pilot/preflight.js";
-import { log } from "../lib/logger.js";
 
 export default async function pilotRoutes(server: FastifyInstance): Promise<void> {
 

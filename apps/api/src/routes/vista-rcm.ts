@@ -18,7 +18,6 @@
 import type { FastifyInstance } from 'fastify';
 import { validateCredentials } from '../vista/config.js';
 import { connect, disconnect, callRpc } from '../vista/rpcBrokerClient.js';
-import { safeCallRpc } from '../lib/rpc-resilience.js';
 import { audit } from '../lib/audit.js';
 import { log } from '../lib/logger.js';
 import { readFileSync, existsSync } from 'fs';

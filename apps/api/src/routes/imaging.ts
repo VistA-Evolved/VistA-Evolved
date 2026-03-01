@@ -16,7 +16,7 @@
 import type { FastifyInstance } from "fastify";
 import { validateCredentials } from "../vista/config.js";
 import { connect, disconnect, callRpc } from "../vista/rpcBrokerClient.js";
-import { optionalRpc, isRpcAvailable } from "../vista/rpcCapabilities.js";
+import { optionalRpc } from "../vista/rpcCapabilities.js";
 import { safeErr } from '../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */

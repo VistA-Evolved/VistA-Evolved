@@ -21,7 +21,6 @@ import { getSession, type SessionData } from "../auth/session-store.js";
 import { validateCredentials } from "../vista/config.js";
 import { connect, disconnect, callRpc } from "../vista/rpcBrokerClient.js";
 import { audit as centralAudit, queryAuditEvents } from "../lib/audit.js";
-import { log } from "../lib/logger.js";
 import type { AuditAction } from "../lib/audit.js";
 import { safeErr } from '../lib/safe-error.js';
 

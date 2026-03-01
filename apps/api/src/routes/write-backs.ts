@@ -23,8 +23,8 @@
 import type { FastifyInstance } from "fastify";
 import { validateCredentials } from "../vista/config.js";
 import { connect, disconnect, callRpc, getDuz } from "../vista/rpcBrokerClient.js";
-import { optionalRpc, isRpcAvailable, getCapabilities } from "../vista/rpcCapabilities.js";
-import { audit as centralAudit, queryAuditEvents } from "../lib/audit.js";
+import { optionalRpc } from "../vista/rpcCapabilities.js";
+import { audit as centralAudit } from "../lib/audit.js";
 import { log } from "../lib/logger.js";
 import type { AuditAction } from "../lib/audit.js";
 

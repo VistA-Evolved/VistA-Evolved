@@ -80,7 +80,6 @@ import {
   revokeShare,
   getSharePreview,
   verifyShareAccess,
-  SHAREABLE_CURATED_SECTIONS,
 } from "../services/portal-sharing.js";
 import type { ShareableSection } from "../services/portal-sharing.js";
 import {

@@ -20,7 +20,6 @@
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { log } from "../lib/logger.js";
 import { validateCredentials } from "../vista/config.js";
 import { connect, disconnect, callRpc } from "../vista/rpcBrokerClient.js";
 import {

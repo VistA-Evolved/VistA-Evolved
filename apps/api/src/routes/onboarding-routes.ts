@@ -15,7 +15,6 @@
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { log } from "../lib/logger.js";
 import {
   createOnboarding,
   getOnboarding,
@@ -28,7 +27,7 @@ import {
 } from "../config/onboarding-store.js";
 import { probeConnect } from "../vista/rpcBroker.js";
 import { upsertTenant, getTenant } from "../config/tenant-config.js";
-import { getModuleStatus, setTenantModules, validateDependencies } from "../modules/module-registry.js";
+import { setTenantModules, validateDependencies } from "../modules/module-registry.js";
 import { requireSession } from "../auth/auth-routes.js";
 
 /* ------------------------------------------------------------------ */

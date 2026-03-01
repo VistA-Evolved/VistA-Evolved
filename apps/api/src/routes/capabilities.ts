@@ -14,7 +14,6 @@
 import type { FastifyInstance } from "fastify";
 import {
   discoverCapabilities,
-  getCapabilities,
   getDomainCapabilities,
   KNOWN_RPCS,
 } from "../vista/rpcCapabilities.js";

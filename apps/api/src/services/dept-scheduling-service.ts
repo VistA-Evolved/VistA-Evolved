@@ -408,9 +408,7 @@ export function evaluateSchedulingRules(
 
     if (c.appointmentTypes?.length && context.appointmentType) {
       if (!c.appointmentTypes.includes(context.appointmentType)) {
-        if (rule.action === "deny") {
-          blockers.push({ rule: rule.name, action: rule.action, reason: `Appointment type '${context.appointmentType}' not allowed` });
-        }
+        blockers.push({ rule: rule.name, action: rule.action, reason: `Appointment type '${context.appointmentType}' not allowed` });
       }
     }
 

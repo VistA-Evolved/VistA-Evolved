@@ -115,9 +115,17 @@ export function isPhiAllowed(): boolean {
 const providerRegistry = new Map<string, NotificationProvider>();
 const consentStore = new Map<string, PatientConsent>();
 const notificationLog: NotificationRecord[] = [];
+const MAX_NOTIFICATION_LOG_SIZE = 50_000;
 const templateStore = new Map<string, NotificationTemplate>();
 
 // ─── Provider Registry ───────────────────────────────────
+
+function pushNotificationRecord(record: NotificationRecord): void {
+  notificationLog.push(record);
+  if (notificationLog.length > MAX_NOTIFICATION_LOG_SIZE) {
+    notificationLog.splice(0, notificationLog.length - MAX_NOTIFICATION_LOG_SIZE);
+  }
+}
 
 export function registerProvider(provider: NotificationProvider): void {
   providerRegistry.set(provider.id, provider);
@@ -323,7 +331,7 @@ export async function sendNotification(
       failureReason: "No consent granted",
       createdAt: now,
     };
-    notificationLog.push(record);
+    pushNotificationRecord(record);
     return { sent: false, record, reason: "No consent granted" };
   }
 
@@ -344,7 +352,7 @@ export async function sendNotification(
       failureReason: "PHI content blocked",
       createdAt: now,
     };
-    notificationLog.push(record);
+    pushNotificationRecord(record);
     return { sent: false, record, reason: "PHI content blocked" };
   }
 
@@ -366,7 +374,7 @@ export async function sendNotification(
       failureReason: `Provider '${providerId}' not found`,
       createdAt: now,
     };
-    notificationLog.push(record);
+    pushNotificationRecord(record);
     return { sent: false, record, reason: `Provider '${providerId}' not found` };
   }
 
@@ -400,7 +408,7 @@ export async function sendNotification(
       failureReason: result.error,
       createdAt: now,
     };
-    notificationLog.push(record);
+    pushNotificationRecord(record);
     return { sent: result.success, record };
   } catch (err: any) {
     const record: NotificationRecord = {
@@ -417,7 +425,7 @@ export async function sendNotification(
       failureReason: err?.message || "Unknown error",
       createdAt: now,
     };
-    notificationLog.push(record);
+    pushNotificationRecord(record);
     return { sent: false, record, reason: err?.message };
   }
 }

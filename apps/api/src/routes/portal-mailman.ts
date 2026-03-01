@@ -10,7 +10,7 @@
  * Security: message bodies NEVER in audit/logs. Redacted before audit.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import type { FastifyInstance, FastifyRequest } from "fastify";
 import {
   listMessages,
   getVistaMessage,

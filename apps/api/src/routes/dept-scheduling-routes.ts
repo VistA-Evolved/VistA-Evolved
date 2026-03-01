@@ -30,7 +30,7 @@ import {
   getReferral,
   transitionReferral,
 } from "../services/dept-scheduling-service.js";
-import type { ResourceType, DayOfWeek, RuleAction, ReferralStatus } from "../services/dept-scheduling-service.js";
+import type { ResourceType, ReferralStatus } from "../services/dept-scheduling-service.js";
 
 export async function deptSchedulingRoutes(server: FastifyInstance): Promise<void> {
   const tenantId = "default";

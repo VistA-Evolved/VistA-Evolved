@@ -348,10 +348,12 @@ export function listMemberships(
   userId?: string,
   departmentId?: string,
 ): DeptRoleMembership[] {
+  const now = new Date();
   return Array.from(membershipStore.values()).filter(
     (m) =>
       m.tenantId === tenantId &&
       m.status === "active" &&
+      (!m.expiresAt || new Date(m.expiresAt) > now) &&
       (!userId || m.userId === userId) &&
       (!departmentId || m.departmentId === departmentId),
   );

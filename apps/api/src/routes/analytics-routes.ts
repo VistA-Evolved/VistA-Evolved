@@ -20,7 +20,7 @@
  */
 
 import type { FastifyInstance } from "fastify";
-import { requireSession, requireRole } from "../auth/auth-routes.js";
+import { requireSession } from "../auth/auth-routes.js";
 import { audit, type AuditAction } from "../lib/audit.js";
 import { log } from "../lib/logger.js";
 import { getRpcHealthSummary } from "../lib/rpc-resilience.js";

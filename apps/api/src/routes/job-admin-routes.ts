@@ -11,7 +11,6 @@
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import {
-  JOB_NAMES,
   ALL_JOB_NAMES,
   DEFAULT_CRON_SCHEDULES,
   getJobConcurrency,

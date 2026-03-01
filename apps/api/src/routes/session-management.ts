@@ -14,7 +14,7 @@
  */
 
 import type { FastifyInstance } from "fastify";
-import { getSession, destroySession, listSessions, type SessionData } from "../auth/session-store.js";
+import { getSession, listSessions } from "../auth/session-store.js";
 import { SESSION_CONFIG } from "../config/server-config.js";
 import {
   getUserSessions,
@@ -22,14 +22,12 @@ import {
   getSecurityEventCounts,
 } from "../auth/session-security.js";
 import {
-  evaluateStepUp,
   computeAssuranceLevel,
   getActionsAtLevel,
   type MfaState,
 } from "../auth/step-up-auth.js";
 import {
   getEnrollment,
-  checkMfaRequired,
   MFA_ENFORCEMENT_ENABLED,
   roleRequiresMfa,
 } from "../auth/mfa-enforcement.js";
