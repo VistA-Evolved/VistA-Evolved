@@ -301,6 +301,12 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
   // Phase 433: Lab filing RPCs — target RPCs for HL7 ORU^R01 inbound lab result filing (not available via RPC)
   { name: "LRFZX", reason: "Lab result filing routine — not an RPC, requires direct M call or custom ZVE wrapper (Phase 433)" },
   { name: "LR VERIFY", reason: "Lab result verification — LR package not exposed via OR CPRS GUI CHART context (Phase 433)" },
+  // Phase 434: ORWDXC session RPCs — referenced in CPRS Delphi but not yet called by VistA-Evolved
+  { name: "ORWDXC DELAY", reason: "Delay order checks for complex orders — CPRS Delphi references but not yet wired (Phase 434)" },
+  { name: "ORWDXC DELORD", reason: "Remove order from active check session — CPRS Delphi references (Phase 434)" },
+  { name: "ORWDXC FILLID", reason: "Get fill ID for duplicate therapy checks — requires pharmacy context (Phase 434)" },
+  { name: "ORWDXC ON", reason: "Check if order checking is enabled for site — CPRS Delphi references (Phase 434)" },
+  { name: "ORWDXC SESSION", reason: "Order check session management — CPRS Delphi references (Phase 434)" },
 ];
 
 /* ------------------------------------------------------------------ */
