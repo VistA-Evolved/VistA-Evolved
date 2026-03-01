@@ -237,6 +237,9 @@ import { clearinghouseTransportRoutes } from "../routes/clearinghouse-transport.
 // Wave 14: Certification Pipeline (Phase 323)
 import certificationPipelineRoutes from "../routes/certification-pipeline.js";
 
+// Wave 14: Marketplace/Registry (Phase 324)
+import marketplaceRoutes from "../routes/marketplace.js";
+
 /**
  * Register all route plugins in the exact order from the original index.ts.
  * Also starts cleanup jobs that were previously co-located with route registration.
@@ -541,6 +544,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Wave 14: Certification Pipeline (Phase 323)
   server.register(certificationPipelineRoutes);
+
+  // Wave 14: Marketplace/Registry (Phase 324)
+  server.register(marketplaceRoutes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

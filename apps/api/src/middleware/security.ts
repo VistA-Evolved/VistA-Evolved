@@ -142,6 +142,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/x12\/gateway\//, auth: "admin" }, // Phase 321: X12 inbound gateway (parse, validate, route)
   { pattern: /^\/clearinghouse\//, auth: "admin" }, // Phase 322: Clearinghouse transport (SFTP, AS2, REST, vault)
   { pattern: /^\/certification\//, auth: "admin" }, // Phase 323: Certification pipeline (suites, runs, certificates)
+  { pattern: /^\/marketplace\//, auth: "session" }, // Phase 324: Integration marketplace (read=session, write=admin inline)
   // Default: session required for anything else
 ];
 
