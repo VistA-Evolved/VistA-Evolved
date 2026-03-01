@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<POCT1A version="1.0">
+  <Observation id="OBS-ABG-001">
+    <Device>
+      <Manufacturer>Siemens Healthineers</Manufacturer>
+      <Model>RAPIDPoint 500e</Model>
+      <SerialNumber>RP5-2024-00389</SerialNumber>
+      <SoftwareVersion>5.1.0</SoftwareVersion>
+    </Device>
+    <Patient>
+      <PatientId>SYN-PAT-012</PatientId>
+      <LastName>CHEN</LastName>
+      <FirstName>WEI</FirstName>
+      <DateOfBirth>1990-07-04</DateOfBirth>
+      <Gender>M</Gender>
+    </Patient>
+    <OperatorId>RT-RESP-08</OperatorId>
+    <Timestamp>2026-01-15T10:45:00Z</Timestamp>
+    <Result>
+      <Analyte code="pH" name="Blood pH"/>
+      <Value>7.32</Value>
+      <Unit></Unit>
+      <Flag>L</Flag>
+      <ReferenceRange>7.35-7.45</ReferenceRange>
+      <Timestamp>2026-01-15T10:44:30Z</Timestamp>
+    </Result>
+    <Result>
+      <Analyte code="pCO2" name="Partial Pressure CO2"/>
+      <Value>52</Value>
+      <Unit>mmHg</Unit>
+      <Flag>H</Flag>
+      <ReferenceRange>35-45</ReferenceRange>
+      <Timestamp>2026-01-15T10:44:30Z</Timestamp>
+    </Result>
+    <Result>
+      <Analyte code="pO2" name="Partial Pressure O2"/>
+      <Value>68</Value>
+      <Unit>mmHg</Unit>
+      <Flag>L</Flag>
+      <ReferenceRange>80-100</ReferenceRange>
+      <Timestamp>2026-01-15T10:44:30Z</Timestamp>
+    </Result>
+    <Result>
+      <Analyte code="HCO3" name="Bicarbonate"/>
+      <Value>26</Value>
+      <Unit>mmol/L</Unit>
+      <Flag>N</Flag>
+      <ReferenceRange>22-26</ReferenceRange>
+      <Timestamp>2026-01-15T10:44:30Z</Timestamp>
+    </Result>
+    <Result>
+      <Analyte code="Lac" name="Lactate"/>
+      <Value>3.8</Value>
+      <Unit>mmol/L</Unit>
+      <Flag>H</Flag>
+      <ReferenceRange>0.5-2.0</ReferenceRange>
+      <Timestamp>2026-01-15T10:44:30Z</Timestamp>
+    </Result>
+  </Observation>
+</POCT1A>

@@ -205,7 +205,7 @@ import certificationEvidenceRoutes from "../routes/certification-evidence.js";
 import vistaProvisionRoutes from "../routes/vista-provision.js";
 
 // Wave 21: Device + Modality Integration (Phases 378-388)
-import { edgeGatewayRoutes, deviceRegistryRoutes, hl7v2IngestRoutes, startGatewayCleanup } from "../devices/index.js";
+import { edgeGatewayRoutes, deviceRegistryRoutes, hl7v2IngestRoutes, astmPoct1aIngestRoutes, startGatewayCleanup } from "../devices/index.js";
 
 // Inline routes + domain auto-stubs
 import { registerInlineRoutes } from "./inline-routes.js";
@@ -676,6 +676,7 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(edgeGatewayRoutes);
   server.register(deviceRegistryRoutes);
   server.register(hl7v2IngestRoutes);
+  server.register(astmPoct1aIngestRoutes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

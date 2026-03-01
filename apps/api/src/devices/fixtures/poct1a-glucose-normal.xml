@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<POCT1A version="1.0">
+  <Observation id="OBS-GLU-001">
+    <Device>
+      <Manufacturer>Nova Biomedical</Manufacturer>
+      <Model>StatStrip Xpress</Model>
+      <SerialNumber>NSX-2024-00147</SerialNumber>
+      <SoftwareVersion>3.2.1</SoftwareVersion>
+    </Device>
+    <Patient>
+      <PatientId>SYN-PAT-010</PatientId>
+      <LastName>MARTINEZ</LastName>
+      <FirstName>CARLOS</FirstName>
+      <DateOfBirth>1978-03-15</DateOfBirth>
+      <Gender>M</Gender>
+    </Patient>
+    <OperatorId>NURSE-RN-42</OperatorId>
+    <Timestamp>2026-01-15T08:30:00Z</Timestamp>
+    <Result>
+      <Analyte code="GLU" name="Glucose"/>
+      <Value>82</Value>
+      <Unit>mg/dL</Unit>
+      <Flag>N</Flag>
+      <ReferenceRange>70-140</ReferenceRange>
+      <Timestamp>2026-01-15T08:29:45Z</Timestamp>
+    </Result>
+  </Observation>
+</POCT1A>

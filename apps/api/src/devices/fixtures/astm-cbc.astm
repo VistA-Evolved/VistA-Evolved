@@ -1,0 +1,11 @@
+H|\^&|||ABX Pentra 80^1.0|||||||LIS2-A2||P|1|20260115120000
+P|1|||SYN-PAT-001||DOE^JOHN||19800115|M
+O|1|SPEC-001||^^^CBC|||20260115115500
+R|1|WBC^White Blood Cell Count|7.2|10e3/uL|4.0-11.0|N||F
+R|2|RBC^Red Blood Cell Count|4.85|10e6/uL|4.20-5.80|N||F
+R|3|HGB^Hemoglobin|14.2|g/dL|12.0-17.5|N||F
+R|4|HCT^Hematocrit|42.1|%|36.0-51.0|N||F
+R|5|PLT^Platelets|245|10e3/uL|150-400|N||F
+R|6|MCV^Mean Corpuscular Volume|86.8|fL|80.0-100.0|N||F
+R|7|MCH^Mean Corpuscular Hemoglobin|29.3|pg|27.0-33.0|N||F
+L|1|N

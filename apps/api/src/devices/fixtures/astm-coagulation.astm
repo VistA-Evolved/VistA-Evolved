@@ -1,0 +1,8 @@
+H|\^&|||Abbott Alinity ci^4.0|||||||LIS2-A2||P|1|20260115103000
+P|1|||SYN-PAT-004||GARCIA^MARIA||19880912|F
+O|1|COAG-001||^^^PT/INR|||20260115102500
+R|1|PT^Prothrombin Time|22.5|sec|11.0-13.5|H||F
+R|2|INR^International Normalized Ratio|2.1||0.9-1.1|H||F
+R|3|APTT^Activated Partial Thromboplastin Time|38.2|sec|25.0-36.0|H||F
+C|1|L|Patient on warfarin therapy - therapeutic INR 2.0-3.0
+L|1|N

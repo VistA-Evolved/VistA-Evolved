@@ -198,6 +198,8 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/edge-gateways\/[^/]+\/heartbeat/, auth: "service" }, // Phase 379: gateway heartbeat
   { pattern: /^\/edge-gateways\//, auth: "admin" },          // Phase 379: gateway management
   { pattern: /^\/devices\/hl7v2\/ingest$/, auth: "service" }, // Phase 381: HL7v2 ingest (gateway)
+  { pattern: /^\/devices\/astm\/ingest$/, auth: "service" },  // Phase 382: ASTM ingest (gateway)
+  { pattern: /^\/devices\/poct1a\/ingest$/, auth: "service" }, // Phase 382: POCT1-A ingest (gateway)
   { pattern: /^\/devices\//, auth: "admin" },                  // Phase 380: device registry
   // Default: session required for anything else
 ];

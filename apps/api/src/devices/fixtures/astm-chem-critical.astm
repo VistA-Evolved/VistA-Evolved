@@ -1,0 +1,13 @@
+H|\^&|||Roche Cobas c311^3.1|||||||LIS2-A2||P|1|20260115090000
+P|1|||SYN-PAT-003||BROWN^ROBERT||19650708|M
+O|1|CHEM-001||^^^BMP|||20260115085500
+R|1|GLU^Glucose|328|mg/dL|70-100|HH||F
+R|2|Na^Sodium|131|mmol/L|136-145|L||F
+R|3|K^Potassium|5.9|mmol/L|3.5-5.0|H||F
+R|4|Cl^Chloride|98|mmol/L|98-106|N||F
+R|5|CO2^CO2|18|mmol/L|23-29|LL||F
+R|6|BUN^Blood Urea Nitrogen|42|mg/dL|7-20|H||F
+R|7|Cr^Creatinine|2.1|mg/dL|0.7-1.3|H||F
+R|8|Ca^Calcium|7.8|mg/dL|8.5-10.5|L||F
+C|1|L|DKA workup - critical glucose and CO2
+L|1|N

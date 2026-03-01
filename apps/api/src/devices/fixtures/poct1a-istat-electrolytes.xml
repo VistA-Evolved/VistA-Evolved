@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<POCT1A version="1.0">
+  <Observation id="OBS-LYTE-001">
+    <Device>
+      <Manufacturer>Abbott</Manufacturer>
+      <Model>i-STAT 1</Model>
+      <SerialNumber>IST-2024-78234</SerialNumber>
+      <SoftwareVersion>6.1.2</SoftwareVersion>
+    </Device>
+    <Patient>
+      <PatientId>SYN-PAT-014</PatientId>
+      <LastName>PATEL</LastName>
+      <FirstName>PRIYA</FirstName>
+      <DateOfBirth>1988-01-30</DateOfBirth>
+      <Gender>F</Gender>
+    </Patient>
+    <OperatorId>MD-ATTEND-03</OperatorId>
+    <Timestamp>2026-01-15T11:20:00Z</Timestamp>
+    <Result>
+      <Analyte code="Na" name="Sodium"/>
+      <Value>128</Value>
+      <Unit>mmol/L</Unit>
+      <Flag>L</Flag>
+      <ReferenceRange>136-145</ReferenceRange>
+      <Timestamp>2026-01-15T11:19:30Z</Timestamp>
+    </Result>
+    <Result>
+      <Analyte code="K" name="Potassium"/>
+      <Value>5.8</Value>
+      <Unit>mmol/L</Unit>
+      <Flag>H</Flag>
+      <ReferenceRange>3.5-5.0</ReferenceRange>
+      <Timestamp>2026-01-15T11:19:30Z</Timestamp>
+    </Result>
+    <Result>
+      <Analyte code="Cl" name="Chloride"/>
+      <Value>101</Value>
+      <Unit>mmol/L</Unit>
+      <Flag>N</Flag>
+      <ReferenceRange>98-106</ReferenceRange>
+      <Timestamp>2026-01-15T11:19:30Z</Timestamp>
+    </Result>
+    <Result>
+      <Analyte code="iCa" name="Ionized Calcium"/>
+      <Value>1.05</Value>
+      <Unit>mmol/L</Unit>
+      <Flag>L</Flag>
+      <ReferenceRange>1.12-1.32</ReferenceRange>
+      <Timestamp>2026-01-15T11:19:30Z</Timestamp>
+    </Result>
+    <Result>
+      <Analyte code="Hct" name="Hematocrit"/>
+      <Value>32</Value>
+      <Unit>%</Unit>
+      <Flag>L</Flag>
+      <ReferenceRange>36-51</ReferenceRange>
+      <Timestamp>2026-01-15T11:19:30Z</Timestamp>
+    </Result>
+  </Observation>
+</POCT1A>

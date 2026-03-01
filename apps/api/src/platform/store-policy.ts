@@ -4101,6 +4101,28 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "none (transient diagnostics)",
     notes: "Phase 381: HL7 v2 ingest log for MLLP message diagnostics.",
   },
+  {
+    id: "astm-ingest-log",
+    file: "devices/astm-poct1a-ingest-routes.ts",
+    variable: "astmIngestLog",
+    description: "In-memory ASTM E1381 ingest diagnostic log",
+    classification: "cache" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "devices",
+    migrationTarget: "none (transient diagnostics)",
+    notes: "Phase 382: ASTM ingest log for analyzer message diagnostics.",
+  },
+  {
+    id: "poct1a-ingest-log",
+    file: "devices/astm-poct1a-ingest-routes.ts",
+    variable: "poct1aIngestLog",
+    description: "In-memory POCT1-A ingest diagnostic log",
+    classification: "cache" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "devices",
+    migrationTarget: "none (transient diagnostics)",
+    notes: "Phase 382: POCT1-A ingest log for POC device diagnostics.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
