@@ -258,6 +258,14 @@ import scalePerformanceRoutes from "../routes/scale-performance-routes.js";
 import sreSupportPostureRoutes from "../routes/sre-support-posture-routes.js";
 import scaleCertRunnerRoutes from "../routes/scale-cert-runner-routes.js";
 
+// Wave 16: Enterprise Security + Governance (Phases 337-345)
+import sessionManagementRoutes from "../routes/session-management.js";
+import scimRoutes from "../routes/scim-routes.js";
+import { secretsRoutes } from "../routes/secrets-routes.js";
+import { tenantSecurityRoutes } from "../routes/tenant-security-routes.js";
+import { privacyRoutes } from "../routes/privacy-routes.js";
+import { siemRoutes } from "../routes/siem-routes.js";
+
 /**
  * Register all route plugins in the exact order from the original index.ts.
  * Also starts cleanup jobs that were previously co-located with route registration.
@@ -595,6 +603,14 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Wave 15: Scale Certification Runner (Phase 336)
   server.register(scaleCertRunnerRoutes);
+
+  // Wave 16: Enterprise Security + Governance (Phases 337-345)
+  server.register(sessionManagementRoutes);   // Phase 338: session, step-up, MFA status
+  server.register(scimRoutes);                // Phase 339: SCIM 2.0 provisioning
+  server.register(secretsRoutes);             // Phase 341: key/secret management
+  server.register(tenantSecurityRoutes);      // Phase 342: tenant security policies
+  server.register(privacyRoutes);             // Phase 343: privacy segmentation
+  server.register(siemRoutes);                // Phase 344: SIEM sink & alerts
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

@@ -1508,6 +1508,62 @@ scripts/
      the JSONL file verbatim without adding any PHI. S3 credentials are never
      logged or included in audit entries.
 
+## 7w. Architecture Quick Map (Wave 16 — Phases 337-345)
+
+```
+apps/api/src/
+  auth/
+    session-security.ts           -- Device fingerprinting + concurrent session tracking (Phase 338)
+    step-up-auth.ts               -- 3-tier assurance: standard/elevated/critical (Phase 338)
+    mfa-enforcement.ts            -- Feature-flagged MFA enrollment + grace periods (Phase 338)
+    scim-server.ts                -- In-process SCIM 2.0 connector (Phase 339)
+    scim-connector.ts             -- SCIM interface types (Phase 339)
+    abac-attributes.ts            -- Request/resource/environment attribute extractors (Phase 340)
+    abac-engine.ts                -- Composable ABAC engine (AND/OR combinators) (Phase 340)
+    key-provider.ts               -- Multi-backend key provider (env/file/vault/kms) (Phase 341)
+    envelope-encryption.ts        -- Envelope encryption (DEK+KEK) with AES-256-GCM (Phase 341)
+    rotation-manager.ts           -- Key rotation lifecycle + grace period (Phase 341)
+    tenant-security-policy.ts     -- Per-tenant security posture (CIDR, MFA, sessions) (Phase 342)
+    privacy-segmentation.ts       -- Sensitivity tags + break-glass + access reasons (Phase 343)
+    siem-sink.ts                  -- Multi-transport SIEM export (webhook/syslog/S3/OTLP) (Phase 344)
+    security-alerts.ts            -- Configurable alert rules (brute-force, privilege esc.) (Phase 344)
+  routes/
+    session-management.ts         -- /auth/sessions, /auth/security-events, /auth/step-up/*, /auth/mfa/* (Phase 338)
+    scim-routes.ts                -- /scim/v2/* SCIM 2.0 endpoints (Phase 339)
+    secrets-routes.ts             -- /secrets/* key management endpoints (Phase 341)
+    tenant-security-routes.ts     -- /tenant-security/* policy CRUD (Phase 342)
+    privacy-routes.ts             -- /privacy/* tags + access reasons (Phase 343)
+    siem-routes.ts                -- /siem/* SIEM status + alert rules (Phase 344)
+  posture/
+    security-cert-posture.ts      -- Wave 16 certification posture gates (Phase 345)
+
+docs/runbooks/
+  wave16-security-governance.md   -- Wave 16 runbook (Phase 345)
+```
+
+177. **W16 route files MUST be registered in `register-routes.ts` (Phase 337-345).**
+     All 6 route files are imported and `server.register()`'d after Wave 15
+     registrations. AUTH_RULES in `security.ts` configure auth levels: session
+     for `/auth/sessions|step-up|mfa`, none for `/scim/` (bearer in handler),
+     admin for `/secrets/|tenant-security/|siem/`, session for `/privacy/`.
+178. **SCIM bearer token auth is in-handler, not middleware (Phase 339).**
+     The `/scim/*` AUTH_RULE is `"none"` because SCIM uses its own Bearer
+     token (`SCIM_BEARER_TOKEN` env var) with constant-time comparison.
+     Feature-gated by `SCIM_ENABLED=true`.
+179. **ABAC chains AFTER RBAC, never grants (Phase 340).** RBAC runs first
+     via `evaluatePolicy()`. ABAC can only DENY or CONSTRAIN. Built-in
+     conditions: time-of-day, day-of-week, IP range, facility match,
+     sensitivity level, environment mode, maintenance mode, feature flags.
+180. **Envelope encryption zeroes DEK after use (Phase 341).** `dek.fill(0)`
+     clears the data encryption key from memory after encrypt/decrypt.
+     KEK comes from KeyProvider. Re-encryption for key rotation supported.
+181. **SIEM flush is on a 30s timer with `unref()` (Phase 344).** Won't
+     block graceful shutdown. `initSiemSink()` + `stopSiemSink()` called
+     at startup/shutdown. 6 built-in alert rules with sliding window detection.
+182. **Security cert posture checks file existence only (Phase 345).**
+     `checkSecurityCertPosture()` verifies all W16 source files exist per
+     phase. No runtime health probes — pure file-based gate for certification.
+
 ## 8. Bug Tracker & Lessons Learned
 
 A comprehensive log of every bug, challenge, and fix from Phase 1 through
