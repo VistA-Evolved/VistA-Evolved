@@ -1,5 +1,5 @@
 /**
- * VistA Clinical Engine Adapter — Phase 37C, extended Phase 432.
+ * VistA Clinical Engine Adapter — Phase 37C, extended Phase 436.
  *
  * Default implementation that calls VistA RPCs via the RPC Broker client.
  * This is the production adapter for VA and WorldVistA environments.
@@ -7,6 +7,7 @@
 
 import type { ClinicalEngineAdapter } from "./interface.js";
 import { log } from "../../lib/logger.js";
+import { auditAdapterWrite } from "../adapter-audit.js";
 import type {
   AdapterResult,
   PatientRecord,
@@ -286,6 +287,12 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       const ien = result.split("^")[0];
       const failed = ien.startsWith("-1") || ien === "0";
 
+      auditAdapterWrite({
+        action: "write.allergy", success: !failed, duz, dfn,
+        rpc: "ORWDAL32 SAVE ALLERGY", ien: failed ? undefined : ien,
+        errorMessage: failed ? result : undefined,
+      });
+
       return {
         ok: !failed,
         data: { success: !failed, ien: failed ? undefined : ien, message: failed ? result : "Allergy saved" },
@@ -293,6 +300,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       };
     } catch (err: any) {
       log.warn("addAllergy via adapter failed", { error: err.message });
+      auditAdapterWrite({ action: "write.allergy", success: false, dfn, rpc: "ORWDAL32 SAVE ALLERGY", errorMessage: err.message });
       return { ok: false, error: err.message, vistaGrounding: { rpc: "ORWDAL32 SAVE ALLERGY", vistaPackage: "OR", vistaFiles: ["120.8"] } };
     }
   }
@@ -314,6 +322,12 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       const result = resp.join("\n").trim();
       const failed = result.toUpperCase().includes("ERROR");
 
+      auditAdapterWrite({
+        action: "write.vitals", success: !failed, duz, dfn,
+        rpc: "GMV ADD VM",
+        errorMessage: failed ? result : undefined,
+      });
+
       return {
         ok: !failed,
         data: { success: !failed, message: failed ? result : "Vital added" },
@@ -321,6 +335,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       };
     } catch (err: any) {
       log.warn("addVital via adapter failed", { error: err.message });
+      auditAdapterWrite({ action: "write.vitals", success: false, dfn, rpc: "GMV ADD VM", errorMessage: err.message });
       return { ok: false, error: err.message, vistaGrounding: { rpc: "GMV ADD VM", vistaPackage: "GMV", vistaFiles: ["120.5"] } };
     }
   }
@@ -340,6 +355,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       ]);
       const docIen = createResp[0]?.split("^")[0]?.trim();
       if (!docIen || docIen.startsWith("-1") || docIen === "0") {
+        auditAdapterWrite({ action: "write.note", success: false, duz, dfn, rpc: "TIU CREATE RECORD", errorMessage: createResp.join("\n") });
         return {
           ok: false,
           data: { success: false, message: createResp.join("\n") },
@@ -352,6 +368,11 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       const textParam = noteLines.join("\r\n");
       await safeCallRpc("TIU SET DOCUMENT TEXT", [docIen, textParam, "1"]);
 
+      auditAdapterWrite({
+        action: "write.note", success: true, duz, dfn,
+        rpc: "TIU CREATE RECORD + TIU SET DOCUMENT TEXT", ien: docIen,
+      });
+
       return {
         ok: true,
         data: { success: true, ien: docIen, message: "Note created" },
@@ -359,6 +380,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       };
     } catch (err: any) {
       log.warn("createNote via adapter failed", { error: err.message });
+      auditAdapterWrite({ action: "write.note", success: false, dfn, rpc: "TIU CREATE RECORD", errorMessage: err.message });
       return { ok: false, error: err.message, vistaGrounding: { rpc: "TIU CREATE RECORD", vistaPackage: "TIU", vistaFiles: ["8925"] } };
     }
   }
@@ -379,6 +401,12 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       const ien = result.split("^")[0];
       const failed = ien.startsWith("-1") || ien === "0";
 
+      auditAdapterWrite({
+        action: "write.problem", success: !failed, duz, dfn,
+        rpc: "ORQQPL ADD SAVE", ien: failed ? undefined : ien,
+        errorMessage: failed ? result : undefined,
+      });
+
       return {
         ok: !failed,
         data: { success: !failed, ien: failed ? undefined : ien, message: failed ? result : "Problem added" },
@@ -386,6 +414,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       };
     } catch (err: any) {
       log.warn("addProblem via adapter failed", { error: err.message });
+      auditAdapterWrite({ action: "write.problem", success: false, dfn, rpc: "ORQQPL ADD SAVE", errorMessage: err.message });
       return { ok: false, error: err.message, vistaGrounding: { rpc: "ORQQPL ADD SAVE", vistaPackage: "OR", vistaFiles: ["9000011"] } };
     }
   }

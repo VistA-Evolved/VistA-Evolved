@@ -660,6 +660,16 @@ export const STORE_INVENTORY: StoreEntry[] = [
   // CLINICAL / ORDERS / NOTES
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
+    id: "adapter-write-audit",
+    file: "adapters/adapter-audit.ts",
+    variable: "immutableAudit (delegated)",
+    description: "Clinical adapter write audit trail via immutableAudit (Phase 436)",
+    classification: "critical",
+    durability: "pg_backed",
+    domain: "clinical",
+    notes: "Phase 436: All 4 adapter write methods (allergy/vital/note/problem) emit write.* immutable audit events. Hash-chained via immutable-audit.ts.",
+  },
+  {
     id: "write-back-drafts",
     file: "routes/write-backs.ts",
     variable: "drafts",

@@ -1,7 +1,7 @@
 # Prompts Index
 
 Generated: 2026-03-01
-Total prompt folders: 435
+Total prompt folders: 436
 
 | # | Folder | Phase | Files |
 |---|--------|-------|-------|
@@ -440,3 +440,4 @@ Total prompt folders: 435
 | 433 | 433-PHASE-433-LAB-HL7-INBOUND | 433 | 3 |
 | 434 | 434-PHASE-434-ORDER-CHECK-ENHANCEMENT | 434 | 3 |
 | 435 | 435-PHASE-435-ADAPTER-WRITE-WIRING | 435 | 3 |
+| 436 | 436-PHASE-436-WRITE-BACK-AUDIT-TRAIL | 436 | 3 |
