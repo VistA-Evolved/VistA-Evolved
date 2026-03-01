@@ -282,6 +282,10 @@ import { pluginRoutes } from "../routes/plugin-routes.js";
 import { uiExtensionRoutes } from "../routes/ui-extension-routes.js";
 import { marketplaceRoutes as pluginMarketplaceRoutes } from "../routes/marketplace-routes.js";
 
+// Wave 19: Data Platform + Analytics + De-Id + Reporting (Phases 362-369)
+import analyticsExtractRoutes from "../routes/analytics-extract-routes.js";
+import w19ReportingRoutes from "../routes/reporting-routes.js";
+
 /**
  * Register all route plugins in the exact order from the original index.ts.
  * Also starts cleanup jobs that were previously co-located with route registration.
@@ -643,6 +647,10 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(pluginRoutes);                          // Phase 358: backend plugin SDK
   server.register(uiExtensionRoutes);                      // Phase 359: UI extension slots
   server.register(pluginMarketplaceRoutes);                // Phase 360: plugin marketplace
+
+  // Wave 19: Data Platform + Analytics + De-Id + Reporting (Phases 362-369)
+  server.register(analyticsExtractRoutes);                   // Phase 363-367: extract, de-id, quality, RCM metrics
+  server.register(w19ReportingRoutes);                            // Phase 365-368: reporting API, dataset access controls
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

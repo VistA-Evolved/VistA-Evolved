@@ -3667,6 +3667,106 @@ CREATE INDEX IF NOT EXISTS idx_mpa_listing ON marketplace_audit_log(listing_id);
 CREATE INDEX IF NOT EXISTS idx_mpa_created ON marketplace_audit_log(created_at);
 `,
   },
+
+  // ── v50: Analytics Data Platform (Wave 19, Phases 362-369) ──
+  {
+    version: 50,
+    name: "analytics_data_platform",
+    sql: `
+CREATE TABLE IF NOT EXISTS analytics_extract_run (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  entity_types TEXT[] NOT NULL DEFAULT '{}',
+  incremental BOOLEAN NOT NULL DEFAULT TRUE,
+  extracted_count INTEGER NOT NULL DEFAULT 0,
+  started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  finished_at TIMESTAMPTZ,
+  status TEXT NOT NULL DEFAULT 'pending'
+);
+CREATE INDEX IF NOT EXISTS idx_axr_tenant ON analytics_extract_run(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_axr_started ON analytics_extract_run(tenant_id, started_at);
+
+CREATE TABLE IF NOT EXISTS analytics_extract_record (
+  id TEXT PRIMARY KEY,
+  run_id TEXT NOT NULL,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  entity_type TEXT NOT NULL,
+  source_id TEXT NOT NULL,
+  data JSONB NOT NULL DEFAULT '{}',
+  extracted_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_axrec_run ON analytics_extract_record(run_id);
+CREATE INDEX IF NOT EXISTS idx_axrec_tenant ON analytics_extract_record(tenant_id, entity_type);
+
+CREATE TABLE IF NOT EXISTS analytics_extract_offset (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  entity_type TEXT NOT NULL,
+  last_offset TEXT NOT NULL DEFAULT '',
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE(tenant_id, entity_type)
+);
+
+CREATE TABLE IF NOT EXISTS analytics_deid_config (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default' UNIQUE,
+  mode TEXT NOT NULL DEFAULT 'strict',
+  denylist_scan_enabled BOOLEAN NOT NULL DEFAULT TRUE,
+  custom_field_denylist TEXT[] NOT NULL DEFAULT '{}',
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS analytics_quality_metric_run (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  measure_id TEXT NOT NULL,
+  value NUMERIC(12,4) NOT NULL DEFAULT 0,
+  sample_size INTEGER NOT NULL DEFAULT 0,
+  period_start TIMESTAMPTZ,
+  period_end TIMESTAMPTZ,
+  status TEXT NOT NULL DEFAULT 'computed',
+  input_refs TEXT[] NOT NULL DEFAULT '{}',
+  computed_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_aqmr_tenant ON analytics_quality_metric_run(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_aqmr_measure ON analytics_quality_metric_run(tenant_id, measure_id);
+
+CREATE TABLE IF NOT EXISTS analytics_dataset_permission (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  dataset_id TEXT NOT NULL,
+  role TEXT NOT NULL,
+  actions TEXT[] NOT NULL DEFAULT '{}',
+  granted_by TEXT NOT NULL,
+  granted_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE(tenant_id, dataset_id, role)
+);
+CREATE INDEX IF NOT EXISTS idx_adp_tenant ON analytics_dataset_permission(tenant_id);
+
+CREATE TABLE IF NOT EXISTS analytics_column_mask_rule (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  dataset_id TEXT NOT NULL,
+  column_name TEXT NOT NULL,
+  mask_type TEXT NOT NULL DEFAULT 'redact',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_acmr_tenant ON analytics_column_mask_rule(tenant_id, dataset_id);
+
+CREATE TABLE IF NOT EXISTS analytics_export_audit (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  dataset_id TEXT NOT NULL,
+  exported_by TEXT NOT NULL,
+  format TEXT NOT NULL DEFAULT 'json',
+  row_count INTEGER NOT NULL DEFAULT 0,
+  filter_summary TEXT,
+  exported_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_aea_tenant ON analytics_export_audit(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_aea_exported ON analytics_export_audit(tenant_id, exported_at);
+`,
+  },
 ];
 
 /**
@@ -3888,6 +3988,15 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   "marketplace_install",
   "marketplace_review",
   "marketplace_audit_log",
+  // Wave 19: Analytics Data Platform (Phases 362-369)
+  "analytics_extract_run",
+  "analytics_extract_record",
+  "analytics_extract_offset",
+  "analytics_deid_config",
+  "analytics_quality_metric_run",
+  "analytics_dataset_permission",
+  "analytics_column_mask_rule",
+  "analytics_export_audit",
 ] as const;
 
 /**

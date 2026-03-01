@@ -349,6 +349,20 @@ async function startBackgroundServices(): Promise<void> {
   initAnalyticsStore();
   startAggregationJob();
 
+  // Wave 19: Register quality & RCM report generators (Phases 366-367)
+  try {
+    const { initQualityReportGenerators } = await import("../analytics/quality-metrics.js");
+    initQualityReportGenerators();
+  } catch (qmErr: any) {
+    log.warn("Quality report generators failed to init (non-fatal)", { error: qmErr.message });
+  }
+  try {
+    const { initRcmReportGenerators } = await import("../analytics/rcm-analytics.js");
+    initRcmReportGenerators();
+  } catch (rmErr: any) {
+    log.warn("RCM report generators failed to init (non-fatal)", { error: rmErr.message });
+  }
+
   // Phase 157: Start audit JSONL shipper (if enabled)
   startShipperJob();
 
