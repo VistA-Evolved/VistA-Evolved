@@ -1,0 +1,237 @@
+{
+  "version": "2.0.0",
+  "generatedAt": "2025-01-01T00:00:00.000Z",
+  "description": "RPC Safe-Harbor Classification v2 — Phase 426 (W26 P4). Classifies all write RPCs by safety tier for production write-back.",
+  "tiers": {
+    "safe-harbor": "Proven safe in sandbox. LOCK/UNLOCK + proper params. Production-ready with standard VistA data.",
+    "supervised": "Works in sandbox but requires clinical oversight or has known limitations. Write-back allowed with audit trail.",
+    "experimental": "Called successfully but output not fully validated. Dev/test only.",
+    "blocked": "Must not be called in production. Either absent, dangerous without full workflow, or requires subsystems not available.",
+    "infrastructure": "Internal-use RPCs (auth, context, lock). Not direct clinical writes."
+  },
+  "classifications": [
+    {
+      "rpc": "ORWDAL32 SAVE ALLERGY",
+      "domain": "allergies",
+      "tier": "safe-harbor",
+      "tag": "write",
+      "sandboxTested": true,
+      "requiresLock": false,
+      "notes": "Fully tested in Phase 9. Requires all 6 OREDITED fields. GMRAGNT format: NAME^IEN;file_root.",
+      "prerequisites": ["ORWDAL32 ALLERGY MATCH"],
+      "relatedBugs": ["BUG-007"]
+    },
+    {
+      "rpc": "GMV ADD VM",
+      "domain": "vitals",
+      "tier": "safe-harbor",
+      "tag": "write",
+      "sandboxTested": true,
+      "requiresLock": false,
+      "notes": "Simple vitals write. Tested in Phase 8.",
+      "prerequisites": [],
+      "relatedBugs": []
+    },
+    {
+      "rpc": "TIU CREATE RECORD",
+      "domain": "notes",
+      "tier": "safe-harbor",
+      "tag": "write",
+      "sandboxTested": true,
+      "requiresLock": false,
+      "notes": "Creates unsigned TIU note. Requires TIU SET RECORD TEXT to populate body. Note remains unsigned until signed.",
+      "prerequisites": [],
+      "relatedBugs": ["BUG-030", "BUG-033"]
+    },
+    {
+      "rpc": "TIU SET RECORD TEXT",
+      "domain": "notes",
+      "tier": "safe-harbor",
+      "tag": "write",
+      "sandboxTested": true,
+      "requiresLock": false,
+      "notes": "Sets text body of an existing TIU note. Usually paired with TIU CREATE RECORD.",
+      "prerequisites": ["TIU CREATE RECORD"],
+      "relatedBugs": []
+    },
+    {
+      "rpc": "ORQQPL ADD SAVE",
+      "domain": "problems",
+      "tier": "safe-harbor",
+      "tag": "write",
+      "sandboxTested": true,
+      "requiresLock": false,
+      "notes": "Add a new problem to patient's problem list. Requires ORQQPL4 LEX for ICD lookup.",
+      "prerequisites": ["ORQQPL4 LEX"],
+      "relatedBugs": []
+    },
+    {
+      "rpc": "ORQQPL EDIT SAVE",
+      "domain": "problems",
+      "tier": "blocked",
+      "tag": "write",
+      "sandboxTested": false,
+      "requiresLock": false,
+      "notes": "Genuinely absent from WorldVistA Docker sandbox. Returns 'doesn't exist'.",
+      "prerequisites": [],
+      "relatedBugs": []
+    },
+    {
+      "rpc": "ORWDX SAVE",
+      "domain": "orders",
+      "tier": "supervised",
+      "tag": "write",
+      "sandboxTested": true,
+      "requiresLock": true,
+      "notes": "General order save. MUST bracket with ORWDX LOCK before and ORWDX UNLOCK after. Complex parameter set.",
+      "prerequisites": ["ORWDX LOCK"],
+      "relatedBugs": ["BUG-029"]
+    },
+    {
+      "rpc": "ORWDX LOCK",
+      "domain": "orders",
+      "tier": "infrastructure",
+      "tag": "write",
+      "sandboxTested": true,
+      "requiresLock": false,
+      "notes": "Patient lock for ordering. MUST call UNLOCK when done. Forgetting leaves patient locked.",
+      "prerequisites": [],
+      "relatedBugs": ["BUG-029"]
+    },
+    {
+      "rpc": "ORWDX UNLOCK",
+      "domain": "orders",
+      "tier": "infrastructure",
+      "tag": "write",
+      "sandboxTested": true,
+      "requiresLock": false,
+      "notes": "Release patient lock after ordering.",
+      "prerequisites": ["ORWDX LOCK"],
+      "relatedBugs": ["BUG-029"]
+    },
+    {
+      "rpc": "ORWDXA DC",
+      "domain": "orders",
+      "tier": "supervised",
+      "tag": "write",
+      "sandboxTested": true,
+      "requiresLock": true,
+      "notes": "Discontinue an order. Requires LOCK. Clinician oversight required.",
+      "prerequisites": ["ORWDX LOCK"],
+      "relatedBugs": []
+    },
+    {
+      "rpc": "ORWDXA FLAG",
+      "domain": "orders",
+      "tier": "supervised",
+      "tag": "write",
+      "sandboxTested": true,
+      "requiresLock": false,
+      "notes": "Flag an order for review. Lower risk than DC but still needs clinical context.",
+      "prerequisites": [],
+      "relatedBugs": []
+    },
+    {
+      "rpc": "ORWDXA VERIFY",
+      "domain": "orders",
+      "tier": "supervised",
+      "tag": "write",
+      "sandboxTested": true,
+      "requiresLock": false,
+      "notes": "Verify/sign an order. Requires e-signature code.",
+      "prerequisites": [],
+      "relatedBugs": []
+    },
+    {
+      "rpc": "ORWOR1 SIG",
+      "domain": "orders",
+      "tier": "supervised",
+      "tag": "write",
+      "sandboxTested": true,
+      "requiresLock": false,
+      "notes": "Sign orders with e-signature. Phase 154 added esCode hashing to audit trail.",
+      "prerequisites": [],
+      "relatedBugs": []
+    },
+    {
+      "rpc": "ORWDXM AUTOACK",
+      "domain": "medications",
+      "tier": "experimental",
+      "tag": "write",
+      "sandboxTested": true,
+      "requiresLock": true,
+      "notes": "Quick-order medication auto-acknowledge. Complex workflow not fully validated in sandbox.",
+      "prerequisites": ["ORWDX LOCK"],
+      "relatedBugs": []
+    },
+    {
+      "rpc": "ORQQCN2 MED RESULTS",
+      "domain": "consults",
+      "tier": "experimental",
+      "tag": "write",
+      "sandboxTested": true,
+      "requiresLock": false,
+      "notes": "Enter consult result. Works but consult data sparse in sandbox.",
+      "prerequisites": ["ORQQCN LIST"],
+      "relatedBugs": []
+    },
+    {
+      "rpc": "ORWLRR ACK",
+      "domain": "labs",
+      "tier": "supervised",
+      "tag": "write",
+      "sandboxTested": true,
+      "requiresLock": false,
+      "notes": "Acknowledge lab result. Low risk — marks result as seen by provider.",
+      "prerequisites": ["ORWLRR INTERIM"],
+      "relatedBugs": []
+    },
+    {
+      "rpc": "ORWPCE SAVE",
+      "domain": "encounter",
+      "tier": "supervised",
+      "tag": "write",
+      "sandboxTested": true,
+      "requiresLock": false,
+      "notes": "Save encounter/PCE data. Complex multi-section payload. Needs clinical validation.",
+      "prerequisites": [],
+      "relatedBugs": []
+    },
+    {
+      "rpc": "ZVE MAIL SEND",
+      "domain": "messaging",
+      "tier": "safe-harbor",
+      "tag": "custom",
+      "sandboxTested": true,
+      "requiresLock": false,
+      "notes": "Custom VistA-Evolved RPC. Send MailMan message via ZVEMSGR.",
+      "prerequisites": [],
+      "relatedBugs": []
+    },
+    {
+      "rpc": "ZVE MAIL MANAGE",
+      "domain": "messaging",
+      "tier": "safe-harbor",
+      "tag": "custom",
+      "sandboxTested": true,
+      "requiresLock": false,
+      "notes": "Custom VistA-Evolved RPC. Manage MailMan folders via ZVEMSGR.",
+      "prerequisites": [],
+      "relatedBugs": []
+    }
+  ],
+  "summary": {
+    "safe-harbor": 7,
+    "supervised": 6,
+    "experimental": 2,
+    "blocked": 1,
+    "infrastructure": 2,
+    "total": 18
+  },
+  "productionReadiness": {
+    "readyForProduction": ["ORWDAL32 SAVE ALLERGY", "GMV ADD VM", "TIU CREATE RECORD", "TIU SET RECORD TEXT", "ORQQPL ADD SAVE", "ZVE MAIL SEND", "ZVE MAIL MANAGE"],
+    "requiresSupervision": ["ORWDX SAVE", "ORWDXA DC", "ORWDXA FLAG", "ORWDXA VERIFY", "ORWOR1 SIG", "ORWLRR ACK", "ORWPCE SAVE"],
+    "devTestOnly": ["ORWDXM AUTOACK", "ORQQCN2 MED RESULTS"],
+    "notAvailable": ["ORQQPL EDIT SAVE"]
+  }
+}

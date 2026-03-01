@@ -1,7 +1,7 @@
 # Prompts Index
 
 Generated: 2026-03-01
-Total prompt folders: 425
+Total prompt folders: 426
 
 | # | Folder | Phase | Files |
 |---|--------|-------|-------|
@@ -430,3 +430,4 @@ Total prompt folders: 425
 | 423 | 423-PHASE-423-PROMPTS-REPAIR | 423 | 3 |
 | 424 | 424-PHASE-424-VISTA-RUNTIME-STRATEGY | 424 | 3 |
 | 425 | 425-PHASE-425-CONTAINER-PROBE | 425 | 3 |
+| 426 | 426-PHASE-426-RPC-SAFE-HARBOR-V2 | 426 | 3 |
