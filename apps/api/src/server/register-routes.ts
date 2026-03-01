@@ -249,6 +249,9 @@ import multiClusterRoutes from "../routes/multi-cluster-routes.js";
 // Wave 15: Global Routing (Phase 329)
 import globalRoutingRoutes from "../routes/global-routing-routes.js";
 
+// Wave 15: Data Plane Sharding (Phase 330)
+import dataPlaneShardingRoutes from "../routes/data-plane-sharding-routes.js";
+
 /**
  * Register all route plugins in the exact order from the original index.ts.
  * Also starts cleanup jobs that were previously co-located with route registration.
@@ -565,6 +568,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Wave 15: Global Routing (Phase 329)
   server.register(globalRoutingRoutes);
+
+  // Wave 15: Data Plane Sharding (Phase 330)
+  server.register(dataPlaneShardingRoutes);
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

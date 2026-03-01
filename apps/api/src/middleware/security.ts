@@ -149,6 +149,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/platform\/tenants\//, auth: "admin" },   // Phase 328: Tenant placement
   { pattern: /^\/platform\/placements/, auth: "admin" },   // Phase 328: Placement queries
   { pattern: /^\/platform\/routing\//, auth: "admin" },    // Phase 329: Global routing
+  { pattern: /^\/platform\/shards\//, auth: "admin" },     // Phase 330: Data plane sharding
   // Default: session required for anything else
 ];
 
