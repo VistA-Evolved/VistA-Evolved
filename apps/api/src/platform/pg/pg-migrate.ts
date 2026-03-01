@@ -3601,6 +3601,72 @@ CREATE TABLE IF NOT EXISTS ui_slot_policy (
 CREATE INDEX IF NOT EXISTS idx_usp_tenant ON ui_slot_policy(tenant_id);
 `,
   },
+
+  // ── v49: Plugin Marketplace (Phase 360) ──
+  {
+    version: 49,
+    name: "plugin_marketplace",
+    sql: `
+CREATE TABLE IF NOT EXISTS marketplace_listing (
+  id TEXT PRIMARY KEY,
+  plugin_id TEXT NOT NULL,
+  publisher_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  version TEXT NOT NULL,
+  description TEXT,
+  summary TEXT,
+  category TEXT NOT NULL DEFAULT 'other',
+  tags TEXT[] NOT NULL DEFAULT '{}',
+  manifest_hash TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'draft',
+  review_notes TEXT,
+  reviewed_by TEXT,
+  reviewed_at TIMESTAMPTZ,
+  install_count INTEGER NOT NULL DEFAULT 0,
+  rating NUMERIC(3,2) NOT NULL DEFAULT 0,
+  rating_count INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_mpl_status ON marketplace_listing(status);
+CREATE INDEX IF NOT EXISTS idx_mpl_category ON marketplace_listing(category);
+CREATE INDEX IF NOT EXISTS idx_mpl_publisher ON marketplace_listing(publisher_id);
+
+CREATE TABLE IF NOT EXISTS marketplace_install (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  listing_id TEXT NOT NULL,
+  plugin_id TEXT NOT NULL,
+  version TEXT NOT NULL,
+  installed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  uninstalled_at TIMESTAMPTZ,
+  installed_by TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_mpi_tenant ON marketplace_install(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_mpi_listing ON marketplace_install(tenant_id, listing_id);
+
+CREATE TABLE IF NOT EXISTS marketplace_review (
+  id TEXT PRIMARY KEY,
+  listing_id TEXT NOT NULL,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  rating INTEGER NOT NULL,
+  comment TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_mpr_listing ON marketplace_review(listing_id);
+
+CREATE TABLE IF NOT EXISTS marketplace_audit_log (
+  id TEXT PRIMARY KEY,
+  listing_id TEXT NOT NULL,
+  action TEXT NOT NULL,
+  actor TEXT NOT NULL,
+  detail JSONB,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_mpa_listing ON marketplace_audit_log(listing_id);
+CREATE INDEX IF NOT EXISTS idx_mpa_created ON marketplace_audit_log(created_at);
+`,
+  },
 ];
 
 /**
@@ -3817,6 +3883,11 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   // Phase 359: UI Extension Slots
   "ui_extension_slot",
   "ui_slot_policy",
+  // Phase 360: Plugin Marketplace
+  "marketplace_listing",
+  "marketplace_install",
+  "marketplace_review",
+  "marketplace_audit_log",
 ] as const;
 
 /**

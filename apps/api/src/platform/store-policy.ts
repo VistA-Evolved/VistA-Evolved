@@ -3660,6 +3660,52 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: ui_slot_policy (v48)",
     notes: "Phase 359: Per-slot max extensions and approval policies.",
   },
+
+  // ── Phase 360: Plugin Marketplace ──
+  {
+    id: "marketplace-listings",
+    file: "services/marketplace-service.ts",
+    variable: "listings",
+    description: "In-memory marketplace listing catalog",
+    classification: "critical" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "marketplace",
+    migrationTarget: "pg: marketplace_listing (v49)",
+    notes: "Phase 360: Plugin listings with approval FSM.",
+  },
+  {
+    id: "marketplace-installs",
+    file: "services/marketplace-service.ts",
+    variable: "installs",
+    description: "In-memory marketplace install records",
+    classification: "audit" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "marketplace",
+    migrationTarget: "pg: marketplace_install (v49)",
+    notes: "Phase 360: Tenant-scoped install/uninstall tracking.",
+  },
+  {
+    id: "marketplace-reviews",
+    file: "services/marketplace-service.ts",
+    variable: "reviews",
+    description: "In-memory marketplace reviews",
+    classification: "cache" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "marketplace",
+    migrationTarget: "pg: marketplace_review (v49)",
+    notes: "Phase 360: Plugin ratings and comments.",
+  },
+  {
+    id: "marketplace-audit",
+    file: "services/marketplace-service.ts",
+    variable: "auditLog",
+    description: "In-memory marketplace audit trail",
+    classification: "audit" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "marketplace",
+    migrationTarget: "pg: marketplace_audit_log (v49)",
+    notes: "Phase 360: Max 10K entries; listing lifecycle audit.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

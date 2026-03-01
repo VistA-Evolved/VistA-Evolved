@@ -280,6 +280,7 @@ import { webhookRoutes } from "../routes/webhook-routes.js";
 import { fhirSubscriptionRoutes } from "../routes/fhir-subscription-routes.js";
 import { pluginRoutes } from "../routes/plugin-routes.js";
 import { uiExtensionRoutes } from "../routes/ui-extension-routes.js";
+import { marketplaceRoutes as pluginMarketplaceRoutes } from "../routes/marketplace-routes.js";
 
 /**
  * Register all route plugins in the exact order from the original index.ts.
@@ -641,6 +642,7 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(fhirSubscriptionRoutes);              // Phase 357: FHIR Subscriptions v1
   server.register(pluginRoutes);                          // Phase 358: backend plugin SDK
   server.register(uiExtensionRoutes);                      // Phase 359: UI extension slots
+  server.register(pluginMarketplaceRoutes);                // Phase 360: plugin marketplace
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);
