@@ -3223,6 +3223,60 @@ CREATE INDEX IF NOT EXISTS idx_wte_task ON workflow_task_event(task_id);
 CREATE INDEX IF NOT EXISTS idx_wte_tenant ON workflow_task_event(tenant_id);
 `,
   },
+  // ── v42 — Phase 351: Patient Communications ──
+  {
+    version: 42,
+    name: "phase351_patient_comms",
+    sql: `
+-- Patient Consent (Phase 351)
+CREATE TABLE IF NOT EXISTS patient_consent (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn_hash TEXT NOT NULL,
+  channel TEXT NOT NULL,
+  category TEXT NOT NULL DEFAULT '*',
+  status TEXT NOT NULL DEFAULT 'opted_in',
+  locale TEXT,
+  recorded_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_pc_tenant ON patient_consent(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_pc_patient ON patient_consent(tenant_id, patient_dfn_hash);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_pc_uniq ON patient_consent(tenant_id, patient_dfn_hash, channel, category);
+
+-- Notification Template (Phase 351)
+CREATE TABLE IF NOT EXISTS notification_template (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  category TEXT NOT NULL,
+  channel TEXT NOT NULL,
+  locale TEXT NOT NULL DEFAULT 'en',
+  subject TEXT NOT NULL,
+  body TEXT NOT NULL,
+  contains_phi BOOLEAN NOT NULL DEFAULT false,
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_nt_tenant ON notification_template(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_nt_cat ON notification_template(tenant_id, category);
+
+-- Notification Record (Phase 351)
+CREATE TABLE IF NOT EXISTS notification_record (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn_hash TEXT NOT NULL,
+  channel TEXT NOT NULL,
+  category TEXT NOT NULL,
+  template_id TEXT,
+  provider_id TEXT,
+  status TEXT NOT NULL,
+  error TEXT,
+  sent_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_nr_tenant ON notification_record(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_nr_patient ON notification_record(tenant_id, patient_dfn_hash);
+`,
+  },
 ];
 
 /**
@@ -3413,6 +3467,10 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   // Phase 350: Workflow Inbox
   "workflow_task",
   "workflow_task_event",
+  // Phase 351: Patient Communications
+  "patient_consent",
+  "notification_template",
+  "notification_record",
 ] as const;
 
 /**
