@@ -3852,6 +3852,40 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: release_notification (v51)",
     notes: "Phase 371: Sent maintenance notifications.",
   },
+  // -- Phase 372: Customer Success Tooling --
+  {
+    id: "customer-success-onboarding",
+    file: "services/customer-success-service.ts",
+    variable: "onboardingStore",
+    description: "In-memory tenant onboarding configs",
+    classification: "configuration" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "customer-success",
+    migrationTarget: "pg: tenant_onboarding (v51)",
+    notes: "Phase 372: Onboarding workflow state.",
+  },
+  {
+    id: "customer-success-datasets",
+    file: "services/customer-success-service.ts",
+    variable: "datasetStore",
+    description: "In-memory synthetic dataset records",
+    classification: "cache" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "customer-success",
+    migrationTarget: "pg: synthetic_dataset (v51)",
+    notes: "Phase 372: Seeded synthetic data metadata.",
+  },
+  {
+    id: "customer-success-demo-envs",
+    file: "services/customer-success-service.ts",
+    variable: "demoEnvStore",
+    description: "In-memory demo environment records",
+    classification: "configuration" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "customer-success",
+    migrationTarget: "pg: demo_environment (v51)",
+    notes: "Phase 372: Ephemeral demo environments.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
