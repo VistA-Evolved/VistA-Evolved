@@ -18,6 +18,7 @@ import type {
   RpcExecutor,
   WritebackDomain,
   DryRunTranscript,
+  ReviewDecision,
 } from "./types.js";
 import { INTENT_DOMAIN_MAP } from "./types.js";
 import {
@@ -280,4 +281,106 @@ export function getCommandDetail(commandId: string): {
     attempts: getAttempts(commandId),
     result: getResult(commandId),
   };
+}
+
+/* ------------------------------------------------------------------ */
+/* Supervised review (Phase 437)                                        */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Mark a command as requiring supervised review.
+ * Called during submitCommand() when the target RPC is in the supervised tier.
+ */
+export function markAsSupervisedReview(
+  commandId: string,
+  safeHarborTier: string,
+): CommandExecutionResult {
+  const cmd = getCommand(commandId);
+  if (!cmd) {
+    return { commandId, status: "failed", error: "Command not found" };
+  }
+
+  updateCommandStatus(commandId, "awaiting_review");
+  cmd.supervisedMeta = {
+    requiresReview: true,
+    safeHarborTier,
+  };
+
+  log.info(`Writeback awaiting review: id=${commandId} domain=${cmd.domain} tier=${safeHarborTier}`);
+  immutableAudit("writeback.submit", "success", { sub: cmd.createdBy, name: cmd.createdBy }, {
+    tenantId: cmd.tenantId,
+    detail: {
+      commandId,
+      domain: cmd.domain,
+      intent: cmd.intent,
+      supervisedTier: safeHarborTier,
+      status: "awaiting_review",
+    },
+  });
+
+  return {
+    commandId,
+    status: "awaiting_review",
+    dryRunTranscript: cmd.dryRunTranscript,
+  };
+}
+
+/**
+ * Review a supervised command — approve or reject.
+ *
+ * - approve: transitions to pending (worker will execute)
+ * - reject: transitions to rejected (terminal)
+ */
+export async function reviewCommand(
+  commandId: string,
+  decision: ReviewDecision,
+  reviewerDuz: string,
+  reason?: string,
+): Promise<CommandExecutionResult> {
+  const cmd = getCommand(commandId);
+  if (!cmd) {
+    return { commandId, status: "failed", error: "Command not found" };
+  }
+
+  if (cmd.status !== "awaiting_review") {
+    return {
+      commandId,
+      status: cmd.status,
+      error: `Command is not awaiting review (current: ${cmd.status})`,
+    };
+  }
+
+  // Record the review
+  if (!cmd.supervisedMeta) {
+    cmd.supervisedMeta = { requiresReview: true };
+  }
+  cmd.supervisedMeta.reviewedBy = reviewerDuz;
+  cmd.supervisedMeta.reviewedAt = new Date().toISOString();
+  cmd.supervisedMeta.reviewDecision = decision;
+  if (reason) cmd.supervisedMeta.reviewReason = reason;
+
+  const auditAction = decision === "approve" ? "writeback.execute" : "writeback.reject";
+  const auditOutcome = decision === "approve" ? "success" : "denied";
+
+  immutableAudit(auditAction as any, auditOutcome, { sub: reviewerDuz, name: reviewerDuz }, {
+    tenantId: cmd.tenantId,
+    detail: {
+      commandId,
+      domain: cmd.domain,
+      intent: cmd.intent,
+      reviewDecision: decision,
+      reviewReason: reason,
+    },
+  });
+
+  if (decision === "reject") {
+    updateCommandStatus(commandId, "rejected", reason || "Supervisor rejected");
+    log.info(`Writeback review rejected: id=${commandId} by=${reviewerDuz}`);
+    return { commandId, status: "rejected", error: reason || "Supervisor rejected" };
+  }
+
+  // Approve → process the command
+  updateCommandStatus(commandId, "pending");
+  log.info(`Writeback review approved: id=${commandId} by=${reviewerDuz}`);
+  return processCommand(commandId);
 }

@@ -87,18 +87,30 @@ export function checkWritebackGate(
 }
 
 /**
+ * Check if supervised-mode review is enabled.
+ * When ON, supervised-tier RPCs require clinical review before execution.
+ * When OFF, supervised-tier RPCs execute like safe-harbor (dev convenience).
+ * Phase 437.
+ */
+export function isSupervisedModeEnabled(): boolean {
+  return envBool("WRITEBACK_SUPERVISED_MODE", true);
+}
+
+/**
  * Get a summary of all writeback gate states.
  * Useful for /posture and admin endpoints.
  */
 export function getWritebackGateSummary(tenantId?: string): {
   globalEnabled: boolean;
   dryRunMode: boolean;
+  supervisedMode: boolean;
   domains: Record<WritebackDomain, boolean>;
 } {
   const config = resolveGateConfig(tenantId);
   return {
     globalEnabled: config.globalEnabled,
     dryRunMode: config.dryRunMode,
+    supervisedMode: isSupervisedModeEnabled(),
     domains: config.domainGates,
   };
 }

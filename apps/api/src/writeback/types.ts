@@ -71,13 +71,35 @@ export const INTENT_DOMAIN_MAP: Record<WritebackIntent, WritebackDomain> = {
 /* ------------------------------------------------------------------ */
 
 export type CommandStatus =
-  | "pending"        // Created, not yet processed
-  | "processing"     // Worker picked up
-  | "completed"      // RPC succeeded
-  | "failed"         // RPC failed (terminal)
-  | "dry_run"        // Dry-run recorded (no RPC executed)
-  | "rejected"       // Validation failed
-  | "retrying";      // Transient failure, will retry
+  | "pending"           // Created, not yet processed
+  | "processing"        // Worker picked up
+  | "completed"         // RPC succeeded
+  | "failed"            // RPC failed (terminal)
+  | "dry_run"           // Dry-run recorded (no RPC executed)
+  | "rejected"          // Validation failed
+  | "retrying"          // Transient failure, will retry
+  | "awaiting_review";  // Supervised-mode: waiting for clinician review (Phase 437)
+
+/* ------------------------------------------------------------------ */
+/* Supervised review (Phase 437)                                       */
+/* ------------------------------------------------------------------ */
+
+export type ReviewDecision = "approve" | "reject";
+
+export interface SupervisedReviewMeta {
+  /** Is this command subject to supervised review? */
+  requiresReview: boolean;
+  /** Safe-harbor tier of the target RPC */
+  safeHarborTier?: string;
+  /** Who reviewed this command */
+  reviewedBy?: string;
+  /** When reviewed (ISO 8601) */
+  reviewedAt?: string;
+  /** Approve or reject */
+  reviewDecision?: ReviewDecision;
+  /** Rejection reason (if rejected) */
+  reviewReason?: string;
+}
 
 /* ------------------------------------------------------------------ */
 /* Command record                                                      */
@@ -103,6 +125,8 @@ export interface ClinicalCommand {
   attemptCount: number;
   /** Most recent error (redacted) */
   lastError?: string;
+  /** Supervised review metadata (Phase 437) */
+  supervisedMeta?: SupervisedReviewMeta;
 }
 
 /* ------------------------------------------------------------------ */

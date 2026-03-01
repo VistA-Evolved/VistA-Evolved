@@ -14,7 +14,7 @@
 
 import type { FastifyInstance } from "fastify";
 import { createHash } from "crypto";
-import { submitCommand, processCommand, getCommandDetail } from "./command-bus.js";
+import { submitCommand, processCommand, getCommandDetail, reviewCommand } from "./command-bus.js";
 import { listCommands, getCommandStoreStats } from "./command-store.js";
 import { getWritebackGateSummary } from "./gates.js";
 import { runCertification, getCertificationSummary } from "./certification-runner.js";
@@ -146,6 +146,27 @@ export default async function writebackRoutes(server: FastifyInstance): Promise<
 
     const statusCode = result.status === "failed" ? 500 : 200;
     return reply.code(statusCode).send({ ok: result.status !== "failed", ...result });
+  });
+
+  /**
+   * POST /writeback/commands/:id/review — Approve or reject a supervised command (Phase 437).
+   * Body: { decision: "approve" | "reject", reason?: string }
+   */
+  server.post("/writeback/commands/:id/review", async (request, reply) => {
+    const { id } = request.params as any;
+    const body = (request.body as any) || {};
+    const { decision, reason } = body;
+
+    if (!decision || (decision !== "approve" && decision !== "reject")) {
+      return reply.code(400).send({ ok: false, error: 'decision must be "approve" or "reject"' });
+    }
+
+    const session = (request as any).session || {};
+    const reviewerDuz = session.duz || session.userId || "anon";
+
+    const result = await reviewCommand(id, decision, reviewerDuz, reason);
+    const statusCode = result.status === "failed" || result.status === "rejected" ? 422 : 200;
+    return reply.code(statusCode).send({ ok: result.status !== "failed" && result.status !== "rejected", ...result });
   });
 
   /**
