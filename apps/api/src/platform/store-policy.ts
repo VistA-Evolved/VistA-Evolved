@@ -4090,6 +4090,17 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: device_audit_log (v60)",
     notes: "Phase 380: Device lifecycle audit entries (20K max, FIFO).",
   },
+  {
+    id: "hl7v2-ingest-log",
+    file: "devices/hl7v2-ingest-routes.ts",
+    variable: "ingestLog",
+    description: "In-memory HL7 v2 ingest diagnostic log",
+    classification: "cache" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "devices",
+    migrationTarget: "none (transient diagnostics)",
+    notes: "Phase 381: HL7 v2 ingest log for MLLP message diagnostics.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
