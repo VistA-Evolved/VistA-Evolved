@@ -92,6 +92,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/scim\//, auth: "none" }, // Phase 339: SCIM endpoints (bearer token auth in handler)
   { pattern: /^\/secrets\//, auth: "admin" }, // Phase 341: secrets management (admin only)
   { pattern: /^\/tenant-security\//, auth: "admin" }, // Phase 342: tenant security posture (admin only)
+  { pattern: /^\/privacy\//, auth: "session" }, // Phase 343: privacy segmentation (session, fine-grained in handler)
   { pattern: /^\/imaging\/ingest\/callback$/, auth: "service" }, // Phase 23: Orthanc webhook (X-Service-Key)
   { pattern: /^\/imaging\/health$/, auth: "session" }, // Phase 24: imaging health check
   { pattern: /^\/imaging\/devices/, auth: "session" }, // Phase 24: device registry (imaging_admin checked in handler)

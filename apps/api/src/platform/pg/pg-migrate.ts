@@ -2976,6 +2976,48 @@ CREATE INDEX IF NOT EXISTS idx_tspc_tenant ON tenant_security_policy_change(tena
 CREATE INDEX IF NOT EXISTS idx_tspc_time ON tenant_security_policy_change(tenant_id, changed_at);
 `,
   },
+  {
+    version: 37,
+    name: "phase343_privacy_segmentation",
+    sql: `
+-- Sensitivity Tags (Phase 343)
+CREATE TABLE IF NOT EXISTS sensitivity_tag (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT,
+  record_type TEXT,
+  record_id TEXT,
+  category TEXT NOT NULL DEFAULT 'normal',
+  applied_by TEXT NOT NULL,
+  applied_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  source TEXT NOT NULL DEFAULT 'manual',
+  label TEXT,
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb
+);
+CREATE INDEX IF NOT EXISTS idx_stag_patient ON sensitivity_tag(tenant_id, patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_stag_record ON sensitivity_tag(tenant_id, record_type, record_id);
+CREATE INDEX IF NOT EXISTS idx_stag_category ON sensitivity_tag(tenant_id, category);
+
+-- Access Reasons (Phase 343)
+CREATE TABLE IF NOT EXISTS access_reason (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  user_id TEXT NOT NULL,
+  user_name TEXT NOT NULL,
+  patient_dfn TEXT NOT NULL,
+  record_type TEXT NOT NULL,
+  record_id TEXT NOT NULL,
+  categories JSONB NOT NULL DEFAULT '[]'::jsonb,
+  reason TEXT NOT NULL,
+  break_glass BOOLEAN NOT NULL DEFAULT false,
+  accessed_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_ar_tenant ON access_reason(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_ar_patient ON access_reason(tenant_id, patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_ar_user ON access_reason(tenant_id, user_id);
+CREATE INDEX IF NOT EXISTS idx_ar_time ON access_reason(tenant_id, accessed_at);
+`,
+  },
 ];
 
 /**
