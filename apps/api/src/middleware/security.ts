@@ -148,6 +148,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/platform\/clusters\//, auth: "admin" },  // Phase 328: Multi-cluster registry
   { pattern: /^\/platform\/tenants\//, auth: "admin" },   // Phase 328: Tenant placement
   { pattern: /^\/platform\/placements/, auth: "admin" },   // Phase 328: Placement queries
+  { pattern: /^\/platform\/routing\//, auth: "admin" },    // Phase 329: Global routing
   // Default: session required for anything else
 ];
 
