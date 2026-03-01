@@ -1,0 +1,77 @@
+{
+  "countryCode": "GH",
+  "countryName": "Ghana",
+  "packVersion": "0.1.0",
+  "status": "draft",
+  "maintainer": "VistA-Evolved Core Team",
+  "defaultLocale": "en",
+  "defaultTimezone": "Africa/Accra",
+  "supportedLocales": ["en"],
+
+  "regulatoryProfile": {
+    "framework": "DPA_GH",
+    "consentRequired": true,
+    "consentGranularity": "all-or-nothing",
+    "dataExportRestricted": true,
+    "requiresConsentForTransfer": true,
+    "retentionMinYears": 5,
+    "retentionMaxYears": null,
+    "breakGlassAllowed": true,
+    "auditRetentionDays": 1825,
+    "rightToErasure": true,
+    "dataPortability": true
+  },
+
+  "dataResidency": {
+    "region": "gh-acc",
+    "crossBorderTransferAllowed": true,
+    "requiresConsentForTransfer": true,
+    "retentionMinYears": 5
+  },
+
+  "terminologyDefaults": {
+    "diagnosisCodeSystem": "ICD-10-WHO",
+    "procedureCodeSystem": "passthrough",
+    "labCodeSystem": "passthrough",
+    "drugCodeSystem": "passthrough"
+  },
+
+  "payerModules": [],
+
+  "enabledModules": [
+    "kernel",
+    "clinical",
+    "portal",
+    "analytics",
+    "interop",
+    "intake",
+    "iam",
+    "scheduling"
+  ],
+
+  "featureFlags": {
+    "x12_edi_enabled": false,
+    "philhealth_eclaims": false,
+    "nhia_gdrg": true,
+    "break_glass_enabled": true,
+    "telehealth_recording": false,
+    "oidc_required": false,
+    "cross_border_transfer": true
+  },
+
+  "uiDefaults": {
+    "dateFormat": "DD/MM/YYYY",
+    "timeFormat": "24h",
+    "numberFormat": "en-GH",
+    "currencyCode": "GHS",
+    "theme": "default",
+    "rtlSupport": false
+  },
+
+  "reportingRequirements": {
+    "qualityMeasures": [],
+    "publicHealthReporting": ["DHIMS2"],
+    "claimFormats": ["NHIA-G-DRG"],
+    "remittanceFormats": []
+  }
+}

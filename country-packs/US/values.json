@@ -1,0 +1,82 @@
+{
+  "countryCode": "US",
+  "countryName": "United States of America",
+  "packVersion": "1.0.0",
+  "status": "active",
+  "maintainer": "VistA-Evolved Core Team",
+  "defaultLocale": "en",
+  "defaultTimezone": "America/New_York",
+  "supportedLocales": ["en", "es"],
+
+  "regulatoryProfile": {
+    "framework": "HIPAA",
+    "consentRequired": true,
+    "consentGranularity": "category",
+    "dataExportRestricted": false,
+    "requiresConsentForTransfer": false,
+    "retentionMinYears": 6,
+    "retentionMaxYears": null,
+    "breakGlassAllowed": true,
+    "auditRetentionDays": 2190,
+    "rightToErasure": false,
+    "dataPortability": false
+  },
+
+  "dataResidency": {
+    "region": "us-east",
+    "crossBorderTransferAllowed": false,
+    "requiresConsentForTransfer": false,
+    "retentionMinYears": 6
+  },
+
+  "terminologyDefaults": {
+    "diagnosisCodeSystem": "ICD-10-CM",
+    "procedureCodeSystem": "CPT",
+    "labCodeSystem": "LOINC",
+    "drugCodeSystem": "NDC"
+  },
+
+  "payerModules": ["us_core"],
+
+  "enabledModules": [
+    "kernel",
+    "clinical",
+    "portal",
+    "telehealth",
+    "imaging",
+    "analytics",
+    "interop",
+    "fhir",
+    "intake",
+    "ai",
+    "iam",
+    "rcm",
+    "scheduling"
+  ],
+
+  "featureFlags": {
+    "x12_edi_enabled": true,
+    "philhealth_eclaims": false,
+    "nhia_gdrg": false,
+    "break_glass_enabled": true,
+    "telehealth_recording": false,
+    "oidc_required": false,
+    "cross_border_transfer": false
+  },
+
+  "uiDefaults": {
+    "dateFormat": "MM/DD/YYYY",
+    "timeFormat": "12h",
+    "numberFormat": "en-US",
+    "currencyCode": "USD",
+    "theme": "default",
+    "rtlSupport": false
+  },
+
+  "reportingRequirements": {
+    "qualityMeasures": ["CQM", "MIPS", "HEDIS"],
+    "publicHealthReporting": ["ELR", "ECR", "immunization"],
+    "claimFormats": ["X12-837P", "X12-837I"],
+    "remittanceFormats": ["X12-835"]
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "countryCode": "PH",
+  "countryName": "Philippines",
+  "packVersion": "1.0.0",
+  "status": "active",
+  "maintainer": "VistA-Evolved Core Team",
+  "defaultLocale": "fil",
+  "defaultTimezone": "Asia/Manila",
+  "supportedLocales": ["fil", "en"],
+
+  "regulatoryProfile": {
+    "framework": "DPA_PH",
+    "consentRequired": true,
+    "consentGranularity": "all-or-nothing",
+    "dataExportRestricted": true,
+    "requiresConsentForTransfer": true,
+    "retentionMinYears": 5,
+    "retentionMaxYears": 10,
+    "breakGlassAllowed": true,
+    "auditRetentionDays": 1825,
+    "rightToErasure": true,
+    "dataPortability": true
+  },
+
+  "dataResidency": {
+    "region": "ph-mnl",
+    "crossBorderTransferAllowed": true,
+    "requiresConsentForTransfer": true,
+    "retentionMinYears": 5
+  },
+
+  "terminologyDefaults": {
+    "diagnosisCodeSystem": "ICD-10-WHO",
+    "procedureCodeSystem": "CPT",
+    "labCodeSystem": "LOINC",
+    "drugCodeSystem": "passthrough"
+  },
+
+  "payerModules": ["ph_hmos"],
+
+  "enabledModules": [
+    "kernel",
+    "clinical",
+    "portal",
+    "telehealth",
+    "analytics",
+    "interop",
+    "intake",
+    "iam",
+    "rcm",
+    "scheduling"
+  ],
+
+  "featureFlags": {
+    "x12_edi_enabled": false,
+    "philhealth_eclaims": true,
+    "nhia_gdrg": false,
+    "break_glass_enabled": true,
+    "telehealth_recording": false,
+    "oidc_required": false,
+    "cross_border_transfer": true
+  },
+
+  "uiDefaults": {
+    "dateFormat": "DD/MM/YYYY",
+    "timeFormat": "12h",
+    "numberFormat": "fil-PH",
+    "currencyCode": "PHP",
+    "theme": "default",
+    "rtlSupport": false
+  },
+
+  "reportingRequirements": {
+    "qualityMeasures": [],
+    "publicHealthReporting": ["DOH-FHSIS"],
+    "claimFormats": ["PhilHealth-CF1", "PhilHealth-CF2", "PhilHealth-CF3", "PhilHealth-CF4"],
+    "remittanceFormats": ["PhilHealth-eClaims-Response"]
+  }
+}
