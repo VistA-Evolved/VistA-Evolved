@@ -3563,6 +3563,44 @@ CREATE INDEX IF NOT EXISTS idx_pal_plugin ON plugin_audit_log(tenant_id, plugin_
 CREATE INDEX IF NOT EXISTS idx_pal_created ON plugin_audit_log(tenant_id, created_at);
 `,
   },
+
+  // ── v48: UI Extension Slots (Phase 359) ──
+  {
+    version: 48,
+    name: "ui_extension_slots",
+    sql: `
+CREATE TABLE IF NOT EXISTS ui_extension_slot (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  plugin_id TEXT NOT NULL,
+  slot_location TEXT NOT NULL,
+  label TEXT NOT NULL,
+  icon TEXT,
+  component_ref TEXT NOT NULL,
+  priority INTEGER NOT NULL DEFAULT 100,
+  allowed_roles TEXT[] NOT NULL DEFAULT '{"*"}',
+  status TEXT NOT NULL DEFAULT 'active',
+  config JSONB NOT NULL DEFAULT '{}',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_ues_tenant ON ui_extension_slot(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_ues_slot ON ui_extension_slot(tenant_id, slot_location);
+CREATE INDEX IF NOT EXISTS idx_ues_plugin ON ui_extension_slot(tenant_id, plugin_id);
+
+CREATE TABLE IF NOT EXISTS ui_slot_policy (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  slot_location TEXT NOT NULL,
+  max_extensions INTEGER NOT NULL DEFAULT 5,
+  require_approval BOOLEAN NOT NULL DEFAULT true,
+  admin_roles TEXT[] NOT NULL DEFAULT '{"admin"}',
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE(tenant_id, slot_location)
+);
+CREATE INDEX IF NOT EXISTS idx_usp_tenant ON ui_slot_policy(tenant_id);
+`,
+  },
 ];
 
 /**
@@ -3776,6 +3814,9 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   // Phase 358: Plugin SDK
   "plugin_registry",
   "plugin_audit_log",
+  // Phase 359: UI Extension Slots
+  "ui_extension_slot",
+  "ui_slot_policy",
 ] as const;
 
 /**

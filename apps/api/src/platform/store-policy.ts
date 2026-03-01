@@ -3636,6 +3636,30 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "derived from plugin_registry (v47)",
     notes: "Phase 358: Key-keyed transformer pipeline.",
   },
+
+  // ── Phase 359: UI Extension Slots ──
+  {
+    id: "ui-extensions",
+    file: "services/ui-extension-service.ts",
+    variable: "extensions",
+    description: "In-memory UI extension slot registry",
+    classification: "critical" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "ui-extensions",
+    migrationTarget: "pg: ui_extension_slot (v48)",
+    notes: "Phase 359: Plugin-injected UI components in predefined slots.",
+  },
+  {
+    id: "ui-slot-policies",
+    file: "services/ui-extension-service.ts",
+    variable: "slotPolicies",
+    description: "In-memory UI slot policy registry",
+    classification: "registry" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "ui-extensions",
+    migrationTarget: "pg: ui_slot_policy (v48)",
+    notes: "Phase 359: Per-slot max extensions and approval policies.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
