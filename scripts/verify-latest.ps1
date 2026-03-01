@@ -1,3 +1,3 @@
 # Always points to the newest full verification script
-# Phase 247: Wave 6 Certification Suite
-& "$PSScriptRoot\verify-wave6-certification.ps1" @args
+# Phase 345: Wave 16 Security Certification
+& "$PSScriptRoot\verify-wave16-security.ps1" @args

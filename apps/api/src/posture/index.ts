@@ -20,6 +20,7 @@ import { checkBackupPosture } from "./backup-posture.js";
 import { checkDataPlanePosture } from "./data-plane-posture.js";
 import { checkAuditShippingPosture } from "./audit-shipping-posture.js";
 import { checkCertificationPosture } from "./certification-posture.js";
+import { checkSecurityCertPosture } from "./security-cert-posture.js";
 import { getStoreInventorySummary } from "../platform/store-policy.js";
 
 export default async function postureRoutes(server: FastifyInstance) {
@@ -34,6 +35,7 @@ export default async function postureRoutes(server: FastifyInstance) {
     const dataPlane = checkDataPlanePosture();
     const auditShipping = await checkAuditShippingPosture();
     const certification = checkCertificationPosture();
+    const securityCert = checkSecurityCertPosture();
     const storePolicy = getStoreInventorySummary();
 
     const totalGates = [
@@ -44,6 +46,7 @@ export default async function postureRoutes(server: FastifyInstance) {
       ...dataPlane.gates,
       ...auditShipping.gates,
       ...certification.gates,
+      ...securityCert.gates,
     ];
     const passCount = totalGates.filter((g) => g.pass).length;
     const totalScore = Math.round((passCount / totalGates.length) * 100);
@@ -60,6 +63,7 @@ export default async function postureRoutes(server: FastifyInstance) {
         dataPlane,
         auditShipping,
         certification,
+        securityCert,
         storePolicy: {
           total: storePolicy.total,
           criticalInMemoryCount: storePolicy.criticalInMemoryCount,
@@ -127,5 +131,10 @@ export default async function postureRoutes(server: FastifyInstance) {
       summary: `${summary.total} stores inventoried, ${summary.criticalInMemoryCount} critical+in_memory_only`,
       ...summary,
     };
+  });
+
+  // Phase 345: Wave 16 security certification posture
+  server.get("/posture/security-cert", async () => {
+    return { ok: true, ...checkSecurityCertPosture() };
   });
 }
