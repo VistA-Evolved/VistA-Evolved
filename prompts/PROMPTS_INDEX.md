@@ -1,7 +1,7 @@
 # Prompts Index
 
 Generated: 2026-03-01
-Total prompt folders: 427
+Total prompt folders: 428
 
 | # | Folder | Phase | Files |
 |---|--------|-------|-------|
@@ -432,3 +432,4 @@ Total prompt folders: 427
 | 425 | 425-PHASE-425-CONTAINER-PROBE | 425 | 3 |
 | 426 | 426-PHASE-426-RPC-SAFE-HARBOR-V2 | 426 | 3 |
 | 427 | 427-PHASE-427-WRITEBACK-FEASIBILITY | 427 | 3 |
+| 428 | 428-PHASE-428-ADAPTER-HEALTH-PANEL | 428 | 3 |
