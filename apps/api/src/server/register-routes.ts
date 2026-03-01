@@ -226,6 +226,7 @@ import { exchangePackRoutes } from "../exchange-packs/index.js";
 
 // Wave 24: Pilot Go-Lives + Stabilization (Phases 409-417)
 import { intakeRoutes as pilotIntakeRoutes } from "../pilots/intake/index.js";
+import { sreRoutes } from "../pilots/sre/index.js";
 
 // Inline routes + domain auto-stubs
 import { registerInlineRoutes } from "./inline-routes.js";
@@ -722,6 +723,7 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Wave 24: Pilot Go-Lives + Stabilization (Phases 409-417)
   server.register(pilotIntakeRoutes);        // Phase 411: Customer Integration Intake
+  server.register(sreRoutes);                // Phase 416: SRE Monitoring
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);
