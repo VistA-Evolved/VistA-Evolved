@@ -2939,6 +2939,43 @@ CREATE INDEX IF NOT EXISTS idx_kre_key ON key_rotation_event(tenant_id, key_id);
 CREATE INDEX IF NOT EXISTS idx_kre_time ON key_rotation_event(tenant_id, created_at);
 `,
   },
+  {
+    version: 36,
+    name: "phase342_tenant_security_policy",
+    sql: `
+-- Tenant Security Policy (Phase 342)
+CREATE TABLE IF NOT EXISTS tenant_security_policy (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL UNIQUE,
+  allowed_cidrs JSONB NOT NULL DEFAULT '[]'::jsonb,
+  require_mfa BOOLEAN NOT NULL DEFAULT false,
+  allow_exports BOOLEAN NOT NULL DEFAULT true,
+  max_session_age_sec INTEGER NOT NULL DEFAULT 28800,
+  max_concurrent_sessions INTEGER NOT NULL DEFAULT 5,
+  ip_allow_list JSONB NOT NULL DEFAULT '[]'::jsonb,
+  break_glass_enabled BOOLEAN NOT NULL DEFAULT true,
+  min_password_length INTEGER NOT NULL DEFAULT 8,
+  audit_shipping_enabled BOOLEAN NOT NULL DEFAULT false,
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_by TEXT NOT NULL DEFAULT 'system'
+);
+CREATE INDEX IF NOT EXISTS idx_tsp_tenant ON tenant_security_policy(tenant_id);
+
+-- Tenant Security Policy Change Log (Phase 342)
+CREATE TABLE IF NOT EXISTS tenant_security_policy_change (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  tenant_id TEXT NOT NULL,
+  field_name TEXT NOT NULL,
+  old_value JSONB,
+  new_value JSONB,
+  changed_by TEXT NOT NULL,
+  changed_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_tspc_tenant ON tenant_security_policy_change(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_tspc_time ON tenant_security_policy_change(tenant_id, changed_at);
+`,
+  },
 ];
 
 /**
