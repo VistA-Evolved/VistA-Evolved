@@ -217,6 +217,9 @@ const AUTH_RULES: AuthRule[] = [
   // ── Wave 22, Phase 393: Lab Deep Workflows ──
   { pattern: /^\/lab\/critical-alerts\/[^\/]+\/resolve$/, auth: "admin" }, // Phase 393: resolve critical alert (admin)
   { pattern: /^\/lab\//, auth: "session" },                       // Phase 393: lab reads + writes
+  // ── Wave 22, Phase 394: Imaging/Radiology Deep Workflows ──
+  { pattern: /^\/radiology\/critical-alerts\/[^\/]+\/resolve$/, auth: "admin" }, // Phase 394: resolve rad critical alert
+  { pattern: /^\/radiology\//, auth: "session" },                 // Phase 394: radiology reads + writes
   // Default: session required for anything else
 ];
 
