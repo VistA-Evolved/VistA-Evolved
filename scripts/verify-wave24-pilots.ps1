@@ -150,7 +150,7 @@ foreach ($ed in $evidenceDirs) {
 Write-Host "`n--- Section 14: TypeScript Build ---"
 Gate "tsc --noEmit clean" {
   Push-Location "$root/apps/api"
-  $out = pnpm exec tsc --noEmit 2>&1
+  $null = pnpm exec tsc --noEmit 2>&1
   Pop-Location
   $LASTEXITCODE -eq 0
 }

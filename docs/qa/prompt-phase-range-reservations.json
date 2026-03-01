@@ -50,13 +50,13 @@
         "reservedAt":  "2026-03-01T12:00:00.000Z"
     },
     {
-        "start":  409,
-        "branch":  "main",
         "wave":  "24",
-        "reservedAt":  "2026-03-01T20:05:33.9540882+08:00",
-        "count":  9,
-        "status":  "reserved",
+        "start":  409,
         "end":  417,
-        "owner":  "copilot-agent"
+        "count":  9,
+        "branch":  "main",
+        "owner":  "copilot-agent",
+        "status":  "reserved",
+        "reservedAt":  "2026-03-01T20:05:33.954Z"
     }
 ]

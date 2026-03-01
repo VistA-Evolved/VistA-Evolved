@@ -4904,6 +4904,52 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: exchange_transaction (future)",
     notes: "Phase 406-407: Exchange transactions (50K max, FIFO).",
   },
+
+  // PILOT GO-LIVES (Wave 24)
+  {
+    id: "pilot-intake-intakes",
+    file: "pilots/intake/intake-store.ts",
+    variable: "intakeStore",
+    description: "Customer integration intake records",
+    classification: "operational" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "pilots",
+    migrationTarget: "pg: pilot_intakes (future)",
+    notes: "Phase 411: Integration intake records (5K max, FIFO).",
+  },
+  {
+    id: "pilot-intake-configs",
+    file: "pilots/intake/intake-store.ts",
+    variable: "configStore",
+    description: "Generated config artifacts from intakes",
+    classification: "operational" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "pilots",
+    migrationTarget: "pg: pilot_intake_configs (future)",
+    notes: "Phase 411: Config artifacts keyed by intakeId.",
+  },
+  {
+    id: "pilot-sre-incidents",
+    file: "pilots/sre/sre-store.ts",
+    variable: "incidents",
+    description: "SRE incident tracker",
+    classification: "operational" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "pilots",
+    migrationTarget: "pg: sre_incidents (future)",
+    notes: "Phase 416: SRE incidents (1K max, sorted eviction).",
+  },
+  {
+    id: "pilot-sre-slo-snapshots",
+    file: "pilots/sre/sre-store.ts",
+    variable: "sloSnapshots",
+    description: "SLO measurement snapshots",
+    classification: "operational" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "pilots",
+    migrationTarget: "pg: sre_slo_snapshots (future)",
+    notes: "Phase 416: Keyed by SloId (6 canonical SLOs).",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
