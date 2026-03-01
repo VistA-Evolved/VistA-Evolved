@@ -3886,6 +3886,29 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: demo_environment (v51)",
     notes: "Phase 372: Ephemeral demo environments.",
   },
+  // Phase 373: Support Ops Automation (W20-P4)
+  {
+    id: "support-ops-tickets",
+    file: "services/support-ops-service.ts",
+    variable: "ticketStore",
+    description: "In-memory support ticket records",
+    classification: "operational" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "support-ops",
+    migrationTarget: "pg: support_ticket (v52)",
+    notes: "Phase 373: Support ticket lifecycle with SLA tracking.",
+  },
+  {
+    id: "support-ops-diagnostics",
+    file: "services/support-ops-service.ts",
+    variable: "diagnosticsStore",
+    description: "In-memory diagnostics bundle records",
+    classification: "cache" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "support-ops",
+    migrationTarget: "pg: diagnostics_bundle (v52)",
+    notes: "Phase 373: Auto-generated diagnostics bundles.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
