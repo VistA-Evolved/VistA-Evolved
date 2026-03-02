@@ -86,6 +86,7 @@ data/rpc-traces/
 
 # Evidence bundles (generated)
 /artifacts/
+/evidence/
 docs/evidence/*/
 data/evidence/
 

@@ -13,8 +13,8 @@
   Directory for evidence output. Default: evidence/wave-36/512-W36-P3-VISTA-BASELINE-LANE
 
 .EXAMPLE
-  pwsh scripts/vista-baseline-probe.ps1
-  pwsh scripts/vista-baseline-probe.ps1 -SkipDocker
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/vista-baseline-probe.ps1
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/vista-baseline-probe.ps1 -SkipDocker
 #>
 param(
   [switch]$SkipDocker,

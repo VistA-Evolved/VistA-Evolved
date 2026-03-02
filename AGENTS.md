@@ -1564,6 +1564,27 @@ docs/runbooks/
      `checkSecurityCertPosture()` verifies all W16 source files exist per
      phase. No runtime health probes — pure file-based gate for certification.
 
+## 7x. Architecture Quick Map (Phase 512 / Wave 36 additions)
+
+```
+docs/runbooks/
+  vista-baselines.md              -- Multi-lane VistA reference (legacy, VEHU, distro) (Phase 512)
+
+scripts/
+  vista-baseline-probe.ps1        -- 9-gate VistA lane probe with -SkipDocker (Phase 512)
+```
+
+183. **Use VEHU lane for new development, not legacy wv (Phase 512).**
+     The legacy `worldvista/worldvista-ehr` image is 7+ years old with minimal
+     synthetic patients and no SDES scheduling data. The `worldvista/vehu`
+     image (profile `vehu`, port 9431) has richer clinical data and is the
+     recommended dev/test baseline. See `docs/runbooks/vista-baselines.md`.
+184. **VistA baseline probe writes evidence JSON (Phase 512).** Run
+     `scripts/vista-baseline-probe.ps1 -SkipDocker` for structure-only checks
+     or without the flag for full Docker + TCP probing. Evidence written to
+     `evidence/wave-36/512-W36-P3-VISTA-BASELINE-LANE/baseline-probe.json`.
+     Added as optional G13 in `verify-rc.ps1`.
+
 ## 8. Bug Tracker & Lessons Learned
 
 A comprehensive log of every bug, challenge, and fix from Phase 1 through

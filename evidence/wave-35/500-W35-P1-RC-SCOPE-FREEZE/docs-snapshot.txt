@@ -1,9 +1,0 @@
-P1 Evidence Snapshot — 2026-03-02
-
-Documents created:
-  - prompts/WAVE_35_MANIFEST.md (10-phase map)
-  - docs/release/RC_SCOPE.md (12 must-pass gates + 3 non-blocking)
-  - docs/release/RC_EXIT_CRITERIA.md (P0-P3 severity, error budgets, downtime behavior)
-  - prompts/500-W35-P1-RC-SCOPE-FREEZE/ (IMPLEMENT + VERIFY + NOTES)
-
-Phase reservation: 500-509 for Wave 35

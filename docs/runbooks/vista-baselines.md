@@ -115,7 +115,7 @@ Run the baseline probe to identify which VistA is running and verify
 connectivity:
 
 ```powershell
-pwsh scripts/vista-baseline-probe.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/vista-baseline-probe.ps1
 ```
 
 The probe checks:
@@ -125,7 +125,7 @@ The probe checks:
 
 ### Offline mode (no Docker required)
 ```powershell
-pwsh scripts/vista-baseline-probe.ps1 -SkipDocker
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/vista-baseline-probe.ps1 -SkipDocker
 ```
 
 ---

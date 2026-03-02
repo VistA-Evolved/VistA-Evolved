@@ -59,7 +59,8 @@ $gates = @(
   @{ Id="G09"; Label="Performance Smoke";          Type="ps1";  Path="scripts/perf/run-soak.ps1";                      Required=$false },
   @{ Id="G10"; Label="Defect Budget";              Type="ps1";  Path="scripts/qa/bug-bash-run.ps1";                    Required=$true  },
   @{ Id="G11"; Label="Production Posture";         Type="node"; Path="scripts/qa-gates/prod-posture.mjs";              Required=$true  },
-  @{ Id="G12"; Label="Data Plane Posture";         Type="node"; Path="qa/gauntlet/gates/g12-data-plane.mjs";           Required=$true  }
+  @{ Id="G12"; Label="Data Plane Posture";         Type="node"; Path="qa/gauntlet/gates/g12-data-plane.mjs";           Required=$true  },
+  @{ Id="G13"; Label="VistA Baseline Probe";       Type="ps1";  Path="scripts/vista-baseline-probe.ps1";              Required=$false }
 )
 
 $results = @()
