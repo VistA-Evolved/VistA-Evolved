@@ -1,0 +1,287 @@
+{
+  "_meta": {
+    "description": "Integration-pending budget baseline (Phase 480)",
+    "updatedAt": "2026-03-02T04:48:47.455Z",
+    "updatedBy": "integration-pending-budget.mjs --update"
+  },
+  "total": 292,
+  "tolerance": 0,
+  "files": [
+    {
+      "file": "apps/api/src/routes/nursing/index.ts",
+      "count": 24
+    },
+    {
+      "file": "apps/api/src/routes/emar/index.ts",
+      "count": 19
+    },
+    {
+      "file": "apps/api/src/writeback/__tests__/adt-contract.test.ts",
+      "count": 19
+    },
+    {
+      "file": "apps/api/src/routes/cprs/orders-cpoe.ts",
+      "count": 17
+    },
+    {
+      "file": "apps/api/src/rcm/workflows/vista-source-map.ts",
+      "count": 12
+    },
+    {
+      "file": "apps/api/src/routes/vista-rcm.ts",
+      "count": 12
+    },
+    {
+      "file": "apps/api/src/workflows/department-packs.ts",
+      "count": 10
+    },
+    {
+      "file": "apps/api/src/writeback/executors/adt-executor.ts",
+      "count": 10
+    },
+    {
+      "file": "apps/api/src/rcm/eligibility/routes.ts",
+      "count": 9
+    },
+    {
+      "file": "apps/api/src/routes/discharge-workflow.ts",
+      "count": 9
+    },
+    {
+      "file": "apps/api/src/routes/inpatient/index.ts",
+      "count": 9
+    },
+    {
+      "file": "apps/api/src/routes/adt/index.ts",
+      "count": 8
+    },
+    {
+      "file": "apps/api/src/writeback/__tests__/pharm-contract.test.ts",
+      "count": 8
+    },
+    {
+      "file": "apps/api/src/migration/ccda-parser.ts",
+      "count": 7
+    },
+    {
+      "file": "apps/api/src/platform/store-policy.ts",
+      "count": 7
+    },
+    {
+      "file": "apps/api/src/routes/med-reconciliation.ts",
+      "count": 6
+    },
+    {
+      "file": "apps/api/src/lab/types.ts",
+      "count": 5
+    },
+    {
+      "file": "apps/api/src/migration/export-pipeline.ts",
+      "count": 5
+    },
+    {
+      "file": "apps/api/src/pharmacy/types.ts",
+      "count": 5
+    },
+    {
+      "file": "apps/api/src/radiology/types.ts",
+      "count": 5
+    },
+    {
+      "file": "apps/api/src/routes/cprs/wave1-routes.ts",
+      "count": 4
+    },
+    {
+      "file": "apps/api/src/routes/immunizations/index.ts",
+      "count": 4
+    },
+    {
+      "file": "apps/api/src/telehealth/encounter-link.ts",
+      "count": 4
+    },
+    {
+      "file": "apps/api/src/writeback/executors/pharm-executor.ts",
+      "count": 4
+    },
+    {
+      "file": "apps/api/src/inpatient/inpatient-store.ts",
+      "count": 3
+    },
+    {
+      "file": "apps/api/src/inpatient/types.ts",
+      "count": 3
+    },
+    {
+      "file": "apps/api/src/pharmacy/pharmacy-store.ts",
+      "count": 3
+    },
+    {
+      "file": "apps/api/src/rcm/vistaBindings/encounter-to-claim.ts",
+      "count": 3
+    },
+    {
+      "file": "apps/api/src/routes/cprs/tiu-notes.ts",
+      "count": 3
+    },
+    {
+      "file": "apps/api/src/writeback/__tests__/telehealth-hardening-contract.test.ts",
+      "count": 3
+    },
+    {
+      "file": "apps/api/src/exports/data-portability.ts",
+      "count": 2
+    },
+    {
+      "file": "apps/api/src/hl7/lab-inbound/handler.ts",
+      "count": 2
+    },
+    {
+      "file": "apps/api/src/lab/lab-store.ts",
+      "count": 2
+    },
+    {
+      "file": "apps/api/src/radiology/radiology-store.ts",
+      "count": 2
+    },
+    {
+      "file": "apps/api/src/rcm/eligibility/types.ts",
+      "count": 2
+    },
+    {
+      "file": "apps/api/src/rcm/hmo-portal/claim-packet-config.ts",
+      "count": 2
+    },
+    {
+      "file": "apps/api/src/rcm/hmo-portal/loa-templates.ts",
+      "count": 2
+    },
+    {
+      "file": "apps/api/src/rcm/vistaBindings/era-to-vista.ts",
+      "count": 2
+    },
+    {
+      "file": "apps/api/src/routes/mar-safety.ts",
+      "count": 2
+    },
+    {
+      "file": "apps/api/src/routes/scheduling/index.ts",
+      "count": 2
+    },
+    {
+      "file": "apps/api/src/routes/scheduling/writeback-guard.ts",
+      "count": 2
+    },
+    {
+      "file": "apps/api/src/templates/types.ts",
+      "count": 2
+    },
+    {
+      "file": "apps/api/src/writeback/executors/img-executor.ts",
+      "count": 2
+    },
+    {
+      "file": "apps/api/src/cds/cds-store.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/fhir/fhir-routes.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/hl7/lab-inbound/types.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/intake/brain-routes.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/qa/clinic-day-journeys.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/rcm/adapters/philhealth-adapter.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/rcm/adapters/x12-adapter.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/rcm/denials/edi-import.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/rcm/eligibility/edi-stub-adapters.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/rcm/hmo-portal/adapter-manifest.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/rcm/loa/loa-types.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/rcm/loa/loa-workflow.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/rcm/reconciliation/edi835-parser.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/rcm/vistaBindings/charge-capture.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/rcm/workflows/claims-workflow.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/rcm/workflows/remittance-routes.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/routes/cprs/order-check-types.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/routes/identity-linking.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/routes/onboarding-routes.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/routes/portal-auth.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/routes/portal-documents.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/routes/record-portability.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/routes/scheduling/writeback-routes.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/services/record-portability-store.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/vista/rpcDebugData.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/workflows/types.ts",
+      "count": 1
+    }
+  ]
+}
