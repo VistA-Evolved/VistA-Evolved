@@ -26,7 +26,7 @@ budgeted count. Budget tracked in `docs/qa/integration-pending-budget.json`.
 
 ### G04 — Tier-0 Hospital Certification
 ```powershell
-node scripts/qa-gates/tier0-hospital-certification.mjs
+node scripts/qa-gates/certification-runner.mjs
 ```
 **Pass criteria:** Exit 0. All tier-0 scenario gates pass.
 
@@ -75,7 +75,7 @@ node scripts/qa-gates/prod-posture.mjs
 
 ### G12 — Data Plane Posture (offline)
 ```powershell
-node scripts/qa-gates/g12-data-plane.mjs 2>$null; echo $LASTEXITCODE
+node qa/gauntlet/gates/g12-data-plane.mjs 2>$null; echo $LASTEXITCODE
 ```
 **Pass criteria:** Exit 0 in fixture mode (PG not required for RC gate).
 

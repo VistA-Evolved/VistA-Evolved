@@ -1,0 +1,210 @@
+============================================
+  RC-1 Verify Orchestrator
+  2026-03-02 15:36:55
+  Root: C:\Users\kmoul\OneDrive\Documents\GitHub\VistA-Evolved
+============================================
+
+--- G01 : Prompts Tree Health ---
+
+=== QA Gate: Prompts Tree Health (Phase 113B) ===
+
+  PASS  no-duplicate-flat: No flat files duplicating existing phase folders
+  PASS  orphan-flat: No orphan flat files at root
+  PASS  naming-convention: All 502 folders follow convention
+  PASS  impl-verify-pair: All 501 folders have IMPLEMENT + VERIFY
+  PASS  phase-mismatch: All file headings match their folder phase numbers
+  WARN  duplicate-phase: Phase 263 has 2 folders: 260-PHASE-263-SUPPORT-TOOLING-V2, 263-PHASE-263-WAVE8-INTEGRITY-AUDIT
+  WARN  duplicate-phase: Phase 283 has 2 folders: 281-PHASE-283-THEME-SYSTEM-CORE, 283-PHASE-283-MIGRATION-TEMPLATES
+  WARN  duplicate-phase: Phase 284 has 2 folders: 282-PHASE-284-THEME-PACKS-BRANDING, 284-PHASE-284-BILLING-METERING
+  WARN  duplicate-phase: Phase 290 has 2 folders: 290-PHASE-290-WAVE9-INTEGRITY-AUDIT, 297-PHASE-290-INTEROP-CERT-HARNESS
+  PASS  nested-phase: No nested numbered subdirectories in phase folders
+  PASS  shadow-folder: No shadow numbered directories (501 dirs all recognized)
+  WARN  notes-present: 305 phase folders missing NOTES.md (legacy)
+
+=== Summary ===
+  PASS: 7
+  WARN: 5
+  FAIL: 0
+
+Exit code: 0
+  [PASS] G01 (187ms, exit=0)
+
+--- G02 : Phase Index Freshness ---
+
+=== QA Gate: Phase Index Integrity (Phase 108) ===
+
+  PASS  phase-index.json exists -- C:\Users\kmoul\OneDrive\Documents\GitHub\VistA-Evolved\docs\qa\phase-index.json
+  PASS  phase count matches -- index: 500, folders: 500
+  PASS  all phases have IMPLEMENT or VERIFY -- 500 phases validated
+  PASS  no new duplicate phase numbers -- Duplicates: 263, 263, 283, 284, 290, 290 (all known legacy)
+  PASS  generated specs exist -- E2E: true, API: true (193 phases with routes)
+  PASS  phase-index freshness -- Generated 0 days ago (2026-03-02)
+
+=== Phase Index Gate: 6 checks, 6 pass, 0 fail ===
+  [PASS] G02 (52ms, exit=0)
+
+--- G03 : Integration-Pending Budget ---
+Integration-Pending Budget Gate (Phase 480)
+
+Current count: 254 occurrences in 71 files
+
+Baseline:  254 (from 2026-03-02T07:36:49.552Z)
+Current:   254
+Delta:     +0
+Tolerance: 0
+
+PASS  Budget unchanged.
+  [PASS] G03 (95ms, exit=0)
+
+--- G04 : Tier-0 Hospital Cert ---
+
+=== E2E Certification Gate (Phase 278) ===
+
+  [PARTIAL] cert-001 Outpatient Visit Complete Flow (4/7 steps)
+  [PARTIAL] cert-002 Patient Portal Session (3/5 steps)
+  [PARTIAL] cert-003 Imaging Study Lifecycle (3/4 steps)
+  [PARTIAL] cert-004 RCM Claim Submission (2/4 steps)
+  [READY] cert-005 Pharmacy Medication Management (3/3 steps)
+  [PARTIAL] cert-006 Lab Order and Results (1/3 steps)
+  [PARTIAL] cert-007 Scheduling Appointment (2/4 steps)
+  [READY] cert-008 Telehealth Visit (4/4 steps)
+  [PARTIAL] cert-009 Nursing Documentation (0/3 steps)
+  [PARTIAL] cert-010 ADT Admission-Discharge-Transfer (0/4 steps)
+  [PARTIAL] cert-011 Interop HL7 Message Flow (0/3 steps)
+  [READY] cert-012 Admin Security & Audit (5/5 steps)
+
+  Scenarios: 3 ready, 9 partial (of 12)
+  Steps:     27/49 reachable (55.1%)
+
+  Output: artifacts/certification-report.json
+  [PASS] G04 (127ms, exit=0)
+
+--- G05 : Country Conformance ---
+
+=== Country Conformance Runner (Phase 499) ===
+
+Found 3 packs: GH, PH, US
+
+--- GH ---
+  PASS  [GH] pack-load: Loaded GH v0.1.0
+  PASS  [GH] regulatory-framework: framework: DPA_GH
+  PASS  [GH] regulatory-consent-required: consentRequired: true
+  PASS  [GH] regulatory-granularity: consentGranularity: all-or-nothing
+  PASS  [GH] consent-profile-known: DPA_GH found in consent engine
+  PASS  [GH] residency-region: region: gh-acc
+  PASS  [GH] residency-cross-border: crossBorderTransferAllowed: true
+  PASS  [GH] retention-min-years: retentionMinYears: 5
+  PASS  [GH] dsar-right-to-erasure: rightToErasure: true
+  PASS  [GH] dsar-data-portability: dataPortability: true
+  PASS  [GH] i18n-en: web + portal messages exist
+  PASS  [GH] terminology-dx: diagnosisCodeSystem: ICD-10-WHO
+  PASS  [GH] terminology-proc: procedureCodeSystem: passthrough
+  => PASS
+
+--- PH ---
+  PASS  [PH] pack-load: Loaded PH v1.0.0
+  PASS  [PH] regulatory-framework: framework: DPA_PH
+  PASS  [PH] regulatory-consent-required: consentRequired: true
+  PASS  [PH] regulatory-granularity: consentGranularity: all-or-nothing
+  PASS  [PH] consent-profile-known: DPA_PH found in consent engine
+  PASS  [PH] residency-region: region: ph-mnl
+  PASS  [PH] residency-cross-border: crossBorderTransferAllowed: true
+  PASS  [PH] retention-min-years: retentionMinYears: 5
+  PASS  [PH] dsar-right-to-erasure: rightToErasure: true
+  PASS  [PH] dsar-data-portability: dataPortability: true
+  PASS  [PH] i18n-fil: web + portal messages exist
+  PASS  [PH] i18n-en: web + portal messages exist
+  PASS  [PH] terminology-dx: diagnosisCodeSystem: ICD-10-WHO
+  PASS  [PH] terminology-proc: procedureCodeSystem: CPT
+  => PASS
+
+--- US ---
+  PASS  [US] pack-load: Loaded US v1.0.0
+  PASS  [US] regulatory-framework: framework: HIPAA
+  PASS  [US] regulatory-consent-required: consentRequired: true
+  PASS  [US] regulatory-granularity: consentGranularity: category
+  PASS  [US] consent-profile-known: HIPAA found in consent engine
+  PASS  [US] residency-region: region: us-east
+  PASS  [US] residency-cross-border: crossBorderTransferAllowed: false
+  PASS  [US] retention-min-years: retentionMinYears: 6
+  PASS  [US] dsar-right-to-erasure: rightToErasure: false
+  PASS  [US] dsar-data-portability: dataPortability: false
+  PASS  [US] i18n-en: web + portal messages exist
+  PASS  [US] i18n-es: web + portal messages exist
+  PASS  [US] terminology-dx: diagnosisCodeSystem: ICD-10-CM
+  PASS  [US] terminology-proc: procedureCodeSystem: CPT
+  => PASS
+
+=== Evidence Summary ===
+  GH: 13 pass, 0 warn, 0 fail => PASS
+  PH: 14 pass, 0 warn, 0 fail => PASS
+  US: 14 pass, 0 warn, 0 fail => PASS
+
+  --- Totals: 41 passed, 0 warned, 0 failed ---
+  [PASS] G05 (43ms, exit=0)
+
+--- G06 : RPC Trace Compare ---
+--- G06: RPC Trace Compare ---
+  [PASS] rpcRegistry.ts exists
+  [PASS] rpc-catalog-snapshot.json exists
+  [PASS] Snapshot has RPCs (137)
+  [PASS] Snapshot has exceptions (59)
+  [PASS] Registry has entries (210)
+  [PASS] RPC drift <= 30 (snapshot: 196, code: 210, delta: 14)
+
+--- G06 result: PASS ---
+  [PASS] G06 (40ms, exit=0)
+
+--- G07a : TypeScript API ---
+  [PASS] G07a (7231ms, exit=0)
+
+--- G07b : TypeScript Web ---
+  [PASS] G07b (1782ms, exit=0)
+
+--- G08 : Security Pre-Cert ---
+  [SKIP] Script not found: scripts/security/run-precert.ps1
+
+--- G09 : Performance Smoke ---
+  [SKIP] Script not found: scripts/perf/run-soak.ps1
+
+--- G10 : Defect Budget ---
+  [SKIP] Script not found: scripts/qa/bug-bash-run.ps1
+
+--- G11 : Production Posture ---
+
+=== QA Gate: Production Posture (Phase 107) ===
+
+  PASS  posture module: index.ts -- apps/api/src/posture/index.ts
+  PASS  posture module: observability-posture.ts -- apps/api/src/posture/observability-posture.ts
+  PASS  posture module: tenant-posture.ts -- apps/api/src/posture/tenant-posture.ts
+  PASS  posture module: perf-posture.ts -- apps/api/src/posture/perf-posture.ts
+  PASS  posture module: backup-posture.ts -- apps/api/src/posture/backup-posture.ts
+  PASS  backup-restore script -- scripts/backup-restore.mjs
+  PASS  performance-budgets.json valid -- config/performance-budgets.json
+  PASS  production posture runbook -- docs/runbooks/phase107-production-posture.md
+  PASS  tenant RLS infrastructure (applyRlsPolicies) -- pg-migrate.ts
+  PASS  structured logger -- lib/logger.ts
+  PASS  prometheus metrics -- telemetry/metrics.ts
+  PASS  otel tracing -- telemetry/tracing.ts
+  PASS  audit module -- lib/audit.ts
+  PASS  security middleware -- middleware/security.ts
+  PASS  no console.log in posture modules -- found 0 console calls
+
+=== Prod-Posture QA: 15 gates, 15 pass, 0 fail ===
+  [PASS] G11 (47ms, exit=0)
+
+--- G12 : Data Plane Posture ---
+
+  [PASS] G12 (40ms, exit=0)
+
+============================================
+  SUMMARY
+============================================
+  PASS: 10
+  FAIL: 0
+  SKIP: 3
+  TOTAL: 13
+
+  Overall: RC_READY
+============================================
+

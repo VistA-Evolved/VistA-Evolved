@@ -1,10 +1,10 @@
 {
   "_meta": {
     "description": "Integration-pending budget baseline (Phase 480)",
-    "updatedAt": "2026-03-02T06:14:18.142Z",
+    "updatedAt": "2026-03-02T07:36:49.552Z",
     "updatedBy": "integration-pending-budget.mjs --update"
   },
-  "total": 253,
+  "total": 254,
   "tolerance": 0,
   "files": [
     {
@@ -273,6 +273,10 @@
     },
     {
       "file": "apps/api/src/routes/scheduling/writeback-routes.ts",
+      "count": 1
+    },
+    {
+      "file": "apps/api/src/routes/utf8-routes.ts",
       "count": 1
     },
     {

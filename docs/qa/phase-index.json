@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-02T06:48:09.998Z",
+  "generatedAt": "2026-03-02T07:36:27.225Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 489,
+  "phaseCount": 500,
   "phases": [
     {
       "phaseNumber": "1",
@@ -11928,6 +11928,195 @@
       "filesTouched": []
     },
     {
+      "phaseNumber": "491",
+      "title": "W34-P1: Reservation + Manifest + Country Pack Coverage Matrix",
+      "folder": "491-W34-P1-MANIFEST-COVERAGE",
+      "files": [
+        "491-01-IMPLEMENT.md",
+        "491-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "491-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "491-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "492",
+      "title": "W34-P2: Tenant Binding (countryPackId / locale / timezone)",
+      "folder": "492-W34-P2-TENANT-BINDING",
+      "files": [
+        "492-01-IMPLEMENT.md",
+        "492-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "492-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "492-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "493",
+      "title": "W34-P3: Runtime Policy Spine",
+      "folder": "493-W34-P3-RUNTIME-POLICY-SPINE",
+      "files": [
+        "493-01-IMPLEMENT.md",
+        "493-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "493-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "493-99-VERIFY.md"
+      ],
+      "routes": [
+        "/country-policy/effective"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "494",
+      "title": "W34-P4 CONSENT PRIVACY V2",
+      "folder": "494-W34-P4-CONSENT-PRIVACY-V2",
+      "files": [
+        "494-01-IMPLEMENT.md",
+        "494-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "494-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "494-99-VERIFY.md"
+      ],
+      "routes": [
+        "/consent-pou/directives",
+        "/consent/policy-check",
+        "/privacy/rights"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "495",
+      "title": "W34-P5 DATA RESIDENCY",
+      "folder": "495-W34-P5-DATA-RESIDENCY",
+      "files": [
+        "495-01-IMPLEMENT.md",
+        "495-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "495-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "495-99-VERIFY.md"
+      ],
+      "routes": [
+        "/residency/enforce-pack-transfer"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "496",
+      "title": "W34-P6 RETENTION DSAR",
+      "folder": "496-W34-P6-RETENTION-DSAR",
+      "files": [
+        "496-01-IMPLEMENT.md",
+        "496-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "496-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "496-99-VERIFY.md"
+      ],
+      "routes": [
+        "/dsar/requests",
+        "/dsar/requests/:id/fulfill"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "497",
+      "title": "W34-P7 I18N COVERAGE",
+      "folder": "497-W34-P7-I18N-COVERAGE",
+      "files": [
+        "497-01-IMPLEMENT.md",
+        "497-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "497-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "497-99-VERIFY.md"
+      ],
+      "routes": [
+        "/i18n/coverage"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "498",
+      "title": "W34-P8 UTF8 LANE",
+      "folder": "498-W34-P8-UTF8-LANE",
+      "files": [
+        "498-01-IMPLEMENT.md",
+        "498-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "498-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "498-99-VERIFY.md"
+      ],
+      "routes": [
+        "/vista/utf8/status",
+        "/vista/utf8/test"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "499",
+      "title": "W34-P9 CONFORMANCE RUNNER",
+      "folder": "499-W34-P9-CONFORMANCE-RUNNER",
+      "files": [
+        "499-01-IMPLEMENT.md",
+        "499-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "499-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "499-99-VERIFY.md"
+      ],
+      "routes": [
+        "/conformance/run"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
       "phaseNumber": "45",
       "title": "Transaction Correctness Engine (X12/CORE/Ack/Status/ERA)",
       "folder": "50-PHASE-45-TRANSACTION-ENGINE",
@@ -11968,6 +12157,46 @@
         "docs/runbooks/rcm-x12-local-vs-external-translator.md",
         "prompts/50-PHASE-45-TRANSACTION-ENGINE/01-implement.md"
       ]
+    },
+    {
+      "phaseNumber": "500",
+      "title": "Reservation + Manifest + RC Scope Freeze",
+      "folder": "500-W35-P1-RC-SCOPE-FREEZE",
+      "files": [
+        "500-01-IMPLEMENT.md",
+        "500-99-VERIFY.md",
+        "500-NOTES.md"
+      ],
+      "implementFiles": [
+        "500-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "500-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "501",
+      "title": "Single \"RC Verify\" Orchestrator + Report",
+      "folder": "501-W35-P2-RC-VERIFY-ORCHESTRATOR",
+      "files": [
+        "501-01-IMPLEMENT.md",
+        "501-99-VERIFY.md",
+        "501-NOTES.md"
+      ],
+      "implementFiles": [
+        "501-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "501-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
     },
     {
       "phaseNumber": "46",

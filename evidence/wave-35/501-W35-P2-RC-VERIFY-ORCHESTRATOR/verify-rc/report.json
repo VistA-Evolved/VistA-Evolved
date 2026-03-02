@@ -1,0 +1,129 @@
+{
+    "summary":  {
+                    "skip":  3,
+                    "pass":  10,
+                    "fail":  0,
+                    "total":  13
+                },
+    "gates":  [
+                  {
+                      "label":  "Prompts Tree Health",
+                      "exitCode":  0,
+                      "durationMs":  187,
+                      "required":  true,
+                      "reason":  "",
+                      "status":  "PASS",
+                      "gateName":  "G01"
+                  },
+                  {
+                      "label":  "Phase Index Freshness",
+                      "exitCode":  0,
+                      "durationMs":  52,
+                      "required":  true,
+                      "reason":  "",
+                      "status":  "PASS",
+                      "gateName":  "G02"
+                  },
+                  {
+                      "label":  "Integration-Pending Budget",
+                      "exitCode":  0,
+                      "durationMs":  95,
+                      "required":  true,
+                      "reason":  "",
+                      "status":  "PASS",
+                      "gateName":  "G03"
+                  },
+                  {
+                      "label":  "Tier-0 Hospital Cert",
+                      "exitCode":  0,
+                      "durationMs":  127,
+                      "required":  true,
+                      "reason":  "",
+                      "status":  "PASS",
+                      "gateName":  "G04"
+                  },
+                  {
+                      "label":  "Country Conformance",
+                      "exitCode":  0,
+                      "durationMs":  43,
+                      "required":  true,
+                      "reason":  "",
+                      "status":  "PASS",
+                      "gateName":  "G05"
+                  },
+                  {
+                      "label":  "RPC Trace Compare",
+                      "exitCode":  0,
+                      "durationMs":  40,
+                      "required":  true,
+                      "reason":  "",
+                      "status":  "PASS",
+                      "gateName":  "G06"
+                  },
+                  {
+                      "label":  "TypeScript API",
+                      "exitCode":  0,
+                      "durationMs":  7231,
+                      "required":  true,
+                      "reason":  "",
+                      "status":  "PASS",
+                      "gateName":  "G07a"
+                  },
+                  {
+                      "label":  "TypeScript Web",
+                      "exitCode":  0,
+                      "durationMs":  1782,
+                      "required":  true,
+                      "reason":  "",
+                      "status":  "PASS",
+                      "gateName":  "G07b"
+                  },
+                  {
+                      "label":  "Security Pre-Cert",
+                      "exitCode":  null,
+                      "durationMs":  0,
+                      "required":  true,
+                      "reason":  "Script not found: scripts/security/run-precert.ps1",
+                      "status":  "SKIP",
+                      "gateName":  "G08"
+                  },
+                  {
+                      "label":  "Performance Smoke",
+                      "exitCode":  null,
+                      "durationMs":  0,
+                      "required":  false,
+                      "reason":  "Script not found: scripts/perf/run-soak.ps1",
+                      "status":  "SKIP",
+                      "gateName":  "G09"
+                  },
+                  {
+                      "label":  "Defect Budget",
+                      "exitCode":  null,
+                      "durationMs":  0,
+                      "required":  true,
+                      "reason":  "Script not found: scripts/qa/bug-bash-run.ps1",
+                      "status":  "SKIP",
+                      "gateName":  "G10"
+                  },
+                  {
+                      "label":  "Production Posture",
+                      "exitCode":  0,
+                      "durationMs":  47,
+                      "required":  true,
+                      "reason":  "",
+                      "status":  "PASS",
+                      "gateName":  "G11"
+                  },
+                  {
+                      "label":  "Data Plane Posture",
+                      "exitCode":  0,
+                      "durationMs":  40,
+                      "required":  true,
+                      "reason":  "",
+                      "status":  "PASS",
+                      "gateName":  "G12"
+                  }
+              ],
+    "generatedAt":  "2026-03-02T15:37:05.0677547+08:00",
+    "overallStatus":  "RC_READY"
+}
