@@ -10,7 +10,7 @@
 
 import { deflateRawSync } from "node:zlib";
 import { createHash } from "node:crypto";
-import type { ExportBundle, ExportArtifact } from "./types.js";
+import type { ExportBundle } from "./types.js";
 
 /* ── Minimal ZIP builder (no external deps) ──────────────── */
 

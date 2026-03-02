@@ -103,6 +103,7 @@ export function normalizeCodes(codes: PaymentCode[]): NormalizedCarcRarc[] {
     if (code.type === 'CARC') {
       const carcEntry = lookupCarc(code.code);
       const groupCode = code.code.length >= 1 ? extractGroupCode(code.code) : undefined;
+      const rec = buildActionRecommendation(code.code);
       return {
         type: 'CARC' as const,
         code: code.code,
@@ -111,18 +112,19 @@ export function normalizeCodes(codes: PaymentCode[]): NormalizedCarcRarc[] {
         groupDescription: groupCode ? getCarcGroupDescription(groupCode) : undefined,
         category: carcEntry?.category,
         actionHint: carcEntry?.commonAction,
-        actionRecommendation: buildActionRecommendation(code.code, code.type),
+        actionRecommendation: rec.action,
       };
     }
 
     if (code.type === 'RARC') {
       const rarcEntry = lookupRarc(code.code);
+      const rec = buildActionRecommendation(code.code, [code.code]);
       return {
         type: 'RARC' as const,
         code: code.code,
         description: rarcEntry?.description ?? code.description ?? `RARC ${code.code}`,
         actionHint: rarcEntry?.actionHint,
-        actionRecommendation: buildActionRecommendation(code.code, code.type),
+        actionRecommendation: rec.action,
       };
     }
 
@@ -303,7 +305,7 @@ export function processRemittanceBatch(
     }
     if (
       options.autoApproveBelowCents &&
-      classifiedLine.financials.adjustmentAmountCents <= options.autoApproveBelowCents &&
+      (classifiedLine.financials.adjustmentAmountCents ?? 0) <= options.autoApproveBelowCents &&
       classifiedLine.classification === 'adjustment'
     ) {
       approvalStatus = 'auto_approved';
