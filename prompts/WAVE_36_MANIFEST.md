@@ -24,6 +24,6 @@ probe script.
 
 | Phase | Commit | Title |
 |-------|--------|-------|
-| 510 | (pending) | Prompt Tree Health Repair |
-| 511 | (pending) | Phase Index Builder Correctness |
-| 512 | (pending) | VistA Baseline Lane |
+| 510 | 7c904f5 | Prompt Tree Health Repair |
+| 511 | ea54494 | Phase Index Builder Correctness |
+| 512 | ee6f96f | VistA Baseline Lane |
