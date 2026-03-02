@@ -3841,6 +3841,482 @@ CREATE INDEX IF NOT EXISTS idx_onboard_payer ON payer_onboarding_task(payer_id);
 CREATE INDEX IF NOT EXISTS idx_onboard_status ON payer_onboarding_task(status);
 `,
   },
+
+  // ── v53: Phase 523 (W38-C2) — ED Durability ──
+  {
+    version: 53,
+    name: "phase523_ed_durability",
+    sql: `
+-- Phase 523 (W38-C2): Emergency Department PG-backed durability.
+CREATE TABLE IF NOT EXISTS ed_visit (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'waiting',
+  arrival_time TIMESTAMPTZ NOT NULL,
+  arrival_mode TEXT NOT NULL,
+  triage_json JSONB,
+  bed_assignment_json JSONB,
+  attending_provider TEXT,
+  disposition TEXT,
+  disposition_time TIMESTAMPTZ,
+  disposition_by TEXT,
+  admit_order_ien TEXT,
+  created_by TEXT,
+  total_minutes INTEGER,
+  door_to_provider_minutes INTEGER,
+  door_to_disposition_minutes INTEGER,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_ed_visit_tenant ON ed_visit(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_ed_visit_patient ON ed_visit(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_ed_visit_status ON ed_visit(status);
+CREATE INDEX IF NOT EXISTS idx_ed_visit_arrival ON ed_visit(arrival_time);
+
+CREATE TABLE IF NOT EXISTS ed_bed (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  zone TEXT NOT NULL,
+  bed_number TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'available',
+  current_visit_id TEXT,
+  last_cleaned_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_ed_bed_tenant ON ed_bed(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_ed_bed_status ON ed_bed(status);
+`,
+  },
+
+  // ── v54: Phase 524 (W38-C3) — OR/Anesthesia Durability ──
+  {
+    version: 54,
+    name: "phase524_or_durability",
+    sql: `
+-- Phase 524 (W38-C3): Operating Room PG-backed durability.
+CREATE TABLE IF NOT EXISTS or_case (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'scheduled',
+  priority TEXT NOT NULL DEFAULT 'elective',
+  room_id TEXT,
+  scheduled_date TEXT NOT NULL,
+  scheduled_start_time TEXT,
+  estimated_duration_min INTEGER NOT NULL,
+  surgeon TEXT NOT NULL,
+  assistants JSONB NOT NULL DEFAULT '[]'::jsonb,
+  procedure TEXT NOT NULL,
+  procedure_cpt TEXT,
+  laterality TEXT,
+  anesthesia_json JSONB,
+  milestones_json JSONB NOT NULL DEFAULT '[]'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_or_case_tenant ON or_case(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_or_case_patient ON or_case(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_or_case_status ON or_case(status);
+CREATE INDEX IF NOT EXISTS idx_or_case_date ON or_case(scheduled_date);
+
+CREATE TABLE IF NOT EXISTS or_room (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  name TEXT NOT NULL,
+  location TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'available',
+  current_case_id TEXT,
+  capabilities JSONB NOT NULL DEFAULT '[]'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_or_room_tenant ON or_room(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_or_room_status ON or_room(status);
+
+CREATE TABLE IF NOT EXISTS or_block (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  room_id TEXT NOT NULL,
+  service_id TEXT NOT NULL,
+  day_of_week INTEGER NOT NULL,
+  start_time TEXT NOT NULL,
+  end_time TEXT NOT NULL,
+  surgeon TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_or_block_tenant ON or_block(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_or_block_room ON or_block(room_id);
+`,
+  },
+
+  // ── v55: Phase 525 (W38-C4) — ICU Durability ──
+  {
+    version: 55,
+    name: "phase525_icu_durability",
+    sql: `
+-- Phase 525 (W38-C4): ICU PG-backed durability (6 tables).
+CREATE TABLE IF NOT EXISTS icu_admission (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  bed_id TEXT NOT NULL,
+  unit TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'active',
+  admit_time TIMESTAMPTZ NOT NULL,
+  admit_source TEXT NOT NULL,
+  attending_provider TEXT NOT NULL,
+  diagnosis TEXT NOT NULL,
+  code_status TEXT NOT NULL DEFAULT 'full',
+  isolation_precautions JSONB,
+  discharge_time TIMESTAMPTZ,
+  discharge_disposition TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_icu_adm_tenant ON icu_admission(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_icu_adm_patient ON icu_admission(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_icu_adm_status ON icu_admission(status);
+CREATE INDEX IF NOT EXISTS idx_icu_adm_unit ON icu_admission(unit);
+
+CREATE TABLE IF NOT EXISTS icu_bed (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  unit TEXT NOT NULL,
+  bed_number TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'available',
+  current_admission_id TEXT,
+  monitors JSONB NOT NULL DEFAULT '[]'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_icu_bed_tenant ON icu_bed(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_icu_bed_unit ON icu_bed(unit);
+CREATE INDEX IF NOT EXISTS idx_icu_bed_status ON icu_bed(status);
+
+CREATE TABLE IF NOT EXISTS icu_flowsheet_entry (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  admission_id TEXT NOT NULL,
+  category TEXT NOT NULL,
+  timestamp TIMESTAMPTZ NOT NULL,
+  recorded_by TEXT NOT NULL,
+  values_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+  validated BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_icu_fs_tenant ON icu_flowsheet_entry(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_icu_fs_admission ON icu_flowsheet_entry(admission_id);
+CREATE INDEX IF NOT EXISTS idx_icu_fs_category ON icu_flowsheet_entry(category);
+CREATE INDEX IF NOT EXISTS idx_icu_fs_timestamp ON icu_flowsheet_entry(timestamp);
+
+CREATE TABLE IF NOT EXISTS icu_vent_record (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  admission_id TEXT NOT NULL,
+  timestamp TIMESTAMPTZ NOT NULL,
+  mode TEXT NOT NULL,
+  tidal_volume INTEGER,
+  respiratory_rate INTEGER,
+  peep INTEGER NOT NULL,
+  fio2 TEXT NOT NULL,
+  pressure_support INTEGER,
+  inspiratory_pressure INTEGER,
+  pip INTEGER,
+  plateau INTEGER,
+  compliance INTEGER,
+  recorded_by TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_icu_vent_tenant ON icu_vent_record(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_icu_vent_admission ON icu_vent_record(admission_id);
+CREATE INDEX IF NOT EXISTS idx_icu_vent_timestamp ON icu_vent_record(timestamp);
+
+CREATE TABLE IF NOT EXISTS icu_io_record (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  admission_id TEXT NOT NULL,
+  type TEXT NOT NULL,
+  source TEXT NOT NULL,
+  volume_ml INTEGER NOT NULL,
+  timestamp TIMESTAMPTZ NOT NULL,
+  recorded_by TEXT NOT NULL,
+  description TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_icu_io_tenant ON icu_io_record(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_icu_io_admission ON icu_io_record(admission_id);
+CREATE INDEX IF NOT EXISTS idx_icu_io_type ON icu_io_record(type);
+
+CREATE TABLE IF NOT EXISTS icu_score (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  admission_id TEXT NOT NULL,
+  score_type TEXT NOT NULL,
+  score INTEGER NOT NULL,
+  components_json JSONB,
+  timestamp TIMESTAMPTZ NOT NULL,
+  calculated_by TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_icu_score_tenant ON icu_score(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_icu_score_admission ON icu_score(admission_id);
+CREATE INDEX IF NOT EXISTS idx_icu_score_type ON icu_score(score_type);
+`,
+  },
+
+  // ── v56: Phase 526 (W38-C5) — Device Registry Durability ──
+  {
+    version: 56,
+    name: "phase526_device_registry_durability",
+    sql: `
+-- Phase 526 (W38-C5): Device Registry PG-backed durability.
+CREATE TABLE IF NOT EXISTS managed_device (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  name TEXT NOT NULL,
+  manufacturer TEXT NOT NULL,
+  model TEXT NOT NULL,
+  serial_number TEXT NOT NULL,
+  device_class TEXT NOT NULL,
+  protocols JSONB NOT NULL DEFAULT '[]'::jsonb,
+  gateway_id TEXT,
+  status TEXT NOT NULL DEFAULT 'active',
+  firmware_version TEXT,
+  last_calibration TIMESTAMPTZ,
+  next_calibration TIMESTAMPTZ,
+  metadata_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_mdev_tenant ON managed_device(tenant_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_mdev_tenant_serial ON managed_device(tenant_id, serial_number);
+CREATE INDEX IF NOT EXISTS idx_mdev_class ON managed_device(device_class);
+CREATE INDEX IF NOT EXISTS idx_mdev_status ON managed_device(status);
+CREATE INDEX IF NOT EXISTS idx_mdev_gateway ON managed_device(gateway_id);
+
+CREATE TABLE IF NOT EXISTS device_patient_association (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  device_id TEXT NOT NULL,
+  patient_dfn TEXT NOT NULL,
+  location TEXT,
+  facility_code TEXT,
+  status TEXT NOT NULL DEFAULT 'active',
+  associated_by TEXT NOT NULL,
+  started_at TIMESTAMPTZ NOT NULL,
+  ended_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_dpa_tenant ON device_patient_association(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_dpa_device ON device_patient_association(device_id);
+CREATE INDEX IF NOT EXISTS idx_dpa_patient ON device_patient_association(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_dpa_status ON device_patient_association(status);
+
+CREATE TABLE IF NOT EXISTS device_location_mapping (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  device_id TEXT NOT NULL,
+  ward TEXT NOT NULL,
+  room TEXT NOT NULL,
+  bed TEXT NOT NULL,
+  facility_code TEXT NOT NULL,
+  active BOOLEAN NOT NULL DEFAULT TRUE,
+  mapped_at TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_dlm_tenant ON device_location_mapping(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_dlm_device ON device_location_mapping(device_id);
+CREATE INDEX IF NOT EXISTS idx_dlm_ward ON device_location_mapping(ward);
+
+CREATE TABLE IF NOT EXISTS device_audit_log (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  device_id TEXT NOT NULL,
+  action TEXT NOT NULL,
+  actor TEXT NOT NULL,
+  detail JSONB NOT NULL DEFAULT '{}'::jsonb,
+  timestamp TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_dal_tenant ON device_audit_log(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_dal_device ON device_audit_log(device_id);
+CREATE INDEX IF NOT EXISTS idx_dal_timestamp ON device_audit_log(timestamp);
+`,
+  },
+
+  // ── v57: Phase 528 (W38-C7) — Radiology Durability ──
+  {
+    version: 57,
+    name: "phase528_radiology_durability",
+    sql: `
+-- Phase 528 (W38-C7): Radiology PG-backed durability (6 tables).
+CREATE TABLE IF NOT EXISTS radiology_order (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  vista_order_ien TEXT,
+  vista_rad_proc_ien TEXT,
+  status TEXT NOT NULL DEFAULT 'ordered',
+  procedure_name TEXT NOT NULL,
+  procedure_code TEXT,
+  cpt_code TEXT,
+  modality TEXT NOT NULL,
+  priority TEXT NOT NULL DEFAULT 'routine',
+  clinical_indication TEXT NOT NULL,
+  ordering_provider_duz TEXT NOT NULL,
+  ordering_provider_name TEXT NOT NULL,
+  protocol_name TEXT,
+  protocol_assigned_by_duz TEXT,
+  protocol_assigned_at TIMESTAMPTZ,
+  mwl_worklist_item_id TEXT,
+  mpps_record_id TEXT,
+  study_instance_uid TEXT,
+  accession_number TEXT,
+  scheduled_at TIMESTAMPTZ,
+  started_at TIMESTAMPTZ,
+  completed_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_rad_order_tenant ON radiology_order(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rad_order_patient ON radiology_order(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_rad_order_status ON radiology_order(status);
+CREATE INDEX IF NOT EXISTS idx_rad_order_modality ON radiology_order(modality);
+CREATE INDEX IF NOT EXISTS idx_rad_order_accession ON radiology_order(accession_number);
+
+CREATE TABLE IF NOT EXISTS reading_worklist_item (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  rad_order_id TEXT NOT NULL,
+  patient_dfn TEXT NOT NULL,
+  study_instance_uid TEXT NOT NULL,
+  accession_number TEXT NOT NULL,
+  modality TEXT NOT NULL,
+  procedure_name TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'unread',
+  priority TEXT NOT NULL DEFAULT 'routine',
+  assigned_radiologist_duz TEXT,
+  assigned_radiologist_name TEXT,
+  assigned_at TIMESTAMPTZ,
+  report_started_at TIMESTAMPTZ,
+  report_finalized_at TIMESTAMPTZ,
+  prior_study_count INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_rwi_tenant ON reading_worklist_item(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rwi_order ON reading_worklist_item(rad_order_id);
+CREATE INDEX IF NOT EXISTS idx_rwi_status ON reading_worklist_item(status);
+CREATE INDEX IF NOT EXISTS idx_rwi_radiologist ON reading_worklist_item(assigned_radiologist_duz);
+
+CREATE TABLE IF NOT EXISTS rad_report (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  rad_order_id TEXT NOT NULL,
+  reading_worklist_item_id TEXT NOT NULL,
+  patient_dfn TEXT NOT NULL,
+  study_instance_uid TEXT NOT NULL,
+  accession_number TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'draft',
+  findings TEXT NOT NULL DEFAULT '',
+  impression TEXT NOT NULL DEFAULT '',
+  report_text TEXT NOT NULL DEFAULT '',
+  template_id TEXT,
+  dictated_by_duz TEXT NOT NULL,
+  dictated_by_name TEXT NOT NULL,
+  dictated_at TIMESTAMPTZ NOT NULL,
+  prelim_signed_by_duz TEXT,
+  prelim_signed_by_name TEXT,
+  prelim_signed_at TIMESTAMPTZ,
+  verified_by_duz TEXT,
+  verified_by_name TEXT,
+  verified_at TIMESTAMPTZ,
+  vista_tiu_note_ien TEXT,
+  critical_finding BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_rad_rpt_tenant ON rad_report(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rad_rpt_order ON rad_report(rad_order_id);
+CREATE INDEX IF NOT EXISTS idx_rad_rpt_status ON rad_report(status);
+CREATE INDEX IF NOT EXISTS idx_rad_rpt_patient ON rad_report(patient_dfn);
+
+CREATE TABLE IF NOT EXISTS dose_registry_entry (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  rad_order_id TEXT NOT NULL,
+  study_instance_uid TEXT NOT NULL,
+  accession_number TEXT NOT NULL,
+  modality TEXT NOT NULL,
+  procedure_name TEXT NOT NULL,
+  ctdi_vol TEXT,
+  dlp TEXT,
+  dap TEXT,
+  fluoro_time_sec INTEGER,
+  exposure_count INTEGER,
+  effective_dose_msv TEXT,
+  exceeds_drl BOOLEAN NOT NULL DEFAULT FALSE,
+  drl_threshold TEXT,
+  drl_metric TEXT,
+  mpps_record_id TEXT,
+  performed_at TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_dose_tenant ON dose_registry_entry(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_dose_patient ON dose_registry_entry(patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_dose_modality ON dose_registry_entry(modality);
+CREATE INDEX IF NOT EXISTS idx_dose_exceeds ON dose_registry_entry(exceeds_drl);
+
+CREATE TABLE IF NOT EXISTS rad_critical_alert (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  rad_report_id TEXT NOT NULL,
+  rad_order_id TEXT NOT NULL,
+  patient_dfn TEXT NOT NULL,
+  finding TEXT NOT NULL,
+  category TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'active',
+  notify_provider_duz TEXT NOT NULL,
+  notify_provider_name TEXT NOT NULL,
+  communicated_to_duz TEXT,
+  communicated_to_name TEXT,
+  communicated_at TIMESTAMPTZ,
+  communication_method TEXT,
+  acknowledged_by_duz TEXT,
+  acknowledged_by_name TEXT,
+  acknowledged_at TIMESTAMPTZ,
+  communication_deadline_minutes INTEGER NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_rca_tenant ON rad_critical_alert(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_rca_status ON rad_critical_alert(status);
+CREATE INDEX IF NOT EXISTS idx_rca_patient ON rad_critical_alert(patient_dfn);
+
+CREATE TABLE IF NOT EXISTS peer_review (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  rad_report_id TEXT NOT NULL,
+  rad_order_id TEXT NOT NULL,
+  patient_dfn TEXT NOT NULL,
+  reviewer_duz TEXT NOT NULL,
+  reviewer_name TEXT NOT NULL,
+  original_dictator_duz TEXT NOT NULL,
+  original_dictator_name TEXT NOT NULL,
+  score INTEGER NOT NULL,
+  comments TEXT NOT NULL,
+  discrepancy_category TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_pr_tenant ON peer_review(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_pr_report ON peer_review(rad_report_id);
+CREATE INDEX IF NOT EXISTS idx_pr_reviewer ON peer_review(reviewer_duz);
+`,
+  },
 ];
 
 /**
@@ -4074,6 +4550,32 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   // Phase 514: Payer dossiers + onboarding
   "payer_dossier",
   "payer_onboarding_task",
+  // Phase 523 (W38-C2): ED durability
+  "ed_visit",
+  "ed_bed",
+  // Phase 524 (W38-C3): OR durability
+  "or_case",
+  "or_room",
+  "or_block",
+  // Phase 525 (W38-C4): ICU durability
+  "icu_admission",
+  "icu_bed",
+  "icu_flowsheet_entry",
+  "icu_vent_record",
+  "icu_io_record",
+  "icu_score",
+  // Phase 526 (W38-C5): Device registry durability
+  "managed_device",
+  "device_patient_association",
+  "device_location_mapping",
+  "device_audit_log",
+  // Phase 528 (W38-C7): Radiology durability
+  "radiology_order",
+  "reading_worklist_item",
+  "rad_report",
+  "dose_registry_entry",
+  "rad_critical_alert",
+  "peer_review",
 ] as const;
 
 /**

@@ -1545,3 +1545,495 @@ export const moduleAuditLog = pgTable("module_audit_log", {
 }, (table) => [
   index("idx_mal_tenant_created2").on(table.tenantId, table.createdAt),
 ]);
+
+/* ================================================================
+ *  WAVE 38: SERVICE-LINE + DEVICE + RADIOLOGY DURABILITY TABLES
+ * ================================================================ */
+
+// ── Phase 523 (C2): Emergency Department ─────────────────────────
+
+/** ED Visit — full lifecycle from arrival through disposition. */
+export const pgEdVisit = pgTable("ed_visit", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  patientDfn: text("patient_dfn").notNull(),
+  status: text("status").notNull().default("waiting"),
+  arrivalTime: timestamp("arrival_time", { withTimezone: true }).notNull(),
+  arrivalMode: text("arrival_mode").notNull(),
+  triageJson: jsonb("triage_json"),
+  bedAssignmentJson: jsonb("bed_assignment_json"),
+  attendingProvider: text("attending_provider"),
+  disposition: text("disposition"),
+  dispositionTime: timestamp("disposition_time", { withTimezone: true }),
+  dispositionBy: text("disposition_by"),
+  admitOrderIen: text("admit_order_ien"),
+  createdBy: text("created_by"),
+  totalMinutes: integer("total_minutes"),
+  doorToProviderMinutes: integer("door_to_provider_minutes"),
+  doorToDispositionMinutes: integer("door_to_disposition_minutes"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_ed_visit_tenant").on(table.tenantId),
+  index("idx_ed_visit_patient").on(table.patientDfn),
+  index("idx_ed_visit_status").on(table.status),
+  index("idx_ed_visit_arrival").on(table.arrivalTime),
+]);
+
+/** ED Bed — bed inventory and occupancy status. */
+export const pgEdBed = pgTable("ed_bed", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  zone: text("zone").notNull(),
+  bedNumber: text("bed_number").notNull(),
+  status: text("status").notNull().default("available"),
+  currentVisitId: text("current_visit_id"),
+  lastCleanedAt: timestamp("last_cleaned_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_ed_bed_tenant").on(table.tenantId),
+  index("idx_ed_bed_status").on(table.status),
+]);
+
+// ── Phase 524 (C3): Operating Room / Anesthesia ──────────────────
+
+/** OR Case — surgical case lifecycle with milestone tracking. */
+export const pgOrCase = pgTable("or_case", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  patientDfn: text("patient_dfn").notNull(),
+  status: text("status").notNull().default("scheduled"),
+  priority: text("priority").notNull().default("elective"),
+  roomId: text("room_id"),
+  scheduledDate: text("scheduled_date").notNull(),
+  scheduledStartTime: text("scheduled_start_time"),
+  estimatedDurationMin: integer("estimated_duration_min").notNull(),
+  surgeon: text("surgeon").notNull(),
+  assistants: jsonb("assistants").notNull().default([]),
+  procedure: text("procedure").notNull(),
+  procedureCpt: text("procedure_cpt"),
+  laterality: text("laterality"),
+  anesthesiaJson: jsonb("anesthesia_json"),
+  milestonesJson: jsonb("milestones_json").notNull().default([]),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_or_case_tenant").on(table.tenantId),
+  index("idx_or_case_patient").on(table.patientDfn),
+  index("idx_or_case_status").on(table.status),
+  index("idx_or_case_date").on(table.scheduledDate),
+]);
+
+/** OR Room — operating room inventory and status. */
+export const pgOrRoom = pgTable("or_room", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  name: text("name").notNull(),
+  location: text("location").notNull(),
+  status: text("status").notNull().default("available"),
+  currentCaseId: text("current_case_id"),
+  capabilities: jsonb("capabilities").notNull().default([]),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_or_room_tenant").on(table.tenantId),
+  index("idx_or_room_status").on(table.status),
+]);
+
+/** OR Block — surgical block time allocations. */
+export const pgOrBlock = pgTable("or_block", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  roomId: text("room_id").notNull(),
+  serviceId: text("service_id").notNull(),
+  dayOfWeek: integer("day_of_week").notNull(),
+  startTime: text("start_time").notNull(),
+  endTime: text("end_time").notNull(),
+  surgeon: text("surgeon"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_or_block_tenant").on(table.tenantId),
+  index("idx_or_block_room").on(table.roomId),
+]);
+
+// ── Phase 525 (C4): ICU ─────────────────────────────────────────
+
+/** ICU Admission — patient admission through discharge. */
+export const pgIcuAdmission = pgTable("icu_admission", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  patientDfn: text("patient_dfn").notNull(),
+  bedId: text("bed_id").notNull(),
+  unit: text("unit").notNull(),
+  status: text("status").notNull().default("active"),
+  admitTime: timestamp("admit_time", { withTimezone: true }).notNull(),
+  admitSource: text("admit_source").notNull(),
+  attendingProvider: text("attending_provider").notNull(),
+  diagnosis: text("diagnosis").notNull(),
+  codeStatus: text("code_status").notNull().default("full"),
+  isolationPrecautions: jsonb("isolation_precautions"),
+  dischargeTime: timestamp("discharge_time", { withTimezone: true }),
+  dischargeDisposition: text("discharge_disposition"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_icu_adm_tenant").on(table.tenantId),
+  index("idx_icu_adm_patient").on(table.patientDfn),
+  index("idx_icu_adm_status").on(table.status),
+  index("idx_icu_adm_unit").on(table.unit),
+]);
+
+/** ICU Bed — bed inventory and status by unit. */
+export const pgIcuBed = pgTable("icu_bed", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  unit: text("unit").notNull(),
+  bedNumber: text("bed_number").notNull(),
+  status: text("status").notNull().default("available"),
+  currentAdmissionId: text("current_admission_id"),
+  monitors: jsonb("monitors").notNull().default([]),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_icu_bed_tenant").on(table.tenantId),
+  index("idx_icu_bed_unit").on(table.unit),
+  index("idx_icu_bed_status").on(table.status),
+]);
+
+/** ICU Flowsheet Entry — clinical observation charting. */
+export const pgIcuFlowsheetEntry = pgTable("icu_flowsheet_entry", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  admissionId: text("admission_id").notNull(),
+  category: text("category").notNull(),
+  timestamp: timestamp("timestamp", { withTimezone: true }).notNull(),
+  recordedBy: text("recorded_by").notNull(),
+  valuesJson: jsonb("values_json").notNull().default({}),
+  validated: boolean("validated").notNull().default(false),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_icu_fs_tenant").on(table.tenantId),
+  index("idx_icu_fs_admission").on(table.admissionId),
+  index("idx_icu_fs_category").on(table.category),
+  index("idx_icu_fs_timestamp").on(table.timestamp),
+]);
+
+/** ICU Ventilator Record — ventilator settings history. */
+export const pgIcuVentRecord = pgTable("icu_vent_record", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  admissionId: text("admission_id").notNull(),
+  timestamp: timestamp("timestamp", { withTimezone: true }).notNull(),
+  mode: text("mode").notNull(),
+  tidalVolume: integer("tidal_volume"),
+  respiratoryRate: integer("respiratory_rate"),
+  peep: integer("peep").notNull(),
+  fio2: text("fio2").notNull(),
+  pressureSupport: integer("pressure_support"),
+  inspiratoryPressure: integer("inspiratory_pressure"),
+  pip: integer("pip"),
+  plateau: integer("plateau"),
+  compliance: integer("compliance"),
+  recordedBy: text("recorded_by").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_icu_vent_tenant").on(table.tenantId),
+  index("idx_icu_vent_admission").on(table.admissionId),
+  index("idx_icu_vent_timestamp").on(table.timestamp),
+]);
+
+/** ICU Intake/Output Record — fluid balance tracking. */
+export const pgIcuIoRecord = pgTable("icu_io_record", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  admissionId: text("admission_id").notNull(),
+  type: text("type").notNull(),
+  source: text("source").notNull(),
+  volumeMl: integer("volume_ml").notNull(),
+  timestamp: timestamp("timestamp", { withTimezone: true }).notNull(),
+  recordedBy: text("recorded_by").notNull(),
+  description: text("description"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_icu_io_tenant").on(table.tenantId),
+  index("idx_icu_io_admission").on(table.admissionId),
+  index("idx_icu_io_type").on(table.type),
+]);
+
+/** ICU Severity Score — APACHE-II, SOFA, GCS, etc. */
+export const pgIcuScore = pgTable("icu_score", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  admissionId: text("admission_id").notNull(),
+  scoreType: text("score_type").notNull(),
+  score: integer("score").notNull(),
+  componentsJson: jsonb("components_json"),
+  timestamp: timestamp("timestamp", { withTimezone: true }).notNull(),
+  calculatedBy: text("calculated_by").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_icu_score_tenant").on(table.tenantId),
+  index("idx_icu_score_admission").on(table.admissionId),
+  index("idx_icu_score_type").on(table.scoreType),
+]);
+
+// ── Phase 526 (C5): Device Registry ─────────────────────────────
+
+/** Managed Device — physical medical device inventory. */
+export const pgManagedDevice = pgTable("managed_device", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  name: text("name").notNull(),
+  manufacturer: text("manufacturer").notNull(),
+  model: text("model").notNull(),
+  serialNumber: text("serial_number").notNull(),
+  deviceClass: text("device_class").notNull(),
+  protocols: jsonb("protocols").notNull().default([]),
+  gatewayId: text("gateway_id"),
+  status: text("status").notNull().default("active"),
+  firmwareVersion: text("firmware_version"),
+  lastCalibration: timestamp("last_calibration", { withTimezone: true }),
+  nextCalibration: timestamp("next_calibration", { withTimezone: true }),
+  metadataJson: jsonb("metadata_json").notNull().default({}),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_mdev_tenant").on(table.tenantId),
+  uniqueIndex("idx_mdev_tenant_serial").on(table.tenantId, table.serialNumber),
+  index("idx_mdev_class").on(table.deviceClass),
+  index("idx_mdev_status").on(table.status),
+  index("idx_mdev_gateway").on(table.gatewayId),
+]);
+
+/** Device Patient Association — device-to-patient binding. */
+export const pgDevicePatientAssociation = pgTable("device_patient_association", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  deviceId: text("device_id").notNull(),
+  patientDfn: text("patient_dfn").notNull(),
+  location: text("location"),
+  facilityCode: text("facility_code"),
+  status: text("status").notNull().default("active"),
+  associatedBy: text("associated_by").notNull(),
+  startedAt: timestamp("started_at", { withTimezone: true }).notNull(),
+  endedAt: timestamp("ended_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_dpa_tenant").on(table.tenantId),
+  index("idx_dpa_device").on(table.deviceId),
+  index("idx_dpa_patient").on(table.patientDfn),
+  index("idx_dpa_status").on(table.status),
+]);
+
+/** Device Location Mapping — device-to-ward/room/bed binding. */
+export const pgDeviceLocationMapping = pgTable("device_location_mapping", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  deviceId: text("device_id").notNull(),
+  ward: text("ward").notNull(),
+  room: text("room").notNull(),
+  bed: text("bed").notNull(),
+  facilityCode: text("facility_code").notNull(),
+  active: boolean("active").notNull().default(true),
+  mappedAt: timestamp("mapped_at", { withTimezone: true }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_dlm_tenant").on(table.tenantId),
+  index("idx_dlm_device").on(table.deviceId),
+  index("idx_dlm_ward").on(table.ward),
+]);
+
+/** Device Audit Log — append-only device lifecycle events. */
+export const pgDeviceAuditLog = pgTable("device_audit_log", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  deviceId: text("device_id").notNull(),
+  action: text("action").notNull(),
+  actor: text("actor").notNull(),
+  detail: jsonb("detail").notNull().default({}),
+  timestamp: timestamp("timestamp", { withTimezone: true }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_dal_tenant").on(table.tenantId),
+  index("idx_dal_device").on(table.deviceId),
+  index("idx_dal_timestamp").on(table.timestamp),
+]);
+
+// ── Phase 528 (C7): Radiology ───────────────────────────────────
+
+/** Radiology Order — order lifecycle with protocol assignment. */
+export const pgRadiologyOrder = pgTable("radiology_order", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  patientDfn: text("patient_dfn").notNull(),
+  vistaOrderIen: text("vista_order_ien"),
+  vistaRadProcIen: text("vista_rad_proc_ien"),
+  status: text("status").notNull().default("ordered"),
+  procedureName: text("procedure_name").notNull(),
+  procedureCode: text("procedure_code"),
+  cptCode: text("cpt_code"),
+  modality: text("modality").notNull(),
+  priority: text("priority").notNull().default("routine"),
+  clinicalIndication: text("clinical_indication").notNull(),
+  orderingProviderDuz: text("ordering_provider_duz").notNull(),
+  orderingProviderName: text("ordering_provider_name").notNull(),
+  protocolName: text("protocol_name"),
+  protocolAssignedByDuz: text("protocol_assigned_by_duz"),
+  protocolAssignedAt: timestamp("protocol_assigned_at", { withTimezone: true }),
+  mwlWorklistItemId: text("mwl_worklist_item_id"),
+  mppsRecordId: text("mpps_record_id"),
+  studyInstanceUid: text("study_instance_uid"),
+  accessionNumber: text("accession_number"),
+  scheduledAt: timestamp("scheduled_at", { withTimezone: true }),
+  startedAt: timestamp("started_at", { withTimezone: true }),
+  completedAt: timestamp("completed_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_rad_order_tenant").on(table.tenantId),
+  index("idx_rad_order_patient").on(table.patientDfn),
+  index("idx_rad_order_status").on(table.status),
+  index("idx_rad_order_modality").on(table.modality),
+  index("idx_rad_order_accession").on(table.accessionNumber),
+]);
+
+/** Radiology Reading Worklist — study-to-radiologist assignment. */
+export const pgReadingWorklistItem = pgTable("reading_worklist_item", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  radOrderId: text("rad_order_id").notNull(),
+  patientDfn: text("patient_dfn").notNull(),
+  studyInstanceUid: text("study_instance_uid").notNull(),
+  accessionNumber: text("accession_number").notNull(),
+  modality: text("modality").notNull(),
+  procedureName: text("procedure_name").notNull(),
+  status: text("status").notNull().default("unread"),
+  priority: text("priority").notNull().default("routine"),
+  assignedRadiologistDuz: text("assigned_radiologist_duz"),
+  assignedRadiologistName: text("assigned_radiologist_name"),
+  assignedAt: timestamp("assigned_at", { withTimezone: true }),
+  reportStartedAt: timestamp("report_started_at", { withTimezone: true }),
+  reportFinalizedAt: timestamp("report_finalized_at", { withTimezone: true }),
+  priorStudyCount: integer("prior_study_count").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_rwi_tenant").on(table.tenantId),
+  index("idx_rwi_order").on(table.radOrderId),
+  index("idx_rwi_status").on(table.status),
+  index("idx_rwi_radiologist").on(table.assignedRadiologistDuz),
+]);
+
+/** Radiology Report — report lifecycle (draft -> prelim -> final). */
+export const pgRadReport = pgTable("rad_report", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  radOrderId: text("rad_order_id").notNull(),
+  readingWorklistItemId: text("reading_worklist_item_id").notNull(),
+  patientDfn: text("patient_dfn").notNull(),
+  studyInstanceUid: text("study_instance_uid").notNull(),
+  accessionNumber: text("accession_number").notNull(),
+  status: text("status").notNull().default("draft"),
+  findings: text("findings").notNull().default(""),
+  impression: text("impression").notNull().default(""),
+  reportText: text("report_text").notNull().default(""),
+  templateId: text("template_id"),
+  dictatedByDuz: text("dictated_by_duz").notNull(),
+  dictatedByName: text("dictated_by_name").notNull(),
+  dictatedAt: timestamp("dictated_at", { withTimezone: true }).notNull(),
+  prelimSignedByDuz: text("prelim_signed_by_duz"),
+  prelimSignedByName: text("prelim_signed_by_name"),
+  prelimSignedAt: timestamp("prelim_signed_at", { withTimezone: true }),
+  verifiedByDuz: text("verified_by_duz"),
+  verifiedByName: text("verified_by_name"),
+  verifiedAt: timestamp("verified_at", { withTimezone: true }),
+  vistaTiuNoteIen: text("vista_tiu_note_ien"),
+  criticalFinding: boolean("critical_finding").notNull().default(false),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_rad_rpt_tenant").on(table.tenantId),
+  index("idx_rad_rpt_order").on(table.radOrderId),
+  index("idx_rad_rpt_status").on(table.status),
+  index("idx_rad_rpt_patient").on(table.patientDfn),
+]);
+
+/** Radiation Dose Registry — dose tracking with DRL comparison. */
+export const pgDoseRegistryEntry = pgTable("dose_registry_entry", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  patientDfn: text("patient_dfn").notNull(),
+  radOrderId: text("rad_order_id").notNull(),
+  studyInstanceUid: text("study_instance_uid").notNull(),
+  accessionNumber: text("accession_number").notNull(),
+  modality: text("modality").notNull(),
+  procedureName: text("procedure_name").notNull(),
+  ctdiVol: text("ctdi_vol"),
+  dlp: text("dlp"),
+  dap: text("dap"),
+  fluoroTimeSec: integer("fluoro_time_sec"),
+  exposureCount: integer("exposure_count"),
+  effectiveDoseMSv: text("effective_dose_msv"),
+  exceedsDrl: boolean("exceeds_drl").notNull().default(false),
+  drlThreshold: text("drl_threshold"),
+  drlMetric: text("drl_metric"),
+  mppsRecordId: text("mpps_record_id"),
+  performedAt: timestamp("performed_at", { withTimezone: true }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_dose_tenant").on(table.tenantId),
+  index("idx_dose_patient").on(table.patientDfn),
+  index("idx_dose_modality").on(table.modality),
+  index("idx_dose_exceeds").on(table.exceedsDrl),
+]);
+
+/** Radiology Critical Alert — critical finding communication tracking. */
+export const pgRadCriticalAlert = pgTable("rad_critical_alert", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  radReportId: text("rad_report_id").notNull(),
+  radOrderId: text("rad_order_id").notNull(),
+  patientDfn: text("patient_dfn").notNull(),
+  finding: text("finding").notNull(),
+  category: text("category").notNull(),
+  status: text("status").notNull().default("active"),
+  notifyProviderDuz: text("notify_provider_duz").notNull(),
+  notifyProviderName: text("notify_provider_name").notNull(),
+  communicatedToDuz: text("communicated_to_duz"),
+  communicatedToName: text("communicated_to_name"),
+  communicatedAt: timestamp("communicated_at", { withTimezone: true }),
+  communicationMethod: text("communication_method"),
+  acknowledgedByDuz: text("acknowledged_by_duz"),
+  acknowledgedByName: text("acknowledged_by_name"),
+  acknowledgedAt: timestamp("acknowledged_at", { withTimezone: true }),
+  communicationDeadlineMinutes: integer("communication_deadline_minutes").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_rca_tenant").on(table.tenantId),
+  index("idx_rca_status").on(table.status),
+  index("idx_rca_patient").on(table.patientDfn),
+]);
+
+/** Radiology Peer Review — RADPEER quality scoring. */
+export const pgPeerReview = pgTable("peer_review", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  radReportId: text("rad_report_id").notNull(),
+  radOrderId: text("rad_order_id").notNull(),
+  patientDfn: text("patient_dfn").notNull(),
+  reviewerDuz: text("reviewer_duz").notNull(),
+  reviewerName: text("reviewer_name").notNull(),
+  originalDictatorDuz: text("original_dictator_duz").notNull(),
+  originalDictatorName: text("original_dictator_name").notNull(),
+  score: integer("score").notNull(),
+  comments: text("comments").notNull(),
+  discrepancyCategory: text("discrepancy_category"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_pr_tenant").on(table.tenantId),
+  index("idx_pr_report").on(table.radReportId),
+  index("idx_pr_reviewer").on(table.reviewerDuz),
+]);
