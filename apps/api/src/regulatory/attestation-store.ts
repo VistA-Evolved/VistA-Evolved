@@ -244,7 +244,8 @@ export function getAttestationSummary(tenantId?: string): AttestationSummary[] {
 export function verifyAttestationChain(): { valid: boolean; brokenAt?: string; checked: number } {
   const entries = [...attestations.values()];
   for (const entry of entries) {
-    const expected = computeHash({ ...entry, hash: undefined as any });
+    const { hash: _h, ...rest } = entry;
+    const expected = computeHash(rest);
     if (expected !== entry.hash) {
       return { valid: false, brokenAt: entry.id, checked: entries.indexOf(entry) };
     }

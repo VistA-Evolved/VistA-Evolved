@@ -133,6 +133,11 @@ import emarRoutes from "../routes/emar/index.js";
 import handoffRoutes from "../routes/handoff/index.js";
 import uiPrefsRoutes from "../routes/ui-prefs.js";
 
+// Service-line boards (Phase 464-471, W31)
+import edRoutes from "../service-lines/ed/ed-routes.js";
+import orRoutes from "../service-lines/or/or-routes.js";
+import icuRoutes from "../service-lines/icu/icu-routes.js";
+
 // Schema status (Phase 175)
 import schemaStatusRoutes from "../routes/admin/schema-status.js";
 
@@ -503,6 +508,11 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(nursingRoutes);
   server.register(emarRoutes);
   server.register(handoffRoutes);
+
+  // Service-line boards: ED / OR / ICU (Phase 464-471, W31)
+  server.register(edRoutes);
+  server.register(orRoutes);
+  server.register(icuRoutes);
 
   // UI prefs (Phase 79)
   server.register(uiPrefsRoutes);

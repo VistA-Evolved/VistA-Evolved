@@ -73,7 +73,17 @@ export function resolveServiceLine(path: string): ServiceLine | null {
 
 // ── Permission required per HTTP method ─────────────────────────────
 
-export function requiredPermissionForMethod(method: string): ServiceLinePermission {
+/** Documentation sub-paths — POST to these is "document", not "manage". */
+const DOCUMENT_PATHS = [
+  "/triage", "/flowsheet", "/vent", "/io", "/scores",
+  "/anesthesia", "/disposition",
+];
+
+export function requiredPermissionForMethod(method: string, path?: string): ServiceLinePermission {
+  // POST to documentation sub-paths requires "document", not "manage"
+  if (path && method.toUpperCase() === "POST") {
+    if (DOCUMENT_PATHS.some((dp) => path.endsWith(dp))) return "document";
+  }
   switch (method.toUpperCase()) {
     case "GET": return "view";
     case "POST": return "manage";

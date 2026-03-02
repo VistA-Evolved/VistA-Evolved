@@ -12,6 +12,7 @@
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import type { RegulatoryFramework } from "../regulatory/types.js";
 
 import {
   classify,
@@ -53,7 +54,7 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
   });
 
   server.get("/regulatory/frameworks/:id", async (request: FastifyRequest<{ Params: { id: string } }>) => {
-    const fw = getFramework(request.params.id);
+    const fw = getFramework(request.params.id as RegulatoryFramework);
     if (!fw) return { ok: false, error: "Framework not found" };
     return { ok: true, framework: fw };
   });

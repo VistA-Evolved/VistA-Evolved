@@ -57,6 +57,7 @@ export function createVisit(
     status: "waiting",
     arrivalTime: now,
     arrivalMode,
+    createdBy,
     createdAt: now,
     updatedAt: now,
   };

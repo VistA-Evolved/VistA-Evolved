@@ -89,6 +89,7 @@ export interface EdVisit {
   dispositionTime?: string;
   dispositionBy?: string;
   admitOrderIen?: string;
+  createdBy?: string;
   totalMinutes?: number;
   doorToProviderMinutes?: number;
   doorToDispositionMinutes?: number;

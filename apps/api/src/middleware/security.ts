@@ -241,6 +241,10 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/exchange-packs\//, auth: "session" },   // Phase 406-407: Exchange Packs
   // Wave 24: Pilot Go-Lives + Stabilization (Phases 409-417)
   { pattern: /^\/pilots\//, auth: "admin" },              // Phase 411+: Pilot intake/ops (admin only)
+  // Wave 31: Service-line boards — ED / OR / ICU (Phases 464-471)
+  { pattern: /^\/ed\//, auth: "session" },                // Phase 464-465: ED tracker + board
+  { pattern: /^\/or\//, auth: "session" },                // Phase 466-467: OR scheduling + board
+  { pattern: /^\/icu\//, auth: "session" },               // Phase 468-469: ICU flowsheet + metrics
   // Default: session required for anything else
 ];
 
