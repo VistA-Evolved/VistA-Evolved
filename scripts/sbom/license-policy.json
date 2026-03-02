@@ -1,0 +1,42 @@
+{
+  "version": "1.0.0",
+  "description": "License policy for VistA-Evolved SBOM checks. Phase 454 (W29-P8).",
+  "allowed": [
+    "MIT",
+    "Apache-2.0",
+    "ISC",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "0BSD",
+    "CC0-1.0",
+    "Unlicense",
+    "BlueOak-1.0.0",
+    "Public-Domain",
+    "Python-2.0",
+    "Artistic-2.0",
+    "Zlib",
+    "CC-BY-3.0",
+    "CC-BY-4.0"
+  ],
+  "denied": [
+    "GPL-2.0",
+    "GPL-3.0",
+    "AGPL-3.0",
+    "SSPL-1.0",
+    "EUPL-1.1",
+    "EUPL-1.2"
+  ],
+  "review": [
+    "LGPL-2.1",
+    "LGPL-3.0",
+    "MPL-2.0",
+    "EPL-1.0",
+    "EPL-2.0"
+  ],
+  "notes": {
+    "GPL": "Copyleft licenses are denied to avoid distribution obligations",
+    "LGPL": "Requires review -- dynamic linking may be acceptable",
+    "MPL": "Requires review -- file-level copyleft",
+    "review": "Licenses in the review list require manual approval before inclusion"
+  }
+}
