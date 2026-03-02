@@ -100,6 +100,24 @@ if ($failed.Count -gt 0) {
 Write-Host ""
 Write-Host "All images built successfully." -ForegroundColor Green
 Write-Host ""
+
+# ── Emit VistA Release Manifest (Phase 449) ────────────────────────
+$manifestScript = Join-Path $RepoRoot "scripts" "upstream" "emit-release-manifest.mjs"
+if (Test-Path -LiteralPath $manifestScript) {
+    Write-Host "Emitting release manifest..." -ForegroundColor Cyan
+    Push-Location $RepoRoot
+    try {
+        node $manifestScript
+        Write-Host "  Release manifest written to artifacts/vista-release-manifest.json" -ForegroundColor Green
+    } catch {
+        Write-Host "  WARN: Release manifest emission failed: $($_.Exception.Message)" -ForegroundColor Yellow
+    }
+    Pop-Location
+} else {
+    Write-Host "  SKIP: emit-release-manifest.mjs not found" -ForegroundColor Yellow
+}
+
+Write-Host ""
 Write-Host "To load into Kind:" -ForegroundColor Gray
 foreach ($s in $succeeded) {
     Write-Host "  kind load docker-image $s --name ve-local" -ForegroundColor Gray
