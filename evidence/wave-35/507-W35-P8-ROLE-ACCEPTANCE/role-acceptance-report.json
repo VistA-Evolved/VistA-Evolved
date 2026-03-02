@@ -1,0 +1,97 @@
+{
+  "generatedAt": "2026-03-02T07:57:38.990Z",
+  "pass": 18,
+  "fail": 0,
+  "results": [
+    {
+      "label": "AUTH_RULES array declared in security.ts",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "AUTH_RULES has substantial coverage (147 rules)",
+      "status": "PASS",
+      "detail": "found 147 pattern rules"
+    },
+    {
+      "label": "All AUTH_RULES have valid auth levels",
+      "status": "PASS",
+      "detail": "0 invalid"
+    },
+    {
+      "label": "Critical admin routes require admin auth",
+      "status": "PASS",
+      "detail": "14 verified"
+    },
+    {
+      "label": "rbac.ts exists and defines ROLE_PERMISSIONS",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "All 7 roles present in ROLE_PERMISSIONS",
+      "status": "PASS",
+      "detail": "all present"
+    },
+    {
+      "label": "Admin role has all core permissions",
+      "status": "PASS",
+      "detail": "12 verified"
+    },
+    {
+      "label": "clerk role has minimal permissions (least privilege)",
+      "status": "PASS",
+      "detail": "2 permissions"
+    },
+    {
+      "label": "clerk role does NOT have admin:system",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "Guard function requirePermission() exported from rbac.ts",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "Guard function requireAdmin() exported from rbac.ts",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "Guard function requireRole() exported from auth module",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "Policy engine has default-deny",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "Policy engine has evaluatePolicy()",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "Imaging RBAC module exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "Analytics permissions configured",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "ABAC engine module exists (Phase 340)",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "Session security module exists (Phase 338)",
+      "status": "PASS",
+      "detail": ""
+    }
+  ]
+}
