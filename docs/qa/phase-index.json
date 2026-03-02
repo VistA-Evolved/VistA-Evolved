@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-02T07:47:39.856Z",
+  "generatedAt": "2026-03-02T08:01:27.930Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 503,
+  "phaseCount": 508,
   "phases": [
     {
       "phaseNumber": "1",
@@ -12254,6 +12254,106 @@
       ],
       "verifyFiles": [
         "504-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "505",
+      "title": "Reliability / Chaos Hooks",
+      "folder": "505-W35-P6-RELIABILITY-CHAOS",
+      "files": [
+        "505-01-IMPLEMENT.md",
+        "505-99-VERIFY.md",
+        "505-NOTES.md"
+      ],
+      "implementFiles": [
+        "505-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "505-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "506",
+      "title": "Security Pre-Cert Pack + Evidence",
+      "folder": "506-W35-P7-SECURITY-PRECERT",
+      "files": [
+        "506-01-IMPLEMENT.md",
+        "506-99-VERIFY.md",
+        "506-NOTES.md"
+      ],
+      "implementFiles": [
+        "506-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "506-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "507",
+      "title": "W35-P8 ROLE ACCEPTANCE",
+      "folder": "507-W35-P8-ROLE-ACCEPTANCE",
+      "files": [
+        "507-01-IMPLEMENT.md",
+        "507-99-VERIFY.md",
+        "507-NOTES.md"
+      ],
+      "implementFiles": [
+        "507-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "507-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "508",
+      "title": "W35-P9 OPERATIONAL RUNBOOKS",
+      "folder": "508-W35-P9-OPERATIONAL-RUNBOOKS",
+      "files": [
+        "508-01-IMPLEMENT.md",
+        "508-99-VERIFY.md",
+        "508-NOTES.md"
+      ],
+      "implementFiles": [
+        "508-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "508-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "509",
+      "title": "W35-P10 RC EVIDENCE BUNDLE",
+      "folder": "509-W35-P10-RC-EVIDENCE-BUNDLE",
+      "files": [
+        "509-01-IMPLEMENT.md",
+        "509-99-VERIFY.md",
+        "509-NOTES.md"
+      ],
+      "implementFiles": [
+        "509-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "509-99-VERIFY.md"
       ],
       "routes": [],
       "rpcs": [],

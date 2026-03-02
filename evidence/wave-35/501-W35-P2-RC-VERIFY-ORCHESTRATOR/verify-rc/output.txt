@@ -1,6 +1,6 @@
 ============================================
   RC-1 Verify Orchestrator
-  2026-03-02 15:36:55
+  2026-03-02 16:00:40
   Root: C:\Users\kmoul\OneDrive\Documents\GitHub\VistA-Evolved
 ============================================
 
@@ -10,15 +10,15 @@
 
   PASS  no-duplicate-flat: No flat files duplicating existing phase folders
   PASS  orphan-flat: No orphan flat files at root
-  PASS  naming-convention: All 502 folders follow convention
-  PASS  impl-verify-pair: All 501 folders have IMPLEMENT + VERIFY
+  PASS  naming-convention: All 510 folders follow convention
+  PASS  impl-verify-pair: All 509 folders have IMPLEMENT + VERIFY
   PASS  phase-mismatch: All file headings match their folder phase numbers
   WARN  duplicate-phase: Phase 263 has 2 folders: 260-PHASE-263-SUPPORT-TOOLING-V2, 263-PHASE-263-WAVE8-INTEGRITY-AUDIT
   WARN  duplicate-phase: Phase 283 has 2 folders: 281-PHASE-283-THEME-SYSTEM-CORE, 283-PHASE-283-MIGRATION-TEMPLATES
   WARN  duplicate-phase: Phase 284 has 2 folders: 282-PHASE-284-THEME-PACKS-BRANDING, 284-PHASE-284-BILLING-METERING
   WARN  duplicate-phase: Phase 290 has 2 folders: 290-PHASE-290-WAVE9-INTEGRITY-AUDIT, 297-PHASE-290-INTEROP-CERT-HARNESS
   PASS  nested-phase: No nested numbered subdirectories in phase folders
-  PASS  shadow-folder: No shadow numbered directories (501 dirs all recognized)
+  PASS  shadow-folder: No shadow numbered directories (509 dirs all recognized)
   WARN  notes-present: 305 phase folders missing NOTES.md (legacy)
 
 === Summary ===
@@ -27,21 +27,21 @@
   FAIL: 0
 
 Exit code: 0
-  [PASS] G01 (187ms, exit=0)
+  [PASS] G01 (227ms, exit=0)
 
 --- G02 : Phase Index Freshness ---
 
 === QA Gate: Phase Index Integrity (Phase 108) ===
 
   PASS  phase-index.json exists -- C:\Users\kmoul\OneDrive\Documents\GitHub\VistA-Evolved\docs\qa\phase-index.json
-  PASS  phase count matches -- index: 500, folders: 500
-  PASS  all phases have IMPLEMENT or VERIFY -- 500 phases validated
+  PASS  phase count matches -- index: 508, folders: 508
+  PASS  all phases have IMPLEMENT or VERIFY -- 508 phases validated
   PASS  no new duplicate phase numbers -- Duplicates: 263, 263, 283, 284, 290, 290 (all known legacy)
   PASS  generated specs exist -- E2E: true, API: true (193 phases with routes)
   PASS  phase-index freshness -- Generated 0 days ago (2026-03-02)
 
 === Phase Index Gate: 6 checks, 6 pass, 0 fail ===
-  [PASS] G02 (52ms, exit=0)
+  [PASS] G02 (75ms, exit=0)
 
 --- G03 : Integration-Pending Budget ---
 Integration-Pending Budget Gate (Phase 480)
@@ -54,7 +54,7 @@ Delta:     +0
 Tolerance: 0
 
 PASS  Budget unchanged.
-  [PASS] G03 (95ms, exit=0)
+  [PASS] G03 (106ms, exit=0)
 
 --- G04 : Tier-0 Hospital Cert ---
 
@@ -77,7 +77,7 @@ PASS  Budget unchanged.
   Steps:     27/49 reachable (55.1%)
 
   Output: artifacts/certification-report.json
-  [PASS] G04 (127ms, exit=0)
+  [PASS] G04 (155ms, exit=0)
 
 --- G05 : Country Conformance ---
 
@@ -141,7 +141,7 @@ Found 3 packs: GH, PH, US
   US: 14 pass, 0 warn, 0 fail => PASS
 
   --- Totals: 41 passed, 0 warned, 0 failed ---
-  [PASS] G05 (43ms, exit=0)
+  [PASS] G05 (83ms, exit=0)
 
 --- G06 : RPC Trace Compare ---
 --- G06: RPC Trace Compare ---
@@ -153,22 +153,80 @@ Found 3 packs: GH, PH, US
   [PASS] RPC drift <= 30 (snapshot: 196, code: 210, delta: 14)
 
 --- G06 result: PASS ---
-  [PASS] G06 (40ms, exit=0)
+  [PASS] G06 (52ms, exit=0)
 
 --- G07a : TypeScript API ---
-  [PASS] G07a (7231ms, exit=0)
+  [PASS] G07a (21084ms, exit=0)
 
 --- G07b : TypeScript Web ---
-  [PASS] G07b (1782ms, exit=0)
+  [PASS] G07b (1812ms, exit=0)
 
 --- G08 : Security Pre-Cert ---
-  [SKIP] Script not found: scripts/security/run-precert.ps1
+Security Pre-Cert (Phase 506)
+  Root: C:\Users\kmoul\OneDrive\Documents\GitHub\VistA-Evolved
+
+  [PASS] No hardcoded credentials in API src
+         Found in: 
+  [PASS] Console.log budget <= 6 (found: 2)
+  [PASS] PHI redaction module exists
+         phi-redaction.ts
+  [PASS] CSRF client module exists
+         apps/web/src/lib/csrf.ts
+  [PASS] CSRF referenced in security middleware
+         security.ts
+  [PASS] AUTH_RULES defined in security middleware
+         security.ts
+  [PASS] Rate limiter configured
+         security.ts
+  [PASS] Immutable audit is hash-chained
+         immutable-audit.ts
+  [PASS] Session security module exists
+         auth/session-security.ts
+  [PASS] Policy engine exists
+         auth/policy-engine.ts
+  [PASS] .env.local not git-tracked
+
+  === Security Pre-Cert Summary ===
+  PASS: 11  FAIL: 0
+  Report: C:\Users\kmoul\OneDrive\Documents\GitHub\VistA-Evolved\evidence\wave-35\506-W35-P7-SECURITY-PRECERT\precert-report.json
+  [PASS] G08 (904ms, exit=0)
 
 --- G09 : Performance Smoke ---
-  [SKIP] Script not found: scripts/perf/run-soak.ps1
+Performance smoke Test (Phase 504)
+  Root: C:\Users\kmoul\OneDrive\Documents\GitHub\VistA-Evolved
+
+  Measuring: TypeScript API compile (budget: 60000ms)
+    [PASS] 20843ms (exit=0)
+  Measuring: TypeScript Web compile (budget: 30000ms)
+    [PASS] 1917ms (exit=0)
+  Measuring: Phase index build (budget: 15000ms)
+    [PASS] 216ms (exit=0)
+  Measuring: Prompts tree health (budget: 5000ms)
+    [PASS] 240ms (exit=0)
+  Measuring: RPC trace compare (budget: 5000ms)
+    [PASS] 56ms (exit=0)
+  Measuring: Production posture (budget: 5000ms)
+    [PASS] 55ms (exit=0)
+
+  === Summary ===
+  PASS: 6  FAIL: 0  SKIP: 0
+  Report: C:\Users\kmoul\OneDrive\Documents\GitHub\VistA-Evolved\evidence\wave-35\504-W35-P5-PERF-BUDGETS\perf-smoke-report.json
+  [PASS] G09 (23704ms, exit=0)
 
 --- G10 : Defect Budget ---
-  [SKIP] Script not found: scripts/qa/bug-bash-run.ps1
+Bug Bash Harness (Phase 502)
+
+  BUG-TRACKER.md: 74 bugs found
+  Code scan: 69 TODO/FIXME/HACK/BUG markers
+
+  Severity counts:
+    P0: 0
+    P1: 0
+    P2: 7
+    P3: 62
+
+  Registry: C:\Users\kmoul\OneDrive\Documents\GitHub\VistA-Evolved\artifacts\defect-registry.json
+  [PASS] G10 (2668ms, exit=0)
 
 --- G11 : Production Posture ---
 
@@ -191,18 +249,18 @@ Found 3 packs: GH, PH, US
   PASS  no console.log in posture modules -- found 0 console calls
 
 === Prod-Posture QA: 15 gates, 15 pass, 0 fail ===
-  [PASS] G11 (47ms, exit=0)
+  [PASS] G11 (71ms, exit=0)
 
 --- G12 : Data Plane Posture ---
 
-  [PASS] G12 (40ms, exit=0)
+  [PASS] G12 (50ms, exit=0)
 
 ============================================
   SUMMARY
 ============================================
-  PASS: 10
+  PASS: 13
   FAIL: 0
-  SKIP: 3
+  SKIP: 0
   TOTAL: 13
 
   Overall: RC_READY
