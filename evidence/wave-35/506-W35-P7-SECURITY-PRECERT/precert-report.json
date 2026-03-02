@@ -1,0 +1,62 @@
+{
+    "pass":  11,
+    "generatedAt":  "2026-03-02T15:53:15.7276485+08:00",
+    "fail":  0,
+    "results":  [
+                    {
+                        "label":  "No hardcoded credentials in API src",
+                        "status":  "PASS",
+                        "detail":  "Found in: "
+                    },
+                    {
+                        "label":  "Console.log budget \u003c= 6 (found: 2)",
+                        "status":  "PASS",
+                        "detail":  ""
+                    },
+                    {
+                        "label":  "PHI redaction module exists",
+                        "status":  "PASS",
+                        "detail":  "phi-redaction.ts"
+                    },
+                    {
+                        "label":  "CSRF client module exists",
+                        "status":  "PASS",
+                        "detail":  "apps/web/src/lib/csrf.ts"
+                    },
+                    {
+                        "label":  "CSRF referenced in security middleware",
+                        "status":  "PASS",
+                        "detail":  "security.ts"
+                    },
+                    {
+                        "label":  "AUTH_RULES defined in security middleware",
+                        "status":  "PASS",
+                        "detail":  "security.ts"
+                    },
+                    {
+                        "label":  "Rate limiter configured",
+                        "status":  "PASS",
+                        "detail":  "security.ts"
+                    },
+                    {
+                        "label":  "Immutable audit is hash-chained",
+                        "status":  "PASS",
+                        "detail":  "immutable-audit.ts"
+                    },
+                    {
+                        "label":  "Session security module exists",
+                        "status":  "PASS",
+                        "detail":  "auth/session-security.ts"
+                    },
+                    {
+                        "label":  "Policy engine exists",
+                        "status":  "PASS",
+                        "detail":  "auth/policy-engine.ts"
+                    },
+                    {
+                        "label":  ".env.local not git-tracked",
+                        "status":  "PASS",
+                        "detail":  ""
+                    }
+                ]
+}
