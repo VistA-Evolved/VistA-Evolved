@@ -1,0 +1,9 @@
+{
+  "total": 103,
+  "covered": 52,
+  "rpcWired": 32,
+  "writebackReady": 11,
+  "tested": 45,
+  "coveragePercent": 50.5,
+  "timestamp": "2026-03-02T11:40:24.384Z"
+}

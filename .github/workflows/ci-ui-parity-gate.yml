@@ -1,0 +1,20 @@
+name: UI Parity Gap Gate
+
+on:
+  pull_request:
+    paths:
+      - 'data/ui-estate/**'
+      - 'apps/**'
+      - 'config/capabilities.json'
+      - 'config/modules.json'
+
+jobs:
+  parity-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run UI Parity Gap Gate
+        run: node scripts/qa-gates/ui-parity-gate.mjs
