@@ -100,7 +100,7 @@ describe("Phase 493: W34-P3: Runtime Policy Spine", () => {
   });
 });
 
-describe("Phase 494: W34-P4 CONSENT PRIVACY V2", () => {
+describe("Phase 494: Notes", () => {
   it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/consent-pou/directives`);
     expect(r0.status, "/consent-pou/directives").not.toBe(500);
@@ -111,7 +111,7 @@ describe("Phase 494: W34-P4 CONSENT PRIVACY V2", () => {
   });
 });
 
-describe("Phase 495: W34-P5 DATA RESIDENCY", () => {
+describe("Phase 495: Notes", () => {
   it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/residency/enforce-pack-transfer`);
     expect(r0.status, "/residency/enforce-pack-transfer").not.toBe(500);

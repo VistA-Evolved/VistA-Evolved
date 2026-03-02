@@ -110,7 +110,7 @@ test.describe("Phase 471: Service-Line Dashboards (W31-P8)", () => {
 
 });
 
-test.describe("Phase 488: W33-P8 UI HARDENING", () => {
+test.describe("Phase 488: Notes", () => {
   test("UI component files exist on disk", async () => {
     const componentNames = ["ActionInspector.tsx","IntegrationPendingModal.tsx","NursingPanel.tsx","OrdersPanel.tsx","RpcDebugPanel.tsx","page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {

@@ -340,7 +340,7 @@ test.describe("Phase 67: ADT + Inpatient Lists v1 (VistA-FIRST, READ FIRST)", ()
   });
 });
 
-test.describe("Phase 68: NURSING WORKFLOW", () => {
+test.describe("Phase 68: Notes", () => {
   test("UI component files exist on disk", async () => {
     const componentNames = ["NursingPanel.tsx","page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
@@ -364,7 +364,7 @@ test.describe("Phase 68: NURSING WORKFLOW", () => {
 
 });
 
-test.describe("Phase 69: RCM OPS EXCELLENCE", () => {
+test.describe("Phase 69: Notes", () => {
   test("UI component files exist on disk", async () => {
     const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {

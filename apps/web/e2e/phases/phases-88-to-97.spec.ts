@@ -238,7 +238,7 @@ test.describe("Phase 93: PH HMO Deepening Pack (ALL Licensed HMOs) — IMPLEMENT
   });
 });
 
-test.describe("Phase 94: PH HMO WORKFLOW", () => {
+test.describe("Phase 94: Notes", () => {
   test("UI component files exist on disk", async () => {
     const componentNames = ["layout.tsx","page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {

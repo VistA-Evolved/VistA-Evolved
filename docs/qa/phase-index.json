@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-02T08:22:40.506Z",
+  "generatedAt": "2026-03-02T08:49:45.908Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 508,
+  "phaseCount": 511,
   "phases": [
     {
       "phaseNumber": "1",
@@ -9,7 +9,8 @@
       "folder": "02-PHASE-1-HELLO-SYSTEM",
       "files": [
         "02-01-hello-system-IMPLEMENT.md",
-        "02-99-hello-system-VERIFY.md"
+        "02-99-hello-system-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "02-01-hello-system-IMPLEMENT.md"
@@ -30,7 +31,8 @@
       "folder": "03-PHASE-2-VISTA-SANDBOX",
       "files": [
         "03-01-vista-sandbox-IMPLEMENT.md",
-        "03-99-vista-sandbox-VERIFY.md"
+        "03-99-vista-sandbox-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "03-01-vista-sandbox-IMPLEMENT.md"
@@ -49,7 +51,8 @@
       "folder": "04-PHASE-3-VISTA-PING",
       "files": [
         "04-01-vista-ping-IMPLEMENT.md",
-        "04-99-vista-ping-VERIFY.md"
+        "04-99-vista-ping-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "04-01-vista-ping-IMPLEMENT.md"
@@ -69,7 +72,8 @@
       "files": [
         "05-01-default-patient-list-IMPLEMENT.md",
         "05-02-rpc-protocol-fix-IMPLEMENT.md",
-        "05-99-default-patient-list-VERIFY.md"
+        "05-99-default-patient-list-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "05-01-default-patient-list-IMPLEMENT.md",
@@ -91,7 +95,8 @@
       "folder": "06-PHASE-4B-PATIENT-SEARCH",
       "files": [
         "06-01-patient-search-IMPLEMENT.md",
-        "06-99-patient-search-VERIFY.md"
+        "06-99-patient-search-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "06-01-patient-search-IMPLEMENT.md"
@@ -119,7 +124,8 @@
         "07-06-Phase5C-Allergies-Display-VERIFY.md",
         "07-07-Phase5D-Add-Allergy-IMPLEMENT.md",
         "07-08-Phase5D-Add-Allergy-VERIFY.md",
-        "07-99-Phase5-FULL-VERIFY.md"
+        "07-99-Phase5-FULL-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "07-01-Phase5A-Patient-Search-UI-IMPLEMENT.md",
@@ -155,7 +161,8 @@
         "08-02-Phase6A-Vitals-Display-VERIFY.md",
         "08-03-Phase6B-Add-Vitals-IMPLEMENT.md",
         "08-04-Phase6B-Add-Vitals-VERIFY.md",
-        "08-99-Phase6-FULL-VERIFY.md"
+        "08-99-Phase6-FULL-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "08-01-Phase6A-Vitals-Display-IMPLEMENT.md",
@@ -184,7 +191,8 @@
         "09-02-Phase7A-Notes-List-VERIFY.md",
         "09-03-Phase7B-Create-Note-IMPLEMENT.md",
         "09-04-Phase7B-Create-Note-VERIFY.md",
-        "09-99-Phase7-FULL-VERIFY.md"
+        "09-99-Phase7-FULL-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "09-01-Phase7A-Notes-List-IMPLEMENT.md",
@@ -213,7 +221,8 @@
         "10-02-Phase8A-Meds-List-VERIFY.md",
         "10-03-Phase8B-Add-Med-IMPLEMENT.md",
         "10-04-Phase8B-Add-Med-VERIFY.md",
-        "10-99-Phase8-FULL-VERIFY.md"
+        "10-99-Phase8-FULL-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "10-01-Phase8A-Meds-List-IMPLEMENT.md",
@@ -239,7 +248,8 @@
       "folder": "100-PHASE-96-PHILHEALTH-ECLAIMS3-ADAPTER",
       "files": [
         "96-01-IMPLEMENT.md",
-        "96-99-VERIFY.md"
+        "96-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "96-01-IMPLEMENT.md"
@@ -272,7 +282,8 @@
       "folder": "101-PHASE-96B-QA-AUDIT-OS",
       "files": [
         "96B-01-IMPLEMENT.md",
-        "96B-99-VERIFY.md"
+        "96B-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "96B-01-IMPLEMENT.md"
@@ -302,7 +313,8 @@
       "folder": "102-PHASE-97B-PH-HMO-DEEPENING-V2",
       "files": [
         "97B-01-IMPLEMENT.md",
-        "97B-99-VERIFY.md"
+        "97B-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "97B-01-IMPLEMENT.md"
@@ -329,7 +341,8 @@
       "folder": "103-PHASE-98-RCM-DENIALS",
       "files": [
         "98-01-IMPLEMENT.md",
-        "98-99-VERIFY.md"
+        "98-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "98-01-IMPLEMENT.md"
@@ -358,7 +371,8 @@
       "folder": "104-PHASE-99-RCM-RECONCILIATION",
       "files": [
         "99-01-IMPLEMENT.md",
-        "99-99-VERIFY.md"
+        "99-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "99-01-IMPLEMENT.md"
@@ -393,7 +407,8 @@
       "folder": "105-PHASE-101-PLATFORM-DATA-LAYER",
       "files": [
         "101-01-IMPLEMENT.md",
-        "101-99-VERIFY.md"
+        "101-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "101-01-IMPLEMENT.md"
@@ -430,11 +445,12 @@
     },
     {
       "phaseNumber": "102",
-      "title": "REGISTRY MIGRATION",
+      "title": "Notes",
       "folder": "106-PHASE-102-REGISTRY-MIGRATION",
       "files": [
         "102-01-IMPLEMENT.md",
-        "102-99-VERIFY.md"
+        "102-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "102-01-IMPLEMENT.md"
@@ -455,7 +471,8 @@
       "folder": "107-PHASE-103-DB-PERFORMANCE",
       "files": [
         "103-01-IMPLEMENT.md",
-        "103-99-VERIFY.md"
+        "103-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "103-01-IMPLEMENT.md"
@@ -470,11 +487,12 @@
     },
     {
       "phaseNumber": "104",
-      "title": "DB SECURITY",
+      "title": "Notes",
       "folder": "108-PHASE-104-DB-SECURITY",
       "files": [
         "104-01-IMPLEMENT.md",
-        "104-99-VERIFY.md"
+        "104-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "104-01-IMPLEMENT.md"
@@ -508,7 +526,8 @@
       "folder": "109-PHASE-105-QA-GAUNTLET",
       "files": [
         "105-01-IMPLEMENT.md",
-        "105-99-VERIFY.md"
+        "105-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "105-01-IMPLEMENT.md"
@@ -538,7 +557,8 @@
         "11-02-Phase9A-Problem-List-VERIFY.md",
         "11-03-Phase9B-Add-Problem-IMPLEMENT.md",
         "11-04-Phase9B-Add-Problem-VERIFY.md",
-        "11-99-Phase9-FULL-VERIFY.md"
+        "11-99-Phase9-FULL-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "11-01-Phase9A-Problem-List-IMPLEMENT.md",
@@ -564,7 +584,8 @@
       "folder": "110-PHASE-106-VISTA-ALIGNMENT",
       "files": [
         "106-01-IMPLEMENT.md",
-        "106-99-VERIFY.md"
+        "106-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "106-01-IMPLEMENT.md"
@@ -599,7 +620,8 @@
       "folder": "111-PHASE-107-PRODUCTION-POSTURE",
       "files": [
         "107-01-IMPLEMENT.md",
-        "107-99-VERIFY.md"
+        "107-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "107-01-IMPLEMENT.md"
@@ -641,7 +663,8 @@
       "folder": "112-PHASE-108-PHASE-AUDIT-HARNESS",
       "files": [
         "108-01-IMPLEMENT.md",
-        "108-99-VERIFY.md"
+        "108-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "108-01-IMPLEMENT.md"
@@ -672,7 +695,8 @@
       "folder": "113-PHASE-109-MODULAR-PACKAGING",
       "files": [
         "109-01-IMPLEMENT.md",
-        "109-99-VERIFY.md"
+        "109-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "109-01-IMPLEMENT.md"
@@ -711,7 +735,8 @@
       "folder": "114-PHASE-110-RCM-CREDENTIAL-VAULT-LOA",
       "files": [
         "110-01-IMPLEMENT.md",
-        "110-99-VERIFY.md"
+        "110-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "110-01-IMPLEMENT.md"
@@ -758,7 +783,8 @@
       "folder": "115-PHASE-111-CLAIM-LIFECYCLE-SCRUBBER",
       "files": [
         "111-01-IMPLEMENT.md",
-        "111-99-VERIFY.md"
+        "111-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "111-01-IMPLEMENT.md"
@@ -803,7 +829,8 @@
       "folder": "116-PHASE-112-EVIDENCE-GATING",
       "files": [
         "112-01-IMPLEMENT.md",
-        "112-99-VERIFY.md"
+        "112-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "112-01-IMPLEMENT.md"
@@ -844,7 +871,8 @@
       "folder": "117-PHASE-113B-HARDENING",
       "files": [
         "113B-01-IMPLEMENT.md",
-        "113B-99-VERIFY.md"
+        "113B-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "113B-01-IMPLEMENT.md"
@@ -873,7 +901,8 @@
       "folder": "118-PHASE-114-DURABILITY-WAVE1",
       "files": [
         "114-01-IMPLEMENT.md",
-        "114-99-VERIFY.md"
+        "114-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "114-01-IMPLEMENT.md"
@@ -908,7 +937,8 @@
       "folder": "119-PHASE-116-JOB-QUEUE",
       "files": [
         "116-01-IMPLEMENT.md",
-        "116-99-VERIFY.md"
+        "116-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "116-01-IMPLEMENT.md"
@@ -957,7 +987,8 @@
         "12-06-Phase10C-CPRS-Replica-Shell-VERIFY.md",
         "12-07-Phase10D-API-Scaffold-Generator-IMPLEMENT.md",
         "12-08-Phase10D-API-Scaffold-Generator-VERIFY.md",
-        "12-99-Phase10-FULL-VERIFY.md"
+        "12-99-Phase10-FULL-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "12-01-Phase10A-CPRS-Inventory-Extraction-IMPLEMENT.md",
@@ -1010,7 +1041,8 @@
       "folder": "120-PHASE-117-PG-PROD-POSTURE",
       "files": [
         "117-01-IMPLEMENT.md",
-        "117-99-VERIFY.md"
+        "117-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "117-01-IMPLEMENT.md"
@@ -1054,7 +1086,8 @@
       "folder": "121-PHASE-118-GO-LIVE-HARDENING",
       "files": [
         "118-01-IMPLEMENT.md",
-        "118-99-VERIFY.md"
+        "118-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "118-01-IMPLEMENT.md"
@@ -1101,7 +1134,8 @@
       "folder": "122-PHASE-119-QA-GAUNTLET",
       "files": [
         "119-01-IMPLEMENT.md",
-        "119-99-VERIFY.md"
+        "119-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "119-01-IMPLEMENT.md"
@@ -1140,7 +1174,8 @@
       "folder": "123-PHASE-120-PREEXISTING-FIXES",
       "files": [
         "120-01-IMPLEMENT.md",
-        "120-99-VERIFY.md"
+        "120-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "120-01-IMPLEMENT.md"
@@ -1193,7 +1228,8 @@
       "folder": "124-PHASE-120B-FULL-SYSTEM-AUDIT",
       "files": [
         "120B-01-IMPLEMENT.md",
-        "120B-99-VERIFY.md"
+        "120B-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "120B-01-IMPLEMENT.md"
@@ -1220,7 +1256,8 @@
       "folder": "125-PHASE-121-DURABILITY-WAVE-1",
       "files": [
         "121-01-IMPLEMENT.md",
-        "121-99-VERIFY.md"
+        "121-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "121-01-IMPLEMENT.md"
@@ -1255,7 +1292,8 @@
       "folder": "126-PHASE-122-TENANT-ISOLATION",
       "files": [
         "122-01-IMPLEMENT.md",
-        "122-99-VERIFY.md"
+        "122-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "122-01-IMPLEMENT.md"
@@ -1280,7 +1318,8 @@
       "folder": "127-PHASE-123-SCHEDULING-SD",
       "files": [
         "123-01-IMPLEMENT.md",
-        "123-99-VERIFY.md"
+        "123-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "123-01-IMPLEMENT.md"
@@ -1313,7 +1352,8 @@
       "folder": "128-PHASE-124-DEADCLICK-ZERO",
       "files": [
         "124-01-IMPLEMENT.md",
-        "124-99-VERIFY.md"
+        "124-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "124-01-IMPLEMENT.md"
@@ -1342,7 +1382,8 @@
       "folder": "129-PHASE-125-POSTGRES-ONLY-DATAPLANE",
       "files": [
         "125-01-IMPLEMENT.md",
-        "125-99-VERIFY.md"
+        "125-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "125-01-IMPLEMENT.md"
@@ -1373,7 +1414,8 @@
       "folder": "13-PHASE-11-CPRS-WEB-REPLICA",
       "files": [
         "13-01-Phase11-CPRS-Web-Replica-IMPLEMENT.md",
-        "13-99-Phase11-CPRS-Web-Replica-VERIFY.md"
+        "13-99-Phase11-CPRS-Web-Replica-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "13-01-Phase11-CPRS-Web-Replica-IMPLEMENT.md"
@@ -1429,11 +1471,12 @@
     },
     {
       "phaseNumber": "126",
-      "title": "RCM DURABILITY PG",
+      "title": "Notes",
       "folder": "130-PHASE-126-RCM-DURABILITY-PG",
       "files": [
         "126-01-IMPLEMENT.md",
-        "126-99-VERIFY.md"
+        "126-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "126-01-IMPLEMENT.md"
@@ -1465,7 +1508,8 @@
       "folder": "131-PHASE-127-PORTAL-TELEHEALTH-PG",
       "files": [
         "127-01-IMPLEMENT.md",
-        "127-99-VERIFY.md"
+        "127-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "127-01-IMPLEMENT.md"
@@ -1500,7 +1544,8 @@
       "folder": "132-PHASE-128-IMAGING-SCHEDULING-PG",
       "files": [
         "128-01-IMPLEMENT.md",
-        "128-99-VERIFY.md"
+        "128-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "128-01-IMPLEMENT.md"
@@ -1534,7 +1579,8 @@
       "folder": "133-PHASE-129-QA-LADDER",
       "files": [
         "129-01-IMPLEMENT.md",
-        "129-99-VERIFY.md"
+        "129-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "129-01-IMPLEMENT.md"
@@ -1564,7 +1610,8 @@
       "folder": "134-PHASE-130-MAILMAN-BRIDGE",
       "files": [
         "130-01-IMPLEMENT.md",
-        "130-99-VERIFY.md"
+        "130-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "130-01-IMPLEMENT.md"
@@ -1604,7 +1651,8 @@
       "folder": "135-PHASE-131-SCHEDULING-DEPTH",
       "files": [
         "131-01-IMPLEMENT.md",
-        "131-99-VERIFY.md"
+        "131-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "131-01-IMPLEMENT.md"
@@ -1659,7 +1707,8 @@
       "folder": "136-PHASE-132-CSRF-SYNC-TOKEN",
       "files": [
         "132-01-IMPLEMENT.md",
-        "132-99-VERIFY.md"
+        "132-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "132-01-IMPLEMENT.md"
@@ -1710,7 +1759,8 @@
       "folder": "137-PHASE-132B-I18N",
       "files": [
         "132B-01-IMPLEMENT.md",
-        "132B-99-VERIFY.md"
+        "132B-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "132B-01-IMPLEMENT.md"
@@ -1752,7 +1802,8 @@
       "folder": "138-PHASE-133-OBSERVABILITY-BASELINE",
       "files": [
         "133-01-IMPLEMENT.md",
-        "133-99-VERIFY.md"
+        "133-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "133-01-IMPLEMENT.md"
@@ -1783,7 +1834,8 @@
       "folder": "139-PHASE-134-DISASTER-RECOVERY",
       "files": [
         "134-01-IMPLEMENT.md",
-        "134-99-VERIFY.md"
+        "134-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "134-01-IMPLEMENT.md"
@@ -1808,11 +1860,12 @@
     },
     {
       "phaseNumber": "12",
-      "title": "CPRS PARITY WIRING",
+      "title": "Notes",
       "folder": "14-PHASE-12-CPRS-PARITY-WIRING",
       "files": [
         "14-01-cprs-parity-wiring-IMPLEMENT.md",
-        "14-99-cprs-parity-wiring-VERIFY.md"
+        "14-99-cprs-parity-wiring-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "14-01-cprs-parity-wiring-IMPLEMENT.md"
@@ -1878,7 +1931,8 @@
       "folder": "140-PHASE-135-TENANT-ONBOARDING-MODULES",
       "files": [
         "135-01-IMPLEMENT.md",
-        "135-99-VERIFY.md"
+        "135-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "135-01-IMPLEMENT.md"
@@ -1909,7 +1963,8 @@
       "folder": "141-PHASE-136-STORE-POLICY-GATE",
       "files": [
         "136-01-IMPLEMENT.md",
-        "136-99-VERIFY.md"
+        "136-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "136-01-IMPLEMENT.md"
@@ -1940,7 +1995,8 @@
       "folder": "142-PHASE-137-ADT-BEDBOARD",
       "files": [
         "137-01-IMPLEMENT.md",
-        "137-99-VERIFY.md"
+        "137-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "137-01-IMPLEMENT.md"
@@ -1991,7 +2047,8 @@
       "folder": "143-PHASE-138-NURSING-DOC-MAR-HANDOFF",
       "files": [
         "138-01-IMPLEMENT.md",
-        "138-99-VERIFY.md"
+        "138-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "138-01-IMPLEMENT.md"
@@ -2030,7 +2087,8 @@
       "folder": "144-PHASE-139-SCHEDULING-LIFECYCLE",
       "files": [
         "139-01-IMPLEMENT.md",
-        "139-99-VERIFY.md"
+        "139-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "139-01-IMPLEMENT.md"
@@ -2068,7 +2126,8 @@
       "folder": "145-PHASE-140-PORTAL-PARITY",
       "files": [
         "140-01-IMPLEMENT.md",
-        "140-99-VERIFY.md"
+        "140-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "140-01-IMPLEMENT.md"
@@ -2114,7 +2173,8 @@
       "folder": "146-PHASE-141-ENTERPRISE-IAM",
       "files": [
         "141-01-IMPLEMENT.md",
-        "141-99-VERIFY.md"
+        "141-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "141-01-IMPLEMENT.md"
@@ -2154,7 +2214,8 @@
       "folder": "147-PHASE-142-RCM-OPS-EXCELLENCE",
       "files": [
         "142-01-IMPLEMENT.md",
-        "142-99-VERIFY.md"
+        "142-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "142-01-IMPLEMENT.md"
@@ -2191,7 +2252,8 @@
       "folder": "148-PHASE-143-AI-INTAKE-ENGINE",
       "files": [
         "143-01-IMPLEMENT.md",
-        "143-99-VERIFY.md"
+        "143-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "143-01-IMPLEMENT.md"
@@ -2225,7 +2287,8 @@
       "folder": "149-PHASE-144-QA-LADDER-V2",
       "files": [
         "144-01-IMPLEMENT.md",
-        "144-99-VERIFY.md"
+        "144-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "144-01-IMPLEMENT.md"
@@ -2249,11 +2312,12 @@
     },
     {
       "phaseNumber": "13",
-      "title": "CPRS OPERATIONALIZATION",
+      "title": "Notes",
       "folder": "15-PHASE-13-CPRS-OPERATIONALIZATION",
       "files": [
         "15-01-cprs-operationalization-IMPLEMENT.md",
-        "15-99-cprs-operationalization-VERIFY.md"
+        "15-99-cprs-operationalization-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "15-01-cprs-operationalization-IMPLEMENT.md"
@@ -2315,7 +2379,8 @@
       "folder": "150-PHASE-145-CONVERGENCE",
       "files": [
         "145-01-IMPLEMENT.md",
-        "145-99-VERIFY.md"
+        "145-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "145-01-IMPLEMENT.md"
@@ -2340,7 +2405,8 @@
       "folder": "151-PHASE-146-DURABILITY-WAVE3",
       "files": [
         "146-01-IMPLEMENT.md",
-        "146-99-VERIFY.md"
+        "146-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "146-01-IMPLEMENT.md"
@@ -2364,7 +2430,8 @@
       "folder": "152-PHASE-147-SCHEDULING-DEPTH-V2",
       "files": [
         "147-01-IMPLEMENT.md",
-        "147-99-VERIFY.md"
+        "147-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "147-01-IMPLEMENT.md"
@@ -2403,7 +2470,8 @@
       "folder": "153-PHASE-148-PROD-VISTA-DISTRO",
       "files": [
         "148-01-IMPLEMENT.md",
-        "148-99-VERIFY.md"
+        "148-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "148-01-IMPLEMENT.md"
@@ -2428,7 +2496,8 @@
       "folder": "154-PHASE-149-TRUTH-REFRESH",
       "files": [
         "149-01-IMPLEMENT.md",
-        "149-99-VERIFY.md"
+        "149-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "149-01-IMPLEMENT.md"
@@ -2457,7 +2526,8 @@
       "folder": "155-PHASE-150-IAM-PORTAL-AUTH",
       "files": [
         "150-01-IMPLEMENT.md",
-        "150-99-VERIFY.md"
+        "150-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "150-01-IMPLEMENT.md"
@@ -2488,7 +2558,8 @@
       "folder": "156-PHASE-151-PHI-REDACTION",
       "files": [
         "151-01-IMPLEMENT.md",
-        "151-99-VERIFY.md"
+        "151-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "151-01-IMPLEMENT.md"
@@ -2507,7 +2578,8 @@
       "folder": "157-PHASE-152-SCHEDULING-PG-ONLY",
       "files": [
         "152-01-IMPLEMENT.md",
-        "152-99-VERIFY.md"
+        "152-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "152-01-IMPLEMENT.md"
@@ -2531,7 +2603,8 @@
       "folder": "158-PHASE-153-IAM-OIDC-DEFAULT",
       "files": [
         "153-01-IMPLEMENT.md",
-        "153-99-VERIFY.md"
+        "153-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "153-01-IMPLEMENT.md"
@@ -2552,7 +2625,8 @@
       "folder": "159-PHASE-154-CPOE-SIGNING",
       "files": [
         "154-01-IMPLEMENT.md",
-        "154-99-VERIFY.md"
+        "154-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "154-01-IMPLEMENT.md"
@@ -2586,7 +2660,8 @@
       "folder": "16-PHASE-14-PARITY-CLOSURE",
       "files": [
         "16-01-Phase14A-Compat-Layer-IMPLEMENT.md",
-        "16-99-Phase14A-Compat-Layer-VERIFY.md"
+        "16-99-Phase14A-Compat-Layer-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "16-01-Phase14A-Compat-Layer-IMPLEMENT.md"
@@ -2634,7 +2709,8 @@
       "folder": "160-PHASE-155-VISTA-ROUTINE-INSTALLER",
       "files": [
         "155-01-IMPLEMENT.md",
-        "155-99-VERIFY.md"
+        "155-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "155-01-IMPLEMENT.md"
@@ -2662,7 +2738,8 @@
       "folder": "161-PHASE-156-IMAGING-ORTHANC",
       "files": [
         "156-01-IMPLEMENT.md",
-        "156-99-VERIFY.md"
+        "156-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "156-01-IMPLEMENT.md"
@@ -2692,7 +2769,8 @@
       "folder": "162-PHASE-157-AUDIT-JSONL-SHIPPING",
       "files": [
         "157-01-IMPLEMENT.md",
-        "157-99-VERIFY.md"
+        "157-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "157-01-IMPLEMENT.md"
@@ -2732,7 +2810,8 @@
       "folder": "163-PHASE-158-SPECIALTY-TEMPLATE-WORKFLOW-STUDIO",
       "files": [
         "158-01-IMPLEMENT.md",
-        "158-99-VERIFY.md"
+        "158-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "158-01-IMPLEMENT.md"
@@ -2774,7 +2853,8 @@
       "folder": "164-PHASE-159-PATIENT-QUEUE-WAITING-CALLING",
       "files": [
         "159-01-IMPLEMENT.md",
-        "159-99-VERIFY.md"
+        "159-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "159-01-IMPLEMENT.md"
@@ -2799,7 +2879,8 @@
       "folder": "165-PHASE-160-DEPARTMENT-WORKFLOW-PACKS",
       "files": [
         "160-01-IMPLEMENT.md",
-        "160-99-VERIFY.md"
+        "160-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "160-01-IMPLEMENT.md"
@@ -2820,7 +2901,8 @@
       "folder": "166-PHASE-161-VISTA-CPRS-ALIGNMENT-VERIFICATION-PACK",
       "files": [
         "01-IMPLEMENT.md",
-        "99-VERIFY.md"
+        "99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "01-IMPLEMENT.md"
@@ -2852,7 +2934,8 @@
       "folder": "167-PHASE-162-PERFORMANCE-UX-SPEED-PASS",
       "files": [
         "01-IMPLEMENT.md",
-        "99-VERIFY.md"
+        "99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "01-IMPLEMENT.md"
@@ -2883,7 +2966,8 @@
       "folder": "168-PHASE-163-MODULAR-PACKAGING-VALIDATION",
       "files": [
         "01-IMPLEMENT.md",
-        "99-VERIFY.md"
+        "99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "01-IMPLEMENT.md"
@@ -2904,7 +2988,8 @@
       "folder": "169-PHASE-164-CERTIFICATION-READINESS-POSTURE",
       "files": [
         "01-IMPLEMENT.md",
-        "99-VERIFY.md"
+        "99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "01-IMPLEMENT.md"
@@ -2921,12 +3006,13 @@
     },
     {
       "phaseNumber": "15",
-      "title": "ENTERPRISE HARDENING",
+      "title": "Notes",
       "folder": "17-PHASE-15-ENTERPRISE-HARDENING",
       "files": [
         "17-01-enterprise-hardening-IMPLEMENT.md",
         "17-02-advisory-fixes-IMPLEMENT.md",
-        "17-99-enterprise-hardening-VERIFY.md"
+        "17-99-enterprise-hardening-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "17-01-enterprise-hardening-IMPLEMENT.md",
@@ -2960,7 +3046,8 @@
       "folder": "170-PHASE-165-SPECIALTY-COVERAGE-SCORE-QA-LADDER",
       "files": [
         "01-IMPLEMENT.md",
-        "99-VERIFY.md"
+        "99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "01-IMPLEMENT.md"
@@ -2981,7 +3068,8 @@
       "folder": "171-PHASE-166-CLINIC-DAY-SIMULATOR",
       "files": [
         "166-01-IMPLEMENT.md",
-        "166-99-VERIFY.md"
+        "166-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "166-01-IMPLEMENT.md"
@@ -3011,7 +3099,8 @@
       "folder": "172-PHASE-167-SPECIALTY-PACK-HARDENING",
       "files": [
         "167-01-IMPLEMENT.md",
-        "167-99-VERIFY.md"
+        "167-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "167-01-IMPLEMENT.md"
@@ -3030,7 +3119,8 @@
       "folder": "173-PHASE-168-INPATIENT-DEPTH",
       "files": [
         "168-01-IMPLEMENT.md",
-        "168-99-VERIFY.md"
+        "168-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "168-01-IMPLEMENT.md"
@@ -3049,7 +3139,8 @@
       "folder": "174-PHASE-169-PATIENT-IDENTITY-LINKING",
       "files": [
         "169-01-IMPLEMENT.md",
-        "169-99-VERIFY.md"
+        "169-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "169-01-IMPLEMENT.md"
@@ -3068,7 +3159,8 @@
       "folder": "175-PHASE-170-SCHEDULING-WRITEBACK",
       "files": [
         "170-01-IMPLEMENT.md",
-        "170-99-VERIFY.md"
+        "170-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "170-01-IMPLEMENT.md"
@@ -3087,7 +3179,8 @@
       "folder": "176-PHASE-171-OPS-ADMIN-CENTER",
       "files": [
         "171-01-IMPLEMENT.md",
-        "171-99-VERIFY.md"
+        "171-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "171-01-IMPLEMENT.md"
@@ -3106,7 +3199,8 @@
       "folder": "177-PHASE-172-CERTIFICATION-EVIDENCE-EXPORT",
       "files": [
         "172-01-IMPLEMENT.md",
-        "172-99-VERIFY.md"
+        "172-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "172-01-IMPLEMENT.md"
@@ -3125,7 +3219,8 @@
       "folder": "179-PHASE-211-PROMPTOPS-GOVERNANCE",
       "files": [
         "211-01-IMPLEMENT.md",
-        "211-99-VERIFY.md"
+        "211-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "211-01-IMPLEMENT.md"
@@ -3140,11 +3235,12 @@
     },
     {
       "phaseNumber": "16",
-      "title": "PRODUCTION READINESS",
+      "title": "Notes",
       "folder": "18-PHASE-16-PRODUCTION-READINESS",
       "files": [
         "18-01-Phase16-IMPLEMENT.md",
-        "18-99-Phase16-VERIFY.md"
+        "18-99-Phase16-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "18-01-Phase16-IMPLEMENT.md"
@@ -3190,7 +3286,8 @@
       "folder": "180-PHASE-212-REPAIR-PROMPTS-TREE",
       "files": [
         "212-01-IMPLEMENT.md",
-        "212-99-VERIFY.md"
+        "212-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "212-01-IMPLEMENT.md"
@@ -3212,7 +3309,8 @@
       "folder": "181-PHASE-213-BACKFILL-WAVE1",
       "files": [
         "213-01-IMPLEMENT.md",
-        "213-99-VERIFY.md"
+        "213-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "213-01-IMPLEMENT.md"
@@ -3231,7 +3329,8 @@
       "folder": "182-PHASE-173-API-BOOTSTRAP-DECOMPOSITION",
       "files": [
         "173-01-IMPLEMENT.md",
-        "173-99-VERIFY.md"
+        "173-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "173-01-IMPLEMENT.md"
@@ -3255,7 +3354,8 @@
       "folder": "183-PHASE-174-PG-ONLY-DATAPLANE",
       "files": [
         "174-01-IMPLEMENT.md",
-        "174-99-VERIFY.md"
+        "174-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "174-01-IMPLEMENT.md"
@@ -3278,7 +3378,8 @@
       "folder": "184-PHASE-175-SCHEMA-MIGRATION-SOT",
       "files": [
         "175-01-IMPLEMENT.md",
-        "175-99-VERIFY.md"
+        "175-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "175-01-IMPLEMENT.md"
@@ -3300,7 +3401,8 @@
       "folder": "185-PHASE-176-TENANT-RLS-ENFORCEMENT",
       "files": [
         "176-01-IMPLEMENT.md",
-        "176-99-VERIFY.md"
+        "176-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "176-01-IMPLEMENT.md"
@@ -3322,7 +3424,8 @@
       "folder": "186-PHASE-177-DURABILITY-AUDIT",
       "files": [
         "177-01-IMPLEMENT.md",
-        "177-99-VERIFY.md"
+        "177-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "177-01-IMPLEMENT.md"
@@ -3343,7 +3446,8 @@
       "folder": "187-PHASE-178-FHIR-R4-GATEWAY",
       "files": [
         "178-01-IMPLEMENT.md",
-        "178-99-VERIFY.md"
+        "178-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "178-01-IMPLEMENT.md"
@@ -3362,7 +3466,8 @@
       "folder": "188-PHASE-214-CONVERT-WAVE2",
       "files": [
         "214-01-IMPLEMENT.md",
-        "214-99-VERIFY.md"
+        "214-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "214-01-IMPLEMENT.md"
@@ -3383,7 +3488,8 @@
       "folder": "189-PHASE-179-HELM-FOUNDATION",
       "files": [
         "179-01-IMPLEMENT.md",
-        "179-99-VERIFY.md"
+        "179-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "179-01-IMPLEMENT.md"
@@ -3402,7 +3508,8 @@
       "folder": "19-PHASE-17-MULTITENANT-CONTROL-PLANE",
       "files": [
         "19-01-Phase17-ControlPlane-IMPLEMENT.md",
-        "19-99-Phase17-ControlPlane-VERIFY.md"
+        "19-99-Phase17-ControlPlane-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "19-01-Phase17-ControlPlane-IMPLEMENT.md"
@@ -3432,7 +3539,8 @@
       "folder": "190-PHASE-180-DOCKER-IMAGE-CONTRACTS",
       "files": [
         "180-01-IMPLEMENT.md",
-        "180-99-VERIFY.md"
+        "180-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "180-01-IMPLEMENT.md"
@@ -3451,7 +3559,8 @@
       "folder": "191-PHASE-181-SHARED-LAYER-CHART",
       "files": [
         "181-01-IMPLEMENT.md",
-        "181-99-VERIFY.md"
+        "181-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "181-01-IMPLEMENT.md"
@@ -3470,7 +3579,8 @@
       "folder": "192-PHASE-182-TENANT-LAYER-CHART",
       "files": [
         "182-01-IMPLEMENT.md",
-        "182-99-VERIFY.md"
+        "182-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "182-01-IMPLEMENT.md"
@@ -3489,7 +3599,8 @@
       "folder": "193-PHASE-183-TENANT-PROVISIONING",
       "files": [
         "183-01-IMPLEMENT.md",
-        "183-99-VERIFY.md"
+        "183-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "183-01-IMPLEMENT.md"
@@ -3508,7 +3619,8 @@
       "folder": "194-PHASE-184-SECRETS-STRATEGY",
       "files": [
         "184-01-IMPLEMENT.md",
-        "184-99-VERIFY.md"
+        "184-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "184-01-IMPLEMENT.md"
@@ -3527,7 +3639,8 @@
       "folder": "195-PHASE-185-PG-BACKUP-PITR",
       "files": [
         "185-01-IMPLEMENT.md",
-        "185-99-VERIFY.md"
+        "185-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "185-01-IMPLEMENT.md"
@@ -3548,7 +3661,8 @@
       "folder": "196-PHASE-186-YOTTADB-BACKUP",
       "files": [
         "186-01-IMPLEMENT.md",
-        "186-99-VERIFY.md"
+        "186-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "186-01-IMPLEMENT.md"
@@ -3569,7 +3683,8 @@
       "folder": "197-PHASE-187-DR-DRILL-AUTOMATION",
       "files": [
         "187-01-IMPLEMENT.md",
-        "187-99-VERIFY.md"
+        "187-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "187-01-IMPLEMENT.md"
@@ -3588,7 +3703,8 @@
       "folder": "198-PHASE-188-OBSERVABILITY-BASELINE",
       "files": [
         "188-01-IMPLEMENT.md",
-        "188-99-VERIFY.md"
+        "188-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "188-01-IMPLEMENT.md"
@@ -3607,7 +3723,8 @@
       "folder": "199-PHASE-189-PERF-TUNING-RUNBOOK",
       "files": [
         "189-01-IMPLEMENT.md",
-        "189-99-VERIFY.md"
+        "189-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "189-01-IMPLEMENT.md"
@@ -3628,7 +3745,8 @@
         "20-01-Phase18-Interop-Imaging-IMPLEMENT.md",
         "20-02-Phase18B-VistaFirst-Enforcement-IMPLEMENT.md",
         "20-90-Phase18B-VistaFirst-Enforcement-VERIFY.md",
-        "20-99-Phase18-Interop-Imaging-VERIFY.md"
+        "20-99-Phase18-Interop-Imaging-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "20-01-Phase18-Interop-Imaging-IMPLEMENT.md",
@@ -3679,7 +3797,8 @@
       "folder": "200-PHASE-190-LOAD-TEST-HARNESS",
       "files": [
         "190-01-IMPLEMENT.md",
-        "190-99-VERIFY.md"
+        "190-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "190-01-IMPLEMENT.md"
@@ -3698,7 +3817,8 @@
       "folder": "201-PHASE-191-QUEUE-BACKPRESSURE",
       "files": [
         "191-01-IMPLEMENT.md",
-        "191-99-VERIFY.md"
+        "191-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "191-01-IMPLEMENT.md"
@@ -3717,7 +3837,8 @@
       "folder": "202-PHASE-192-K8S-AUTOSCALING",
       "files": [
         "192-01-IMPLEMENT.md",
-        "192-99-VERIFY.md"
+        "192-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "192-01-IMPLEMENT.md"
@@ -3736,7 +3857,8 @@
       "folder": "203-PHASE-193-FHIR-ENCOUNTER-RESOURCE",
       "files": [
         "193-01-IMPLEMENT.md",
-        "193-99-VERIFY.md"
+        "193-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "193-01-IMPLEMENT.md"
@@ -3755,7 +3877,8 @@
       "folder": "204-PHASE-194-FHIR-CACHE-ETAG",
       "files": [
         "194-01-IMPLEMENT.md",
-        "194-99-VERIFY.md"
+        "194-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "194-01-IMPLEMENT.md"
@@ -3774,7 +3897,8 @@
       "folder": "205-PHASE-195-SMART-ON-FHIR-POSTURE",
       "files": [
         "195-01-IMPLEMENT.md",
-        "195-99-VERIFY.md"
+        "195-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "195-01-IMPLEMENT.md"
@@ -3793,7 +3917,8 @@
       "folder": "206-PHASE-196-FHIR-CONFORMANCE-SUITE",
       "files": [
         "196-01-IMPLEMENT.md",
-        "196-99-VERIFY.md"
+        "196-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "196-01-IMPLEMENT.md"
@@ -3812,7 +3937,8 @@
       "folder": "207-PHASE-215-CONVERT-WAVE3",
       "files": [
         "215-01-IMPLEMENT.md",
-        "215-99-VERIFY.md"
+        "215-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "215-01-IMPLEMENT.md"
@@ -3833,7 +3959,8 @@
       "folder": "208-PHASE-197-GITOPS-ARGOCD",
       "files": [
         "197-01-IMPLEMENT.md",
-        "197-99-VERIFY.md"
+        "197-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "197-01-IMPLEMENT.md"
@@ -3852,7 +3979,8 @@
       "folder": "209-PHASE-198-ENVIRONMENT-MODEL",
       "files": [
         "198-01-IMPLEMENT.md",
-        "198-99-VERIFY.md"
+        "198-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "198-01-IMPLEMENT.md"
@@ -3873,7 +4001,8 @@
         "21-01-Phase19-Reporting-Governance-IMPLEMENT.md",
         "21-02-Phase19B-VistaFirst-Enforcement-IMPLEMENT.md",
         "21-90-Phase19B-VistaFirst-Enforcement-VERIFY.md",
-        "21-99-Phase19-Reporting-Governance-VERIFY.md"
+        "21-99-Phase19-Reporting-Governance-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "21-01-Phase19-Reporting-Governance-IMPLEMENT.md",
@@ -3928,7 +4057,8 @@
       "folder": "210-PHASE-199-CI-PR-GATES",
       "files": [
         "199-01-IMPLEMENT.md",
-        "199-99-VERIFY.md"
+        "199-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "199-01-IMPLEMENT.md"
@@ -3947,7 +4077,8 @@
       "folder": "211-PHASE-200-CD-PIPELINE",
       "files": [
         "200-01-IMPLEMENT.md",
-        "200-99-VERIFY.md"
+        "200-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "200-01-IMPLEMENT.md"
@@ -3966,7 +4097,8 @@
       "folder": "212-PHASE-201-CANARY-METRIC-GATE",
       "files": [
         "201-01-IMPLEMENT.md",
-        "201-99-VERIFY.md"
+        "201-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "201-01-IMPLEMENT.md"
@@ -3985,7 +4117,8 @@
       "folder": "213-PHASE-202-AUTO-ROLLBACK",
       "files": [
         "202-01-IMPLEMENT.md",
-        "202-99-VERIFY.md"
+        "202-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "202-01-IMPLEMENT.md"
@@ -4004,7 +4137,8 @@
       "folder": "214-PHASE-203-POLICY-AS-CODE",
       "files": [
         "203-01-IMPLEMENT.md",
-        "203-99-VERIFY.md"
+        "203-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "203-01-IMPLEMENT.md"
@@ -4023,7 +4157,8 @@
       "folder": "215-PHASE-204-SBOM-ATTESTATION",
       "files": [
         "204-01-IMPLEMENT.md",
-        "204-99-VERIFY.md"
+        "204-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "204-01-IMPLEMENT.md"
@@ -4042,7 +4177,8 @@
       "folder": "216-PHASE-205-SLO-BURN-RATE-ALERTS",
       "files": [
         "205-01-IMPLEMENT.md",
-        "205-99-VERIFY.md"
+        "205-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "205-01-IMPLEMENT.md"
@@ -4061,7 +4197,8 @@
       "folder": "217-PHASE-206-E2E-PLAYWRIGHT-SMOKE",
       "files": [
         "206-01-IMPLEMENT.md",
-        "206-99-VERIFY.md"
+        "206-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "206-01-IMPLEMENT.md"
@@ -4080,7 +4217,8 @@
       "folder": "218-PHASE-207-FLEET-ROLLOUT-CLI",
       "files": [
         "207-01-IMPLEMENT.md",
-        "207-99-VERIFY.md"
+        "207-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "207-01-IMPLEMENT.md"
@@ -4099,7 +4237,8 @@
       "folder": "219-PHASE-208-COMPLIANCE-EVIDENCE",
       "files": [
         "208-01-IMPLEMENT.md",
-        "208-99-VERIFY.md"
+        "208-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "208-01-IMPLEMENT.md"
@@ -4118,7 +4257,8 @@
       "folder": "22-PHASE-20-VISTA-FIRST-GROUNDING",
       "files": [
         "22-01-Phase20-VistaFirst-Grounding-IMPLEMENT.md",
-        "22-99-Phase20-VistaFirst-Grounding-VERIFY.md"
+        "22-99-Phase20-VistaFirst-Grounding-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "22-01-Phase20-VistaFirst-Grounding-IMPLEMENT.md"
@@ -4153,7 +4293,8 @@
       "folder": "220-PHASE-209-CROSS-REGION-DR",
       "files": [
         "209-01-IMPLEMENT.md",
-        "209-99-VERIFY.md"
+        "209-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "209-01-IMPLEMENT.md"
@@ -4172,7 +4313,8 @@
       "folder": "221-PHASE-210-GO-LIVE-RUNBOOKS",
       "files": [
         "210-01-IMPLEMENT.md",
-        "210-99-VERIFY.md"
+        "210-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "210-01-IMPLEMENT.md"
@@ -4191,7 +4333,8 @@
       "folder": "222-PHASE-216-ROUTE-RPC-MAP",
       "files": [
         "216-01-IMPLEMENT.md",
-        "216-99-VERIFY.md"
+        "216-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "216-01-IMPLEMENT.md"
@@ -4215,7 +4358,8 @@
       "folder": "223-PHASE-217-LIVE-RPC-VERIFICATION",
       "files": [
         "217-01-IMPLEMENT.md",
-        "217-99-VERIFY.md"
+        "217-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "217-01-IMPLEMENT.md"
@@ -4236,7 +4380,8 @@
       "folder": "224-PHASE-218-FIX-RPC-FINDINGS",
       "files": [
         "218-01-IMPLEMENT.md",
-        "218-99-VERIFY.md"
+        "218-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "218-01-IMPLEMENT.md"
@@ -4261,7 +4406,8 @@
       "folder": "225-PHASE-219-WAVE-AUDIT",
       "files": [
         "219-01-IMPLEMENT.md",
-        "219-99-VERIFY.md"
+        "219-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "219-01-IMPLEMENT.md"
@@ -4283,7 +4429,8 @@
       "folder": "226-PHASE-220-CONVERGENCE-SNAPSHOT",
       "files": [
         "220-01-IMPLEMENT.md",
-        "220-99-VERIFY.md"
+        "220-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "220-01-IMPLEMENT.md"
@@ -4306,7 +4453,8 @@
       "folder": "227-PHASE-221-WAVE4-AUDIT",
       "files": [
         "221-01-IMPLEMENT.md",
-        "221-99-VERIFY.md"
+        "221-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "221-01-IMPLEMENT.md"
@@ -4332,7 +4480,8 @@
       "folder": "228-PHASE-231-OIDC-BEARER-FHIR",
       "files": [
         "231-01-IMPLEMENT.md",
-        "231-99-VERIFY.md"
+        "231-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "231-01-IMPLEMENT.md"
@@ -4356,7 +4505,8 @@
       "folder": "229-PHASE-232-SMART-SCOPE-ENFORCEMENT",
       "files": [
         "232-01-IMPLEMENT.md",
-        "232-99-VERIFY.md"
+        "232-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "232-01-IMPLEMENT.md"
@@ -4376,11 +4526,12 @@
     },
     {
       "phaseNumber": "21",
-      "title": "INTEROP REALITY",
+      "title": "Notes",
       "folder": "23-PHASE-21-INTEROP-REALITY",
       "files": [
         "23-01-interop-reality-IMPLEMENT.md",
-        "23-99-interop-reality-VERIFY.md"
+        "23-99-interop-reality-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "23-01-interop-reality-IMPLEMENT.md"
@@ -4423,7 +4574,8 @@
       "folder": "230-PHASE-233-FHIR-SEARCH-PARAMS",
       "files": [
         "233-01-IMPLEMENT.md",
-        "233-99-VERIFY.md"
+        "233-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "233-01-IMPLEMENT.md"
@@ -4446,7 +4598,8 @@
       "folder": "231-PHASE-234-FHIR-PAGING",
       "files": [
         "234-01-IMPLEMENT.md",
-        "234-99-VERIFY.md"
+        "234-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "234-01-IMPLEMENT.md"
@@ -4469,7 +4622,8 @@
       "folder": "232-PHASE-235-CAPABILITY-CONFORMANCE",
       "files": [
         "235-01-IMPLEMENT.md",
-        "235-99-VERIFY.md"
+        "235-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "235-01-IMPLEMENT.md"
@@ -4493,7 +4647,8 @@
       "folder": "233-PHASE-236-SMART-E2E-SMOKE",
       "files": [
         "236-01-IMPLEMENT.md",
-        "236-99-VERIFY.md"
+        "236-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "236-01-IMPLEMENT.md"
@@ -4514,7 +4669,8 @@
       "folder": "234-PHASE-237-PROMPT-LINTER-MANIFEST",
       "files": [
         "237-01-IMPLEMENT.md",
-        "237-99-VERIFY.md"
+        "237-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "237-01-IMPLEMENT.md"
@@ -4533,7 +4689,8 @@
       "folder": "235-PHASE-238-OSS-REUSE-AUDIT",
       "files": [
         "238-01-IMPLEMENT.md",
-        "238-99-VERIFY.md"
+        "238-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "238-01-IMPLEMENT.md"
@@ -4560,7 +4717,8 @@
       "folder": "236-PHASE-239-HL7-ENGINE-PACKAGING",
       "files": [
         "239-01-IMPLEMENT.md",
-        "239-99-VERIFY.md"
+        "239-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "239-01-IMPLEMENT.md"
@@ -4591,7 +4749,8 @@
       "folder": "237-PHASE-240-HL7-ROUTING-LAYER",
       "files": [
         "240-01-IMPLEMENT.md",
-        "240-99-VERIFY.md"
+        "240-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "240-01-IMPLEMENT.md"
@@ -4623,7 +4782,8 @@
       "folder": "238-PHASE-241-HL7-MESSAGE-PACKS",
       "files": [
         "241-01-IMPLEMENT.md",
-        "241-99-VERIFY.md"
+        "241-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "241-01-IMPLEMENT.md"
@@ -4642,7 +4802,8 @@
       "folder": "239-PHASE-242-PAYER-SCALE-HARDENING",
       "files": [
         "242-01-IMPLEMENT.md",
-        "242-99-VERIFY.md"
+        "242-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "242-01-IMPLEMENT.md"
@@ -4662,7 +4823,8 @@
       "files": [
         "24-01-imaging-platform-IMPLEMENT.md",
         "24-03-known-gaps-fix-IMPLEMENT.md",
-        "24-99-imaging-platform-VERIFY.md"
+        "24-99-imaging-platform-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "24-01-imaging-platform-IMPLEMENT.md",
@@ -4708,7 +4870,8 @@
       "folder": "240-PHASE-243-ONBOARDING-UX",
       "files": [
         "243-01-IMPLEMENT.md",
-        "243-99-VERIFY.md"
+        "243-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "243-01-IMPLEMENT.md"
@@ -4730,7 +4893,8 @@
       "folder": "241-PHASE-244-SUPPORT-TOOLING",
       "files": [
         "244-01-IMPLEMENT.md",
-        "244-99-VERIFY.md"
+        "244-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "244-01-IMPLEMENT.md"
@@ -4752,7 +4916,8 @@
       "folder": "242-PHASE-245-DATA-EXPORTS-V2",
       "files": [
         "245-01-IMPLEMENT.md",
-        "245-99-VERIFY.md"
+        "245-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "245-01-IMPLEMENT.md"
@@ -4782,7 +4947,8 @@
       "folder": "243-PHASE-246-PILOT-HARDENING",
       "files": [
         "246-01-IMPLEMENT.md",
-        "246-99-VERIFY.md"
+        "246-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "246-01-IMPLEMENT.md"
@@ -4811,7 +4977,8 @@
       "folder": "244-PHASE-247-WAVE6-CERTIFICATION",
       "files": [
         "247-01-IMPLEMENT.md",
-        "247-99-VERIFY.md"
+        "247-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "247-01-IMPLEMENT.md"
@@ -4838,7 +5005,8 @@
       "files": [
         "248-01-IMPLEMENT.md",
         "248-99-VERIFY.md",
-        "248-NOTES.md"
+        "248-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "248-01-IMPLEMENT.md"
@@ -4865,7 +5033,8 @@
       "files": [
         "249-01-IMPLEMENT.md",
         "249-99-VERIFY.md",
-        "249-NOTES.md"
+        "249-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "249-01-IMPLEMENT.md"
@@ -4892,7 +5061,8 @@
       "files": [
         "250-01-IMPLEMENT.md",
         "250-99-VERIFY.md",
-        "250-NOTES.md"
+        "250-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "250-01-IMPLEMENT.md"
@@ -4922,7 +5092,8 @@
       "files": [
         "251-01-IMPLEMENT.md",
         "251-99-VERIFY.md",
-        "251-NOTES.md"
+        "251-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "251-01-IMPLEMENT.md"
@@ -4948,7 +5119,8 @@
       "files": [
         "252-01-IMPLEMENT.md",
         "252-99-VERIFY.md",
-        "252-NOTES.md"
+        "252-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "252-01-IMPLEMENT.md"
@@ -4971,7 +5143,8 @@
       "folder": "25-PHASE-23-IMAGING-WORKFLOW",
       "files": [
         "25-01-imaging-workflow-IMPLEMENT.md",
-        "25-99-imaging-workflow-VERIFY.md"
+        "25-99-imaging-workflow-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "25-01-imaging-workflow-IMPLEMENT.md"
@@ -5003,7 +5176,8 @@
       "files": [
         "253-01-IMPLEMENT.md",
         "253-99-VERIFY.md",
-        "253-NOTES.md"
+        "253-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "253-01-IMPLEMENT.md"
@@ -5028,7 +5202,8 @@
       "files": [
         "254-01-IMPLEMENT.md",
         "254-99-VERIFY.md",
-        "254-NOTES.md"
+        "254-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "254-01-IMPLEMENT.md"
@@ -5051,7 +5226,8 @@
       "files": [
         "255-01-IMPLEMENT.md",
         "255-99-VERIFY.md",
-        "255-NOTES.md"
+        "255-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "255-01-IMPLEMENT.md"
@@ -5071,7 +5247,8 @@
       "files": [
         "256-01-IMPLEMENT.md",
         "256-99-VERIFY.md",
-        "256-NOTES.md"
+        "256-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "256-01-IMPLEMENT.md"
@@ -5098,7 +5275,8 @@
       "files": [
         "257-01-IMPLEMENT.md",
         "257-99-VERIFY.md",
-        "257-NOTES.md"
+        "257-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "257-01-IMPLEMENT.md"
@@ -5118,7 +5296,8 @@
       "files": [
         "258-01-IMPLEMENT.md",
         "258-99-VERIFY.md",
-        "258-NOTES.md"
+        "258-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "258-01-IMPLEMENT.md"
@@ -5142,7 +5321,8 @@
       "files": [
         "259-01-IMPLEMENT.md",
         "259-99-VERIFY.md",
-        "259-NOTES.md"
+        "259-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "259-01-IMPLEMENT.md"
@@ -5172,7 +5352,8 @@
       "files": [
         "260-01-IMPLEMENT.md",
         "260-99-VERIFY.md",
-        "260-NOTES.md"
+        "260-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "260-01-IMPLEMENT.md"
@@ -5196,7 +5377,8 @@
       "files": [
         "261-01-IMPLEMENT.md",
         "261-99-VERIFY.md",
-        "261-NOTES.md"
+        "261-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "261-01-IMPLEMENT.md"
@@ -5228,7 +5410,8 @@
       "files": [
         "262-01-IMPLEMENT.md",
         "262-99-VERIFY.md",
-        "262-NOTES.md"
+        "262-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "262-01-IMPLEMENT.md"
@@ -5253,11 +5436,12 @@
     },
     {
       "phaseNumber": "24",
-      "title": "IMAGING ENTERPRISE",
+      "title": "Notes",
       "folder": "26-PHASE-24-IMAGING-ENTERPRISE",
       "files": [
         "26-01-imaging-enterprise-IMPLEMENT.md",
-        "26-99-imaging-enterprise-VERIFY.md"
+        "26-99-imaging-enterprise-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "26-01-imaging-enterprise-IMPLEMENT.md"
@@ -5296,7 +5480,8 @@
       "files": [
         "263-01-IMPLEMENT.md",
         "263-99-VERIFY.md",
-        "263-NOTES.md"
+        "263-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "263-01-IMPLEMENT.md"
@@ -5323,7 +5508,8 @@
       "files": [
         "264-01-IMPLEMENT.md",
         "264-99-VERIFY.md",
-        "264-NOTES.md"
+        "264-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "264-01-IMPLEMENT.md"
@@ -5343,7 +5529,8 @@
       "files": [
         "265-01-IMPLEMENT.md",
         "265-99-VERIFY.md",
-        "265-NOTES.md"
+        "265-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "265-01-IMPLEMENT.md"
@@ -5362,7 +5549,8 @@
       "folder": "263-PHASE-263-WAVE8-INTEGRITY-AUDIT",
       "files": [
         "263-01-IMPLEMENT.md",
-        "263-99-VERIFY.md"
+        "263-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "263-01-IMPLEMENT.md"
@@ -5391,12 +5579,13 @@
     },
     {
       "phaseNumber": "263",
-      "title": "Wave 8 INTEGRITY AUDIT",
+      "title": "Notes",
       "folder": "263-WAVE-8-INTEGRITY-AUDIT",
       "files": [
         "263-01-IMPLEMENT.md",
         "263-99-VERIFY.md",
-        "263-NOTES.md"
+        "263-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "263-01-IMPLEMENT.md"
@@ -5429,7 +5618,8 @@
       "folder": "264-PHASE-266-SAFETY-CASE-SCAFFOLD",
       "files": [
         "266-01-IMPLEMENT.md",
-        "266-99-VERIFY.md"
+        "266-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "266-01-IMPLEMENT.md"
@@ -5453,7 +5643,8 @@
       "folder": "265-PHASE-267-RPC-CONTRACT-SUITE-V2",
       "files": [
         "267-01-IMPLEMENT.md",
-        "267-99-VERIFY.md"
+        "267-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "267-01-IMPLEMENT.md"
@@ -5474,7 +5665,8 @@
       "folder": "266-PHASE-268-DATA-INTEGRITY-INVARIANTS",
       "files": [
         "268-01-IMPLEMENT.md",
-        "268-99-VERIFY.md"
+        "268-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "268-01-IMPLEMENT.md"
@@ -5495,7 +5687,8 @@
       "folder": "267-PHASE-269-SECURITY-VERIFICATION-GAUNTLET",
       "files": [
         "269-01-IMPLEMENT.md",
-        "269-99-VERIFY.md"
+        "269-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "269-01-IMPLEMENT.md"
@@ -5520,7 +5713,8 @@
       "folder": "268-PHASE-270-PRIVACY-ACCESS-PROOF",
       "files": [
         "270-01-IMPLEMENT.md",
-        "270-99-VERIFY.md"
+        "270-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "270-01-IMPLEMENT.md"
@@ -5543,7 +5737,8 @@
       "folder": "269-PHASE-271-RESILIENCE-GAMEDAYS",
       "files": [
         "271-01-IMPLEMENT.md",
-        "271-99-VERIFY.md"
+        "271-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "271-01-IMPLEMENT.md"
@@ -5566,7 +5761,8 @@
       "files": [
         "27-01-bi-analytics-IMPLEMENT.md",
         "27-02-phase25d-risk-mitigation-IMPLEMENT.md",
-        "27-99-bi-analytics-VERIFY.md"
+        "27-99-bi-analytics-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "27-01-bi-analytics-IMPLEMENT.md",
@@ -5607,7 +5803,8 @@
       "folder": "270-PHASE-272-CERTIFICATION-BUNDLE-V2",
       "files": [
         "272-01-IMPLEMENT.md",
-        "272-99-VERIFY.md"
+        "272-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "272-01-IMPLEMENT.md"
@@ -5630,7 +5827,8 @@
       "folder": "271-PHASE-273-GO-LIVE-CUTOVER-KIT",
       "files": [
         "273-01-IMPLEMENT.md",
-        "273-99-VERIFY.md"
+        "273-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "273-01-IMPLEMENT.md"
@@ -5654,7 +5852,8 @@
       "folder": "272-PHASE-274-PROMPT-CANONICALIZATION",
       "files": [
         "274-01-IMPLEMENT.md",
-        "274-99-VERIFY.md"
+        "274-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "274-01-IMPLEMENT.md"
@@ -5677,7 +5876,8 @@
       "folder": "273-PHASE-275-TENANT-CONTROL-PLANE",
       "files": [
         "275-01-IMPLEMENT.md",
-        "275-99-VERIFY.md"
+        "275-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "275-01-IMPLEMENT.md"
@@ -5700,7 +5900,8 @@
       "folder": "274-PHASE-276-DURABILITY-READ-THROUGH",
       "files": [
         "276-01-IMPLEMENT.md",
-        "276-99-VERIFY.md"
+        "276-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "276-01-IMPLEMENT.md"
@@ -5719,7 +5920,8 @@
       "folder": "275-PHASE-277-VISTA-CONTAINER-MODERNIZATION",
       "files": [
         "277-01-IMPLEMENT.md",
-        "277-99-VERIFY.md"
+        "277-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "277-01-IMPLEMENT.md"
@@ -5738,7 +5940,8 @@
       "folder": "276-PHASE-278-E2E-CERTIFICATION-GATES",
       "files": [
         "278-01-IMPLEMENT.md",
-        "278-99-VERIFY.md"
+        "278-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "278-01-IMPLEMENT.md"
@@ -5757,7 +5960,8 @@
       "folder": "277-PHASE-279-INTEROP-HL7-ENGINE",
       "files": [
         "279-01-IMPLEMENT.md",
-        "279-99-VERIFY.md"
+        "279-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "279-01-IMPLEMENT.md"
@@ -5778,7 +5982,8 @@
       "folder": "278-PHASE-280-UX-THEMING-LAYOUT",
       "files": [
         "280-01-IMPLEMENT.md",
-        "280-99-VERIFY.md"
+        "280-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "280-01-IMPLEMENT.md"
@@ -5800,7 +6005,8 @@
       "folder": "279-PHASE-281-DATA-MIGRATION-FOUNDATIONS",
       "files": [
         "281-01-IMPLEMENT.md",
-        "281-99-VERIFY.md"
+        "281-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "281-01-IMPLEMENT.md"
@@ -5827,7 +6033,8 @@
       "folder": "28-PHASE-26-PORTAL-TELEHEALTH",
       "files": [
         "28-01-portal-telehealth-IMPLEMENT.md",
-        "28-99-portal-telehealth-VERIFY.md"
+        "28-99-portal-telehealth-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "28-01-portal-telehealth-IMPLEMENT.md"
@@ -5877,7 +6084,8 @@
       "files": [
         "280-01-IMPLEMENT.md",
         "280-99-VERIFY.md",
-        "280-NOTES.md"
+        "280-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "280-01-IMPLEMENT.md"
@@ -5906,7 +6114,8 @@
       "files": [
         "281-01-IMPLEMENT.md",
         "281-99-VERIFY.md",
-        "281-NOTES.md"
+        "281-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "281-01-IMPLEMENT.md"
@@ -5937,7 +6146,8 @@
       "files": [
         "282-01-IMPLEMENT.md",
         "282-99-VERIFY.md",
-        "282-NOTES.md"
+        "282-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "282-01-IMPLEMENT.md"
@@ -5964,7 +6174,8 @@
       "files": [
         "283-01-IMPLEMENT.md",
         "283-99-VERIFY.md",
-        "283-NOTES.md"
+        "283-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "283-01-IMPLEMENT.md"
@@ -5989,7 +6200,8 @@
       "files": [
         "284-01-IMPLEMENT.md",
         "284-99-VERIFY.md",
-        "284-NOTES.md"
+        "284-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "284-01-IMPLEMENT.md"
@@ -6033,7 +6245,8 @@
       "files": [
         "285-01-IMPLEMENT.md",
         "285-99-VERIFY.md",
-        "285-NOTES.md"
+        "285-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "285-01-IMPLEMENT.md"
@@ -6076,7 +6289,8 @@
       "files": [
         "286-01-IMPLEMENT.md",
         "286-99-VERIFY.md",
-        "286-NOTES.md"
+        "286-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "286-01-IMPLEMENT.md"
@@ -6098,11 +6312,12 @@
     },
     {
       "phaseNumber": "94",
-      "title": "PH HMO WORKFLOW",
+      "title": "Notes",
       "folder": "287-PHASE-94-PH-HMO-WORKFLOW",
       "files": [
         "94-01-IMPLEMENT.md",
-        "94-99-VERIFY.md"
+        "94-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "94-01-IMPLEMENT.md"
@@ -6124,7 +6339,8 @@
       "folder": "288-PHASE-95-PAYER-REGISTRY-PERSISTENCE",
       "files": [
         "95-01-IMPLEMENT.md",
-        "95-99-VERIFY.md"
+        "95-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "95-01-IMPLEMENT.md"
@@ -6164,7 +6380,8 @@
       "folder": "289-PHASE-95B-PLATFORM-PERSISTENCE",
       "files": [
         "95B-01-IMPLEMENT.md",
-        "95B-99-VERIFY.md"
+        "95B-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "95B-01-IMPLEMENT.md"
@@ -6185,7 +6402,8 @@
       "folder": "29-PHASE-27-PORTAL-CORE",
       "files": [
         "29-01-portal-core-IMPLEMENT.md",
-        "29-99-portal-core-VERIFY.md"
+        "29-99-portal-core-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "29-01-portal-core-IMPLEMENT.md"
@@ -6220,7 +6438,8 @@
       "folder": "290-PHASE-290-WAVE9-INTEGRITY-AUDIT",
       "files": [
         "AUDIT-01-IMPLEMENT.md",
-        "AUDIT-99-VERIFY.md"
+        "AUDIT-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "AUDIT-01-IMPLEMENT.md"
@@ -6246,12 +6465,13 @@
     },
     {
       "phaseNumber": "290",
-      "title": "Wave 9 INTEGRITY AUDIT",
+      "title": "Notes",
       "folder": "290-WAVE-9-INTEGRITY-AUDIT",
       "files": [
         "290-01-IMPLEMENT.md",
         "290-99-VERIFY.md",
-        "290-NOTES.md"
+        "290-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "290-01-IMPLEMENT.md"
@@ -6281,7 +6501,8 @@
       "folder": "291-PHASE-100-ELIGIBILITY-CLAIMSTATUS",
       "files": [
         "100-01-IMPLEMENT.md",
-        "100-99-VERIFY.md"
+        "100-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "100-01-IMPLEMENT.md"
@@ -6320,7 +6541,8 @@
       "folder": "292-PHASE-97-HMO-PORTAL-ADAPTER",
       "files": [
         "97-01-IMPLEMENT.md",
-        "97-99-VERIFY.md"
+        "97-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "97-01-IMPLEMENT.md"
@@ -6371,7 +6593,8 @@
       "folder": "293-PHASE-115-DURABILITY-WAVE2",
       "files": [
         "115-01-IMPLEMENT.md",
-        "115-99-VERIFY.md"
+        "115-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "115-01-IMPLEMENT.md"
@@ -6411,7 +6634,8 @@
       "folder": "294-PHASE-287-REAL-TLS-DEV-K8S",
       "files": [
         "287-01-IMPLEMENT.md",
-        "287-99-VERIFY.md"
+        "287-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "287-01-IMPLEMENT.md"
@@ -6440,7 +6664,8 @@
       "folder": "295-PHASE-288-VISTA-DISTRO-MODERNIZE",
       "files": [
         "288-01-IMPLEMENT.md",
-        "288-99-VERIFY.md"
+        "288-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "288-01-IMPLEMENT.md"
@@ -6467,7 +6692,8 @@
       "folder": "296-PHASE-289-LOAD-TEST-CAMPAIGN",
       "files": [
         "289-01-IMPLEMENT.md",
-        "289-99-VERIFY.md"
+        "289-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "289-01-IMPLEMENT.md"
@@ -6494,7 +6720,8 @@
       "folder": "297-PHASE-290-INTEROP-CERT-HARNESS",
       "files": [
         "290-01-IMPLEMENT.md",
-        "290-99-VERIFY.md"
+        "290-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "290-01-IMPLEMENT.md"
@@ -6521,7 +6748,8 @@
       "folder": "298-PHASE-291-CERT-EVIDENCE-PACK-V2",
       "files": [
         "291-01-IMPLEMENT.md",
-        "291-99-VERIFY.md"
+        "291-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "291-01-IMPLEMENT.md"
@@ -6547,7 +6775,8 @@
       "files": [
         "299-01-IMPLEMENT.md",
         "299-99-VERIFY.md",
-        "299-NOTES.md"
+        "299-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "299-01-IMPLEMENT.md"
@@ -6573,11 +6802,12 @@
     },
     {
       "phaseNumber": "28",
-      "title": "ENTERPRISE INTAKE OS",
+      "title": "Notes",
       "folder": "30-PHASE-28-ENTERPRISE-INTAKE-OS",
       "files": [
         "30-01-enterprise-intake-os-IMPLEMENT.md",
-        "30-99-enterprise-intake-os-VERIFY.md"
+        "30-99-enterprise-intake-os-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "30-01-enterprise-intake-os-IMPLEMENT.md"
@@ -6605,7 +6835,8 @@
       "files": [
         "300-01-IMPLEMENT.md",
         "300-99-VERIFY.md",
-        "300-NOTES.md"
+        "300-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "300-01-IMPLEMENT.md"
@@ -6642,7 +6873,8 @@
       "files": [
         "301-01-IMPLEMENT.md",
         "301-99-VERIFY.md",
-        "301-NOTES.md"
+        "301-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "301-01-IMPLEMENT.md"
@@ -6666,7 +6898,8 @@
       "files": [
         "302-01-IMPLEMENT.md",
         "302-99-VERIFY.md",
-        "302-NOTES.md"
+        "302-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "302-01-IMPLEMENT.md"
@@ -6695,7 +6928,8 @@
       "files": [
         "303-01-IMPLEMENT.md",
         "303-99-VERIFY.md",
-        "303-NOTES.md"
+        "303-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "303-01-IMPLEMENT.md"
@@ -6719,7 +6953,8 @@
       "files": [
         "304-01-IMPLEMENT.md",
         "304-99-VERIFY.md",
-        "304-NOTES.md"
+        "304-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "304-01-IMPLEMENT.md"
@@ -6743,7 +6978,8 @@
       "files": [
         "305-01-IMPLEMENT.md",
         "305-99-VERIFY.md",
-        "305-NOTES.md"
+        "305-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "305-01-IMPLEMENT.md"
@@ -6767,7 +7003,8 @@
       "files": [
         "306-01-IMPLEMENT.md",
         "306-99-VERIFY.md",
-        "306-NOTES.md"
+        "306-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "306-01-IMPLEMENT.md"
@@ -6791,7 +7028,8 @@
       "files": [
         "307-01-IMPLEMENT.md",
         "307-99-VERIFY.md",
-        "307-NOTES.md"
+        "307-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "307-01-IMPLEMENT.md"
@@ -6823,7 +7061,8 @@
       "files": [
         "308-01-IMPLEMENT.md",
         "308-99-VERIFY.md",
-        "308-NOTES.md"
+        "308-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "308-01-IMPLEMENT.md"
@@ -6857,7 +7096,8 @@
       "files": [
         "309-01-IMPLEMENT.md",
         "309-99-VERIFY.md",
-        "309-NOTES.md"
+        "309-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "309-01-IMPLEMENT.md"
@@ -6872,11 +7112,12 @@
     },
     {
       "phaseNumber": "29",
-      "title": "PATIENT IAM",
+      "title": "Notes",
       "folder": "31-PHASE-29-PATIENT-IAM",
       "files": [
         "31-01-patient-iam-IMPLEMENT.md",
-        "31-99-patient-iam-VERIFY.md"
+        "31-99-patient-iam-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "31-01-patient-iam-IMPLEMENT.md"
@@ -6908,7 +7149,8 @@
       "files": [
         "310-01-IMPLEMENT.md",
         "310-99-VERIFY.md",
-        "310-NOTES.md"
+        "310-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "310-01-IMPLEMENT.md"
@@ -6928,7 +7170,8 @@
       "files": [
         "311-01-IMPLEMENT.md",
         "311-99-VERIFY.md",
-        "311-NOTES.md"
+        "311-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "311-01-IMPLEMENT.md"
@@ -6955,7 +7198,8 @@
       "files": [
         "312-01-IMPLEMENT.md",
         "312-99-VERIFY.md",
-        "312-NOTES.md"
+        "312-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "312-01-IMPLEMENT.md"
@@ -6983,7 +7227,8 @@
       "files": [
         "313-01-IMPLEMENT.md",
         "313-99-VERIFY.md",
-        "313-NOTES.md"
+        "313-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "313-01-IMPLEMENT.md"
@@ -7008,7 +7253,8 @@
       "files": [
         "314-01-IMPLEMENT.md",
         "314-99-VERIFY.md",
-        "314-NOTES.md"
+        "314-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "314-01-IMPLEMENT.md"
@@ -7037,7 +7283,8 @@
       "files": [
         "315-01-IMPLEMENT.md",
         "315-99-VERIFY.md",
-        "315-NOTES.md"
+        "315-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "315-01-IMPLEMENT.md"
@@ -7061,7 +7308,8 @@
       "files": [
         "316-01-IMPLEMENT.md",
         "316-99-VERIFY.md",
-        "316-NOTES.md"
+        "316-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "316-01-IMPLEMENT.md"
@@ -7166,7 +7414,8 @@
       "folder": "32-PHASE-30-TELEHEALTH",
       "files": [
         "32-01-telehealth-IMPLEMENT.md",
-        "32-99-telehealth-VERIFY.md"
+        "32-99-telehealth-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "32-01-telehealth-IMPLEMENT.md"
@@ -7380,7 +7629,8 @@
       "files": [
         "326-01-IMPLEMENT.md",
         "326-99-VERIFY.md",
-        "326-NOTES.md"
+        "326-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "326-01-IMPLEMENT.md"
@@ -7483,11 +7733,12 @@
     },
     {
       "phaseNumber": "31",
-      "title": "SHARING EXPORTS",
+      "title": "Notes",
       "folder": "33-PHASE-31-SHARING-EXPORTS",
       "files": [
         "33-01-sharing-exports-IMPLEMENT.md",
-        "33-99-sharing-exports-VERIFY.md"
+        "33-99-sharing-exports-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "33-01-sharing-exports-IMPLEMENT.md"
@@ -7789,11 +8040,12 @@
     },
     {
       "phaseNumber": "32",
-      "title": "MESSAGING REFILLS",
+      "title": "Notes",
       "folder": "34-PHASE-32-MESSAGING-REFILLS",
       "files": [
         "34-01-messaging-refills-IMPLEMENT.md",
-        "34-99-messaging-refills-VERIFY.md"
+        "34-99-messaging-refills-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "34-01-messaging-refills-IMPLEMENT.md"
@@ -8043,11 +8295,12 @@
     },
     {
       "phaseNumber": "33",
-      "title": "AI ASSIST GATEWAY",
+      "title": "Notes",
       "folder": "35-PHASE-33-AI-ASSIST-GATEWAY",
       "files": [
         "35-01-ai-assist-IMPLEMENT.md",
-        "35-99-ai-assist-VERIFY.md"
+        "35-99-ai-assist-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "35-01-ai-assist-IMPLEMENT.md"
@@ -8302,7 +8555,8 @@
       "folder": "36-PHASE-34-REGULATED-SDLC",
       "files": [
         "36-01-regulated-sdlc-IMPLEMENT.md",
-        "36-99-regulated-sdlc-VERIFY.md"
+        "36-99-regulated-sdlc-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "36-01-regulated-sdlc-IMPLEMENT.md"
@@ -8582,7 +8836,8 @@
       "folder": "37-PHASE-35-IAM-AUTHZ-AUDIT",
       "files": [
         "37-01-iam-authz-audit-IMPLEMENT.md",
-        "37-99-iam-authz-audit-VERIFY.md"
+        "37-99-iam-authz-audit-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "37-01-iam-authz-audit-IMPLEMENT.md"
@@ -8884,11 +9139,12 @@
     },
     {
       "phaseNumber": "36",
-      "title": "OBSERVABILITY RELIABILITY",
+      "title": "Notes",
       "folder": "38-PHASE-36-OBSERVABILITY-RELIABILITY",
       "files": [
         "38-01-observability-reliability-IMPLEMENT.md",
-        "38-99-observability-reliability-VERIFY.md"
+        "38-99-observability-reliability-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "38-01-observability-reliability-IMPLEMENT.md"
@@ -9205,7 +9461,8 @@
       "folder": "39-PHASE-37-QUALITY-HARDENING",
       "files": [
         "39-01-quality-hardening-IMPLEMENT.md",
-        "39-99-quality-hardening-VERIFY.md"
+        "39-99-quality-hardening-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "39-01-quality-hardening-IMPLEMENT.md"
@@ -9564,7 +9821,8 @@
       "folder": "40-PHASE-37B-CPRS-PARITY-GROUNDING",
       "files": [
         "40-01-cprs-parity-grounding-IMPLEMENT.md",
-        "40-99-cprs-parity-grounding-VERIFY.md"
+        "40-99-cprs-parity-grounding-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "40-01-cprs-parity-grounding-IMPLEMENT.md"
@@ -9846,7 +10104,8 @@
       "folder": "41-PHASE-37C-PRODUCT-MODULARITY",
       "files": [
         "41-01-IMPLEMENT.md",
-        "41-99-VERIFY.md"
+        "41-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "41-01-IMPLEMENT.md"
@@ -10085,7 +10344,8 @@
       "folder": "42-PHASE-38-RCM-PAYER-CONNECTIVITY",
       "files": [
         "42-01-rcm-payer-platform-IMPLEMENT.md",
-        "42-99-rcm-payer-platform-VERIFY.md"
+        "42-99-rcm-payer-platform-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "42-01-rcm-payer-platform-IMPLEMENT.md"
@@ -10206,7 +10466,8 @@
       "files": [
         "423-01-IMPLEMENT.md",
         "423-99-VERIFY.md",
-        "423-NOTES.md"
+        "423-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "423-01-IMPLEMENT.md"
@@ -10229,7 +10490,8 @@
       "files": [
         "424-01-IMPLEMENT.md",
         "424-99-VERIFY.md",
-        "424-NOTES.md"
+        "424-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "424-01-IMPLEMENT.md"
@@ -10254,7 +10516,8 @@
       "files": [
         "425-01-IMPLEMENT.md",
         "425-99-VERIFY.md",
-        "425-NOTES.md"
+        "425-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "425-01-IMPLEMENT.md"
@@ -10280,7 +10543,8 @@
       "files": [
         "426-01-IMPLEMENT.md",
         "426-99-VERIFY.md",
-        "426-NOTES.md"
+        "426-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "426-01-IMPLEMENT.md"
@@ -10302,7 +10566,8 @@
       "files": [
         "427-01-IMPLEMENT.md",
         "427-99-VERIFY.md",
-        "427-NOTES.md"
+        "427-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "427-01-IMPLEMENT.md"
@@ -10331,7 +10596,8 @@
       "files": [
         "428-01-IMPLEMENT.md",
         "428-99-VERIFY.md",
-        "428-NOTES.md"
+        "428-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "428-01-IMPLEMENT.md"
@@ -10360,7 +10626,8 @@
       "files": [
         "429-01-IMPLEMENT.md",
         "429-99-VERIFY.md",
-        "429-NOTES.md"
+        "429-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "429-01-IMPLEMENT.md"
@@ -10381,7 +10648,8 @@
       "folder": "43-PHASE-39-BILLING-GROUNDING",
       "files": [
         "43-01-IMPLEMENT.md",
-        "43-99-VERIFY.md"
+        "43-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "43-01-IMPLEMENT.md"
@@ -10424,7 +10692,8 @@
       "files": [
         "430-01-IMPLEMENT.md",
         "430-99-VERIFY.md",
-        "430-NOTES.md"
+        "430-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "430-01-IMPLEMENT.md"
@@ -10444,7 +10713,8 @@
       "files": [
         "431-01-IMPLEMENT.md",
         "431-99-VERIFY.md",
-        "431-NOTES.md"
+        "431-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "431-01-IMPLEMENT.md"
@@ -10470,7 +10740,8 @@
       "files": [
         "432-01-IMPLEMENT.md",
         "432-99-VERIFY.md",
-        "432-NOTES.md"
+        "432-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "432-01-IMPLEMENT.md"
@@ -10493,7 +10764,8 @@
       "files": [
         "433-01-IMPLEMENT.md",
         "433-99-VERIFY.md",
-        "433-NOTES.md"
+        "433-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "433-01-IMPLEMENT.md"
@@ -10513,7 +10785,8 @@
       "files": [
         "434-01-IMPLEMENT.md",
         "434-99-VERIFY.md",
-        "434-NOTES.md"
+        "434-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "434-01-IMPLEMENT.md"
@@ -10541,7 +10814,8 @@
       "files": [
         "435-01-IMPLEMENT.md",
         "435-99-VERIFY.md",
-        "435-NOTES.md"
+        "435-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "435-01-IMPLEMENT.md"
@@ -10567,7 +10841,8 @@
       "files": [
         "436-01-IMPLEMENT.md",
         "436-99-VERIFY.md",
-        "436-NOTES.md"
+        "436-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "436-01-IMPLEMENT.md"
@@ -10587,7 +10862,8 @@
       "files": [
         "437-01-IMPLEMENT.md",
         "437-99-VERIFY.md",
-        "437-NOTES.md"
+        "437-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "437-01-IMPLEMENT.md"
@@ -10611,7 +10887,8 @@
       "files": [
         "438-01-IMPLEMENT.md",
         "438-99-VERIFY.md",
-        "438-NOTES.md"
+        "438-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "438-01-IMPLEMENT.md"
@@ -10633,7 +10910,8 @@
       "files": [
         "439-01-IMPLEMENT.md",
         "439-99-VERIFY.md",
-        "439-NOTES.md"
+        "439-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "439-01-IMPLEMENT.md"
@@ -10656,7 +10934,8 @@
       "files": [
         "44-01-IMPLEMENT.md",
         "44-02-IMPLEMENT-GLOBAL-RCM.md",
-        "44-99-VERIFY.md"
+        "44-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "44-01-IMPLEMENT.md",
@@ -10903,7 +11182,8 @@
       "folder": "449-PHASE-449-RELEASE-MANIFEST",
       "files": [
         "449-01-IMPLEMENT.md",
-        "449-99-VERIFY.md"
+        "449-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "449-01-IMPLEMENT.md"
@@ -10922,7 +11202,8 @@
       "folder": "45-PHASE-41-VIVIAN-RPC-CATALOG",
       "files": [
         "45-01-IMPLEMENT.md",
-        "45-99-VERIFY.md"
+        "45-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "45-01-IMPLEMENT.md"
@@ -10957,7 +11238,8 @@
       "folder": "450-PHASE-450-PATCH-TRAIN",
       "files": [
         "450-01-IMPLEMENT.md",
-        "450-99-VERIFY.md"
+        "450-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "450-01-IMPLEMENT.md"
@@ -10976,7 +11258,8 @@
       "folder": "451-PHASE-451-COMPAT-MATRIX",
       "files": [
         "451-01-IMPLEMENT.md",
-        "451-99-VERIFY.md"
+        "451-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "451-01-IMPLEMENT.md"
@@ -10995,7 +11278,8 @@
       "folder": "452-PHASE-452-HARVEST-ADRS",
       "files": [
         "452-01-IMPLEMENT.md",
-        "452-99-VERIFY.md"
+        "452-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "452-01-IMPLEMENT.md"
@@ -11014,7 +11298,8 @@
       "folder": "453-PHASE-453-DASHBOARD-INTEGRATION",
       "files": [
         "453-01-IMPLEMENT.md",
-        "453-99-VERIFY.md"
+        "453-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "453-01-IMPLEMENT.md"
@@ -11033,7 +11318,8 @@
       "folder": "454-PHASE-454-SBOM-LICENSE",
       "files": [
         "454-01-IMPLEMENT.md",
-        "454-99-VERIFY.md"
+        "454-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "454-01-IMPLEMENT.md"
@@ -11052,7 +11338,8 @@
       "folder": "455-PHASE-455-UPGRADE-GONOGO",
       "files": [
         "455-01-IMPLEMENT.md",
-        "455-99-VERIFY.md"
+        "455-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "455-01-IMPLEMENT.md"
@@ -11071,7 +11358,8 @@
       "folder": "456-PHASE-456-FHIR-IMPORT",
       "files": [
         "456-01-IMPLEMENT.md",
-        "456-99-VERIFY.md"
+        "456-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "456-01-IMPLEMENT.md"
@@ -11093,7 +11381,8 @@
       "folder": "457-PHASE-457-CCDA-INGEST",
       "files": [
         "457-01-IMPLEMENT.md",
-        "457-99-VERIFY.md"
+        "457-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "457-01-IMPLEMENT.md"
@@ -11115,7 +11404,8 @@
       "folder": "458-PHASE-458-HL7V2-ADT",
       "files": [
         "458-01-IMPLEMENT.md",
-        "458-99-VERIFY.md"
+        "458-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "458-01-IMPLEMENT.md"
@@ -11136,7 +11426,8 @@
       "folder": "459-PHASE-459-DUAL-RUN",
       "files": [
         "459-01-IMPLEMENT.md",
-        "459-99-VERIFY.md"
+        "459-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "459-01-IMPLEMENT.md"
@@ -11157,7 +11448,8 @@
       "folder": "46-PHASE-42-VISTA-BILLING-RCM",
       "files": [
         "46-01-IMPLEMENT.md",
-        "46-99-VERIFY.md"
+        "46-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "46-01-IMPLEMENT.md"
@@ -11194,7 +11486,8 @@
       "folder": "460-PHASE-460-RECON-ENGINE",
       "files": [
         "460-01-IMPLEMENT.md",
-        "460-99-VERIFY.md"
+        "460-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "460-01-IMPLEMENT.md"
@@ -11215,7 +11508,8 @@
       "folder": "461-PHASE-461-CUTOVER-PLAYBOOK",
       "files": [
         "461-01-IMPLEMENT.md",
-        "461-99-VERIFY.md"
+        "461-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "461-01-IMPLEMENT.md"
@@ -11234,7 +11528,8 @@
       "folder": "462-PHASE-462-ROLLBACK-DRILLS",
       "files": [
         "462-01-IMPLEMENT.md",
-        "462-99-VERIFY.md"
+        "462-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "462-01-IMPLEMENT.md"
@@ -11253,7 +11548,8 @@
       "folder": "463-PHASE-463-MIGRATION-QA",
       "files": [
         "463-01-IMPLEMENT.md",
-        "463-99-VERIFY.md"
+        "463-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "463-01-IMPLEMENT.md"
@@ -11272,7 +11568,8 @@
       "folder": "464-PHASE-464-ED-TRACKER-TYPES",
       "files": [
         "464-01-IMPLEMENT.md",
-        "464-99-VERIFY.md"
+        "464-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "464-01-IMPLEMENT.md"
@@ -11291,7 +11588,8 @@
       "folder": "465-PHASE-465-ED-BOARD-ADAPTER",
       "files": [
         "465-01-IMPLEMENT.md",
-        "465-99-VERIFY.md"
+        "465-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "465-01-IMPLEMENT.md"
@@ -11314,7 +11612,8 @@
       "folder": "466-PHASE-466-OR-ANESTHESIA-TYPES",
       "files": [
         "466-01-IMPLEMENT.md",
-        "466-99-VERIFY.md"
+        "466-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "466-01-IMPLEMENT.md"
@@ -11333,7 +11632,8 @@
       "folder": "467-PHASE-467-OR-SCHEDULING-ADAPTER",
       "files": [
         "467-01-IMPLEMENT.md",
-        "467-99-VERIFY.md"
+        "467-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "467-01-IMPLEMENT.md"
@@ -11357,7 +11657,8 @@
       "folder": "468-PHASE-468-ICU-FLOWSHEET-TYPES",
       "files": [
         "468-01-IMPLEMENT.md",
-        "468-99-VERIFY.md"
+        "468-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "468-01-IMPLEMENT.md"
@@ -11376,7 +11677,8 @@
       "folder": "469-PHASE-469-ICU-DEVICE-ADAPTER",
       "files": [
         "469-01-IMPLEMENT.md",
-        "469-99-VERIFY.md"
+        "469-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "469-01-IMPLEMENT.md"
@@ -11399,7 +11701,8 @@
       "folder": "47-PHASE-43-RCM-LOOP",
       "files": [
         "43-01-IMPLEMENT.md",
-        "43-99-VERIFY.md"
+        "43-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "43-01-IMPLEMENT.md"
@@ -11423,7 +11726,8 @@
       "folder": "470-PHASE-470-SERVICE-LINE-RBAC",
       "files": [
         "470-01-IMPLEMENT.md",
-        "470-99-VERIFY.md"
+        "470-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "470-01-IMPLEMENT.md"
@@ -11442,7 +11746,8 @@
       "folder": "471-PHASE-471-SERVICE-LINE-DASHBOARDS",
       "files": [
         "471-01-IMPLEMENT.md",
-        "471-99-VERIFY.md"
+        "471-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "471-01-IMPLEMENT.md"
@@ -11463,7 +11768,8 @@
       "folder": "472-PHASE-472-SERVICE-LINE-QA",
       "files": [
         "472-01-IMPLEMENT.md",
-        "472-99-VERIFY.md"
+        "472-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "472-01-IMPLEMENT.md"
@@ -11747,7 +12053,8 @@
       "files": [
         "484-01-IMPLEMENT.md",
         "484-99-VERIFY.md",
-        "484-NOTES.md"
+        "484-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "484-01-IMPLEMENT.md"
@@ -11767,7 +12074,8 @@
       "files": [
         "485-01-IMPLEMENT.md",
         "485-99-VERIFY.md",
-        "485-NOTES.md"
+        "485-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "485-01-IMPLEMENT.md"
@@ -11787,7 +12095,8 @@
       "files": [
         "486-01-IMPLEMENT.md",
         "486-99-VERIFY.md",
-        "486-NOTES.md"
+        "486-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "486-01-IMPLEMENT.md"
@@ -11807,7 +12116,8 @@
       "files": [
         "487-01-IMPLEMENT.md",
         "487-99-VERIFY.md",
-        "487-NOTES.md"
+        "487-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "487-01-IMPLEMENT.md"
@@ -11822,12 +12132,13 @@
     },
     {
       "phaseNumber": "488",
-      "title": "W33-P8 UI HARDENING",
+      "title": "Notes",
       "folder": "488-W33-P8-UI-HARDENING",
       "files": [
         "488-01-IMPLEMENT.md",
         "488-99-VERIFY.md",
-        "488-NOTES.md"
+        "488-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "488-01-IMPLEMENT.md"
@@ -11849,12 +12160,13 @@
     },
     {
       "phaseNumber": "489",
-      "title": "W33-P9 DAY IN THE LIFE",
+      "title": "Notes",
       "folder": "489-W33-P9-DAY-IN-THE-LIFE",
       "files": [
         "489-01-IMPLEMENT.md",
         "489-99-VERIFY.md",
-        "489-NOTES.md"
+        "489-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "489-01-IMPLEMENT.md"
@@ -11873,7 +12185,8 @@
       "folder": "49-PHASE-44-PAYER-DIRECTORY",
       "files": [
         "49-01-IMPLEMENT.md",
-        "49-99-VERIFY.md"
+        "49-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "49-01-IMPLEMENT.md"
@@ -11910,11 +12223,12 @@
     },
     {
       "phaseNumber": "490",
-      "title": "W33-P10 PRODUCTION GATES",
+      "title": "Notes",
       "folder": "490-W33-P10-PRODUCTION-GATES",
       "files": [
         "490-01-IMPLEMENT.md",
-        "490-99-VERIFY.md"
+        "490-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "490-01-IMPLEMENT.md"
@@ -11933,7 +12247,8 @@
       "folder": "491-W34-P1-MANIFEST-COVERAGE",
       "files": [
         "491-01-IMPLEMENT.md",
-        "491-99-VERIFY.md"
+        "491-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "491-01-IMPLEMENT.md"
@@ -11952,7 +12267,8 @@
       "folder": "492-W34-P2-TENANT-BINDING",
       "files": [
         "492-01-IMPLEMENT.md",
-        "492-99-VERIFY.md"
+        "492-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "492-01-IMPLEMENT.md"
@@ -11971,7 +12287,8 @@
       "folder": "493-W34-P3-RUNTIME-POLICY-SPINE",
       "files": [
         "493-01-IMPLEMENT.md",
-        "493-99-VERIFY.md"
+        "493-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "493-01-IMPLEMENT.md"
@@ -11988,11 +12305,12 @@
     },
     {
       "phaseNumber": "494",
-      "title": "W34-P4 CONSENT PRIVACY V2",
+      "title": "Notes",
       "folder": "494-W34-P4-CONSENT-PRIVACY-V2",
       "files": [
         "494-01-IMPLEMENT.md",
-        "494-99-VERIFY.md"
+        "494-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "494-01-IMPLEMENT.md"
@@ -12011,11 +12329,12 @@
     },
     {
       "phaseNumber": "495",
-      "title": "W34-P5 DATA RESIDENCY",
+      "title": "Notes",
       "folder": "495-W34-P5-DATA-RESIDENCY",
       "files": [
         "495-01-IMPLEMENT.md",
-        "495-99-VERIFY.md"
+        "495-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "495-01-IMPLEMENT.md"
@@ -12032,11 +12351,12 @@
     },
     {
       "phaseNumber": "496",
-      "title": "W34-P6 RETENTION DSAR",
+      "title": "Notes",
       "folder": "496-W34-P6-RETENTION-DSAR",
       "files": [
         "496-01-IMPLEMENT.md",
-        "496-99-VERIFY.md"
+        "496-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "496-01-IMPLEMENT.md"
@@ -12054,11 +12374,12 @@
     },
     {
       "phaseNumber": "497",
-      "title": "W34-P7 I18N COVERAGE",
+      "title": "Notes",
       "folder": "497-W34-P7-I18N-COVERAGE",
       "files": [
         "497-01-IMPLEMENT.md",
-        "497-99-VERIFY.md"
+        "497-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "497-01-IMPLEMENT.md"
@@ -12075,11 +12396,12 @@
     },
     {
       "phaseNumber": "498",
-      "title": "W34-P8 UTF8 LANE",
+      "title": "Notes",
       "folder": "498-W34-P8-UTF8-LANE",
       "files": [
         "498-01-IMPLEMENT.md",
-        "498-99-VERIFY.md"
+        "498-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "498-01-IMPLEMENT.md"
@@ -12097,11 +12419,12 @@
     },
     {
       "phaseNumber": "499",
-      "title": "W34-P9 CONFORMANCE RUNNER",
+      "title": "Notes",
       "folder": "499-W34-P9-CONFORMANCE-RUNNER",
       "files": [
         "499-01-IMPLEMENT.md",
-        "499-99-VERIFY.md"
+        "499-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "499-01-IMPLEMENT.md"
@@ -12122,7 +12445,8 @@
       "folder": "50-PHASE-45-TRANSACTION-ENGINE",
       "files": [
         "50-01-IMPLEMENT.md",
-        "50-99-VERIFY.md"
+        "50-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "50-01-IMPLEMENT.md"
@@ -12165,7 +12489,8 @@
       "files": [
         "500-01-IMPLEMENT.md",
         "500-99-VERIFY.md",
-        "500-NOTES.md"
+        "500-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "500-01-IMPLEMENT.md"
@@ -12185,7 +12510,8 @@
       "files": [
         "501-01-IMPLEMENT.md",
         "501-99-VERIFY.md",
-        "501-NOTES.md"
+        "501-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "501-01-IMPLEMENT.md"
@@ -12205,7 +12531,8 @@
       "files": [
         "502-01-IMPLEMENT.md",
         "502-99-VERIFY.md",
-        "502-NOTES.md"
+        "502-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "502-01-IMPLEMENT.md"
@@ -12225,7 +12552,8 @@
       "files": [
         "503-01-IMPLEMENT.md",
         "503-99-VERIFY.md",
-        "503-NOTES.md"
+        "503-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "503-01-IMPLEMENT.md"
@@ -12247,7 +12575,8 @@
       "files": [
         "504-01-IMPLEMENT.md",
         "504-99-VERIFY.md",
-        "504-NOTES.md"
+        "504-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "504-01-IMPLEMENT.md"
@@ -12267,7 +12596,8 @@
       "files": [
         "505-01-IMPLEMENT.md",
         "505-99-VERIFY.md",
-        "505-NOTES.md"
+        "505-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "505-01-IMPLEMENT.md"
@@ -12287,7 +12617,8 @@
       "files": [
         "506-01-IMPLEMENT.md",
         "506-99-VERIFY.md",
-        "506-NOTES.md"
+        "506-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "506-01-IMPLEMENT.md"
@@ -12302,12 +12633,13 @@
     },
     {
       "phaseNumber": "507",
-      "title": "W35-P8 ROLE ACCEPTANCE",
+      "title": "Notes",
       "folder": "507-W35-P8-ROLE-ACCEPTANCE",
       "files": [
         "507-01-IMPLEMENT.md",
         "507-99-VERIFY.md",
-        "507-NOTES.md"
+        "507-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "507-01-IMPLEMENT.md"
@@ -12322,12 +12654,13 @@
     },
     {
       "phaseNumber": "508",
-      "title": "W35-P9 OPERATIONAL RUNBOOKS",
+      "title": "Notes",
       "folder": "508-W35-P9-OPERATIONAL-RUNBOOKS",
       "files": [
         "508-01-IMPLEMENT.md",
         "508-99-VERIFY.md",
-        "508-NOTES.md"
+        "508-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "508-01-IMPLEMENT.md"
@@ -12342,12 +12675,13 @@
     },
     {
       "phaseNumber": "509",
-      "title": "W35-P10 RC EVIDENCE BUNDLE",
+      "title": "Notes",
       "folder": "509-W35-P10-RC-EVIDENCE-BUNDLE",
       "files": [
         "509-01-IMPLEMENT.md",
         "509-99-VERIFY.md",
-        "509-NOTES.md"
+        "509-NOTES.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "509-01-IMPLEMENT.md"
@@ -12366,7 +12700,8 @@
       "folder": "51-PHASE-46-NATIONAL-GATEWAY-PACKS",
       "files": [
         "51-01-IMPLEMENT.md",
-        "51-99-VERIFY.md"
+        "51-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "51-01-IMPLEMENT.md"
@@ -12401,12 +12736,75 @@
       ]
     },
     {
+      "phaseNumber": "510",
+      "title": "Prompt Tree Health Repair",
+      "folder": "510-W36-P1-PROMPT-TREE-REPAIR",
+      "files": [
+        "510-01-IMPLEMENT.md",
+        "510-99-VERIFY.md",
+        "NOTES.md"
+      ],
+      "implementFiles": [
+        "510-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "510-99-VERIFY.md"
+      ],
+      "routes": [
+        "/prompts"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "511",
+      "title": "Phase Index Builder Correctness",
+      "folder": "511-W36-P2-PHASE-INDEX-CORRECTNESS",
+      "files": [
+        "511-01-IMPLEMENT.md",
+        "511-99-VERIFY.md",
+        "NOTES.md"
+      ],
+      "implementFiles": [
+        "511-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "511-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "512",
+      "title": "VistA Baseline Lane",
+      "folder": "512-W36-P3-VISTA-BASELINE-LANE",
+      "files": [
+        "512-01-IMPLEMENT.md",
+        "512-99-VERIFY.md",
+        "NOTES.md"
+      ],
+      "implementFiles": [
+        "512-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "512-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
       "phaseNumber": "47",
       "title": "CI + Evidence Pack + Hard Quality Gates",
       "folder": "52-PHASE-47-CI-EVIDENCE-QUALITY-GATES",
       "files": [
         "52-01-IMPLEMENT.md",
-        "52-99-VERIFY.md"
+        "52-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "52-01-IMPLEMENT.md"
@@ -12434,7 +12832,8 @@
       "folder": "53-PHASE-48-OBSERVABILITY-INCIDENT-RUNTIME",
       "files": [
         "53-01-IMPLEMENT.md",
-        "53-99-VERIFY.md"
+        "53-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "53-01-IMPLEMENT.md"
@@ -12464,7 +12863,8 @@
       "folder": "54-PHASE-49-VISTA-AUTH-HARDENING-RBAC",
       "files": [
         "54-01-IMPLEMENT.md",
-        "54-99-VERIFY.md"
+        "54-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "54-01-IMPLEMENT.md"
@@ -12495,7 +12895,8 @@
       "folder": "55-PHASE-50-MIGRATION-TOOLKIT",
       "files": [
         "55-01-IMPLEMENT.md",
-        "55-99-VERIFY.md"
+        "55-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "55-01-IMPLEMENT.md"
@@ -12537,7 +12938,8 @@
       "folder": "56-PHASE-51-ENTERPRISE-PACKAGING",
       "files": [
         "56-01-IMPLEMENT.md",
-        "56-99-VERIFY.md"
+        "56-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "56-01-IMPLEMENT.md"
@@ -12566,7 +12968,8 @@
       "folder": "57-PHASE-52-E2E-PERF-BUDGETS",
       "files": [
         "57-01-IMPLEMENT.md",
-        "57-99-VERIFY.md"
+        "57-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "57-01-IMPLEMENT.md"
@@ -12594,7 +12997,8 @@
       "folder": "58-PHASE-53-PROMPTOS-GOVERNANCE",
       "files": [
         "58-01-IMPLEMENT.md",
-        "58-99-VERIFY.md"
+        "58-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "58-01-IMPLEMENT.md"
@@ -12636,7 +13040,8 @@
       "folder": "59-PHASE-54-ALIGNMENT-AUDIT",
       "files": [
         "59-01-IMPLEMENT.md",
-        "59-99-VERIFY.md"
+        "59-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "59-01-IMPLEMENT.md"
@@ -12658,7 +13063,8 @@
       "folder": "60-PHASE-55-CPRS-PARITY-HARNESS",
       "files": [
         "60-01-IMPLEMENT.md",
-        "60-99-VERIFY.md"
+        "60-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "60-01-IMPLEMENT.md"
@@ -12681,7 +13087,8 @@
       "folder": "61-PHASE-56-CPRS-WAVE1-LAYOUT",
       "files": [
         "61-01-IMPLEMENT.md",
-        "61-99-VERIFY.md"
+        "61-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "61-01-IMPLEMENT.md"
@@ -12722,7 +13129,8 @@
       "folder": "62-PHASE-57-CPRS-WAVE2-WRITE",
       "files": [
         "62-01-IMPLEMENT.md",
-        "62-99-VERIFY.md"
+        "62-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "62-01-IMPLEMENT.md"
@@ -12758,7 +13166,8 @@
       "folder": "63-PHASE-58-INTEROP-MONITOR-V2",
       "files": [
         "63-01-IMPLEMENT.md",
-        "63-99-VERIFY.md"
+        "63-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "63-01-IMPLEMENT.md"
@@ -12797,7 +13206,8 @@
       "folder": "64-PHASE-59-CPOE-PARITY",
       "files": [
         "64-01-IMPLEMENT.md",
-        "64-99-VERIFY.md"
+        "64-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "64-01-IMPLEMENT.md"
@@ -12836,7 +13246,8 @@
       "folder": "65-PHASE-60-TIU-NOTES-PARITY",
       "files": [
         "65-01-IMPLEMENT.md",
-        "65-99-VERIFY.md"
+        "65-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "65-01-IMPLEMENT.md"
@@ -12864,7 +13275,8 @@
       "folder": "66-PHASE-61-PORTAL-DIGITAL-FRONT-DOOR",
       "files": [
         "66-01-IMPLEMENT.md",
-        "66-99-VERIFY.md"
+        "66-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "66-01-IMPLEMENT.md"
@@ -12900,7 +13312,8 @@
       "folder": "67-PHASE-62-GO-LIVE-HARDENING",
       "files": [
         "67-01-IMPLEMENT.md",
-        "67-99-VERIFY.md"
+        "67-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "67-01-IMPLEMENT.md"
@@ -12935,7 +13348,8 @@
       "folder": "68-PHASE-63-SCHEDULING-V1",
       "files": [
         "68-01-IMPLEMENT.md",
-        "68-99-VERIFY.md"
+        "68-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "68-01-IMPLEMENT.md"
@@ -12982,7 +13396,8 @@
       "folder": "69-PHASE-64-SECURE-MESSAGING-V1",
       "files": [
         "69-01-IMPLEMENT.md",
-        "69-99-VERIFY.md"
+        "69-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "69-01-IMPLEMENT.md"
@@ -13019,7 +13434,8 @@
       "folder": "70-PHASE-70-MAILMAN-RPC-BRIDGE",
       "files": [
         "70-01-IMPLEMENT.md",
-        "70-99-VERIFY.md"
+        "70-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "70-01-IMPLEMENT.md"
@@ -13052,7 +13468,8 @@
       "folder": "71-PHASE-65-IMMUNIZATIONS",
       "files": [
         "71-01-IMPLEMENT.md",
-        "71-99-VERIFY.md"
+        "71-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "71-01-IMPLEMENT.md"
@@ -13078,7 +13495,8 @@
       "folder": "72-PHASE-66-PRODUCTION-IAM-V1",
       "files": [
         "72-01-IMPLEMENT.md",
-        "72-99-VERIFY.md"
+        "72-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "72-01-IMPLEMENT.md"
@@ -13113,7 +13531,8 @@
       "folder": "73-PHASE-67-ADT-INPATIENT",
       "files": [
         "73-01-IMPLEMENT.md",
-        "73-99-VERIFY.md"
+        "73-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "73-01-IMPLEMENT.md"
@@ -13160,11 +13579,12 @@
     },
     {
       "phaseNumber": "68",
-      "title": "NURSING WORKFLOW",
+      "title": "Notes",
       "folder": "74-PHASE-68-NURSING-WORKFLOW",
       "files": [
         "74-01-IMPLEMENT.md",
-        "74-99-VERIFY.md"
+        "74-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "74-01-IMPLEMENT.md"
@@ -13197,11 +13617,12 @@
     },
     {
       "phaseNumber": "69",
-      "title": "RCM OPS EXCELLENCE",
+      "title": "Notes",
       "folder": "75-PHASE-69-RCM-OPS-EXCELLENCE",
       "files": [
         "75-01-IMPLEMENT.md",
-        "75-99-VERIFY.md"
+        "75-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "75-01-IMPLEMENT.md"
@@ -13237,7 +13658,8 @@
       "folder": "76-PHASE-71-INTEROP-MONITOR-V2",
       "files": [
         "76-01-IMPLEMENT.md",
-        "76-99-VERIFY.md"
+        "76-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "76-01-IMPLEMENT.md"
@@ -13268,7 +13690,8 @@
       "folder": "77-PHASE-72-REALITY-VERIFIER-PACK",
       "files": [
         "77-01-IMPLEMENT.md",
-        "77-99-VERIFY.md"
+        "77-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "77-01-IMPLEMENT.md"
@@ -13301,7 +13724,8 @@
       "folder": "78-PHASE-73-DRIFT-LOCK",
       "files": [
         "78-01-IMPLEMENT.md",
-        "78-99-VERIFY.md"
+        "78-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "78-01-IMPLEMENT.md"
@@ -13320,7 +13744,8 @@
       "folder": "79-PHASE-74-REALITY-VERIFIER-V2",
       "files": [
         "79-01-IMPLEMENT.md",
-        "79-99-VERIFY.md"
+        "79-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "79-01-IMPLEMENT.md"
@@ -13348,11 +13773,12 @@
     },
     {
       "phaseNumber": "75",
-      "title": "GO LIVE EVIDENCE PACK",
+      "title": "Notes",
       "folder": "80-PHASE-75-GO-LIVE-EVIDENCE-PACK",
       "files": [
         "80-01-IMPLEMENT.md",
-        "80-99-VERIFY.md"
+        "80-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "80-01-IMPLEMENT.md"
@@ -13384,7 +13810,8 @@
       "folder": "81-PHASE-76-MODULARIZATION-V1",
       "files": [
         "81-01-IMPLEMENT.md",
-        "81-99-VERIFY.md"
+        "81-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "81-01-IMPLEMENT.md"
@@ -13419,7 +13846,8 @@
       "folder": "82-PHASE-77-OBSERVABILITY-V1",
       "files": [
         "82-01-IMPLEMENT.md",
-        "82-99-VERIFY.md"
+        "82-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "82-01-IMPLEMENT.md"
@@ -13458,7 +13886,8 @@
       "folder": "83-PHASE-78-PENDING-BURNDOWN",
       "files": [
         "83-01-IMPLEMENT.md",
-        "83-99-VERIFY.md"
+        "83-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "83-01-IMPLEMENT.md"
@@ -13488,7 +13917,8 @@
       "folder": "84-PHASE-79-COVERSHEET-LAYOUT",
       "files": [
         "84-01-IMPLEMENT.md",
-        "84-99-VERIFY.md"
+        "84-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "84-01-IMPLEMENT.md"
@@ -13517,11 +13947,12 @@
     },
     {
       "phaseNumber": "80",
-      "title": "PATIENT RECORD PORTABILITY",
+      "title": "Notes",
       "folder": "85-PHASE-80-PATIENT-RECORD-PORTABILITY",
       "files": [
         "85-01-IMPLEMENT.md",
-        "85-99-VERIFY.md"
+        "85-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "85-01-IMPLEMENT.md"
@@ -13559,7 +13990,8 @@
       "folder": "86-PHASE-81-IMAGING-VIEWER-V1",
       "files": [
         "86-01-IMPLEMENT.md",
-        "86-99-VERIFY.md"
+        "86-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "86-01-IMPLEMENT.md"
@@ -13594,7 +14026,8 @@
       "folder": "87-PHASE-82-RCM-ADAPTER-EXPANSION-V2",
       "files": [
         "87-01-IMPLEMENT.md",
-        "87-99-VERIFY.md"
+        "87-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "87-01-IMPLEMENT.md"
@@ -13624,7 +14057,8 @@
       "folder": "88-PHASE-83-INPATIENT-ADT",
       "files": [
         "88-01-IMPLEMENT.md",
-        "88-99-VERIFY.md"
+        "88-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "88-01-IMPLEMENT.md"
@@ -13661,7 +14095,8 @@
       "folder": "89-PHASE-84-NURSING",
       "files": [
         "89-01-IMPLEMENT.md",
-        "89-99-VERIFY.md"
+        "89-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "89-01-IMPLEMENT.md"
@@ -13700,7 +14135,8 @@
       "folder": "90-PHASE-85-EMAR-BCMA",
       "files": [
         "90-01-IMPLEMENT.md",
-        "90-99-VERIFY.md"
+        "90-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "90-01-IMPLEMENT.md"
@@ -13739,7 +14175,8 @@
       "folder": "91-PHASE-86-SHIFT-HANDOFF",
       "files": [
         "91-01-IMPLEMENT.md",
-        "91-99-VERIFY.md"
+        "91-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "91-01-IMPLEMENT.md"
@@ -13783,7 +14220,8 @@
       "folder": "92-PHASE-87-MEGA-AUDIT",
       "files": [
         "87-01-IMPLEMENT.md",
-        "87-99-VERIFY.md"
+        "87-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "87-01-IMPLEMENT.md"
@@ -13822,7 +14260,8 @@
       "folder": "93-PHASE-87B-PH-RCM",
       "files": [
         "87B-01-IMPLEMENT.md",
-        "87B-99-VERIFY.md"
+        "87B-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "87B-01-IMPLEMENT.md"
@@ -13872,7 +14311,8 @@
       "folder": "94-PHASE-88-PH-PAYER-REGISTRY",
       "files": [
         "94-01-IMPLEMENT.md",
-        "94-99-VERIFY.md"
+        "94-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "94-01-IMPLEMENT.md"
@@ -13908,7 +14348,8 @@
       "folder": "95-PHASE-89-LOA-ENGINE-V1",
       "files": [
         "89-01-IMPLEMENT.md",
-        "89-99-VERIFY.md"
+        "89-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "89-01-IMPLEMENT.md"
@@ -13947,7 +14388,8 @@
       "folder": "96-PHASE-90-PHILHEALTH-ECLAIMS3",
       "files": [
         "90-01-IMPLEMENT.md",
-        "90-99-VERIFY.md"
+        "90-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "90-01-IMPLEMENT.md"
@@ -13981,7 +14423,8 @@
       "folder": "97-PHASE-91-CLAIMS-LIFECYCLE",
       "files": [
         "91-01-IMPLEMENT.md",
-        "91-99-VERIFY.md"
+        "91-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "91-01-IMPLEMENT.md"
@@ -14018,7 +14461,8 @@
       "folder": "98-PHASE-92-PAYMENTS",
       "files": [
         "92-01-IMPLEMENT.md",
-        "92-99-VERIFY.md"
+        "92-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "92-01-IMPLEMENT.md"
@@ -14072,7 +14516,8 @@
       "folder": "99-PHASE-93-PH-HMO-DEEPENING",
       "files": [
         "93-01-IMPLEMENT.md",
-        "93-99-VERIFY.md"
+        "93-99-VERIFY.md",
+        "NOTES.md"
       ],
       "implementFiles": [
         "93-01-IMPLEMENT.md"

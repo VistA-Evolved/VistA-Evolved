@@ -76,7 +76,7 @@ describe("Phase 25: Risk Mitigation (ETL Writer + Auth + Persistence)", () => {
   });
 });
 
-describe("Phase 36: OBSERVABILITY RELIABILITY", () => {
+describe("Phase 36: Notes", () => {
   it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/health`);
     expect(r0.status, "/health").not.toBe(500);

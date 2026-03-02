@@ -140,7 +140,7 @@ test.describe("Phase 79: CPRS Cover Sheet Layout Parity v1", () => {
   });
 });
 
-test.describe("Phase 80: PATIENT RECORD PORTABILITY", () => {
+test.describe("Phase 80: Notes", () => {
   test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/portal/record/export`);
     expect(r0.status(), "/portal/record/export not 500").not.toBe(500);

@@ -196,7 +196,7 @@ test.describe("Phase 100: Eligibility + Claim Status Polling Framework (Adapter-
   });
 });
 
-test.describe("Phase 102: REGISTRY MIGRATION", () => {
+test.describe("Phase 102: Notes", () => {
   test("UI component files exist on disk", async () => {
     const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {

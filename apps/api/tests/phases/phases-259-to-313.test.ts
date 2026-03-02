@@ -65,7 +65,7 @@ describe("Phase 263: Wave 8 Integrity Audit", () => {
   });
 });
 
-describe("Phase 263: Wave 8 INTEGRITY AUDIT", () => {
+describe("Phase 263: Notes", () => {
   it("phase registered in index", () => {
     expect("263").toBeTruthy();
   });

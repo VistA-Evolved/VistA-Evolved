@@ -150,7 +150,7 @@ test.describe("Phase 11: CPRS Web Replica End-to-End", () => {
   });
 });
 
-test.describe("Phase 12: CPRS PARITY WIRING", () => {
+test.describe("Phase 12: Notes", () => {
   test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/cprs/verify`);
     expect(r0.status(), "/cprs/verify not 500").not.toBe(500);
@@ -198,7 +198,7 @@ test.describe("Phase 12: CPRS PARITY WIRING", () => {
   });
 });
 
-test.describe("Phase 13: CPRS OPERATIONALIZATION", () => {
+test.describe("Phase 13: Notes", () => {
   test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/admin/audit-log`);
     expect(r0.status(), "/admin/audit-log not 500").not.toBe(500);
@@ -294,7 +294,7 @@ test.describe("Phase 14: Compatibility Layer IMPLEMENT", () => {
   });
 });
 
-test.describe("Phase 15: ENTERPRISE HARDENING", () => {
+test.describe("Phase 15: Notes", () => {
   test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/audit/events`);
     expect(r0.status(), "/audit/events not 500").not.toBe(500);
@@ -342,7 +342,7 @@ test.describe("Phase 15: ENTERPRISE HARDENING", () => {
   });
 });
 
-test.describe("Phase 16: PRODUCTION READINESS", () => {
+test.describe("Phase 16: Notes", () => {
   test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/health`);
     expect(r0.status(), "/health not 500").not.toBe(500);
@@ -524,7 +524,7 @@ test.describe("Phase 19: Reporting + Export Governance + Ops Analytics + Optiona
   });
 });
 
-test.describe("Phase 21: INTEROP REALITY", () => {
+test.describe("Phase 21: Notes", () => {
   test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/vista/interop/hl7-links`);
     expect(r0.status(), "/vista/interop/hl7-links not 500").not.toBe(500);

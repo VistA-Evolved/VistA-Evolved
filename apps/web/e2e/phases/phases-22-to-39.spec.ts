@@ -108,7 +108,7 @@ test.describe("Phase 23: Imaging Workflow — VERIFY", () => {
   });
 });
 
-test.describe("Phase 24: IMAGING ENTERPRISE", () => {
+test.describe("Phase 24: Notes", () => {
   test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/security/break-glass/start`);
     expect(r0.status(), "/security/break-glass/start not 500").not.toBe(500);
@@ -177,7 +177,7 @@ test.describe("Phase 26: Portal & Telehealth: VistA-First Grounding + Contract +
   });
 });
 
-test.describe("Phase 28: ENTERPRISE INTAKE OS", () => {
+test.describe("Phase 28: Notes", () => {
   test("UI component files exist on disk", async () => {
     const componentNames = ["IntakePanel.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
@@ -201,7 +201,7 @@ test.describe("Phase 28: ENTERPRISE INTAKE OS", () => {
 
 });
 
-test.describe("Phase 29: PATIENT IAM", () => {
+test.describe("Phase 29: Notes", () => {
   test("UI component files exist on disk", async () => {
     const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
@@ -225,7 +225,7 @@ test.describe("Phase 29: PATIENT IAM", () => {
 
 });
 
-test.describe("Phase 32: MESSAGING REFILLS", () => {
+test.describe("Phase 32: Notes", () => {
   test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/portal/staff/tasks`);
     expect(r0.status(), "/portal/staff/tasks not 500").not.toBe(500);
@@ -267,7 +267,7 @@ test.describe("Phase 32: MESSAGING REFILLS", () => {
   });
 });
 
-test.describe("Phase 33: AI ASSIST GATEWAY", () => {
+test.describe("Phase 33: Notes", () => {
   test("UI component files exist on disk", async () => {
     const componentNames = ["AIAssistPanel.tsx","CPRSTabStrip.tsx","page.tsx","portal-nav.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {

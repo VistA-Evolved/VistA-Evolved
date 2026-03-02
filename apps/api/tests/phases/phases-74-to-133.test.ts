@@ -18,7 +18,7 @@ describe("Phase 74: Reality Verification Pack v2 (E2E Evidence + Click Audit + T
   });
 });
 
-describe("Phase 75: GO LIVE EVIDENCE PACK", () => {
+describe("Phase 75: Notes", () => {
   it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/artifacts/evidence/phase75/backup/`);
     expect(r0.status, "/artifacts/evidence/phase75/backup/").not.toBe(500);
@@ -40,7 +40,7 @@ describe("Phase 78: IMPLEMENT: PendingTargets Burn-Down v1 (Top 20 Gaps)", () =>
   });
 });
 
-describe("Phase 104: DB SECURITY", () => {
+describe("Phase 104: Notes", () => {
   it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/admin/payer-db/audit/export`);
     expect(r0.status, "/admin/payer-db/audit/export").not.toBe(500);
