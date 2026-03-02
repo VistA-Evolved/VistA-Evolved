@@ -213,6 +213,11 @@ export const KNOWN_RPCS: { rpc: string; domain: string; fallback?: string; descr
   { rpc: "NURS ASSESSMENTS",       domain: "nursing",    description: "Nursing assessments (NURS)" },
   // Lab write RPCs (LR package)
   { rpc: "LR VERIFY",              domain: "labs",       description: "Write-back: verify lab result (LR)" },
+  // Phase 484 (W33-P4): Nursing I/O + assessment RPCs
+  { rpc: "GMRIO RESULTS",           domain: "nursing",    description: "I&O results read (GMR)" },
+  { rpc: "GMRIO ADD",               domain: "nursing",    description: "I&O entry add (GMR)" },
+  { rpc: "ZVENAS LIST",             domain: "nursing",    description: "Assessment read (custom ZVE)" },
+  { rpc: "ZVENAS SAVE",             domain: "nursing",    description: "Assessment save (custom ZVE)" },
 ];
 
 /* ------------------------------------------------------------------ */

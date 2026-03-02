@@ -34,6 +34,7 @@ import { safeCallRpc, safeCallRpcWithList } from "../../lib/rpc-resilience.js";
 import type { RpcParam } from "../../vista/rpcBrokerClient.js";
 import { log } from "../../lib/logger.js";
 import { immutableAudit } from "../../lib/immutable-audit.js";
+import { tier0Gate } from "../../lib/tier0-response.js";
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
@@ -231,57 +232,59 @@ export default async function nursingRoutes(server: FastifyInstance) {
     }
   });
 
-  /* ------ GET /vista/nursing/tasks?dfn=N (integration-pending) ------ */
+  /* ------ GET /vista/nursing/tasks?dfn=N (Tier-0 capability-gated) ------ */
   server.get("/vista/nursing/tasks", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
 
-    immutableAudit("nursing.tasks", "success", auditActor(session), { detail: { dfn, status: "integration-pending" } });
-    // No native VistA "nursing task list" RPC exists -- tasks are derived from orders,
-    // MAR schedule, and nursing protocols. Real implementation requires BCMA + order parsing.
-    return pendingFallback("Nursing Task List", [
-      { rpc: "PSB MED LOG", package: "PSB", reason: "BCMA/PSB package not available in WorldVistA sandbox -- deferred to Phase 68B" },
-      { rpc: "ORWORDG IEN", package: "OR", reason: "Ward order group IEN lookup for nursing order view -- deferred to Phase 68B" },
-    ]);
+    const blocked = tier0Gate("PSB MED LOG", "nursing", {
+      vistaFiles: ["PSB(53.79) BCMA MEDICATION LOG"],
+      targetRoutines: ["PSBML", "PSBMLEN", "PSBVDL"],
+      migrationPath: "Install BCMA package, configure med routes, enable PSB RPCs",
+      sandboxNote: "WorldVistA Docker does not include BCMA/PSB package. Nursing tasks derived from BCMA + order parsing.",
+    });
+    immutableAudit("nursing.tasks", blocked ? "blocked" : "attempt", auditActor(session), { detail: { dfn, gated: !!blocked, rpc: "PSB MED LOG" } });
+    if (blocked) return reply.status(202).send(blocked);
+
+    // RPC available -- real implementation not yet wired (Phase 68B future)
+    return reply.code(501).send({ ok: false, status: "not-implemented", message: "PSB MED LOG available but task parsing not yet wired" });
   });
 
-  /* ------ GET /vista/nursing/mar?dfn=N (integration-pending) ------ */
+  /* ------ GET /vista/nursing/mar?dfn=N (Tier-0 capability-gated) ------ */
   server.get("/vista/nursing/mar", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
 
-    immutableAudit("nursing.mar", "success", auditActor(session), { detail: { dfn, status: "integration-pending" } });
-    return pendingFallback("Medication Administration Record", [
-      { rpc: "PSB ALLERGY", package: "PSB", reason: "BCMA/PSB package not available in WorldVistA sandbox" },
-      { rpc: "PSB MED LOG", package: "PSB", reason: "BCMA/PSB package not available in WorldVistA sandbox" },
-    ]);
+    const blocked = tier0Gate("PSB ALLERGY", "nursing", {
+      vistaFiles: ["PSB(53.79) BCMA MEDICATION LOG", "PSB(53.78) BCMA ALLERGY"],
+      targetRoutines: ["PSBML", "PSBAL", "PSBMLEN"],
+      migrationPath: "Install BCMA package, configure med routes, enable PSB RPCs",
+      sandboxNote: "WorldVistA Docker does not include BCMA/PSB package. MAR requires PSB ALLERGY + PSB MED LOG.",
+    });
+    immutableAudit("nursing.mar", blocked ? "blocked" : "attempt", auditActor(session), { detail: { dfn, gated: !!blocked, rpc: "PSB ALLERGY" } });
+    if (blocked) return reply.status(202).send(blocked);
+
+    return reply.code(501).send({ ok: false, status: "not-implemented", message: "PSB ALLERGY available but MAR view not yet wired" });
   });
 
-  /* ------ POST /vista/nursing/mar/administer (integration-pending) ------ */
+  /* ------ POST /vista/nursing/mar/administer (Tier-0 capability-gated) ------ */
   server.post("/vista/nursing/mar/administer", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
 
-    immutableAudit("nursing.mar", "success", auditActor(session), { detail: { action: "administer-attempt", status: "integration-pending" } });
-    return reply.code(202).send({
-      ok: false,
-      source: "integration-pending",
-      status: "integration-pending",
-      message: "Medication administration recording requires BCMA/PSB package",
-      rpcUsed: [],
-      pendingTargets: [
-        { rpc: "PSB MED LOG", package: "PSB", reason: "BCMA/PSB package not available in WorldVistA sandbox -- deferred to Phase 68B" },
-      ],
-      vistaGrounding: {
-        vistaFiles: ["PSB(53.79) BCMA MEDICATION LOG"],
-        targetRoutines: ["PSBML", "PSBMLEN"],
-        migrationPath: "Install BCMA package, configure med routes, enable PSB RPCs",
-        sandboxNote: "WorldVistA Docker does not include BCMA/PSB package",
-      },
+    const blocked = tier0Gate("PSB MED LOG", "nursing", {
+      vistaFiles: ["PSB(53.79) BCMA MEDICATION LOG"],
+      targetRoutines: ["PSBML", "PSBMLEN"],
+      migrationPath: "Install BCMA package, configure med routes, enable PSB RPCs",
+      sandboxNote: "WorldVistA Docker does not include BCMA/PSB package.",
     });
+    immutableAudit("nursing.mar", blocked ? "blocked" : "attempt", auditActor(session), { detail: { action: "administer-attempt", gated: !!blocked, rpc: "PSB MED LOG" } });
+    if (blocked) return reply.status(202).send(blocked);
+
+    return reply.code(501).send({ ok: false, status: "not-implemented", message: "PSB MED LOG available but administer not yet wired" });
   });
 
   /* ================================================================ */
@@ -455,75 +458,42 @@ export default async function nursingRoutes(server: FastifyInstance) {
     }
   });
 
-  /* ------ GET /vista/nursing/io?dfn=N (integration-pending) ------ */
+  /* ------ GET /vista/nursing/io?dfn=N (Tier-0 capability-gated) ------ */
   server.get("/vista/nursing/io", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
 
-    // VistA I&O is tracked in GMR(126) INTAKE/OUTPUT file.
-    // The generic RPC "ORQQVI VITALS" does NOT cover I&O.
-    // Possible RPCs: GMRIO RESULTS (not in sandbox OR CPRS GUI CHART context).
-    immutableAudit("nursing.io", "success", auditActor(session), { detail: { dfn, status: "integration-pending" } });
-    return {
-      ok: false,
-      source: "integration-pending",
-      status: "integration-pending",
-      items: [],
-      shifts: [],
-      totals: null,
-      rpcUsed: [],
-      pendingTargets: [
-        { rpc: "GMRIO RESULTS", package: "GMR", reason: "I&O results RPC -- not available in OR CPRS GUI CHART context" },
-        { rpc: "GMRIO ADD", package: "GMR", reason: "I&O entry add -- requires GMR IO package" },
-      ],
-      vistaGrounding: {
-        vistaFiles: ["GMR(126) INTAKE/OUTPUT", "GMR(126.1) I/O TYPE", "GMR(126.2) I/O SHIFT"],
-        targetRoutines: ["GMRIORES", "GMRIOADD", "GMRIOENT"],
-        migrationPath: "Enable GMR I&O RPCs in OR CPRS GUI CHART context, or create ZVEIOM custom M routine",
-        sandboxNote: "GMR I&O package exists in WorldVistA but RPCs not exposed via OR CPRS GUI CHART context",
-      },
-      _note: `I&O for DFN ${dfn}: requires GMR I&O package RPCs. Target file: GMR(126).`,
-    };
+    const blocked = tier0Gate("GMRIO RESULTS", "nursing", {
+      vistaFiles: ["GMR(126) INTAKE/OUTPUT", "GMR(126.1) I/O TYPE", "GMR(126.2) I/O SHIFT"],
+      targetRoutines: ["GMRIORES", "GMRIOADD", "GMRIOENT"],
+      migrationPath: "Enable GMR I&O RPCs in OR CPRS GUI CHART context, or create ZVEIOM custom M routine",
+      sandboxNote: "GMR I&O package exists in WorldVistA but RPCs not exposed via OR CPRS GUI CHART context.",
+    });
+    immutableAudit("nursing.io", blocked ? "blocked" : "attempt", auditActor(session), { detail: { dfn, gated: !!blocked, rpc: "GMRIO RESULTS" } });
+    if (blocked) return reply.status(202).send(blocked);
+
+    return reply.code(501).send({ ok: false, status: "not-implemented", message: "GMRIO RESULTS available but I&O parsing not yet wired" });
   });
 
-  /* ------ GET /vista/nursing/assessments?dfn=N (integration-pending) ------ */
+  /* ------ GET /vista/nursing/assessments?dfn=N (Tier-0 capability-gated) ------ */
   server.get("/vista/nursing/assessments", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || "").trim();
     if (!dfn) return reply.code(400).send({ ok: false, error: "Missing dfn parameter" });
     if (!/^\d+$/.test(dfn)) return reply.code(400).send({ ok: false, error: "Invalid dfn -- must be a positive integer" });
 
-    // Nursing assessments in VistA are stored via GN (Nursing) package:
-    // File 228 (GN ASSESSMENT) and File 228.1 (GN ASSESSMENT DETAIL).
-    // No standard RPC in OR CPRS GUI CHART context for reading assessments.
-    immutableAudit("nursing.assessments", "success", auditActor(session), { detail: { dfn, status: "integration-pending" } });
-    return {
-      ok: false,
-      source: "integration-pending",
-      status: "integration-pending",
-      items: [],
-      assessmentTypes: [
-        "Head-to-Toe",
-        "Pain Assessment",
-        "Fall Risk (Morse)",
-        "Braden Skin Assessment",
-        "Restraint Assessment",
-      ],
-      rpcUsed: [],
-      pendingTargets: [
-        { rpc: "ZVENAS LIST", package: "ZVE", reason: "Custom assessment read RPC -- to be built in Phase 84B" },
-        { rpc: "ZVENAS SAVE", package: "ZVE", reason: "Custom assessment save RPC -- to be built in Phase 84B" },
-      ],
-      vistaGrounding: {
-        vistaFiles: ["GN(228) ASSESSMENT", "GN(228.1) ASSESSMENT DETAIL", "TIU(8925) TIU DOCUMENT"],
-        targetRoutines: ["GNASMT", "GNASMTU", "TIUSRVP"],
-        migrationPath: "Build ZVENAS custom RPCs wrapping GN package, or use TIU-based assessment templates",
-        sandboxNote: "GN Nursing package present but no standard read/write RPCs exposed. TIU templates are the recommended approach.",
-      },
-      _note: `Nursing assessments for DFN ${dfn}: requires GN package RPCs or TIU template approach.`,
-    };
+    const blocked = tier0Gate("ZVENAS LIST", "nursing", {
+      vistaFiles: ["GN(228) ASSESSMENT", "GN(228.1) ASSESSMENT DETAIL", "TIU(8925) TIU DOCUMENT"],
+      targetRoutines: ["GNASMT", "GNASMTU", "TIUSRVP"],
+      migrationPath: "Build ZVENAS custom RPCs wrapping GN package, or use TIU-based assessment templates",
+      sandboxNote: "GN Nursing package present but no standard read/write RPCs exposed. TIU templates are the recommended approach.",
+    });
+    immutableAudit("nursing.assessments", blocked ? "blocked" : "attempt", auditActor(session), { detail: { dfn, gated: !!blocked, rpc: "ZVENAS LIST" } });
+    if (blocked) return reply.status(202).send(blocked);
+
+    return reply.code(501).send({ ok: false, status: "not-implemented", message: "ZVENAS LIST available but assessment retrieval not yet wired" });
   });
 
   /* ------ POST /vista/nursing/notes/create ------ */

@@ -1,16 +1,12 @@
 {
   "_meta": {
     "description": "Integration-pending budget baseline (Phase 480)",
-    "updatedAt": "2026-03-02T05:48:27.594Z",
+    "updatedAt": "2026-03-02T06:05:35.260Z",
     "updatedBy": "integration-pending-budget.mjs --update"
   },
-  "total": 290,
+  "total": 274,
   "tolerance": 0,
   "files": [
-    {
-      "file": "apps/api/src/routes/nursing/index.ts",
-      "count": 24
-    },
     {
       "file": "apps/api/src/routes/emar/index.ts",
       "count": 19
@@ -46,6 +42,10 @@
     {
       "file": "apps/api/src/routes/discharge-workflow.ts",
       "count": 9
+    },
+    {
+      "file": "apps/api/src/routes/nursing/index.ts",
+      "count": 8
     },
     {
       "file": "apps/api/src/writeback/__tests__/pharm-contract.test.ts",

@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-02T05:48:32.960Z",
+  "generatedAt": "2026-03-02T06:05:51.423Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 482,
+  "phaseCount": 483,
   "phases": [
     {
       "phaseNumber": "1",
@@ -11739,6 +11739,26 @@
         "apps/api/src/routes/adt/index.ts",
         "apps/api/src/routes/inpatient/index.ts"
       ]
+    },
+    {
+      "phaseNumber": "484",
+      "title": "W33-P4: Nursing Writeback (Vitals + I/O + Assessments)",
+      "folder": "484-W33-P4-NURSING-WRITEBACK",
+      "files": [
+        "484-01-IMPLEMENT.md",
+        "484-99-VERIFY.md",
+        "484-NOTES.md"
+      ],
+      "implementFiles": [
+        "484-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "484-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
     },
     {
       "phaseNumber": "44",
