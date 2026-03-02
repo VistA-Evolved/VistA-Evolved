@@ -779,6 +779,32 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: "Phase 143: governance audit trail for brain decisions.",
   },
 
+
+  // MHA (Mental Health Assessment)
+  {
+    id: "mha-administration-store",
+    file: "routes/mha/index.ts",
+    variable: "administrationStore",
+    description: "Scored MHA instrument administrations (PHQ-9, GAD-7, PCL-5, C-SSRS, AUDIT-C)",
+    classification: "clinical_data",
+    durability: "in_memory_only",
+    domain: "mha",
+    maxSize: 50_000,
+    migrationTarget: "pg: mha_administration table",
+    notes: "Phase 535/536: In-memory store. TIU writeback via file-note endpoint.",
+  },
+  {
+    id: "mha-patient-index",
+    file: "routes/mha/index.ts",
+    variable: "patientIndex",
+    description: "Patient DFN -> administration ID index for result lookups",
+    classification: "index",
+    durability: "in_memory_only",
+    domain: "mha",
+    maxSize: 50_000,
+    migrationTarget: "pg: derived from mha_administration.dfn column",
+    notes: "Phase 535: Secondary index, rebuilt from administration store.",
+  },
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // MIGRATION
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•

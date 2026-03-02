@@ -1,14 +1,15 @@
 /**
- * MHA Routes — Phase 535: Mental Health Assessment v1
+ * MHA Routes — Phase 535/536: Mental Health Assessment v1 + TIU Writeback
  *
  * Endpoints:
- *   GET  /vista/mha/instruments         — List available MH instruments
- *   GET  /vista/mha/instruments/:id     — Get full instrument definition (FHIR Questionnaire)
- *   GET  /vista/mha/results?dfn=N       — Patient MH results history
- *   POST /vista/mha/administer          — Submit completed instrument + score
+ *   GET  /vista/mha/instruments              — List available MH instruments
+ *   GET  /vista/mha/instruments/:id          — Get full instrument definition (FHIR Questionnaire)
+ *   GET  /vista/mha/results?dfn=N            — Patient MH results history
+ *   POST /vista/mha/administer               — Submit completed instrument + score
+ *   POST /vista/mha/administer/:id/file-note — File scored result as TIU note (Phase 536)
  *
  * Auth: session-based (/vista/* catch-all in security.ts).
- * VistA RPCs: YTT/YTQZ namespace (read-only in v1; write-back in Phase 536).
+ * VistA RPCs: YTT/YTQZ namespace + TIU CREATE RECORD / TIU SET DOCUMENT TEXT.
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
@@ -18,6 +19,7 @@ import { log } from "../../lib/logger.js";
 import { safeErr } from "../../lib/safe-error.js";
 import { listInstruments, getInstrument, loadInstruments } from "./instruments.js";
 import { scoreInstrument, type MhaAnswer, type MhaScoreResult } from "./scoring.js";
+import { generateMhaNote, buildNoteInput } from "./note-generator.js";
 import { randomUUID } from "node:crypto";
 
 /* ------------------------------------------------------------------ */
@@ -224,6 +226,131 @@ export default async function mhaRoutes(server: FastifyInstance): Promise<void> 
       rpcUsed: [],
       pendingTargets: ["YTT SAVE RESULTS", "TIU CREATE RECORD"],
       _note: "Stored locally. VistA write-back via TIU CREATE RECORD planned for Phase 536.",
+    });
+  });
+
+  /* -------------------------------------------------------------- */
+  /* POST /vista/mha/administer/:id/file-note — TIU writeback        */
+  /* Phase 536: File scored result as TIU note in VistA               */
+  /* -------------------------------------------------------------- */
+  server.post("/vista/mha/administer/:id/file-note", async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = requireSession(request, reply);
+    if (!session) return;
+
+    const { id } = request.params as { id: string };
+    const body = (request.body as any) || {};
+    const { titleIen, visitLocation, visitDate } = body as {
+      titleIen?: string;
+      visitLocation?: string;
+      visitDate?: string;
+    };
+
+    // Lookup administration
+    const admin = administrationStore.get(id);
+    if (!admin) {
+      return reply.code(404).send({ ok: false, error: `Administration not found: ${id}` });
+    }
+
+    if (admin.vistaFiled) {
+      return reply.code(409).send({
+        ok: false,
+        error: "Already filed to VistA",
+        vistaIen: admin.vistaIen,
+      });
+    }
+
+    // Get instrument for note generation
+    const instrument = getInstrument(admin.instrumentId);
+    if (!instrument) {
+      return reply.code(500).send({
+        ok: false,
+        error: `Instrument definition not found: ${admin.instrumentId}`,
+      });
+    }
+
+    // Generate note text
+    const noteInput = buildNoteInput(admin, instrument);
+    const noteLines = generateMhaNote(noteInput);
+
+    const duz = (session as any).duz || "unknown";
+    const useTitleIen = titleIen || "3"; // default to GENERAL NOTE if not specified
+
+    // Attempt TIU CREATE RECORD
+    let docIen: string | null = null;
+    let rpcUsed: string[] = [];
+    let draftFallback = false;
+
+    try {
+      const createResp = await safeCallRpc("TIU CREATE RECORD", [
+        admin.dfn,
+        useTitleIen,
+        duz,
+        visitLocation || "",
+        visitDate || "",
+      ]);
+
+      const firstLine = Array.isArray(createResp) ? createResp[0] : String(createResp);
+      docIen = firstLine?.split("^")[0]?.trim() || null;
+
+      if (!docIen || docIen.startsWith("-1") || docIen === "0") {
+        draftFallback = true;
+        docIen = null;
+        log.warn(`MHA: TIU CREATE RECORD returned error: ${firstLine}`);
+      } else {
+        rpcUsed.push("TIU CREATE RECORD");
+      }
+    } catch (err: any) {
+      draftFallback = true;
+      log.warn(`MHA: TIU CREATE RECORD unavailable, using draft fallback: ${err.message}`);
+    }
+
+    // If we got a doc IEN, set the text
+    if (docIen && !draftFallback) {
+      try {
+        // Build word-processing LIST parameter
+        const textEntries: string[] = [];
+        for (let i = 0; i < noteLines.length; i++) {
+          textEntries.push(noteLines[i]);
+        }
+        await safeCallRpc("TIU SET DOCUMENT TEXT", [docIen, ...textEntries]);
+        rpcUsed.push("TIU SET DOCUMENT TEXT");
+
+        // Mark as filed
+        admin.vistaFiled = true;
+        admin.vistaIen = docIen;
+
+        log.info(`MHA: Filed TIU note IEN=${docIen} for instrument ${admin.instrumentId}`);
+      } catch (err: any) {
+        draftFallback = true;
+        log.warn(`MHA: TIU SET DOCUMENT TEXT failed: ${err.message}`);
+      }
+    }
+
+    if (draftFallback) {
+      return reply.code(200).send({
+        ok: true,
+        status: "draft",
+        source: "local-draft",
+        administrationId: admin.id,
+        instrumentId: admin.instrumentId,
+        noteText: noteLines.join("\n"),
+        vistaFiled: false,
+        rpcUsed,
+        pendingTargets: ["TIU CREATE RECORD", "TIU SET DOCUMENT TEXT"],
+        _note: "VistA TIU RPCs unavailable -- note text returned as draft for manual filing.",
+      });
+    }
+
+    return reply.code(200).send({
+      ok: true,
+      status: "filed",
+      source: "vista",
+      administrationId: admin.id,
+      instrumentId: admin.instrumentId,
+      vistaFiled: true,
+      vistaIen: docIen,
+      rpcUsed,
+      pendingTargets: [],
     });
   });
 }
