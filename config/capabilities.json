@@ -267,6 +267,30 @@
       "targetPackage": null,
       "description": "View imaging audit trail"
     },
+    "imaging.capture.upload": {
+      "status": "live",
+      "module": "imaging",
+      "adapter": "imaging",
+      "targetRpc": "MAG4 ADD IMAGE",
+      "targetPackage": "MAG",
+      "description": "Upload/capture image via browser and store to Orthanc (Phase 538)"
+    },
+    "imaging.capture.attach": {
+      "status": "pending",
+      "module": "imaging",
+      "adapter": "imaging",
+      "targetRpc": "TIU ID ATTACH ENTRY",
+      "targetPackage": "MAG",
+      "description": "Attach captured image to VistA note/consult/order (Phase 538)"
+    },
+    "imaging.capture.list": {
+      "status": "live",
+      "module": "imaging",
+      "adapter": "imaging",
+      "targetRpc": "MAG4 PAT GET IMAGES",
+      "targetPackage": "MAG",
+      "description": "List captured images for a patient (Phase 538)"
+    },
     "telehealth.room.create": {
       "status": "live",
       "module": "telehealth",

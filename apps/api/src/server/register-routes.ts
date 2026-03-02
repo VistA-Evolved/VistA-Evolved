@@ -140,6 +140,7 @@ import uiPrefsRoutes from "../routes/ui-prefs.js";
 // Mental Health Assessment (Phase 535)
 import mhaRoutes from "../routes/mha/index.js";
 import clinicalProceduresRoutes from "../routes/clinical-procedures/index.js";
+import imagingCaptureRoutes from "../routes/imaging-capture/index.js";
 
 // Service-line boards (Phase 464-471, W31)
 import edRoutes from "../service-lines/ed/ed-routes.js";
@@ -367,6 +368,7 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(imagingDeviceRoutes);
   server.register(imagingAuditRoutes);
   server.register(imagingViewerRoutes);
+  server.register(imagingCaptureRoutes); // Phase 538: SIC-like browser capture
 
   // Admin/tenant routes (Phase 17B)
   server.register(adminRoutes);

@@ -830,7 +830,32 @@ export const STORE_INVENTORY: StoreEntry[] = [
     maxSize: 50_000,
     migrationTarget: "pg: derived from cp_result.dfn column",
     notes: "Phase 537: Secondary index for CP results.",
-  },  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  }, 
+  // Imaging Capture (Phase 538)
+  {
+    id: "imaging-capture-store",
+    file: "routes/imaging-capture/index.ts",
+    variable: "captureStore",
+    description: "SIC-like image capture attachments (browser upload -> Orthanc -> VistA link)",
+    classification: "clinical_data",
+    durability: "in_memory_only",
+    domain: "imaging",
+    maxSize: 50_000,
+    migrationTarget: "pg: imaging_capture table",
+    notes: "Phase 538: In-memory. VistA MAG4 ADD IMAGE writeback pending.",
+  },
+  {
+    id: "imaging-capture-patient-index",
+    file: "routes/imaging-capture/index.ts",
+    variable: "patientCaptureIndex",
+    description: "Patient DFN -> capture ID index",
+    classification: "index",
+    durability: "in_memory_only",
+    domain: "imaging",
+    maxSize: 50_000,
+    migrationTarget: "pg: derived from imaging_capture.dfn column",
+    notes: "Phase 538: Secondary index for captures.",
+  }, // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // MIGRATION
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {

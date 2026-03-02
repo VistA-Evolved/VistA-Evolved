@@ -78,6 +78,9 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "MAG4 PAT GET IMAGES",      domain: "imaging",    tag: "read",  description: "Get patient images list" },
   { name: "MAGG PAT PHOTOS",          domain: "imaging",    tag: "read",  description: "Get patient photos" },
   { name: "RA DETAILED REPORT",       domain: "imaging",    tag: "read",  description: "Radiology detailed report" },
+  { name: "MAG4 ADD IMAGE",           domain: "imaging",    tag: "write", description: "Add image entry to VistA File 2005 (Phase 538: SIC capture)" },
+  { name: "MAG NEW SO ENTRY",         domain: "imaging",    tag: "write", description: "Create new storage object entry for image capture" },
+  { name: "MAG4 IMAGE",               domain: "imaging",    tag: "read",  description: "Get image metadata from File 2005" },
 
   // --- Inbox ---
   { name: "ORWORB UNSIG ORDERS",      domain: "inbox",      tag: "read",  description: "Get unsigned orders notifications" },

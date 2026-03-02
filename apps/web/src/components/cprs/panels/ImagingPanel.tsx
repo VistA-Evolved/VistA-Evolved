@@ -52,7 +52,7 @@ interface ImagingStatus {
 }
 
 type ModalityFilter = 'all' | 'CR' | 'CT' | 'MR' | 'US' | 'XR' | 'DX' | 'NM' | 'PT';
-type ImagingTab = 'studies' | 'worklist' | 'orders' | 'devices' | 'audit';
+type ImagingTab = 'studies' | 'worklist' | 'orders' | 'capture' | 'devices' | 'audit';
 
 /** Phase 24: Break-glass session info from API. */
 interface BreakGlassInfo {
@@ -425,7 +425,7 @@ export default function ImagingPanel({ dfn }: Props) {
 
       {/* Phase 24: Tab bar with admin tabs */}
       <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid var(--cprs-border)', marginBottom: 8 }}>
-        {(['studies', 'worklist', 'orders'] as ImagingTab[]).map((tab) => (
+        {(['studies', 'worklist', 'orders', 'capture'] as ImagingTab[]).map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -443,6 +443,7 @@ export default function ImagingPanel({ dfn }: Props) {
           >
             {tab === 'studies' ? `Studies (${studies.length})` :
              tab === 'worklist' ? `Worklist (${worklist.length})` :
+             tab === 'capture' ? 'Capture' :
              'New Order'}
           </button>
         ))}
@@ -603,6 +604,11 @@ export default function ImagingPanel({ dfn }: Props) {
       {/* ===== NEW ORDER TAB ===== */}
       {activeTab === 'orders' && (
         <ImagingOrderForm dfn={dfn} onCreated={() => { fetchWorklist(); setActiveTab('worklist'); }} />
+      )}
+
+      {/* ===== CAPTURE TAB (Phase 538: SIC-like browser capture) ===== */}
+      {activeTab === 'capture' && (
+        <ImagingCaptureTab dfn={dfn} />
       )}
 
       {/* ===== DEVICES TAB (Phase 24, admin only) ===== */}
@@ -1196,6 +1202,145 @@ export default function ImagingPanel({ dfn }: Props) {
 /* ------------------------------------------------------------------ */
 /* ImagingOrderForm — inline order creation (Phase 23)                 */
 /* ------------------------------------------------------------------ */
+
+/* ===== Phase 538: Imaging Capture Tab (SIC-like) ===== */
+function ImagingCaptureTab({ dfn }: { dfn: string }) {
+  const [captures, setCaptures] = useState<any[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [captureNotes, setCaptureNotes] = useState("");
+
+  const fetchCaptures = useCallback(async () => {
+    try {
+      const resp = await fetch(`${API_BASE}/imaging/capture?dfn=${dfn}`, { credentials: "include" });
+      if (resp.ok) {
+        const data = await resp.json();
+        setCaptures(data.captures || []);
+      }
+    } catch { /* ignore */ }
+  }, [dfn]);
+
+  useEffect(() => { fetchCaptures(); }, [fetchCaptures]);
+
+  const handleUpload = async () => {
+    if (!selectedFile) return;
+    setUploading(true);
+    setErr(null);
+    setSuccess(null);
+    try {
+      const buffer = await selectedFile.arrayBuffer();
+      const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
+      const resp = await fetch(`${API_BASE}/imaging/capture`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          dfn,
+          filename: selectedFile.name,
+          mimeType: selectedFile.type || "application/octet-stream",
+          fileBase64: base64,
+          notes: captureNotes,
+        }),
+      });
+      const data = await resp.json();
+      if (data.ok) {
+        setSuccess(`Captured: ${data.capture.id.slice(0, 8)}... (Orthanc: ${data.orthancStored ? "stored" : "unavailable"})`);
+        setSelectedFile(null);
+        setCaptureNotes("");
+        fetchCaptures();
+      } else {
+        setErr(data.error || "Upload failed");
+      }
+    } catch (e: any) {
+      setErr(e.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <div>
+      <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 8 }}>
+        Image Capture (SIC-like)
+        <span style={{
+          background: "#fef3c7", color: "#b45309", padding: "1px 6px",
+          borderRadius: 3, fontSize: 10, fontWeight: 600, marginLeft: 8,
+        }}>INTEGRATION PENDING</span>
+      </div>
+
+      {/* Upload form */}
+      <div style={{
+        border: "1px solid #e5e7eb", borderRadius: 6, padding: 12, marginBottom: 12,
+        background: "#fafafa",
+      }}>
+        <div style={{ fontSize: 11, fontWeight: 500, marginBottom: 8 }}>Upload Image / Document</div>
+        <input
+          type="file"
+          accept="image/*,application/pdf,.dcm"
+          onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+          style={{ fontSize: 11, marginBottom: 6 }}
+        />
+        <div style={{ marginBottom: 6 }}>
+          <input
+            type="text"
+            placeholder="Notes (optional)"
+            value={captureNotes}
+            onChange={(e) => setCaptureNotes(e.target.value)}
+            style={{ fontSize: 11, padding: "4px 8px", width: "100%", border: "1px solid #d1d5db", borderRadius: 4 }}
+          />
+        </div>
+        <button
+          onClick={handleUpload}
+          disabled={!selectedFile || uploading}
+          style={{
+            fontSize: 11, padding: "4px 12px", background: "#2563eb",
+            color: "#fff", border: "none", borderRadius: 4, cursor: "pointer",
+            opacity: !selectedFile || uploading ? 0.5 : 1,
+          }}
+        >
+          {uploading ? "Uploading..." : "Capture & Store"}
+        </button>
+        {err && <div style={{ color: "#ef4444", fontSize: 11, marginTop: 4 }}>{err}</div>}
+        {success && <div style={{ color: "#10b981", fontSize: 11, marginTop: 4 }}>{success}</div>}
+      </div>
+
+      {/* Capture history */}
+      <div style={{ fontSize: 11, fontWeight: 500, marginBottom: 4 }}>
+        Capture History ({captures.length})
+      </div>
+      {captures.length === 0 && (
+        <div style={{ color: "#9ca3af", fontSize: 11 }}>No captures for this patient.</div>
+      )}
+      {captures.map((c: any) => (
+        <div key={c.id} style={{
+          padding: "6px 8px", borderBottom: "1px solid #f3f4f6", fontSize: 11,
+          display: "flex", justifyContent: "space-between",
+        }}>
+          <span>{c.originalFilename} ({c.mimeType})</span>
+          <span style={{
+            color: c.status === "attached" ? "#10b981" : c.status === "filed" ? "#2563eb" : "#6b7280",
+          }}>
+            {c.status}
+          </span>
+        </div>
+      ))}
+
+      {/* VistA grounding info */}
+      <div style={{
+        marginTop: 12, border: "1px solid #f59e0b", borderRadius: 6,
+        padding: 10, background: "#fffbeb", fontSize: 11,
+      }}>
+        <div style={{ fontWeight: 600, color: "#b45309", marginBottom: 4 }}>VistA Grounding</div>
+        <div><strong>Target:</strong> File 2005 (Image), MAG4 ADD IMAGE, TIU ID ATTACH ENTRY</div>
+        <div style={{ color: "#92400e", fontStyle: "italic", marginTop: 4 }}>
+          VistA filing pending -- images stored to Orthanc only in sandbox.
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const MODALITY_OPTIONS = ['CR', 'CT', 'MR', 'US', 'DX', 'NM', 'PT', 'XA', 'MG', 'RF'] as const;
 const PRIORITY_OPTIONS = ['routine', 'urgent', 'stat'] as const;
