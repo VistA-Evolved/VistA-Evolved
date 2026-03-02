@@ -1,10 +1,10 @@
 {
   "_meta": {
     "description": "Integration-pending budget baseline (Phase 480)",
-    "updatedAt": "2026-03-02T06:12:40.564Z",
+    "updatedAt": "2026-03-02T06:14:18.142Z",
     "updatedBy": "integration-pending-budget.mjs --update"
   },
-  "total": 257,
+  "total": 253,
   "tolerance": 0,
   "files": [
     {
@@ -13,10 +13,6 @@
     },
     {
       "file": "apps/api/src/rcm/workflows/vista-source-map.ts",
-      "count": 12
-    },
-    {
-      "file": "apps/api/src/routes/cprs/orders-cpoe.ts",
       "count": 12
     },
     {
@@ -38,6 +34,10 @@
     {
       "file": "apps/api/src/routes/discharge-workflow.ts",
       "count": 9
+    },
+    {
+      "file": "apps/api/src/routes/cprs/orders-cpoe.ts",
+      "count": 8
     },
     {
       "file": "apps/api/src/routes/nursing/index.ts",

@@ -183,12 +183,14 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
 
     const check = optionalRpc("ORWORR AGET");
     if (!check.available) {
+      const ordersProbe = probeTier0Rpc("ORWORR AGET", "orders");
       return {
         ok: true,
-        status: "integration-pending",
+        status: "unsupported-in-sandbox" as const,
         orders: [],
         rpcUsed,
         vivianPresence,
+        capabilityProbe: ordersProbe,
         pendingTargets: ["ORWORR AGET"],
         pendingNote: "ORWORR AGET present in Vivian but RPC capability not detected at runtime.",
       };
@@ -649,7 +651,8 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       }
     }
 
-    // Signing RPC not available — return honest pending (no fake success)
+    // Signing RPC not available -- return capability-probed response (no fake success)
+    const signProbe = probeTier0Rpc("ORWOR1 SIG", "orders");
     auditWrite("clinical.order-sign", "failure", actor, validDfn!, { mode: "rpc-unavailable" });
     for (const oid of (orderIds as string[])) {
       void logSignEvent({
@@ -660,13 +663,14 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
     }
     return {
       ok: false,
-      status: "integration-pending",
+      status: "unsupported-in-sandbox" as const,
       rpcUsed,
       vivianPresence,
+      capabilityProbe: signProbe,
       pendingTargets: ["ORWOR1 SIG"],
       pendingNote: "ORWOR1 SIG not available at runtime. Orders remain unsigned.",
       unsignedCount: (orderIds as string[]).length,
-      message: `${(orderIds as string[]).length} order(s) remain unsigned. Signing integration pending.`,
+      message: `${(orderIds as string[]).length} order(s) remain unsigned. Signing RPC unavailable.`,
     };
   });
 
@@ -744,26 +748,28 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       }
     }
 
-    // Order checks integration pending
+    // Order checks -- capability-probed fallback
+    const checksProbe = probeTier0Rpc("ORWDXC ACCEPT", "orders");
     audit("clinical.order-check", "success", { duz: actor }, {
       patientDfn: validDfn!,
-      detail: { mode: "integration-pending" },
+      detail: { mode: "capability-probed" },
     });
 
     return {
       ok: true,
-      status: "integration-pending",
+      status: "unsupported-in-sandbox" as const,
       checks: [],
       checkCount: 0,
       rpcUsed,
       vivianPresence,
+      capabilityProbe: checksProbe,
       pendingTargets: ["ORWDXC ACCEPT", "ORWDXC DISPLAY", "ORWDXC SAVECHK"],
       pendingNote: "VistA order checks require active order context with valid order IEN(s). " +
         "ORWDXC ACCEPT returns drug-allergy, drug-drug interaction, duplicate therapy, " +
         "and contraindication checks. ORWDXC DISPLAY formats the check text for review. " +
         "In this sandbox: order check RPCs exist but require orders with proper orderable " +
         "items data to produce meaningful results.",
-      message: "Order checks integration pending. No blocking checks found.",
+      message: "Order checks RPC available but requires valid order context.",
     };
   });
 

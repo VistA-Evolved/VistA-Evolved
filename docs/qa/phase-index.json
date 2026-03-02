@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-02T06:12:40.735Z",
+  "generatedAt": "2026-03-02T06:14:18.310Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 485,
+  "phaseCount": 486,
   "phases": [
     {
       "phaseNumber": "1",
@@ -11794,6 +11794,26 @@
       ],
       "verifyFiles": [
         "486-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "487",
+      "title": "W33-P7: Order Sign + Checks + List Fallbacks",
+      "folder": "487-W33-P7-PHARMACY-WRITEBACK",
+      "files": [
+        "487-01-IMPLEMENT.md",
+        "487-99-VERIFY.md",
+        "487-NOTES.md"
+      ],
+      "implementFiles": [
+        "487-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "487-99-VERIFY.md"
       ],
       "routes": [],
       "rpcs": [],
