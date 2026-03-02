@@ -40,6 +40,11 @@ docker-compose.override.yml
 /reference/
 reference/cprs/
 
+# Vendor upstream mirrors (large, observe-only -- keep LOCK.json)
+vendor/worldvista/*/
+!vendor/worldvista/LOCK.json
+vendor/worldvista/sync.log
+
 # Analytics local data (JSONL event persistence)
 apps/api/data/
 

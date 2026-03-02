@@ -1,0 +1,46 @@
+{
+  "generatedAt": "2025-01-01T00:00:00.000Z",
+  "generatedBy": "worldvista-sync.ps1",
+  "repos": [
+    {
+      "repo": "WorldVistA/worldvista-ehr",
+      "branch": "master",
+      "sha": "not-yet-synced",
+      "fetchedAt": null,
+      "licensePath": "",
+      "description": "Core WorldVistA EHR Docker image source"
+    },
+    {
+      "repo": "WorldVistA/VistA-M",
+      "branch": "master",
+      "sha": "not-yet-synced",
+      "fetchedAt": null,
+      "licensePath": "",
+      "description": "VistA MUMPS routines and globals"
+    },
+    {
+      "repo": "WorldVistA/FHIR-Data-Service",
+      "branch": "main",
+      "sha": "not-yet-synced",
+      "fetchedAt": null,
+      "licensePath": "",
+      "description": "VistA FHIR Data Service (nodeVistA)"
+    },
+    {
+      "repo": "WorldVistA/popHealth",
+      "branch": "master",
+      "sha": "not-yet-synced",
+      "fetchedAt": null,
+      "licensePath": "",
+      "description": "Quality measure / CQM reporting"
+    },
+    {
+      "repo": "WorldVistA/Blue-Button",
+      "branch": "master",
+      "sha": "not-yet-synced",
+      "fetchedAt": null,
+      "licensePath": "",
+      "description": "Patient data export (Blue Button)"
+    }
+  ]
+}
