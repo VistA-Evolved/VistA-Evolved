@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-02T06:05:51.423Z",
+  "generatedAt": "2026-03-02T06:08:04.799Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 483,
+  "phaseCount": 484,
   "phases": [
     {
       "phaseNumber": "1",
@@ -11754,6 +11754,26 @@
       ],
       "verifyFiles": [
         "484-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "485",
+      "title": "W33-P5: eMAR Writeback (BCMA)",
+      "folder": "485-W33-P5-EMAR-WRITEBACK",
+      "files": [
+        "485-01-IMPLEMENT.md",
+        "485-99-VERIFY.md",
+        "485-NOTES.md"
+      ],
+      "implementFiles": [
+        "485-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "485-99-VERIFY.md"
       ],
       "routes": [],
       "rpcs": [],

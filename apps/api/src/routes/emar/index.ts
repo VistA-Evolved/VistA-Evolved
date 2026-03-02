@@ -26,6 +26,7 @@ import { safeCallRpc } from "../../lib/rpc-resilience.js";
 import { log } from "../../lib/logger.js";
 import { safeErr } from '../../lib/safe-error.js';
 import { immutableAudit } from "../../lib/immutable-audit.js";
+import { tier0Gate } from "../../lib/tier0-response.js";
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
@@ -463,26 +464,25 @@ export default async function emarRoutes(server: FastifyInstance) {
     }
   });
 
-  /* ------ GET /emar/history?dfn=N (integration-pending) ------ */
+  /* ------ GET /emar/history?dfn=N (Tier-0 capability-gated) ------ */
   server.get("/emar/history", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const dfn = validateDfn((request.query as any)?.dfn, reply);
     if (!dfn) return;
 
-    immutableAudit("emar.history", "success", auditActor(session), { detail: { dfn, status: "integration-pending" } });
-    return {
-      ...pendingFallback("Medication Administration History", [
-        { rpc: "PSB MED LOG", package: "PSB", reason: "Administration history requires BCMA/PSB package (not available in WorldVistA sandbox)" },
-      ], {
-        vistaFiles: ["PSB(53.79) BCMA MEDICATION LOG"],
-        targetRoutines: ["PSBML", "PSBMLEN", "PSBMLHS"],
-        migrationPath: "Install BCMA package -> configure PSB MED LOG RPC -> query file 53.79 for administration records",
-        sandboxNote: "WorldVistA Docker does not include BCMA/PSB package",
-      }),
-    };
+    const blocked = tier0Gate("PSB MED LOG", "emar", {
+      vistaFiles: ["PSB(53.79) BCMA MEDICATION LOG"],
+      targetRoutines: ["PSBML", "PSBMLEN", "PSBMLHS"],
+      migrationPath: "Install BCMA package -> configure PSB MED LOG RPC -> query file 53.79 for administration records",
+      sandboxNote: "WorldVistA Docker does not include BCMA/PSB package.",
+    });
+    immutableAudit("emar.history", blocked ? "blocked" : "attempt", auditActor(session), { detail: { dfn, gated: !!blocked, rpc: "PSB MED LOG" } });
+    if (blocked) return reply.status(202).send(blocked);
+
+    return reply.code(501).send({ ok: false, status: "not-implemented", message: "PSB MED LOG available but history retrieval not yet wired" });
   });
 
-  /* ------ POST /emar/administer (integration-pending) ------ */
+  /* ------ POST /emar/administer (Tier-0 capability-gated) ------ */
   server.post("/emar/administer", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
 
@@ -507,32 +507,16 @@ export default async function emarRoutes(server: FastifyInstance) {
       return reply.code(400).send({ ok: false, error: "Reason exceeds maximum length (2000 chars)" });
     }
 
-    // Log the administration attempt for audit (Phase 151: no PHI in log payloads)
-    log.info("eMAR administration attempt (integration-pending)", {
-      orderIEN,
-      action,
-      hasReason: !!reason,
+    const blocked = tier0Gate("PSB MED LOG", "emar", {
+      vistaFiles: ["PSB(53.79) BCMA MEDICATION LOG"],
+      targetRoutines: ["PSBML", "PSBMLEN"],
+      migrationPath: "Install BCMA package -> enable PSB MED LOG RPC -> implement 5-rights barcode verification -> write to file 53.79",
+      sandboxNote: "WorldVistA Docker does not include BCMA/PSB package.",
     });
-    immutableAudit("emar.administer", "success", auditActor(session), { detail: { dfn, orderIEN, action, status: "integration-pending" } });
+    immutableAudit("emar.administer", blocked ? "blocked" : "attempt", auditActor(session), { detail: { dfn, orderIEN, action, gated: !!blocked, rpc: "PSB MED LOG" } });
+    if (blocked) return reply.status(202).send(blocked);
 
-    return reply.code(202).send({
-      ok: false,
-      source: "integration-pending",
-      status: "integration-pending",
-      message: "Medication administration recording requires BCMA/PSB package. This attempt has been logged for audit.",
-      rpcUsed: [],
-      pendingTargets: [
-        { rpc: "PSB MED LOG", package: "PSB", reason: "Write administration record to BCMA Medication Log (file 53.79)" },
-      ],
-      vistaGrounding: {
-        vistaFiles: ["PSB(53.79) BCMA MEDICATION LOG"],
-        targetRoutines: ["PSBML", "PSBMLEN"],
-        migrationPath: "Install BCMA package -> enable PSB MED LOG RPC -> implement 5-rights barcode verification -> write to file 53.79",
-        sandboxNote: "WorldVistA Docker does not include BCMA/PSB package. Administration recording is deferred.",
-      },
-      recordedAction: action,
-      auditNote: "Administration attempt logged with timestamp, user, patient, and order for compliance trail.",
-    });
+    return reply.code(501).send({ ok: false, status: "not-implemented", message: "PSB MED LOG available but administer not yet wired" });
   });
 
   /* ------ GET /emar/duplicate-check?dfn=N ------ */
@@ -595,7 +579,7 @@ export default async function emarRoutes(server: FastifyInstance) {
     }
   });
 
-  /* ------ POST /emar/barcode-scan (integration-pending) ------ */
+  /* ------ POST /emar/barcode-scan (Tier-0 capability-gated) ------ */
   server.post("/emar/barcode-scan", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
 
@@ -613,26 +597,15 @@ export default async function emarRoutes(server: FastifyInstance) {
       return reply.code(400).send({ ok: false, error: "Missing or non-numeric dfn" });
     }
 
-    log.info("BCMA barcode scan attempt (integration-pending)", { barcodeLength: barcode.length });
-    immutableAudit("emar.barcode-scan", "success", auditActor(session), { detail: { dfn, barcodeLength: barcode.length, status: "integration-pending" } });
-
-    return reply.code(202).send({
-      ok: false,
-      source: "integration-pending",
-      status: "integration-pending",
-      message: "Barcode medication verification requires BCMA/PSB package with PSJBCMA routines",
-      rpcUsed: [],
-      pendingTargets: [
-        { rpc: "PSB MED LOG", package: "PSB", reason: "BCMA medication verification against active orders" },
-        { rpc: "PSJBCMA", package: "PSB", reason: "Barcode-to-medication lookup via PSJ BCMA routines" },
-      ],
-      vistaGrounding: {
-        vistaFiles: ["PSB(53.79) BCMA MEDICATION LOG", "PSB(53.795) BCMA UNABLE TO SCAN LOG"],
-        targetRoutines: ["PSJBCMA", "PSJBCMA1", "PSBML"],
-        migrationPath: "Install BCMA package -> configure barcode scanner hardware -> enable PSB/PSJ RPCs -> implement 5-rights verification workflow",
-        sandboxNote: "WorldVistA Docker does not include BCMA/PSB or PSJ barcode packages",
-        fiveRights: ["Right Patient", "Right Medication", "Right Dose", "Right Route", "Right Time"],
-      },
+    const blocked = tier0Gate("PSJBCMA", "emar", {
+      vistaFiles: ["PSB(53.79) BCMA MEDICATION LOG", "PSB(53.795) BCMA UNABLE TO SCAN LOG"],
+      targetRoutines: ["PSJBCMA", "PSJBCMA1", "PSBML"],
+      migrationPath: "Install BCMA package -> configure barcode scanner hardware -> enable PSB/PSJ RPCs -> implement 5-rights verification workflow",
+      sandboxNote: "WorldVistA Docker does not include BCMA/PSB or PSJ barcode packages.",
     });
+    immutableAudit("emar.barcode-scan", blocked ? "blocked" : "attempt", auditActor(session), { detail: { dfn, barcodeLength: barcode.length, gated: !!blocked, rpc: "PSJBCMA" } });
+    if (blocked) return reply.status(202).send(blocked);
+
+    return reply.code(501).send({ ok: false, status: "not-implemented", message: "PSJBCMA available but barcode scan not yet wired" });
   });
 }
