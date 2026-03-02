@@ -65,7 +65,8 @@
         "^/handoff/",
         "^/vista/mha",
         "^/vista/clinical-procedures",
-        "^/vista/longitudinal"
+        "^/vista/longitudinal",
+        "^/vista/hybrids"
       ],
       "dependencies": ["kernel"],
       "adapters": ["clinical-engine"],

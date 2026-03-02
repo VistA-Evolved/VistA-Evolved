@@ -1,0 +1,3698 @@
+{
+  "_meta": {
+    "generatedAt": "2026-03-02T16:04:11.557Z",
+    "generatedBy": "scripts/ui-estate/build-hybrids-map.mjs",
+    "phase": 541,
+    "description": "VA/IHS GUI Hybrids Capability Map -- cross-references desktop GUI apps with VistA-Evolved coverage",
+    "sources": {
+      "vaEstate": "data/ui-estate/va-ui-estate.json",
+      "ihsEstate": "data/ui-estate/ihs-ui-estate.json",
+      "rpcCoverage": "docs/vista-alignment/rpc-coverage.json",
+      "capabilities": "config/capabilities.json"
+    }
+  },
+  "summary": {
+    "totalHybrids": 28,
+    "byPlatform": {
+      "dotnet": 4,
+      "delphi": 8,
+      "web": 12,
+      "java": 4
+    },
+    "byDeploymentModel": {
+      "hybrid": 2,
+      "thick-client": 11,
+      "browser": 11,
+      "api-only": 4
+    },
+    "byMigrationStrategy": {
+      "replace": 11,
+      "deprecate": 2,
+      "coexist": 11,
+      "wrap": 4
+    },
+    "avgMigrationReadiness": 33,
+    "totalRpcOverlap": 48,
+    "totalRpcGap": 109,
+    "totalCapOverlap": 104,
+    "thickClientCount": 11,
+    "browserCount": 11,
+    "hybridCount": 2,
+    "apiOnlyCount": 4
+  },
+  "hybrids": [
+    {
+      "id": "esig",
+      "name": "E-Signature Service",
+      "agency": "va",
+      "category": "infrastructure",
+      "hostPlatform": "dotnet",
+      "deploymentModel": "hybrid",
+      "authMechanism": "xwb-rpc",
+      "migrationStrategy": "replace",
+      "surfaceCount": 2,
+      "coveredSurfaces": 2,
+      "writebackSurfaces": 2,
+      "testedSurfaces": 2,
+      "rpcOverlap": [
+        {
+          "name": "ORWOR1 SIG",
+          "isLive": true,
+          "domain": "orders"
+        },
+        {
+          "name": "TIU SIGN RECORD",
+          "isLive": true,
+          "domain": "notes"
+        }
+      ],
+      "rpcGap": [
+        {
+          "name": "ORWDX SEND",
+          "vivianGrounded": true,
+          "inCprs": true
+        }
+      ],
+      "capabilityOverlap": [
+        "interop.hl7.monitor",
+        "interop.hl7.read",
+        "interop.hlo.read",
+        "interop.queue.read",
+        "interop.msg.list",
+        "interop.msg.detail",
+        "interop.registry.manage",
+        "iam.audit.view",
+        "iam.policy.evaluate",
+        "iam.auth-mode.validate",
+        "iam.break-glass.request",
+        "iam.break-glass.approve",
+        "iam.break-glass.deny",
+        "iam.break-glass.revoke",
+        "iam.role-mapping"
+      ],
+      "migrationReadiness": 90,
+      "surfaceSummary": [
+        {
+          "id": "esig-order-sign",
+          "name": "Order Electronic Signature",
+          "migrationStatus": "writeback",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": true
+        },
+        {
+          "id": "esig-note-sign",
+          "name": "Note Electronic Signature",
+          "migrationStatus": "writeback",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": true
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "esig-order-sign",
+          "route": "/cprs/orders-cpoe/*",
+          "page": "/cprs/chart/[dfn]/orders",
+          "component": "OrdersPanel",
+          "phase": 154
+        },
+        {
+          "surface": "esig-note-sign",
+          "route": "/cprs/tiu-notes/*",
+          "phase": 60
+        }
+      ]
+    },
+    {
+      "id": "voda",
+      "name": "VODA (VistA Object Display Application)",
+      "agency": "va",
+      "category": "reporting",
+      "hostPlatform": "delphi",
+      "deploymentModel": "thick-client",
+      "authMechanism": "xwb-rpc",
+      "migrationStrategy": "deprecate",
+      "surfaceCount": 1,
+      "coveredSurfaces": 1,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 1,
+      "rpcOverlap": [
+        {
+          "name": "ORWRP REPORT TEXT",
+          "isLive": true,
+          "domain": "reports"
+        }
+      ],
+      "rpcGap": [],
+      "capabilityOverlap": [
+        "clinical.patient.search",
+        "clinical.patient.demographics",
+        "clinical.patient.defaultList",
+        "clinical.allergies.list",
+        "clinical.allergies.add",
+        "clinical.vitals.list",
+        "clinical.vitals.add",
+        "clinical.immunizations.list",
+        "clinical.notes.list",
+        "clinical.notes.create",
+        "clinical.notes.getText",
+        "clinical.medications.list",
+        "clinical.medications.order",
+        "clinical.problems.list",
+        "clinical.icd.search",
+        "clinical.consults.list",
+        "clinical.consults.detail",
+        "clinical.surgery.list",
+        "clinical.dcSummaries.list",
+        "clinical.labs.list",
+        "clinical.reports.list",
+        "clinical.reports.text",
+        "clinical.orders.sign",
+        "analytics.dashboard.view",
+        "analytics.export",
+        "clinical.longitudinal.timeline",
+        "clinical.longitudinal.summary",
+        "clinical.longitudinal.meds",
+        "messaging.clinician.inbox",
+        "messaging.clinician.send",
+        "messaging.mail-groups",
+        "clinical.adt.wards",
+        "clinical.adt.wardPatients",
+        "clinical.adt.providerPatients",
+        "clinical.adt.teams",
+        "clinical.adt.teamPatients",
+        "clinical.adt.specialties",
+        "clinical.adt.specialtyPatients",
+        "clinical.adt.locations",
+        "clinical.adt.admissions",
+        "clinical.adt.census",
+        "clinical.adt.bedboard",
+        "clinical.adt.movements",
+        "clinical.nursing.vitals",
+        "clinical.nursing.vitalsRange",
+        "clinical.nursing.notes",
+        "clinical.nursing.wardPatients",
+        "clinical.nursing.flowsheet",
+        "clinical.nursing.createNote",
+        "clinical.nursing.noteText",
+        "clinical.mha.instruments.list",
+        "clinical.mha.instruments.administer",
+        "clinical.emar.schedule",
+        "clinical.emar.allergies",
+        "clinical.emar.duplicateCheck",
+        "clinical.handoff.reports",
+        "clinical.handoff.wardPatients"
+      ],
+      "migrationReadiness": 80,
+      "surfaceSummary": [
+        {
+          "id": "voda-object-viewer",
+          "name": "Clinical Object Viewer",
+          "migrationStatus": "api-wired",
+          "priority": "p3-low",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "voda-object-viewer",
+          "page": "/cprs/chart/[dfn]/cover",
+          "phase": 11
+        }
+      ]
+    },
+    {
+      "id": "mhv",
+      "name": "MHV (My HealtheVet)",
+      "agency": "va",
+      "category": "portal",
+      "hostPlatform": "web",
+      "deploymentModel": "browser",
+      "authMechanism": "oauth2",
+      "migrationStrategy": "coexist",
+      "surfaceCount": 4,
+      "coveredSurfaces": 4,
+      "writebackSurfaces": 1,
+      "testedSurfaces": 4,
+      "rpcOverlap": [
+        {
+          "name": "ORWPS ACTIVE",
+          "isLive": true,
+          "domain": "medications"
+        },
+        {
+          "name": "ORWRP REPORT TEXT",
+          "isLive": true,
+          "domain": "reports"
+        }
+      ],
+      "rpcGap": [
+        {
+          "name": "XM SEND",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "SDES GET APPT BY PATIENT",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "SD W/L GET LIST",
+          "vivianGrounded": false,
+          "inCprs": false
+        }
+      ],
+      "capabilityOverlap": [
+        "portal.health.view",
+        "portal.messaging.send",
+        "portal.appointments.list",
+        "portal.refills.request",
+        "portal.export.pdf",
+        "portal.sharing.create",
+        "portal.documents.list",
+        "portal.documents.generate",
+        "portal.documents.download",
+        "portal.consents.view",
+        "portal.consents.update",
+        "messaging.portal.send"
+      ],
+      "migrationReadiness": 67,
+      "surfaceSummary": [
+        {
+          "id": "mhv-secure-messaging",
+          "name": "Secure Messaging",
+          "migrationStatus": "api-wired",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": true
+        },
+        {
+          "id": "mhv-rx-refills",
+          "name": "Prescription Refill Requests",
+          "migrationStatus": "scaffold",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "mhv-appointments",
+          "name": "Appointment View/Request",
+          "migrationStatus": "scaffold",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        },
+        {
+          "id": "mhv-blue-button",
+          "name": "Blue Button Health Records",
+          "migrationStatus": "scaffold",
+          "priority": "p1-high",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "mhv-secure-messaging",
+          "route": "/portal/mailman/*",
+          "page": "/dashboard/messages",
+          "phase": 130
+        },
+        {
+          "surface": "mhv-rx-refills",
+          "route": "/portal/*",
+          "page": "/dashboard/refills",
+          "phase": 32
+        },
+        {
+          "surface": "mhv-appointments",
+          "route": "/scheduling/*",
+          "page": "/dashboard/appointments",
+          "phase": 147
+        },
+        {
+          "surface": "mhv-blue-button",
+          "route": "/portal/documents/*",
+          "page": "/dashboard/records",
+          "phase": 140
+        }
+      ]
+    },
+    {
+      "id": "cprs",
+      "name": "CPRS (Computerized Patient Record System)",
+      "agency": "va",
+      "category": "clinical",
+      "hostPlatform": "delphi",
+      "deploymentModel": "thick-client",
+      "authMechanism": "xwb-rpc",
+      "migrationStrategy": "replace",
+      "surfaceCount": 17,
+      "coveredSurfaces": 15,
+      "writebackSurfaces": 6,
+      "testedSurfaces": 13,
+      "rpcOverlap": [
+        {
+          "name": "ORQQAL LIST",
+          "isLive": true,
+          "domain": "allergies"
+        },
+        {
+          "name": "ORWPS ACTIVE",
+          "isLive": true,
+          "domain": "medications"
+        },
+        {
+          "name": "ORQQVI VITALS",
+          "isLive": true,
+          "domain": "vitals"
+        },
+        {
+          "name": "ORQQPL ADD SAVE",
+          "isLive": true,
+          "domain": "problems"
+        },
+        {
+          "name": "ORQQPL EDIT SAVE",
+          "isLive": true,
+          "domain": "problems"
+        },
+        {
+          "name": "ORWDAL32 SAVE ALLERGY",
+          "isLive": true,
+          "domain": "allergies"
+        },
+        {
+          "name": "GMV ADD VM",
+          "isLive": true,
+          "domain": "vitals"
+        },
+        {
+          "name": "TIU GET RECORD TEXT",
+          "isLive": true,
+          "domain": "notes"
+        },
+        {
+          "name": "TIU CREATE RECORD",
+          "isLive": true,
+          "domain": "notes"
+        },
+        {
+          "name": "TIU SET DOCUMENT TEXT",
+          "isLive": true,
+          "domain": "notes"
+        },
+        {
+          "name": "TIU SIGN RECORD",
+          "isLive": true,
+          "domain": "notes"
+        },
+        {
+          "name": "ORWDX SAVE",
+          "isLive": true,
+          "domain": "orders"
+        },
+        {
+          "name": "ORWDX LOCK",
+          "isLive": true,
+          "domain": "orders"
+        },
+        {
+          "name": "ORWDX UNLOCK",
+          "isLive": true,
+          "domain": "orders"
+        },
+        {
+          "name": "ORWOR1 SIG",
+          "isLive": true,
+          "domain": "orders"
+        },
+        {
+          "name": "ORQQCN LIST",
+          "isLive": false,
+          "domain": "consults"
+        },
+        {
+          "name": "ORQQCN DETAIL",
+          "isLive": false,
+          "domain": "consults"
+        },
+        {
+          "name": "ORWRP REPORT TEXT",
+          "isLive": true,
+          "domain": "reports"
+        },
+        {
+          "name": "ORWORB FASTUSER",
+          "isLive": true,
+          "domain": "inbox"
+        },
+        {
+          "name": "ORWPT LIST ALL",
+          "isLive": true,
+          "domain": "patients"
+        },
+        {
+          "name": "ORWPT SELECT",
+          "isLive": true,
+          "domain": "patients"
+        },
+        {
+          "name": "TIU DOCUMENTS BY CONTEXT",
+          "isLive": true,
+          "domain": "notes"
+        }
+      ],
+      "rpcGap": [
+        {
+          "name": "ORQQPL LIST",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "ORWOR RESULT",
+          "vivianGrounded": true,
+          "inCprs": true
+        },
+        {
+          "name": "GMV MARK ERROR",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "GMV V/M ALLDATA",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "ORWDCN32 NEW CONSULT",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "ORWLR CUMULATIVE REPORT",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "ORWLR RESULTS",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "ORWRP2 HS COMPONENTS",
+          "vivianGrounded": true,
+          "inCprs": true
+        },
+        {
+          "name": "ORWSR SURGERY LIST",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "ORWORB GETDCOS",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "ORWPT FULLSSN",
+          "vivianGrounded": true,
+          "inCprs": true
+        },
+        {
+          "name": "ORWPT BYWARD",
+          "vivianGrounded": true,
+          "inCprs": true
+        },
+        {
+          "name": "ORWPS DETAIL",
+          "vivianGrounded": true,
+          "inCprs": true
+        },
+        {
+          "name": "ORWPS REASON",
+          "vivianGrounded": true,
+          "inCprs": true
+        },
+        {
+          "name": "ORWPT PTINQ",
+          "vivianGrounded": true,
+          "inCprs": true
+        },
+        {
+          "name": "TIU GET PERSONAL PREFERENCES",
+          "vivianGrounded": true,
+          "inCprs": true
+        },
+        {
+          "name": "ORQQPP LIST",
+          "vivianGrounded": true,
+          "inCprs": true
+        },
+        {
+          "name": "DGPF IS FLAG ACTIVE",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "DGPF GET FLAG DETAIL",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "ORB SORT METHOD",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "ORWORB GETDATA",
+          "vivianGrounded": true,
+          "inCprs": true
+        }
+      ],
+      "capabilityOverlap": [
+        "clinical.patient.search",
+        "clinical.patient.demographics",
+        "clinical.patient.defaultList",
+        "clinical.allergies.list",
+        "clinical.allergies.add",
+        "clinical.vitals.list",
+        "clinical.vitals.add",
+        "clinical.immunizations.list",
+        "clinical.notes.list",
+        "clinical.notes.create",
+        "clinical.notes.getText",
+        "clinical.medications.list",
+        "clinical.medications.order",
+        "clinical.problems.list",
+        "clinical.icd.search",
+        "clinical.consults.list",
+        "clinical.consults.detail",
+        "clinical.surgery.list",
+        "clinical.dcSummaries.list",
+        "clinical.labs.list",
+        "clinical.reports.list",
+        "clinical.reports.text",
+        "clinical.orders.sign",
+        "clinical.longitudinal.timeline",
+        "clinical.longitudinal.summary",
+        "clinical.longitudinal.meds",
+        "messaging.clinician.inbox",
+        "messaging.clinician.send",
+        "messaging.mail-groups",
+        "clinical.adt.wards",
+        "clinical.adt.wardPatients",
+        "clinical.adt.providerPatients",
+        "clinical.adt.teams",
+        "clinical.adt.teamPatients",
+        "clinical.adt.specialties",
+        "clinical.adt.specialtyPatients",
+        "clinical.adt.locations",
+        "clinical.adt.admissions",
+        "clinical.adt.census",
+        "clinical.adt.bedboard",
+        "clinical.adt.movements",
+        "clinical.nursing.vitals",
+        "clinical.nursing.vitalsRange",
+        "clinical.nursing.notes",
+        "clinical.nursing.wardPatients",
+        "clinical.nursing.flowsheet",
+        "clinical.nursing.createNote",
+        "clinical.nursing.noteText",
+        "clinical.mha.instruments.list",
+        "clinical.mha.instruments.administer",
+        "clinical.emar.schedule",
+        "clinical.emar.allergies",
+        "clinical.emar.duplicateCheck",
+        "clinical.handoff.reports",
+        "clinical.handoff.wardPatients"
+      ],
+      "migrationReadiness": 65,
+      "surfaceSummary": [
+        {
+          "id": "cprs-cover-sheet",
+          "name": "Cover Sheet",
+          "migrationStatus": "api-wired",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": true
+        },
+        {
+          "id": "cprs-problems",
+          "name": "Problem List",
+          "migrationStatus": "writeback",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": true
+        },
+        {
+          "id": "cprs-allergies",
+          "name": "Allergies",
+          "migrationStatus": "writeback",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": true
+        },
+        {
+          "id": "cprs-vitals",
+          "name": "Vitals",
+          "migrationStatus": "writeback",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": true
+        },
+        {
+          "id": "cprs-notes",
+          "name": "TIU Notes",
+          "migrationStatus": "writeback",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": true
+        },
+        {
+          "id": "cprs-orders",
+          "name": "Orders (CPOE)",
+          "migrationStatus": "writeback",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": true
+        },
+        {
+          "id": "cprs-consults",
+          "name": "Consults",
+          "migrationStatus": "api-wired",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        },
+        {
+          "id": "cprs-labs",
+          "name": "Lab Results",
+          "migrationStatus": "api-wired",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        },
+        {
+          "id": "cprs-reports",
+          "name": "Reports",
+          "migrationStatus": "api-wired",
+          "priority": "p1-high",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        },
+        {
+          "id": "cprs-surgery",
+          "name": "Surgery",
+          "migrationStatus": "api-wired",
+          "priority": "p1-high",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        },
+        {
+          "id": "cprs-inbox",
+          "name": "Notifications / Inbox",
+          "migrationStatus": "api-wired",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        },
+        {
+          "id": "cprs-patient-search",
+          "name": "Patient Selection / Search",
+          "migrationStatus": "api-wired",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        },
+        {
+          "id": "cprs-meds",
+          "name": "Medications Tab",
+          "migrationStatus": "api-wired",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        },
+        {
+          "id": "cprs-dc-summary",
+          "name": "Discharge Summary",
+          "migrationStatus": "scaffold",
+          "priority": "p1-high",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        },
+        {
+          "id": "cprs-patient-postings",
+          "name": "Patient Postings / Flags",
+          "migrationStatus": "not-started",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "cprs-flagged-patients",
+          "name": "Flagged Patient List",
+          "migrationStatus": "not-started",
+          "priority": "p2-medium",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "cprs-notifications",
+          "name": "Notifications / Alerts",
+          "migrationStatus": "scaffold",
+          "priority": "p1-high",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "cprs-cover-sheet",
+          "route": "/vista/*",
+          "page": "/cprs/chart/[dfn]/cover",
+          "component": "CoverSheetPanel",
+          "phase": 11
+        },
+        {
+          "surface": "cprs-problems",
+          "route": "/vista/problems",
+          "page": "/cprs/chart/[dfn]/problems",
+          "component": "ProblemsPanel",
+          "phase": 9
+        },
+        {
+          "surface": "cprs-allergies",
+          "route": "/vista/allergies",
+          "page": "/cprs/chart/[dfn]/allergies",
+          "component": "AllergiesPanel",
+          "phase": 7
+        },
+        {
+          "surface": "cprs-vitals",
+          "route": "/vista/vitals",
+          "page": "/cprs/chart/[dfn]/vitals",
+          "component": "VitalsPanel",
+          "phase": 6
+        },
+        {
+          "surface": "cprs-notes",
+          "route": "/vista/notes",
+          "page": "/cprs/chart/[dfn]/notes",
+          "component": "NotesPanel",
+          "phase": 7
+        },
+        {
+          "surface": "cprs-orders",
+          "route": "/cprs/orders-cpoe/*",
+          "page": "/cprs/chart/[dfn]/orders",
+          "component": "OrdersPanel",
+          "phase": 59
+        },
+        {
+          "surface": "cprs-consults",
+          "route": "/vista/consults",
+          "page": "/cprs/chart/[dfn]/consults",
+          "component": "ConsultsPanel",
+          "phase": 12
+        },
+        {
+          "surface": "cprs-labs",
+          "route": "/vista/labs",
+          "page": "/cprs/chart/[dfn]/labs",
+          "component": "LabsPanel",
+          "phase": 12
+        },
+        {
+          "surface": "cprs-reports",
+          "route": "/vista/reports",
+          "page": "/cprs/chart/[dfn]/reports",
+          "phase": 19
+        },
+        {
+          "surface": "cprs-surgery",
+          "route": "/vista/surgery",
+          "page": "/cprs/chart/[dfn]/surgery",
+          "phase": 12
+        },
+        {
+          "surface": "cprs-inbox",
+          "route": "/vista/inbox",
+          "page": "/cprs/inbox",
+          "phase": 12
+        },
+        {
+          "surface": "cprs-patient-search",
+          "route": "/vista/patient-search",
+          "page": "/cprs/patient-search",
+          "phase": 4
+        },
+        {
+          "surface": "cprs-meds",
+          "route": "/vista/medications",
+          "page": "/cprs",
+          "component": "MedsPanel",
+          "phase": 15
+        },
+        {
+          "surface": "cprs-dc-summary",
+          "route": "/vista/tiu/*",
+          "page": "/cprs",
+          "component": "NotesPanel",
+          "phase": 17
+        },
+        {
+          "surface": "cprs-notifications",
+          "route": "/vista/notifications",
+          "page": "/cprs",
+          "component": "InboxPanel",
+          "phase": 16
+        }
+      ]
+    },
+    {
+      "id": "icare",
+      "name": "iCare (IHS Clinical Analytics)",
+      "agency": "ihs",
+      "category": "reporting",
+      "hostPlatform": "web",
+      "deploymentModel": "browser",
+      "authMechanism": "saml",
+      "migrationStrategy": "coexist",
+      "surfaceCount": 4,
+      "coveredSurfaces": 3,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 1,
+      "rpcOverlap": [
+        {
+          "name": "ORWPT LIST ALL",
+          "isLive": true,
+          "domain": "patients"
+        },
+        {
+          "name": "ORQPT DEFAULT PATIENT LIST",
+          "isLive": true,
+          "domain": "patients"
+        }
+      ],
+      "rpcGap": [],
+      "capabilityOverlap": [
+        "clinical.patient.search",
+        "clinical.patient.demographics",
+        "clinical.patient.defaultList",
+        "clinical.allergies.list",
+        "clinical.allergies.add",
+        "clinical.vitals.list",
+        "clinical.vitals.add",
+        "clinical.immunizations.list",
+        "clinical.notes.list",
+        "clinical.notes.create",
+        "clinical.notes.getText",
+        "clinical.medications.list",
+        "clinical.medications.order",
+        "clinical.problems.list",
+        "clinical.icd.search",
+        "clinical.consults.list",
+        "clinical.consults.detail",
+        "clinical.surgery.list",
+        "clinical.dcSummaries.list",
+        "clinical.labs.list",
+        "clinical.reports.list",
+        "clinical.reports.text",
+        "clinical.orders.sign",
+        "analytics.dashboard.view",
+        "analytics.export",
+        "clinical.longitudinal.timeline",
+        "clinical.longitudinal.summary",
+        "clinical.longitudinal.meds",
+        "messaging.clinician.inbox",
+        "messaging.clinician.send",
+        "messaging.mail-groups",
+        "clinical.adt.wards",
+        "clinical.adt.wardPatients",
+        "clinical.adt.providerPatients",
+        "clinical.adt.teams",
+        "clinical.adt.teamPatients",
+        "clinical.adt.specialties",
+        "clinical.adt.specialtyPatients",
+        "clinical.adt.locations",
+        "clinical.adt.admissions",
+        "clinical.adt.census",
+        "clinical.adt.bedboard",
+        "clinical.adt.movements",
+        "clinical.nursing.vitals",
+        "clinical.nursing.vitalsRange",
+        "clinical.nursing.notes",
+        "clinical.nursing.wardPatients",
+        "clinical.nursing.flowsheet",
+        "clinical.nursing.createNote",
+        "clinical.nursing.noteText",
+        "clinical.mha.instruments.list",
+        "clinical.mha.instruments.administer",
+        "clinical.emar.schedule",
+        "clinical.emar.allergies",
+        "clinical.emar.duplicateCheck",
+        "clinical.handoff.reports",
+        "clinical.handoff.wardPatients"
+      ],
+      "migrationReadiness": 63,
+      "surfaceSummary": [
+        {
+          "id": "icare-gpra-dashboard",
+          "name": "GPRA Performance Dashboard",
+          "migrationStatus": "scaffold",
+          "priority": "p1-high",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "icare-patient-panel",
+          "name": "Patient Panel Management",
+          "migrationStatus": "api-wired",
+          "priority": "p1-high",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        },
+        {
+          "id": "icare-population-health",
+          "name": "Population Health Reports",
+          "migrationStatus": "scaffold",
+          "priority": "p2-medium",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "icare-crs",
+          "name": "Clinical Reporting System (CRS)",
+          "migrationStatus": "not-started",
+          "priority": "p2-medium",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "icare-gpra-dashboard",
+          "route": "/analytics/*",
+          "page": "/cprs/admin/analytics",
+          "phase": 25
+        },
+        {
+          "surface": "icare-patient-panel",
+          "route": "/vista/default-patient-list",
+          "page": "/cprs/patient-search",
+          "phase": 4
+        },
+        {
+          "surface": "icare-population-health",
+          "route": "/reports/*",
+          "page": "/cprs/admin/reports",
+          "phase": 365
+        }
+      ]
+    },
+    {
+      "id": "va-direct",
+      "name": "VA Direct Messaging",
+      "agency": "va",
+      "category": "clinical",
+      "hostPlatform": "web",
+      "deploymentModel": "api-only",
+      "authMechanism": "oauth2",
+      "migrationStrategy": "wrap",
+      "surfaceCount": 1,
+      "coveredSurfaces": 1,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 1,
+      "rpcOverlap": [],
+      "rpcGap": [
+        {
+          "name": "XM SEND",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "XMXAPIB LIST",
+          "vivianGrounded": false,
+          "inCprs": false
+        }
+      ],
+      "capabilityOverlap": [
+        "clinical.patient.search",
+        "clinical.patient.demographics",
+        "clinical.patient.defaultList",
+        "clinical.allergies.list",
+        "clinical.allergies.add",
+        "clinical.vitals.list",
+        "clinical.vitals.add",
+        "clinical.immunizations.list",
+        "clinical.notes.list",
+        "clinical.notes.create",
+        "clinical.notes.getText",
+        "clinical.medications.list",
+        "clinical.medications.order",
+        "clinical.problems.list",
+        "clinical.icd.search",
+        "clinical.consults.list",
+        "clinical.consults.detail",
+        "clinical.surgery.list",
+        "clinical.dcSummaries.list",
+        "clinical.labs.list",
+        "clinical.reports.list",
+        "clinical.reports.text",
+        "clinical.orders.sign",
+        "clinical.longitudinal.timeline",
+        "clinical.longitudinal.summary",
+        "clinical.longitudinal.meds",
+        "messaging.clinician.inbox",
+        "messaging.clinician.send",
+        "messaging.mail-groups",
+        "clinical.adt.wards",
+        "clinical.adt.wardPatients",
+        "clinical.adt.providerPatients",
+        "clinical.adt.teams",
+        "clinical.adt.teamPatients",
+        "clinical.adt.specialties",
+        "clinical.adt.specialtyPatients",
+        "clinical.adt.locations",
+        "clinical.adt.admissions",
+        "clinical.adt.census",
+        "clinical.adt.bedboard",
+        "clinical.adt.movements",
+        "clinical.nursing.vitals",
+        "clinical.nursing.vitalsRange",
+        "clinical.nursing.notes",
+        "clinical.nursing.wardPatients",
+        "clinical.nursing.flowsheet",
+        "clinical.nursing.createNote",
+        "clinical.nursing.noteText",
+        "clinical.mha.instruments.list",
+        "clinical.mha.instruments.administer",
+        "clinical.emar.schedule",
+        "clinical.emar.allergies",
+        "clinical.emar.duplicateCheck",
+        "clinical.handoff.reports",
+        "clinical.handoff.wardPatients"
+      ],
+      "migrationReadiness": 50,
+      "surfaceSummary": [
+        {
+          "id": "direct-secure-messaging",
+          "name": "Direct Secure Messaging",
+          "migrationStatus": "scaffold",
+          "priority": "p2-medium",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "direct-secure-messaging",
+          "route": "/vista/mailman",
+          "page": "/cprs/messages",
+          "phase": 130
+        }
+      ]
+    },
+    {
+      "id": "vista-audit",
+      "name": "VistA Audit Solution",
+      "agency": "va",
+      "category": "infrastructure",
+      "hostPlatform": "web",
+      "deploymentModel": "browser",
+      "authMechanism": "saml",
+      "migrationStrategy": "coexist",
+      "surfaceCount": 1,
+      "coveredSurfaces": 1,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 1,
+      "rpcOverlap": [],
+      "rpcGap": [],
+      "capabilityOverlap": [
+        "interop.hl7.monitor",
+        "interop.hl7.read",
+        "interop.hlo.read",
+        "interop.queue.read",
+        "interop.msg.list",
+        "interop.msg.detail",
+        "interop.registry.manage",
+        "iam.audit.view",
+        "iam.policy.evaluate",
+        "iam.auth-mode.validate",
+        "iam.break-glass.request",
+        "iam.break-glass.approve",
+        "iam.break-glass.deny",
+        "iam.break-glass.revoke",
+        "iam.role-mapping"
+      ],
+      "migrationReadiness": 50,
+      "surfaceSummary": [
+        {
+          "id": "va-audit-viewer",
+          "name": "Audit Trail Viewer",
+          "migrationStatus": "api-wired",
+          "priority": "p1-high",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "va-audit-viewer",
+          "route": "/audit/*",
+          "page": "/cprs/admin/audit-viewer",
+          "phase": 35
+        }
+      ]
+    },
+    {
+      "id": "adt",
+      "name": "ADT (Admission/Discharge/Transfer)",
+      "agency": "va",
+      "category": "clinical",
+      "hostPlatform": "delphi",
+      "deploymentModel": "thick-client",
+      "authMechanism": "xwb-rpc",
+      "migrationStrategy": "replace",
+      "surfaceCount": 3,
+      "coveredSurfaces": 3,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 3,
+      "rpcOverlap": [],
+      "rpcGap": [
+        {
+          "name": "DG ADT STATUS",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "DG BEDBOARD",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "ORWPT BYWARD",
+          "vivianGrounded": true,
+          "inCprs": true
+        },
+        {
+          "name": "DG ADT ADMIT",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "DG ADT DISCHARGE",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "DG ADT TRANSFER",
+          "vivianGrounded": false,
+          "inCprs": false
+        }
+      ],
+      "capabilityOverlap": [
+        "clinical.patient.search",
+        "clinical.patient.demographics",
+        "clinical.patient.defaultList",
+        "clinical.allergies.list",
+        "clinical.allergies.add",
+        "clinical.vitals.list",
+        "clinical.vitals.add",
+        "clinical.immunizations.list",
+        "clinical.notes.list",
+        "clinical.notes.create",
+        "clinical.notes.getText",
+        "clinical.medications.list",
+        "clinical.medications.order",
+        "clinical.problems.list",
+        "clinical.icd.search",
+        "clinical.consults.list",
+        "clinical.consults.detail",
+        "clinical.surgery.list",
+        "clinical.dcSummaries.list",
+        "clinical.labs.list",
+        "clinical.reports.list",
+        "clinical.reports.text",
+        "clinical.orders.sign",
+        "clinical.longitudinal.timeline",
+        "clinical.longitudinal.summary",
+        "clinical.longitudinal.meds",
+        "messaging.clinician.inbox",
+        "messaging.clinician.send",
+        "messaging.mail-groups",
+        "clinical.adt.wards",
+        "clinical.adt.wardPatients",
+        "clinical.adt.providerPatients",
+        "clinical.adt.teams",
+        "clinical.adt.teamPatients",
+        "clinical.adt.specialties",
+        "clinical.adt.specialtyPatients",
+        "clinical.adt.locations",
+        "clinical.adt.admissions",
+        "clinical.adt.census",
+        "clinical.adt.bedboard",
+        "clinical.adt.movements",
+        "clinical.nursing.vitals",
+        "clinical.nursing.vitalsRange",
+        "clinical.nursing.notes",
+        "clinical.nursing.wardPatients",
+        "clinical.nursing.flowsheet",
+        "clinical.nursing.createNote",
+        "clinical.nursing.noteText",
+        "clinical.mha.instruments.list",
+        "clinical.mha.instruments.administer",
+        "clinical.emar.schedule",
+        "clinical.emar.allergies",
+        "clinical.emar.duplicateCheck",
+        "clinical.handoff.reports",
+        "clinical.handoff.wardPatients"
+      ],
+      "migrationReadiness": 50,
+      "surfaceSummary": [
+        {
+          "id": "adt-bedboard",
+          "name": "Bed Board",
+          "migrationStatus": "api-wired",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        },
+        {
+          "id": "adt-census",
+          "name": "Ward Census",
+          "migrationStatus": "api-wired",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        },
+        {
+          "id": "adt-admit-discharge",
+          "name": "Admit/Discharge/Transfer Processing",
+          "migrationStatus": "scaffold",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "adt-bedboard",
+          "route": "/vista/adt/*",
+          "page": "/inpatient/bedboard",
+          "phase": 137
+        },
+        {
+          "surface": "adt-census",
+          "route": "/vista/adt/*",
+          "page": "/inpatient/census",
+          "phase": 137
+        },
+        {
+          "surface": "adt-admit-discharge",
+          "route": "/vista/adt/*",
+          "page": "/cprs/inpatient",
+          "phase": 137
+        }
+      ]
+    },
+    {
+      "id": "vista-imaging",
+      "name": "VistA Imaging (VI / VIX)",
+      "agency": "va",
+      "category": "imaging",
+      "hostPlatform": "delphi",
+      "deploymentModel": "thick-client",
+      "authMechanism": "xwb-rpc",
+      "migrationStrategy": "replace",
+      "surfaceCount": 6,
+      "coveredSurfaces": 4,
+      "writebackSurfaces": 1,
+      "testedSurfaces": 4,
+      "rpcOverlap": [
+        {
+          "name": "MAG4 PAT GET IMAGES",
+          "isLive": true,
+          "domain": "imaging"
+        },
+        {
+          "name": "TIU CREATE RECORD",
+          "isLive": true,
+          "domain": "notes"
+        }
+      ],
+      "rpcGap": [
+        {
+          "name": "MAG4 GET IMAGE INFO",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "MAGG PAT INFO",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "MAG4 ADD IMAGE",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "MAGG CAPTURE",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "ORWDXR NEW ORDER",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "RAD/NUC MED REGISTER",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "MAG4 REMOTE IMAGE",
+          "vivianGrounded": false,
+          "inCprs": false
+        }
+      ],
+      "capabilityOverlap": [
+        "imaging.viewer.open",
+        "imaging.studies.list",
+        "imaging.worklist.view",
+        "imaging.devices.manage",
+        "imaging.audit.view",
+        "imaging.capture.upload",
+        "imaging.capture.list"
+      ],
+      "migrationReadiness": 43,
+      "surfaceSummary": [
+        {
+          "id": "vi-clinical-display",
+          "name": "Clinical Image Display",
+          "migrationStatus": "api-wired",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "vi-dicom-viewer",
+          "name": "DICOM Viewer (OHIF)",
+          "migrationStatus": "api-wired",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "vi-image-capture",
+          "name": "Image Capture (SIC-equivalent)",
+          "migrationStatus": "not-started",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "vi-worklist",
+          "name": "Imaging Worklist",
+          "migrationStatus": "scaffold",
+          "priority": "p1-high",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "vi-device-registry",
+          "name": "DICOM Device Registry",
+          "migrationStatus": "api-wired",
+          "priority": "p2-medium",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": true
+        },
+        {
+          "id": "vi-teleradiology",
+          "name": "Teleradiology (VIX)",
+          "migrationStatus": "not-started",
+          "priority": "p2-medium",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "vi-clinical-display",
+          "route": "/imaging/*",
+          "page": "/cprs/chart/[dfn]/imaging",
+          "component": "ImagingPanel",
+          "phase": 23
+        },
+        {
+          "surface": "vi-dicom-viewer",
+          "route": "/imaging/viewer/*",
+          "page": "/cprs/chart/[dfn]/imaging",
+          "component": "ImagingPanel",
+          "phase": 81
+        },
+        {
+          "surface": "vi-worklist",
+          "route": "/imaging/*",
+          "component": "ImagingPanel (Worklist tab)",
+          "phase": 23
+        },
+        {
+          "surface": "vi-device-registry",
+          "route": "/imaging/*",
+          "component": "ImagingPanel (Devices tab)",
+          "phase": 24
+        }
+      ]
+    },
+    {
+      "id": "cdsp",
+      "name": "CDSP (Clinical Decision Support Platform)",
+      "agency": "va",
+      "category": "clinical",
+      "hostPlatform": "web",
+      "deploymentModel": "browser",
+      "authMechanism": "oauth2",
+      "migrationStrategy": "coexist",
+      "surfaceCount": 2,
+      "coveredSurfaces": 1,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 1,
+      "rpcOverlap": [
+        {
+          "name": "ORWDXC ACCEPT",
+          "isLive": true,
+          "domain": "orders"
+        },
+        {
+          "name": "ORWDXC SAVECHK",
+          "isLive": false,
+          "domain": "orders"
+        }
+      ],
+      "rpcGap": [
+        {
+          "name": "ORQQPX REMINDER LIST",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "PXRM REMINDERS LIST",
+          "vivianGrounded": false,
+          "inCprs": false
+        }
+      ],
+      "capabilityOverlap": [
+        "clinical.patient.search",
+        "clinical.patient.demographics",
+        "clinical.patient.defaultList",
+        "clinical.allergies.list",
+        "clinical.allergies.add",
+        "clinical.vitals.list",
+        "clinical.vitals.add",
+        "clinical.immunizations.list",
+        "clinical.notes.list",
+        "clinical.notes.create",
+        "clinical.notes.getText",
+        "clinical.medications.list",
+        "clinical.medications.order",
+        "clinical.problems.list",
+        "clinical.icd.search",
+        "clinical.consults.list",
+        "clinical.consults.detail",
+        "clinical.surgery.list",
+        "clinical.dcSummaries.list",
+        "clinical.labs.list",
+        "clinical.reports.list",
+        "clinical.reports.text",
+        "clinical.orders.sign",
+        "clinical.longitudinal.timeline",
+        "clinical.longitudinal.summary",
+        "clinical.longitudinal.meds",
+        "messaging.clinician.inbox",
+        "messaging.clinician.send",
+        "messaging.mail-groups",
+        "clinical.adt.wards",
+        "clinical.adt.wardPatients",
+        "clinical.adt.providerPatients",
+        "clinical.adt.teams",
+        "clinical.adt.teamPatients",
+        "clinical.adt.specialties",
+        "clinical.adt.specialtyPatients",
+        "clinical.adt.locations",
+        "clinical.adt.admissions",
+        "clinical.adt.census",
+        "clinical.adt.bedboard",
+        "clinical.adt.movements",
+        "clinical.nursing.vitals",
+        "clinical.nursing.vitalsRange",
+        "clinical.nursing.notes",
+        "clinical.nursing.wardPatients",
+        "clinical.nursing.flowsheet",
+        "clinical.nursing.createNote",
+        "clinical.nursing.noteText",
+        "clinical.mha.instruments.list",
+        "clinical.mha.instruments.administer",
+        "clinical.emar.schedule",
+        "clinical.emar.allergies",
+        "clinical.emar.duplicateCheck",
+        "clinical.handoff.reports",
+        "clinical.handoff.wardPatients"
+      ],
+      "migrationReadiness": 40,
+      "surfaceSummary": [
+        {
+          "id": "cdsp-order-checks",
+          "name": "Order Checks",
+          "migrationStatus": "scaffold",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "cdsp-clinical-reminders",
+          "name": "Clinical Reminders",
+          "migrationStatus": "not-started",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "cdsp-order-checks",
+          "route": "/cprs/orders-cpoe/*",
+          "phase": 434
+        }
+      ]
+    },
+    {
+      "id": "ciss",
+      "name": "CISS (Clinical Information Support System)",
+      "agency": "va",
+      "category": "reporting",
+      "hostPlatform": "web",
+      "deploymentModel": "browser",
+      "authMechanism": "saml",
+      "migrationStrategy": "wrap",
+      "surfaceCount": 1,
+      "coveredSurfaces": 1,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 0,
+      "rpcOverlap": [],
+      "rpcGap": [],
+      "capabilityOverlap": [
+        "clinical.patient.search",
+        "clinical.patient.demographics",
+        "clinical.patient.defaultList",
+        "clinical.allergies.list",
+        "clinical.allergies.add",
+        "clinical.vitals.list",
+        "clinical.vitals.add",
+        "clinical.immunizations.list",
+        "clinical.notes.list",
+        "clinical.notes.create",
+        "clinical.notes.getText",
+        "clinical.medications.list",
+        "clinical.medications.order",
+        "clinical.problems.list",
+        "clinical.icd.search",
+        "clinical.consults.list",
+        "clinical.consults.detail",
+        "clinical.surgery.list",
+        "clinical.dcSummaries.list",
+        "clinical.labs.list",
+        "clinical.reports.list",
+        "clinical.reports.text",
+        "clinical.orders.sign",
+        "analytics.dashboard.view",
+        "analytics.export",
+        "clinical.longitudinal.timeline",
+        "clinical.longitudinal.summary",
+        "clinical.longitudinal.meds",
+        "messaging.clinician.inbox",
+        "messaging.clinician.send",
+        "messaging.mail-groups",
+        "clinical.adt.wards",
+        "clinical.adt.wardPatients",
+        "clinical.adt.providerPatients",
+        "clinical.adt.teams",
+        "clinical.adt.teamPatients",
+        "clinical.adt.specialties",
+        "clinical.adt.specialtyPatients",
+        "clinical.adt.locations",
+        "clinical.adt.admissions",
+        "clinical.adt.census",
+        "clinical.adt.bedboard",
+        "clinical.adt.movements",
+        "clinical.nursing.vitals",
+        "clinical.nursing.vitalsRange",
+        "clinical.nursing.notes",
+        "clinical.nursing.wardPatients",
+        "clinical.nursing.flowsheet",
+        "clinical.nursing.createNote",
+        "clinical.nursing.noteText",
+        "clinical.mha.instruments.list",
+        "clinical.mha.instruments.administer",
+        "clinical.emar.schedule",
+        "clinical.emar.allergies",
+        "clinical.emar.duplicateCheck",
+        "clinical.handoff.reports",
+        "clinical.handoff.wardPatients"
+      ],
+      "migrationReadiness": 40,
+      "surfaceSummary": [
+        {
+          "id": "ciss-population-dashboard",
+          "name": "Population Health Dashboard",
+          "migrationStatus": "scaffold",
+          "priority": "p3-low",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "ciss-population-dashboard",
+          "route": "/analytics/*",
+          "page": "/cprs/admin/analytics",
+          "phase": 25
+        }
+      ]
+    },
+    {
+      "id": "numi",
+      "name": "NUMI (Nursing Unit Management Indicators)",
+      "agency": "va",
+      "category": "admin",
+      "hostPlatform": "web",
+      "deploymentModel": "browser",
+      "authMechanism": "saml",
+      "migrationStrategy": "coexist",
+      "surfaceCount": 1,
+      "coveredSurfaces": 1,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 0,
+      "rpcOverlap": [],
+      "rpcGap": [],
+      "capabilityOverlap": [
+        "iam.audit.view",
+        "iam.policy.evaluate",
+        "iam.auth-mode.validate",
+        "iam.break-glass.request",
+        "iam.break-glass.approve",
+        "iam.break-glass.deny",
+        "iam.break-glass.revoke",
+        "iam.role-mapping"
+      ],
+      "migrationReadiness": 40,
+      "surfaceSummary": [
+        {
+          "id": "numi-staffing",
+          "name": "Nurse Staffing Dashboard",
+          "migrationStatus": "scaffold",
+          "priority": "p3-low",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "numi-staffing",
+          "route": "/vista/nursing/*",
+          "page": "/cprs/nursing",
+          "phase": 68
+        }
+      ]
+    },
+    {
+      "id": "vistaweb",
+      "name": "VistAWeb",
+      "agency": "va",
+      "category": "reporting",
+      "hostPlatform": "java",
+      "deploymentModel": "browser",
+      "authMechanism": "saml",
+      "migrationStrategy": "deprecate",
+      "surfaceCount": 2,
+      "coveredSurfaces": 1,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 1,
+      "rpcOverlap": [
+        {
+          "name": "ORWPT SELECT",
+          "isLive": true,
+          "domain": "patients"
+        },
+        {
+          "name": "ORQQAL LIST",
+          "isLive": true,
+          "domain": "allergies"
+        }
+      ],
+      "rpcGap": [
+        {
+          "name": "ORQQPL LIST",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "ORWCIRN LIST",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "XWB REMOTE RPC",
+          "vivianGrounded": true,
+          "inCprs": true
+        }
+      ],
+      "capabilityOverlap": [
+        "clinical.patient.search",
+        "clinical.patient.demographics",
+        "clinical.patient.defaultList",
+        "clinical.allergies.list",
+        "clinical.allergies.add",
+        "clinical.vitals.list",
+        "clinical.vitals.add",
+        "clinical.immunizations.list",
+        "clinical.notes.list",
+        "clinical.notes.create",
+        "clinical.notes.getText",
+        "clinical.medications.list",
+        "clinical.medications.order",
+        "clinical.problems.list",
+        "clinical.icd.search",
+        "clinical.consults.list",
+        "clinical.consults.detail",
+        "clinical.surgery.list",
+        "clinical.dcSummaries.list",
+        "clinical.labs.list",
+        "clinical.reports.list",
+        "clinical.reports.text",
+        "clinical.orders.sign",
+        "analytics.dashboard.view",
+        "analytics.export",
+        "clinical.longitudinal.timeline",
+        "clinical.longitudinal.summary",
+        "clinical.longitudinal.meds",
+        "messaging.clinician.inbox",
+        "messaging.clinician.send",
+        "messaging.mail-groups",
+        "clinical.adt.wards",
+        "clinical.adt.wardPatients",
+        "clinical.adt.providerPatients",
+        "clinical.adt.teams",
+        "clinical.adt.teamPatients",
+        "clinical.adt.specialties",
+        "clinical.adt.specialtyPatients",
+        "clinical.adt.locations",
+        "clinical.adt.admissions",
+        "clinical.adt.census",
+        "clinical.adt.bedboard",
+        "clinical.adt.movements",
+        "clinical.nursing.vitals",
+        "clinical.nursing.vitalsRange",
+        "clinical.nursing.notes",
+        "clinical.nursing.wardPatients",
+        "clinical.nursing.flowsheet",
+        "clinical.nursing.createNote",
+        "clinical.nursing.noteText",
+        "clinical.mha.instruments.list",
+        "clinical.mha.instruments.administer",
+        "clinical.emar.schedule",
+        "clinical.emar.allergies",
+        "clinical.emar.duplicateCheck",
+        "clinical.handoff.reports",
+        "clinical.handoff.wardPatients"
+      ],
+      "migrationReadiness": 37,
+      "surfaceSummary": [
+        {
+          "id": "vistaweb-patient-summary",
+          "name": "Patient Summary View",
+          "migrationStatus": "api-wired",
+          "priority": "p2-medium",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        },
+        {
+          "id": "vistaweb-remote-data",
+          "name": "Remote Data Access",
+          "migrationStatus": "scaffold",
+          "priority": "p2-medium",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "vistaweb-patient-summary",
+          "page": "/cprs/chart/[dfn]/cover",
+          "phase": 11
+        },
+        {
+          "surface": "vistaweb-remote-data",
+          "page": "/cprs/remote-data-viewer",
+          "phase": 14
+        }
+      ]
+    },
+    {
+      "id": "rpms-ehr",
+      "name": "RPMS EHR + VueCentric",
+      "agency": "ihs",
+      "category": "clinical",
+      "hostPlatform": "delphi",
+      "deploymentModel": "thick-client",
+      "authMechanism": "xwb-rpc",
+      "migrationStrategy": "replace",
+      "surfaceCount": 10,
+      "coveredSurfaces": 5,
+      "writebackSurfaces": 1,
+      "testedSurfaces": 5,
+      "rpcOverlap": [
+        {
+          "name": "ORQQAL LIST",
+          "isLive": true,
+          "domain": "allergies"
+        },
+        {
+          "name": "ORWPS ACTIVE",
+          "isLive": true,
+          "domain": "medications"
+        },
+        {
+          "name": "ORWPCE PCE4NOTE",
+          "isLive": false,
+          "domain": "billing"
+        },
+        {
+          "name": "ORWPCE SAVE",
+          "isLive": false,
+          "domain": "billing"
+        }
+      ],
+      "rpcGap": [
+        {
+          "name": "ORQQPL LIST",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "BEHOENCX GET PROBLEM LIST",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "BPXRM REMINDERS",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "BPXRM GET REMINDERS",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "PSO RXDISP",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "ORWLR RESULTS",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "ORWLR CUMULATIVE REPORT",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "DENT GET CHART",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "DENT SAVE PROCEDURE",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "YTT GET INSTRUMENT",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "YTT SAVE RESULTS",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "BWHR GET PATIENT DATA",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "BDMA AUDIT",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "BDMA PATIENT DATA",
+          "vivianGrounded": false,
+          "inCprs": false
+        }
+      ],
+      "capabilityOverlap": [
+        "clinical.patient.search",
+        "clinical.patient.demographics",
+        "clinical.patient.defaultList",
+        "clinical.allergies.list",
+        "clinical.allergies.add",
+        "clinical.vitals.list",
+        "clinical.vitals.add",
+        "clinical.immunizations.list",
+        "clinical.notes.list",
+        "clinical.notes.create",
+        "clinical.notes.getText",
+        "clinical.medications.list",
+        "clinical.medications.order",
+        "clinical.problems.list",
+        "clinical.icd.search",
+        "clinical.consults.list",
+        "clinical.consults.detail",
+        "clinical.surgery.list",
+        "clinical.dcSummaries.list",
+        "clinical.labs.list",
+        "clinical.reports.list",
+        "clinical.reports.text",
+        "clinical.orders.sign",
+        "clinical.longitudinal.timeline",
+        "clinical.longitudinal.summary",
+        "clinical.longitudinal.meds",
+        "messaging.clinician.inbox",
+        "messaging.clinician.send",
+        "messaging.mail-groups",
+        "clinical.adt.wards",
+        "clinical.adt.wardPatients",
+        "clinical.adt.providerPatients",
+        "clinical.adt.teams",
+        "clinical.adt.teamPatients",
+        "clinical.adt.specialties",
+        "clinical.adt.specialtyPatients",
+        "clinical.adt.locations",
+        "clinical.adt.admissions",
+        "clinical.adt.census",
+        "clinical.adt.bedboard",
+        "clinical.adt.movements",
+        "clinical.nursing.vitals",
+        "clinical.nursing.vitalsRange",
+        "clinical.nursing.notes",
+        "clinical.nursing.wardPatients",
+        "clinical.nursing.flowsheet",
+        "clinical.nursing.createNote",
+        "clinical.nursing.noteText",
+        "clinical.mha.instruments.list",
+        "clinical.mha.instruments.administer",
+        "clinical.emar.schedule",
+        "clinical.emar.allergies",
+        "clinical.emar.duplicateCheck",
+        "clinical.handoff.reports",
+        "clinical.handoff.wardPatients"
+      ],
+      "migrationReadiness": 34,
+      "surfaceSummary": [
+        {
+          "id": "rpms-patient-summary",
+          "name": "Patient Summary (VueCentric)",
+          "migrationStatus": "api-wired",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": true
+        },
+        {
+          "id": "rpms-pcc-encounter",
+          "name": "PCC Encounter Form",
+          "migrationStatus": "scaffold",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        },
+        {
+          "id": "rpms-health-maintenance",
+          "name": "Health Maintenance Reminders",
+          "migrationStatus": "scaffold",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "rpms-pharmacy",
+          "name": "Pharmacy (Outpatient)",
+          "migrationStatus": "api-wired",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        },
+        {
+          "id": "rpms-lab",
+          "name": "Lab Results",
+          "migrationStatus": "api-wired",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        },
+        {
+          "id": "rpms-dental",
+          "name": "Dental Record",
+          "migrationStatus": "not-started",
+          "priority": "p2-medium",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "rpms-optometry",
+          "name": "Optometry/Ophthalmology",
+          "migrationStatus": "not-started",
+          "priority": "p3-low",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "rpms-behavioral-health",
+          "name": "Behavioral Health",
+          "migrationStatus": "not-started",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "rpms-womens-health",
+          "name": "Women's Health",
+          "migrationStatus": "not-started",
+          "priority": "p2-medium",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "rpms-asthma-diabetes",
+          "name": "Chronic Disease Management (Asthma/Diabetes)",
+          "migrationStatus": "not-started",
+          "priority": "p2-medium",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "rpms-patient-summary",
+          "route": "/vista/*",
+          "page": "/cprs/chart/[dfn]/cover",
+          "component": "CoverSheetPanel",
+          "phase": 11
+        },
+        {
+          "surface": "rpms-pcc-encounter",
+          "route": "/vista/notes",
+          "page": "/encounter/note-builder",
+          "phase": 12
+        },
+        {
+          "surface": "rpms-health-maintenance",
+          "route": "/immunizations/*",
+          "page": "/dashboard/immunizations",
+          "phase": 65
+        },
+        {
+          "surface": "rpms-pharmacy",
+          "route": "/vista/medications",
+          "page": "/cprs/chart/[dfn]/meds",
+          "phase": 8
+        },
+        {
+          "surface": "rpms-lab",
+          "route": "/vista/labs",
+          "page": "/cprs/chart/[dfn]/labs",
+          "phase": 12
+        }
+      ]
+    },
+    {
+      "id": "bprm",
+      "name": "BPRM v4 (IHS Patient Registration)",
+      "agency": "ihs",
+      "category": "admin",
+      "hostPlatform": "delphi",
+      "deploymentModel": "thick-client",
+      "authMechanism": "xwb-rpc",
+      "migrationStrategy": "replace",
+      "surfaceCount": 3,
+      "coveredSurfaces": 2,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 1,
+      "rpcOverlap": [],
+      "rpcGap": [
+        {
+          "name": "BPRM GET PATIENT DEMO",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "BPRM SAVE PATIENT",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "BPRM ELIGIBILITY CHECK",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "IBCN GET INSURANCE",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "BPRM SAVE INSURANCE",
+          "vivianGrounded": false,
+          "inCprs": false
+        }
+      ],
+      "capabilityOverlap": [
+        "iam.audit.view",
+        "iam.policy.evaluate",
+        "iam.auth-mode.validate",
+        "iam.break-glass.request",
+        "iam.break-glass.approve",
+        "iam.break-glass.deny",
+        "iam.break-glass.revoke",
+        "iam.role-mapping"
+      ],
+      "migrationReadiness": 30,
+      "surfaceSummary": [
+        {
+          "id": "bprm-registration",
+          "name": "Patient Registration",
+          "migrationStatus": "scaffold",
+          "priority": "p1-high",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "bprm-eligibility",
+          "name": "IHS Eligibility Verification",
+          "migrationStatus": "not-started",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "bprm-third-party-billing",
+          "name": "Third-Party Billing Data",
+          "migrationStatus": "scaffold",
+          "priority": "p2-medium",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "bprm-registration",
+          "route": "/vista/patient-demographics",
+          "page": "/cprs/patient-search",
+          "phase": 4
+        },
+        {
+          "surface": "bprm-third-party-billing",
+          "route": "/rcm/*",
+          "page": "/cprs/admin/rcm",
+          "phase": 38
+        }
+      ]
+    },
+    {
+      "id": "lighthouse",
+      "name": "VA Lighthouse (API Platform)",
+      "agency": "va",
+      "category": "infrastructure",
+      "hostPlatform": "web",
+      "deploymentModel": "api-only",
+      "authMechanism": "oauth2",
+      "migrationStrategy": "coexist",
+      "surfaceCount": 2,
+      "coveredSurfaces": 1,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 1,
+      "rpcOverlap": [],
+      "rpcGap": [],
+      "capabilityOverlap": [
+        "interop.hl7.monitor",
+        "interop.hl7.read",
+        "interop.hlo.read",
+        "interop.queue.read",
+        "interop.msg.list",
+        "interop.msg.detail",
+        "interop.registry.manage",
+        "iam.audit.view",
+        "iam.policy.evaluate",
+        "iam.auth-mode.validate",
+        "iam.break-glass.request",
+        "iam.break-glass.approve",
+        "iam.break-glass.deny",
+        "iam.break-glass.revoke",
+        "iam.role-mapping"
+      ],
+      "migrationReadiness": 25,
+      "surfaceSummary": [
+        {
+          "id": "lighthouse-health-api",
+          "name": "Health API (Patient-facing)",
+          "migrationStatus": "scaffold",
+          "priority": "p2-medium",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "lighthouse-provider-api",
+          "name": "Provider Directory API",
+          "migrationStatus": "scaffold",
+          "priority": "p3-low",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "lighthouse-health-api",
+          "route": "/portal/*",
+          "page": "/dashboard/records",
+          "phase": 27
+        },
+        {
+          "surface": "lighthouse-provider-api",
+          "route": "/provider-directory/*",
+          "phase": 402
+        }
+      ]
+    },
+    {
+      "id": "jlv",
+      "name": "JLV (Joint Longitudinal Viewer)",
+      "agency": "va",
+      "category": "reporting",
+      "hostPlatform": "web",
+      "deploymentModel": "browser",
+      "authMechanism": "saml",
+      "migrationStrategy": "coexist",
+      "surfaceCount": 5,
+      "coveredSurfaces": 0,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 0,
+      "rpcOverlap": [
+        {
+          "name": "ORWRP REPORT TEXT",
+          "isLive": true,
+          "domain": "reports"
+        },
+        {
+          "name": "ORWPT SELECT",
+          "isLive": true,
+          "domain": "patients"
+        },
+        {
+          "name": "TIU GET RECORD TEXT",
+          "isLive": true,
+          "domain": "notes"
+        },
+        {
+          "name": "ORWPS ACTIVE",
+          "isLive": true,
+          "domain": "medications"
+        }
+      ],
+      "rpcGap": [
+        {
+          "name": "ORWLR RESULTS",
+          "vivianGrounded": false,
+          "inCprs": false
+        }
+      ],
+      "capabilityOverlap": [
+        "clinical.patient.search",
+        "clinical.patient.demographics",
+        "clinical.patient.defaultList",
+        "clinical.allergies.list",
+        "clinical.allergies.add",
+        "clinical.vitals.list",
+        "clinical.vitals.add",
+        "clinical.immunizations.list",
+        "clinical.notes.list",
+        "clinical.notes.create",
+        "clinical.notes.getText",
+        "clinical.medications.list",
+        "clinical.medications.order",
+        "clinical.problems.list",
+        "clinical.icd.search",
+        "clinical.consults.list",
+        "clinical.consults.detail",
+        "clinical.surgery.list",
+        "clinical.dcSummaries.list",
+        "clinical.labs.list",
+        "clinical.reports.list",
+        "clinical.reports.text",
+        "clinical.orders.sign",
+        "analytics.dashboard.view",
+        "analytics.export",
+        "clinical.longitudinal.timeline",
+        "clinical.longitudinal.summary",
+        "clinical.longitudinal.meds",
+        "messaging.clinician.inbox",
+        "messaging.clinician.send",
+        "messaging.mail-groups",
+        "clinical.adt.wards",
+        "clinical.adt.wardPatients",
+        "clinical.adt.providerPatients",
+        "clinical.adt.teams",
+        "clinical.adt.teamPatients",
+        "clinical.adt.specialties",
+        "clinical.adt.specialtyPatients",
+        "clinical.adt.locations",
+        "clinical.adt.admissions",
+        "clinical.adt.census",
+        "clinical.adt.bedboard",
+        "clinical.adt.movements",
+        "clinical.nursing.vitals",
+        "clinical.nursing.vitalsRange",
+        "clinical.nursing.notes",
+        "clinical.nursing.wardPatients",
+        "clinical.nursing.flowsheet",
+        "clinical.nursing.createNote",
+        "clinical.nursing.noteText",
+        "clinical.mha.instruments.list",
+        "clinical.mha.instruments.administer",
+        "clinical.emar.schedule",
+        "clinical.emar.allergies",
+        "clinical.emar.duplicateCheck",
+        "clinical.handoff.reports",
+        "clinical.handoff.wardPatients"
+      ],
+      "migrationReadiness": 24,
+      "surfaceSummary": [
+        {
+          "id": "jlv-timeline",
+          "name": "Clinical Timeline",
+          "migrationStatus": "not-started",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "jlv-documents",
+          "name": "Cross-Facility Documents",
+          "migrationStatus": "scaffold",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "jlv-meds-summary",
+          "name": "Longitudinal Medication Summary",
+          "migrationStatus": "not-started",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "jlv-labs-aggregate",
+          "name": "Aggregated Lab Results",
+          "migrationStatus": "not-started",
+          "priority": "p2-medium",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "jlv-community-care",
+          "name": "Community Care Records",
+          "migrationStatus": "scaffold",
+          "priority": "p2-medium",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "jlv-documents",
+          "page": "/cprs/remote-data-viewer",
+          "phase": 14
+        },
+        {
+          "surface": "jlv-community-care",
+          "route": "/fhir/*",
+          "phase": 178
+        }
+      ]
+    },
+    {
+      "id": "bcma",
+      "name": "BCMA (Bar Code Medication Administration)",
+      "agency": "va",
+      "category": "pharmacy",
+      "hostPlatform": "delphi",
+      "deploymentModel": "thick-client",
+      "authMechanism": "xwb-rpc",
+      "migrationStrategy": "replace",
+      "surfaceCount": 5,
+      "coveredSurfaces": 2,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 2,
+      "rpcOverlap": [
+        {
+          "name": "ORWPS ACTIVE",
+          "isLive": true,
+          "domain": "medications"
+        }
+      ],
+      "rpcGap": [
+        {
+          "name": "PSB GETORDERSYNONYM",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "PSB MEDICATION LOG",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "PSB SCANPT",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "PSB SCANMED",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "PSB VDL",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "PSB MEDPASS",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "PSB IV BAG",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "PSB IV LOG",
+          "vivianGrounded": false,
+          "inCprs": false
+        }
+      ],
+      "capabilityOverlap": [
+        "clinical.patient.search",
+        "clinical.patient.demographics",
+        "clinical.patient.defaultList",
+        "clinical.allergies.list",
+        "clinical.allergies.add",
+        "clinical.vitals.list",
+        "clinical.vitals.add",
+        "clinical.immunizations.list",
+        "clinical.notes.list",
+        "clinical.notes.create",
+        "clinical.notes.getText",
+        "clinical.medications.list",
+        "clinical.medications.order",
+        "clinical.problems.list",
+        "clinical.icd.search",
+        "clinical.consults.list",
+        "clinical.consults.detail",
+        "clinical.surgery.list",
+        "clinical.dcSummaries.list",
+        "clinical.labs.list",
+        "clinical.reports.list",
+        "clinical.reports.text",
+        "clinical.orders.sign",
+        "clinical.longitudinal.timeline",
+        "clinical.longitudinal.summary",
+        "clinical.longitudinal.meds",
+        "messaging.clinician.inbox",
+        "messaging.clinician.send",
+        "messaging.mail-groups",
+        "clinical.adt.wards",
+        "clinical.adt.wardPatients",
+        "clinical.adt.providerPatients",
+        "clinical.adt.teams",
+        "clinical.adt.teamPatients",
+        "clinical.adt.specialties",
+        "clinical.adt.specialtyPatients",
+        "clinical.adt.locations",
+        "clinical.adt.admissions",
+        "clinical.adt.census",
+        "clinical.adt.bedboard",
+        "clinical.adt.movements",
+        "clinical.nursing.vitals",
+        "clinical.nursing.vitalsRange",
+        "clinical.nursing.notes",
+        "clinical.nursing.wardPatients",
+        "clinical.nursing.flowsheet",
+        "clinical.nursing.createNote",
+        "clinical.nursing.noteText",
+        "clinical.mha.instruments.list",
+        "clinical.mha.instruments.administer",
+        "clinical.emar.schedule",
+        "clinical.emar.allergies",
+        "clinical.emar.duplicateCheck",
+        "clinical.handoff.reports",
+        "clinical.handoff.wardPatients"
+      ],
+      "migrationReadiness": 23,
+      "surfaceSummary": [
+        {
+          "id": "bcma-med-log",
+          "name": "Medication Administration Log",
+          "migrationStatus": "scaffold",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "bcma-virtual-due-list",
+          "name": "Virtual Due List (VDL)",
+          "migrationStatus": "not-started",
+          "priority": "p0-critical",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "bcma-med-tab",
+          "name": "Medication Tab (Inpatient)",
+          "migrationStatus": "api-wired",
+          "priority": "p1-high",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        },
+        {
+          "id": "bcma-scanning",
+          "name": "Barcode Scanning Workflow",
+          "migrationStatus": "not-started",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "bcma-iv-tracking",
+          "name": "IV Bag Tracking",
+          "migrationStatus": "not-started",
+          "priority": "p2-medium",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "bcma-med-log",
+          "route": "/emar/*",
+          "page": "/cprs/emar",
+          "component": "EmarPanel",
+          "phase": 85
+        },
+        {
+          "surface": "bcma-med-tab",
+          "route": "/vista/medications",
+          "page": "/cprs/chart/[dfn]/meds",
+          "component": "MedsPanel",
+          "phase": 8
+        }
+      ]
+    },
+    {
+      "id": "vse-vs-gui",
+      "name": "VSE / VS GUI (VistA Scheduling Enhancement)",
+      "agency": "va",
+      "category": "scheduling",
+      "hostPlatform": "dotnet",
+      "deploymentModel": "thick-client",
+      "authMechanism": "xwb-rpc",
+      "migrationStrategy": "replace",
+      "surfaceCount": 6,
+      "coveredSurfaces": 3,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 2,
+      "rpcOverlap": [],
+      "rpcGap": [
+        {
+          "name": "SDES GET CLINIC DETAILS",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "SDES GET APPT TYPES",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "SDES MAKE APPOINTMENT",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "SDES CANCEL APPOINTMENT",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "SDES CHECK IN",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "SDOE CHECK IN",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "SD W/L CHECK IN",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "SDES GET RECALL LIST",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "SD W/L GET LIST",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "SD W/L MANAGE",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "SDES GET CLINIC RESOURCE",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "SDVW WORKLIST",
+          "vivianGrounded": false,
+          "inCprs": false
+        }
+      ],
+      "capabilityOverlap": [
+        "scheduling.lifecycle.read",
+        "scheduling.lifecycle.transition",
+        "scheduling.posture",
+        "scheduling.request.approve",
+        "scheduling.request.reject",
+        "scheduling.clinic.preferences",
+        "scheduling.appointmentTypes",
+        "scheduling.cancelReasons",
+        "scheduling.clinicResource",
+        "scheduling.sdesAvailability",
+        "scheduling.verify",
+        "scheduling.mode",
+        "scheduling.parity"
+      ],
+      "migrationReadiness": 23,
+      "surfaceSummary": [
+        {
+          "id": "vse-appointment-book",
+          "name": "Appointment Book / Grid View",
+          "migrationStatus": "scaffold",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        },
+        {
+          "id": "vse-check-in",
+          "name": "Patient Check-In",
+          "migrationStatus": "scaffold",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "vse-recall-reminder",
+          "name": "Recall/Reminder Management",
+          "migrationStatus": "not-started",
+          "priority": "p2-medium",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "vse-wait-list",
+          "name": "Wait List Management",
+          "migrationStatus": "not-started",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "vse-clinic-setup",
+          "name": "Clinic Profile Setup",
+          "migrationStatus": "scaffold",
+          "priority": "p2-medium",
+          "covered": true,
+          "rpcWired": true,
+          "writebackReady": false
+        },
+        {
+          "id": "vse-resource-view",
+          "name": "Resource/Provider View",
+          "migrationStatus": "scaffold",
+          "priority": "p2-medium",
+          "covered": false,
+          "rpcWired": true,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "vse-appointment-book",
+          "route": "/scheduling/*",
+          "page": "/cprs/scheduling",
+          "component": "SchedulingPanel",
+          "phase": 147
+        },
+        {
+          "surface": "vse-check-in",
+          "route": "/scheduling/*",
+          "page": "/cprs/scheduling",
+          "phase": 147
+        },
+        {
+          "surface": "vse-clinic-setup",
+          "route": "/scheduling/*",
+          "phase": 147
+        },
+        {
+          "surface": "vse-resource-view",
+          "route": "/scheduling/clinic/:ien/resource",
+          "phase": 147
+        }
+      ]
+    },
+    {
+      "id": "ivs-sic",
+      "name": "IVS / SIC (Imaging Viewing Solution / Scanned Image Capture)",
+      "agency": "va",
+      "category": "imaging",
+      "hostPlatform": "web",
+      "deploymentModel": "browser",
+      "authMechanism": "saml",
+      "migrationStrategy": "coexist",
+      "surfaceCount": 3,
+      "coveredSurfaces": 0,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 0,
+      "rpcOverlap": [
+        {
+          "name": "TIU CREATE RECORD",
+          "isLive": true,
+          "domain": "notes"
+        }
+      ],
+      "rpcGap": [
+        {
+          "name": "MAG4 ADD IMAGE",
+          "vivianGrounded": false,
+          "inCprs": false
+        }
+      ],
+      "capabilityOverlap": [
+        "imaging.viewer.open",
+        "imaging.studies.list",
+        "imaging.worklist.view",
+        "imaging.devices.manage",
+        "imaging.audit.view",
+        "imaging.capture.upload",
+        "imaging.capture.list"
+      ],
+      "migrationReadiness": 15,
+      "surfaceSummary": [
+        {
+          "id": "ivs-document-scan",
+          "name": "Document Scanning",
+          "migrationStatus": "not-started",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "ivs-photo-capture",
+          "name": "Clinical Photo Capture",
+          "migrationStatus": "not-started",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "ivs-batch-import",
+          "name": "Batch Document Import",
+          "migrationStatus": "not-started",
+          "priority": "p3-low",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": []
+    },
+    {
+      "id": "hwsc",
+      "name": "HWSC (Health Web Services Client)",
+      "agency": "va",
+      "category": "infrastructure",
+      "hostPlatform": "java",
+      "deploymentModel": "api-only",
+      "authMechanism": "iam-sts",
+      "migrationStrategy": "wrap",
+      "surfaceCount": 1,
+      "coveredSurfaces": 0,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 1,
+      "rpcOverlap": [],
+      "rpcGap": [],
+      "capabilityOverlap": [
+        "interop.hl7.monitor",
+        "interop.hl7.read",
+        "interop.hlo.read",
+        "interop.queue.read",
+        "interop.msg.list",
+        "interop.msg.detail",
+        "interop.registry.manage",
+        "iam.audit.view",
+        "iam.policy.evaluate",
+        "iam.auth-mode.validate",
+        "iam.break-glass.request",
+        "iam.break-glass.approve",
+        "iam.break-glass.deny",
+        "iam.break-glass.revoke",
+        "iam.role-mapping"
+      ],
+      "migrationReadiness": 10,
+      "surfaceSummary": [
+        {
+          "id": "hwsc-fhir-gateway",
+          "name": "FHIR R4 Gateway",
+          "migrationStatus": "api-wired",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "hwsc-fhir-gateway",
+          "route": "/fhir/*",
+          "phase": 178
+        }
+      ]
+    },
+    {
+      "id": "bsdx-pims",
+      "name": "BSDX / PIMS (IHS Scheduling)",
+      "agency": "ihs",
+      "category": "scheduling",
+      "hostPlatform": "dotnet",
+      "deploymentModel": "thick-client",
+      "authMechanism": "xwb-rpc",
+      "migrationStrategy": "replace",
+      "surfaceCount": 5,
+      "coveredSurfaces": 1,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 1,
+      "rpcOverlap": [],
+      "rpcGap": [
+        {
+          "name": "BSDX BOOKING SLOTS",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "BSDX MAKE APPOINTMENT",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "BSDX CANCEL APPOINTMENT",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "BSDX CHECK IN",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "BSDX PRINT ROUTING SLIP",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "BSDX GET RESOURCES",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "BSDX SETUP",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "SD W/L GET LIST",
+          "vivianGrounded": false,
+          "inCprs": false
+        }
+      ],
+      "capabilityOverlap": [
+        "scheduling.lifecycle.read",
+        "scheduling.lifecycle.transition",
+        "scheduling.posture",
+        "scheduling.request.approve",
+        "scheduling.request.reject",
+        "scheduling.clinic.preferences",
+        "scheduling.appointmentTypes",
+        "scheduling.cancelReasons",
+        "scheduling.clinicResource",
+        "scheduling.sdesAvailability",
+        "scheduling.verify",
+        "scheduling.mode",
+        "scheduling.parity"
+      ],
+      "migrationReadiness": 10,
+      "surfaceSummary": [
+        {
+          "id": "bsdx-appointment-grid",
+          "name": "Appointment Grid",
+          "migrationStatus": "scaffold",
+          "priority": "p0-critical",
+          "covered": true,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "bsdx-check-in",
+          "name": "Patient Check-In",
+          "migrationStatus": "not-started",
+          "priority": "p0-critical",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "bsdx-resource-setup",
+          "name": "Resource/Clinic Setup",
+          "migrationStatus": "not-started",
+          "priority": "p2-medium",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "bsdx-wait-list",
+          "name": "Wait List",
+          "migrationStatus": "not-started",
+          "priority": "p2-medium",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "bsdx-reports",
+          "name": "Scheduling Reports",
+          "migrationStatus": "not-started",
+          "priority": "p3-low",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "bsdx-appointment-grid",
+          "route": "/scheduling/*",
+          "page": "/cprs/scheduling",
+          "phase": 147
+        }
+      ]
+    },
+    {
+      "id": "mha",
+      "name": "MHA (Mental Health Assistant)",
+      "agency": "va",
+      "category": "mental-health",
+      "hostPlatform": "delphi",
+      "deploymentModel": "thick-client",
+      "authMechanism": "xwb-rpc",
+      "migrationStrategy": "replace",
+      "surfaceCount": 8,
+      "coveredSurfaces": 0,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 0,
+      "rpcOverlap": [
+        {
+          "name": "TIU CREATE RECORD",
+          "isLive": true,
+          "domain": "notes"
+        },
+        {
+          "name": "TIU SET DOCUMENT TEXT",
+          "isLive": true,
+          "domain": "notes"
+        }
+      ],
+      "rpcGap": [
+        {
+          "name": "YTT GET INSTRUMENT",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "YTQZ LISTTESTS",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "YTT SAVE RESULTS",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "YTQZ RESULTLIST",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "YTQZ DETAILLIST",
+          "vivianGrounded": false,
+          "inCprs": false
+        }
+      ],
+      "capabilityOverlap": [
+        "clinical.patient.search",
+        "clinical.patient.demographics",
+        "clinical.patient.defaultList",
+        "clinical.allergies.list",
+        "clinical.allergies.add",
+        "clinical.vitals.list",
+        "clinical.vitals.add",
+        "clinical.immunizations.list",
+        "clinical.notes.list",
+        "clinical.notes.create",
+        "clinical.notes.getText",
+        "clinical.medications.list",
+        "clinical.medications.order",
+        "clinical.problems.list",
+        "clinical.icd.search",
+        "clinical.consults.list",
+        "clinical.consults.detail",
+        "clinical.surgery.list",
+        "clinical.dcSummaries.list",
+        "clinical.labs.list",
+        "clinical.reports.list",
+        "clinical.reports.text",
+        "clinical.orders.sign",
+        "clinical.longitudinal.timeline",
+        "clinical.longitudinal.summary",
+        "clinical.longitudinal.meds",
+        "messaging.clinician.inbox",
+        "messaging.clinician.send",
+        "messaging.mail-groups",
+        "clinical.adt.wards",
+        "clinical.adt.wardPatients",
+        "clinical.adt.providerPatients",
+        "clinical.adt.teams",
+        "clinical.adt.teamPatients",
+        "clinical.adt.specialties",
+        "clinical.adt.specialtyPatients",
+        "clinical.adt.locations",
+        "clinical.adt.admissions",
+        "clinical.adt.census",
+        "clinical.adt.bedboard",
+        "clinical.adt.movements",
+        "clinical.nursing.vitals",
+        "clinical.nursing.vitalsRange",
+        "clinical.nursing.notes",
+        "clinical.nursing.wardPatients",
+        "clinical.nursing.flowsheet",
+        "clinical.nursing.createNote",
+        "clinical.nursing.noteText",
+        "clinical.mha.instruments.list",
+        "clinical.mha.instruments.administer",
+        "clinical.emar.schedule",
+        "clinical.emar.allergies",
+        "clinical.emar.duplicateCheck",
+        "clinical.handoff.reports",
+        "clinical.handoff.wardPatients"
+      ],
+      "migrationReadiness": 9,
+      "surfaceSummary": [
+        {
+          "id": "mha-instrument-admin",
+          "name": "Instrument Administration",
+          "migrationStatus": "not-started",
+          "priority": "p0-critical",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "mha-phq9",
+          "name": "PHQ-9 Depression Screen",
+          "migrationStatus": "not-started",
+          "priority": "p0-critical",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "mha-gad7",
+          "name": "GAD-7 Anxiety Screen",
+          "migrationStatus": "not-started",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "mha-pcl5",
+          "name": "PCL-5 PTSD Screen",
+          "migrationStatus": "not-started",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "mha-cssrs",
+          "name": "Columbia Suicide Severity Rating",
+          "migrationStatus": "not-started",
+          "priority": "p0-critical",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "mha-audit-c",
+          "name": "AUDIT-C Alcohol Screen",
+          "migrationStatus": "not-started",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "mha-results-history",
+          "name": "Instrument Results History",
+          "migrationStatus": "not-started",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "mha-tiu-writeback",
+          "name": "MHA to TIU Note Writeback",
+          "migrationStatus": "not-started",
+          "priority": "p0-critical",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": []
+    },
+    {
+      "id": "clinical-procedures",
+      "name": "Clinical Procedures (CP/MD)",
+      "agency": "va",
+      "category": "clinical",
+      "hostPlatform": "dotnet",
+      "deploymentModel": "thick-client",
+      "authMechanism": "xwb-rpc",
+      "migrationStrategy": "replace",
+      "surfaceCount": 4,
+      "coveredSurfaces": 0,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 0,
+      "rpcOverlap": [
+        {
+          "name": "TIU CREATE RECORD",
+          "isLive": true,
+          "domain": "notes"
+        }
+      ],
+      "rpcGap": [
+        {
+          "name": "MD RECEIVE DATA",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "MD GET STATUS",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "MD GET WORKLIST",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "MD GET DATA",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "MD GET INSTRUMENT LIST",
+          "vivianGrounded": false,
+          "inCprs": false
+        }
+      ],
+      "capabilityOverlap": [
+        "clinical.patient.search",
+        "clinical.patient.demographics",
+        "clinical.patient.defaultList",
+        "clinical.allergies.list",
+        "clinical.allergies.add",
+        "clinical.vitals.list",
+        "clinical.vitals.add",
+        "clinical.immunizations.list",
+        "clinical.notes.list",
+        "clinical.notes.create",
+        "clinical.notes.getText",
+        "clinical.medications.list",
+        "clinical.medications.order",
+        "clinical.problems.list",
+        "clinical.icd.search",
+        "clinical.consults.list",
+        "clinical.consults.detail",
+        "clinical.surgery.list",
+        "clinical.dcSummaries.list",
+        "clinical.labs.list",
+        "clinical.reports.list",
+        "clinical.reports.text",
+        "clinical.orders.sign",
+        "clinical.longitudinal.timeline",
+        "clinical.longitudinal.summary",
+        "clinical.longitudinal.meds",
+        "messaging.clinician.inbox",
+        "messaging.clinician.send",
+        "messaging.mail-groups",
+        "clinical.adt.wards",
+        "clinical.adt.wardPatients",
+        "clinical.adt.providerPatients",
+        "clinical.adt.teams",
+        "clinical.adt.teamPatients",
+        "clinical.adt.specialties",
+        "clinical.adt.specialtyPatients",
+        "clinical.adt.locations",
+        "clinical.adt.admissions",
+        "clinical.adt.census",
+        "clinical.adt.bedboard",
+        "clinical.adt.movements",
+        "clinical.nursing.vitals",
+        "clinical.nursing.vitalsRange",
+        "clinical.nursing.notes",
+        "clinical.nursing.wardPatients",
+        "clinical.nursing.flowsheet",
+        "clinical.nursing.createNote",
+        "clinical.nursing.noteText",
+        "clinical.mha.instruments.list",
+        "clinical.mha.instruments.administer",
+        "clinical.emar.schedule",
+        "clinical.emar.allergies",
+        "clinical.emar.duplicateCheck",
+        "clinical.handoff.reports",
+        "clinical.handoff.wardPatients"
+      ],
+      "migrationReadiness": 5,
+      "surfaceSummary": [
+        {
+          "id": "cp-acquisition",
+          "name": "Data Acquisition",
+          "migrationStatus": "not-started",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "cp-worklist",
+          "name": "Procedure Worklist",
+          "migrationStatus": "not-started",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "cp-results-review",
+          "name": "Results Review & Interpretation",
+          "migrationStatus": "not-started",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "cp-instrument-config",
+          "name": "Instrument Configuration",
+          "migrationStatus": "not-started",
+          "priority": "p2-medium",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": []
+    },
+    {
+      "id": "hinge",
+      "name": "HINGE (Health Information National Gateway Exchange)",
+      "agency": "va",
+      "category": "infrastructure",
+      "hostPlatform": "java",
+      "deploymentModel": "hybrid",
+      "authMechanism": "iam-sts",
+      "migrationStrategy": "coexist",
+      "surfaceCount": 2,
+      "coveredSurfaces": 0,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 0,
+      "rpcOverlap": [],
+      "rpcGap": [],
+      "capabilityOverlap": [
+        "interop.hl7.monitor",
+        "interop.hl7.read",
+        "interop.hlo.read",
+        "interop.queue.read",
+        "interop.msg.list",
+        "interop.msg.detail",
+        "interop.registry.manage",
+        "iam.audit.view",
+        "iam.policy.evaluate",
+        "iam.auth-mode.validate",
+        "iam.break-glass.request",
+        "iam.break-glass.approve",
+        "iam.break-glass.deny",
+        "iam.break-glass.revoke",
+        "iam.role-mapping"
+      ],
+      "migrationReadiness": 0,
+      "surfaceSummary": [
+        {
+          "id": "hinge-query",
+          "name": "Patient Discovery / Query",
+          "migrationStatus": "scaffold",
+          "priority": "p2-medium",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "hinge-document-retrieve",
+          "name": "Document Retrieve",
+          "migrationStatus": "scaffold",
+          "priority": "p2-medium",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "hinge-query",
+          "route": "/interop-gateway/*",
+          "phase": 400
+        },
+        {
+          "surface": "hinge-document-retrieve",
+          "route": "/document-exchange/*",
+          "phase": 403
+        }
+      ]
+    },
+    {
+      "id": "ves",
+      "name": "VES (Veteran Enrollment System)",
+      "agency": "va",
+      "category": "admin",
+      "hostPlatform": "web",
+      "deploymentModel": "browser",
+      "authMechanism": "saml",
+      "migrationStrategy": "coexist",
+      "surfaceCount": 2,
+      "coveredSurfaces": 0,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 0,
+      "rpcOverlap": [],
+      "rpcGap": [
+        {
+          "name": "DG ENROLLMENT STATUS",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "DG SENSITIVE PATIENT ACCESS",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "DG ELIGIBILITY STATUS",
+          "vivianGrounded": false,
+          "inCprs": false
+        }
+      ],
+      "capabilityOverlap": [
+        "iam.audit.view",
+        "iam.policy.evaluate",
+        "iam.auth-mode.validate",
+        "iam.break-glass.request",
+        "iam.break-glass.approve",
+        "iam.break-glass.deny",
+        "iam.break-glass.revoke",
+        "iam.role-mapping"
+      ],
+      "migrationReadiness": 0,
+      "surfaceSummary": [
+        {
+          "id": "ves-enrollment",
+          "name": "Enrollment Processing",
+          "migrationStatus": "not-started",
+          "priority": "p2-medium",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        },
+        {
+          "id": "ves-eligibility",
+          "name": "Eligibility Verification",
+          "migrationStatus": "not-started",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": []
+    },
+    {
+      "id": "pats",
+      "name": "PATS (Patient Advocate Tracking System)",
+      "agency": "va",
+      "category": "admin",
+      "hostPlatform": "web",
+      "deploymentModel": "browser",
+      "authMechanism": "saml",
+      "migrationStrategy": "coexist",
+      "surfaceCount": 1,
+      "coveredSurfaces": 0,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 0,
+      "rpcOverlap": [],
+      "rpcGap": [],
+      "capabilityOverlap": [
+        "iam.audit.view",
+        "iam.policy.evaluate",
+        "iam.auth-mode.validate",
+        "iam.break-glass.request",
+        "iam.break-glass.approve",
+        "iam.break-glass.deny",
+        "iam.break-glass.revoke",
+        "iam.role-mapping"
+      ],
+      "migrationReadiness": 0,
+      "surfaceSummary": [
+        {
+          "id": "pats-complaint-tracking",
+          "name": "Complaint/Issue Tracking",
+          "migrationStatus": "not-started",
+          "priority": "p3-low",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": []
+    },
+    {
+      "id": "person-services",
+      "name": "Person Services (MPI/PSIM)",
+      "agency": "va",
+      "category": "infrastructure",
+      "hostPlatform": "java",
+      "deploymentModel": "api-only",
+      "authMechanism": "iam-sts",
+      "migrationStrategy": "wrap",
+      "surfaceCount": 1,
+      "coveredSurfaces": 0,
+      "writebackSurfaces": 0,
+      "testedSurfaces": 0,
+      "rpcOverlap": [],
+      "rpcGap": [
+        {
+          "name": "MPIF001 LOOKUP",
+          "vivianGrounded": false,
+          "inCprs": false
+        },
+        {
+          "name": "MPIF001 QUERY",
+          "vivianGrounded": false,
+          "inCprs": false
+        }
+      ],
+      "capabilityOverlap": [
+        "interop.hl7.monitor",
+        "interop.hl7.read",
+        "interop.hlo.read",
+        "interop.queue.read",
+        "interop.msg.list",
+        "interop.msg.detail",
+        "interop.registry.manage",
+        "iam.audit.view",
+        "iam.policy.evaluate",
+        "iam.auth-mode.validate",
+        "iam.break-glass.request",
+        "iam.break-glass.approve",
+        "iam.break-glass.deny",
+        "iam.break-glass.revoke",
+        "iam.role-mapping"
+      ],
+      "migrationReadiness": 0,
+      "surfaceSummary": [
+        {
+          "id": "ps-patient-matching",
+          "name": "Patient Identity Matching",
+          "migrationStatus": "scaffold",
+          "priority": "p1-high",
+          "covered": false,
+          "rpcWired": false,
+          "writebackReady": false
+        }
+      ],
+      "veEquivalents": [
+        {
+          "surface": "ps-patient-matching",
+          "route": "/mpi/*",
+          "phase": 401
+        }
+      ]
+    }
+  ]
+}

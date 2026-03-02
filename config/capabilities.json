@@ -1027,6 +1027,22 @@
       "targetPackage": null,
       "description": "Rollback completed imports"
     },
+    "migration.hybrids.map": {
+      "status": "live",
+      "module": "migration",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "VA/IHS GUI Hybrids cross-reference map with RPC overlap/gap (Phase 541)"
+    },
+    "migration.hybrids.summary": {
+      "status": "live",
+      "module": "migration",
+      "adapter": null,
+      "targetRpc": null,
+      "targetPackage": null,
+      "description": "Hybrid systems migration readiness summary rollup (Phase 541)"
+    },
     "messaging.clinician.inbox": {
       "status": "live",
       "module": "clinical",

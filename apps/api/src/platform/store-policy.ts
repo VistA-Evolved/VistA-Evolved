@@ -854,7 +854,12 @@ export const STORE_INVENTORY: StoreEntry[] = [
   // Phase 540: JLV Longitudinal Viewer
   { store: 'longitudinal-timeline-cache', domain: 'clinical', classification: 'cache', durability: 'in_memory_only', description: 'Longitudinal timeline event aggregation cache (Phase 540)' },
   { store: 'longitudinal-summary-cache', domain: 'clinical', classification: 'cache', durability: 'in_memory_only', description: 'Domain-level summary count cache (Phase 540)' },    variable: "patientCaptureIndex",
-    description: "Patient DFN -> capture ID index",
+
+
+  // Phase 541: VA GUI Hybrids capability map
+  { id: 'hybrids-map-cache', module: 'migration', backend: 'in_memory', description: 'VA/IHS GUI hybrids cross-reference cache (5m TTL)' },
+  // Phase 541: VA GUI Hybrids capability map
+  { id: 'hybrids-map-cache', module: 'migration', backend: 'in_memory', description: 'VA/IHS GUI hybrids cross-reference cache (5m TTL)' },    description: "Patient DFN -> capture ID index",
     classification: "index",
     durability: "in_memory_only",
     domain: "imaging",

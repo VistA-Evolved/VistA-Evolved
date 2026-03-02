@@ -142,6 +142,7 @@ import mhaRoutes from "../routes/mha/index.js";
 import clinicalProceduresRoutes from "../routes/clinical-procedures/index.js";
 import imagingCaptureRoutes from "../routes/imaging-capture/index.js";
 import longitudinalRoutes from "../routes/longitudinal/index.js";
+import hybridsRoutes from "../routes/hybrids/index.js";
 
 // Service-line boards (Phase 464-471, W31)
 import edRoutes from "../service-lines/ed/ed-routes.js";
@@ -371,6 +372,7 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(imagingViewerRoutes);
   server.register(imagingCaptureRoutes); // Phase 538: SIC-like browser capture
   server.register(longitudinalRoutes); // Phase 540: JLV-style longitudinal viewer
+  server.register(hybridsRoutes); // Phase 541: VA GUI Hybrids capability map
 
   // Admin/tenant routes (Phase 17B)
   server.register(adminRoutes);

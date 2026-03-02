@@ -178,7 +178,7 @@ const TYPE_LABELS: Record<string, string> = {
 
 export default function IntegrationsPage() {
   const { user, hasRole } = useSession();
-  const [tab, setTab] = useState<'registry' | 'legacy' | 'onboard' | 'hl7hlo' | 'msgbrowser'>('registry');
+  const [tab, setTab] = useState<'registry' | 'legacy' | 'onboard' | 'hl7hlo' | 'msgbrowser' | 'hybrids'>('registry');
   const [integrations, setIntegrations] = useState<Integration[]>([]);
   const [connectors, setConnectors] = useState<Connector[]>([]);
   const [healthSummary, setHealthSummary] = useState<HealthSummary | null>(null);
@@ -187,6 +187,10 @@ export default function IntegrationsPage() {
   const [error, setError] = useState<string | null>(null);
   const [selectedError, setSelectedError] = useState<string | null>(null);
   const [errorLogEntries, setErrorLogEntries] = useState<Integration['errorLog']>([]);
+
+  // Phase 541: VA GUI Hybrids state
+  const [hybridsData, setHybridsData] = useState<any>(null);
+  const [hybridsLoading, setHybridsLoading] = useState(false);
 
   // VistA HL7/HLO telemetry state (Phase 21)
   const [interopSummary, setInteropSummary] = useState<InteropSummary | null>(null);
@@ -501,7 +505,7 @@ export default function IntegrationsPage() {
 
         {/* ── Tab Nav ──────────────────────────────────────────────── */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-          {(['registry', 'hl7hlo', 'msgbrowser', 'onboard', 'legacy'] as const).map((t) => (
+          {(['registry', 'hl7hlo', 'msgbrowser', 'onboard', 'legacy', 'hybrids'] as const).map((t) => (
             <button key={t} className={styles.btn} onClick={() => setTab(t)}
               style={{
                 fontSize: 12,
@@ -509,7 +513,7 @@ export default function IntegrationsPage() {
                 borderBottom: tab === t ? '2px solid var(--cprs-primary)' : '2px solid transparent',
                 borderRadius: 0,
               }}>
-              {t === 'registry' ? 'Integration Registry' : t === 'hl7hlo' ? 'VistA HL7/HLO' : t === 'msgbrowser' ? 'Message Browser' : t === 'onboard' ? 'Device Onboarding' : 'Legacy Connectors'}
+              {t === 'registry' ? 'Integration Registry' : t === 'hl7hlo' ? 'VistA HL7/HLO' : t === 'msgbrowser' ? 'Message Browser' : t === 'onboard' ? 'Device Onboarding' : t === 'hybrids' ? 'GUI Hybrids' : 'Legacy Connectors'}
             </button>
           ))}
           <div style={{ flex: 1 }} />
@@ -726,6 +730,113 @@ export default function IntegrationsPage() {
                   ))}
                 </tbody>
               </table>
+            )}
+          </>
+        )}
+
+        {/* ── VA GUI Hybrids Tab (Phase 541) ─────────────────────────── */}
+        {tab === 'hybrids' && (
+          <>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+              <div>
+                <h3 style={{ fontSize: 14, margin: 0 }}>VA/IHS GUI Hybrids Capability Map</h3>
+                <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', margin: '2px 0 0' }}>
+                  Cross-reference of desktop GUI apps and VistA-Evolved feature overlap.
+                </p>
+              </div>
+              <button className={styles.btn} style={{ fontSize: 11 }} onClick={async () => {
+                setHybridsLoading(true);
+                try {
+                  const r = await fetch('/api/vista/hybrids/summary', { credentials: 'include' });
+                  if (r.ok) setHybridsData(await r.json());
+                } finally { setHybridsLoading(false); }
+              }}>
+                {hybridsLoading ? 'Loading...' : 'Load Hybrids Map'}
+              </button>
+            </div>
+            {hybridsData?.summary && (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, marginBottom: 16 }}>
+                <div style={{ background: 'var(--cprs-bg-alt)', padding: 10, borderRadius: 6, textAlign: 'center' }}>
+                  <div style={{ fontSize: 20, fontWeight: 700 }}>{hybridsData.summary.totalHybrids}</div>
+                  <div style={{ fontSize: 10, color: 'var(--cprs-text-muted)' }}>Total Systems</div>
+                </div>
+                <div style={{ background: 'var(--cprs-bg-alt)', padding: 10, borderRadius: 6, textAlign: 'center' }}>
+                  <div style={{ fontSize: 20, fontWeight: 700 }}>{hybridsData.summary.avgMigrationReadiness}%</div>
+                  <div style={{ fontSize: 10, color: 'var(--cprs-text-muted)' }}>Avg Readiness</div>
+                </div>
+                <div style={{ background: 'var(--cprs-bg-alt)', padding: 10, borderRadius: 6, textAlign: 'center' }}>
+                  <div style={{ fontSize: 20, fontWeight: 700, color: '#16a34a' }}>{hybridsData.summary.totalRpcOverlap}</div>
+                  <div style={{ fontSize: 10, color: 'var(--cprs-text-muted)' }}>RPCs Overlapping</div>
+                </div>
+                <div style={{ background: 'var(--cprs-bg-alt)', padding: 10, borderRadius: 6, textAlign: 'center' }}>
+                  <div style={{ fontSize: 20, fontWeight: 700, color: '#dc2626' }}>{hybridsData.summary.totalRpcGap}</div>
+                  <div style={{ fontSize: 10, color: 'var(--cprs-text-muted)' }}>RPCs Gap</div>
+                </div>
+              </div>
+            )}
+            {hybridsData?.systems && (
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                <thead>
+                  <tr style={{ borderBottom: '2px solid var(--cprs-border)' }}>
+                    <th style={{ textAlign: 'left', padding: '6px 8px' }}>System</th>
+                    <th style={{ textAlign: 'center', padding: '6px 8px' }}>Platform</th>
+                    <th style={{ textAlign: 'center', padding: '6px 8px' }}>Deploy</th>
+                    <th style={{ textAlign: 'center', padding: '6px 8px' }}>Strategy</th>
+                    <th style={{ textAlign: 'center', padding: '6px 8px' }}>Surfaces</th>
+                    <th style={{ textAlign: 'center', padding: '6px 8px' }}>RPC +/-</th>
+                    <th style={{ textAlign: 'center', padding: '6px 8px' }}>Readiness</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {hybridsData.systems.map((h: any) => (
+                    <tr key={h.id} style={{ borderBottom: '1px solid var(--cprs-border)' }}>
+                      <td style={{ padding: '6px 8px' }}>
+                        <div style={{ fontWeight: 500 }}>{h.name}</div>
+                        <div style={{ fontSize: 10, color: 'var(--cprs-text-muted)' }}>{h.agency?.toUpperCase()}</div>
+                      </td>
+                      <td style={{ padding: '6px 8px', textAlign: 'center' }}>
+                        <span style={{ fontSize: 10, background: 'var(--cprs-bg-alt)', padding: '2px 6px', borderRadius: 8 }}>
+                          {h.hostPlatform}
+                        </span>
+                      </td>
+                      <td style={{ padding: '6px 8px', textAlign: 'center', fontSize: 11 }}>{h.deploymentModel}</td>
+                      <td style={{ padding: '6px 8px', textAlign: 'center' }}>
+                        <span style={{
+                          fontSize: 10, padding: '2px 6px', borderRadius: 8, fontWeight: 600,
+                          background: h.migrationStrategy === 'replace' ? '#dcfce7' : h.migrationStrategy === 'wrap' ? '#fef9c3' : h.migrationStrategy === 'deprecate' ? '#fee2e2' : '#e0e7ff',
+                          color: h.migrationStrategy === 'replace' ? '#166534' : h.migrationStrategy === 'wrap' ? '#854d0e' : h.migrationStrategy === 'deprecate' ? '#991b1b' : '#3730a3',
+                        }}>
+                          {h.migrationStrategy}
+                        </span>
+                      </td>
+                      <td style={{ padding: '6px 8px', textAlign: 'center', fontSize: 11 }}>
+                        {h.coveredSurfaces}/{h.surfaceCount}
+                      </td>
+                      <td style={{ padding: '6px 8px', textAlign: 'center', fontSize: 11 }}>
+                        <span style={{ color: '#16a34a' }}>+{h.rpcOverlapCount}</span>
+                        {' / '}
+                        <span style={{ color: '#dc2626' }}>-{h.rpcGapCount}</span>
+                      </td>
+                      <td style={{ padding: '6px 8px', textAlign: 'center' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 4, justifyContent: 'center' }}>
+                          <div style={{ width: 60, height: 6, background: '#e5e7eb', borderRadius: 3, overflow: 'hidden' }}>
+                            <div style={{
+                              width: `${h.migrationReadiness}%`, height: '100%', borderRadius: 3,
+                              background: h.migrationReadiness >= 60 ? '#16a34a' : h.migrationReadiness >= 30 ? '#d97706' : '#dc2626',
+                            }} />
+                          </div>
+                          <span style={{ fontSize: 11, fontWeight: 600 }}>{h.migrationReadiness}%</span>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+            {!hybridsData && !hybridsLoading && (
+              <p style={{ fontSize: 12, color: 'var(--cprs-text-muted)' }}>
+                Click &quot;Load Hybrids Map&quot; to view the cross-reference data.
+              </p>
             )}
           </>
         )}
