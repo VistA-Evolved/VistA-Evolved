@@ -1,7 +1,7 @@
 /**
  * apps/api/src/routes/migration-routes.ts
  *
- * Phases 456-458 (W30-P1/P2/P3).
+ * Phases 456-459 (W30-P1/P2/P3/P4).
  * REST endpoints for data migration operations.
  * Admin-only access for all migration endpoints.
  */
@@ -10,6 +10,8 @@ import type { FastifyInstance } from "fastify";
 import { importFhirBundle, getBatch, listBatches } from "../migration/fhir-import.js";
 import { ingestCcda, getCcdaBatch, listCcdaBatches } from "../migration/ccda-ingest.js";
 import { processAdtMessage, getAdtEvent, listAdtEvents } from "../migration/hl7v2-adt.js";
+import { dualRunHarness } from "../migration/dual-run.js";
+import type { DualRunMode } from "../migration/dual-run.js";
 import type { FhirBundle } from "../migration/types.js";
 
 export async function migrationRoutes(server: FastifyInstance) {
@@ -89,11 +91,37 @@ export async function migrationRoutes(server: FastifyInstance) {
     return reply.send({ ok: true, event });
   });
 
+  // ── Dual-run endpoints (Phase 459) ────────────────────────────
+
+  // GET /migration/dual-run/status — current dual-run mode + stats
+  server.get("/migration/dual-run/status", async (_request, reply) => {
+    return reply.send({ ok: true, ...dualRunHarness.getStats() });
+  });
+
+  // POST /migration/dual-run/mode — set dual-run mode
+  server.post("/migration/dual-run/mode", async (request, reply) => {
+    const body = (request.body as any) || {};
+    const mode = body.mode as DualRunMode | undefined;
+    if (!mode || !["off", "shadow", "compare"].includes(mode)) {
+      return reply.code(400).send({ ok: false, error: "mode must be off, shadow, or compare" });
+    }
+    dualRunHarness.setMode(mode);
+    return reply.send({ ok: true, mode });
+  });
+
+  // GET /migration/dual-run/comparisons — recent comparison log
+  server.get("/migration/dual-run/comparisons", async (request, reply) => {
+    const limit = Number((request.query as any)?.limit) || 50;
+    const comps = dualRunHarness.getComparisons(limit);
+    return reply.send({ ok: true, comparisons: comps, total: comps.length });
+  });
+
   // GET /migration/health — migration subsystem health
   server.get("/migration/health", async (_request, reply) => {
     const fhirBatches = listBatches();
     const ccdaBatches = listCcdaBatches();
     const adtEvts = listAdtEvents();
+    const dualRun = dualRunHarness.getStats();
     return reply.send({
       ok: true,
       status: "ready",
@@ -101,6 +129,7 @@ export async function migrationRoutes(server: FastifyInstance) {
       fhirBatchCount: fhirBatches.length,
       ccdaBatchCount: ccdaBatches.length,
       adtEventCount: adtEvts.length,
+      dualRunMode: dualRun.mode,
     });
   });
 }
