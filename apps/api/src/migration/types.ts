@@ -245,3 +245,87 @@ export interface RollbackPlan {
   canRollback: boolean;
   reason?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/* FHIR R4 types (Phase 456 — W30-P1)                                 */
+/* ------------------------------------------------------------------ */
+
+export type FhirImportStatus = "pending" | "validating" | "importing" | "completed" | "failed" | "partial";
+
+export interface FhirMigrationBatch {
+  id: string;
+  format: "fhir-r4";
+  status: FhirImportStatus;
+  createdAt: string;
+  updatedAt: string;
+  createdBy: string;
+  totalResources: number;
+  importedCount: number;
+  failedCount: number;
+  skippedCount: number;
+  errors: FhirMigrationError[];
+  summary?: Record<string, number>;
+}
+
+export interface FhirMigrationError {
+  resourceType: string;
+  resourceId?: string;
+  field?: string;
+  message: string;
+  severity: "error" | "warning";
+}
+
+export interface FhirImportResult {
+  ok: boolean;
+  batchId: string;
+  status: FhirImportStatus;
+  imported: number;
+  failed: number;
+  skipped: number;
+  errors: FhirMigrationError[];
+}
+
+export interface FhirResource {
+  resourceType: string;
+  id?: string;
+  [key: string]: unknown;
+}
+
+export interface FhirBundle {
+  resourceType: "Bundle";
+  type: "collection" | "transaction" | "batch" | "document";
+  entry?: Array<{ resource?: FhirResource; fullUrl?: string }>;
+}
+
+export interface FhirPatient extends FhirResource {
+  resourceType: "Patient";
+  name?: Array<{ family?: string; given?: string[]; text?: string }>;
+  birthDate?: string;
+  gender?: string;
+  identifier?: Array<{ system?: string; value?: string }>;
+}
+
+export interface FhirCondition extends FhirResource {
+  resourceType: "Condition";
+  subject?: { reference?: string };
+  code?: { coding?: Array<{ system?: string; code?: string; display?: string }> };
+  clinicalStatus?: { coding?: Array<{ code?: string }> };
+  onsetDateTime?: string;
+}
+
+export interface FhirMedicationRequest extends FhirResource {
+  resourceType: "MedicationRequest";
+  subject?: { reference?: string };
+  medicationCodeableConcept?: { coding?: Array<{ system?: string; code?: string; display?: string }> };
+  status?: string;
+  authoredOn?: string;
+}
+
+export interface FhirAllergyIntolerance extends FhirResource {
+  resourceType: "AllergyIntolerance";
+  patient?: { reference?: string };
+  code?: { coding?: Array<{ system?: string; code?: string; display?: string }> };
+  type?: string;
+  category?: string[];
+  criticality?: string;
+}
