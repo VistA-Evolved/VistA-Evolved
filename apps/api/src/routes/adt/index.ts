@@ -27,6 +27,7 @@ import { requireSession } from "../../auth/auth-routes.js";
 import { safeCallRpc } from "../../lib/rpc-resilience.js";
 import { immutableAudit } from "../../lib/immutable-audit.js";
 import { log } from "../../lib/logger.js";
+import { tier0Gate } from "../../lib/tier0-response.js";
 
 /* ------------------------------------------------------------------ */
 /* Audit helper                                                         */
@@ -427,57 +428,52 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
     }
   });
 
-  /* ---- POST /vista/adt/admit -- INTEGRATION PENDING ---- */
+  /* ---- POST /vista/adt/admit -- Tier-0 capability-driven (Phase 483) ---- */
   server.post("/vista/adt/admit", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
-    return reply.status(202).send({
-      ok: false,
-      status: "integration-pending",
-      message: "Patient admission requires DG ADT package RPCs not available in WorldVistA sandbox.",
-      rpcUsed: [],
-      pendingTargets: ["DGPM NEW ADMISSION"],
-      vistaGrounding: {
-        vistaFiles: ["PATIENT MOVEMENT (405)", "PATIENT (2)"],
-        targetRoutines: ["DGPMV", "DGADM"],
-        migrationPath: "Phase 67B: wire DGPM admission RPCs with ward/bed selection + DG ADT event triggers",
-        sandboxNote: "WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context",
-      },
+    const blocked = tier0Gate("DGPM NEW ADMISSION", "adt", {
+      vistaFiles: ["PATIENT MOVEMENT (405)", "PATIENT (2)"],
+      targetRoutines: ["DGPMV", "DGADM"],
+      migrationPath: "Wire DGPM admission RPCs with ward/bed selection + DG ADT event triggers",
+      sandboxNote: "WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context",
     });
+    immutableAudit("adt.admit", blocked ? "blocked" : "attempt", auditActor(request), {
+      detail: { capabilityProbe: blocked?.capabilityProbe },
+    });
+    if (blocked) return reply.status(202).send(blocked);
+    // RPC available -- attempt real writeback (future: wire DGPM NEW ADMISSION call)
+    return reply.status(501).send({ ok: false, status: "not-implemented", message: "DGPM NEW ADMISSION call not yet wired" });
   });
 
-  /* ---- POST /vista/adt/transfer -- INTEGRATION PENDING ---- */
+  /* ---- POST /vista/adt/transfer -- Tier-0 capability-driven (Phase 483) ---- */
   server.post("/vista/adt/transfer", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
-    return reply.status(202).send({
-      ok: false,
-      status: "integration-pending",
-      message: "Patient transfer requires DG ADT package RPCs not available in WorldVistA sandbox.",
-      rpcUsed: [],
-      pendingTargets: ["DGPM NEW TRANSFER"],
-      vistaGrounding: {
-        vistaFiles: ["PATIENT MOVEMENT (405)", "WARD LOCATION (42)"],
-        targetRoutines: ["DGPMV", "DGTRAN"],
-        migrationPath: "Phase 67B: wire DGPM transfer RPC with destination ward/bed + attending provider",
-        sandboxNote: "WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context",
-      },
+    const blocked = tier0Gate("DGPM NEW TRANSFER", "adt", {
+      vistaFiles: ["PATIENT MOVEMENT (405)", "WARD LOCATION (42)"],
+      targetRoutines: ["DGPMV", "DGTRAN"],
+      migrationPath: "Wire DGPM transfer RPC with destination ward/bed + attending provider",
+      sandboxNote: "WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context",
     });
+    immutableAudit("adt.transfer", blocked ? "blocked" : "attempt", auditActor(request), {
+      detail: { capabilityProbe: blocked?.capabilityProbe },
+    });
+    if (blocked) return reply.status(202).send(blocked);
+    return reply.status(501).send({ ok: false, status: "not-implemented", message: "DGPM NEW TRANSFER call not yet wired" });
   });
 
-  /* ---- POST /vista/adt/discharge -- INTEGRATION PENDING ---- */
+  /* ---- POST /vista/adt/discharge -- Tier-0 capability-driven (Phase 483) ---- */
   server.post("/vista/adt/discharge", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
-    return reply.status(202).send({
-      ok: false,
-      status: "integration-pending",
-      message: "Patient discharge requires DG ADT package RPCs not available in WorldVistA sandbox.",
-      rpcUsed: [],
-      pendingTargets: ["DGPM NEW DISCHARGE"],
-      vistaGrounding: {
-        vistaFiles: ["PATIENT MOVEMENT (405)", "PATIENT (2)"],
-        targetRoutines: ["DGPMV", "DGDIS"],
-        migrationPath: "Phase 67B: wire DGPM discharge RPC with discharge type + disposition",
-        sandboxNote: "WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context",
-      },
+    const blocked = tier0Gate("DGPM NEW DISCHARGE", "adt", {
+      vistaFiles: ["PATIENT MOVEMENT (405)", "PATIENT (2)"],
+      targetRoutines: ["DGPMV", "DGDIS"],
+      migrationPath: "Wire DGPM discharge RPC with discharge type + disposition",
+      sandboxNote: "WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context",
     });
+    immutableAudit("adt.discharge", blocked ? "blocked" : "attempt", auditActor(request), {
+      detail: { capabilityProbe: blocked?.capabilityProbe },
+    });
+    if (blocked) return reply.status(202).send(blocked);
+    return reply.status(501).send({ ok: false, status: "not-implemented", message: "DGPM NEW DISCHARGE call not yet wired" });
   });
 }

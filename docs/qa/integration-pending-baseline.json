@@ -1,10 +1,10 @@
 {
   "_meta": {
     "description": "Integration-pending budget baseline (Phase 480)",
-    "updatedAt": "2026-03-02T05:44:13.719Z",
+    "updatedAt": "2026-03-02T05:48:27.594Z",
     "updatedBy": "integration-pending-budget.mjs --update"
   },
-  "total": 296,
+  "total": 290,
   "tolerance": 0,
   "files": [
     {
@@ -48,14 +48,6 @@
       "count": 9
     },
     {
-      "file": "apps/api/src/routes/inpatient/index.ts",
-      "count": 9
-    },
-    {
-      "file": "apps/api/src/routes/adt/index.ts",
-      "count": 8
-    },
-    {
       "file": "apps/api/src/writeback/__tests__/pharm-contract.test.ts",
       "count": 8
     },
@@ -66,6 +58,10 @@
     {
       "file": "apps/api/src/platform/store-policy.ts",
       "count": 7
+    },
+    {
+      "file": "apps/api/src/routes/inpatient/index.ts",
+      "count": 6
     },
     {
       "file": "apps/api/src/routes/med-reconciliation.ts",
@@ -85,6 +81,10 @@
     },
     {
       "file": "apps/api/src/radiology/types.ts",
+      "count": 5
+    },
+    {
+      "file": "apps/api/src/routes/adt/index.ts",
       "count": 5
     },
     {

@@ -117,6 +117,13 @@ export type ImmutableAuditAction =
   | "inpatient.census"
   | "inpatient.bedboard"
   | "inpatient.movements"
+  // Phase 483: ADT + inpatient Tier-0 writeback audit events
+  | "adt.admit"
+  | "adt.transfer"
+  | "adt.discharge"
+  | "inpatient.admit"
+  | "inpatient.transfer"
+  | "inpatient.discharge"
   // Phase 138: Nursing documentation + eMAR + handoff audit events
   | "nursing.vitals"
   | "nursing.vitals-range"
@@ -178,7 +185,7 @@ export type ImmutableAuditAction =
   | "telehealth.consent_withdrawn"
   | "telehealth.session_auto_ended";
 
-export type ImmutableAuditOutcome = "success" | "failure" | "denied" | "error";
+export type ImmutableAuditOutcome = "success" | "failure" | "denied" | "error" | "blocked" | "attempt";
 
 export interface ImmutableAuditEntry {
   /** Sequential entry number (monotonic) */

@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-02T05:44:24.989Z",
+  "generatedAt": "2026-03-02T05:48:32.960Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 481,
+  "phaseCount": 482,
   "phases": [
     {
       "phaseNumber": "1",
@@ -11715,6 +11715,29 @@
       "filesTouched": [
         "apps/api/src/lib/tier0-response.ts",
         "apps/api/src/vista/rpcCapabilities.ts"
+      ]
+    },
+    {
+      "phaseNumber": "483",
+      "title": "W33-P3: ADT Writeback (Admit/Transfer/Discharge)",
+      "folder": "483-W33-P3-ADT-WRITEBACK",
+      "files": [
+        "483-01-IMPLEMENT.md",
+        "483-99-VERIFY.md",
+        "NOTES.md"
+      ],
+      "implementFiles": [
+        "483-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "483-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/routes/adt/index.ts",
+        "apps/api/src/routes/inpatient/index.ts"
       ]
     },
     {
