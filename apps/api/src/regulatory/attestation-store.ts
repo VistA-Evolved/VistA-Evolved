@@ -10,7 +10,7 @@
  */
 
 import { createHash, randomUUID } from "crypto";
-import type { RegulatoryFramework } from "../regulatory/types.js";
+import type { RegulatoryFramework } from "./types.js";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */

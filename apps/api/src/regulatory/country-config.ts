@@ -253,7 +253,7 @@ export function resolveTenantRegulatoryConfig(tenantId: string): TenantRegulator
   return {
     tenantId,
     countryCode: cc,
-    frameworks: frameworks.map((f) => f.id),
+    frameworks,
     packAvailable,
     consentModel,
     retentionMinYears,
@@ -289,7 +289,8 @@ export function getCountryAssignmentAudit(tenantId?: string): CountryAssignmentA
  */
 export function verifyCountryAuditChain(): { valid: boolean; brokenAt?: string; checked: number } {
   for (const entry of assignmentAudit) {
-    const expected = computeAuditHash({ ...entry, hash: undefined as any });
+    const { hash: _h, ...rest } = entry;
+    const expected = computeAuditHash(rest);
     if (expected !== entry.hash) {
       return { valid: false, brokenAt: entry.id, checked: assignmentAudit.indexOf(entry) };
     }

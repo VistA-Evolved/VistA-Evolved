@@ -161,7 +161,7 @@ function checkCrossBorderConstraint(
 }
 
 function checkPhiConstraint(includePhi: boolean, dataTier: DataClassTier): ExportConstraintCheck {
-  if (includePhi && (dataTier === "C3" || dataTier === "C4")) {
+  if (includePhi && (dataTier === "C1_PHI" || dataTier === "C2_DEIDENTIFIED")) {
     return { constraint: "phi-classification", framework: "HIPAA" as RegulatoryFramework, satisfied: true, detail: `PHI included. Data tier: ${dataTier}. Ensure destination has adequate protection.` };
   }
   if (!includePhi) {
@@ -205,7 +205,7 @@ export function createExportPackage(request: ExportRequest): ExportPackage {
   // Run constraint checks
   const constraints: ExportConstraintCheck[] = [];
   constraints.push(checkCrossBorderConstraint(regConfig.countryCode, request.destinationCountry, regConfig));
-  constraints.push(checkPhiConstraint(request.includePhi, "C3")); // Default to C3 for clinical data
+  constraints.push(checkPhiConstraint(request.includePhi, "C1_PHI")); // Default to C1_PHI for clinical data
   constraints.push(checkRetentionConstraint(regConfig));
 
   auditIds.push(appendAudit(exportId, "constraint_check", request.requestedBy,
@@ -257,7 +257,7 @@ export function createExportPackage(request: ExportRequest): ExportPackage {
     destinationCountry: request.destinationCountry || null,
     format: request.format,
     domains: request.domains,
-    dataTier: request.includePhi ? "C3" : "C1",
+    dataTier: request.includePhi ? "C1_PHI" : "C3_AGGREGATED",
     recordCount: 0,
     contentHash,
     sizeBytes: Buffer.byteLength(exportContent, "utf-8"),
@@ -323,7 +323,8 @@ export function getExportAudit(exportId?: string): ExportAuditEntry[] {
  */
 export function verifyExportAuditChain(): { valid: boolean; brokenAt?: string; checked: number } {
   for (const entry of exportAudit) {
-    const expected = computeAuditHash({ ...entry, hash: undefined as any });
+    const { hash: _h, ...rest } = entry;
+    const expected = computeAuditHash(rest);
     if (expected !== entry.hash) {
       return { valid: false, brokenAt: entry.id, checked: exportAudit.indexOf(entry) };
     }

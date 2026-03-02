@@ -75,8 +75,9 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
       tenantId: body.tenantId,
       countryCode: body.countryCode,
       operation: body.operation,
-      dataFields: body.dataFields || [],
-      targetSystem: body.targetSystem,
+      operationRisk: body.operationRisk || "read",
+      dataElements: body.dataElements || [],
+      dataTier: body.dataTier,
     });
     return { ok: true, classification: result };
   });

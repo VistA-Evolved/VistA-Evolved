@@ -14,7 +14,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 async function loadRuntimeMode() {
   // vitest module cache reset
   vi.resetModules();
-  const mod = await import('../../src/platform/runtime-mode.js');
+  const mod = await import('../src/platform/runtime-mode.js');
   return mod;
 }
 

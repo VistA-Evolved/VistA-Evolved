@@ -11,8 +11,10 @@ interface FrameworkDef {
   name: string;
   countryCodes: string[];
   phiElements: string[];
-  retentionMinYears: number;
-  retentionMaxYears: number | null;
+  defaultRetention: {
+    minYears: number;
+    maxYears?: number | null;
+  };
 }
 
 interface AttestationSummary {
@@ -221,7 +223,7 @@ function FrameworksTab({ frameworks }: { frameworks: FrameworkDef[] }) {
             <td style={{ padding: "0.5rem" }}>{fw.countryCodes.join(", ")}</td>
             <td style={{ padding: "0.5rem" }}>{fw.phiElements.length}</td>
             <td style={{ padding: "0.5rem" }}>
-              {fw.retentionMinYears}–{fw.retentionMaxYears ?? "∞"} yr
+              {fw.defaultRetention.minYears}–{fw.defaultRetention.maxYears ?? "∞"} yr
             </td>
           </tr>
         ))}
