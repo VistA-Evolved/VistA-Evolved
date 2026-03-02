@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-02T06:26:29.744Z",
+  "generatedAt": "2026-03-02T06:28:10.627Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 488,
+  "phaseCount": 489,
   "phases": [
     {
       "phaseNumber": "1",
@@ -11907,6 +11907,25 @@
         "docs/runbooks/enrollment-packets.md",
         "scripts/verify-latest.ps"
       ]
+    },
+    {
+      "phaseNumber": "490",
+      "title": "W33-P10 PRODUCTION GATES",
+      "folder": "490-W33-P10-PRODUCTION-GATES",
+      "files": [
+        "490-01-IMPLEMENT.md",
+        "490-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "490-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "490-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
     },
     {
       "phaseNumber": "45",

@@ -8,16 +8,16 @@
 
 | Wave Phase | Resolved ID | Title | Prompt Folder | Status |
 |------------|-------------|-------|---------------|--------|
-| W33-P1 | 481 | Reservation + Manifest + Tier-0 Backlog Freeze | `481-W33-P1-TIER0-RESERVATION` | Done |
-| W33-P2 | 482 | Capability-Driven Routing | `482-W33-P2-CAPABILITY-ROUTING` | Planned |
-| W33-P3 | 483 | ADT Writeback (Admit/Transfer/Discharge) | `483-W33-P3-ADT-WRITEBACK` | Planned |
-| W33-P4 | 484 | Nursing Writeback (Vitals + I/O) | `484-W33-P4-NURSING-WRITEBACK` | Planned |
-| W33-P5 | 485 | eMAR Writeback (Administer + Barcode Scan) | `485-W33-P5-EMAR-WRITEBACK` | Planned |
-| W33-P6 | 486 | Lab Writeback (Order + Specimen + Result ACK) | `486-W33-P6-LAB-WRITEBACK` | Planned |
-| W33-P7 | 487 | Pharmacy Writeback (Verify/Dispense + Safety) | `487-W33-P7-PHARMACY-WRITEBACK` | Planned |
-| W33-P8 | 488 | UI Hardening (Eliminate Tier-0 Pending UX) | `488-W33-P8-UI-HARDENING` | Planned |
-| W33-P9 | 489 | Hospital Day-in-the-Life Runner + Golden Traces | `489-W33-P9-HOSPITAL-DITL-RUNNER` | Planned |
-| W33-P10 | 490 | Production Gates + Baseline Reduction | `490-W33-P10-PROD-GATES` | Planned |
+| W33-P1 | 481 | Reservation + Manifest + Tier-0 Backlog Freeze | `481-W33-P1-TIER0-RESERVATION` | Done (`93343f5`) |
+| W33-P2 | 482 | Capability-Driven Routing | `482-W33-P2-CAPABILITY-ROUTING` | Done (`e303236`) |
+| W33-P3 | 483 | ADT Writeback (Admit/Transfer/Discharge) | `483-W33-P3-ADT-WRITEBACK` | Done (`3748e56`) |
+| W33-P4 | 484 | Nursing Writeback (Vitals + I/O) | `484-W33-P4-NURSING-WRITEBACK` | Done (`4348cbb`) |
+| W33-P5 | 485 | eMAR Writeback (Administer + Barcode Scan) | `485-W33-P5-EMAR-WRITEBACK` | Done (`56c61d2`) |
+| W33-P6 | 486 | Lab Writeback (Order + Specimen + Result ACK) | `486-W33-P6-LAB-WRITEBACK` | Done (`186ecfa`) |
+| W33-P7 | 487 | Pharmacy Writeback (Verify/Dispense + Safety) | `487-W33-P7-PHARMACY-WRITEBACK` | Done (`d3fbf2f`) |
+| W33-P8 | 488 | UI Hardening (Eliminate Tier-0 Pending UX) | `488-W33-P8-UI-HARDENING` | Done (`6158c7c`) |
+| W33-P9 | 489 | Hospital Day-in-the-Life Runner + Golden Traces | `489-W33-P9-DAY-IN-THE-LIFE` | Done (`c14b1e2`) |
+| W33-P10 | 490 | Production Gates + Baseline Reduction | `490-W33-P10-PRODUCTION-GATES` | Done |
 
 ## Scope
 
