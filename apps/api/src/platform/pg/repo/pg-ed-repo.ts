@@ -7,7 +7,7 @@
  * Uses Drizzle ORM + pg-core for type-safe queries.
  */
 
-import { eq, and, sql, desc } from "drizzle-orm";
+import { eq, and, desc } from "drizzle-orm";
 import { getPgDb } from "../pg-db.js";
 import { pgEdVisit, pgEdBed } from "../pg-schema.js";
 

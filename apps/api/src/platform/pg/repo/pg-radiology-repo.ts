@@ -375,7 +375,7 @@ export async function insertDoseRegistryEntry(data: {
   dap?: string;
   fluoroTimeSec?: number;
   exposureCount?: number;
-  effectiveDoseMsv?: string;
+  effectiveDoseMSv?: string;
   exceedsDrl?: boolean;
   drlThreshold?: string;
   drlMetric?: string;
@@ -398,7 +398,7 @@ export async function insertDoseRegistryEntry(data: {
     dap: data.dap ?? null,
     fluoroTimeSec: data.fluoroTimeSec ?? null,
     exposureCount: data.exposureCount ?? null,
-    effectiveDoseMsv: data.effectiveDoseMsv ?? null,
+    effectiveDoseMSv: data.effectiveDoseMSv ?? null,
     exceedsDrl: data.exceedsDrl ?? false,
     drlThreshold: data.drlThreshold ?? null,
     drlMetric: data.drlMetric ?? null,
