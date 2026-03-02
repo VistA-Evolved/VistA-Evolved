@@ -320,3 +320,24 @@ export function resolvePackForTenant(countryCode: string): {
   }
   return { ok: true, pack: result.pack, errors: [] };
 }
+
+/**
+ * Phase 492 (W34-P2): Resolve the effective country policy for a tenant.
+ *
+ * This is the canonical entry point for all pack-based enforcement in P3-P9.
+ * Returns the full CountryPackValues for a given tenantId by looking up the
+ * tenant's countryPackId. Returns null if the pack cannot be resolved (missing,
+ * draft, or invalid).
+ *
+ * Callers should import getTenant from tenant-config.ts to get the countryPackId,
+ * then call this function. This avoids a circular import between tenant-config
+ * and country-pack-loader.
+ */
+export function resolveCountryPolicy(countryPackId: string): CountryPackValues | null {
+  if (!countryPackId) return null;
+  const result = getCountryPack(countryPackId);
+  if (!result) return null;
+  // Accept both active and draft packs for dev flexibility;
+  // resolvePackForTenant() enforces active-only for production gates
+  return result.pack;
+}

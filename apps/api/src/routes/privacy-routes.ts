@@ -1,5 +1,6 @@
 /**
  * Privacy Management Routes — Phase 343 (W16-P7).
+ * Phase 494 (W34-P4): + /privacy/rights endpoint for pack-resolved rights.
  *
  * Endpoints for sensitivity tag management, access reason queries,
  * and privacy stats.
@@ -16,6 +17,7 @@ import {
   getPrivacyStats,
   type SensitivityCategory,
 } from "../auth/privacy-segmentation.js";
+import { getEffectivePolicy } from "../middleware/country-policy-hook.js";
 
 export async function privacyRoutes(app: FastifyInstance): Promise<void> {
 
@@ -142,5 +144,32 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
     const query = request.query as { tenantId?: string };
     const stats = getPrivacyStats(query.tenantId);
     return reply.send({ ok: true, ...stats });
+  });
+
+  /**
+   * Phase 494 (W34-P4): GET /privacy/rights — Effective privacy rights from country pack.
+   * Returns rightToErasure, dataPortability, breakGlassAllowed from the tenant's pack.
+   */
+  app.get("/privacy/rights", async (request: FastifyRequest, reply: FastifyReply) => {
+    const policy = getEffectivePolicy(request);
+    const reg = policy.pack?.regulatoryProfile;
+    return reply.send({
+      ok: true,
+      countryPackId: policy.countryPackId,
+      resolvedFromPack: !!policy.pack,
+      rights: {
+        rightToErasure: reg?.rightToErasure ?? false,
+        dataPortability: reg?.dataPortability ?? false,
+        breakGlassAllowed: reg?.breakGlassAllowed ?? true,
+        consentRequired: reg?.consentRequired ?? true,
+        consentGranularity: reg?.consentGranularity ?? "category",
+        dataExportRestricted: reg?.dataExportRestricted ?? false,
+        requiresConsentForTransfer: reg?.requiresConsentForTransfer ?? false,
+        retentionMinYears: reg?.retentionMinYears ?? 6,
+        retentionMaxYears: reg?.retentionMaxYears ?? null,
+        auditRetentionDays: reg?.auditRetentionDays ?? 2190,
+        framework: reg?.framework ?? "HIPAA",
+      },
+    });
   });
 }

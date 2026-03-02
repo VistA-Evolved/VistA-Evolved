@@ -92,6 +92,9 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
         logoUrl: "", faviconUrl: "", primaryColor: "", secondaryColor: "",
         headerText: "", footerText: "", enabled: false,
       },
+      countryPackId: body.countryPackId ?? "US",
+      locale: body.locale ?? "en",
+      timezone: body.timezone ?? "America/New_York",
       createdAt: body.createdAt ?? new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

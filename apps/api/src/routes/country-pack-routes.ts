@@ -120,4 +120,28 @@ export async function countryPackRoutes(app: FastifyInstance): Promise<void> {
       reportingRequirements: result.pack.reportingRequirements,
     };
   });
+
+  // Phase 493 (W34-P3): Get effective country policy for the current session's tenant
+  app.get('/country-policy/effective', async (request, _reply) => {
+    const policy = request.countryPolicy;
+    if (!policy || !policy.pack) {
+      return {
+        ok: true,
+        resolved: false,
+        countryPackId: policy?.countryPackId || 'US',
+        locale: policy?.locale || 'en',
+        timezone: policy?.timezone || 'America/New_York',
+        pack: null,
+        note: 'No country pack bound to tenant or pack not found',
+      };
+    }
+    return {
+      ok: true,
+      resolved: true,
+      countryPackId: policy.countryPackId,
+      locale: policy.locale,
+      timezone: policy.timezone,
+      pack: policy.pack,
+    };
+  });
 }

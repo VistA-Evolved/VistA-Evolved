@@ -246,6 +246,10 @@ import { consentRoutes } from "../routes/consent-routes.js";
 import { terminologyRoutes } from "../routes/terminology-routes.js";
 import { initTerminologyResolvers } from "../services/terminology-registry.js";
 import { countryPackRoutes } from "../routes/country-pack-routes.js";
+import { countryPolicyHook } from "../middleware/country-policy-hook.js";
+import { dsarRoutes } from "../routes/dsar-routes.js";
+import { utf8Routes } from "../routes/utf8-routes.js";
+import { conformanceRoutes } from "../routes/conformance-routes.js";
 import { complianceRoutes } from "../routes/compliance-routes.js";
 import regulatoryRoutes from "../routes/regulatory-routes.js";
 
@@ -622,6 +626,18 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   initTerminologyResolvers();
   server.register(terminologyRoutes);
   server.register(countryPackRoutes);
+
+  // Phase 493 (W34-P3): Country policy spine — resolves pack per request
+  server.register(countryPolicyHook);
+
+  // Phase 496 (W34-P6): DSAR + Retention workflows
+  server.register(dsarRoutes);
+
+  // Phase 498 (W34-P8): UTF-8 round-trip lane
+  server.register(utf8Routes);
+
+  // Phase 499 (W34-P9): Country conformance runner
+  server.register(conformanceRoutes);
   server.register(complianceRoutes);
 
   // Wave 28: Regulatory Reporting (Phase 444)

@@ -261,3 +261,80 @@ export interface RegionHealth {
   auditBucketAccessible: boolean;
   lastChecked: string;
 }
+
+// ── Phase 495 (W34-P5): Pack-Aware Data Residency Enforcement ──
+
+export interface PackResidencyPolicy {
+  region: DataRegion | string;
+  crossBorderTransferAllowed: boolean;
+  requiresConsentForTransfer: boolean;
+  retentionMinYears: number;
+}
+
+/**
+ * Enforce data residency policy from a country pack's dataResidency config.
+ *
+ * Reads the pack's `dataResidency.region` and `crossBorderTransferAllowed`
+ * to determine whether a proposed operation (write, export, transfer) is
+ * allowed from the tenant's assigned region.
+ *
+ * @param packResidency - The pack's dataResidency config
+ * @param tenantRegion  - The tenant's currently assigned region
+ * @param targetRegion  - The region the operation targets
+ * @param hasConsent    - Whether patient consent is on file
+ * @param hasAgreement  - Whether a transfer agreement exists
+ */
+export function enforcePackResidency(
+  packResidency: PackResidencyPolicy,
+  tenantRegion: string,
+  targetRegion: string,
+  hasConsent: boolean,
+  hasAgreement: boolean,
+): TransferValidationResult {
+  // If tenant region matches pack's home region and target is same → allowed
+  if (tenantRegion === targetRegion) {
+    return {
+      allowed: true,
+      reason: "Same region - no transfer needed",
+      requiresConsent: false,
+      requiresAgreement: false,
+    };
+  }
+
+  // Pack says no cross-border at all → block
+  if (!packResidency.crossBorderTransferAllowed) {
+    return {
+      allowed: false,
+      reason: `Country pack forbids cross-border transfer (region: ${packResidency.region})`,
+      requiresConsent: false,
+      requiresAgreement: false,
+    };
+  }
+
+  // Pack allows cross-border but requires consent
+  if (packResidency.requiresConsentForTransfer && !hasConsent) {
+    return {
+      allowed: false,
+      reason: "Country pack requires patient consent for cross-border transfer",
+      requiresConsent: true,
+      requiresAgreement: true,
+    };
+  }
+
+  // Agreement check
+  if (!hasAgreement) {
+    return {
+      allowed: false,
+      reason: "Data Transfer Agreement required for cross-border transfer",
+      requiresConsent: false,
+      requiresAgreement: true,
+    };
+  }
+
+  return {
+    allowed: true,
+    reason: "Cross-border transfer allowed per country pack policy",
+    requiresConsent: false,
+    requiresAgreement: false,
+  };
+}

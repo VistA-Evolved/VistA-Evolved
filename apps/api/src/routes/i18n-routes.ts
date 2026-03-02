@@ -225,6 +225,36 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
       return { ok: false, error: "Failed to create question" };
     }
   });
+
+  /* ------------------------------------------------------------------ */
+  /* Phase 497 (W34-P7): GET /i18n/coverage — per-pack locale coverage  */
+  /* ------------------------------------------------------------------ */
+  server.get("/i18n/coverage", async () => {
+    // Dynamic import to avoid hard dep on country-pack-loader at module level
+    const { getActiveCountryPacks } = await import("../platform/country-pack-loader.js");
+    const packs = getActiveCountryPacks();
+
+    const report = packs.map((r) => {
+      const p = r.pack;
+      return {
+        countryCode: p.countryCode,
+        status: p.status,
+        supportedLocales: p.supportedLocales || [p.defaultLocale || "en"],
+        defaultLocale: p.defaultLocale || "en",
+        webMessageFiles: (p.supportedLocales || []).map((locale: string) => ({
+          locale,
+          note: "Check via i18n-coverage-gate.mjs for file-level validation",
+        })),
+      };
+    });
+
+    return {
+      ok: true,
+      supportedLocalesCombined: VALID_LOCALE_CODES,
+      packCoverage: report,
+      total: report.length,
+    };
+  });
 }
 
 /* ------------------------------------------------------------------ */

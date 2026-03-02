@@ -250,6 +250,12 @@ export interface TenantConfig {
   vistaHost: string;
   vistaPort: number;
   vistaContext: string;
+  /** Phase 492 (W34-P2): ISO 3166-1 alpha-2 country pack code (e.g. "US", "PH", "GH") */
+  countryPackId: string;
+  /** Phase 492 (W34-P2): BCP-47 locale tag (e.g. "en", "fil", "es") */
+  locale: string;
+  /** Phase 492 (W34-P2): IANA timezone (e.g. "America/New_York", "Asia/Manila") */
+  timezone: string;
   /** Which modules are enabled for this facility */
   enabledModules: ModuleId[];
   /** Feature flags */
@@ -283,6 +289,9 @@ function toRow(config: TenantConfig): TenantConfigRow {
     vista_host: config.vistaHost,
     vista_port: config.vistaPort,
     vista_context: config.vistaContext,
+    country_pack_id: config.countryPackId,
+    locale: config.locale,
+    timezone: config.timezone,
     enabled_modules: config.enabledModules,
     feature_flags: config.featureFlags,
     ui_defaults: config.uiDefaults as any,
@@ -303,6 +312,9 @@ function fromRow(row: TenantConfigRow): TenantConfig {
     vistaHost: row.vista_host,
     vistaPort: row.vista_port,
     vistaContext: row.vista_context,
+    countryPackId: row.country_pack_id || "US",
+    locale: row.locale || "en",
+    timezone: row.timezone || "America/New_York",
     enabledModules: (row.enabled_modules || []) as ModuleId[],
     featureFlags: row.feature_flags || {},
     uiDefaults: { ...DEFAULT_UI_DEFAULTS, ...(row.ui_defaults || {}) } as UIDefaults,
@@ -329,6 +341,9 @@ function buildDefaultTenant(): TenantConfig {
     vistaHost: process.env.VISTA_HOST || "127.0.0.1",
     vistaPort: Number(process.env.VISTA_PORT || 9430),
     vistaContext: process.env.VISTA_CONTEXT || "OR CPRS GUI CHART",
+    countryPackId: process.env.TENANT_COUNTRY_PACK || "US",
+    locale: process.env.TENANT_LOCALE || "en",
+    timezone: process.env.TENANT_TIMEZONE || "America/New_York",
     enabledModules: [...ALL_MODULES],
     featureFlags: { ...DEFAULT_FEATURE_FLAGS },
     uiDefaults: { ...DEFAULT_UI_DEFAULTS },

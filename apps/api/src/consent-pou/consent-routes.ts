@@ -1,5 +1,6 @@
 /**
  * Phase 405 (W23-P7): Consent + Purpose of Use — Routes
+ * Phase 494 (W34-P4): Auto-resolve pack granularity for directive creation
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
@@ -9,6 +10,7 @@ import {
   evaluateConsent, logDisclosure, listDisclosures,
   getConsentDashboardStats,
 } from "./consent-store.js";
+import { getEffectivePolicy } from "../middleware/country-policy-hook.js";
 
 export default async function consentPouRoutes(server: FastifyInstance): Promise<void> {
 
@@ -31,6 +33,10 @@ export default async function consentPouRoutes(server: FastifyInstance): Promise
   server.post("/consent-pou/directives", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const body = (request.body || {}) as Record<string, any>;
+    // Phase 494: resolve pack granularity + framework for directive metadata
+    const policy = getEffectivePolicy(request);
+    const packGranularity = policy.pack?.regulatoryProfile?.consentGranularity || "category";
+    const packFramework = policy.pack?.regulatoryProfile?.framework || "HIPAA";
     try {
       const rec = createDirective({
         tenantId: session.tenantId,
@@ -41,11 +47,16 @@ export default async function consentPouRoutes(server: FastifyInstance): Promise
         dateTime: body.dateTime || new Date().toISOString(),
         grantor: body.grantor || { name: session.userName || "Unknown", role: "patient" },
         grantee: body.grantee,
-        policyUri: body.policyUri,
+        policyUri: body.policyUri || packFramework,
         provisions: body.provisions || [],
         verificationDate: body.verificationDate,
         verifiedBy: body.verifiedBy,
-        metadata: body.metadata,
+        metadata: {
+          ...body.metadata,
+          countryPackId: policy.countryPackId,
+          packGranularity,
+          packFramework,
+        },
       });
       return reply.code(201).send({ ok: true, directive: rec });
     } catch (err: any) {

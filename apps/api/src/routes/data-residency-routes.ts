@@ -1,5 +1,6 @@
 /**
  * Data Residency Routes — Phase 311
+ * Phase 495 (W34-P5): + pack-aware residency enforcement endpoint.
  *
  * Admin-only endpoints for managing data regions and transfer agreements.
  */
@@ -13,9 +14,11 @@ import {
   resolveRegionPgUrl,
   resolveRegionAuditBucket,
   validateCrossBorderTransfer,
+  enforcePackResidency,
   type DataTransferAgreement,
   type DataRegion,
 } from "../platform/data-residency.js";
+import { getEffectivePolicy } from "../middleware/country-policy-hook.js";
 import { randomBytes } from "node:crypto";
 
 // ── In-Memory Stores (Phase 311 scaffold) ──────────────────────
@@ -206,6 +209,54 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
     );
 
     return { ok: true, ...result };
+  });
+
+  // Phase 495 (W34-P5): Pack-aware residency enforcement
+  // Auto-resolves pack dataResidency config from request.countryPolicy.
+  app.post("/residency/enforce-pack-transfer", async (request, reply) => {
+    const body = (request.body as Record<string, unknown>) || {};
+    const { targetRegion, hasConsent, hasAgreement } = body as {
+      targetRegion: string;
+      hasConsent: boolean;
+      hasAgreement: boolean;
+    };
+
+    if (!targetRegion) {
+      return reply.code(400).send({ ok: false, error: "targetRegion required" });
+    }
+
+    const policy = getEffectivePolicy(request);
+    const packResidency = policy.pack?.dataResidency;
+
+    if (!packResidency) {
+      return reply.code(422).send({
+        ok: false,
+        error: "No data residency config in country pack",
+        countryPackId: policy.countryPackId,
+      });
+    }
+
+    const tenantRegion = packResidency.region || "us-east";
+    const result = enforcePackResidency(
+      {
+        region: packResidency.region,
+        crossBorderTransferAllowed: packResidency.crossBorderTransferAllowed ?? false,
+        requiresConsentForTransfer: packResidency.requiresConsentForTransfer ?? false,
+        retentionMinYears: packResidency.retentionMinYears ?? 6,
+      },
+      tenantRegion,
+      targetRegion,
+      !!hasConsent,
+      !!hasAgreement,
+    );
+
+    return {
+      ok: true,
+      countryPackId: policy.countryPackId,
+      tenantRegion,
+      targetRegion,
+      ...result,
+    };
   });
 }
 

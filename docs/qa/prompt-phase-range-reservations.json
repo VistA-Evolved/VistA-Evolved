@@ -148,5 +148,15 @@
     "owner": "agent",
     "status": "reserved",
     "reservedAt": "2026-03-02T05:36:07.520Z"
+  },
+  {
+    "wave": "34",
+    "start": 491,
+    "end": 499,
+    "count": 9,
+    "branch": "main",
+    "owner": "agent",
+    "status": "reserved",
+    "reservedAt": "2026-03-03T00:00:00.000Z"
   }
 ]

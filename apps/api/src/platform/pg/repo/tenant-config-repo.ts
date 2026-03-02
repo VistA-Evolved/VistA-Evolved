@@ -20,6 +20,9 @@ export interface TenantConfigRow {
   vista_host: string;
   vista_port: number;
   vista_context: string;
+  country_pack_id: string;          // Phase 492 (W34-P2)
+  locale: string;                    // Phase 492 (W34-P2)
+  timezone: string;                  // Phase 492 (W34-P2)
   enabled_modules: string[];        // JSONB parsed
   feature_flags: Record<string, boolean>;
   ui_defaults: Record<string, any>;
@@ -72,6 +75,9 @@ function rowFromDb(r: any): TenantConfigRow {
     vista_host: r.vista_host,
     vista_port: Number(r.vista_port),
     vista_context: r.vista_context,
+    country_pack_id: r.country_pack_id || "US",
+    locale: r.locale || "en",
+    timezone: r.timezone || "America/New_York",
     enabled_modules: typeof r.enabled_modules === "string" ? JSON.parse(r.enabled_modules) : (r.enabled_modules || []),
     feature_flags: typeof r.feature_flags === "string" ? JSON.parse(r.feature_flags) : (r.feature_flags || {}),
     ui_defaults: typeof r.ui_defaults === "string" ? JSON.parse(r.ui_defaults) : (r.ui_defaults || {}),
@@ -138,15 +144,19 @@ export async function dbUpsertTenant(row: TenantConfigRow): Promise<TenantConfig
     await pool.query(
       `INSERT INTO tenant_config
         (tenant_id, facility_name, facility_station, vista_host, vista_port,
-         vista_context, enabled_modules, feature_flags, ui_defaults,
+         vista_context, country_pack_id, locale, timezone,
+         enabled_modules, feature_flags, ui_defaults,
          note_templates, connectors, branding, created_at, updated_at)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13::timestamptz,$14::timestamptz)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16::timestamptz,$17::timestamptz)
        ON CONFLICT (tenant_id) DO UPDATE SET
          facility_name = EXCLUDED.facility_name,
          facility_station = EXCLUDED.facility_station,
          vista_host = EXCLUDED.vista_host,
          vista_port = EXCLUDED.vista_port,
          vista_context = EXCLUDED.vista_context,
+         country_pack_id = EXCLUDED.country_pack_id,
+         locale = EXCLUDED.locale,
+         timezone = EXCLUDED.timezone,
          enabled_modules = EXCLUDED.enabled_modules,
          feature_flags = EXCLUDED.feature_flags,
          ui_defaults = EXCLUDED.ui_defaults,
@@ -161,6 +171,9 @@ export async function dbUpsertTenant(row: TenantConfigRow): Promise<TenantConfig
         row.vista_host,
         row.vista_port,
         row.vista_context,
+        row.country_pack_id || "US",
+        row.locale || "en",
+        row.timezone || "America/New_York",
         JSON.stringify(row.enabled_modules),
         JSON.stringify(row.feature_flags),
         JSON.stringify(row.ui_defaults),

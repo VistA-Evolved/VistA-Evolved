@@ -15,8 +15,10 @@ import {
   revokeConsent,
   checkConsentCompliance,
   getConsentProfile,
+  getConsentProfileForPack,
   listConsentProfiles,
 } from "../services/consent-engine.js";
+import { getEffectivePolicy } from "../middleware/country-policy-hook.js";
 
 export async function consentRoutes(app: FastifyInstance): Promise<void> {
   // GET /consent/profiles — list available regulatory consent profiles
@@ -154,6 +156,37 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
       ok: true,
       hasActiveConsent: !!active,
       consent: active || null,
+    };
+  });
+
+  // Phase 494 (W34-P4): Country-policy-aware consent compliance check
+  // Auto-resolves framework from the tenant's bound country pack.
+  app.get("/consent/policy-check", async (request, reply) => {
+    const query = (request.query as Record<string, string>) || {};
+    const { tenantId, dfn } = query;
+
+    if (!tenantId || !dfn) {
+      return reply.code(400).send({ ok: false, error: "tenantId and dfn required" });
+    }
+
+    const policy = getEffectivePolicy(request);
+    const pack = policy.pack;
+    const profile = pack
+      ? getConsentProfileForPack(pack)
+      : getConsentProfile("HIPAA");
+
+    if (!profile) {
+      return reply.code(500).send({ ok: false, error: "Could not resolve consent profile" });
+    }
+
+    const result = checkConsentCompliance(tenantId, dfn, profile);
+    return {
+      ok: true,
+      framework: profile.framework,
+      granularity: profile.granularity,
+      countryPackId: policy.countryPackId,
+      resolvedFromPack: !!pack,
+      ...result,
     };
   });
 }

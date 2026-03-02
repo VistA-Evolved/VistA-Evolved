@@ -3767,6 +3767,27 @@ CREATE INDEX IF NOT EXISTS idx_aea_tenant ON analytics_export_audit(tenant_id);
 CREATE INDEX IF NOT EXISTS idx_aea_exported ON analytics_export_audit(tenant_id, exported_at);
 `,
   },
+
+  // ── v51: Phase 492 (W34-P2) — Tenant Country Pack Binding ──
+  {
+    version: 51,
+    name: "phase492_tenant_country_binding",
+    sql: `
+-- Phase 492 (W34-P2): Add country pack binding to tenant_config.
+-- countryPackId = ISO 3166-1 alpha-2 (e.g. "US", "PH", "GH")
+-- locale = BCP-47 tag (e.g. "en", "fil", "es")
+-- timezone = IANA timezone (e.g. "America/New_York", "Asia/Manila")
+ALTER TABLE tenant_config
+  ADD COLUMN IF NOT EXISTS country_pack_id TEXT NOT NULL DEFAULT 'US';
+ALTER TABLE tenant_config
+  ADD COLUMN IF NOT EXISTS locale TEXT NOT NULL DEFAULT 'en';
+ALTER TABLE tenant_config
+  ADD COLUMN IF NOT EXISTS timezone TEXT NOT NULL DEFAULT 'America/New_York';
+
+CREATE INDEX IF NOT EXISTS idx_tenant_config_pack
+  ON tenant_config(country_pack_id);
+`,
+  },
 ];
 
 /**

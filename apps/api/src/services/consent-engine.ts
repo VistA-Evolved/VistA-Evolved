@@ -118,6 +118,19 @@ export function getConsentProfile(framework: string): RegulatoryConsentProfile |
   return PROFILES[framework];
 }
 
+/**
+ * Phase 494 (W34-P4): Resolve consent profile from a CountryPackValues object.
+ * Reads pack.regulatoryProfile.framework and looks up the matching profile.
+ * Falls back to HIPAA if framework is not found.
+ */
+export function getConsentProfileForPack(pack: {
+  regulatoryProfile?: { framework?: string; consentGranularity?: string };
+}): RegulatoryConsentProfile | undefined {
+  const fw = pack?.regulatoryProfile?.framework;
+  if (!fw) return PROFILES["HIPAA"];
+  return PROFILES[fw] || PROFILES["HIPAA"];
+}
+
 export function listConsentProfiles(): string[] {
   return Object.keys(PROFILES);
 }
