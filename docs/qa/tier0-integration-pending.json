@@ -1,0 +1,217 @@
+{
+  "generatedAt": "2026-03-02T05:40:00Z",
+  "wave": 33,
+  "baselineIntegrationPending": 292,
+  "baselineFiles": 69,
+  "tier0Endpoints": [
+    {
+      "domain": "adt",
+      "method": "POST",
+      "path": "/vista/adt/admit",
+      "routeFile": "apps/api/src/routes/adt/index.ts",
+      "targetRpcs": ["DGPM NEW ADMISSION"],
+      "vistaPackage": "DG ADT",
+      "filemanFiles": ["405", "2"],
+      "currentStatus": "integration-pending",
+      "phase": 483
+    },
+    {
+      "domain": "adt",
+      "method": "POST",
+      "path": "/vista/adt/transfer",
+      "routeFile": "apps/api/src/routes/adt/index.ts",
+      "targetRpcs": ["DGPM NEW TRANSFER"],
+      "vistaPackage": "DG ADT",
+      "filemanFiles": ["405", "42"],
+      "currentStatus": "integration-pending",
+      "phase": 483
+    },
+    {
+      "domain": "adt",
+      "method": "POST",
+      "path": "/vista/adt/discharge",
+      "routeFile": "apps/api/src/routes/adt/index.ts",
+      "targetRpcs": ["DGPM NEW DISCHARGE"],
+      "vistaPackage": "DG ADT",
+      "filemanFiles": ["405", "2"],
+      "currentStatus": "integration-pending",
+      "phase": 483
+    },
+    {
+      "domain": "adt",
+      "method": "POST",
+      "path": "/vista/inpatient/admit",
+      "routeFile": "apps/api/src/routes/inpatient/index.ts",
+      "targetRpcs": ["DGPM NEW ADMISSION"],
+      "vistaPackage": "DG ADT",
+      "filemanFiles": ["405", "2"],
+      "currentStatus": "integration-pending",
+      "phase": 483
+    },
+    {
+      "domain": "adt",
+      "method": "POST",
+      "path": "/vista/inpatient/transfer",
+      "routeFile": "apps/api/src/routes/inpatient/index.ts",
+      "targetRpcs": ["DGPM NEW TRANSFER"],
+      "vistaPackage": "DG ADT",
+      "filemanFiles": ["405", "42"],
+      "currentStatus": "integration-pending",
+      "phase": 483
+    },
+    {
+      "domain": "adt",
+      "method": "POST",
+      "path": "/vista/inpatient/discharge",
+      "routeFile": "apps/api/src/routes/inpatient/index.ts",
+      "targetRpcs": ["DGPM NEW DISCHARGE"],
+      "vistaPackage": "DG ADT",
+      "filemanFiles": ["405", "2"],
+      "currentStatus": "integration-pending",
+      "phase": 483
+    },
+    {
+      "domain": "nursing",
+      "method": "GET",
+      "path": "/vista/nursing/tasks",
+      "routeFile": "apps/api/src/routes/nursing/index.ts",
+      "targetRpcs": ["NURS TASK LIST"],
+      "vistaPackage": "NURS",
+      "filemanFiles": [],
+      "currentStatus": "integration-pending",
+      "phase": 484
+    },
+    {
+      "domain": "nursing",
+      "method": "GET",
+      "path": "/vista/nursing/mar",
+      "routeFile": "apps/api/src/routes/nursing/index.ts",
+      "targetRpcs": ["PSB MED LOG"],
+      "vistaPackage": "PSB (BCMA)",
+      "filemanFiles": [],
+      "currentStatus": "integration-pending",
+      "phase": 484
+    },
+    {
+      "domain": "nursing",
+      "method": "POST",
+      "path": "/vista/nursing/mar/administer",
+      "routeFile": "apps/api/src/routes/nursing/index.ts",
+      "targetRpcs": ["PSB MED LOG"],
+      "vistaPackage": "PSB (BCMA)",
+      "filemanFiles": [],
+      "currentStatus": "integration-pending",
+      "phase": 484
+    },
+    {
+      "domain": "nursing",
+      "method": "GET",
+      "path": "/vista/nursing/io",
+      "routeFile": "apps/api/src/routes/nursing/index.ts",
+      "targetRpcs": ["GMV I/O"],
+      "vistaPackage": "VITALS/NURS",
+      "filemanFiles": ["120.5"],
+      "currentStatus": "integration-pending",
+      "phase": 484
+    },
+    {
+      "domain": "nursing",
+      "method": "GET",
+      "path": "/vista/nursing/assessments",
+      "routeFile": "apps/api/src/routes/nursing/index.ts",
+      "targetRpcs": ["NURS ASSESSMENTS"],
+      "vistaPackage": "NURS",
+      "filemanFiles": [],
+      "currentStatus": "integration-pending",
+      "phase": 484
+    },
+    {
+      "domain": "emar",
+      "method": "GET",
+      "path": "/emar/history",
+      "routeFile": "apps/api/src/routes/emar/index.ts",
+      "targetRpcs": ["PSB MED LOG"],
+      "vistaPackage": "PSB (BCMA)",
+      "filemanFiles": [],
+      "currentStatus": "integration-pending",
+      "phase": 485
+    },
+    {
+      "domain": "emar",
+      "method": "POST",
+      "path": "/emar/administer",
+      "routeFile": "apps/api/src/routes/emar/index.ts",
+      "targetRpcs": ["PSB MED LOG"],
+      "vistaPackage": "PSB (BCMA)",
+      "filemanFiles": [],
+      "currentStatus": "integration-pending",
+      "phase": 485
+    },
+    {
+      "domain": "emar",
+      "method": "POST",
+      "path": "/emar/barcode-scan",
+      "routeFile": "apps/api/src/routes/emar/index.ts",
+      "targetRpcs": ["PSJBCMA"],
+      "vistaPackage": "PSJ (BCMA)",
+      "filemanFiles": [],
+      "currentStatus": "integration-pending",
+      "phase": 485
+    },
+    {
+      "domain": "lab",
+      "method": "POST",
+      "path": "/vista/cprs/orders/lab",
+      "routeFile": "apps/api/src/routes/cprs/orders-cpoe.ts",
+      "targetRpcs": ["ORWDX SAVE"],
+      "vistaPackage": "OR",
+      "filemanFiles": ["100"],
+      "currentStatus": "integration-pending",
+      "phase": 486
+    },
+    {
+      "domain": "lab",
+      "method": "POST",
+      "path": "/vista/cprs/orders/imaging",
+      "routeFile": "apps/api/src/routes/cprs/orders-cpoe.ts",
+      "targetRpcs": ["ORWDX SAVE"],
+      "vistaPackage": "OR",
+      "filemanFiles": ["100"],
+      "currentStatus": "integration-pending",
+      "phase": 486
+    },
+    {
+      "domain": "lab",
+      "method": "POST",
+      "path": "/vista/cprs/orders/consult",
+      "routeFile": "apps/api/src/routes/cprs/orders-cpoe.ts",
+      "targetRpcs": ["ORWDX SAVE"],
+      "vistaPackage": "OR",
+      "filemanFiles": ["100"],
+      "currentStatus": "integration-pending",
+      "phase": 486
+    },
+    {
+      "domain": "pharmacy",
+      "method": "POST",
+      "path": "/vista/cprs/orders/sign",
+      "routeFile": "apps/api/src/routes/cprs/orders-cpoe.ts",
+      "targetRpcs": ["ORWOR1 SIG"],
+      "vistaPackage": "OR",
+      "filemanFiles": ["100"],
+      "currentStatus": "integration-pending",
+      "phase": 487
+    },
+    {
+      "domain": "discharge",
+      "method": "POST",
+      "path": "/discharge-workflow/*",
+      "routeFile": "apps/api/src/routes/discharge-workflow.ts",
+      "targetRpcs": ["DGPM NEW DISCHARGE"],
+      "vistaPackage": "DG ADT",
+      "filemanFiles": ["405", "2"],
+      "currentStatus": "integration-pending",
+      "phase": 483
+    }
+  ]
+}

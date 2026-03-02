@@ -138,5 +138,15 @@
     "owner": "ai-coder",
     "status": "reserved",
     "reservedAt": "2026-03-02T04:23:29.217Z"
+  },
+  {
+    "wave": "33",
+    "start": 481,
+    "end": 490,
+    "count": 10,
+    "branch": "main",
+    "owner": "agent",
+    "status": "reserved",
+    "reservedAt": "2026-03-02T05:36:07.520Z"
   }
 ]

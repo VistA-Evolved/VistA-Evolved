@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-02T05:34:19.435Z",
+  "generatedAt": "2026-03-02T05:39:23.623Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 479,
+  "phaseCount": 480,
   "phases": [
     {
       "phaseNumber": "1",
@@ -11669,6 +11669,30 @@
       "rpcs": [],
       "uiComponents": [],
       "filesTouched": []
+    },
+    {
+      "phaseNumber": "481",
+      "title": "W33-P1: Reservation + Manifest + Tier-0 Backlog Freeze",
+      "folder": "481-W33-P1-TIER0-RESERVATION",
+      "files": [
+        "481-01-IMPLEMENT.md",
+        "481-99-VERIFY.md",
+        "NOTES.md"
+      ],
+      "implementFiles": [
+        "481-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "481-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "prompts/WAVE_33_MANIFEST.md",
+        "docs/clinical/tier0-writeback-targets.md",
+        "docs/qa/tier0-integration-pending.json"
+      ]
     },
     {
       "phaseNumber": "44",
