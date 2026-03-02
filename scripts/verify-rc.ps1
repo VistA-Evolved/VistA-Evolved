@@ -134,6 +134,11 @@ foreach ($gate in $gates) {
   } catch {
     $exitCode = 1
     Log "  ERROR: $($_.Exception.Message)"
+  } finally {
+    # Ensure directory stack is clean even if a gate throws
+    while ((Get-Location -Stack -ErrorAction SilentlyContinue).Count -gt 0) {
+      Pop-Location -ErrorAction SilentlyContinue
+    }
   }
 
   $sw.Stop()

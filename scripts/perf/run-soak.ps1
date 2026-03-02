@@ -72,10 +72,8 @@ if ($Mode -eq "full") {
   [void]$allResults.Add(@{ label = "Full soak"; status = "SKIP"; budgetMs = 0; actualMs = 0; exitCode = 0 })
 }
 
-$passN = ($allResults | Where-Object { $_.status -eq "PASS" }).Count
-if ($null -eq $passN) { $passN = 0 }
-$skipN = ($allResults | Where-Object { $_.status -eq "SKIP" }).Count
-if ($null -eq $skipN) { $skipN = 0 }
+$passN = @($allResults | Where-Object { $_.status -eq "PASS" }).Count
+$skipN = @($allResults | Where-Object { $_.status -eq "SKIP" }).Count
 
 Write-Host ""
 Write-Host "  === Summary ==="

@@ -49,6 +49,8 @@ const categories = [
   { name: "Performance", pattern: /perform|load.test|budget/i },
   { name: "Disaster recovery", pattern: /disaster|gameday|rollback/i },
   { name: "Tenant / multi-tenant", pattern: /tenant|multitenant/i },
+  { name: "Scheduling", pattern: /schedul/i },
+  { name: "Analytics", pattern: /analytics|octo|rocto/i },
 ];
 
 for (const cat of categories) {

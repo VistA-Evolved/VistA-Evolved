@@ -16,7 +16,7 @@ fast enough, secure enough, and verifiable with a single command.
 | 505 | W35-P6-RELIABILITY-CHAOS | Reliability/Chaos Hooks |
 | 506 | W35-P7-SECURITY-PRECERT | Security Pre-Cert Pack + Evidence |
 | 507 | W35-P8-ROLE-ACCEPTANCE | Role-Based Acceptance Matrix + UI Smoke |
-| 508 | W35-P9-RUNBOOKS-TRAINING | Operational Runbooks + Training Mode + Demo Reset |
+| 508 | W35-P9-OPERATIONAL-RUNBOOKS | Operational Runbooks + Training Mode + Demo Reset |
 | 509 | W35-P10-RC-EVIDENCE-BUNDLE | RC Evidence Bundle v2 + Go/No-Go Gate |
 
 ## Definition of Done
@@ -41,7 +41,7 @@ fast enough, secure enough, and verifiable with a single command.
 | 506 | `e4e662d` | Security Pre-Cert Pack |
 | 507 | `7c84cab` | Role-Based Acceptance Matrix |
 | 508 | `4a45f5f` | Operational Runbooks + Demo Reset |
-| 509 | (this commit) | RC Evidence Bundle v2 + Go/No-Go Gate |
+| 509 | `f744fe1` | RC Evidence Bundle v2 + Go/No-Go Gate |
 
 ## Final Gate Status
 

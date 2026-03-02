@@ -87,7 +87,8 @@ foreach ($dir in $scanDirs) {
           line     = $lineNum
           tag      = $tag
           severity = $sev
-          text     = $fline.Trim().Substring(0, [Math]::Min($fline.Trim().Length, 120))
+        $trimmed  = $fline.Trim()
+        $text     = $trimmed.Substring(0, [Math]::Min($trimmed.Length, 120))
         }
       }
     }

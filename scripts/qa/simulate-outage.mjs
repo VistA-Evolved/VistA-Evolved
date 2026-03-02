@@ -110,10 +110,14 @@ if (existsSync(exitCriteria)) {
 // ---- Live checks (requires running API) ----
 if (isLive) {
   console.log('\n  --- Live Simulation ---');
+  console.log('  NOTE: Admin endpoints require an authenticated session.');
+  console.log('  Set OUTAGE_SIM_COOKIE to a valid ehr_session cookie value.');
   const API = process.env.API_BASE || 'http://127.0.0.1:3001';
+  const cookie = process.env.OUTAGE_SIM_COOKIE || '';
 
   async function apiFetch(path, opts = {}) {
-    const res = await fetch(`${API}${path}`, { ...opts, signal: AbortSignal.timeout(5000) });
+    const headers = cookie ? { Cookie: `ehr_session=${cookie}` } : {};
+    const res = await fetch(`${API}${path}`, { ...opts, headers: { ...headers, ...(opts.headers || {}) }, signal: AbortSignal.timeout(5000) });
     const body = await res.json();
     return { status: res.status, body };
   }

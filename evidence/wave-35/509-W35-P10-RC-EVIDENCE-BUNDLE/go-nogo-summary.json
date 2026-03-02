@@ -26,16 +26,16 @@
     "overallStatus": "RC_READY"
   },
   "phases": [
-    { "id": 500, "title": "RC Scope Freeze", "commit": "085db77", "status": "complete" },
-    { "id": 501, "title": "RC Verify Orchestrator", "commit": "84b6e2c", "status": "complete" },
-    { "id": 502, "title": "Bug Bash Harness", "commit": "e9ad2a7", "status": "complete" },
-    { "id": 503, "title": "Downtime Mode + Outage Sim", "commit": "06f8c97", "status": "complete" },
-    { "id": 504, "title": "Perf Budgets + Soak Tests", "commit": "1b1f002", "status": "complete" },
-    { "id": 505, "title": "Reliability / Chaos Hooks", "commit": "79b4002", "status": "complete" },
-    { "id": 506, "title": "Security Pre-Cert Pack", "commit": "e4e662d", "status": "complete" },
-    { "id": 507, "title": "Role-Based Acceptance Matrix", "commit": "7c84cab", "status": "complete" },
-    { "id": 508, "title": "Operational Runbooks + Demo Reset", "commit": "4a45f5f", "status": "complete" },
-    { "id": 509, "title": "RC Evidence Bundle v2", "commit": "pending", "status": "in-progress" }
+    { "id": 500, "title": "RC Scope Freeze", "commit": "085db77728426ef56157c288fbcfede41f645fa6", "status": "complete" },
+    { "id": 501, "title": "RC Verify Orchestrator", "commit": "84b6e2c3a91cff01c10c8204c99dcceb87b6667b", "status": "complete" },
+    { "id": 502, "title": "Bug Bash Harness", "commit": "e9ad2a7ca3594b5cdb2dbf2e38b7bfb6f5744a49", "status": "complete" },
+    { "id": 503, "title": "Downtime Mode + Outage Sim", "commit": "06f8c9734f292ca3b6fa944b3a62629e0cbdc617", "status": "complete" },
+    { "id": 504, "title": "Perf Budgets + Soak Tests", "commit": "1b1f002f04d7a231d6c3c9acb2c479089eae1cdb", "status": "complete" },
+    { "id": 505, "title": "Reliability / Chaos Hooks", "commit": "79b4002b2704bc350abd613e3c98ab62b5da5dbc", "status": "complete" },
+    { "id": 506, "title": "Security Pre-Cert Pack", "commit": "e4e662d95f6248b5e59a91a56170f29b466efdab", "status": "complete" },
+    { "id": 507, "title": "Role-Based Acceptance Matrix", "commit": "7c84cabae74ee52dd6ee09663c7e370815e2200e", "status": "complete" },
+    { "id": 508, "title": "Operational Runbooks + Demo Reset", "commit": "4a45f5f23251dcfa2862b7876053f51389d5d314", "status": "complete" },
+    { "id": 509, "title": "RC Evidence Bundle v2", "commit": "f744fe17ac1ed6e605930956197c0e584be972d0", "status": "complete" }
   ],
   "evidenceDirectories": [
     "evidence/wave-35/500-W35-P1-RC-SCOPE-FREEZE/",

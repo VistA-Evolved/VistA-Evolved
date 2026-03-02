@@ -122,7 +122,9 @@ export function resetCircuitBreaker(): void {
 export function forceOpenCircuitBreaker(): void {
   cbFailures = RPC_CONFIG.circuitBreakerThreshold;
   transitionCircuit("open");
-  cbOpenedAt = Date.now() + 3_600_000; // 1h in the future so it stays open
+  // Set cbOpenedAt 1 hour in the future so isCircuitOpen() computes a
+  // negative elapsed time, preventing automatic half-open transition for ~1h.
+  cbOpenedAt = Date.now() + 3_600_000;
   log.warn("Circuit breaker force-opened for outage simulation");
 }
 

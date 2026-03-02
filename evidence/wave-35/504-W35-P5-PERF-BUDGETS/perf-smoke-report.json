@@ -1,48 +1,48 @@
 {
     "fail":  0,
     "pass":  6,
-    "generatedAt":  "2026-03-02T16:01:28.3408277+08:00",
+    "generatedAt":  "2026-03-02T16:22:40.8402957+08:00",
     "skip":  0,
     "results":  [
                     {
                         "label":  "TypeScript API compile",
                         "status":  "PASS",
-                        "actualMs":  20843,
+                        "actualMs":  7650,
                         "budgetMs":  60000,
                         "exitCode":  0
                     },
                     {
                         "label":  "TypeScript Web compile",
                         "status":  "PASS",
-                        "actualMs":  1917,
+                        "actualMs":  1727,
                         "budgetMs":  30000,
                         "exitCode":  0
                     },
                     {
                         "label":  "Phase index build",
                         "status":  "PASS",
-                        "actualMs":  216,
+                        "actualMs":  185,
                         "budgetMs":  15000,
                         "exitCode":  0
                     },
                     {
                         "label":  "Prompts tree health",
                         "status":  "PASS",
-                        "actualMs":  240,
+                        "actualMs":  216,
                         "budgetMs":  5000,
                         "exitCode":  0
                     },
                     {
                         "label":  "RPC trace compare",
                         "status":  "PASS",
-                        "actualMs":  56,
+                        "actualMs":  42,
                         "budgetMs":  5000,
                         "exitCode":  0
                     },
                     {
                         "label":  "Production posture",
                         "status":  "PASS",
-                        "actualMs":  55,
+                        "actualMs":  44,
                         "budgetMs":  5000,
                         "exitCode":  0
                     }
