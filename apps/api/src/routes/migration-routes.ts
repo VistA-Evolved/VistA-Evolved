@@ -1,7 +1,7 @@
 /**
  * apps/api/src/routes/migration-routes.ts
  *
- * Phases 456-459 (W30-P1/P2/P3/P4).
+ * Phases 456-460 (W30-P1 through P5).
  * REST endpoints for data migration operations.
  * Admin-only access for all migration endpoints.
  */
@@ -12,6 +12,8 @@ import { ingestCcda, getCcdaBatch, listCcdaBatches } from "../migration/ccda-ing
 import { processAdtMessage, getAdtEvent, listAdtEvents } from "../migration/hl7v2-adt.js";
 import { dualRunHarness } from "../migration/dual-run.js";
 import type { DualRunMode } from "../migration/dual-run.js";
+import { reconEngine } from "../migration/recon-engine.js";
+import type { ReconEntityType, ResolutionStatus } from "../migration/recon-engine.js";
 import type { FhirBundle } from "../migration/types.js";
 
 export async function migrationRoutes(server: FastifyInstance) {
@@ -116,12 +118,65 @@ export async function migrationRoutes(server: FastifyInstance) {
     return reply.send({ ok: true, comparisons: comps, total: comps.length });
   });
 
+  // ── Recon endpoints (Phase 460) ────────────────────────────────
+
+  // POST /migration/recon/run — start a reconciliation job
+  server.post("/migration/recon/run", async (request, reply) => {
+    const body = (request.body as any) || {};
+    const { entityType, sourceRecords, targetRecords } = body;
+    if (!entityType || !Array.isArray(sourceRecords) || !Array.isArray(targetRecords)) {
+      return reply.code(400).send({ ok: false, error: "entityType, sourceRecords[], targetRecords[] required" });
+    }
+    const userId = (request as any).session?.duz || "system";
+    const job = reconEngine.runRecon(entityType as ReconEntityType, sourceRecords, targetRecords, userId);
+    return reply.send({ ok: true, job });
+  });
+
+  // GET /migration/recon/jobs — list recon jobs
+  server.get("/migration/recon/jobs", async (_request, reply) => {
+    const jobs = reconEngine.listJobs();
+    return reply.send({ ok: true, jobs, total: jobs.length });
+  });
+
+  // GET /migration/recon/jobs/:id — get single recon job
+  server.get("/migration/recon/jobs/:id", async (request, reply) => {
+    const { id } = request.params as { id: string };
+    const job = reconEngine.getJob(id);
+    if (!job) return reply.code(404).send({ ok: false, error: "Recon job not found" });
+    return reply.send({ ok: true, job });
+  });
+
+  // GET /migration/recon/discrepancies — list discrepancies
+  server.get("/migration/recon/discrepancies", async (request, reply) => {
+    const q = request.query as any;
+    const list = reconEngine.listDiscrepancies(q?.jobId, q?.status as ResolutionStatus);
+    return reply.send({ ok: true, discrepancies: list, total: list.length });
+  });
+
+  // POST /migration/recon/discrepancies/:id/resolve — resolve a discrepancy
+  server.post("/migration/recon/discrepancies/:id/resolve", async (request, reply) => {
+    const { id } = request.params as { id: string };
+    const body = (request.body as any) || {};
+    const { resolution, notes } = body;
+    if (!resolution) return reply.code(400).send({ ok: false, error: "resolution required" });
+    const userId = (request as any).session?.duz || "system";
+    const ok = reconEngine.resolveDiscrepancy(id, resolution, userId, notes);
+    if (!ok) return reply.code(404).send({ ok: false, error: "Discrepancy not found" });
+    return reply.send({ ok: true });
+  });
+
+  // GET /migration/recon/stats — recon stats
+  server.get("/migration/recon/stats", async (_request, reply) => {
+    return reply.send({ ok: true, ...reconEngine.getStats() });
+  });
+
   // GET /migration/health — migration subsystem health
   server.get("/migration/health", async (_request, reply) => {
     const fhirBatches = listBatches();
     const ccdaBatches = listCcdaBatches();
     const adtEvts = listAdtEvents();
     const dualRun = dualRunHarness.getStats();
+    const recon = reconEngine.getStats();
     return reply.send({
       ok: true,
       status: "ready",
@@ -130,6 +185,8 @@ export async function migrationRoutes(server: FastifyInstance) {
       ccdaBatchCount: ccdaBatches.length,
       adtEventCount: adtEvts.length,
       dualRunMode: dualRun.mode,
+      reconJobs: recon.totalJobs,
+      reconOpenDiscrepancies: recon.openDiscrepancies,
     });
   });
 }
