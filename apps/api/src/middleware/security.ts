@@ -161,6 +161,9 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/consent\//, auth: "session" },        // Phase 312: consent management
   { pattern: /^\/terminology\//, auth: "session" },    // Phase 313: terminology resolution
   { pattern: /^\/country-packs\//, auth: "session" },  // Phase 314: country pack config
+  { pattern: /^\/country-policy\//, auth: "session" }, // Phase 493: effective country policy (session)
+  { pattern: /^\/conformance\//, auth: "admin" },      // Phase 499: conformance runner (admin only)
+  { pattern: /^\/dsar\//, auth: "session" },           // Phase 496: DSAR requests (session, fine-grained in handler)
   { pattern: /^\/compliance\//, auth: "admin" },       // Phase 315: compliance matrix
   // Wave 28: Regulatory Reporting (Phase 444)
   { pattern: /^\/regulatory\//, auth: "admin" },       // Phase 444: regulatory classification, attestation, export

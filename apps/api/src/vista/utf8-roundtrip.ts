@@ -29,19 +29,19 @@ export function buildTestCorpus(): Utf8TestString[] {
     { locale: "en", script: "Latin", label: "ASCII baseline", input: "Hello World 1234" },
 
     // Spanish — accented characters
-    { locale: "es", script: "Latin-Extended", label: "Spanish accents", input: "Prueba de acentos: nina, senor, cafe" },
+    { locale: "es", script: "Latin-Extended", label: "Spanish accents", input: "Prueba de acentos: ni\u00F1a, se\u00F1or, caf\u00E9" },
 
     // Filipino — Tagalog with diacritics
-    { locale: "fil", script: "Latin-Extended", label: "Filipino diacritics", input: "Magandang umaga, kumusta ka?" },
+    { locale: "fil", script: "Latin-Extended", label: "Filipino diacritics", input: "Magandang umaga, kumust\u00E1 ka?" },
 
     // Filipino — extended characters
-    { locale: "fil", script: "Latin-Extended", label: "Filipino names", input: "Juan, Maria, Jose" },
+    { locale: "fil", script: "Latin-Extended", label: "Filipino names", input: "Ju\u00E1n, Mar\u00EDa, Jos\u00E9" },
 
     // Mixed numeric + diacritics
-    { locale: "es", script: "Latin-Extended", label: "Mixed numeric", input: "Paciente #12345 - atencion medica" },
+    { locale: "es", script: "Latin-Extended", label: "Mixed numeric", input: "Paciente #12345 - atenci\u00F3n m\u00E9dica" },
 
     // Vietnamese — heavy diacritics
-    { locale: "vi", script: "Latin-Extended", label: "Vietnamese diacritics", input: "Xin chao, cam on ban" },
+    { locale: "vi", script: "Latin-Extended", label: "Vietnamese diacritics", input: "Xin ch\u00E0o, c\u1EA3m \u01A1n b\u1EA1n" },
 
     // CJK — Chinese characters
     { locale: "zh", script: "CJK", label: "Chinese characters", input: "\u4F60\u597D\u4E16\u754C" },

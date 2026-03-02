@@ -5170,6 +5170,18 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: icu_scores (future)",
     notes: "Phase 468: 6 score types (APACHE-II, SOFA, GCS, RASS, CAM-ICU, Braden).",
   },
+  // Wave 34: Multi-Country Regulatory v2 (Phases 491-499)
+  {
+    id: "dsar-requests",
+    file: "services/dsar-store.ts",
+    variable: "store",
+    description: "In-memory DSAR request lifecycle store",
+    classification: "critical" as StoreClassification,
+    durability: "in_memory_only" as DurabilityStatus,
+    domain: "compliance",
+    migrationTarget: "pg: dsar_requests (future)",
+    notes: "Phase 496: DSAR requests lost on restart. 50K max with FIFO eviction.",
+  },
 ];
 
 // â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
