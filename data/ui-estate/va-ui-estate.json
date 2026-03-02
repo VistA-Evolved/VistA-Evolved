@@ -1,0 +1,1876 @@
+{
+  "$schema": "https://vista-evolved.dev/schemas/ui-estate.schema.json",
+  "agency": "va",
+  "generatedAt": "2026-03-02T00:00:00Z",
+  "systems": [
+    {
+      "id": "bcma",
+      "name": "BCMA (Bar Code Medication Administration)",
+      "category": "pharmacy",
+      "description": "Barcode-driven medication administration at bedside. Scans patient wristband + med unit dose, validates 5 rights, records administration in VistA.",
+      "vistaNamespace": "PSB",
+      "surfaces": [
+        {
+          "id": "bcma-med-log",
+          "name": "Medication Administration Log",
+          "description": "Real-time log of all medication administrations for a patient. Shows scheduled, PRN, and continuous meds with scan results.",
+          "vistaFiles": ["PSB(53.79)", "PHARMACY PATIENT(55)"],
+          "targetRpcs": ["PSB GETORDERSYNONYM", "PSB MEDICATION LOG", "PSB SCANPT", "PSB SCANMED"],
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/emar/*",
+            "page": "/cprs/emar",
+            "component": "EmarPanel",
+            "phase": 85
+          },
+          "notes": "eMAR panel scaffolded in Phase 85. PSB RPCs not yet wired -- sandbox lacks BCMA config."
+        },
+        {
+          "id": "bcma-virtual-due-list",
+          "name": "Virtual Due List (VDL)",
+          "description": "Shows all medications currently due or overdue for a ward/team. Drives nurse workflow.",
+          "vistaFiles": ["PSB(53.79)", "ORDER(100)", "PHARMACY PATIENT(55)"],
+          "targetRpcs": ["PSB VDL", "PSB SCANPT"],
+          "priority": "p0-critical",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "notes": "VDL is the primary nurse workflow driver. Needs ward/team context from ADT."
+        },
+        {
+          "id": "bcma-med-tab",
+          "name": "Medication Tab (Inpatient)",
+          "description": "Detailed medication view showing active orders, last admin times, and PRN effectiveness.",
+          "vistaFiles": ["PHARMACY PATIENT(55)", "PRESCRIPTION(52)"],
+          "targetRpcs": ["PSB MEDICATION LOG", "ORWPS ACTIVE"],
+          "priority": "p1-high",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/medications",
+            "page": "/cprs/chart/[dfn]/meds",
+            "component": "MedsPanel",
+            "phase": 8
+          }
+        },
+        {
+          "id": "bcma-scanning",
+          "name": "Barcode Scanning Workflow",
+          "description": "Scan patient wristband, scan medication, validate match, record administration.",
+          "vistaFiles": ["PSB(53.79)"],
+          "targetRpcs": ["PSB SCANPT", "PSB SCANMED", "PSB MEDPASS"],
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "notes": "Requires device integration (barcode scanner) -- Phase 538 imaging capture may provide pattern."
+        },
+        {
+          "id": "bcma-iv-tracking",
+          "name": "IV Bag Tracking",
+          "description": "Track IV solutions from pharmacy to bedside. Scan bag, record hang/stop times.",
+          "vistaFiles": ["IV(55.01)", "PSB(53.79)"],
+          "targetRpcs": ["PSB IV BAG", "PSB IV LOG"],
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "vista-imaging",
+      "name": "VistA Imaging (VI / VIX)",
+      "category": "imaging",
+      "description": "Enterprise imaging display and capture. Includes clinical display, DICOM viewer, image capture, and teleradiology via VIX (VistA Imaging Exchange).",
+      "vistaNamespace": "MAG",
+      "surfaces": [
+        {
+          "id": "vi-clinical-display",
+          "name": "Clinical Image Display",
+          "description": "View DICOM and non-DICOM clinical images associated with patient record. Integrated into CPRS.",
+          "vistaFiles": ["IMAGE(2005)", "IMAGE AUDIT(2005.1)"],
+          "targetRpcs": ["MAG4 PAT GET IMAGES", "MAG4 GET IMAGE INFO", "MAGG PAT INFO"],
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/imaging/*",
+            "page": "/cprs/chart/[dfn]/imaging",
+            "component": "ImagingPanel",
+            "phase": 23
+          },
+          "notes": "Imaging panel uses Orthanc/DICOMweb proxy, not MAG RPCs directly. VIX not implemented."
+        },
+        {
+          "id": "vi-dicom-viewer",
+          "name": "DICOM Viewer (OHIF)",
+          "description": "Full diagnostic-quality DICOM viewer with MPR, measurements, annotations.",
+          "vistaFiles": ["IMAGE(2005)"],
+          "targetRpcs": ["MAG4 GET IMAGE INFO"],
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/imaging/viewer/*",
+            "page": "/cprs/chart/[dfn]/imaging",
+            "component": "ImagingPanel",
+            "phase": 81
+          },
+          "notes": "OHIF viewer integrated via Docker. Fork-first per meta-rules."
+        },
+        {
+          "id": "vi-image-capture",
+          "name": "Image Capture (SIC-equivalent)",
+          "description": "Capture clinical images from scanner, camera, or document feeder. Associate with TIU note or order.",
+          "vistaFiles": ["IMAGE(2005)", "TIU DOCUMENT(8925)"],
+          "targetRpcs": ["MAG4 ADD IMAGE", "MAGG CAPTURE", "TIU CREATE RECORD"],
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "notes": "Target for Phase 538 (P8: Imaging Capture + Attach)."
+        },
+        {
+          "id": "vi-worklist",
+          "name": "Imaging Worklist",
+          "description": "Radiologist reading worklist with study status, priority, and assignment.",
+          "vistaFiles": ["RAD/NUC MED ORDERS(75.1)", "RADIOLOGY EXAM(70)"],
+          "targetRpcs": ["ORWDXR NEW ORDER", "RAD/NUC MED REGISTER"],
+          "priority": "p1-high",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/imaging/*",
+            "component": "ImagingPanel (Worklist tab)",
+            "phase": 23
+          },
+          "notes": "In-memory worklist store (Phase 23). PG-backed as of Phase 528."
+        },
+        {
+          "id": "vi-device-registry",
+          "name": "DICOM Device Registry",
+          "description": "Manage DICOM AE Titles, modality worklist, and C-ECHO verification.",
+          "vistaFiles": [],
+          "targetRpcs": [],
+          "priority": "p2-medium",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": true,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/imaging/*",
+            "component": "ImagingPanel (Devices tab)",
+            "phase": 24
+          }
+        },
+        {
+          "id": "vi-teleradiology",
+          "name": "Teleradiology (VIX)",
+          "description": "Cross-facility image sharing via VistA Imaging Exchange. Enables remote reading.",
+          "vistaFiles": ["IMAGE(2005)"],
+          "targetRpcs": ["MAG4 REMOTE IMAGE"],
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "ivs-sic",
+      "name": "IVS / SIC (Imaging Viewing Solution / Scanned Image Capture)",
+      "category": "imaging",
+      "description": "Document scanning and clinical image capture for non-DICOM content. Replaces legacy SIC with IVS.",
+      "vistaNamespace": "MAG",
+      "surfaces": [
+        {
+          "id": "ivs-document-scan",
+          "name": "Document Scanning",
+          "description": "Scan paper documents (consult reports, outside records) into VistA Imaging.",
+          "vistaFiles": ["IMAGE(2005)", "TIU DOCUMENT(8925)"],
+          "targetRpcs": ["MAG4 ADD IMAGE", "TIU CREATE RECORD"],
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "notes": "Target for Phase 538 (P8: Imaging Capture + Attach)."
+        },
+        {
+          "id": "ivs-photo-capture",
+          "name": "Clinical Photo Capture",
+          "description": "Capture wound photos, dermatology images, progress photos via webcam or mobile device.",
+          "vistaFiles": ["IMAGE(2005)"],
+          "targetRpcs": ["MAG4 ADD IMAGE"],
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "ivs-batch-import",
+          "name": "Batch Document Import",
+          "description": "Bulk import of scanned documents with metadata mapping.",
+          "vistaFiles": ["IMAGE(2005)"],
+          "targetRpcs": ["MAG4 ADD IMAGE"],
+          "priority": "p3-low",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "mha",
+      "name": "MHA (Mental Health Assistant)",
+      "category": "mental-health",
+      "description": "Standardized mental health screening instruments (PHQ-9, GAD-7, PCL-5, AUDIT-C, Columbia Suicide Severity). Uses LForms/NLM questionnaire engine.",
+      "vistaNamespace": "YTT",
+      "surfaces": [
+        {
+          "id": "mha-instrument-admin",
+          "name": "Instrument Administration",
+          "description": "Administer standardized instruments to patients. Auto-score and store results.",
+          "vistaFiles": ["MH TESTS AND SURVEYS(601.71)", "MH INSTRUMENT(601.72)", "MH RESULTS(601.84)"],
+          "targetRpcs": ["YTT GET INSTRUMENT", "YTQZ LISTTESTS", "YTT SAVE RESULTS", "YTQZ RESULTLIST"],
+          "priority": "p0-critical",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "notes": "Target for Phase 535 (P5: MHA v1 LForms)."
+        },
+        {
+          "id": "mha-phq9",
+          "name": "PHQ-9 Depression Screen",
+          "description": "Patient Health Questionnaire-9. Primary depression screening instrument.",
+          "vistaFiles": ["MH TESTS AND SURVEYS(601.71)", "MH RESULTS(601.84)"],
+          "targetRpcs": ["YTT GET INSTRUMENT", "YTT SAVE RESULTS"],
+          "priority": "p0-critical",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "mha-gad7",
+          "name": "GAD-7 Anxiety Screen",
+          "description": "Generalized Anxiety Disorder 7-item scale.",
+          "vistaFiles": ["MH TESTS AND SURVEYS(601.71)", "MH RESULTS(601.84)"],
+          "targetRpcs": ["YTT GET INSTRUMENT", "YTT SAVE RESULTS"],
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "mha-pcl5",
+          "name": "PCL-5 PTSD Screen",
+          "description": "PTSD Checklist for DSM-5. 20-item self-report measure.",
+          "vistaFiles": ["MH TESTS AND SURVEYS(601.71)", "MH RESULTS(601.84)"],
+          "targetRpcs": ["YTT GET INSTRUMENT", "YTT SAVE RESULTS"],
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "mha-cssrs",
+          "name": "Columbia Suicide Severity Rating",
+          "description": "Columbia Suicide Severity Rating Scale (C-SSRS). Mandated for all MH encounters.",
+          "vistaFiles": ["MH TESTS AND SURVEYS(601.71)", "MH RESULTS(601.84)"],
+          "targetRpcs": ["YTT GET INSTRUMENT", "YTT SAVE RESULTS"],
+          "priority": "p0-critical",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "mha-audit-c",
+          "name": "AUDIT-C Alcohol Screen",
+          "description": "Alcohol Use Disorders Identification Test - Consumption.",
+          "vistaFiles": ["MH TESTS AND SURVEYS(601.71)", "MH RESULTS(601.84)"],
+          "targetRpcs": ["YTT GET INSTRUMENT", "YTT SAVE RESULTS"],
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "mha-results-history",
+          "name": "Instrument Results History",
+          "description": "View historical scores and trend lines for all administered instruments.",
+          "vistaFiles": ["MH RESULTS(601.84)"],
+          "targetRpcs": ["YTQZ RESULTLIST", "YTQZ DETAILLIST"],
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "mha-tiu-writeback",
+          "name": "MHA to TIU Note Writeback",
+          "description": "Auto-generate TIU progress note from completed instrument with scores embedded.",
+          "vistaFiles": ["TIU DOCUMENT(8925)", "MH RESULTS(601.84)"],
+          "targetRpcs": ["TIU CREATE RECORD", "TIU SET DOCUMENT TEXT", "YTT SAVE RESULTS"],
+          "priority": "p0-critical",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "notes": "Target for Phase 536 (P6: MHA VistA Writeback)."
+        }
+      ]
+    },
+    {
+      "id": "vse-vs-gui",
+      "name": "VSE / VS GUI (VistA Scheduling Enhancement)",
+      "category": "scheduling",
+      "description": "Appointment scheduling, check-in, recall, wait list management. VSE is the modernized scheduling GUI replacing legacy SD options.",
+      "vistaNamespace": "SD",
+      "surfaces": [
+        {
+          "id": "vse-appointment-book",
+          "name": "Appointment Book / Grid View",
+          "description": "Visual grid of clinic slots. Drag-and-drop appointment scheduling.",
+          "vistaFiles": ["HOSPITAL LOCATION(44)", "PATIENT APPOINTMENT(2.98)"],
+          "targetRpcs": ["SDES GET CLINIC DETAILS", "SDES GET APPT TYPES", "SDES MAKE APPOINTMENT", "SDES CANCEL APPOINTMENT"],
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/scheduling/*",
+            "page": "/cprs/scheduling",
+            "component": "SchedulingPanel",
+            "phase": 147
+          },
+          "notes": "SDES RPCs callable but slots empty without ZVESDSEED.m. Phase 539 targets parity."
+        },
+        {
+          "id": "vse-check-in",
+          "name": "Patient Check-In",
+          "description": "Mark patient as arrived, update insurance, collect copay.",
+          "vistaFiles": ["PATIENT APPOINTMENT(2.98)", "VISIT(9000010)"],
+          "targetRpcs": ["SDES CHECK IN", "SDOE CHECK IN", "SD W/L CHECK IN"],
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/scheduling/*",
+            "page": "/cprs/scheduling",
+            "phase": 147
+          }
+        },
+        {
+          "id": "vse-recall-reminder",
+          "name": "Recall/Reminder Management",
+          "description": "Schedule future recall dates. Auto-generate reminder letters.",
+          "vistaFiles": ["SD RECALL(403.5)", "RECALL REMINDERS(403.5)"],
+          "targetRpcs": ["SDES GET RECALL LIST", "SD W/L GET LIST"],
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "vse-wait-list",
+          "name": "Wait List Management",
+          "description": "Manage electronic wait lists (EWL) for clinic appointments.",
+          "vistaFiles": ["SD WAIT LIST(409.3)"],
+          "targetRpcs": ["SD W/L GET LIST", "SD W/L MANAGE"],
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "vse-clinic-setup",
+          "name": "Clinic Profile Setup",
+          "description": "Configure clinic hours, slot templates, provider assignments, special instructions.",
+          "vistaFiles": ["HOSPITAL LOCATION(44)"],
+          "targetRpcs": ["SDES GET CLINIC DETAILS", "SDES GET APPT TYPES"],
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/scheduling/*",
+            "phase": 147
+          }
+        },
+        {
+          "id": "vse-resource-view",
+          "name": "Resource/Provider View",
+          "description": "View and manage schedules by provider, room, or equipment.",
+          "vistaFiles": ["HOSPITAL LOCATION(44)", "NEW PERSON(200)"],
+          "targetRpcs": ["SDES GET CLINIC RESOURCE", "SDVW WORKLIST"],
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": false,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/scheduling/clinic/:ien/resource",
+            "phase": 147
+          }
+        }
+      ]
+    },
+    {
+      "id": "cprs",
+      "name": "CPRS (Computerized Patient Record System)",
+      "category": "clinical",
+      "description": "Primary clinician workstation. Cover sheet, notes, orders, consults, surgery, labs, imaging integration.",
+      "vistaNamespace": "OR",
+      "surfaces": [
+        {
+          "id": "cprs-cover-sheet",
+          "name": "Cover Sheet",
+          "description": "Patient summary with active problems, allergies, meds, vitals, recent labs, orders, appointments.",
+          "vistaFiles": ["PROBLEM(9000011)", "PATIENT ALLERGY(120.8)", "ORDER(100)"],
+          "targetRpcs": ["ORQQPL LIST", "ORQQAL LIST", "ORWPS ACTIVE", "ORQQVI VITALS", "ORWOR RESULT"],
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": true,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/*",
+            "page": "/cprs/chart/[dfn]/cover",
+            "component": "CoverSheetPanel",
+            "phase": 11
+          }
+        },
+        {
+          "id": "cprs-problems",
+          "name": "Problem List",
+          "description": "Active/inactive problem list with ICD-10 coding. Add, edit, inactivate problems.",
+          "vistaFiles": ["PROBLEM(9000011)"],
+          "targetRpcs": ["ORQQPL LIST", "ORQQPL ADD SAVE", "ORQQPL EDIT SAVE"],
+          "priority": "p0-critical",
+          "migrationStatus": "writeback",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": true,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/problems",
+            "page": "/cprs/chart/[dfn]/problems",
+            "component": "ProblemsPanel",
+            "phase": 9
+          }
+        },
+        {
+          "id": "cprs-allergies",
+          "name": "Allergies",
+          "description": "Allergy/adverse reaction list. Enter new allergy with reactant, symptoms, severity.",
+          "vistaFiles": ["PATIENT ALLERGY(120.8)", "GMR ALLERGIES(120.82)"],
+          "targetRpcs": ["ORQQAL LIST", "ORWDAL32 SAVE ALLERGY"],
+          "priority": "p0-critical",
+          "migrationStatus": "writeback",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": true,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/allergies",
+            "page": "/cprs/chart/[dfn]/allergies",
+            "component": "AllergiesPanel",
+            "phase": 7
+          }
+        },
+        {
+          "id": "cprs-vitals",
+          "name": "Vitals",
+          "description": "Enter and view vital signs (T, P, R, BP, SpO2, pain, height, weight).",
+          "vistaFiles": ["GMRV VITAL MEASUREMENT(120.5)"],
+          "targetRpcs": ["GMV MARK ERROR", "GMV ADD VM", "GMV V/M ALLDATA"],
+          "priority": "p0-critical",
+          "migrationStatus": "writeback",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": true,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/vitals",
+            "page": "/cprs/chart/[dfn]/vitals",
+            "component": "VitalsPanel",
+            "phase": 6
+          }
+        },
+        {
+          "id": "cprs-notes",
+          "name": "TIU Notes",
+          "description": "Progress notes, consult results, discharge summaries. Create, edit, sign, co-sign.",
+          "vistaFiles": ["TIU DOCUMENT(8925)"],
+          "targetRpcs": ["TIU GET RECORD TEXT", "TIU CREATE RECORD", "TIU SET DOCUMENT TEXT", "TIU SIGN RECORD"],
+          "priority": "p0-critical",
+          "migrationStatus": "writeback",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": true,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/notes",
+            "page": "/cprs/chart/[dfn]/notes",
+            "component": "NotesPanel",
+            "phase": 7
+          }
+        },
+        {
+          "id": "cprs-orders",
+          "name": "Orders (CPOE)",
+          "description": "Computerized provider order entry. Meds, labs, imaging, consults, diets, nursing.",
+          "vistaFiles": ["ORDER(100)", "ORDER ACTIONS(100.008)"],
+          "targetRpcs": ["ORWDX SAVE", "ORWDX LOCK", "ORWDX UNLOCK", "ORWOR RESULT", "ORWOR1 SIG"],
+          "priority": "p0-critical",
+          "migrationStatus": "writeback",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": true,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/cprs/orders-cpoe/*",
+            "page": "/cprs/chart/[dfn]/orders",
+            "component": "OrdersPanel",
+            "phase": 59
+          }
+        },
+        {
+          "id": "cprs-consults",
+          "name": "Consults",
+          "description": "Request, track, and complete consults. Inter-facility consult forwarding.",
+          "vistaFiles": ["REQUEST/CONSULTATION(123)"],
+          "targetRpcs": ["ORQQCN LIST", "ORQQCN DETAIL", "ORWDCN32 NEW CONSULT"],
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/consults",
+            "page": "/cprs/chart/[dfn]/consults",
+            "component": "ConsultsPanel",
+            "phase": 12
+          }
+        },
+        {
+          "id": "cprs-labs",
+          "name": "Lab Results",
+          "description": "View lab results with cumulative and graph views. Micro, pathology, blood bank.",
+          "vistaFiles": ["LAB DATA(63)", "ACCESSION(68)"],
+          "targetRpcs": ["ORWLR CUMULATIVE REPORT", "ORWLR RESULTS"],
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/labs",
+            "page": "/cprs/chart/[dfn]/labs",
+            "component": "LabsPanel",
+            "phase": 12
+          }
+        },
+        {
+          "id": "cprs-reports",
+          "name": "Reports",
+          "description": "Clinical reports (health summary, OE/RR, radiology, surgical, pathology).",
+          "vistaFiles": [],
+          "targetRpcs": ["ORWRP REPORT TEXT", "ORWRP2 HS COMPONENTS"],
+          "priority": "p1-high",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/reports",
+            "page": "/cprs/chart/[dfn]/reports",
+            "phase": 19
+          }
+        },
+        {
+          "id": "cprs-surgery",
+          "name": "Surgery",
+          "description": "Surgical case listing, operative reports, anesthesia records.",
+          "vistaFiles": ["SURGERY(130)"],
+          "targetRpcs": ["ORWSR SURGERY LIST"],
+          "priority": "p1-high",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/vista/surgery",
+            "page": "/cprs/chart/[dfn]/surgery",
+            "phase": 12
+          }
+        },
+        {
+          "id": "cprs-inbox",
+          "name": "Notifications / Inbox",
+          "description": "Clinician notification inbox. Flagged orders, unsigned notes, consult results.",
+          "vistaFiles": ["OE/RR NOTIFICATIONS(100.9)"],
+          "targetRpcs": ["ORWORB FASTUSER", "ORWORB GETDCOS"],
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/inbox",
+            "page": "/cprs/inbox",
+            "phase": 12
+          }
+        },
+        {
+          "id": "cprs-patient-search",
+          "name": "Patient Selection / Search",
+          "description": "Search by name, SSN, or select from team/ward patient lists.",
+          "vistaFiles": ["PATIENT(2)"],
+          "targetRpcs": ["ORWPT FULLSSN", "ORWPT LIST ALL", "ORWPT BYWARD", "ORWPT SELECT"],
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/patient-search",
+            "page": "/cprs/patient-search",
+            "phase": 4
+          }
+        },
+        {
+          "id": "cprs-meds",
+          "name": "Medications Tab",
+          "description": "View active/recent/all medications grouped by inpatient, outpatient, non-VA. Details include sig, refills, last fill date.",
+          "vistaFiles": ["PRESCRIPTION(52)", "PHARMACY PATIENT(55)", "ORDER(100)"],
+          "targetRpcs": ["ORWPS ACTIVE", "ORWPS DETAIL", "ORWPS REASON"],
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/medications",
+            "page": "/cprs",
+            "component": "MedsPanel",
+            "phase": 15
+          },
+          "notes": "MedsPanel wired in Phase 15. ORWPS ACTIVE multi-line grouping parsed correctly (BUG-028)."
+        },
+        {
+          "id": "cprs-dc-summary",
+          "name": "Discharge Summary",
+          "description": "Free-text discharge summary linked to admission. TIU document type = Discharge Summary.",
+          "vistaFiles": ["TIU DOCUMENT(8925)", "TIU DOCUMENT DEFINITION(8925.1)"],
+          "targetRpcs": ["TIU CREATE RECORD", "TIU SET DOCUMENT TEXT", "TIU SIGN RECORD", "TIU DOCUMENTS BY CONTEXT"],
+          "priority": "p1-high",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/vista/tiu/*",
+            "page": "/cprs",
+            "component": "NotesPanel",
+            "phase": 17
+          },
+          "notes": "Shares TIU infrastructure with notes tab. D/C Summary is a TIU document class."
+        },
+        {
+          "id": "cprs-patient-postings",
+          "name": "Patient Postings / Flags",
+          "description": "Crisis notes, clinical warnings, advance directives displayed as banner bar items in CPRS.",
+          "vistaFiles": ["TIU DOCUMENT(8925)", "PATIENT(2)"],
+          "targetRpcs": ["ORWPT PTINQ", "TIU GET PERSONAL PREFERENCES", "ORQQPP LIST"],
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "notes": "Patient postings display crisis notes and advance directives in CPRS header bar."
+        },
+        {
+          "id": "cprs-flagged-patients",
+          "name": "Flagged Patient List",
+          "description": "Provider tool to view patients flagged for behavioral, missing, or identity alerts.",
+          "vistaFiles": ["PATIENT(2)", "DGPF ASSIGNMENT(26.13)"],
+          "targetRpcs": ["DGPF IS FLAG ACTIVE", "DGPF GET FLAG DETAIL"],
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "notes": "Patient record flag display in CPRS selection list + cover sheet."
+        },
+        {
+          "id": "cprs-notifications",
+          "name": "Notifications / Alerts",
+          "description": "Inbox-style alerts for lab results, order flags, consult results, imaging results requiring action.",
+          "vistaFiles": ["OE/RR NOTIFICATIONS(100.9)", "ALERT(8992)"],
+          "targetRpcs": ["ORWORB FASTUSER", "ORB SORT METHOD", "ORWORB GETDATA"],
+          "priority": "p1-high",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/vista/notifications",
+            "page": "/cprs",
+            "component": "InboxPanel",
+            "phase": 16
+          },
+          "notes": "Inbox panel in Phase 16. ORWORB RPCs available but not yet wired to VistA notifications."
+        }
+      ]
+    },
+    {
+      "id": "clinical-procedures",
+      "name": "Clinical Procedures (CP/MD)",
+      "category": "clinical",
+      "description": "Gateway for device-acquired clinical data (EKG, spirometry, holter, sleep studies). Acquires data from devices, associates with patient/order, stores in VistA.",
+      "vistaNamespace": "MD",
+      "surfaces": [
+        {
+          "id": "cp-acquisition",
+          "name": "Data Acquisition",
+          "description": "Acquire clinical data from medical devices (EKG machines, spirometers, holter recorders).",
+          "vistaFiles": ["CP DEFINITION(702.01)", "CP INSTRUMENT(702.09)"],
+          "targetRpcs": ["MD RECEIVE DATA", "MD GET STATUS"],
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "notes": "Target for Phase 537 (P7: Clinical Procedures v1)."
+        },
+        {
+          "id": "cp-worklist",
+          "name": "Procedure Worklist",
+          "description": "List of pending procedures to be performed. Organized by clinic, date, instrument.",
+          "vistaFiles": ["CP DEFINITION(702.01)"],
+          "targetRpcs": ["MD GET WORKLIST"],
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "cp-results-review",
+          "name": "Results Review & Interpretation",
+          "description": "Review acquired EKG tracings, PFT results. Add clinician interpretation.",
+          "vistaFiles": ["CP DEFINITION(702.01)", "TIU DOCUMENT(8925)"],
+          "targetRpcs": ["MD GET DATA", "TIU CREATE RECORD"],
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "cp-instrument-config",
+          "name": "Instrument Configuration",
+          "description": "Configure device connections, data formats, and mapping to VistA procedures.",
+          "vistaFiles": ["CP INSTRUMENT(702.09)"],
+          "targetRpcs": ["MD GET INSTRUMENT LIST"],
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "jlv",
+      "name": "JLV (Joint Longitudinal Viewer)",
+      "category": "reporting",
+      "description": "Cross-facility, cross-agency (VA+DoD) longitudinal patient record viewer. Read-only. Shows data from VistA, CHCS, MHS Genesis, community care.",
+      "vistaNamespace": "OR",
+      "surfaces": [
+        {
+          "id": "jlv-timeline",
+          "name": "Clinical Timeline",
+          "description": "Chronological view of all clinical events across facilities.",
+          "vistaFiles": [],
+          "targetRpcs": ["ORWRP REPORT TEXT", "ORWPT SELECT"],
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "notes": "Target for Phase 540 (P10: JLV Longitudinal Viewer). CPRS remote-data-viewer page exists."
+        },
+        {
+          "id": "jlv-documents",
+          "name": "Cross-Facility Documents",
+          "description": "View clinical documents from remote VA facilities and DoD.",
+          "vistaFiles": ["TIU DOCUMENT(8925)"],
+          "targetRpcs": ["ORWRP REPORT TEXT", "TIU GET RECORD TEXT"],
+          "priority": "p1-high",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "page": "/cprs/remote-data-viewer",
+            "phase": 14
+          }
+        },
+        {
+          "id": "jlv-meds-summary",
+          "name": "Longitudinal Medication Summary",
+          "description": "Unified medication list across all facilities and pharmacies.",
+          "vistaFiles": ["PRESCRIPTION(52)", "PHARMACY PATIENT(55)"],
+          "targetRpcs": ["ORWPS ACTIVE"],
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "jlv-labs-aggregate",
+          "name": "Aggregated Lab Results",
+          "description": "Combined lab results from all facilities with trend graphing.",
+          "vistaFiles": ["LAB DATA(63)"],
+          "targetRpcs": ["ORWLR RESULTS"],
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "jlv-community-care",
+          "name": "Community Care Records",
+          "description": "View records from non-VA community care providers via FHIR/C-CDA.",
+          "vistaFiles": [],
+          "targetRpcs": [],
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": false,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/fhir/*",
+            "phase": 178
+          }
+        }
+      ]
+    },
+    {
+      "id": "vistaweb",
+      "name": "VistAWeb",
+      "category": "reporting",
+      "description": "Web-based read-only clinical viewer. Lighter-weight alternative to CPRS for remote data access.",
+      "vistaNamespace": "OR",
+      "surfaces": [
+        {
+          "id": "vistaweb-patient-summary",
+          "name": "Patient Summary View",
+          "description": "Read-only patient summary accessible from any browser.",
+          "vistaFiles": ["PATIENT(2)"],
+          "targetRpcs": ["ORWPT SELECT", "ORQQPL LIST", "ORQQAL LIST"],
+          "priority": "p2-medium",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "page": "/cprs/chart/[dfn]/cover",
+            "phase": 11
+          },
+          "notes": "VistA-Evolved subsumes VistAWeb entirely via the web CPRS UI."
+        },
+        {
+          "id": "vistaweb-remote-data",
+          "name": "Remote Data Access",
+          "description": "View clinical data from other VA facilities via VistaLink/HDR.",
+          "vistaFiles": [],
+          "targetRpcs": ["ORWCIRN LIST", "XWB REMOTE RPC"],
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "page": "/cprs/remote-data-viewer",
+            "phase": 14
+          }
+        }
+      ]
+    },
+    {
+      "id": "cdsp",
+      "name": "CDSP (Clinical Decision Support Platform)",
+      "category": "clinical",
+      "description": "VA's clinical decision support engine. Delivers evidence-based alerts, reminders, and order checks.",
+      "vistaNamespace": "OR",
+      "surfaces": [
+        {
+          "id": "cdsp-order-checks",
+          "name": "Order Checks",
+          "description": "Drug-drug, drug-allergy, duplicate order checks during CPOE.",
+          "vistaFiles": ["ORDER CHECK(100.05)"],
+          "targetRpcs": ["ORWDXC ACCEPT", "ORWDXC SAVECHK"],
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/cprs/orders-cpoe/*",
+            "phase": 434
+          },
+          "notes": "Order check enhancement scaffolded in Phase 434."
+        },
+        {
+          "id": "cdsp-clinical-reminders",
+          "name": "Clinical Reminders",
+          "description": "Preventive care reminders (screenings, immunizations, follow-ups).",
+          "vistaFiles": ["CLINICAL REMINDER(811.9)"],
+          "targetRpcs": ["ORQQPX REMINDER LIST", "PXRM REMINDERS LIST"],
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "ciss",
+      "name": "CISS (Clinical Information Support System)",
+      "category": "reporting",
+      "description": "Clinical information support and reporting system. Provides dashboards and population health views.",
+      "vistaNamespace": "OR",
+      "surfaces": [
+        {
+          "id": "ciss-population-dashboard",
+          "name": "Population Health Dashboard",
+          "description": "Aggregate views of clinical quality measures across patient populations.",
+          "vistaFiles": [],
+          "targetRpcs": [],
+          "priority": "p3-low",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/analytics/*",
+            "page": "/cprs/admin/analytics",
+            "phase": 25
+          }
+        }
+      ]
+    },
+    {
+      "id": "va-direct",
+      "name": "VA Direct Messaging",
+      "category": "clinical",
+      "description": "Secure health information exchange using Direct protocol (S/MIME + XDR).",
+      "vistaNamespace": "XM",
+      "surfaces": [
+        {
+          "id": "direct-secure-messaging",
+          "name": "Direct Secure Messaging",
+          "description": "Send/receive encrypted clinical messages to external providers via Direct addresses.",
+          "vistaFiles": ["MAILMAN(3.9)"],
+          "targetRpcs": ["XM SEND", "XMXAPIB LIST"],
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/mailman",
+            "page": "/cprs/messages",
+            "phase": 130
+          }
+        }
+      ]
+    },
+    {
+      "id": "esig",
+      "name": "E-Signature Service",
+      "category": "infrastructure",
+      "description": "Electronic signature verification for order signing, note signing, and co-signing.",
+      "vistaNamespace": "OR",
+      "surfaces": [
+        {
+          "id": "esig-order-sign",
+          "name": "Order Electronic Signature",
+          "description": "Sign orders with electronic signature code. Required for all CPOE actions.",
+          "vistaFiles": ["ORDER(100)"],
+          "targetRpcs": ["ORWOR1 SIG", "ORWDX SEND"],
+          "priority": "p0-critical",
+          "migrationStatus": "writeback",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": true,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/cprs/orders-cpoe/*",
+            "page": "/cprs/chart/[dfn]/orders",
+            "component": "OrdersPanel",
+            "phase": 154
+          }
+        },
+        {
+          "id": "esig-note-sign",
+          "name": "Note Electronic Signature",
+          "description": "Sign TIU notes and addenda.",
+          "vistaFiles": ["TIU DOCUMENT(8925)"],
+          "targetRpcs": ["TIU SIGN RECORD"],
+          "priority": "p0-critical",
+          "migrationStatus": "writeback",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": true,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/cprs/tiu-notes/*",
+            "phase": 60
+          }
+        }
+      ]
+    },
+    {
+      "id": "hinge",
+      "name": "HINGE (Health Information National Gateway Exchange)",
+      "category": "infrastructure",
+      "description": "National health information exchange gateway for VA. Connects to eHealth Exchange, Carequality, CommonWell.",
+      "vistaNamespace": "HLO",
+      "surfaces": [
+        {
+          "id": "hinge-query",
+          "name": "Patient Discovery / Query",
+          "description": "Find patient records across national HIE networks.",
+          "vistaFiles": [],
+          "targetRpcs": [],
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": false,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/interop-gateway/*",
+            "phase": 400
+          }
+        },
+        {
+          "id": "hinge-document-retrieve",
+          "name": "Document Retrieve",
+          "description": "Retrieve C-CDA documents from external HIEs.",
+          "vistaFiles": [],
+          "targetRpcs": [],
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": false,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/document-exchange/*",
+            "phase": 403
+          }
+        }
+      ]
+    },
+    {
+      "id": "hwsc",
+      "name": "HWSC (Health Web Services Client)",
+      "category": "infrastructure",
+      "description": "RESTful web services client for VA. FHIR client, HL7v2 gateway, API management.",
+      "vistaNamespace": "XOB",
+      "surfaces": [
+        {
+          "id": "hwsc-fhir-gateway",
+          "name": "FHIR R4 Gateway",
+          "description": "SMART on FHIR R4 endpoint exposing VistA data as FHIR resources.",
+          "vistaFiles": [],
+          "targetRpcs": [],
+          "priority": "p1-high",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": false,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/fhir/*",
+            "phase": 178
+          },
+          "notes": "FHIR R4 gateway scaffolded in Phase 178. SMART-on-FHIR in Phase 195."
+        }
+      ]
+    },
+    {
+      "id": "lighthouse",
+      "name": "VA Lighthouse (API Platform)",
+      "category": "infrastructure",
+      "description": "VA's public-facing API platform. Provides OAuth2-protected FHIR APIs for third-party apps.",
+      "vistaNamespace": "XOB",
+      "surfaces": [
+        {
+          "id": "lighthouse-health-api",
+          "name": "Health API (Patient-facing)",
+          "description": "Patient-authorized access to their health data (Blue Button equivalent).",
+          "vistaFiles": [],
+          "targetRpcs": [],
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/portal/*",
+            "page": "/dashboard/records",
+            "phase": 27
+          }
+        },
+        {
+          "id": "lighthouse-provider-api",
+          "name": "Provider Directory API",
+          "description": "Provider search and directory services for scheduling and referrals.",
+          "vistaFiles": ["NEW PERSON(200)"],
+          "targetRpcs": [],
+          "priority": "p3-low",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": false,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/provider-directory/*",
+            "phase": 402
+          }
+        }
+      ]
+    },
+    {
+      "id": "ves",
+      "name": "VES (Veteran Enrollment System)",
+      "category": "admin",
+      "description": "Enrollment, eligibility, and means test processing. Determines veteran benefit eligibility.",
+      "vistaNamespace": "DG",
+      "surfaces": [
+        {
+          "id": "ves-enrollment",
+          "name": "Enrollment Processing",
+          "description": "Process new enrollment applications and priority group assignments.",
+          "vistaFiles": ["PATIENT(2)", "ENROLLMENT(27.11)"],
+          "targetRpcs": ["DG ENROLLMENT STATUS"],
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "ves-eligibility",
+          "name": "Eligibility Verification",
+          "description": "Real-time eligibility verification for clinical encounters.",
+          "vistaFiles": ["PATIENT(2)", "ELIGIBILITY CODE(8.1)"],
+          "targetRpcs": ["DG SENSITIVE PATIENT ACCESS", "DG ELIGIBILITY STATUS"],
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "mhv",
+      "name": "MHV (My HealtheVet)",
+      "category": "portal",
+      "description": "Veteran-facing patient portal. Secure messaging, Rx refills, appointment viewing, Blue Button health records.",
+      "vistaNamespace": "MHV",
+      "surfaces": [
+        {
+          "id": "mhv-secure-messaging",
+          "name": "Secure Messaging",
+          "description": "Patient-to-provider asynchronous messaging.",
+          "vistaFiles": ["MAILMAN(3.9)"],
+          "targetRpcs": ["XM SEND"],
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": true,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/portal/mailman/*",
+            "page": "/dashboard/messages",
+            "phase": 130
+          }
+        },
+        {
+          "id": "mhv-rx-refills",
+          "name": "Prescription Refill Requests",
+          "description": "Patients request Rx refills online. Routed to pharmacy.",
+          "vistaFiles": ["PRESCRIPTION(52)"],
+          "targetRpcs": ["ORWPS ACTIVE"],
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/portal/*",
+            "page": "/dashboard/refills",
+            "phase": 32
+          }
+        },
+        {
+          "id": "mhv-appointments",
+          "name": "Appointment View/Request",
+          "description": "View upcoming appointments and request new ones.",
+          "vistaFiles": ["PATIENT APPOINTMENT(2.98)"],
+          "targetRpcs": ["SDES GET APPT BY PATIENT", "SD W/L GET LIST"],
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/scheduling/*",
+            "page": "/dashboard/appointments",
+            "phase": 147
+          }
+        },
+        {
+          "id": "mhv-blue-button",
+          "name": "Blue Button Health Records",
+          "description": "Download complete health record as PDF or C-CDA.",
+          "vistaFiles": [],
+          "targetRpcs": ["ORWRP REPORT TEXT"],
+          "priority": "p1-high",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/portal/documents/*",
+            "page": "/dashboard/records",
+            "phase": 140
+          }
+        }
+      ]
+    },
+    {
+      "id": "voda",
+      "name": "VODA (VistA Object Display Application)",
+      "category": "reporting",
+      "description": "Object-based clinical data display. Provides structured views of VistA data objects.",
+      "vistaNamespace": "OR",
+      "surfaces": [
+        {
+          "id": "voda-object-viewer",
+          "name": "Clinical Object Viewer",
+          "description": "Structured display of clinical data objects (problems, allergies, vitals, etc.).",
+          "vistaFiles": [],
+          "targetRpcs": ["ORWRP REPORT TEXT"],
+          "priority": "p3-low",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "page": "/cprs/chart/[dfn]/cover",
+            "phase": 11
+          },
+          "notes": "VistA-Evolved CPRS replica effectively replaces VODA functionality."
+        }
+      ]
+    },
+    {
+      "id": "numi",
+      "name": "NUMI (Nursing Unit Management Indicators)",
+      "category": "admin",
+      "description": "Nursing workload and staffing indicators. Acuity-based staffing recommendations.",
+      "vistaNamespace": "NURS",
+      "surfaces": [
+        {
+          "id": "numi-staffing",
+          "name": "Nurse Staffing Dashboard",
+          "description": "Unit-level staffing vs acuity display. Nurse-to-patient ratios.",
+          "vistaFiles": ["NURSING ACUITY(213)", "WARD LOCATION(42)"],
+          "targetRpcs": [],
+          "priority": "p3-low",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/vista/nursing/*",
+            "page": "/cprs/nursing",
+            "phase": 68
+          }
+        }
+      ]
+    },
+    {
+      "id": "pats",
+      "name": "PATS (Patient Advocate Tracking System)",
+      "category": "admin",
+      "description": "Track patient complaints, compliments, and congressional inquiries.",
+      "vistaNamespace": "QAC",
+      "surfaces": [
+        {
+          "id": "pats-complaint-tracking",
+          "name": "Complaint/Issue Tracking",
+          "description": "Log and track patient complaints through resolution.",
+          "vistaFiles": ["PATIENT ADVOCATE CONTACT(745)"],
+          "targetRpcs": [],
+          "priority": "p3-low",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "person-services",
+      "name": "Person Services (MPI/PSIM)",
+      "category": "infrastructure",
+      "description": "Master Patient Index and Person Service Identity Management. National patient matching and ICN assignment.",
+      "vistaNamespace": "MPIF",
+      "surfaces": [
+        {
+          "id": "ps-patient-matching",
+          "name": "Patient Identity Matching",
+          "description": "Match patients across facilities using MPI. Assign/verify ICN.",
+          "vistaFiles": ["PATIENT(2)", "MPI(985)"],
+          "targetRpcs": ["MPIF001 LOOKUP", "MPIF001 QUERY"],
+          "priority": "p1-high",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": false,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/mpi/*",
+            "phase": 401
+          }
+        }
+      ]
+    },
+    {
+      "id": "vista-audit",
+      "name": "VistA Audit Solution",
+      "category": "infrastructure",
+      "description": "Audit trail management. Track all user actions in VistA for compliance and security.",
+      "vistaNamespace": "XU",
+      "surfaces": [
+        {
+          "id": "va-audit-viewer",
+          "name": "Audit Trail Viewer",
+          "description": "View and search audit logs for user actions, data access, and changes.",
+          "vistaFiles": ["AUDIT(1.1)"],
+          "targetRpcs": [],
+          "priority": "p1-high",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/audit/*",
+            "page": "/cprs/admin/audit-viewer",
+            "phase": 35
+          }
+        }
+      ]
+    },
+    {
+      "id": "adt",
+      "name": "ADT (Admission/Discharge/Transfer)",
+      "category": "clinical",
+      "description": "Inpatient bed management, census, admission/discharge/transfer processing.",
+      "vistaNamespace": "DG",
+      "surfaces": [
+        {
+          "id": "adt-bedboard",
+          "name": "Bed Board",
+          "description": "Visual bed management showing current census, pending admissions, available beds.",
+          "vistaFiles": ["WARD LOCATION(42)", "BED STATUS(405.1)"],
+          "targetRpcs": ["DG ADT STATUS", "DG BEDBOARD"],
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/adt/*",
+            "page": "/inpatient/bedboard",
+            "phase": 137
+          }
+        },
+        {
+          "id": "adt-census",
+          "name": "Ward Census",
+          "description": "Current inpatient census by ward/team with patient details.",
+          "vistaFiles": ["WARD LOCATION(42)", "PATIENT MOVEMENT(405)"],
+          "targetRpcs": ["ORWPT BYWARD"],
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/adt/*",
+            "page": "/inpatient/census",
+            "phase": 137
+          }
+        },
+        {
+          "id": "adt-admit-discharge",
+          "name": "Admit/Discharge/Transfer Processing",
+          "description": "Process new admissions, discharges, and inter-ward transfers.",
+          "vistaFiles": ["PATIENT MOVEMENT(405)"],
+          "targetRpcs": ["DG ADT ADMIT", "DG ADT DISCHARGE", "DG ADT TRANSFER"],
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/adt/*",
+            "page": "/cprs/inpatient",
+            "phase": 137
+          },
+          "notes": "ADT writeback scaffolded in Phase 431/483."
+        }
+      ]
+    }
+  ]
+}

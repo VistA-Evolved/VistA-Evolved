@@ -1,0 +1,136 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vista-evolved.dev/schemas/ui-estate.schema.json",
+  "title": "UI Estate Catalog",
+  "description": "Machine-readable catalog of VA/IHS desktop GUI surfaces mapped to VistA-Evolved coverage",
+  "type": "object",
+  "required": ["$schema", "agency", "generatedAt", "systems"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "https://vista-evolved.dev/schemas/ui-estate.schema.json"
+    },
+    "agency": {
+      "type": "string",
+      "enum": ["va", "ihs"]
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "systems": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/System" },
+      "minItems": 1
+    }
+  },
+  "definitions": {
+    "System": {
+      "type": "object",
+      "required": ["id", "name", "category", "description", "surfaces"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$",
+          "description": "Kebab-case unique identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable system name"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["clinical", "admin", "imaging", "scheduling", "portal", "reporting", "infrastructure", "pharmacy", "lab", "mental-health"]
+        },
+        "description": {
+          "type": "string"
+        },
+        "vistaNamespace": {
+          "type": "string",
+          "description": "Primary VistA namespace (e.g., PSB for BCMA, MAG for Imaging)"
+        },
+        "surfaces": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Surface" },
+          "minItems": 1
+        }
+      }
+    },
+    "Surface": {
+      "type": "object",
+      "required": ["id", "name", "description", "priority", "migrationStatus", "coverage"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "vistaFiles": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "VistA FileMan file numbers/names referenced"
+        },
+        "targetRpcs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "VistA RPCs needed for this surface"
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["p0-critical", "p1-high", "p2-medium", "p3-low"]
+        },
+        "migrationStatus": {
+          "type": "string",
+          "enum": ["not-started", "scaffold", "api-wired", "writeback", "parity", "certified"]
+        },
+        "coverage": {
+          "$ref": "#/definitions/Coverage"
+        },
+        "veEquivalent": {
+          "$ref": "#/definitions/VeEquivalent"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "Coverage": {
+      "type": "object",
+      "required": ["present_ui", "present_api", "vista_rpc_wired", "writeback_ready", "tests_present", "evidence_present"],
+      "properties": {
+        "present_ui": { "type": "boolean", "description": "UI page/component exists in VistA-Evolved" },
+        "present_api": { "type": "boolean", "description": "API route exists for this surface" },
+        "vista_rpc_wired": { "type": "boolean", "description": "RPC calls wired through rpcBrokerClient" },
+        "writeback_ready": { "type": "boolean", "description": "Write operations are functional" },
+        "tests_present": { "type": "boolean", "description": "E2E or API tests cover this surface" },
+        "evidence_present": { "type": "boolean", "description": "Evidence artifacts exist for verification" }
+      }
+    },
+    "VeEquivalent": {
+      "type": "object",
+      "properties": {
+        "route": {
+          "type": "string",
+          "description": "API route prefix (e.g., /vista/allergies)"
+        },
+        "page": {
+          "type": "string",
+          "description": "Web UI page path (e.g., /cprs/chart/[dfn]/allergies)"
+        },
+        "component": {
+          "type": "string",
+          "description": "React component name (e.g., AllergiesPanel)"
+        },
+        "phase": {
+          "type": ["integer", "string"],
+          "description": "Phase number that implemented this surface"
+        }
+      }
+    }
+  }
+}

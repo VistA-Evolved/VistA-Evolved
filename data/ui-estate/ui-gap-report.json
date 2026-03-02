@@ -1,0 +1,1563 @@
+{
+  "generatedAt": "2026-03-02T11:38:11.390Z",
+  "generatedBy": "scripts/ui-estate/build-ui-estate.mjs",
+  "phase": 531,
+  "totals": {
+    "systems": 28,
+    "surfaces": 103,
+    "covered": 52,
+    "gaps": 51,
+    "coveragePct": 50,
+    "rpcReferencingSurfaces": 87
+  },
+  "byPriority": {
+    "p0-critical": {
+      "total": 37,
+      "covered": 31
+    },
+    "p1-high": {
+      "total": 33,
+      "covered": 11
+    },
+    "p2-medium": {
+      "total": 25,
+      "covered": 7
+    },
+    "p3-low": {
+      "total": 8,
+      "covered": 3
+    }
+  },
+  "byMigrationStatus": {
+    "not-started": 42,
+    "scaffold": 31,
+    "api-wired": 23,
+    "writeback": 7,
+    "parity": 0,
+    "certified": 0
+  },
+  "workspace": {
+    "apiRouteFiles": 370,
+    "apiRoutePrefixes": 487,
+    "webPages": 71,
+    "portalPages": 25,
+    "e2eTests": 44,
+    "capabilities": 160
+  },
+  "systemBreakdown": [
+    {
+      "id": "bcma",
+      "name": "BCMA (Bar Code Medication Administration)",
+      "agency": "va",
+      "category": "pharmacy",
+      "surfaceCount": 5,
+      "coverageAvg": 27,
+      "surfaceDetails": [
+        {
+          "id": "bcma-med-log",
+          "name": "Medication Administration Log",
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coveragePct": 50,
+          "covered": true
+        },
+        {
+          "id": "bcma-virtual-due-list",
+          "name": "Virtual Due List (VDL)",
+          "priority": "p0-critical",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "bcma-med-tab",
+          "name": "Medication Tab (Inpatient)",
+          "priority": "p1-high",
+          "migrationStatus": "api-wired",
+          "coveragePct": 83,
+          "covered": true
+        },
+        {
+          "id": "bcma-scanning",
+          "name": "Barcode Scanning Workflow",
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "bcma-iv-tracking",
+          "name": "IV Bag Tracking",
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        }
+      ]
+    },
+    {
+      "id": "vista-imaging",
+      "name": "VistA Imaging (VI / VIX)",
+      "agency": "va",
+      "category": "imaging",
+      "surfaceCount": 6,
+      "coverageAvg": 47,
+      "surfaceDetails": [
+        {
+          "id": "vi-clinical-display",
+          "name": "Clinical Image Display",
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coveragePct": 67,
+          "covered": true
+        },
+        {
+          "id": "vi-dicom-viewer",
+          "name": "DICOM Viewer (OHIF)",
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coveragePct": 67,
+          "covered": true
+        },
+        {
+          "id": "vi-image-capture",
+          "name": "Image Capture (SIC-equivalent)",
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "vi-worklist",
+          "name": "Imaging Worklist",
+          "priority": "p1-high",
+          "migrationStatus": "scaffold",
+          "coveragePct": 67,
+          "covered": true
+        },
+        {
+          "id": "vi-device-registry",
+          "name": "DICOM Device Registry",
+          "priority": "p2-medium",
+          "migrationStatus": "api-wired",
+          "coveragePct": 83,
+          "covered": true
+        },
+        {
+          "id": "vi-teleradiology",
+          "name": "Teleradiology (VIX)",
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        }
+      ]
+    },
+    {
+      "id": "ivs-sic",
+      "name": "IVS / SIC (Imaging Viewing Solution / Scanned Image Capture)",
+      "agency": "va",
+      "category": "imaging",
+      "surfaceCount": 3,
+      "coverageAvg": 0,
+      "surfaceDetails": [
+        {
+          "id": "ivs-document-scan",
+          "name": "Document Scanning",
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "ivs-photo-capture",
+          "name": "Clinical Photo Capture",
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "ivs-batch-import",
+          "name": "Batch Document Import",
+          "priority": "p3-low",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        }
+      ]
+    },
+    {
+      "id": "mha",
+      "name": "MHA (Mental Health Assistant)",
+      "agency": "va",
+      "category": "mental-health",
+      "surfaceCount": 8,
+      "coverageAvg": 0,
+      "surfaceDetails": [
+        {
+          "id": "mha-instrument-admin",
+          "name": "Instrument Administration",
+          "priority": "p0-critical",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "mha-phq9",
+          "name": "PHQ-9 Depression Screen",
+          "priority": "p0-critical",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "mha-gad7",
+          "name": "GAD-7 Anxiety Screen",
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "mha-pcl5",
+          "name": "PCL-5 PTSD Screen",
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "mha-cssrs",
+          "name": "Columbia Suicide Severity Rating",
+          "priority": "p0-critical",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "mha-audit-c",
+          "name": "AUDIT-C Alcohol Screen",
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "mha-results-history",
+          "name": "Instrument Results History",
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "mha-tiu-writeback",
+          "name": "MHA to TIU Note Writeback",
+          "priority": "p0-critical",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        }
+      ]
+    },
+    {
+      "id": "vse-vs-gui",
+      "name": "VSE / VS GUI (VistA Scheduling Enhancement)",
+      "agency": "va",
+      "category": "scheduling",
+      "surfaceCount": 6,
+      "coverageAvg": 36,
+      "surfaceDetails": [
+        {
+          "id": "vse-appointment-book",
+          "name": "Appointment Book / Grid View",
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coveragePct": 83,
+          "covered": true
+        },
+        {
+          "id": "vse-check-in",
+          "name": "Patient Check-In",
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coveragePct": 50,
+          "covered": true
+        },
+        {
+          "id": "vse-recall-reminder",
+          "name": "Recall/Reminder Management",
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "vse-wait-list",
+          "name": "Wait List Management",
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "vse-clinic-setup",
+          "name": "Clinic Profile Setup",
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coveragePct": 50,
+          "covered": true
+        },
+        {
+          "id": "vse-resource-view",
+          "name": "Resource/Provider View",
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coveragePct": 33,
+          "covered": false
+        }
+      ]
+    },
+    {
+      "id": "cprs",
+      "name": "CPRS (Computerized Patient Record System)",
+      "agency": "va",
+      "category": "clinical",
+      "surfaceCount": 17,
+      "coverageAvg": 73,
+      "surfaceDetails": [
+        {
+          "id": "cprs-cover-sheet",
+          "name": "Cover Sheet",
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coveragePct": 100,
+          "covered": true
+        },
+        {
+          "id": "cprs-problems",
+          "name": "Problem List",
+          "priority": "p0-critical",
+          "migrationStatus": "writeback",
+          "coveragePct": 100,
+          "covered": true
+        },
+        {
+          "id": "cprs-allergies",
+          "name": "Allergies",
+          "priority": "p0-critical",
+          "migrationStatus": "writeback",
+          "coveragePct": 100,
+          "covered": true
+        },
+        {
+          "id": "cprs-vitals",
+          "name": "Vitals",
+          "priority": "p0-critical",
+          "migrationStatus": "writeback",
+          "coveragePct": 100,
+          "covered": true
+        },
+        {
+          "id": "cprs-notes",
+          "name": "TIU Notes",
+          "priority": "p0-critical",
+          "migrationStatus": "writeback",
+          "coveragePct": 100,
+          "covered": true
+        },
+        {
+          "id": "cprs-orders",
+          "name": "Orders (CPOE)",
+          "priority": "p0-critical",
+          "migrationStatus": "writeback",
+          "coveragePct": 100,
+          "covered": true
+        },
+        {
+          "id": "cprs-consults",
+          "name": "Consults",
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coveragePct": 83,
+          "covered": true
+        },
+        {
+          "id": "cprs-labs",
+          "name": "Lab Results",
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coveragePct": 83,
+          "covered": true
+        },
+        {
+          "id": "cprs-reports",
+          "name": "Reports",
+          "priority": "p1-high",
+          "migrationStatus": "api-wired",
+          "coveragePct": 83,
+          "covered": true
+        },
+        {
+          "id": "cprs-surgery",
+          "name": "Surgery",
+          "priority": "p1-high",
+          "migrationStatus": "api-wired",
+          "coveragePct": 67,
+          "covered": true
+        },
+        {
+          "id": "cprs-inbox",
+          "name": "Notifications / Inbox",
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coveragePct": 83,
+          "covered": true
+        },
+        {
+          "id": "cprs-patient-search",
+          "name": "Patient Selection / Search",
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coveragePct": 83,
+          "covered": true
+        },
+        {
+          "id": "cprs-meds",
+          "name": "Medications Tab",
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coveragePct": 83,
+          "covered": true
+        },
+        {
+          "id": "cprs-dc-summary",
+          "name": "Discharge Summary",
+          "priority": "p1-high",
+          "migrationStatus": "scaffold",
+          "coveragePct": 50,
+          "covered": true
+        },
+        {
+          "id": "cprs-patient-postings",
+          "name": "Patient Postings / Flags",
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "cprs-flagged-patients",
+          "name": "Flagged Patient List",
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "cprs-notifications",
+          "name": "Notifications / Alerts",
+          "priority": "p1-high",
+          "migrationStatus": "scaffold",
+          "coveragePct": 33,
+          "covered": true
+        }
+      ]
+    },
+    {
+      "id": "clinical-procedures",
+      "name": "Clinical Procedures (CP/MD)",
+      "agency": "va",
+      "category": "clinical",
+      "surfaceCount": 4,
+      "coverageAvg": 0,
+      "surfaceDetails": [
+        {
+          "id": "cp-acquisition",
+          "name": "Data Acquisition",
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "cp-worklist",
+          "name": "Procedure Worklist",
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "cp-results-review",
+          "name": "Results Review & Interpretation",
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "cp-instrument-config",
+          "name": "Instrument Configuration",
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        }
+      ]
+    },
+    {
+      "id": "jlv",
+      "name": "JLV (Joint Longitudinal Viewer)",
+      "agency": "va",
+      "category": "reporting",
+      "surfaceCount": 5,
+      "coverageAvg": 7,
+      "surfaceDetails": [
+        {
+          "id": "jlv-timeline",
+          "name": "Clinical Timeline",
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "jlv-documents",
+          "name": "Cross-Facility Documents",
+          "priority": "p1-high",
+          "migrationStatus": "scaffold",
+          "coveragePct": 17,
+          "covered": false
+        },
+        {
+          "id": "jlv-meds-summary",
+          "name": "Longitudinal Medication Summary",
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "jlv-labs-aggregate",
+          "name": "Aggregated Lab Results",
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "jlv-community-care",
+          "name": "Community Care Records",
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coveragePct": 17,
+          "covered": false
+        }
+      ]
+    },
+    {
+      "id": "vistaweb",
+      "name": "VistAWeb",
+      "agency": "va",
+      "category": "reporting",
+      "surfaceCount": 2,
+      "coverageAvg": 50,
+      "surfaceDetails": [
+        {
+          "id": "vistaweb-patient-summary",
+          "name": "Patient Summary View",
+          "priority": "p2-medium",
+          "migrationStatus": "api-wired",
+          "coveragePct": 83,
+          "covered": true
+        },
+        {
+          "id": "vistaweb-remote-data",
+          "name": "Remote Data Access",
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coveragePct": 17,
+          "covered": false
+        }
+      ]
+    },
+    {
+      "id": "cdsp",
+      "name": "CDSP (Clinical Decision Support Platform)",
+      "agency": "va",
+      "category": "clinical",
+      "surfaceCount": 2,
+      "coverageAvg": 25,
+      "surfaceDetails": [
+        {
+          "id": "cdsp-order-checks",
+          "name": "Order Checks",
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coveragePct": 50,
+          "covered": true
+        },
+        {
+          "id": "cdsp-clinical-reminders",
+          "name": "Clinical Reminders",
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        }
+      ]
+    },
+    {
+      "id": "ciss",
+      "name": "CISS (Clinical Information Support System)",
+      "agency": "va",
+      "category": "reporting",
+      "surfaceCount": 1,
+      "coverageAvg": 33,
+      "surfaceDetails": [
+        {
+          "id": "ciss-population-dashboard",
+          "name": "Population Health Dashboard",
+          "priority": "p3-low",
+          "migrationStatus": "scaffold",
+          "coveragePct": 33,
+          "covered": true
+        }
+      ]
+    },
+    {
+      "id": "va-direct",
+      "name": "VA Direct Messaging",
+      "agency": "va",
+      "category": "clinical",
+      "surfaceCount": 1,
+      "coverageAvg": 83,
+      "surfaceDetails": [
+        {
+          "id": "direct-secure-messaging",
+          "name": "Direct Secure Messaging",
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coveragePct": 83,
+          "covered": true
+        }
+      ]
+    },
+    {
+      "id": "esig",
+      "name": "E-Signature Service",
+      "agency": "va",
+      "category": "infrastructure",
+      "surfaceCount": 2,
+      "coverageAvg": 100,
+      "surfaceDetails": [
+        {
+          "id": "esig-order-sign",
+          "name": "Order Electronic Signature",
+          "priority": "p0-critical",
+          "migrationStatus": "writeback",
+          "coveragePct": 100,
+          "covered": true
+        },
+        {
+          "id": "esig-note-sign",
+          "name": "Note Electronic Signature",
+          "priority": "p0-critical",
+          "migrationStatus": "writeback",
+          "coveragePct": 100,
+          "covered": true
+        }
+      ]
+    },
+    {
+      "id": "hinge",
+      "name": "HINGE (Health Information National Gateway Exchange)",
+      "agency": "va",
+      "category": "infrastructure",
+      "surfaceCount": 2,
+      "coverageAvg": 17,
+      "surfaceDetails": [
+        {
+          "id": "hinge-query",
+          "name": "Patient Discovery / Query",
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coveragePct": 17,
+          "covered": false
+        },
+        {
+          "id": "hinge-document-retrieve",
+          "name": "Document Retrieve",
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coveragePct": 17,
+          "covered": false
+        }
+      ]
+    },
+    {
+      "id": "hwsc",
+      "name": "HWSC (Health Web Services Client)",
+      "agency": "va",
+      "category": "infrastructure",
+      "surfaceCount": 1,
+      "coverageAvg": 50,
+      "surfaceDetails": [
+        {
+          "id": "hwsc-fhir-gateway",
+          "name": "FHIR R4 Gateway",
+          "priority": "p1-high",
+          "migrationStatus": "api-wired",
+          "coveragePct": 50,
+          "covered": false
+        }
+      ]
+    },
+    {
+      "id": "lighthouse",
+      "name": "VA Lighthouse (API Platform)",
+      "agency": "va",
+      "category": "infrastructure",
+      "surfaceCount": 2,
+      "coverageAvg": 42,
+      "surfaceDetails": [
+        {
+          "id": "lighthouse-health-api",
+          "name": "Health API (Patient-facing)",
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coveragePct": 67,
+          "covered": true
+        },
+        {
+          "id": "lighthouse-provider-api",
+          "name": "Provider Directory API",
+          "priority": "p3-low",
+          "migrationStatus": "scaffold",
+          "coveragePct": 17,
+          "covered": false
+        }
+      ]
+    },
+    {
+      "id": "ves",
+      "name": "VES (Veteran Enrollment System)",
+      "agency": "va",
+      "category": "admin",
+      "surfaceCount": 2,
+      "coverageAvg": 0,
+      "surfaceDetails": [
+        {
+          "id": "ves-enrollment",
+          "name": "Enrollment Processing",
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "ves-eligibility",
+          "name": "Eligibility Verification",
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        }
+      ]
+    },
+    {
+      "id": "mhv",
+      "name": "MHV (My HealtheVet)",
+      "agency": "va",
+      "category": "portal",
+      "surfaceCount": 4,
+      "coverageAvg": 75,
+      "surfaceDetails": [
+        {
+          "id": "mhv-secure-messaging",
+          "name": "Secure Messaging",
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coveragePct": 100,
+          "covered": true
+        },
+        {
+          "id": "mhv-rx-refills",
+          "name": "Prescription Refill Requests",
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coveragePct": 67,
+          "covered": true
+        },
+        {
+          "id": "mhv-appointments",
+          "name": "Appointment View/Request",
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coveragePct": 83,
+          "covered": true
+        },
+        {
+          "id": "mhv-blue-button",
+          "name": "Blue Button Health Records",
+          "priority": "p1-high",
+          "migrationStatus": "scaffold",
+          "coveragePct": 50,
+          "covered": true
+        }
+      ]
+    },
+    {
+      "id": "voda",
+      "name": "VODA (VistA Object Display Application)",
+      "agency": "va",
+      "category": "reporting",
+      "surfaceCount": 1,
+      "coverageAvg": 83,
+      "surfaceDetails": [
+        {
+          "id": "voda-object-viewer",
+          "name": "Clinical Object Viewer",
+          "priority": "p3-low",
+          "migrationStatus": "api-wired",
+          "coveragePct": 83,
+          "covered": true
+        }
+      ]
+    },
+    {
+      "id": "numi",
+      "name": "NUMI (Nursing Unit Management Indicators)",
+      "agency": "va",
+      "category": "admin",
+      "surfaceCount": 1,
+      "coverageAvg": 33,
+      "surfaceDetails": [
+        {
+          "id": "numi-staffing",
+          "name": "Nurse Staffing Dashboard",
+          "priority": "p3-low",
+          "migrationStatus": "scaffold",
+          "coveragePct": 33,
+          "covered": true
+        }
+      ]
+    },
+    {
+      "id": "pats",
+      "name": "PATS (Patient Advocate Tracking System)",
+      "agency": "va",
+      "category": "admin",
+      "surfaceCount": 1,
+      "coverageAvg": 0,
+      "surfaceDetails": [
+        {
+          "id": "pats-complaint-tracking",
+          "name": "Complaint/Issue Tracking",
+          "priority": "p3-low",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        }
+      ]
+    },
+    {
+      "id": "person-services",
+      "name": "Person Services (MPI/PSIM)",
+      "agency": "va",
+      "category": "infrastructure",
+      "surfaceCount": 1,
+      "coverageAvg": 17,
+      "surfaceDetails": [
+        {
+          "id": "ps-patient-matching",
+          "name": "Patient Identity Matching",
+          "priority": "p1-high",
+          "migrationStatus": "scaffold",
+          "coveragePct": 17,
+          "covered": false
+        }
+      ]
+    },
+    {
+      "id": "vista-audit",
+      "name": "VistA Audit Solution",
+      "agency": "va",
+      "category": "infrastructure",
+      "surfaceCount": 1,
+      "coverageAvg": 67,
+      "surfaceDetails": [
+        {
+          "id": "va-audit-viewer",
+          "name": "Audit Trail Viewer",
+          "priority": "p1-high",
+          "migrationStatus": "api-wired",
+          "coveragePct": 67,
+          "covered": true
+        }
+      ]
+    },
+    {
+      "id": "adt",
+      "name": "ADT (Admission/Discharge/Transfer)",
+      "agency": "va",
+      "category": "clinical",
+      "surfaceCount": 3,
+      "coverageAvg": 78,
+      "surfaceDetails": [
+        {
+          "id": "adt-bedboard",
+          "name": "Bed Board",
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coveragePct": 83,
+          "covered": true
+        },
+        {
+          "id": "adt-census",
+          "name": "Ward Census",
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coveragePct": 83,
+          "covered": true
+        },
+        {
+          "id": "adt-admit-discharge",
+          "name": "Admit/Discharge/Transfer Processing",
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coveragePct": 67,
+          "covered": true
+        }
+      ]
+    },
+    {
+      "id": "rpms-ehr",
+      "name": "RPMS EHR + VueCentric",
+      "agency": "ihs",
+      "category": "clinical",
+      "surfaceCount": 10,
+      "coverageAvg": 38,
+      "surfaceDetails": [
+        {
+          "id": "rpms-patient-summary",
+          "name": "Patient Summary (VueCentric)",
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coveragePct": 100,
+          "covered": true
+        },
+        {
+          "id": "rpms-pcc-encounter",
+          "name": "PCC Encounter Form",
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coveragePct": 67,
+          "covered": true
+        },
+        {
+          "id": "rpms-health-maintenance",
+          "name": "Health Maintenance Reminders",
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coveragePct": 50,
+          "covered": true
+        },
+        {
+          "id": "rpms-pharmacy",
+          "name": "Pharmacy (Outpatient)",
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coveragePct": 83,
+          "covered": true
+        },
+        {
+          "id": "rpms-lab",
+          "name": "Lab Results",
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coveragePct": 83,
+          "covered": true
+        },
+        {
+          "id": "rpms-dental",
+          "name": "Dental Record",
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "rpms-optometry",
+          "name": "Optometry/Ophthalmology",
+          "priority": "p3-low",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "rpms-behavioral-health",
+          "name": "Behavioral Health",
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "rpms-womens-health",
+          "name": "Women's Health",
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "rpms-asthma-diabetes",
+          "name": "Chronic Disease Management (Asthma/Diabetes)",
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        }
+      ]
+    },
+    {
+      "id": "icare",
+      "name": "iCare (IHS Clinical Analytics)",
+      "agency": "ihs",
+      "category": "reporting",
+      "surfaceCount": 4,
+      "coverageAvg": 37,
+      "surfaceDetails": [
+        {
+          "id": "icare-gpra-dashboard",
+          "name": "GPRA Performance Dashboard",
+          "priority": "p1-high",
+          "migrationStatus": "scaffold",
+          "coveragePct": 33,
+          "covered": true
+        },
+        {
+          "id": "icare-patient-panel",
+          "name": "Patient Panel Management",
+          "priority": "p1-high",
+          "migrationStatus": "api-wired",
+          "coveragePct": 83,
+          "covered": true
+        },
+        {
+          "id": "icare-population-health",
+          "name": "Population Health Reports",
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coveragePct": 33,
+          "covered": true
+        },
+        {
+          "id": "icare-crs",
+          "name": "Clinical Reporting System (CRS)",
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        }
+      ]
+    },
+    {
+      "id": "bprm",
+      "name": "BPRM v4 (IHS Patient Registration)",
+      "agency": "ihs",
+      "category": "admin",
+      "surfaceCount": 3,
+      "coverageAvg": 28,
+      "surfaceDetails": [
+        {
+          "id": "bprm-registration",
+          "name": "Patient Registration",
+          "priority": "p1-high",
+          "migrationStatus": "scaffold",
+          "coveragePct": 50,
+          "covered": true
+        },
+        {
+          "id": "bprm-eligibility",
+          "name": "IHS Eligibility Verification",
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "bprm-third-party-billing",
+          "name": "Third-Party Billing Data",
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coveragePct": 33,
+          "covered": true
+        }
+      ]
+    },
+    {
+      "id": "bsdx-pims",
+      "name": "BSDX / PIMS (IHS Scheduling)",
+      "agency": "ihs",
+      "category": "scheduling",
+      "surfaceCount": 5,
+      "coverageAvg": 10,
+      "surfaceDetails": [
+        {
+          "id": "bsdx-appointment-grid",
+          "name": "Appointment Grid",
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coveragePct": 50,
+          "covered": true
+        },
+        {
+          "id": "bsdx-check-in",
+          "name": "Patient Check-In",
+          "priority": "p0-critical",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "bsdx-resource-setup",
+          "name": "Resource/Clinic Setup",
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "bsdx-wait-list",
+          "name": "Wait List",
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        },
+        {
+          "id": "bsdx-reports",
+          "name": "Scheduling Reports",
+          "priority": "p3-low",
+          "migrationStatus": "not-started",
+          "coveragePct": 0,
+          "covered": false
+        }
+      ]
+    }
+  ],
+  "gaps": [
+    {
+      "system": "bcma",
+      "surface": "bcma-virtual-due-list",
+      "name": "Virtual Due List (VDL)",
+      "priority": "p0-critical",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "mha",
+      "surface": "mha-instrument-admin",
+      "name": "Instrument Administration",
+      "priority": "p0-critical",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "mha",
+      "surface": "mha-phq9",
+      "name": "PHQ-9 Depression Screen",
+      "priority": "p0-critical",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "mha",
+      "surface": "mha-cssrs",
+      "name": "Columbia Suicide Severity Rating",
+      "priority": "p0-critical",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "mha",
+      "surface": "mha-tiu-writeback",
+      "name": "MHA to TIU Note Writeback",
+      "priority": "p0-critical",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "bsdx-pims",
+      "surface": "bsdx-check-in",
+      "name": "Patient Check-In",
+      "priority": "p0-critical",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "bcma",
+      "surface": "bcma-scanning",
+      "name": "Barcode Scanning Workflow",
+      "priority": "p1-high",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "vista-imaging",
+      "surface": "vi-image-capture",
+      "name": "Image Capture (SIC-equivalent)",
+      "priority": "p1-high",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "ivs-sic",
+      "surface": "ivs-document-scan",
+      "name": "Document Scanning",
+      "priority": "p1-high",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "ivs-sic",
+      "surface": "ivs-photo-capture",
+      "name": "Clinical Photo Capture",
+      "priority": "p1-high",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "mha",
+      "surface": "mha-gad7",
+      "name": "GAD-7 Anxiety Screen",
+      "priority": "p1-high",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "mha",
+      "surface": "mha-pcl5",
+      "name": "PCL-5 PTSD Screen",
+      "priority": "p1-high",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "mha",
+      "surface": "mha-audit-c",
+      "name": "AUDIT-C Alcohol Screen",
+      "priority": "p1-high",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "mha",
+      "surface": "mha-results-history",
+      "name": "Instrument Results History",
+      "priority": "p1-high",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "vse-vs-gui",
+      "surface": "vse-wait-list",
+      "name": "Wait List Management",
+      "priority": "p1-high",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "cprs",
+      "surface": "cprs-patient-postings",
+      "name": "Patient Postings / Flags",
+      "priority": "p1-high",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "clinical-procedures",
+      "surface": "cp-acquisition",
+      "name": "Data Acquisition",
+      "priority": "p1-high",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "clinical-procedures",
+      "surface": "cp-worklist",
+      "name": "Procedure Worklist",
+      "priority": "p1-high",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "clinical-procedures",
+      "surface": "cp-results-review",
+      "name": "Results Review & Interpretation",
+      "priority": "p1-high",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "jlv",
+      "surface": "jlv-timeline",
+      "name": "Clinical Timeline",
+      "priority": "p1-high",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "jlv",
+      "surface": "jlv-meds-summary",
+      "name": "Longitudinal Medication Summary",
+      "priority": "p1-high",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "cdsp",
+      "surface": "cdsp-clinical-reminders",
+      "name": "Clinical Reminders",
+      "priority": "p1-high",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "ves",
+      "surface": "ves-eligibility",
+      "name": "Eligibility Verification",
+      "priority": "p1-high",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "rpms-ehr",
+      "surface": "rpms-behavioral-health",
+      "name": "Behavioral Health",
+      "priority": "p1-high",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "bprm",
+      "surface": "bprm-eligibility",
+      "name": "IHS Eligibility Verification",
+      "priority": "p1-high",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "jlv",
+      "surface": "jlv-documents",
+      "name": "Cross-Facility Documents",
+      "priority": "p1-high",
+      "migrationStatus": "scaffold",
+      "coveragePct": 17
+    },
+    {
+      "system": "person-services",
+      "surface": "ps-patient-matching",
+      "name": "Patient Identity Matching",
+      "priority": "p1-high",
+      "migrationStatus": "scaffold",
+      "coveragePct": 17
+    },
+    {
+      "system": "hwsc",
+      "surface": "hwsc-fhir-gateway",
+      "name": "FHIR R4 Gateway",
+      "priority": "p1-high",
+      "migrationStatus": "api-wired",
+      "coveragePct": 50
+    },
+    {
+      "system": "bcma",
+      "surface": "bcma-iv-tracking",
+      "name": "IV Bag Tracking",
+      "priority": "p2-medium",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "vista-imaging",
+      "surface": "vi-teleradiology",
+      "name": "Teleradiology (VIX)",
+      "priority": "p2-medium",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "vse-vs-gui",
+      "surface": "vse-recall-reminder",
+      "name": "Recall/Reminder Management",
+      "priority": "p2-medium",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "cprs",
+      "surface": "cprs-flagged-patients",
+      "name": "Flagged Patient List",
+      "priority": "p2-medium",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "clinical-procedures",
+      "surface": "cp-instrument-config",
+      "name": "Instrument Configuration",
+      "priority": "p2-medium",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "jlv",
+      "surface": "jlv-labs-aggregate",
+      "name": "Aggregated Lab Results",
+      "priority": "p2-medium",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "ves",
+      "surface": "ves-enrollment",
+      "name": "Enrollment Processing",
+      "priority": "p2-medium",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "rpms-ehr",
+      "surface": "rpms-dental",
+      "name": "Dental Record",
+      "priority": "p2-medium",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "rpms-ehr",
+      "surface": "rpms-womens-health",
+      "name": "Women's Health",
+      "priority": "p2-medium",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "rpms-ehr",
+      "surface": "rpms-asthma-diabetes",
+      "name": "Chronic Disease Management (Asthma/Diabetes)",
+      "priority": "p2-medium",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "icare",
+      "surface": "icare-crs",
+      "name": "Clinical Reporting System (CRS)",
+      "priority": "p2-medium",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "bsdx-pims",
+      "surface": "bsdx-resource-setup",
+      "name": "Resource/Clinic Setup",
+      "priority": "p2-medium",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "bsdx-pims",
+      "surface": "bsdx-wait-list",
+      "name": "Wait List",
+      "priority": "p2-medium",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "jlv",
+      "surface": "jlv-community-care",
+      "name": "Community Care Records",
+      "priority": "p2-medium",
+      "migrationStatus": "scaffold",
+      "coveragePct": 17
+    },
+    {
+      "system": "vistaweb",
+      "surface": "vistaweb-remote-data",
+      "name": "Remote Data Access",
+      "priority": "p2-medium",
+      "migrationStatus": "scaffold",
+      "coveragePct": 17
+    },
+    {
+      "system": "hinge",
+      "surface": "hinge-query",
+      "name": "Patient Discovery / Query",
+      "priority": "p2-medium",
+      "migrationStatus": "scaffold",
+      "coveragePct": 17
+    },
+    {
+      "system": "hinge",
+      "surface": "hinge-document-retrieve",
+      "name": "Document Retrieve",
+      "priority": "p2-medium",
+      "migrationStatus": "scaffold",
+      "coveragePct": 17
+    },
+    {
+      "system": "vse-vs-gui",
+      "surface": "vse-resource-view",
+      "name": "Resource/Provider View",
+      "priority": "p2-medium",
+      "migrationStatus": "scaffold",
+      "coveragePct": 33
+    },
+    {
+      "system": "ivs-sic",
+      "surface": "ivs-batch-import",
+      "name": "Batch Document Import",
+      "priority": "p3-low",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "pats",
+      "surface": "pats-complaint-tracking",
+      "name": "Complaint/Issue Tracking",
+      "priority": "p3-low",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "rpms-ehr",
+      "surface": "rpms-optometry",
+      "name": "Optometry/Ophthalmology",
+      "priority": "p3-low",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "bsdx-pims",
+      "surface": "bsdx-reports",
+      "name": "Scheduling Reports",
+      "priority": "p3-low",
+      "migrationStatus": "not-started",
+      "coveragePct": 0
+    },
+    {
+      "system": "lighthouse",
+      "surface": "lighthouse-provider-api",
+      "name": "Provider Directory API",
+      "priority": "p3-low",
+      "migrationStatus": "scaffold",
+      "coveragePct": 17
+    }
+  ]
+}

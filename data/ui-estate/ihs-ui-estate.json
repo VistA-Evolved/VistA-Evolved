@@ -1,0 +1,481 @@
+{
+  "$schema": "https://vista-evolved.dev/schemas/ui-estate.schema.json",
+  "agency": "ihs",
+  "generatedAt": "2026-03-02T00:00:00Z",
+  "systems": [
+    {
+      "id": "rpms-ehr",
+      "name": "RPMS EHR + VueCentric",
+      "category": "clinical",
+      "description": "IHS Resource and Patient Management System electronic health record. VueCentric is the Delphi-based GUI client (analogous to CPRS). Shares VistA-M kernel but diverges in clinical packages (BJPC, BPXRM, etc.).",
+      "vistaNamespace": "BI",
+      "surfaces": [
+        {
+          "id": "rpms-patient-summary",
+          "name": "Patient Summary (VueCentric)",
+          "description": "Cover sheet equivalent showing active problems, meds, allergies, vitals, health maintenance. IHS-specific fields: tribal affiliation, community/village.",
+          "vistaFiles": ["PATIENT(2)", "PROBLEM(9000011)", "V PATIENT ED(9000010.02)"],
+          "targetRpcs": ["ORQQPL LIST", "ORQQAL LIST", "ORWPS ACTIVE", "BEHOENCX GET PROBLEM LIST"],
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": true,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/*",
+            "page": "/cprs/chart/[dfn]/cover",
+            "component": "CoverSheetPanel",
+            "phase": 11
+          },
+          "notes": "VistA-Evolved cover sheet covers core RPMS patient summary. IHS-specific fields (tribal, community) need extension."
+        },
+        {
+          "id": "rpms-pcc-encounter",
+          "name": "PCC Encounter Form",
+          "description": "Patient Care Component encounter documentation. Multi-purpose visit form capturing diagnoses (ICD-10), procedures (CPT), providers, measurements. Foundational to IHS clinical data.",
+          "vistaFiles": ["VISIT(9000010)", "V POV(9000010.07)", "V CPT(9000010.18)", "V PROVIDER(9000010.06)"],
+          "targetRpcs": ["ORWPCE PCE4NOTE", "ORWPCE SAVE"],
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/vista/notes",
+            "page": "/encounter/note-builder",
+            "phase": 12
+          },
+          "notes": "PCE encounter is analogous to CPRS encounter but with IHS-specific V-files (9000010.xx)."
+        },
+        {
+          "id": "rpms-health-maintenance",
+          "name": "Health Maintenance Reminders",
+          "description": "IHS health maintenance tracking. Immunizations, screenings, preventive care based on IHS Clinical Reporting System (CRS) definitions.",
+          "vistaFiles": ["IMMUNIZATION(9000010.11)", "HEALTH FACTOR(9000010.23)"],
+          "targetRpcs": ["BPXRM REMINDERS", "BPXRM GET REMINDERS"],
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/immunizations/*",
+            "page": "/dashboard/immunizations",
+            "phase": 65
+          },
+          "notes": "Immunizations module covers part of health maintenance. BPXRM reminders not wired."
+        },
+        {
+          "id": "rpms-pharmacy",
+          "name": "Pharmacy (Outpatient)",
+          "description": "Outpatient pharmacy dispensing, refill processing, drug utilization review. IHS uses same PSO namespace but different formulary management.",
+          "vistaFiles": ["PRESCRIPTION(52)", "DRUG(50)"],
+          "targetRpcs": ["ORWPS ACTIVE", "PSO RXDISP"],
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/medications",
+            "page": "/cprs/chart/[dfn]/meds",
+            "phase": 8
+          }
+        },
+        {
+          "id": "rpms-lab",
+          "name": "Lab Results",
+          "description": "Lab ordering and results display. Same VistA Lab package plus IHS CDC GPRA reporting integration.",
+          "vistaFiles": ["LAB DATA(63)", "ACCESSION(68)"],
+          "targetRpcs": ["ORWLR RESULTS", "ORWLR CUMULATIVE REPORT"],
+          "priority": "p0-critical",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/labs",
+            "page": "/cprs/chart/[dfn]/labs",
+            "phase": 12
+          }
+        },
+        {
+          "id": "rpms-dental",
+          "name": "Dental Record",
+          "description": "IHS dental charting, treatment planning, and procedure documentation. Uses DENT namespace unique to IHS.",
+          "vistaFiles": ["DENTAL TREATMENT(220)", "DENTAL PATIENT(220.1)"],
+          "targetRpcs": ["DENT GET CHART", "DENT SAVE PROCEDURE"],
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "notes": "IHS-specific. No VA equivalent. Low priority unless IHS deployment target."
+        },
+        {
+          "id": "rpms-optometry",
+          "name": "Optometry/Ophthalmology",
+          "description": "IHS eye care module. Visual acuity, refraction, eye exam documentation.",
+          "vistaFiles": ["V EXAM(9000010.13)"],
+          "targetRpcs": [],
+          "priority": "p3-low",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "rpms-behavioral-health",
+          "name": "Behavioral Health",
+          "description": "IHS behavioral health documentation. Substance abuse, mental health screening, suicide risk assessment.",
+          "vistaFiles": ["MH TESTS AND SURVEYS(601.71)", "MH RESULTS(601.84)"],
+          "targetRpcs": ["YTT GET INSTRUMENT", "YTT SAVE RESULTS"],
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "notes": "Shares MH namespace with VA MHA. Phase 535 (MHA v1) covers core instrument engine."
+        },
+        {
+          "id": "rpms-womens-health",
+          "name": "Women's Health",
+          "description": "IHS women's health tracking. Prenatal, postpartum, family planning, pap smear tracking.",
+          "vistaFiles": ["WH PATIENT DATA(9000017)", "WH NOTIFICATION(9000017.1)"],
+          "targetRpcs": ["BWHR GET PATIENT DATA"],
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "rpms-asthma-diabetes",
+          "name": "Chronic Disease Management (Asthma/Diabetes)",
+          "description": "IHS chronic disease registries. Diabetes audit, asthma action plans, cardiovascular risk tracking.",
+          "vistaFiles": ["DM AUDIT(9002000)", "ASTHMA PATIENT(9002050)"],
+          "targetRpcs": ["BDMA AUDIT", "BDMA PATIENT DATA"],
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "icare",
+      "name": "iCare (IHS Clinical Analytics)",
+      "category": "reporting",
+      "description": "IHS population health analytics and clinical reporting. Aggregates data across IHS facilities for GPRA (Government Performance and Results Act) measures.",
+      "vistaNamespace": "BI",
+      "surfaces": [
+        {
+          "id": "icare-gpra-dashboard",
+          "name": "GPRA Performance Dashboard",
+          "description": "National performance measures tracking. Immunization rates, cancer screening, diabetes control, etc.",
+          "vistaFiles": [],
+          "targetRpcs": [],
+          "priority": "p1-high",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/analytics/*",
+            "page": "/cprs/admin/analytics",
+            "phase": 25
+          },
+          "notes": "Analytics module provides general dashboards. GPRA-specific measures need IHS data definitions."
+        },
+        {
+          "id": "icare-patient-panel",
+          "name": "Patient Panel Management",
+          "description": "Provider empanelment and panel size management. Active patient rosters by provider/clinic.",
+          "vistaFiles": ["PATIENT(2)", "HOSPITAL LOCATION(44)"],
+          "targetRpcs": ["ORWPT LIST ALL", "ORQPT DEFAULT PATIENT LIST"],
+          "priority": "p1-high",
+          "migrationStatus": "api-wired",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": true,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": true
+          },
+          "veEquivalent": {
+            "route": "/vista/default-patient-list",
+            "page": "/cprs/patient-search",
+            "phase": 4
+          }
+        },
+        {
+          "id": "icare-population-health",
+          "name": "Population Health Reports",
+          "description": "Aggregate reports: community health profiles, chronic disease prevalence, screening coverage.",
+          "vistaFiles": [],
+          "targetRpcs": [],
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/reports/*",
+            "page": "/cprs/admin/reports",
+            "phase": 365
+          }
+        },
+        {
+          "id": "icare-crs",
+          "name": "Clinical Reporting System (CRS)",
+          "description": "IHS CRS extracts clinical data for national reporting. Area/national benchmarking.",
+          "vistaFiles": [],
+          "targetRpcs": [],
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "bprm",
+      "name": "BPRM v4 (IHS Patient Registration)",
+      "category": "admin",
+      "description": "IHS patient registration and demographics. Extends VA DG Registration with tribal enrollment, Indian Health Registration, Beneficiary data.",
+      "vistaNamespace": "BPRM",
+      "surfaces": [
+        {
+          "id": "bprm-registration",
+          "name": "Patient Registration",
+          "description": "Register new patients. IHS-specific: tribal enrollment number, Indian Health eligibility, service unit, community of residence.",
+          "vistaFiles": ["PATIENT(2)", "IHS PATIENT(9000001)"],
+          "targetRpcs": ["BPRM GET PATIENT DEMO", "BPRM SAVE PATIENT"],
+          "priority": "p1-high",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/vista/patient-demographics",
+            "page": "/cprs/patient-search",
+            "phase": 4
+          },
+          "notes": "Core demographics via ORWPT. IHS-specific fields (tribal, community) need BPRM RPCs."
+        },
+        {
+          "id": "bprm-eligibility",
+          "name": "IHS Eligibility Verification",
+          "description": "Verify Indian Health eligibility. Check tribal enrollment, CHS (Contract Health Services) eligibility.",
+          "vistaFiles": ["IHS PATIENT(9000001)", "ELIGIBILITY CODE(8.1)"],
+          "targetRpcs": ["BPRM ELIGIBILITY CHECK"],
+          "priority": "p1-high",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "bprm-third-party-billing",
+          "name": "Third-Party Billing Data",
+          "description": "Insurance/Medicaid/Medicare data entry for IHS third-party billing program.",
+          "vistaFiles": ["INSURANCE COMPANY(36)", "INSURANCE TYPE(2.312)"],
+          "targetRpcs": ["IBCN GET INSURANCE", "BPRM SAVE INSURANCE"],
+          "priority": "p2-medium",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/rcm/*",
+            "page": "/cprs/admin/rcm",
+            "phase": 38
+          }
+        }
+      ]
+    },
+    {
+      "id": "bsdx-pims",
+      "name": "BSDX / PIMS (IHS Scheduling)",
+      "category": "scheduling",
+      "description": "IHS Big Sky/DocuStar scheduling system (BSDX) and Patient Information Management System (PIMS). BSDX is a client-server Delphi app for appointment scheduling.",
+      "vistaNamespace": "BSDX",
+      "surfaces": [
+        {
+          "id": "bsdx-appointment-grid",
+          "name": "Appointment Grid",
+          "description": "Visual scheduling grid by clinic/resource. Drag-and-drop appointment booking. Color-coded by status.",
+          "vistaFiles": ["BSDX RESOURCE(9002018.1)", "BSDX APPOINTMENT(9002018.4)"],
+          "targetRpcs": ["BSDX BOOKING SLOTS", "BSDX MAKE APPOINTMENT", "BSDX CANCEL APPOINTMENT"],
+          "priority": "p0-critical",
+          "migrationStatus": "scaffold",
+          "coverage": {
+            "present_ui": true,
+            "present_api": true,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": true,
+            "evidence_present": false
+          },
+          "veEquivalent": {
+            "route": "/scheduling/*",
+            "page": "/cprs/scheduling",
+            "phase": 147
+          },
+          "notes": "Scheduling module covers SDES (VA flavor). BSDX RPCs are IHS-specific and different."
+        },
+        {
+          "id": "bsdx-check-in",
+          "name": "Patient Check-In",
+          "description": "Mark patient arrived. Print routing slip. Update appointment status.",
+          "vistaFiles": ["BSDX APPOINTMENT(9002018.4)"],
+          "targetRpcs": ["BSDX CHECK IN", "BSDX PRINT ROUTING SLIP"],
+          "priority": "p0-critical",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "bsdx-resource-setup",
+          "name": "Resource/Clinic Setup",
+          "description": "Configure scheduling resources, availability templates, access rules.",
+          "vistaFiles": ["BSDX RESOURCE(9002018.1)"],
+          "targetRpcs": ["BSDX GET RESOURCES", "BSDX SETUP"],
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "bsdx-wait-list",
+          "name": "Wait List",
+          "description": "Manage appointment wait lists. Auto-assign when slots open.",
+          "vistaFiles": ["SD WAIT LIST(409.3)"],
+          "targetRpcs": ["SD W/L GET LIST"],
+          "priority": "p2-medium",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        },
+        {
+          "id": "bsdx-reports",
+          "name": "Scheduling Reports",
+          "description": "No-show rates, clinic utilization, provider productivity reports.",
+          "vistaFiles": [],
+          "targetRpcs": [],
+          "priority": "p3-low",
+          "migrationStatus": "not-started",
+          "coverage": {
+            "present_ui": false,
+            "present_api": false,
+            "vista_rpc_wired": false,
+            "writeback_ready": false,
+            "tests_present": false,
+            "evidence_present": false
+          }
+        }
+      ]
+    }
+  ]
+}
