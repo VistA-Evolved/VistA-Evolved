@@ -31,6 +31,16 @@ import {
   storeFlowResult,
   getRecentFlowResults,
   getFlowResultsByFlowId,
+  startTraceSession,
+  recordTraceEntry,
+  endTraceSession,
+  getTraceSession,
+  getActiveSessions,
+  getCompletedSessions,
+  saveAsGolden,
+  listGoldenTraces,
+  compareToGolden,
+  WORKFLOW_TEMPLATES,
 } from "../qa/index.js";
 import type { DeadClickEntry } from "../qa/types.js";
 import { safeErr } from '../lib/safe-error.js';
@@ -194,5 +204,108 @@ export default async function qaRoutes(server: FastifyInstance) {
     if (requestId) return { ok: true, traces: getTracesByRequestId(requestId) };
     if (rpc) return { ok: true, traces: getTracesByRpc(rpc, Number(limit) || 50) };
     return { ok: true, traces: getRecentTraces(Number(limit) || 100) };
+  });
+
+  /* ═══ CONTRACT TRACE SESSIONS (Phase 479) ═════════════════ */
+
+  /** List workflow templates and active sessions */
+  server.get("/qa/contract-traces", async () => {
+    return {
+      ok: true,
+      workflows: WORKFLOW_TEMPLATES,
+      activeSessions: getActiveSessions(),
+      completedSessions: getCompletedSessions(10).map((s) => ({
+        id: s.id,
+        workflow: s.workflow,
+        entryCount: s.entries.length,
+        startedAt: s.startedAt,
+        endedAt: s.endedAt,
+      })),
+      goldenTraces: listGoldenTraces(),
+    };
+  });
+
+  /** Start a new contract trace session */
+  server.post("/qa/contract-traces/sessions", async (request) => {
+    const body = (request.body as any) || {};
+    const workflow = body.workflow || "unnamed";
+    const description = body.description;
+    const instanceId = body.instanceId || "unknown";
+    const session = startTraceSession(workflow, description, instanceId);
+    return { ok: true, session: { id: session.id, workflow: session.workflow } };
+  });
+
+  /** Record an entry into an active session */
+  server.post("/qa/contract-traces/sessions/:id/entry", async (request, reply) => {
+    const { id } = request.params as { id: string };
+    const body = (request.body as any) || {};
+    if (!body.rpcName) {
+      return reply.status(400).send({ ok: false, error: "rpcName required" });
+    }
+    const entry = recordTraceEntry(id, {
+      rpcName: body.rpcName,
+      success: body.success !== false,
+      error: body.error,
+      responseLines: body.responseLines || 0,
+      durationMs: body.durationMs || 0,
+    });
+    if (!entry) {
+      return reply.status(404).send({ ok: false, error: "Session not found or already ended" });
+    }
+    return { ok: true, entry };
+  });
+
+  /** End a session (optionally write to disk and/or save as golden) */
+  server.post("/qa/contract-traces/sessions/:id/end", async (request, reply) => {
+    const { id } = request.params as { id: string };
+    const body = (request.body as any) || {};
+    const session = endTraceSession(id, {
+      writeToDisk: body.writeToDisk !== false,
+    });
+    if (!session) {
+      return reply.status(404).send({ ok: false, error: "Session not found or already ended" });
+    }
+    // Optionally save as golden baseline
+    let goldenPath: string | undefined;
+    if (body.saveAsGolden) {
+      goldenPath = saveAsGolden(session);
+    }
+    return {
+      ok: true,
+      session: {
+        id: session.id,
+        workflow: session.workflow,
+        entryCount: session.entries.length,
+        startedAt: session.startedAt,
+        endedAt: session.endedAt,
+      },
+      goldenPath,
+    };
+  });
+
+  /** Get a specific session's details */
+  server.get("/qa/contract-traces/sessions/:id", async (request, reply) => {
+    const { id } = request.params as { id: string };
+    const session = getTraceSession(id);
+    if (!session) {
+      return reply.status(404).send({ ok: false, error: "Session not found" });
+    }
+    return { ok: true, session };
+  });
+
+  /** Compare an active or completed session against golden */
+  server.post("/qa/contract-traces/sessions/:id/compare", async (request, reply) => {
+    const { id } = request.params as { id: string };
+    const session = getTraceSession(id);
+    const completed = getCompletedSessions(100).find((s) => s.id === id);
+    const target = session || completed;
+    if (!target) {
+      return reply.status(404).send({ ok: false, error: "Session not found" });
+    }
+    const result = compareToGolden(target);
+    if (!result) {
+      return reply.status(404).send({ ok: false, error: "No golden baseline for workflow: " + target.workflow });
+    }
+    return { ok: true, ...result };
   });
 }

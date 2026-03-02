@@ -36,3 +36,25 @@ export {
   getRecentFlowResults,
   getFlowResultsByFlowId,
 } from "./flow-catalog.js";
+
+/* Phase 479: Contract trace recorder */
+export {
+  startTraceSession,
+  recordTraceEntry,
+  endTraceSession,
+  getTraceSession,
+  getActiveSessions,
+  getCompletedSessions,
+  saveAsGolden,
+  loadGoldenTrace,
+  listGoldenTraces,
+  compareToGolden,
+  compareTraces,
+  WORKFLOW_TEMPLATES,
+} from "./rpc-contract-trace.js";
+
+export type {
+  TraceSession,
+  ContractTraceEntry,
+  CompareResult,
+} from "./rpc-contract-trace.js";
