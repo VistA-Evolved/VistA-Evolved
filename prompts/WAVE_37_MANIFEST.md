@@ -36,12 +36,12 @@ adapter v2, denials hardening, and global pack expansion.
 
 | Phase | Commit | Title |
 |-------|--------|-------|
-| 513 | (pending) | RCM Reality Scan |
-| 514 | (pending) | Payer Dossiers |
-| 515 | (pending) | PhilHealth Transport |
-| 516 | (pending) | PhilHealth Export v2 |
-| 517 | (pending) | PH HMO Ops v2 |
-| 518 | (pending) | US X12 Ingest v2 |
-| 519 | (pending) | Clearinghouse v2 |
-| 520 | (pending) | Denials Hardening |
-| 521 | (pending) | Global Pack Expansion |
+| 513 | 20ab12b | RCM Reality Scan |
+| 514 | 20ab12b | Payer Dossiers |
+| 515 | 20ab12b | PhilHealth Transport |
+| 516 | 20ab12b | PhilHealth Export v2 |
+| 517 | 20ab12b | PH HMO Ops v2 |
+| 518 | 20ab12b | US X12 Ingest v2 |
+| 519 | 20ab12b | Clearinghouse v2 |
+| 520 | 20ab12b | Denials Hardening |
+| 521 | 20ab12b | Global Pack Expansion |
