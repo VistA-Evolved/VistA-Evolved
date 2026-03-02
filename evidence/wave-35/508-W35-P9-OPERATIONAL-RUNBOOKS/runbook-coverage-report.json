@@ -1,0 +1,128 @@
+{
+  "generatedAt": "2026-03-02T07:58:48.783Z",
+  "pass": 24,
+  "fail": 0,
+  "totalRunbooks": 197,
+  "results": [
+    {
+      "label": "Runbook directory has files (197)",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "Runbook category: VistA connectivity",
+      "status": "PASS",
+      "detail": "19 runbook(s)"
+    },
+    {
+      "label": "Runbook category: Backup / restore",
+      "status": "PASS",
+      "detail": "3 runbook(s)"
+    },
+    {
+      "label": "Runbook category: Incident response",
+      "status": "PASS",
+      "detail": "6 runbook(s)"
+    },
+    {
+      "label": "Runbook category: Go-live / upgrade",
+      "status": "PASS",
+      "detail": "4 runbook(s)"
+    },
+    {
+      "label": "Runbook category: Observability / monitoring",
+      "status": "PASS",
+      "detail": "6 runbook(s)"
+    },
+    {
+      "label": "Runbook category: Security / auth",
+      "status": "PASS",
+      "detail": "10 runbook(s)"
+    },
+    {
+      "label": "Runbook category: Imaging",
+      "status": "PASS",
+      "detail": "10 runbook(s)"
+    },
+    {
+      "label": "Runbook category: RCM / billing",
+      "status": "PASS",
+      "detail": "29 runbook(s)"
+    },
+    {
+      "label": "Runbook category: Telehealth",
+      "status": "PASS",
+      "detail": "1 runbook(s)"
+    },
+    {
+      "label": "Runbook category: Performance",
+      "status": "PASS",
+      "detail": "5 runbook(s)"
+    },
+    {
+      "label": "Runbook category: Disaster recovery",
+      "status": "PASS",
+      "detail": "6 runbook(s)"
+    },
+    {
+      "label": "Runbook category: Tenant / multi-tenant",
+      "status": "PASS",
+      "detail": "3 runbook(s)"
+    },
+    {
+      "label": "AGENTS.md exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "AGENTS.md has credentials section",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "AGENTS.md has architecture map",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "AGENTS.md has bug tracker reference",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": ".env.example exists for credential template",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "Docker compose: VistA Docker",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "Docker compose: Prod compose",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "Verify script: scripts/verify-rc.ps1",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "Verify script: scripts/verify-latest.ps1",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "Sandbox credentials documented in AGENTS.md",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "label": "Unified VistA routine installer exists",
+      "status": "PASS",
+      "detail": ""
+    }
+  ]
+}
