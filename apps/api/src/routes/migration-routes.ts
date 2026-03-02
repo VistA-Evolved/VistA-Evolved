@@ -1,7 +1,7 @@
 /**
  * apps/api/src/routes/migration-routes.ts
  *
- * Phase 456 (W30-P1) + Phase 457 (W30-P2).
+ * Phases 456-458 (W30-P1/P2/P3).
  * REST endpoints for data migration operations.
  * Admin-only access for all migration endpoints.
  */
@@ -9,6 +9,7 @@
 import type { FastifyInstance } from "fastify";
 import { importFhirBundle, getBatch, listBatches } from "../migration/fhir-import.js";
 import { ingestCcda, getCcdaBatch, listCcdaBatches } from "../migration/ccda-ingest.js";
+import { processAdtMessage, getAdtEvent, listAdtEvents } from "../migration/hl7v2-adt.js";
 import type { FhirBundle } from "../migration/types.js";
 
 export async function migrationRoutes(server: FastifyInstance) {
@@ -59,14 +60,47 @@ export async function migrationRoutes(server: FastifyInstance) {
     return reply.code(code).send(result);
   });
 
+  // POST /migration/hl7v2/adt — process an HL7v2 ADT message (Phase 458)
+  server.post("/migration/hl7v2/adt", async (request, reply) => {
+    const bodyText = typeof request.body === "string"
+      ? request.body
+      : (request.body as any)?.message || "";
+    if (!bodyText || !bodyText.includes("MSH|")) {
+      return reply.code(400).send({ ok: false, error: "Request body must contain an HL7v2 message with MSH segment" });
+    }
+
+    const userId = (request as any).session?.duz || "system";
+    const result = processAdtMessage(bodyText, userId);
+    const code = result.ok ? 200 : 422;
+    return reply.code(code).send(result);
+  });
+
+  // GET /migration/hl7v2/adt/events — list ADT events
+  server.get("/migration/hl7v2/adt/events", async (_request, reply) => {
+    const events = listAdtEvents();
+    return reply.send({ ok: true, events, total: events.length });
+  });
+
+  // GET /migration/hl7v2/adt/events/:id — get single ADT event
+  server.get("/migration/hl7v2/adt/events/:id", async (request, reply) => {
+    const { id } = request.params as { id: string };
+    const event = getAdtEvent(id);
+    if (!event) return reply.code(404).send({ ok: false, error: "ADT event not found" });
+    return reply.send({ ok: true, event });
+  });
+
   // GET /migration/health — migration subsystem health
   server.get("/migration/health", async (_request, reply) => {
-    const all = listBatches();
+    const fhirBatches = listBatches();
+    const ccdaBatches = listCcdaBatches();
+    const adtEvts = listAdtEvents();
     return reply.send({
       ok: true,
       status: "ready",
       formats: ["fhir-r4", "ccda", "hl7v2"],
-      batchCount: all.length,
+      fhirBatchCount: fhirBatches.length,
+      ccdaBatchCount: ccdaBatches.length,
+      adtEventCount: adtEvts.length,
     });
   });
 }
