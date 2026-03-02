@@ -208,6 +208,7 @@ import { clinicalReasoningRoutes } from "../clinical-reasoning/index.js";
 import { localizationRoutes } from "../localization/index.js";
 import { queueRoutes } from "../queue/index.js";
 import { workflowRoutes } from "../workflows/index.js";
+import { switchboardRoutes, initSwitchboard } from "../workflow/index.js";
 import alignmentRoutes from "../routes/alignment-routes.js";
 import { perfRoutes } from "../performance/index.js";
 import moduleValidationRoutes from "../routes/module-validation-routes.js";
@@ -556,6 +557,10 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(localizationRoutes); // Phase 397: Localization + Multi-Country Packs + Theming
   server.register(queueRoutes);
   server.register(workflowRoutes);
+
+  // Workflow State Switchboard (Phase 533)
+  initSwitchboard();
+  server.register(switchboardRoutes);
 
   // Alignment + Performance + Module validation (Phase 161-163)
   server.register(alignmentRoutes);

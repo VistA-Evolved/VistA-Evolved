@@ -434,9 +434,136 @@ function StatCard({ label, value }: { label: string; value: number }) {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Switchboard Tab (Phase 533)                                        */
+/* ------------------------------------------------------------------ */
+interface SwitchboardWorkflow {
+  name: string;
+  description: string;
+  domain: string;
+  phase?: number;
+  stateCount: number;
+  transitionCount: number;
+  initialState: string;
+  terminalStates: string[];
+}
+
+interface SwitchboardDetail {
+  name: string;
+  description: string;
+  domain: string;
+  phase?: number;
+  states: string[];
+  transitions: Record<string, string[]>;
+  mermaid: string;
+}
+
+function SwitchboardTab() {
+  const [workflows, setWorkflows] = useState<SwitchboardWorkflow[]>([]);
+  const [selected, setSelected] = useState<SwitchboardDetail | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      try {
+        const data = await apiFetch<{ registeredWorkflows: number; workflows: SwitchboardWorkflow[] }>(
+          "/workflow/switchboard"
+        );
+        setWorkflows(data.workflows ?? []);
+      } catch {
+        setWorkflows([]);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
+  const selectWorkflow = async (name: string) => {
+    try {
+      const detail = await apiFetch<SwitchboardDetail>(`/workflow/switchboard/${name}`);
+      setSelected(detail);
+    } catch {
+      setSelected(null);
+    }
+  };
+
+  if (loading) return <div style={{ color: "#94a3b8" }}>Loading switchboard...</div>;
+
+  return (
+    <div>
+      <p style={{ color: "#94a3b8", marginBottom: 16 }}>
+        Phase 533 -- Centralized view of all registered finite state machines across the system.
+      </p>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+        {/* Left: workflow list */}
+        <div>
+          <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 12 }}>
+            Registered FSMs ({workflows.length})
+          </h3>
+          {workflows.map((w) => (
+            <div
+              key={w.name}
+              onClick={() => selectWorkflow(w.name)}
+              style={{
+                padding: 12,
+                marginBottom: 8,
+                background: selected?.name === w.name ? "#1e3a5f" : "#1e293b",
+                borderRadius: 8,
+                border: selected?.name === w.name ? "1px solid #3b82f6" : "1px solid #334155",
+                cursor: "pointer",
+              }}
+            >
+              <div style={{ fontWeight: 600 }}>{w.name}</div>
+              <div style={{ fontSize: 12, color: "#94a3b8" }}>{w.description}</div>
+              <div style={{ display: "flex", gap: 12, marginTop: 8, fontSize: 12, color: "#64748b" }}>
+                <span>Domain: {w.domain}</span>
+                <span>States: {w.stateCount}</span>
+                <span>Transitions: {w.transitionCount}</span>
+                {w.phase && <span>Phase: {w.phase}</span>}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Right: detail + mermaid */}
+        <div>
+          {selected ? (
+            <div>
+              <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 12 }}>
+                {selected.name}
+              </h3>
+              <div style={{ background: "#0f172a", padding: 12, borderRadius: 8, marginBottom: 12, fontSize: 13, fontFamily: "monospace", whiteSpace: "pre-wrap" }}>
+                {selected.mermaid}
+              </div>
+              <div style={{ fontSize: 12, color: "#94a3b8" }}>
+                <strong>States:</strong> {selected.states.join(", ")}
+              </div>
+              <div style={{ fontSize: 12, color: "#94a3b8", marginTop: 8 }}>
+                <strong>Transitions:</strong>
+                <ul style={{ margin: "4px 0 0 16px", padding: 0 }}>
+                  {Object.entries(selected.transitions).map(([from, tos]) => (
+                    <li key={from}>
+                      {from} &rarr; {(tos as string[]).join(", ") || "(terminal)"}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ) : (
+            <div style={{ color: "#64748b", padding: 24 }}>
+              Select a workflow to view its state diagram and transitions.
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Main page                                                          */
 /* ------------------------------------------------------------------ */
-const TABS = ["definitions", "instances", "packs", "stats"] as const;
+const TABS = ["definitions", "instances", "packs", "stats", "switchboard"] as const;
 type Tab = (typeof TABS)[number];
 
 export default function WorkflowsAdminPage() {
@@ -477,6 +604,7 @@ export default function WorkflowsAdminPage() {
       {tab === "instances" && <InstancesTab />}
       {tab === "packs" && <PacksTab />}
       {tab === "stats" && <StatsTab />}
+      {tab === "switchboard" && <SwitchboardTab />}
     </div>
   );
 }
