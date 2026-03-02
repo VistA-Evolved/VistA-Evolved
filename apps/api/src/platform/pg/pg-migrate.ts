@@ -3788,6 +3788,59 @@ CREATE INDEX IF NOT EXISTS idx_tenant_config_pack
   ON tenant_config(country_pack_id);
 `,
   },
+
+  // ── v52: Phase 514 (W37-P2) — Payer Dossiers + Onboarding Tasks ──
+  {
+    version: 52,
+    name: "phase514_payer_dossiers",
+    sql: `
+-- Phase 514 (W37-P2): Payer dossier enrichment profile + onboarding workflow tasks.
+CREATE TABLE IF NOT EXISTS payer_dossier (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  payer_id TEXT NOT NULL REFERENCES payer(id),
+  country_code TEXT NOT NULL,
+  display_name TEXT NOT NULL,
+  enrichment_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+  contact_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+  timing_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+  compliance_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+  status TEXT NOT NULL DEFAULT 'draft',
+  completeness_score INTEGER NOT NULL DEFAULT 0,
+  version INTEGER NOT NULL DEFAULT 1,
+  updated_by TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_dossier_tenant ON payer_dossier(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_dossier_payer ON payer_dossier(payer_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_dossier_tenant_payer ON payer_dossier(tenant_id, payer_id);
+
+CREATE TABLE IF NOT EXISTS payer_onboarding_task (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  dossier_id TEXT NOT NULL REFERENCES payer_dossier(id),
+  payer_id TEXT NOT NULL REFERENCES payer(id),
+  task_type TEXT NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT,
+  status TEXT NOT NULL DEFAULT 'pending',
+  assignee TEXT,
+  due_date TIMESTAMPTZ,
+  completed_at TIMESTAMPTZ,
+  completed_by TEXT,
+  evidence_json JSONB,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  version INTEGER NOT NULL DEFAULT 1,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_onboard_tenant ON payer_onboarding_task(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_onboard_dossier ON payer_onboarding_task(dossier_id);
+CREATE INDEX IF NOT EXISTS idx_onboard_payer ON payer_onboarding_task(payer_id);
+CREATE INDEX IF NOT EXISTS idx_onboard_status ON payer_onboarding_task(status);
+`,
+  },
 ];
 
 /**
@@ -4018,6 +4071,9 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   "analytics_dataset_permission",
   "analytics_column_mask_rule",
   "analytics_export_audit",
+  // Phase 514: Payer dossiers + onboarding
+  "payer_dossier",
+  "payer_onboarding_task",
 ] as const;
 
 /**

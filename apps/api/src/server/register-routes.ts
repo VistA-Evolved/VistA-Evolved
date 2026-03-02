@@ -99,6 +99,10 @@ import eligibilityClaimStatusRoutes from "../rcm/eligibility/routes.js";
 import credentialVaultRoutes from "../rcm/credential-vault/credential-vault-routes.js";
 import claimLifecycle111Routes from "../rcm/claim-lifecycle/claim-lifecycle-routes.js";
 import evidenceRoutes from "../rcm/evidence/evidence-routes.js";
+import { dossierRoutes } from "../routes/dossier-routes.js";
+import { philhealthTransportRoutes } from "../rcm/philhealth-eclaims3/transport-routes.js";
+import { clearinghouseGatewayRoutes } from "../rcm/connectors/clearinghouse-gateway-routes.js";
+import { denialPipelineRoutes } from "../rcm/denials/denial-pipeline-routes.js";
 
 // SaaS Billing/Metering (Phase 284)
 import billingRoutes from "../billing/billing-routes.js";
@@ -482,6 +486,10 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(credentialVaultRoutes);
   server.register(claimLifecycle111Routes);
   server.register(evidenceRoutes);
+  server.register(dossierRoutes);  // Phase 514: Payer Dossiers
+  server.register(philhealthTransportRoutes);  // Phase 515: PH Transport
+  server.register(clearinghouseGatewayRoutes);  // Phase 519: Clearinghouse v2
+  server.register(denialPipelineRoutes);  // Phase 520: Denial Pipeline Hardening
 
   // Migration toolkit (Phase 50)
   server.register(migrationRoutes);

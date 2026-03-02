@@ -1,0 +1,376 @@
+{
+  "generatedAt": "2026-03-02T09:10:37.017Z",
+  "phase": 513,
+  "wave": 37,
+  "summary": {
+    "connectors": {
+      "total": 10,
+      "implemented": 8,
+      "stub": 0,
+      "integrationPending": 0,
+      "needsCredentials": 2
+    },
+    "payers": {
+      "total": 7,
+      "byCountry": {
+        "??": 7
+      }
+    },
+    "countryPacks": {
+      "total": 3,
+      "rcmEnabled": 2
+    },
+    "issues": {
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "connectors": [
+    {
+      "id": "acc-nz-connector",
+      "file": "apps/api/src/rcm/connectors/acc-nz-connector.ts",
+      "status": "needs_credentials",
+      "implementsInterface": true,
+      "supportedModes": [
+        "direct_api"
+      ],
+      "supportedTransactions": [],
+      "hasEnvCreds": true,
+      "hasRealHttpCall": false,
+      "hasTodoPlaceholder": false,
+      "lineCount": 158
+    },
+    {
+      "id": "availity-connector",
+      "file": "apps/api/src/rcm/connectors/availity-connector.ts",
+      "status": "implemented",
+      "implementsInterface": true,
+      "supportedModes": [
+        "clearinghouse_edi",
+        "direct_api"
+      ],
+      "supportedTransactions": [],
+      "hasEnvCreds": true,
+      "hasRealHttpCall": true,
+      "hasTodoPlaceholder": false,
+      "lineCount": 125
+    },
+    {
+      "id": "clearinghouse-connector",
+      "file": "apps/api/src/rcm/connectors/clearinghouse-connector.ts",
+      "status": "needs_credentials",
+      "implementsInterface": true,
+      "supportedModes": [
+        "clearinghouse_edi"
+      ],
+      "supportedTransactions": [],
+      "hasEnvCreds": true,
+      "hasRealHttpCall": false,
+      "hasTodoPlaceholder": false,
+      "lineCount": 157
+    },
+    {
+      "id": "eclipse-au-connector",
+      "file": "apps/api/src/rcm/connectors/eclipse-au-connector.ts",
+      "status": "implemented",
+      "implementsInterface": true,
+      "supportedModes": [
+        "government_portal"
+      ],
+      "supportedTransactions": [],
+      "hasEnvCreds": true,
+      "hasRealHttpCall": true,
+      "hasTodoPlaceholder": false,
+      "lineCount": 144
+    },
+    {
+      "id": "nphc-sg-connector",
+      "file": "apps/api/src/rcm/connectors/nphc-sg-connector.ts",
+      "status": "implemented",
+      "implementsInterface": true,
+      "supportedModes": [
+        "government_portal"
+      ],
+      "supportedTransactions": [],
+      "hasEnvCreds": true,
+      "hasRealHttpCall": true,
+      "hasTodoPlaceholder": false,
+      "lineCount": 134
+    },
+    {
+      "id": "officeally-connector",
+      "file": "apps/api/src/rcm/connectors/officeally-connector.ts",
+      "status": "implemented",
+      "implementsInterface": true,
+      "supportedModes": [
+        "clearinghouse_edi"
+      ],
+      "supportedTransactions": [],
+      "hasEnvCreds": true,
+      "hasRealHttpCall": true,
+      "hasTodoPlaceholder": false,
+      "lineCount": 128
+    },
+    {
+      "id": "philhealth-connector",
+      "file": "apps/api/src/rcm/connectors/philhealth-connector.ts",
+      "status": "implemented",
+      "implementsInterface": true,
+      "supportedModes": [
+        "government_portal"
+      ],
+      "supportedTransactions": [],
+      "hasEnvCreds": true,
+      "hasRealHttpCall": true,
+      "hasTodoPlaceholder": false,
+      "lineCount": 219
+    },
+    {
+      "id": "portal-batch-connector",
+      "file": "apps/api/src/rcm/connectors/portal-batch-connector.ts",
+      "status": "implemented",
+      "implementsInterface": true,
+      "supportedModes": [
+        "portal_batch"
+      ],
+      "supportedTransactions": [],
+      "hasEnvCreds": false,
+      "hasRealHttpCall": false,
+      "hasTodoPlaceholder": false,
+      "lineCount": 147
+    },
+    {
+      "id": "sandbox-connector",
+      "file": "apps/api/src/rcm/connectors/sandbox-connector.ts",
+      "status": "implemented",
+      "implementsInterface": true,
+      "supportedModes": [
+        "clearinghouse_edi",
+        "direct_api",
+        "portal_batch",
+        "government_portal",
+        "fhir_payer",
+        "not_classified"
+      ],
+      "supportedTransactions": [],
+      "hasEnvCreds": false,
+      "hasRealHttpCall": false,
+      "hasTodoPlaceholder": false,
+      "lineCount": 268
+    },
+    {
+      "id": "stedi-connector",
+      "file": "apps/api/src/rcm/connectors/stedi-connector.ts",
+      "status": "implemented",
+      "implementsInterface": true,
+      "supportedModes": [
+        "clearinghouse_edi",
+        "direct_api"
+      ],
+      "supportedTransactions": [],
+      "hasEnvCreds": true,
+      "hasRealHttpCall": true,
+      "hasTodoPlaceholder": false,
+      "lineCount": 140
+    }
+  ],
+  "helpers": [
+    {
+      "id": "clearinghouse-transport",
+      "file": "apps/api/src/rcm/connectors/clearinghouse-transport.ts",
+      "status": "helper",
+      "implementsInterface": false,
+      "supportedModes": [],
+      "supportedTransactions": [],
+      "hasEnvCreds": false,
+      "hasRealHttpCall": false,
+      "hasTodoPlaceholder": true,
+      "lineCount": 675
+    },
+    {
+      "id": "connector-resilience",
+      "file": "apps/api/src/rcm/connectors/connector-resilience.ts",
+      "status": "helper",
+      "implementsInterface": false,
+      "supportedModes": [],
+      "supportedTransactions": [],
+      "hasEnvCreds": false,
+      "hasRealHttpCall": false,
+      "hasTodoPlaceholder": false,
+      "lineCount": 211
+    },
+    {
+      "id": "connector-state",
+      "file": "apps/api/src/rcm/connectors/connector-state.ts",
+      "status": "helper",
+      "implementsInterface": false,
+      "supportedModes": [],
+      "supportedTransactions": [],
+      "hasEnvCreds": false,
+      "hasRealHttpCall": false,
+      "hasTodoPlaceholder": false,
+      "lineCount": 353
+    },
+    {
+      "id": "health-monitor",
+      "file": "apps/api/src/rcm/connectors/health-monitor.ts",
+      "status": "helper",
+      "implementsInterface": false,
+      "supportedModes": [],
+      "supportedTransactions": [],
+      "hasEnvCreds": false,
+      "hasRealHttpCall": false,
+      "hasTodoPlaceholder": false,
+      "lineCount": 197
+    }
+  ],
+  "payers": [
+    {
+      "id": "au_core.json",
+      "name": "unknown",
+      "country": "??",
+      "integrationMode": "not_classified",
+      "source": "data/payers/au_core.json"
+    },
+    {
+      "id": "nz_core.json",
+      "name": "unknown",
+      "country": "??",
+      "integrationMode": "not_classified",
+      "source": "data/payers/nz_core.json"
+    },
+    {
+      "id": "ph-hmo-registry.json",
+      "name": "unknown",
+      "country": "??",
+      "integrationMode": "not_classified",
+      "source": "data/payers/ph-hmo-registry.json"
+    },
+    {
+      "id": "ph-hmo-rulepacks.json",
+      "name": "unknown",
+      "country": "??",
+      "integrationMode": "not_classified",
+      "source": "data/payers/ph-hmo-rulepacks.json"
+    },
+    {
+      "id": "ph_hmos.json",
+      "name": "unknown",
+      "country": "??",
+      "integrationMode": "not_classified",
+      "source": "data/payers/ph_hmos.json"
+    },
+    {
+      "id": "sg_core.json",
+      "name": "unknown",
+      "country": "??",
+      "integrationMode": "not_classified",
+      "source": "data/payers/sg_core.json"
+    },
+    {
+      "id": "us_core.json",
+      "name": "unknown",
+      "country": "??",
+      "integrationMode": "not_classified",
+      "source": "data/payers/us_core.json"
+    }
+  ],
+  "countryPacks": [
+    {
+      "countryCode": "GH",
+      "countryName": "Ghana",
+      "status": "draft",
+      "enabledModules": [
+        "kernel",
+        "clinical",
+        "portal",
+        "analytics",
+        "interop",
+        "intake",
+        "iam",
+        "scheduling"
+      ],
+      "payerModules": [],
+      "featureFlags": {
+        "x12_edi_enabled": false,
+        "philhealth_eclaims": false,
+        "nhia_gdrg": true,
+        "break_glass_enabled": true,
+        "telehealth_recording": false,
+        "oidc_required": false,
+        "cross_border_transfer": true
+      },
+      "rcmEnabled": false,
+      "x12Enabled": false,
+      "philhealthEnabled": false
+    },
+    {
+      "countryCode": "PH",
+      "countryName": "Philippines",
+      "status": "active",
+      "enabledModules": [
+        "kernel",
+        "clinical",
+        "portal",
+        "telehealth",
+        "analytics",
+        "interop",
+        "intake",
+        "iam",
+        "rcm",
+        "scheduling"
+      ],
+      "payerModules": [
+        "ph_hmos"
+      ],
+      "featureFlags": {
+        "x12_edi_enabled": false,
+        "philhealth_eclaims": true,
+        "nhia_gdrg": false,
+        "break_glass_enabled": true,
+        "telehealth_recording": false,
+        "oidc_required": false,
+        "cross_border_transfer": true
+      },
+      "rcmEnabled": true,
+      "x12Enabled": false,
+      "philhealthEnabled": true
+    },
+    {
+      "countryCode": "US",
+      "countryName": "United States of America",
+      "status": "active",
+      "enabledModules": [
+        "kernel",
+        "clinical",
+        "portal",
+        "telehealth",
+        "imaging",
+        "analytics",
+        "interop",
+        "fhir",
+        "intake",
+        "ai",
+        "iam",
+        "rcm",
+        "scheduling"
+      ],
+      "payerModules": [
+        "us_core"
+      ],
+      "featureFlags": {
+        "x12_edi_enabled": true,
+        "philhealth_eclaims": false,
+        "nhia_gdrg": false,
+        "break_glass_enabled": true,
+        "telehealth_recording": false,
+        "oidc_required": false,
+        "cross_border_transfer": false
+      },
+      "rcmEnabled": true,
+      "x12Enabled": true,
+      "philhealthEnabled": false
+    }
+  ],
+  "issues": []
+}

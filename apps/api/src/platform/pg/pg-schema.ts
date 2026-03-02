@@ -1476,6 +1476,59 @@ export const tenantFeatureFlag = pgTable("tenant_feature_flag", {
   uniqueIndex("idx_tff_tenant_key").on(table.tenantId, table.flagKey),
 ]);
 
+/* ================================================================
+ *  PAYER DOSSIER TABLES (Phase 514 — Wave 37 B2)
+ * ================================================================ */
+
+/** Payer dossier — comprehensive enrichment profile for a payer. */
+export const payerDossier = pgTable("payer_dossier", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  payerId: text("payer_id").notNull().references(() => payer.id),
+  countryCode: text("country_code").notNull(),
+  displayName: text("display_name").notNull(),
+  enrichmentJson: jsonb("enrichment_json").notNull().default({}),
+  contactJson: jsonb("contact_json").notNull().default({}),
+  timingJson: jsonb("timing_json").notNull().default({}),
+  complianceJson: jsonb("compliance_json").notNull().default({}),
+  status: text("status").notNull().default("draft"),
+  completenessScore: integer("completeness_score").notNull().default(0),
+  version: integer("version").notNull().default(1),
+  updatedBy: text("updated_by"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_dossier_tenant").on(table.tenantId),
+  index("idx_dossier_payer").on(table.payerId),
+  uniqueIndex("idx_dossier_tenant_payer").on(table.tenantId, table.payerId),
+]);
+
+/** Payer onboarding task — workflow step to activate payer connectivity. */
+export const payerOnboardingTask = pgTable("payer_onboarding_task", {
+  id: text("id").primaryKey(),
+  tenantId: text("tenant_id").notNull().default("default"),
+  dossierId: text("dossier_id").notNull().references(() => payerDossier.id),
+  payerId: text("payer_id").notNull().references(() => payer.id),
+  taskType: text("task_type").notNull(),
+  title: text("title").notNull(),
+  description: text("description"),
+  status: text("status").notNull().default("pending"),
+  assignee: text("assignee"),
+  dueDate: timestamp("due_date", { withTimezone: true }),
+  completedAt: timestamp("completed_at", { withTimezone: true }),
+  completedBy: text("completed_by"),
+  evidenceJson: jsonb("evidence_json"),
+  sortOrder: integer("sort_order").notNull().default(0),
+  version: integer("version").notNull().default(1),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_onboard_tenant").on(table.tenantId),
+  index("idx_onboard_dossier").on(table.dossierId),
+  index("idx_onboard_payer").on(table.payerId),
+  index("idx_onboard_status").on(table.status),
+]);
+
 /** Module audit log — append-only change history. */
 export const moduleAuditLog = pgTable("module_audit_log", {
   id: text("id").primaryKey(),

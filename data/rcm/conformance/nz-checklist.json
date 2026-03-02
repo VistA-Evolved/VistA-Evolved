@@ -1,0 +1,19 @@
+{
+  "country": "NZ",
+  "name": "New Zealand",
+  "currency": "NZD",
+  "locale": "en-NZ",
+  "generatedAt": "2025-01-01T00:00:00.000Z",
+  "conformanceChecklist": [
+    { "id": "CONF-001", "area": "currency", "check": "All amounts use NZD", "status": "pending" },
+    { "id": "CONF-002", "area": "locale", "check": "Date formats match en-NZ locale", "status": "pending" },
+    { "id": "CONF-003", "area": "claim_format", "check": "Claim structure matches ACC API spec", "status": "pending" },
+    { "id": "CONF-004", "area": "payer_mapping", "check": "At least 1 payer seed record exists", "status": "pass" },
+    { "id": "CONF-005", "area": "privacy_flags", "check": "PHI redaction rules configured (NHI)", "status": "pending" },
+    { "id": "CONF-006", "area": "connector", "check": "ACC API connector stub exists", "status": "pending" },
+    { "id": "CONF-007", "area": "validation", "check": "NZ validation rules defined (NHI, ACC45)", "status": "pending" },
+    { "id": "CONF-008", "area": "scrubber", "check": "NZ scrubber pack defined", "status": "pending" },
+    { "id": "CONF-009", "area": "seed_data", "check": "nz_core.json schema valid", "status": "pass" },
+    { "id": "CONF-010", "area": "documentation", "check": "NZ onboarding runbook exists", "status": "pending" }
+  ]
+}
