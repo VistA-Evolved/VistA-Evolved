@@ -226,6 +226,23 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "YTT SAVE RESULTS",                 domain: "mental-health", tag: "write", description: "Store completed instrument results to File 601.84" },
   { name: "YTQZ RESULTLIST",                  domain: "mental-health", tag: "read",  description: "Get historical MH results for a patient from File 601.84" },
   { name: "YTQZ DETAILLIST",                  domain: "mental-health", tag: "read",  description: "Get detailed results for a specific MH administration" },
+
+  // --- Clinical Procedures / Medicine (Phase 537: CP/MD v1) ---
+  { name: "MD CLIO",                           domain: "clinical-procedures", tag: "read",  description: "Primary Clinical Procedures CliO engine RPC (File 702)" },
+  { name: "MD TMDPROCEDURE",                   domain: "clinical-procedures", tag: "read",  description: "Procedure management for CP studies" },
+  { name: "MD TMDPATIENT",                     domain: "clinical-procedures", tag: "read",  description: "Patient context for CP/Medicine data" },
+  { name: "MD TMDNOTE",                        domain: "clinical-procedures", tag: "write", description: "TIU note linking for CP studies" },
+  { name: "MD TMDRECORDID",                    domain: "clinical-procedures", tag: "read",  description: "FileMan CRUD for CP records (File 702)" },
+  { name: "MD TMDOUTPUT",                      domain: "clinical-procedures", tag: "read",  description: "Report output for CP results" },
+  { name: "MD TMDCIDC",                        domain: "clinical-procedures", tag: "read",  description: "Procedures+diagnoses for CP clinics" },
+  { name: "MD TMDLEX",                         domain: "clinical-procedures", tag: "read",  description: "CPT/ICD lexicon search for CP" },
+  { name: "MD TMDWIDGET",                      domain: "clinical-procedures", tag: "read",  description: "Widget data for CP display" },
+  { name: "MD UTILITIES",                      domain: "clinical-procedures", tag: "util",  description: "MD package utility functions" },
+  { name: "ORQQCN ASSIGNABLE MED RESULTS",     domain: "clinical-procedures", tag: "read",  description: "Medicine results attachable to consult" },
+  { name: "ORQQCN ATTACH MED RESULTS",         domain: "clinical-procedures", tag: "write", description: "Attach medicine result to consult" },
+  { name: "ORQQCN GET MED RESULT DETAILS",     domain: "clinical-procedures", tag: "read",  description: "Detail of a medicine result" },
+  { name: "TIU IS THIS A CLINPROC?",           domain: "clinical-procedures", tag: "read",  description: "Check if TIU title is under CP class" },
+  { name: "TIU IDENTIFY CLINPROC CLASS",       domain: "clinical-procedures", tag: "read",  description: "Get CP class IEN from TIU" },
 ];
 
 /**

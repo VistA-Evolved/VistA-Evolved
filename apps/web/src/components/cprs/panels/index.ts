@@ -17,3 +17,4 @@ export { default as AIAssistPanel } from './AIAssistPanel';
 export { default as ADTPanel } from './ADTPanel';
 export { default as NursingPanel } from './NursingPanel';
 export { default as MHAPanel } from './MHAPanel';
+export { default as ClinicalProceduresPanel } from './ClinicalProceduresPanel';

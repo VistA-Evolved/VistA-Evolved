@@ -139,6 +139,7 @@ import uiPrefsRoutes from "../routes/ui-prefs.js";
 
 // Mental Health Assessment (Phase 535)
 import mhaRoutes from "../routes/mha/index.js";
+import clinicalProceduresRoutes from "../routes/clinical-procedures/index.js";
 
 // Service-line boards (Phase 464-471, W31)
 import edRoutes from "../service-lines/ed/ed-routes.js";
@@ -518,6 +519,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Mental Health Assessment (Phase 535)
   server.register(mhaRoutes);
+
+  // Clinical Procedures / Medicine (Phase 537)
+  server.register(clinicalProceduresRoutes);
 
   // ADT + Inpatient (Phase 67, 83)
   server.register(adtRoutes);

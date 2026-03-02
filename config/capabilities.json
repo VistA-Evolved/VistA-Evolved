@@ -1259,6 +1259,38 @@
       "targetPackage": "YTT",
       "description": "Detailed MH administration result from VistA File 601.84 (Phase 535)"
     },
+    "clinical.procedures.list": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "MD CLIO",
+      "targetPackage": "MD",
+      "description": "List clinical procedure results from VistA File 702 (Phase 537)"
+    },
+    "clinical.procedures.detail": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "MD TMDRECORDID",
+      "targetPackage": "MD",
+      "description": "Detail of a clinical procedure result from File 702 (Phase 537)"
+    },
+    "clinical.procedures.medicine": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "MD TMDPATIENT",
+      "targetPackage": "MD",
+      "description": "Medicine (MD) data from VistA Files 690-699 (Phase 537)"
+    },
+    "clinical.procedures.consult_link": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORQQCN ATTACH MED RESULTS",
+      "targetPackage": "OR",
+      "description": "Consult-to-procedure linkage via ORQQCN medicine RPCs (Phase 537)"
+    },
     "clinical.emar.schedule": {
       "status": "live",
       "module": "clinical",

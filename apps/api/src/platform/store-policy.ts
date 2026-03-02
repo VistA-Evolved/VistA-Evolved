@@ -805,7 +805,32 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: "pg: derived from mha_administration.dfn column",
     notes: "Phase 535: Secondary index, rebuilt from administration store.",
   },
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+
+  // Clinical Procedures / Medicine (Phase 537)
+  {
+    id: "cp-result-store",
+    file: "routes/clinical-procedures/index.ts",
+    variable: "cpResultStore",
+    description: "Clinical Procedures results store (CP/MD package)",
+    classification: "clinical_data",
+    durability: "in_memory_only",
+    domain: "clinical-procedures",
+    maxSize: 50_000,
+    migrationTarget: "pg: cp_result table",
+    notes: "Phase 537: Integration-pending. MD RPCs not wired in sandbox.",
+  },
+  {
+    id: "cp-patient-index",
+    file: "routes/clinical-procedures/index.ts",
+    variable: "patientCpIndex",
+    description: "Patient DFN -> CP result ID index",
+    classification: "index",
+    durability: "in_memory_only",
+    domain: "clinical-procedures",
+    maxSize: 50_000,
+    migrationTarget: "pg: derived from cp_result.dfn column",
+    notes: "Phase 537: Secondary index for CP results.",
+  },  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // MIGRATION
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
