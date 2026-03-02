@@ -118,6 +118,14 @@ export function resetCircuitBreaker(): void {
   log.info("Circuit breaker manually reset");
 }
 
+/** Force-open circuit breaker for outage simulation (admin). Phase 503. */
+export function forceOpenCircuitBreaker(): void {
+  cbFailures = RPC_CONFIG.circuitBreakerThreshold;
+  transitionCircuit("open");
+  cbOpenedAt = Date.now() + 3_600_000; // 1h in the future so it stays open
+  log.warn("Circuit breaker force-opened for outage simulation");
+}
+
 /* ================================================================== */
 /* Timeout wrapper                                                      */
 /* ================================================================== */

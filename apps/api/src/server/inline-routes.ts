@@ -40,6 +40,7 @@ import {
   getRpcHealthSummary,
   getCircuitBreakerStats,
   resetCircuitBreaker,
+  forceOpenCircuitBreaker,
   invalidateCache,
   safeCallRpc,
   safeCallRpcWithList,
@@ -264,6 +265,12 @@ export function registerInlineRoutes(server: FastifyInstance): void {
   server.post("/admin/circuit-breaker/reset", async () => {
     resetCircuitBreaker();
     return { ok: true, state: getCircuitBreakerStats() };
+  });
+
+  /** Phase 503: Force-open CB for outage simulation. */
+  server.post("/admin/circuit-breaker/force-open", async () => {
+    forceOpenCircuitBreaker();
+    return { ok: true, state: getCircuitBreakerStats(), message: "Circuit breaker force-opened. POST /admin/circuit-breaker/reset to recover." };
   });
 
   server.post("/admin/cache/invalidate", async (request) => {
