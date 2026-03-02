@@ -1,0 +1,10 @@
+=== Phase Index Gate: 6 checks, 6 pass, 0 fail ===
+
+Before fix: Build only discovered ~115 legacy folders
+After fix: Build discovers 474 folders (all styles)
+
+Phase count: index=474, folders=474
+Duplicates: 263, 283, 284, 290 (all known legacy)
+Phases with routes: 184
+Phases with RPCs: 27
+Phases with UI: 122

@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-02-28T07:28:21.104Z",
+  "generatedAt": "2026-03-02T04:29:07.399Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 230,
+  "phaseCount": 474,
   "phases": [
     {
       "phaseNumber": "1",
@@ -234,45 +234,6 @@
       "filesTouched": []
     },
     {
-      "phaseNumber": "100",
-      "title": "Eligibility + Claim Status Polling Framework (Adapter-first)",
-      "folder": "100-PHASE-100-ELIGIBILITY-CLAIMSTATUS",
-      "files": [
-        "100-01-IMPLEMENT.md",
-        "100-99-VERIFY.md"
-      ],
-      "implementFiles": [
-        "100-01-IMPLEMENT.md"
-      ],
-      "verifyFiles": [
-        "100-99-VERIFY.md"
-      ],
-      "routes": [
-        "/rcm/claim-status/check",
-        "/rcm/claim-status/history",
-        "/rcm/claim-status/schedule",
-        "/rcm/claim-status/stats",
-        "/rcm/claim-status/timeline/:claimRef",
-        "/rcm/eligibility/check",
-        "/rcm/eligibility/history",
-        "/rcm/eligibility/stats"
-      ],
-      "rpcs": [],
-      "uiComponents": [
-        "page.tsx"
-      ],
-      "filesTouched": [
-        "apps/api/src/platform/db/schema.ts",
-        "apps/api/src/platform/db/migrate.ts",
-        "types.ts",
-        "types.ts",
-        "apps/api/src/index.ts",
-        "apps/web/src/app/cprs/admin/rcm/page.tsx",
-        "docs/runbooks/rcm-eligibility-claimstatus-phase100.md",
-        "scripts/verify-phase100-eligibility-claimstatus.ps"
-      ]
-    },
-    {
       "phaseNumber": "96",
       "title": "PhilHealth eClaims 3.0 Adapter Skeleton",
       "folder": "100-PHASE-96-PHILHEALTH-ECLAIMS3-ADAPTER",
@@ -334,57 +295,6 @@
         "page.tsx"
       ],
       "filesTouched": []
-    },
-    {
-      "phaseNumber": "97",
-      "title": "Top-5 HMO \"LOA + Claim Packet + Portal Adapter Interface\"",
-      "folder": "101-PHASE-97-HMO-PORTAL-ADAPTER",
-      "files": [
-        "97-01-IMPLEMENT.md",
-        "97-99-VERIFY.md"
-      ],
-      "implementFiles": [
-        "97-01-IMPLEMENT.md"
-      ],
-      "verifyFiles": [
-        "97-99-VERIFY.md"
-      ],
-      "routes": [
-        "/rcm/hmo-portal/*",
-        "/rcm/hmo-portal/adapters",
-        "/rcm/hmo-portal/claims/build",
-        "/rcm/hmo-portal/claims/export",
-        "/rcm/hmo-portal/claims/submit",
-        "/rcm/hmo-portal/loa/build",
-        "/rcm/hmo-portal/loa/export",
-        "/rcm/hmo-portal/loa/submit",
-        "/rcm/hmo-portal/specialties",
-        "/rcm/hmo-portal/submissions",
-        "/rcm/hmo-portal/submissions/:id",
-        "/rcm/hmo-portal/submissions/:id/note",
-        "/rcm/hmo-portal/submissions/:id/status",
-        "/rcm/hmo-portal/submissions/stats"
-      ],
-      "rpcs": [],
-      "uiComponents": [
-        "layout.tsx",
-        "page.tsx"
-      ],
-      "filesTouched": [
-        "apps/api/src/rcm/hmo-portal/types.ts",
-        "apps/api/src/rcm/hmo-portal/loa-engine.ts",
-        "apps/api/src/rcm/hmo-portal/hmo-packet-builder.ts",
-        "apps/api/src/rcm/hmo-portal/portal-adapter.ts",
-        "apps/api/src/rcm/hmo-portal/adapters/maxicare.ts",
-        "apps/api/src/rcm/hmo-portal/adapters/medicard.ts",
-        "apps/api/src/rcm/hmo-portal/adapters/intellicare.ts",
-        "apps/api/src/rcm/hmo-portal/adapters/philcare.ts",
-        "apps/api/src/rcm/hmo-portal/adapters/valucare.ts",
-        "apps/api/src/rcm/hmo-portal/hmo-portal-routes.ts",
-        "apps/web/src/app/cprs/admin/hmo-portal/page.tsx",
-        "apps/api/src/index.ts",
-        "apps/web/src/app/cprs/admin/layout.tsx"
-      ]
     },
     {
       "phaseNumber": "97B",
@@ -885,46 +795,6 @@
         "apps/api/src/index.ts",
         "apps/web/src/app/cprs/admin/rcm/page.tsx",
         "docs/runbooks/phase111-claim-lifecycle.md"
-      ]
-    },
-    {
-      "phaseNumber": "115",
-      "title": "IMPLEMENT: Durability Wave 2 (Portal/Telehealth/Imaging/Idempotency)",
-      "folder": "115-PHASE-115-DURABILITY-WAVE2",
-      "files": [
-        "115-01-IMPLEMENT.md",
-        "115-99-VERIFY.md"
-      ],
-      "implementFiles": [
-        "115-01-IMPLEMENT.md"
-      ],
-      "verifyFiles": [
-        "115-99-VERIFY.md"
-      ],
-      "routes": [],
-      "rpcs": [],
-      "uiComponents": [],
-      "filesTouched": [
-        "apps/api/src/platform/db/schema.ts",
-        "apps/api/src/platform/db/migrate.ts",
-        "apps/api/src/platform/db/repo/portal-message-repo.ts",
-        "apps/api/src/platform/db/repo/portal-appointment-repo.ts",
-        "apps/api/src/platform/db/repo/telehealth-room-repo.ts",
-        "apps/api/src/platform/db/repo/imaging-worklist-repo.ts",
-        "apps/api/src/platform/db/repo/imaging-ingest-repo.ts",
-        "apps/api/src/platform/db/repo/idempotency-repo.ts",
-        "apps/api/src/platform/db/repo/index.ts",
-        "apps/api/src/services/portal-messaging.ts",
-        "apps/api/src/services/portal-appointments.ts",
-        "apps/api/src/telehealth/room-store.ts",
-        "apps/api/src/services/imaging-worklist.ts",
-        "apps/api/src/services/imaging-ingest.ts",
-        "apps/api/src/middleware/idempotency.ts",
-        "apps/api/src/index.ts",
-        "scripts/verify-phase115-durability-wave2.ps",
-        "scripts/verify-latest.ps",
-        "docs/runbooks/durability-wave2.md",
-        "prompts/115-PHASE-115-DURABILITY-WAVE2/115-01-IMPLEMENT.md"
       ]
     },
     {
@@ -4457,6 +4327,54 @@
       ]
     },
     {
+      "phaseNumber": "231",
+      "title": "OIDC Bearer Token Support for FHIR",
+      "folder": "228-PHASE-231-OIDC-BEARER-FHIR",
+      "files": [
+        "231-01-IMPLEMENT.md",
+        "231-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "231-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "231-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/fhir/fhir-bearer-auth.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/fhir/index.ts",
+        "apps/api/tests/fhir-bearer-auth.test.ts"
+      ]
+    },
+    {
+      "phaseNumber": "232",
+      "title": "SMART Scope Enforcement",
+      "folder": "229-PHASE-232-SMART-SCOPE-ENFORCEMENT",
+      "files": [
+        "232-01-IMPLEMENT.md",
+        "232-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "232-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "232-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/fhir/fhir-scope-enforcement.ts",
+        "apps/api/src/fhir/fhir-routes.ts",
+        "apps/api/src/fhir/index.ts",
+        "apps/api/tests/fhir-scope-enforcement.test.ts"
+      ]
+    },
+    {
       "phaseNumber": "21",
       "title": "INTEROP REALITY",
       "folder": "23-PHASE-21-INTEROP-REALITY",
@@ -4498,6 +4416,244 @@
         "apps/web/src/app/cprs/admin/integrations/page.tsx",
         "apps/api/src/index.ts"
       ]
+    },
+    {
+      "phaseNumber": "233",
+      "title": "FHIR Search Parameters Expansion",
+      "folder": "230-PHASE-233-FHIR-SEARCH-PARAMS",
+      "files": [
+        "233-01-IMPLEMENT.md",
+        "233-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "233-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "233-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/fhir/fhir-search-params.ts",
+        "apps/api/src/fhir/fhir-routes.ts",
+        "apps/api/tests/fhir-search-params.test.ts"
+      ]
+    },
+    {
+      "phaseNumber": "234",
+      "title": "FHIR Paging + Bundle Links",
+      "folder": "231-PHASE-234-FHIR-PAGING",
+      "files": [
+        "234-01-IMPLEMENT.md",
+        "234-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "234-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "234-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/fhir/mappers.ts",
+        "apps/api/src/fhir/fhir-routes.ts",
+        "apps/api/tests/fhir-paging.test.ts"
+      ]
+    },
+    {
+      "phaseNumber": "235",
+      "title": "CapabilityStatement Conformance",
+      "folder": "232-PHASE-235-CAPABILITY-CONFORMANCE",
+      "files": [
+        "235-01-IMPLEMENT.md",
+        "235-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "235-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "235-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/fhir/capability-statement.ts",
+        "apps/api/src/fhir/types.ts",
+        "apps/api/tests/fhir-conformance.test.ts",
+        "apps/api/tests/fhir-capability-conformance.test.ts"
+      ]
+    },
+    {
+      "phaseNumber": "236",
+      "title": "SMART App Launch E2E Smoke",
+      "folder": "233-PHASE-236-SMART-E2E-SMOKE",
+      "files": [
+        "236-01-IMPLEMENT.md",
+        "236-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "236-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "236-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/tests/fhir-smart-e2e-smoke.test.ts"
+      ]
+    },
+    {
+      "phaseNumber": "237",
+      "title": "Prompt Linter Manifest",
+      "folder": "234-PHASE-237-PROMPT-LINTER-MANIFEST",
+      "files": [
+        "237-01-IMPLEMENT.md",
+        "237-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "237-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "237-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "238",
+      "title": "OSS Reuse Audit + ADRs (Wave 6 P1)",
+      "folder": "235-PHASE-238-OSS-REUSE-AUDIT",
+      "files": [
+        "238-01-IMPLEMENT.md",
+        "238-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "238-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "238-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "docs/decisions/ADR-hl7-engine-choice.md",
+        "docs/decisions/ADR-progressive-delivery-choice.md",
+        "docs/decisions/ADR-metering-choice.md",
+        "docs/decisions/ADR-feature-flags-choice.md",
+        "docs/decisions/ADR-secrets-sync-choice.md",
+        "docs/decisions/ADR-dr-backup-choice.md",
+        "docs/waves/WAVE6-MANIFEST.md"
+      ]
+    },
+    {
+      "phaseNumber": "239",
+      "title": "HL7v2 Engine Packaging (Wave 6 P2)",
+      "folder": "236-PHASE-239-HL7-ENGINE-PACKAGING",
+      "files": [
+        "239-01-IMPLEMENT.md",
+        "239-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "239-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "239-99-VERIFY.md"
+      ],
+      "routes": [
+        "/hl7/connections",
+        "/hl7/health"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/hl7/types.ts",
+        "apps/api/src/hl7/mllp-server.ts",
+        "apps/api/src/hl7/mllp-client.ts",
+        "apps/api/src/hl7/parser.ts",
+        "apps/api/src/hl7/ack-generator.ts",
+        "apps/api/src/hl7/index.ts",
+        "apps/api/src/routes/hl7-engine.ts",
+        "apps/api/src/index.ts"
+      ]
+    },
+    {
+      "phaseNumber": "240",
+      "title": "HL7v2 Routing Layer (Wave 6 P3)",
+      "folder": "237-PHASE-240-HL7-ROUTING-LAYER",
+      "files": [
+        "240-01-IMPLEMENT.md",
+        "240-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "240-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "240-99-VERIFY.md"
+      ],
+      "routes": [
+        "/hl7/routes/:id/stats",
+        "/hl7/routes/:id/test"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/hl7/routing/types.ts",
+        "apps/api/src/hl7/routing/registry.ts",
+        "apps/api/src/hl7/routing/matcher.ts",
+        "apps/api/src/hl7/routing/transform.ts",
+        "apps/api/src/hl7/routing/dispatcher.ts",
+        "apps/api/src/hl7/routing/index.ts",
+        "apps/api/src/routes/hl7-routing.ts",
+        "apps/api/src/hl7/index.ts",
+        "apps/api/src/server/register-routes.ts"
+      ]
+    },
+    {
+      "phaseNumber": "241",
+      "title": "HL7v2 Core Message Packs (Wave 6 P4)",
+      "folder": "238-PHASE-241-HL7-MESSAGE-PACKS",
+      "files": [
+        "241-01-IMPLEMENT.md",
+        "241-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "241-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "241-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "242",
+      "title": "Payer Adapter Scale Hardening (Wave 6 P5)",
+      "folder": "239-PHASE-242-PAYER-SCALE-HARDENING",
+      "files": [
+        "242-01-IMPLEMENT.md",
+        "242-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "242-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "242-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
     },
     {
       "phaseNumber": "22",
@@ -4547,6 +4703,269 @@
       ]
     },
     {
+      "phaseNumber": "243",
+      "title": "Onboarding UX Wizard (Wave 6 P6)",
+      "folder": "240-PHASE-243-ONBOARDING-UX",
+      "files": [
+        "243-01-IMPLEMENT.md",
+        "243-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "243-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "243-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "layout.tsx",
+        "page.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "244",
+      "title": "Support Tooling (Wave 6 P7)",
+      "folder": "241-PHASE-244-SUPPORT-TOOLING",
+      "files": [
+        "244-01-IMPLEMENT.md",
+        "244-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "244-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "244-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "layout.tsx",
+        "page.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "245",
+      "title": "Data Exports v2 (Wave 6 P8)",
+      "folder": "242-PHASE-245-DATA-EXPORTS-V2",
+      "files": [
+        "245-01-IMPLEMENT.md",
+        "245-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "245-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "245-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "layout.tsx",
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/exports/export-engine.ts",
+        "apps/api/src/exports/export-formats.ts",
+        "apps/api/src/exports/export-sources.ts",
+        "apps/api/src/routes/export-routes.ts",
+        "apps/web/src/app/cprs/admin/exports/page.tsx",
+        "apps/api/src/server/register-routes.ts",
+        "apps/web/src/app/cprs/admin/layout.tsx"
+      ]
+    },
+    {
+      "phaseNumber": "246",
+      "title": "Pilot Hospital Hardening (Wave 6 P9)",
+      "folder": "243-PHASE-246-PILOT-HARDENING",
+      "files": [
+        "246-01-IMPLEMENT.md",
+        "246-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "246-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "246-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "layout.tsx",
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/pilot/site-config.ts",
+        "apps/api/src/pilot/preflight.ts",
+        "apps/api/src/routes/pilot-routes.ts",
+        "apps/web/src/app/cprs/admin/pilot/page.tsx",
+        "apps/api/src/server/register-routes.ts",
+        "apps/web/src/app/cprs/admin/layout.tsx"
+      ]
+    },
+    {
+      "phaseNumber": "247",
+      "title": "Wave 6 Certification Suite",
+      "folder": "244-PHASE-247-WAVE6-CERTIFICATION",
+      "files": [
+        "247-01-IMPLEMENT.md",
+        "247-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "247-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "247-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/verify-wave6-certification.ps",
+        "docs/waves/wave6-certification-snapshot.md",
+        "docs/waves/WAVE6-MANIFEST.md",
+        "scripts/verify-latest.ps",
+        "ops/phase247-summary.md",
+        "ops/phase247-notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "248",
+      "title": "Wave 7 Manifest + Build-vs-Buy Ledger + Entry Gate",
+      "folder": "245-PHASE-248-WAVE7-MANIFEST",
+      "files": [
+        "248-01-IMPLEMENT.md",
+        "248-99-VERIFY.md",
+        "248-NOTES.md"
+      ],
+      "implementFiles": [
+        "248-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "248-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "docs/waves/WAVE7-MANIFEST.md",
+        "docs/build-vs-buy.md",
+        "scripts/wave7-entry-gate.ps",
+        "prompts/245-PHASE-248-WAVE7-MANIFEST/248-01-IMPLEMENT.md",
+        "prompts/245-PHASE-248-WAVE7-MANIFEST/248-99-VERIFY.md",
+        "prompts/245-PHASE-248-WAVE7-MANIFEST/248-NOTES.md"
+      ]
+    },
+    {
+      "phaseNumber": "249",
+      "title": "Supply Chain Security Baseline",
+      "folder": "246-PHASE-249-SUPPLY-CHAIN-SECURITY",
+      "files": [
+        "249-01-IMPLEMENT.md",
+        "249-99-VERIFY.md",
+        "249-NOTES.md"
+      ],
+      "implementFiles": [
+        "249-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "249-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        ".github/workflows/supply-chain-security.yml",
+        ".github/supply-chain-policy.json",
+        "scripts/verify-phase249-supply-chain.ps",
+        "prompts/246-PHASE-249-SUPPLY-CHAIN-SECURITY/249-01-IMPLEMENT.md",
+        "prompts/246-PHASE-249-SUPPLY-CHAIN-SECURITY/249-99-VERIFY.md",
+        "prompts/246-PHASE-249-SUPPLY-CHAIN-SECURITY/249-NOTES.md"
+      ]
+    },
+    {
+      "phaseNumber": "250",
+      "title": "VistA RPC Contract Harness (Wave 7 P3)",
+      "folder": "247-PHASE-250-RPC-CONTRACT-HARNESS",
+      "files": [
+        "250-01-IMPLEMENT.md",
+        "250-99-VERIFY.md",
+        "250-NOTES.md"
+      ],
+      "implementFiles": [
+        "250-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "250-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/vista/contracts/rpc-contracts.ts",
+        "apps/api/src/vista/contracts/sanitize.ts",
+        "apps/api/src/vista/contracts/modes.ts",
+        "apps/api/src/vista/contracts/index.ts",
+        "apps/api/tests/fixtures/vista/*/success.json",
+        "apps/api/tests/fixtures/vista/*/empty.json",
+        "apps/api/tests/rpc-contract-replay.test.ts",
+        "scripts/vista-contracts-record.ts",
+        "scripts/verify-phase250-rpc-contracts.ps"
+      ]
+    },
+    {
+      "phaseNumber": "251",
+      "title": "API + FHIR Contract Verification (Wave 7 P4)",
+      "folder": "248-PHASE-251-API-FHIR-CONTRACT-VERIFICATION",
+      "files": [
+        "251-01-IMPLEMENT.md",
+        "251-99-VERIFY.md",
+        "251-NOTES.md"
+      ],
+      "implementFiles": [
+        "251-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "251-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/api-contracts/route-contracts.ts",
+        "apps/api/src/api-contracts/index.ts",
+        "apps/api/tests/api-contract-verification.test.ts",
+        "apps/api/tests/fhir-contract-verification.test.ts",
+        "scripts/verify-phase251-api-fhir-contracts.ps"
+      ]
+    },
+    {
+      "phaseNumber": "252",
+      "title": "E2E Clinical Journeys (Wave 7 P5)",
+      "folder": "249-PHASE-252-E2E-CLINICAL-JOURNEYS",
+      "files": [
+        "252-01-IMPLEMENT.md",
+        "252-99-VERIFY.md",
+        "252-NOTES.md"
+      ],
+      "implementFiles": [
+        "252-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "252-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/web/e2e/helpers/journey-config.ts",
+        "apps/web/e2e/clinical-journey-evidence.spec.ts",
+        "scripts/verify-phase252-e2e-journeys.ps"
+      ]
+    },
+    {
       "phaseNumber": "23",
       "title": "Imaging Workflow — VERIFY",
       "folder": "25-PHASE-23-IMAGING-WORKFLOW",
@@ -4576,6 +4995,261 @@
         "ImagingPanel.tsx"
       ],
       "filesTouched": []
+    },
+    {
+      "phaseNumber": "253",
+      "title": "Performance Acceptance Gates (Wave 7 P6)",
+      "folder": "250-PHASE-253-PERF-ACCEPTANCE-GATES",
+      "files": [
+        "253-01-IMPLEMENT.md",
+        "253-99-VERIFY.md",
+        "253-NOTES.md"
+      ],
+      "implementFiles": [
+        "253-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "253-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "tests/k6/perf-acceptance-config.ts",
+        ".github/workflows/perf-acceptance-gate.yml",
+        "tests/k6/run-acceptance-gate.ps",
+        "scripts/verify-phase253-perf-gates.ps"
+      ]
+    },
+    {
+      "phaseNumber": "254",
+      "title": "Resilience Certification (Wave 7 P7)",
+      "folder": "251-PHASE-254-RESILIENCE-CERTIFICATION",
+      "files": [
+        "254-01-IMPLEMENT.md",
+        "254-99-VERIFY.md",
+        "254-NOTES.md"
+      ],
+      "implementFiles": [
+        "254-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "254-99-VERIFY.md"
+      ],
+      "routes": [
+        "/health",
+        "/ready"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "255",
+      "title": "DR Certification Drill (Wave 7 P8)",
+      "folder": "252-PHASE-255-DR-CERTIFICATION-DRILL",
+      "files": [
+        "255-01-IMPLEMENT.md",
+        "255-99-VERIFY.md",
+        "255-NOTES.md"
+      ],
+      "implementFiles": [
+        "255-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "255-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "256",
+      "title": "Pilot Hospital Go-Live Kit",
+      "folder": "253-PHASE-256-PILOT-GO-LIVE-KIT",
+      "files": [
+        "256-01-IMPLEMENT.md",
+        "256-99-VERIFY.md",
+        "256-NOTES.md"
+      ],
+      "implementFiles": [
+        "256-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "256-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "docs/pilot-go-live-kit.md",
+        "ops/drills/run-go-live-gate.ps",
+        "apps/api/tests/go-live-certification.test.ts",
+        "scripts/verify-phase256-go-live-kit.ps"
+      ]
+    },
+    {
+      "phaseNumber": "257",
+      "title": "OSS Integration Inventory + ADRs",
+      "folder": "254-PHASE-257-OSS-INTEGRATION-INVENTORY",
+      "files": [
+        "257-01-IMPLEMENT.md",
+        "257-99-VERIFY.md",
+        "257-NOTES.md"
+      ],
+      "implementFiles": [
+        "257-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "257-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "258",
+      "title": "HL7v2 Integration Engine Baseline (Wave 8 P2)",
+      "folder": "255-PHASE-258-HL7V2-ENGINE-BASELINE",
+      "files": [
+        "258-01-IMPLEMENT.md",
+        "258-99-VERIFY.md",
+        "258-NOTES.md"
+      ],
+      "implementFiles": [
+        "258-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "258-99-VERIFY.md"
+      ],
+      "routes": [
+        "/api/platform/integrations/hl7v2/*",
+        "/api/platform/integrations/hl7v2/endpoints",
+        "/api/platform/integrations/hl7v2/endpoints/:id"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "259",
+      "title": "HL7v2 Message Pipeline (Wave 8 P3)",
+      "folder": "256-PHASE-259-HL7V2-MESSAGE-PIPELINE",
+      "files": [
+        "259-01-IMPLEMENT.md",
+        "259-99-VERIFY.md",
+        "259-NOTES.md"
+      ],
+      "implementFiles": [
+        "259-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "259-99-VERIFY.md"
+      ],
+      "routes": [
+        "/hl7/dlq",
+        "/hl7/dlq/:id",
+        "/hl7/dlq/:id/replay",
+        "/hl7/dlq/:id/resolve",
+        "/hl7/dlq/stats",
+        "/hl7/pipeline/events",
+        "/hl7/pipeline/events/:id",
+        "/hl7/pipeline/stats",
+        "/hl7/pipeline/verify"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "260",
+      "title": "HL7v2 Use-Cases v1 (Wave 8 P4)",
+      "folder": "257-PHASE-260-HL7V2-USE-CASES-V1",
+      "files": [
+        "260-01-IMPLEMENT.md",
+        "260-99-VERIFY.md",
+        "260-NOTES.md"
+      ],
+      "implementFiles": [
+        "260-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "260-99-VERIFY.md"
+      ],
+      "routes": [
+        "/hl7/ingest",
+        "/hl7/use-cases",
+        "/hl7/use-cases/fixtures"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "261",
+      "title": "Payer Adapters at Scale — IMPLEMENT",
+      "folder": "258-PHASE-261-PAYER-ADAPTERS-SCALE",
+      "files": [
+        "261-01-IMPLEMENT.md",
+        "261-99-VERIFY.md",
+        "261-NOTES.md"
+      ],
+      "implementFiles": [
+        "261-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "261-99-VERIFY.md"
+      ],
+      "routes": [
+        "/rcm/sdk/adapters",
+        "/rcm/sdk/capabilities",
+        "/rcm/sdk/connectors",
+        "/rcm/sdk/rate-limits",
+        "/rcm/sdk/test-cases",
+        "/rcm/sdk/test-cases/run"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/rcm/adapters/adapter-sdk.ts",
+        "apps/api/src/routes/adapter-sdk-routes.ts",
+        "apps/api/tests/payer-adapter-sdk.test.ts",
+        "scripts/verify-phase261-payer-adapters-scale.ps"
+      ]
+    },
+    {
+      "phaseNumber": "262",
+      "title": "Onboarding UX v2 — IMPLEMENT",
+      "folder": "259-PHASE-262-ONBOARDING-UX-V2",
+      "files": [
+        "262-01-IMPLEMENT.md",
+        "262-99-VERIFY.md",
+        "262-NOTES.md"
+      ],
+      "implementFiles": [
+        "262-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "262-99-VERIFY.md"
+      ],
+      "routes": [
+        "/admin/onboarding/integrations",
+        "/admin/onboarding/integrations/kinds"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/config/onboarding-integration-steps.ts",
+        "apps/api/src/routes/onboarding-integration-routes.ts",
+        "apps/api/tests/onboarding-ux-v2.test.ts",
+        "scripts/verify-phase262-onboarding-ux-v2.ps"
+      ]
     },
     {
       "phaseNumber": "24",
@@ -4613,6 +5287,276 @@
         "docs/runbooks/imaging-device-onboarding-enterprise.md",
         "docs/runbooks/imaging-audit.md",
         "scripts/verify-imaging-devices.ps"
+      ]
+    },
+    {
+      "phaseNumber": "263",
+      "title": "Support Tooling v2 — IMPLEMENT",
+      "folder": "260-PHASE-263-SUPPORT-TOOLING-V2",
+      "files": [
+        "263-01-IMPLEMENT.md",
+        "263-99-VERIFY.md",
+        "263-NOTES.md"
+      ],
+      "implementFiles": [
+        "263-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "263-99-VERIFY.md"
+      ],
+      "routes": [
+        "/admin/support/bundles"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/support/support-toolkit-v2.ts",
+        "apps/api/src/routes/support-toolkit-v2-routes.ts",
+        "apps/api/tests/support-toolkit-v2.test.ts",
+        "scripts/verify-phase263-support-tooling-v2.ps"
+      ]
+    },
+    {
+      "phaseNumber": "264",
+      "title": "Data Portability Exports v1",
+      "folder": "261-PHASE-264-DATA-PORTABILITY-EXPORTS",
+      "files": [
+        "264-01-IMPLEMENT.md",
+        "264-99-VERIFY.md",
+        "264-NOTES.md"
+      ],
+      "implementFiles": [
+        "264-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "264-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "265",
+      "title": "Pilot Hospital Hardening Pack",
+      "folder": "262-PHASE-265-PILOT-HARDENING-PACK",
+      "files": [
+        "265-01-IMPLEMENT.md",
+        "265-99-VERIFY.md",
+        "265-NOTES.md"
+      ],
+      "implementFiles": [
+        "265-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "265-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "263",
+      "title": "Wave 8 Integrity Audit",
+      "folder": "263-PHASE-263-WAVE8-INTEGRITY-AUDIT",
+      "files": [
+        "263-01-IMPLEMENT.md",
+        "263-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "263-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "263-99-VERIFY.md"
+      ],
+      "routes": [
+        "/admin/support/tickets/:param/"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/pilot/sat-suite.ts",
+        "apps/api/src/platform/store-policy.ts",
+        "apps/api/src/routes/adapter-sdk-routes.ts",
+        "apps/api/src/routes/data-portability-routes.ts",
+        "apps/api/src/routes/hl7-pipeline.ts",
+        "apps/api/src/routes/hl7-use-cases.ts",
+        "apps/api/src/routes/onboarding-integration-routes.ts",
+        "apps/api/src/routes/sat-routes.ts",
+        "apps/api/src/routes/support-toolkit-v2-routes.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/tests/support-toolkit-v2.test.ts"
+      ]
+    },
+    {
+      "phaseNumber": "263",
+      "title": "Wave 8 INTEGRITY AUDIT",
+      "folder": "263-WAVE-8-INTEGRITY-AUDIT",
+      "files": [
+        "263-01-IMPLEMENT.md",
+        "263-99-VERIFY.md",
+        "263-NOTES.md"
+      ],
+      "implementFiles": [
+        "263-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "263-99-VERIFY.md"
+      ],
+      "routes": [
+        "/admin/support/tickets/:param/"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/pilot/sat-suite.ts",
+        "apps/api/src/platform/store-policy.ts",
+        "apps/api/src/routes/adapter-sdk-routes.ts",
+        "apps/api/src/routes/data-portability-routes.ts",
+        "apps/api/src/routes/hl7-pipeline.ts",
+        "apps/api/src/routes/hl7-use-cases.ts",
+        "apps/api/src/routes/onboarding-integration-routes.ts",
+        "apps/api/src/routes/sat-routes.ts",
+        "apps/api/src/routes/support-toolkit-v2-routes.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/tests/support-toolkit-v2.test.ts"
+      ]
+    },
+    {
+      "phaseNumber": "266",
+      "title": "Safety Case Scaffold (W8-P1)",
+      "folder": "264-PHASE-266-SAFETY-CASE-SCAFFOLD",
+      "files": [
+        "266-01-IMPLEMENT.md",
+        "266-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "266-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "266-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "docs/safety/SAFETY_CASE.md",
+        "docs/safety/SAFETY_RELEASE_GATE.md",
+        "docs/INDEX.md",
+        "evidence/wave-8/P1-safety-case/safety-case.md"
+      ]
+    },
+    {
+      "phaseNumber": "267",
+      "title": "RPC Contract Test Suite v2 (W8-P2)",
+      "folder": "265-PHASE-267-RPC-CONTRACT-SUITE-V2",
+      "files": [
+        "267-01-IMPLEMENT.md",
+        "267-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "267-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "267-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/rpc-contract-ci.mjs"
+      ]
+    },
+    {
+      "phaseNumber": "268",
+      "title": "Data Integrity & Clinical Invariants (W8-P3)",
+      "folder": "266-PHASE-268-DATA-INTEGRITY-INVARIANTS",
+      "files": [
+        "268-01-IMPLEMENT.md",
+        "268-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "268-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "268-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/clinical-invariants-ci.mjs"
+      ]
+    },
+    {
+      "phaseNumber": "269",
+      "title": "Security Verification Gauntlet (W8-P4)",
+      "folder": "267-PHASE-269-SECURITY-VERIFICATION-GAUNTLET",
+      "files": [
+        "269-01-IMPLEMENT.md",
+        "269-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "269-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "269-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/security/gauntlet.mjs",
+        "scripts/security/dep-scan.mjs",
+        "scripts/security/sast-scan.mjs",
+        "scripts/security/container-scan.mjs",
+        "scripts/security/iac-scan.mjs"
+      ]
+    },
+    {
+      "phaseNumber": "270",
+      "title": "Privacy & Access Controls Proof (W8-P5)",
+      "folder": "268-PHASE-270-PRIVACY-ACCESS-PROOF",
+      "files": [
+        "270-01-IMPLEMENT.md",
+        "270-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "270-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "270-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/privacy/phi-audit.mjs",
+        "scripts/privacy/dsar-evidence.mjs",
+        "scripts/privacy/access-control-proof.mjs"
+      ]
+    },
+    {
+      "phaseNumber": "271",
+      "title": "Resilience GameDays (W8-P6)",
+      "folder": "269-PHASE-271-RESILIENCE-GAMEDAYS",
+      "files": [
+        "271-01-IMPLEMENT.md",
+        "271-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "271-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "271-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "docs/runbooks/gameday-*.md",
+        "scripts/dr/gameday-drill.mjs"
       ]
     },
     {
@@ -4655,6 +5599,226 @@
         "docs/analytics/phase25-data-classification.md",
         "docs/runbooks/analytics-octo-rocto.md",
         "scripts/verify-phase25-bi-analytics.ps"
+      ]
+    },
+    {
+      "phaseNumber": "272",
+      "title": "Certification Evidence Bundle v2",
+      "folder": "270-PHASE-272-CERTIFICATION-BUNDLE-V2",
+      "files": [
+        "272-01-IMPLEMENT.md",
+        "272-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "272-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "272-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/generate-certification-evidence-v2.mjs",
+        "docs/runbooks/evidence-bundle-v2.md",
+        "evidence/wave-8/P7-certification-bundle/bundle-index.md"
+      ]
+    },
+    {
+      "phaseNumber": "273",
+      "title": "Go-Live Cutover Kit",
+      "folder": "271-PHASE-273-GO-LIVE-CUTOVER-KIT",
+      "files": [
+        "273-01-IMPLEMENT.md",
+        "273-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "273-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "273-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "docs/runbooks/go-live.md",
+        "docs/runbooks/first-72-hours.md",
+        "docs/runbooks/pilot-mode.md",
+        "evidence/wave-8/P8-go-live-kit/go-live-evidence.md"
+      ]
+    },
+    {
+      "phaseNumber": "274",
+      "title": "Prompt System Canonicalization & De-dup",
+      "folder": "272-PHASE-274-PROMPT-CANONICALIZATION",
+      "files": [
+        "274-01-IMPLEMENT.md",
+        "274-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "274-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "274-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/qa/prompts-canonical-audit.mjs",
+        "prompts/00-PLAYBOOKS/prompt-folder-reindex-map.json",
+        "docs/audits/prompts-canonical-audit.md"
+      ]
+    },
+    {
+      "phaseNumber": "275",
+      "title": "Tenant & Feature Flag Control Plane Unification",
+      "folder": "273-PHASE-275-TENANT-CONTROL-PLANE",
+      "files": [
+        "275-01-IMPLEMENT.md",
+        "275-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "275-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "275-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/platform/pg/repo/tenant-config-repo.ts",
+        "apps/api/src/config/tenant-config.ts"
+      ]
+    },
+    {
+      "phaseNumber": "276",
+      "title": "Durability: Read-Through Cache for PG-Backed Stores",
+      "folder": "274-PHASE-276-DURABILITY-READ-THROUGH",
+      "files": [
+        "276-01-IMPLEMENT.md",
+        "276-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "276-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "276-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "277",
+      "title": "VistA Container Modernization",
+      "folder": "275-PHASE-277-VISTA-CONTAINER-MODERNIZATION",
+      "files": [
+        "277-01-IMPLEMENT.md",
+        "277-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "277-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "277-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "278",
+      "title": "End-to-End Certification Gates",
+      "folder": "276-PHASE-278-E2E-CERTIFICATION-GATES",
+      "files": [
+        "278-01-IMPLEMENT.md",
+        "278-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "278-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "278-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "279",
+      "title": "Interop HL7 Engine: Production Convergence",
+      "folder": "277-PHASE-279-INTEROP-HL7-ENGINE",
+      "files": [
+        "279-01-IMPLEMENT.md",
+        "279-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "279-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "279-99-VERIFY.md"
+      ],
+      "routes": [
+        "/hl7/health"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "280",
+      "title": "UX Theming & Layout Convergence",
+      "folder": "278-PHASE-280-UX-THEMING-LAYOUT",
+      "files": [
+        "280-01-IMPLEMENT.md",
+        "280-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "280-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "280-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "cprs-ui-state.tsx",
+        "layout.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "281",
+      "title": "Data Migration Foundations",
+      "folder": "279-PHASE-281-DATA-MIGRATION-FOUNDATIONS",
+      "files": [
+        "281-01-IMPLEMENT.md",
+        "281-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "281-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "281-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/migration/fhir-bundle-parser.ts",
+        "apps/api/src/migration/ccda-parser.ts",
+        "apps/api/src/migration/reconciliation.ts",
+        "apps/api/src/migration/migration-orchestrator.ts",
+        "scripts/qa-gates/data-migration-gate.mjs",
+        "prompts/279-PHASE-281-DATA-MIGRATION-FOUNDATIONS/281-01-IMPLEMENT.md",
+        "prompts/279-PHASE-281-DATA-MIGRATION-FOUNDATIONS/281-99-VERIFY.md"
       ]
     },
     {
@@ -4707,6 +5871,315 @@
       ]
     },
     {
+      "phaseNumber": "282",
+      "title": "Wave 10 Manifest + Phase-ID Resolver + OSS Decision ADRs",
+      "folder": "280-PHASE-282-WAVE10-MANIFEST",
+      "files": [
+        "280-01-IMPLEMENT.md",
+        "280-99-VERIFY.md",
+        "280-NOTES.md"
+      ],
+      "implementFiles": [
+        "280-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "280-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "prompts/WAVE_10_MANIFEST.md",
+        "prompts/280-PHASE-282-WAVE10-MANIFEST/280-01-IMPLEMENT.md",
+        "prompts/280-PHASE-282-WAVE10-MANIFEST/280-99-VERIFY.md",
+        "prompts/280-PHASE-282-WAVE10-MANIFEST/280-NOTES.md",
+        "docs/decisions/ADR-OSS-BILLING.md",
+        "docs/decisions/ADR-OSS-FEATURE-FLAGS.md",
+        "evidence/wave-10/280/prompts-scan.json",
+        "evidence/wave-10/280/prompts-scan.txt"
+      ]
+    },
+    {
+      "phaseNumber": "283",
+      "title": "Theme System Core (design tokens + theme provider + persistence)",
+      "folder": "281-PHASE-283-THEME-SYSTEM-CORE",
+      "files": [
+        "281-01-IMPLEMENT.md",
+        "281-99-VERIFY.md",
+        "281-NOTES.md"
+      ],
+      "implementFiles": [
+        "281-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "281-99-VERIFY.md"
+      ],
+      "routes": [
+        "/ui-prefs/theme"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "cprs-ui-state.tsx"
+      ],
+      "filesTouched": [
+        "apps/web/src/lib/theme-tokens.ts",
+        "apps/web/src/stores/cprs-ui-state.tsx",
+        "apps/api/src/services/ui-prefs-store.ts",
+        "apps/api/src/routes/ui-prefs.ts",
+        "apps/api/src/config/tenant-config.ts",
+        "apps/api/src/routes/admin.ts"
+      ]
+    },
+    {
+      "phaseNumber": "284",
+      "title": "Theme Packs + Tenant Branding Admin",
+      "folder": "282-PHASE-284-THEME-PACKS-BRANDING",
+      "files": [
+        "282-01-IMPLEMENT.md",
+        "282-99-VERIFY.md",
+        "282-NOTES.md"
+      ],
+      "implementFiles": [
+        "282-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "282-99-VERIFY.md"
+      ],
+      "routes": [
+        "/admin/branding/:tenantId",
+        "/admin/feature-flags/:tenantId",
+        "/admin/my-tenant",
+        "/cprs/admin/branding"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "283",
+      "title": "Migration Templates Expansion",
+      "folder": "283-PHASE-283-MIGRATION-TEMPLATES",
+      "files": [
+        "283-01-IMPLEMENT.md",
+        "283-99-VERIFY.md",
+        "283-NOTES.md"
+      ],
+      "implementFiles": [
+        "283-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "283-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/migration/types.ts",
+        "apps/api/src/migration/templates.ts",
+        "apps/api/src/migration/__fixtures__/synthetic-fhir-bundle.json",
+        "apps/api/src/migration/__fixtures__/synthetic-ccda.xml"
+      ]
+    },
+    {
+      "phaseNumber": "284",
+      "title": "IMPLEMENT: SaaS Billing / Metering",
+      "folder": "284-PHASE-284-BILLING-METERING",
+      "files": [
+        "284-01-IMPLEMENT.md",
+        "284-99-VERIFY.md",
+        "284-NOTES.md"
+      ],
+      "implementFiles": [
+        "284-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "284-99-VERIFY.md"
+      ],
+      "routes": [
+        "/admin/billing/*",
+        "/admin/billing/health",
+        "/admin/billing/invoices/:tenantId",
+        "/admin/billing/invoices/:tenantId/current",
+        "/admin/billing/plans",
+        "/admin/billing/plans/:planId",
+        "/admin/billing/subscriptions",
+        "/admin/billing/subscriptions/:tenantId",
+        "/admin/billing/usage/:tenantId",
+        "/admin/billing/usage/flush"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/billing/types.ts",
+        "apps/api/src/billing/mock-provider.ts",
+        "apps/api/src/billing/lago-provider.ts",
+        "apps/api/src/billing/metering.ts",
+        "apps/api/src/billing/index.ts",
+        "apps/api/src/billing/billing-routes.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/platform/store-policy.ts",
+        "apps/api/.env.examp",
+        "apps/web/src/app/cprs/admin/billing/page.tsx"
+      ]
+    },
+    {
+      "phaseNumber": "285",
+      "title": "IMPLEMENT: Feature Flags Upgrade (OSS-first)",
+      "folder": "285-PHASE-285-FEATURE-FLAGS-UPGRADE",
+      "files": [
+        "285-01-IMPLEMENT.md",
+        "285-99-VERIFY.md",
+        "285-NOTES.md"
+      ],
+      "implementFiles": [
+        "285-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "285-99-VERIFY.md"
+      ],
+      "routes": [
+        "/admin/flags/*",
+        "/admin/flags/evaluate",
+        "/admin/flags/evaluate-all",
+        "/admin/flags/health",
+        "/admin/flags/variant",
+        "/admin/modules/feature-flags"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/flags/types.ts",
+        "apps/api/src/flags/db-provider.ts",
+        "apps/api/src/flags/unleash-provider.ts",
+        "apps/api/src/flags/index.ts",
+        "apps/api/src/flags/flag-eval-routes.ts",
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/platform/pg/pg-schema.ts",
+        "apps/api/src/platform/pg/repo/module-repo.ts",
+        "apps/api/src/routes/module-entitlement-routes.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/platform/store-policy.ts",
+        "apps/api/.env.examp",
+        "apps/web/src/app/cprs/admin/modules/page.tsx"
+      ]
+    },
+    {
+      "phaseNumber": "286",
+      "title": "Prompt Ordering Collision Fix + Index Regeneration",
+      "folder": "286-PHASE-286-PROMPT-ORDERING-FIX",
+      "files": [
+        "286-01-IMPLEMENT.md",
+        "286-99-VERIFY.md",
+        "286-NOTES.md"
+      ],
+      "implementFiles": [
+        "286-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "286-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/prompts-audit.mjs",
+        "prompts/PROMPTS_INDEX.md",
+        "prompts/WAVE_11_MANIFEST.md",
+        "evidence/wave-11/286/before.json",
+        "evidence/wave-11/286/after.json",
+        "evidence/wave-11/286/rename-map.json"
+      ]
+    },
+    {
+      "phaseNumber": "94",
+      "title": "PH HMO WORKFLOW",
+      "folder": "287-PHASE-94-PH-HMO-WORKFLOW",
+      "files": [
+        "94-01-IMPLEMENT.md",
+        "94-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "94-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "94-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "layout.tsx",
+        "page.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "95",
+      "title": "Payer Registry Persistence + Audit + Evidence Update Workflow",
+      "folder": "288-PHASE-95-PAYER-REGISTRY-PERSISTENCE",
+      "files": [
+        "95-01-IMPLEMENT.md",
+        "95-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "95-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "95-99-VERIFY.md"
+      ],
+      "routes": [
+        "/admin/payers",
+        "/admin/payers/:id",
+        "/admin/payers/:id/audit",
+        "/admin/payers/:id/capabilities",
+        "/admin/payers/:id/tasks",
+        "/admin/payers/import"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "layout.tsx",
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/rcm/payers/payer-persistence.ts",
+        "apps/api/src/rcm/payers/payer-audit.ts",
+        "apps/api/src/rcm/payers/evidence-manager.ts",
+        "apps/api/src/rcm/payers/payer-admin-routes.ts",
+        "apps/api/src/rcm/payers/ph-hmo-registry.ts",
+        "apps/api/src/index.ts",
+        "apps/web/src/app/cprs/admin/payer-registry/page.tsx",
+        "apps/web/src/app/cprs/admin/layout.tsx",
+        "scripts/import-payer-registry.ps",
+        "scripts/verify-prompt-ordering.ps"
+      ]
+    },
+    {
+      "phaseNumber": "95B",
+      "title": "Platform Persistence Unification + Payer Registry Audit/Evidence",
+      "folder": "289-PHASE-95B-PLATFORM-PERSISTENCE",
+      "files": [
+        "95B-01-IMPLEMENT.md",
+        "95B-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "95B-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "95B-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
       "phaseNumber": "27",
       "title": "Portal Core: VistA-First Record + Exports + Proxy + Messaging + Appointments + Sharing — IMPLEMENT",
       "folder": "29-PHASE-27-PORTAL-CORE",
@@ -4742,6 +6215,363 @@
       ]
     },
     {
+      "phaseNumber": "290",
+      "title": "Wave 9 Integrity Audit — Implementation",
+      "folder": "290-PHASE-290-WAVE9-INTEGRITY-AUDIT",
+      "files": [
+        "AUDIT-01-IMPLEMENT.md",
+        "AUDIT-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "AUDIT-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "AUDIT-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/hl7/index.ts",
+        "apps/api/src/routes/hl7-engine.ts",
+        "apps/api/src/migration/migration-routes.ts",
+        "apps/api/src/platform/store-policy.ts",
+        "apps/api/src/platform/pg/index.ts",
+        "apps/api/src/hl7/fhir-bridge.ts",
+        "apps/web/src/components/cprs/cprs.module.css",
+        "apps/web/src/components/chart/MenuBar.module.css",
+        "apps/web/src/components/chart/panels/panels.module.css",
+        "apps/web/src/app/chart/[dfn]/[tab]/page.module.css"
+      ]
+    },
+    {
+      "phaseNumber": "290",
+      "title": "Wave 9 INTEGRITY AUDIT",
+      "folder": "290-WAVE-9-INTEGRITY-AUDIT",
+      "files": [
+        "290-01-IMPLEMENT.md",
+        "290-99-VERIFY.md",
+        "290-NOTES.md"
+      ],
+      "implementFiles": [
+        "290-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "290-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/hl7/index.ts",
+        "apps/api/src/routes/hl7-engine.ts",
+        "apps/api/src/migration/migration-routes.ts",
+        "apps/api/src/platform/store-policy.ts",
+        "apps/api/src/platform/pg/index.ts",
+        "apps/api/src/hl7/fhir-bridge.ts",
+        "apps/web/src/components/cprs/cprs.module.css",
+        "apps/web/src/components/chart/MenuBar.module.css",
+        "apps/web/src/components/chart/panels/panels.module.css",
+        "apps/web/src/app/chart/[dfn]/[tab]/page.module.css"
+      ]
+    },
+    {
+      "phaseNumber": "100",
+      "title": "Eligibility + Claim Status Polling Framework (Adapter-first)",
+      "folder": "291-PHASE-100-ELIGIBILITY-CLAIMSTATUS",
+      "files": [
+        "100-01-IMPLEMENT.md",
+        "100-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "100-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "100-99-VERIFY.md"
+      ],
+      "routes": [
+        "/rcm/claim-status/check",
+        "/rcm/claim-status/history",
+        "/rcm/claim-status/schedule",
+        "/rcm/claim-status/stats",
+        "/rcm/claim-status/timeline/:claimRef",
+        "/rcm/eligibility/check",
+        "/rcm/eligibility/history",
+        "/rcm/eligibility/stats"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/platform/db/schema.ts",
+        "apps/api/src/platform/db/migrate.ts",
+        "types.ts",
+        "types.ts",
+        "apps/api/src/index.ts",
+        "apps/web/src/app/cprs/admin/rcm/page.tsx",
+        "docs/runbooks/rcm-eligibility-claimstatus-phase100.md",
+        "scripts/verify-phase100-eligibility-claimstatus.ps"
+      ]
+    },
+    {
+      "phaseNumber": "97",
+      "title": "Top-5 HMO \"LOA + Claim Packet + Portal Adapter Interface\"",
+      "folder": "292-PHASE-97-HMO-PORTAL-ADAPTER",
+      "files": [
+        "97-01-IMPLEMENT.md",
+        "97-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "97-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "97-99-VERIFY.md"
+      ],
+      "routes": [
+        "/rcm/hmo-portal/*",
+        "/rcm/hmo-portal/adapters",
+        "/rcm/hmo-portal/claims/build",
+        "/rcm/hmo-portal/claims/export",
+        "/rcm/hmo-portal/claims/submit",
+        "/rcm/hmo-portal/loa/build",
+        "/rcm/hmo-portal/loa/export",
+        "/rcm/hmo-portal/loa/submit",
+        "/rcm/hmo-portal/specialties",
+        "/rcm/hmo-portal/submissions",
+        "/rcm/hmo-portal/submissions/:id",
+        "/rcm/hmo-portal/submissions/:id/note",
+        "/rcm/hmo-portal/submissions/:id/status",
+        "/rcm/hmo-portal/submissions/stats"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "layout.tsx",
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/rcm/hmo-portal/types.ts",
+        "apps/api/src/rcm/hmo-portal/loa-engine.ts",
+        "apps/api/src/rcm/hmo-portal/hmo-packet-builder.ts",
+        "apps/api/src/rcm/hmo-portal/portal-adapter.ts",
+        "apps/api/src/rcm/hmo-portal/adapters/maxicare.ts",
+        "apps/api/src/rcm/hmo-portal/adapters/medicard.ts",
+        "apps/api/src/rcm/hmo-portal/adapters/intellicare.ts",
+        "apps/api/src/rcm/hmo-portal/adapters/philcare.ts",
+        "apps/api/src/rcm/hmo-portal/adapters/valucare.ts",
+        "apps/api/src/rcm/hmo-portal/hmo-portal-routes.ts",
+        "apps/web/src/app/cprs/admin/hmo-portal/page.tsx",
+        "apps/api/src/index.ts",
+        "apps/web/src/app/cprs/admin/layout.tsx"
+      ]
+    },
+    {
+      "phaseNumber": "115",
+      "title": "IMPLEMENT: Durability Wave 2 (Portal/Telehealth/Imaging/Idempotency)",
+      "folder": "293-PHASE-115-DURABILITY-WAVE2",
+      "files": [
+        "115-01-IMPLEMENT.md",
+        "115-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "115-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "115-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/platform/db/schema.ts",
+        "apps/api/src/platform/db/migrate.ts",
+        "apps/api/src/platform/db/repo/portal-message-repo.ts",
+        "apps/api/src/platform/db/repo/portal-appointment-repo.ts",
+        "apps/api/src/platform/db/repo/telehealth-room-repo.ts",
+        "apps/api/src/platform/db/repo/imaging-worklist-repo.ts",
+        "apps/api/src/platform/db/repo/imaging-ingest-repo.ts",
+        "apps/api/src/platform/db/repo/idempotency-repo.ts",
+        "apps/api/src/platform/db/repo/index.ts",
+        "apps/api/src/services/portal-messaging.ts",
+        "apps/api/src/services/portal-appointments.ts",
+        "apps/api/src/telehealth/room-store.ts",
+        "apps/api/src/services/imaging-worklist.ts",
+        "apps/api/src/services/imaging-ingest.ts",
+        "apps/api/src/middleware/idempotency.ts",
+        "apps/api/src/index.ts",
+        "scripts/verify-phase115-durability-wave2.ps",
+        "scripts/verify-latest.ps",
+        "docs/runbooks/durability-wave2.md",
+        "prompts/115-PHASE-115-DURABILITY-WAVE2/115-01-IMPLEMENT.md"
+      ]
+    },
+    {
+      "phaseNumber": "287",
+      "title": "Real TLS in Dev + K8s",
+      "folder": "294-PHASE-287-REAL-TLS-DEV-K8S",
+      "files": [
+        "287-01-IMPLEMENT.md",
+        "287-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "287-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "287-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "infra/tls/docker-compose.tls.yml",
+        "infra/tls/mkcert-bootstrap.ps",
+        "nginx/nginx.conf",
+        "nginx/tls.conf",
+        "infra/helm/ve-shared/templates/cert-manager.yaml",
+        "infra/helm/ve-shared/values.yaml",
+        "docker-compose.prod.yml",
+        "docs/runbooks/tls.md",
+        "scripts/verify-phase287-tls.ps"
+      ]
+    },
+    {
+      "phaseNumber": "288",
+      "title": "VistA Distro Modernization",
+      "folder": "295-PHASE-288-VISTA-DISTRO-MODERNIZE",
+      "files": [
+        "288-01-IMPLEMENT.md",
+        "288-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "288-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "288-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "services/vista-distro/build.env",
+        "services/vista-distro/synthea-seed/seed-synthea.ps",
+        "services/vista-distro/synthea-seed/README.md",
+        ".github/workflows/ci-distro-build.yml",
+        ".hadolint.yaml",
+        "docs/runbooks/vista-distro-modernization.md",
+        "scripts/verify-phase288-distro-modernize.ps"
+      ]
+    },
+    {
+      "phaseNumber": "289",
+      "title": "Production-Scale Load Test Campaign",
+      "folder": "296-PHASE-289-LOAD-TEST-CAMPAIGN",
+      "files": [
+        "289-01-IMPLEMENT.md",
+        "289-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "289-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "289-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "tests/k6/prod-load-plan.md",
+        "tests/k6/prod-sustained.js",
+        "tests/k6/prod-spike.js",
+        "tests/k6/prod-soak.js",
+        "tests/k6/run-campaign.ps",
+        "docs/runbooks/load-testing.md",
+        "scripts/verify-phase289-load-tests.ps"
+      ]
+    },
+    {
+      "phaseNumber": "290",
+      "title": "Interop Certification Harness",
+      "folder": "297-PHASE-290-INTEROP-CERT-HARNESS",
+      "files": [
+        "290-01-IMPLEMENT.md",
+        "290-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "290-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "290-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "tests/interop/fhir-conformance.mjs",
+        "tests/interop/smart-readiness.mjs",
+        "tests/interop/hl7-pack-suite.mjs",
+        "tests/interop/assertions/fhir-assertions.mjs",
+        "tests/interop/run-interop-suite.ps",
+        "docs/runbooks/interop-certification.md",
+        "scripts/verify-phase290-interop-cert.ps"
+      ]
+    },
+    {
+      "phaseNumber": "291",
+      "title": "Certification Evidence Pack v2",
+      "folder": "298-PHASE-291-CERT-EVIDENCE-PACK-V2",
+      "files": [
+        "291-01-IMPLEMENT.md",
+        "291-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "291-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "291-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/build-evidence-pack.mjs",
+        "docs/runbooks/certification-evidence-pack.md",
+        "scripts/verify-phase291-evidence-pack.ps",
+        "prompts/298-PHASE-291-CERT-EVIDENCE-PACK-V2/291-01-IMPLEMENT.md",
+        "prompts/298-PHASE-291-CERT-EVIDENCE-PACK-V2/291-99-VERIFY.md"
+      ]
+    },
+    {
+      "phaseNumber": "299",
+      "title": "W12-P1 IMPLEMENT",
+      "folder": "299-PHASE-299-W12-MANIFEST-SCOPE-MATRIX",
+      "files": [
+        "299-01-IMPLEMENT.md",
+        "299-99-VERIFY.md",
+        "299-NOTES.md"
+      ],
+      "implementFiles": [
+        "299-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "299-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "prompts/WAVE_12_MANIFEST.md",
+        "prompts/299-PHASE-299-W12-MANIFEST-SCOPE-MATRIX/299-01-IMPLEMENT.md",
+        "prompts/299-PHASE-299-W12-MANIFEST-SCOPE-MATRIX/299-99-VERIFY.md",
+        "prompts/299-PHASE-299-W12-MANIFEST-SCOPE-MATRIX/299-NOTES.md",
+        "docs/clinical/writeback-scope-matrix.md",
+        "docs/adrs/ADR-PACS-viewer.md",
+        "docs/adrs/ADR-DICOM-store.md",
+        "docs/adrs/ADR-telehealth-providers.md",
+        "docs/adrs/ADR-HL7-ops.md",
+        "scripts/verify-phase299-manifest.ps"
+      ]
+    },
+    {
       "phaseNumber": "28",
       "title": "ENTERPRISE INTAKE OS",
       "folder": "30-PHASE-28-ENTERPRISE-INTAKE-OS",
@@ -4767,6 +6597,278 @@
         "THIRD_PARTY_NOTICES.md",
         "docs/runbooks/phase28-*.md"
       ]
+    },
+    {
+      "phaseNumber": "300",
+      "title": "Clinical Writeback Command Bus (W12-P2)",
+      "folder": "300-PHASE-300-CLINICAL-WRITEBACK-BUS",
+      "files": [
+        "300-01-IMPLEMENT.md",
+        "300-99-VERIFY.md",
+        "300-NOTES.md"
+      ],
+      "implementFiles": [
+        "300-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "300-99-VERIFY.md"
+      ],
+      "routes": [
+        "/writeback/commands",
+        "/writeback/commands/:id",
+        "/writeback/commands/:id/process",
+        "/writeback/gates",
+        "/writeback/stats"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/writeback/types.ts",
+        "apps/api/src/writeback/gates.ts",
+        "apps/api/src/writeback/command-store.ts",
+        "apps/api/src/writeback/command-bus.ts",
+        "apps/api/src/writeback/writeback-routes.ts",
+        "apps/api/src/writeback/index.ts",
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/lib/immutable-audit.ts",
+        "apps/api/src/platform/store-policy.ts",
+        "apps/api/src/server/register-routes.ts"
+      ]
+    },
+    {
+      "phaseNumber": "301",
+      "title": "TIU Notes Writeback Executor (W12-P3)",
+      "folder": "301-PHASE-301-TIU-NOTES-WRITEBACK",
+      "files": [
+        "301-01-IMPLEMENT.md",
+        "301-99-VERIFY.md",
+        "301-NOTES.md"
+      ],
+      "implementFiles": [
+        "301-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "301-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/writeback/executors/tiu-executor.ts",
+        "apps/api/src/writeback/executors/index.ts",
+        "apps/api/src/writeback/__tests__/tiu-contract.test.ts"
+      ]
+    },
+    {
+      "phaseNumber": "302",
+      "title": "Orders Writeback Core (W12-P4)",
+      "folder": "302-PHASE-302-ORDERS-WRITEBACK-CORE",
+      "files": [
+        "302-01-IMPLEMENT.md",
+        "302-99-VERIFY.md",
+        "302-NOTES.md"
+      ],
+      "implementFiles": [
+        "302-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "302-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/writeback/executors/orders-executor.ts",
+        "apps/api/src/writeback/executors/index.ts",
+        "apps/api/src/writeback/__tests__/orders-contract.test.ts",
+        "prompts/299-WAVE-12/302-ORDERS-WRITEBACK/302-01-IMPLEMENT.md",
+        "prompts/299-WAVE-12/302-ORDERS-WRITEBACK/302-99-VERIFY.md",
+        "prompts/299-WAVE-12/302-ORDERS-WRITEBACK/302-NOTES.md",
+        "evidence/wave-12/302-orders-writeback/evidence.md",
+        "scripts/verify-phase302-orders-writeback.ps"
+      ]
+    },
+    {
+      "phaseNumber": "303",
+      "title": "Pharmacy Deep Writeback (W12-P5)",
+      "folder": "303-PHASE-303-PHARMACY-DEEP-WRITEBACK",
+      "files": [
+        "303-01-IMPLEMENT.md",
+        "303-99-VERIFY.md",
+        "303-NOTES.md"
+      ],
+      "implementFiles": [
+        "303-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "303-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/writeback/executors/pharm-executor.ts",
+        "apps/api/src/writeback/executors/index.ts",
+        "apps/api/src/writeback/__tests__/pharm-contract.test.ts"
+      ]
+    },
+    {
+      "phaseNumber": "304",
+      "title": "Lab Deep Writeback (W12-P6)",
+      "folder": "304-PHASE-304-LAB-DEEP-WRITEBACK",
+      "files": [
+        "304-01-IMPLEMENT.md",
+        "304-99-VERIFY.md",
+        "304-NOTES.md"
+      ],
+      "implementFiles": [
+        "304-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "304-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/writeback/executors/lab-executor.ts",
+        "apps/api/src/writeback/executors/index.ts",
+        "apps/api/src/writeback/__tests__/lab-contract.test.ts"
+      ]
+    },
+    {
+      "phaseNumber": "305",
+      "title": "Inpatient ADT Writeback (W12-P7)",
+      "folder": "305-PHASE-305-INPATIENT-ADT-WRITEBACK",
+      "files": [
+        "305-01-IMPLEMENT.md",
+        "305-99-VERIFY.md",
+        "305-NOTES.md"
+      ],
+      "implementFiles": [
+        "305-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "305-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/writeback/executors/adt-executor.ts",
+        "apps/api/src/writeback/executors/index.ts",
+        "apps/api/src/writeback/__tests__/adt-contract.test.ts"
+      ]
+    },
+    {
+      "phaseNumber": "306",
+      "title": "Imaging/PACS Validation (W12-P8)",
+      "folder": "306-PHASE-306-IMAGING-PACS-VALIDATION",
+      "files": [
+        "306-01-IMPLEMENT.md",
+        "306-99-VERIFY.md",
+        "306-NOTES.md"
+      ],
+      "implementFiles": [
+        "306-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "306-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/writeback/executors/img-executor.ts",
+        "apps/api/src/writeback/executors/index.ts",
+        "apps/api/src/writeback/__tests__/img-contract.test.ts"
+      ]
+    },
+    {
+      "phaseNumber": "307",
+      "title": "W12-P9 IMPLEMENT",
+      "folder": "307-PHASE-307-TELEHEALTH-HARDENING",
+      "files": [
+        "307-01-IMPLEMENT.md",
+        "307-99-VERIFY.md",
+        "307-NOTES.md"
+      ],
+      "implementFiles": [
+        "307-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "307-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/telehealth/encounter-link.ts",
+        "apps/api/src/telehealth/consent-posture.ts",
+        "apps/api/src/telehealth/session-hardening.ts",
+        "apps/api/src/writeback/__tests__/telehealth-hardening-contract.test.ts",
+        "apps/api/src/lib/immutable-audit.ts",
+        "apps/api/src/platform/store-policy.ts",
+        "prompts/307-PHASE-307-TELEHEALTH-HARDENING/307-01-IMPLEMENT.md",
+        "prompts/307-PHASE-307-TELEHEALTH-HARDENING/307-99-VERIFY.md",
+        "prompts/307-PHASE-307-TELEHEALTH-HARDENING/307-NOTES.md",
+        "evidence/wave-12/307-telehealth-hardening/evidence.md",
+        "scripts/verify-phase307-telehealth-hardening.ps"
+      ]
+    },
+    {
+      "phaseNumber": "308",
+      "title": "W12-P10 IMPLEMENT",
+      "folder": "308-PHASE-308-CERTIFICATION-RUNNER",
+      "files": [
+        "308-01-IMPLEMENT.md",
+        "308-99-VERIFY.md",
+        "308-NOTES.md"
+      ],
+      "implementFiles": [
+        "308-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "308-99-VERIFY.md"
+      ],
+      "routes": [
+        "/writeback/*",
+        "/writeback/certification",
+        "/writeback/certification/summary"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/writeback/certification-runner.ts",
+        "apps/api/src/writeback/__tests__/certification-contract.test.ts",
+        "apps/api/src/writeback/writeback-routes.ts",
+        "apps/api/src/writeback/index.ts",
+        "prompts/308-PHASE-308-CERTIFICATION-RUNNER/308-01-IMPLEMENT.md",
+        "prompts/308-PHASE-308-CERTIFICATION-RUNNER/308-99-VERIFY.md",
+        "prompts/308-PHASE-308-CERTIFICATION-RUNNER/308-NOTES.md",
+        "evidence/wave-12/308-certification-runner/evidence.md",
+        "scripts/verify-phase308-certification-runner.ps"
+      ]
+    },
+    {
+      "phaseNumber": "309",
+      "title": "IMPLEMENT: Manifest + Country-Pack ADRs + Market Matrix",
+      "folder": "309-PHASE-309-MANIFEST-COUNTRY-PACK-ADRS",
+      "files": [
+        "309-01-IMPLEMENT.md",
+        "309-99-VERIFY.md",
+        "309-NOTES.md"
+      ],
+      "implementFiles": [
+        "309-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "309-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
     },
     {
       "phaseNumber": "29",
@@ -4800,6 +6902,265 @@
       ]
     },
     {
+      "phaseNumber": "310",
+      "title": "IMPLEMENT: Localization Completion",
+      "folder": "310-PHASE-310-LOCALIZATION-COMPLETION",
+      "files": [
+        "310-01-IMPLEMENT.md",
+        "310-99-VERIFY.md",
+        "310-NOTES.md"
+      ],
+      "implementFiles": [
+        "310-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "310-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "311",
+      "title": "IMPLEMENT: Data Residency & Region Routing",
+      "folder": "311-PHASE-311-DATA-RESIDENCY-REGION",
+      "files": [
+        "311-01-IMPLEMENT.md",
+        "311-99-VERIFY.md",
+        "311-NOTES.md"
+      ],
+      "implementFiles": [
+        "311-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "311-99-VERIFY.md"
+      ],
+      "routes": [
+        "/residency/regions",
+        "/residency/regions/:region",
+        "/residency/tenant/:tenantId",
+        "/residency/tenant/:tenantId/assign",
+        "/residency/transfer-agreements",
+        "/residency/validate-transfer"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "312",
+      "title": "IMPLEMENT: Privacy/Consent Controls",
+      "folder": "312-PHASE-312-PRIVACY-CONSENT-CONTROLS",
+      "files": [
+        "312-01-IMPLEMENT.md",
+        "312-99-VERIFY.md",
+        "312-NOTES.md"
+      ],
+      "implementFiles": [
+        "312-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "312-99-VERIFY.md"
+      ],
+      "routes": [
+        "/consent/active",
+        "/consent/categories",
+        "/consent/check",
+        "/consent/grant",
+        "/consent/patient",
+        "/consent/profiles",
+        "/consent/revoke"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "313",
+      "title": "IMPLEMENT: Terminology Strategy",
+      "folder": "313-PHASE-313-TERMINOLOGY-STRATEGY",
+      "files": [
+        "313-01-IMPLEMENT.md",
+        "313-99-VERIFY.md",
+        "313-NOTES.md"
+      ],
+      "implementFiles": [
+        "313-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "313-99-VERIFY.md"
+      ],
+      "routes": [
+        "/terminology/defaults/:country",
+        "/terminology/resolve",
+        "/terminology/resolvers",
+        "/terminology/validate"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "314",
+      "title": "Country Packs (W13-P6)",
+      "folder": "314-PHASE-314-COUNTRY-PACKS",
+      "files": [
+        "314-01-IMPLEMENT.md",
+        "314-99-VERIFY.md",
+        "314-NOTES.md"
+      ],
+      "implementFiles": [
+        "314-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "314-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "country-packs/US/values.json",
+        "country-packs/US/README.md",
+        "country-packs/PH/values.json",
+        "country-packs/PH/README.md",
+        "country-packs/GH/values.json",
+        "country-packs/GH/README.md",
+        "apps/api/src/platform/country-pack-loader.ts",
+        "apps/api/src/routes/country-pack-routes.ts"
+      ]
+    },
+    {
+      "phaseNumber": "315",
+      "title": "Compliance Evidence Mapping (W13-P7)",
+      "folder": "315-PHASE-315-COMPLIANCE-EVIDENCE-MAP",
+      "files": [
+        "315-01-IMPLEMENT.md",
+        "315-99-VERIFY.md",
+        "315-NOTES.md"
+      ],
+      "implementFiles": [
+        "315-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "315-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/services/compliance-matrix.ts",
+        "apps/api/src/routes/compliance-routes.ts",
+        "docs/compliance/compliance-evidence-map.md"
+      ]
+    },
+    {
+      "phaseNumber": "316",
+      "title": "Trust Center Pack (W13-P8)",
+      "folder": "316-PHASE-316-TRUST-CENTER-PACK",
+      "files": [
+        "316-01-IMPLEMENT.md",
+        "316-99-VERIFY.md",
+        "316-NOTES.md"
+      ],
+      "implementFiles": [
+        "316-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "316-99-VERIFY.md"
+      ],
+      "routes": [
+        "/compliance/*",
+        "/iam/audit/verify"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "docs/trust-center/TRUST_CENTER.md",
+        "docs/trust-center/SECURITY_POSTURE.md",
+        "docs/trust-center/ARCHITECTURE_OVERVIEW.md"
+      ]
+    },
+    {
+      "phaseNumber": "317",
+      "title": "W14-P1: Manifest + Interop Inventory + ADRs",
+      "folder": "317-W14-P1-MANIFEST-INTEROP-INVENTORY",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "318",
+      "title": "W14-P2 INTEGRATION CONTROL PLANE",
+      "folder": "318-W14-P2-INTEGRATION-CONTROL-PLANE",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/api/platform/integrations/",
+        "/api/platform/integrations/partners/*"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/services/integration-control-plane.ts",
+        "apps/api/src/routes/integration-control-plane-routes.ts",
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "319",
+      "title": "W14-P3 HL7V2 MESSAGE TEMPLATES",
+      "folder": "319-W14-P3-HL7V2-MESSAGE-TEMPLATES",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/hl7/templates/types.ts",
+        "apps/api/src/hl7/templates/template-store.ts",
+        "apps/api/src/hl7/templates/template-validator.ts",
+        "apps/api/src/hl7/templates/index.ts",
+        "apps/api/src/routes/hl7-templates.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
       "phaseNumber": "30",
       "title": "Telehealth Provider Adapters + Device Check + Waiting Room",
       "folder": "32-PHASE-30-TELEHEALTH",
@@ -4817,6 +7178,308 @@
       "rpcs": [],
       "uiComponents": [],
       "filesTouched": []
+    },
+    {
+      "phaseNumber": "320",
+      "title": "W14-P4: HL7v2 Ops Maturity",
+      "folder": "320-W14-P4-HL7V2-OPS-MATURITY",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/hl7/ops/dashboard",
+        "/hl7/ops/retry",
+        "/hl7/ops/retry/:dlqId",
+        "/hl7/ops/retry/due",
+        "/hl7/ops/retry/stats",
+        "/hl7/ops/sla",
+        "/hl7/ops/sla/:id",
+        "/hl7/ops/sla/evaluate",
+        "/hl7/ops/sla/violations",
+        "/hl7/ops/sla/violations/:id/ack",
+        "/hl7/ops/throughput/:endpointId"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/hl7/hl7-ops-monitor.ts",
+        "apps/api/src/routes/hl7-ops.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "321",
+      "title": "W14-P5: X12 Gateway Service",
+      "folder": "321-W14-P5-X12-GATEWAY-SERVICE",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/x12/gateway/ack/999",
+        "/x12/gateway/ack/ta1",
+        "/x12/gateway/control-numbers",
+        "/x12/gateway/handlers",
+        "/x12/gateway/health",
+        "/x12/gateway/ingest",
+        "/x12/gateway/parse",
+        "/x12/gateway/validate"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/rcm/edi/x12-gateway.ts",
+        "apps/api/src/routes/x12-gateway.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "322",
+      "title": "W14-P6: Clearinghouse Adapters v2",
+      "folder": "322-W14-P6-CLEARINGHOUSE-ADAPTERS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/clearinghouse/health",
+        "/clearinghouse/profiles",
+        "/clearinghouse/transports",
+        "/clearinghouse/transports/test/:id",
+        "/clearinghouse/vault/credentials",
+        "/clearinghouse/vault/credentials/:key",
+        "/clearinghouse/vault/status"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/rcm/connectors/clearinghouse-transport.ts",
+        "apps/api/src/routes/clearinghouse-transport.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "323",
+      "title": "W14-P7: Integration Certification Pipeline",
+      "folder": "323-W14-P7-CERTIFICATION-PIPELINE",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/certification/",
+        "/certification/stats"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/services/certification-pipeline.ts",
+        "apps/api/src/routes/certification-pipeline.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "324",
+      "title": "W14-P8: Integration Marketplace & Registry",
+      "folder": "324-W14-P8-MARKETPLACE-REGISTRY",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/marketplace/",
+        "/marketplace/stats"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/services/integration-marketplace.ts",
+        "apps/api/src/routes/marketplace.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "325",
+      "title": "W14-P9: Integration Onboarding UX",
+      "folder": "325-W14-P9-ONBOARDING-UX",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/onboarding/",
+        "/onboarding/stats"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/services/integration-onboarding.ts",
+        "apps/api/src/routes/onboarding.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "326",
+      "title": "Wave 14 Integrity Audit & Fix Pass",
+      "folder": "326-WAVE-14-INTEGRITY-AUDIT",
+      "files": [
+        "326-01-IMPLEMENT.md",
+        "326-99-VERIFY.md",
+        "326-NOTES.md"
+      ],
+      "implementFiles": [
+        "326-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "326-99-VERIFY.md"
+      ],
+      "routes": [
+        "/hl7/ops/sla/:id",
+        "/hl7/ops/store-stats"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/rcm/edi/x12-gateway.ts",
+        "apps/api/src/hl7/hl7-ops-monitor.ts",
+        "apps/api/src/rcm/connectors/clearinghouse-transport.ts",
+        "apps/api/src/services/certification-pipeline.ts",
+        "apps/api/src/services/integration-marketplace.ts",
+        "apps/api/src/routes/hl7-ops.ts",
+        "apps/api/src/routes/clearinghouse-transport.ts",
+        "apps/api/src/routes/certification-pipeline.ts",
+        "apps/api/src/routes/marketplace.ts"
+      ]
+    },
+    {
+      "phaseNumber": "327",
+      "title": "W15-P1: Manifest + Multi-Region ADRs",
+      "folder": "327-W15-P1-MANIFEST-ADRS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/docs/adrs/"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "328",
+      "title": "W15-P2: Multi-Cluster Registry",
+      "folder": "328-W15-P2-MULTI-CLUSTER-REGISTRY",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/services/multi-cluster-registry.ts",
+        "apps/api/src/routes/multi-cluster-routes.ts",
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "329",
+      "title": "W15-P3: Global Routing",
+      "folder": "329-W15-P3-GLOBAL-ROUTING",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/services/global-routing.ts",
+        "apps/api/src/routes/global-routing-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
     },
     {
       "phaseNumber": "31",
@@ -4846,6 +7509,282 @@
         "AGENTS.md",
         "ops/phase31-summary.md",
         "ops/phase31-notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "330",
+      "title": "W15-P4: Data Plane Sharding",
+      "folder": "330-W15-P4-DATA-PLANE-SHARDING",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/services/data-plane-sharding.ts",
+        "apps/api/src/routes/data-plane-sharding-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "331",
+      "title": "IMPLEMENT: Queue & Cache Regionalization (W15-P5)",
+      "folder": "331-W15-P5-QUEUE-CACHE-REGIONAL",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/services/queue-cache-regional.ts",
+        "apps/api/src/routes/queue-cache-regional-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "332",
+      "title": "IMPLEMENT: Cost Attribution & Budgets (W15-P6)",
+      "folder": "332-W15-P6-COST-ATTRIBUTION",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/services/cost-attribution.ts",
+        "apps/api/src/routes/cost-attribution-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "333",
+      "title": "IMPLEMENT: Multi-Region DR & GameDays (W15-P7)",
+      "folder": "333-W15-P7-DR-GAMEDAYS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/services/dr-gameday.ts",
+        "apps/api/src/routes/dr-gameday-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "334",
+      "title": "IMPLEMENT: Scale Performance Campaign (W15-P8)",
+      "folder": "334-W15-P8-SCALE-PERF",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/services/scale-performance.ts",
+        "apps/api/src/routes/scale-performance-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "335",
+      "title": "W15-P9: Enterprise SRE / Support Posture",
+      "folder": "335-W15-P9-SRE-SUPPORT",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/platform/sre/"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/services/sre-support-posture.ts",
+        "apps/api/src/routes/sre-support-posture-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "336",
+      "title": "W15-P10: Scale Certification Runner",
+      "folder": "336-W15-P10-SCALE-CERT-RUNNER",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/platform/cert/"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/services/scale-cert-runner.ts",
+        "apps/api/src/routes/scale-cert-runner-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "337",
+      "title": "W16-P1: Range Reservation + Manifest + OSS/ADR Decisions",
+      "folder": "337-W16-P1-MANIFEST-ADRS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/docs/adrs/",
+        "/evidence/wave-16/337-manifest/"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "338",
+      "title": "W16-P2 — Enterprise Identity Hardening — IMPLEMENT",
+      "folder": "338-W16-P2-IDENTITY-HARDENING",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/auth/security-events",
+        "/auth/sessions",
+        "/auth/sessions/:id",
+        "/auth/sessions/revoke-all"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/auth/step-up-auth.ts",
+        "apps/api/src/auth/mfa-enforcement.ts",
+        "apps/api/src/auth/session-security.ts",
+        "apps/api/src/routes/session-management.ts",
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/config/server-config.ts",
+        "apps/api/src/middleware/security.ts"
+      ]
+    },
+    {
+      "phaseNumber": "339",
+      "title": "W16-P3 — SCIM Provisioning — IMPLEMENT",
+      "folder": "339-W16-P3-SCIM-PROVISIONING",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/scim/",
+        "/scim/v2/Groups",
+        "/scim/v2/Groups/:id",
+        "/scim/v2/ResourceTypes",
+        "/scim/v2/Schemas",
+        "/scim/v2/ServiceProviderConfig",
+        "/scim/v2/Users",
+        "/scim/v2/Users/:id"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/auth/scim-server.ts",
+        "apps/api/src/routes/scim-routes.ts",
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/middleware/security.ts"
       ]
     },
     {
@@ -4891,6 +7830,216 @@
         "apps/web/src/lib/contracts/data/tabs.json",
         "apps/api/src/index.ts"
       ]
+    },
+    {
+      "phaseNumber": "340",
+      "title": "W16-P4 — Fine-Grained ABAC — IMPLEMENT",
+      "folder": "340-W16-P4-ABAC",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/auth/abac-engine.ts",
+        "apps/api/src/auth/abac-attributes.ts",
+        "apps/api/src/auth/policy-engine.ts"
+      ]
+    },
+    {
+      "phaseNumber": "341",
+      "title": "W16-P5: Secrets & Key Management",
+      "folder": "341-W16-P5-SECRETS-MGMT",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "342",
+      "title": "W16-P6: Tenant Security Posture Controls",
+      "folder": "342-W16-P6-TENANT-SECURITY",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "343",
+      "title": "W16-P7: Privacy Segmentation",
+      "folder": "343-W16-P7-PRIVACY-SEG",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "344",
+      "title": "W16-P8: Security Monitoring + SIEM Export",
+      "folder": "344-W16-P8-SIEM-EXPORT",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "345",
+      "title": "W16-P9: Security Certification Runner",
+      "folder": "345-W16-P9-SECURITY-CERT-RUNNER",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "346",
+      "title": "W17-P1: Range Reservation + Manifest + ADRs",
+      "folder": "346-W17-P1-MANIFEST-ADRS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "docs/qa/prompt-phase-range-reservations.json",
+        "prompts/WAVE_17_MANIFEST.md",
+        "docs/decisions/ADR-FACILITY-LOCATION-MODEL.md",
+        "docs/decisions/ADR-DEPARTMENT-PACKS-MODEL.md",
+        "docs/decisions/ADR-PATIENT-NOTIFICATIONS.md"
+      ]
+    },
+    {
+      "phaseNumber": "347",
+      "title": "W17-P2: Facility/Location Model + VistA Mapping",
+      "folder": "347-W17-P2-FACILITY-MODEL",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "348",
+      "title": "W17-P3: Department/Specialty RBAC Templates",
+      "folder": "348-W17-P3-DEPT-RBAC",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "349",
+      "title": "W17-P4: Department Packs",
+      "folder": "349-W17-P4-DEPT-PACKS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
     },
     {
       "phaseNumber": "33",
@@ -4941,6 +8090,213 @@
       ]
     },
     {
+      "phaseNumber": "350",
+      "title": "W17-P5: Unified Workflow Inbox",
+      "folder": "350-W17-P5-WORKFLOW-INBOX",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "351",
+      "title": "W17-P6: Patient Communications Service",
+      "folder": "351-W17-P6-PATIENT-COMMS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "352",
+      "title": "W17-P7: Scheduling & Resource Layer",
+      "folder": "352-W17-P7-SCHEDULING",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "353",
+      "title": "W17-P8: Department Pack Certification Runner",
+      "folder": "353-W17-P8-PACK-CERT-RUNNER",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "354",
+      "title": "W18-P1: Range Reservation + Manifest + ADRs",
+      "folder": "354-W18-P1-MANIFEST-ADRS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "docs/qa/prompt-phase-range-reservations.json",
+        "prompts/WAVE_18_MANIFEST.md",
+        "docs/decisions/ADR-EVENT-BUS.md",
+        "docs/decisions/ADR-WEBHOOK-SECURITY.md",
+        "docs/decisions/ADR-PLUGIN-MODEL.md",
+        "prompts/354-W18-P1-MANIFEST-ADRS/354-01-IMPLEMENT.md"
+      ]
+    },
+    {
+      "phaseNumber": "355",
+      "title": "W18-P2: Canonical Domain Event Bus",
+      "folder": "355-W18-P2-EVENT-BUS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "356",
+      "title": "W18-P3: Webhooks Framework",
+      "folder": "356-W18-P3-WEBHOOKS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "357",
+      "title": "W18-P4: FHIR Subscriptions v1 (rest-hook)",
+      "folder": "357-W18-P4-FHIR-SUBSCRIPTIONS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "358",
+      "title": "W18-P5: Backend Plugin SDK",
+      "folder": "358-W18-P5-PLUGIN-SDK",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "359",
+      "title": "W18-P6: UI Extension Slots",
+      "folder": "359-W18-P6-UI-EXTENSIONS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
       "phaseNumber": "34",
       "title": "Regulated SDLC + Evidence Pack",
       "folder": "36-PHASE-34-REGULATED-SDLC",
@@ -4979,6 +8335,245 @@
         "apps/api/src/routes/capabilities.ts",
         "apps/api/src/routes/imaging.ts",
         "apps/api/src/routes/inbox.ts"
+      ]
+    },
+    {
+      "phaseNumber": "360",
+      "title": "W18-P7: Plugin Marketplace + Install/Approval Flow",
+      "folder": "360-W18-P7-PLUGIN-MARKETPLACE",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "361",
+      "title": "W18-P8: Ecosystem Certification Runner",
+      "folder": "361-W18-P8-ECOSYSTEM-CERT-RUNNER",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "362",
+      "title": "W19-P1: Reservation + Manifest + ADRs",
+      "folder": "362-W19-P1-MANIFEST-ADRS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "prompts/WAVE_19_MANIFEST.md",
+        "docs/decisions/ADR-ANALYTICS-STACK.md",
+        "docs/decisions/ADR-DEIDENTIFICATION-POSTURE.md",
+        "docs/decisions/ADR-REPORTING-MODEL.md"
+      ]
+    },
+    {
+      "phaseNumber": "363",
+      "title": "W19-P2: Analytics Extract Layer",
+      "folder": "363-W19-P2-ANALYTICS-EXTRACT",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/analytics/extract-layer.ts",
+        "apps/api/src/analytics/extract-types.ts",
+        "apps/api/src/routes/analytics-extract-routes.ts",
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts"
+      ]
+    },
+    {
+      "phaseNumber": "364",
+      "title": "W19-P3: De-Identification & Pseudonymization Service",
+      "folder": "364-W19-P3-DEID-SERVICE",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/analytics/deid-service.ts",
+        "apps/api/src/analytics/deid-types.ts",
+        "apps/api/src/routes/analytics-extract-routes.ts"
+      ]
+    },
+    {
+      "phaseNumber": "365",
+      "title": "W19-P4: Reporting API + UI",
+      "folder": "365-W19-P4-REPORTING-API",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/analytics/reporting-service.ts",
+        "apps/api/src/routes/reporting-routes.ts",
+        "apps/web/src/app/cprs/admin/reporting/page.tsx",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts"
+      ]
+    },
+    {
+      "phaseNumber": "366",
+      "title": "W19-P5: Quality & Safety Metrics v1",
+      "folder": "366-W19-P5-QUALITY-SAFETY",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/analytics/quality-metrics.ts",
+        "apps/api/src/routes/reporting-routes.ts"
+      ]
+    },
+    {
+      "phaseNumber": "367",
+      "title": "W19-P6: RCM Analytics v1",
+      "folder": "367-W19-P6-RCM-ANALYTICS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/analytics/rcm-analytics.ts",
+        "apps/api/src/routes/reporting-routes.ts",
+        "apps/web/src/app/cprs/admin/reporting/page.tsx"
+      ]
+    },
+    {
+      "phaseNumber": "368",
+      "title": "W19-P7: Data Access Controls",
+      "folder": "368-W19-P7-DATA-ACCESS-CONTROLS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/analytics/data-access-controls.ts",
+        "apps/api/src/routes/reporting-routes.ts",
+        "apps/api/src/routes/analytics-extract-routes.ts"
+      ]
+    },
+    {
+      "phaseNumber": "369",
+      "title": "W19-P8: Analytics Certification Runner",
+      "folder": "369-W19-P8-ANALYTICS-CERT-RUNNER",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/verify-wave19-analytics.ps"
       ]
     },
     {
@@ -5030,6 +8625,264 @@
       ]
     },
     {
+      "phaseNumber": "370",
+      "title": "W20-P1 IMPLEMENT: Reservation + Manifest + GA Readiness Checklist",
+      "folder": "370-W20-P1-MANIFEST-GA-CHECKLIST",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "prompts/WAVE_20_MANIFEST.md",
+        "prompts/370-W20-P1-MANIFEST-GA-CHECKLIST/370-01-IMPLEMENT.md",
+        "prompts/370-W20-P1-MANIFEST-GA-CHECKLIST/370-99-VERIFY.md",
+        "docs/ga/GA_READINESS_CHECKLIST.md",
+        "docs/decisions/ADR-GA-READINESS-MODEL.md",
+        "docs/decisions/ADR-RELEASE-TRAIN-GOVERNANCE.md",
+        "docs/decisions/ADR-DATA-RIGHTS-OPERATIONS.md",
+        "scripts/ga-checklist.ps"
+      ]
+    },
+    {
+      "phaseNumber": "371",
+      "title": "W20-P2 IMPLEMENT: Release Train Governance",
+      "folder": "371-W20-P2-RELEASE-TRAIN",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/services/release-train-service.ts",
+        "apps/api/src/routes/release-train-routes.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts",
+        "apps/api/src/platform/pg/pg-migrate.ts",
+        "prompts/371-W20-P2-RELEASE-TRAIN/371-01-IMPLEMENT.md",
+        "prompts/371-W20-P2-RELEASE-TRAIN/371-99-VERIFY.md"
+      ]
+    },
+    {
+      "phaseNumber": "372",
+      "title": "W20-P3 IMPLEMENT: Customer Success Tooling",
+      "folder": "372-W20-P3-CUSTOMER-SUCCESS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/services/customer-success-service.ts",
+        "apps/api/src/routes/customer-success-routes.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts",
+        "prompts/372-W20-P3-CUSTOMER-SUCCESS/372-01-IMPLEMENT.md",
+        "prompts/372-W20-P3-CUSTOMER-SUCCESS/372-99-VERIFY.md"
+      ]
+    },
+    {
+      "phaseNumber": "373",
+      "title": "W20-P4 IMPLEMENT: Support Ops Automation",
+      "folder": "373-W20-P4-SUPPORT-OPS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/services/support-ops-service.ts",
+        "apps/api/src/routes/support-ops-routes.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "374",
+      "title": "W20-P5 EXTERNAL VALIDATION",
+      "folder": "374-W20-P5-EXTERNAL-VALIDATION",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/external-validation/endpoint-inventory",
+        "/external-validation/scope-document",
+        "/external-validation/vulnerabilities",
+        "/external-validation/vulnerabilities/:id/assess"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "375",
+      "title": "W20-P6 DATA RIGHTS",
+      "folder": "375-W20-P6-DATA-RIGHTS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/data-rights/audit",
+        "/data-rights/deletion-requests",
+        "/data-rights/deletion-requests/:id/approve",
+        "/data-rights/deletion-requests/:id/execute",
+        "/data-rights/legal-holds",
+        "/data-rights/legal-holds/:id/release",
+        "/data-rights/retention-policies"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "376",
+      "title": "W20-P7 GA CERT RUNNER",
+      "folder": "376-W20-P7-GA-CERT-RUNNER",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "377",
+      "title": "W20-P8 GA EVIDENCE",
+      "folder": "377-W20-P8-GA-EVIDENCE",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/ga/evidence/bundle",
+        "/ga/evidence/status",
+        "/ga/evidence/trust-center"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "378",
+      "title": "W21-P1 IMPLEMENT: Reservation + Manifest + OSS ADRs + Coverage Map",
+      "folder": "378-W21-P1-MANIFEST-COVERAGE",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "prompts/WAVE_21_MANIFEST.md",
+        "docs/qa/prompt-phase-range-reservations.json",
+        "docs/integrations/device-modality-coverage-map.md",
+        "docs/decisions/ADR-W21-EDGE-GATEWAY.md",
+        "docs/decisions/ADR-W21-INTEGRATION-ENGINE.md",
+        "docs/decisions/ADR-W21-IMAGING-STACK.md",
+        "docs/decisions/ADR-W21-SDC-POSTURE.md",
+        "docs/decisions/ADR-W21-POCT-ASTM.md"
+      ]
+    },
+    {
+      "phaseNumber": "379",
+      "title": "W21-P2 IMPLEMENT: Edge Device Gateway",
+      "folder": "379-W21-P2-EDGE-GATEWAY",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
       "phaseNumber": "36",
       "title": "OBSERVABILITY RELIABILITY",
       "folder": "38-PHASE-36-OBSERVABILITY-RELIABILITY",
@@ -5073,6 +8926,280 @@
       ]
     },
     {
+      "phaseNumber": "380",
+      "title": "W21-P3 IMPLEMENT: Device Registry + Patient/Location Association",
+      "folder": "380-W21-P3-DEVICE-REGISTRY",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "381",
+      "title": "W21-P4 IMPLEMENT: HL7 v2 MLLP Ingest",
+      "folder": "381-W21-P4-HL7V2-MLLP-INGEST",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/devices/hl7v2/ingest",
+        "/devices/hl7v2/ingest-log",
+        "/devices/hl7v2/parse"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "382",
+      "title": "W21-P5 IMPLEMENT: ASTM + POCT1-A Ingest",
+      "folder": "382-W21-P5-ASTM-POCT",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/devices/astm/ingest",
+        "/devices/astm/ingest-log",
+        "/devices/astm/parse",
+        "/devices/poct1a/ingest",
+        "/devices/poct1a/ingest-log",
+        "/devices/poct1a/parse"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "383",
+      "title": "W21-P6 IMPLEMENT: IEEE 11073 SDC Ingest",
+      "folder": "383-W21-P6-SDC-INGEST",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/devices/sdc/ingest",
+        "/devices/sdc/ingest-log",
+        "/devices/sdc/status"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "384",
+      "title": "W21-P7 IMPLEMENT: Alarms Pipeline (IHE PCD ACM)",
+      "folder": "384-W21-P7-ALARMS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/devices/alarms",
+        "/devices/alarms/:id/acknowledge",
+        "/devices/alarms/:id/escalate",
+        "/devices/alarms/:id/state",
+        "/devices/alarms/audit",
+        "/devices/alarms/routing-rules",
+        "/devices/alarms/routing-rules/:id",
+        "/devices/alarms/stats"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "385",
+      "title": "W21-P8 Infusion/BCMA Safety Bridge — IMPLEMENT",
+      "folder": "385-W21-P8-INFUSION-BCMA",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/devices/infusion/pump-events"
+      ],
+      "rpcs": [
+        "PSB MED LOG"
+      ],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/devices/infusion-bcma-types.ts",
+        "apps/api/src/devices/infusion-bcma-store.ts",
+        "apps/api/src/devices/infusion-bcma-routes.ts",
+        "apps/api/src/devices/index.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "386",
+      "title": "W21-P9 Imaging Modality Connectivity — IMPLEMENT",
+      "folder": "386-W21-P9-IMAGING-MODALITY",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/devices/"
+      ],
+      "rpcs": [
+        "ORWDXR NEW ORDER"
+      ],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/devices/imaging-modality-types.ts",
+        "apps/api/src/devices/imaging-modality-store.ts",
+        "apps/api/src/devices/imaging-modality-routes.ts",
+        "apps/api/src/devices/index.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "387",
+      "title": "W21-P10 LOINC/UCUM Normalization — IMPLEMENT",
+      "folder": "387-W21-P10-NORMALIZATION",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/devices/normalize",
+        "/devices/normalize/batch",
+        "/devices/normalize/mappings",
+        "/devices/normalize/mappings/loinc",
+        "/devices/normalize/mappings/ucum",
+        "/devices/normalize/stats",
+        "/devices/normalize/validate"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/devices/normalization-engine.ts",
+        "apps/api/src/devices/normalization-routes.ts",
+        "apps/api/src/devices/index.ts",
+        "apps/api/src/server/register-routes.ts"
+      ]
+    },
+    {
+      "phaseNumber": "388",
+      "title": "W21-P11 Certification Runner — IMPLEMENT",
+      "folder": "388-W21-P11-CERTIFICATION",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/verify-wave21-devices.ps"
+      ]
+    },
+    {
+      "phaseNumber": "389",
+      "title": "W22-P1 IMPLEMENT: Reservation + Manifest + Specialty Coverage Map + ADRs",
+      "folder": "389-W22-P1-MANIFEST-COVERAGE",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "docs/qa/prompt-phase-range-reservations.json",
+        "prompts/WAVE_22_MANIFEST.md",
+        "docs/product/specialty-coverage-map.md",
+        "docs/decisions/ADR-W22-CONTENT-PACKS.md",
+        "docs/decisions/ADR-W22-CDS-ARCH.md",
+        "docs/decisions/ADR-W22-TERMINOLOGY.md",
+        "docs/decisions/ADR-W22-THEMING.md",
+        "prompts/389-W22-P1-MANIFEST-COVERAGE/389-01-IMPLEMENT.md",
+        "prompts/389-W22-P1-MANIFEST-COVERAGE/389-99-VERIFY.md",
+        "prompts/389-W22-P1-MANIFEST-COVERAGE/NOTES.md",
+        "evidence/wave-22/389-manifest-coverage/evidence.md"
+      ]
+    },
+    {
       "phaseNumber": "37",
       "title": "RELEASE CANDIDATE HARDENING",
       "folder": "39-PHASE-37-QUALITY-HARDENING",
@@ -5111,6 +9238,327 @@
       ]
     },
     {
+      "phaseNumber": "390",
+      "title": "W22-P2 IMPLEMENT: Clinical Content Pack Framework v2",
+      "folder": "390-W22-P2-CONTENT-PACKS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/content-packs/types.ts",
+        "apps/api/src/content-packs/pack-store.ts",
+        "apps/api/src/content-packs/pack-routes.ts",
+        "apps/api/src/content-packs/index.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "391",
+      "title": "W22-P3 Inpatient Core: IMPLEMENT",
+      "folder": "391-W22-P3-INPATIENT-CORE",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/inpatient/",
+        "/inpatient/*",
+        "/inpatient/beds",
+        "/vista/inpatient/"
+      ],
+      "rpcs": [
+        "DGPM ADT MOVEMENTS",
+        "GMV ADD VM",
+        "ORQQVI VITALS",
+        "TIU CREATE RECORD"
+      ],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/inpatient/types.ts",
+        "apps/api/src/inpatient/inpatient-store.ts",
+        "apps/api/src/inpatient/inpatient-routes.ts",
+        "apps/api/src/inpatient/index.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "392",
+      "title": "W22-P4 Pharmacy Deep Workflows: IMPLEMENT",
+      "folder": "392-W22-P4-PHARMACY-DEEP",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/pharmacy/",
+        "/pharmacy/*",
+        "/pharmacy/override"
+      ],
+      "rpcs": [
+        "ORWDX SAVE",
+        "ORWDXA DC",
+        "PSB MED LOG",
+        "PSJ LM ORDER UPDATE"
+      ],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/pharmacy/types.ts",
+        "apps/api/src/pharmacy/pharmacy-store.ts",
+        "apps/api/src/pharmacy/pharmacy-routes.ts",
+        "apps/api/src/pharmacy/index.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "393",
+      "title": "W22-P5: Lab Deep Workflows — IMPLEMENT",
+      "folder": "393-W22-P5-LAB-DEEP",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/lab/",
+        "/lab/*",
+        "/lab/critical-alerts/:id/resolve",
+        "/vista/cprs/labs/ack",
+        "/vista/cprs/labs/chart"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/lab/types.ts",
+        "apps/api/src/lab/lab-store.ts",
+        "apps/api/src/lab/lab-routes.ts",
+        "apps/api/src/lab/index.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "394",
+      "title": "W22-P6: Imaging/Radiology Deep Workflows -- IMPLEMENT",
+      "folder": "394-W22-P6-IMAGING-RAD",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/devices/imaging/*",
+        "/imaging/*",
+        "/imaging/worklist/*",
+        "/radiology/*",
+        "/radiology/critical-alerts/:id/resolve"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/radiology/types.ts",
+        "apps/api/src/radiology/radiology-store.ts",
+        "apps/api/src/radiology/radiology-routes.ts",
+        "apps/api/src/radiology/index.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "395",
+      "title": "W22-P7: CDS Hooks + SMART Launch — IMPLEMENT",
+      "folder": "395-W22-P7-CDS-HOOKS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/cds/cqf/config",
+        "/cds/dashboard",
+        "/cds/feedback",
+        "/cds/feedback-log",
+        "/cds/invocations",
+        "/cds/rules",
+        "/cds/services",
+        "/cds/services/:id",
+        "/cds/smart/apps",
+        "/cds/smart/launch",
+        "/cds/smart/launch/:token",
+        "/cds/smart/launch/:token/consume"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/cds/types.ts",
+        "apps/api/src/cds/cds-store.ts",
+        "apps/api/src/cds/cds-routes.ts",
+        "apps/api/src/cds/index.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "396",
+      "title": "W22-P8: Clinical Reasoning + Quality Measures -- IMPLEMENT",
+      "folder": "396-W22-P8-CLINICAL-REASONING",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/clinical-reasoning/types.ts",
+        "apps/api/src/clinical-reasoning/reasoning-store.ts",
+        "apps/api/src/clinical-reasoning/reasoning-routes.ts",
+        "apps/api/src/clinical-reasoning/index.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "397",
+      "title": "W22-P9 LOCALIZATION",
+      "folder": "397-W22-P9-LOCALIZATION",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/localization/",
+        "/localization/*"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/localization/types.ts",
+        "apps/api/src/localization/localization-store.ts",
+        "apps/api/src/localization/localization-routes.ts",
+        "apps/api/src/localization/index.ts",
+        "apps/api/src/server/register-routes.ts",
+        "apps/api/src/middleware/security.ts",
+        "apps/api/src/platform/store-policy.ts"
+      ]
+    },
+    {
+      "phaseNumber": "398",
+      "title": "W22-P10 CERT RUNNER",
+      "folder": "398-W22-P10-CERT-RUNNER",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/verify-wave22-specialty.ps",
+        "scripts/verify-latest.ps",
+        "prompts/398-W22-P10-CERT-RUNNER/398-01-IMPLEMENT.md",
+        "prompts/398-W22-P10-CERT-RUNNER/398-99-VERIFY.md",
+        "prompts/398-W22-P10-CERT-RUNNER/398-NOTES.md"
+      ]
+    },
+    {
+      "phaseNumber": "399",
+      "title": "W23-P1 IMPLEMENT: Reservation + Manifest + Country/Exchange Map + ADRs",
+      "folder": "399-W23-P1-MANIFEST-ADRS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "prompts/WAVE_23_MANIFEST.md",
+        "docs/interop/country-exchange-map.md",
+        "docs/decisions/ADR-W23-*.md"
+      ]
+    },
+    {
       "phaseNumber": "37B",
       "title": "VistA/Vivian Grounding + CPRS Parity Enforcement",
       "folder": "40-PHASE-37B-CPRS-PARITY-GROUNDING",
@@ -5142,6 +9590,257 @@
       ]
     },
     {
+      "phaseNumber": "400",
+      "title": "W23-P2 INTEROP GATEWAY",
+      "folder": "400-W23-P2-INTEROP-GATEWAY",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/interop-gateway/",
+        "/interop-gateway/channels",
+        "/interop-gateway/channels/:id/status",
+        "/interop-gateway/dashboard",
+        "/interop-gateway/mediators",
+        "/interop-gateway/pipelines",
+        "/interop-gateway/transactions",
+        "/route"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "401",
+      "title": "W23-P3 MPI CLIENT REGISTRY",
+      "folder": "401-W23-P3-MPI-CLIENT-REGISTRY",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/mpi/",
+        "/mpi/dashboard",
+        "/mpi/identities",
+        "/mpi/match",
+        "/mpi/merge",
+        "/mpi/merge-events"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "402",
+      "title": "W23-P4 PROVIDER DIRECTORY",
+      "folder": "402-W23-P4-PROVIDER-DIRECTORY",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/provider-directory/",
+        "/provider-directory/dashboard",
+        "/provider-directory/locations[/:id",
+        "/provider-directory/organizations[/:id",
+        "/provider-directory/practitioners/search?q=",
+        "/provider-directory/practitioners[/:id"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "403",
+      "title": "W23-P5 DOCUMENT EXCHANGE",
+      "folder": "403-W23-P5-DOCUMENT-EXCHANGE",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/document-exchange/",
+        "/document-exchange/dashboard",
+        "/document-exchange/documents/search?q=",
+        "/document-exchange/documents[/:id",
+        "/document-exchange/submissions[/:id"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "404",
+      "title": "W23-P6 BULK DATA",
+      "folder": "404-W23-P6-BULK-DATA",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/bulk-data/",
+        "/bulk-data/dashboard",
+        "/bulk-data/export",
+        "/bulk-data/import",
+        "/bulk-data/jobs/:id",
+        "/bulk-data/jobs/:id/kick",
+        "/bulk-data/jobs[/:id"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "405",
+      "title": "W23-P7 CONSENT POU",
+      "folder": "405-W23-P7-CONSENT-POU",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/consent-pou/",
+        "/consent-pou/dashboard",
+        "/consent-pou/directives/:id/revoke",
+        "/consent-pou/directives[/:id",
+        "/consent-pou/disclosures",
+        "/consent-pou/evaluate"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "406",
+      "title": "W23-P8 US EXCHANGE PACK",
+      "folder": "406-W23-P8-US-EXCHANGE-PACK",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/exchange-packs/"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "407",
+      "title": "W23-P9 GLOBAL EXCHANGE PACKS",
+      "folder": "407-W23-P9-GLOBAL-EXCHANGE-PACKS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/exchange-packs/profiles"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "408",
+      "title": "W23-P10 HIE CERT RUNNER",
+      "folder": "408-W23-P10-HIE-CERT-RUNNER",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "409",
+      "title": "W24-P1 MANIFEST ARCHETYPES",
+      "folder": "409-W24-P1-MANIFEST-ARCHETYPES",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/evidence/wave-24/",
+        "/evidence/wave-24/409-manifest/"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
       "phaseNumber": "37C",
       "title": "Productization & Modular Architecture",
       "folder": "41-PHASE-37C-PRODUCT-MODULARITY",
@@ -5166,6 +9865,218 @@
         "scripts/verify-phase37c-modularity.ps",
         "docs/runbooks/phase37c-modularity.md",
         "ops/phase37c-summary.md"
+      ]
+    },
+    {
+      "phaseNumber": "410",
+      "title": "W24-P2 REFERENCE ENVIRONMENTS",
+      "folder": "410-W24-P2-REFERENCE-ENVIRONMENTS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/evidence/wave-24/410-environments/"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "411",
+      "title": "W24-P3: Customer Integration Intake Model — IMPLEMENT",
+      "folder": "411-W24-P3-INTEGRATION-INTAKE",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/pilots/",
+        "/pilots/*"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "412",
+      "title": "W24-P4: Pilot Integration Certification Runs — IMPLEMENT",
+      "folder": "412-W24-P4-CERTIFICATION-RUNS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "413",
+      "title": "W24-P5: Data Migration Rehearsal Program — IMPLEMENT",
+      "folder": "413-W24-P5-MIGRATION-REHEARSAL",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "414",
+      "title": "W24-P6: Clinical Safety & UAT Harness — IMPLEMENT",
+      "folder": "414-W24-P6-UAT-HARNESS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "415",
+      "title": "W24-P7: Cutover + Rollback + DR Rehearsal — IMPLEMENT",
+      "folder": "415-W24-P7-CUTOVER-ROLLBACK",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "416",
+      "title": "W24-P8: Post-Go-Live Monitoring + SRE — IMPLEMENT",
+      "folder": "416-W24-P8-SRE-MONITORING",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "417",
+      "title": "W24-P9: Go/No-Go Gate + Ops Runbooks — IMPLEMENT",
+      "folder": "417-W24-P9-GO-NOGO-GATE",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "418",
+      "title": "W25-P1: Manifest + Range Reservation + Baseline Audit",
+      "folder": "418-W25-P1-MANIFEST-BASELINE",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/evidence/wave-25/418-manifest-baseline/"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "docs/qa/prompt-phase-range-reservations.json",
+        "prompts/WAVE_25_MANIFEST.md"
+      ]
+    },
+    {
+      "phaseNumber": "419",
+      "title": "W25-P2: Flatten W12 + Remove Collisions",
+      "folder": "419-W25-P2-FLATTEN-W12-REMOVE-COLLISION",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/verify-phase302-orders-writeback.ps"
       ]
     },
     {
@@ -5220,6 +10131,251 @@
       ]
     },
     {
+      "phaseNumber": "420",
+      "title": "W25-P3: Recover W15 Prompt Folders",
+      "folder": "420-W25-P3-RECOVER-W15-FOLDERS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "421",
+      "title": "W25-P4: Harden Prompt Gates",
+      "folder": "421-W25-P4-HARDEN-PROMPT-GATES",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/qa-gates/prompts-tree-health.mjs",
+        ".github/workflows/quality-gates.yml",
+        ".github/workflows/ci-verify.yml"
+      ]
+    },
+    {
+      "phaseNumber": "422",
+      "title": "W25-P5: Fix verify-latest + Regenerate Prompt Index + Final Re-Audit",
+      "folder": "422-W25-P5-VERIFY-LATEST-REINDEX",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/verify-latest.ps",
+        "scripts/prompts-index.mjs",
+        "prompts/PROMPTS_INDEX.md",
+        "prompts/WAVE_25_MANIFEST.md"
+      ]
+    },
+    {
+      "phaseNumber": "423",
+      "title": "Prompts Drift Repair + Lint Hardening (W26 P1)",
+      "folder": "423-PHASE-423-PROMPTS-REPAIR",
+      "files": [
+        "423-01-IMPLEMENT.md",
+        "423-99-VERIFY.md",
+        "423-NOTES.md"
+      ],
+      "implementFiles": [
+        "423-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "423-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/qa-gates/prompts-tree-health.mjs",
+        "docs/qa/prompt-phase-range-reservations.json"
+      ]
+    },
+    {
+      "phaseNumber": "424",
+      "title": "VistA Runtime Strategy + Baseline Matrix (W26 P2)",
+      "folder": "424-PHASE-424-VISTA-RUNTIME-STRATEGY",
+      "files": [
+        "424-01-IMPLEMENT.md",
+        "424-99-VERIFY.md",
+        "424-NOTES.md"
+      ],
+      "implementFiles": [
+        "424-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "424-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "data/vista/runtime-matrix.json",
+        "scripts/vista/inspect-container.ps",
+        "scripts/vista/select-runtime.ps",
+        "apps/api/src/vista/rpcCapabilities.ts"
+      ]
+    },
+    {
+      "phaseNumber": "425",
+      "title": "Container-Probe Script + Capability Snapshot (W26 P3)",
+      "folder": "425-PHASE-425-CONTAINER-PROBE",
+      "files": [
+        "425-01-IMPLEMENT.md",
+        "425-99-VERIFY.md",
+        "425-NOTES.md"
+      ],
+      "implementFiles": [
+        "425-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "425-99-VERIFY.md"
+      ],
+      "routes": [
+        "/vista/runtime-matrix",
+        "/vista/runtime-matrix/drift"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/vista/probe-capabilities.mjs",
+        "apps/api/src/routes/capabilities.ts"
+      ]
+    },
+    {
+      "phaseNumber": "426",
+      "title": "RPC Safe-Harbor List v2 (W26 P4)",
+      "folder": "426-PHASE-426-RPC-SAFE-HARBOR-V2",
+      "files": [
+        "426-01-IMPLEMENT.md",
+        "426-99-VERIFY.md",
+        "426-NOTES.md"
+      ],
+      "implementFiles": [
+        "426-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "426-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "data/vista/rpc-safe-harbor-v2.json"
+      ]
+    },
+    {
+      "phaseNumber": "427",
+      "title": "Write-Back Feasibility Report (W26 P5)",
+      "folder": "427-PHASE-427-WRITEBACK-FEASIBILITY",
+      "files": [
+        "427-01-IMPLEMENT.md",
+        "427-99-VERIFY.md",
+        "427-NOTES.md"
+      ],
+      "implementFiles": [
+        "427-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "427-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [
+        "ORQQPL EDIT SAVE"
+      ],
+      "uiComponents": [],
+      "filesTouched": [
+        "docs/vista/writeback-feasibility-report.md",
+        "data/vista/rpc-safe-harbor-v2.json",
+        "data/vista/runtime-matrix.json",
+        "apps/api/src/vista/rpcRegistry.ts",
+        "apps/api/src/vista/rpcCapabilities.ts",
+        "apps/api/src/adapters/types.ts"
+      ]
+    },
+    {
+      "phaseNumber": "428",
+      "title": "Adapter Health Dashboard Panel (W26 P6)",
+      "folder": "428-PHASE-428-ADAPTER-HEALTH-PANEL",
+      "files": [
+        "428-01-IMPLEMENT.md",
+        "428-99-VERIFY.md",
+        "428-NOTES.md"
+      ],
+      "implementFiles": [
+        "428-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "428-99-VERIFY.md"
+      ],
+      "routes": [
+        "/api/adapters/health",
+        "/vista/runtime-matrix"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "layout.tsx",
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/web/src/app/cprs/admin/adapters/page.tsx",
+        "apps/web/src/app/cprs/admin/layout.tsx"
+      ]
+    },
+    {
+      "phaseNumber": "429",
+      "title": "Runtime-Mode Integration Tests (W26 P7)",
+      "folder": "429-PHASE-429-RUNTIME-MODE-TESTS",
+      "files": [
+        "429-01-IMPLEMENT.md",
+        "429-99-VERIFY.md",
+        "429-NOTES.md"
+      ],
+      "implementFiles": [
+        "429-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "429-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/tests/runtime-mode.test.ts"
+      ]
+    },
+    {
       "phaseNumber": "39",
       "title": "VistA Billing Grounding + Capability Map + Read-Only RCM Surfaces",
       "folder": "43-PHASE-39-BILLING-GROUNDING",
@@ -5260,6 +10416,238 @@
         "ops/phase39-summary.md",
         "ops/phase39-notion-update.json"
       ]
+    },
+    {
+      "phaseNumber": "430",
+      "title": "W26 Integrity Audit + Evidence Bundle (W26 P8)",
+      "folder": "430-PHASE-430-W26-INTEGRITY-AUDIT",
+      "files": [
+        "430-01-IMPLEMENT.md",
+        "430-99-VERIFY.md",
+        "430-NOTES.md"
+      ],
+      "implementFiles": [
+        "430-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "430-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "431",
+      "title": "ADT + Clinical Write Adapter Methods (W27 P1)",
+      "folder": "431-PHASE-431-ADT-ADAPTER-WRITES",
+      "files": [
+        "431-01-IMPLEMENT.md",
+        "431-99-VERIFY.md",
+        "431-NOTES.md"
+      ],
+      "implementFiles": [
+        "431-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "431-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/adapters/types.ts",
+        "apps/api/src/adapters/clinical-engine/interface.ts",
+        "apps/api/src/adapters/clinical-engine/stub-adapter.ts",
+        "apps/api/src/adapters/clinical-engine/vista-adapter.ts",
+        "apps/api/src/vista/rpcRegistry.ts"
+      ]
+    },
+    {
+      "phaseNumber": "432",
+      "title": "Pharmacy / MAR / BCMA Adapter Scaffold (W27 P2)",
+      "folder": "432-PHASE-432-PHARMACY-MAR-SCAFFOLD",
+      "files": [
+        "432-01-IMPLEMENT.md",
+        "432-99-VERIFY.md",
+        "432-NOTES.md"
+      ],
+      "implementFiles": [
+        "432-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "432-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [
+        "PSB VALIDATE ORDER",
+        "PSJ ORDER STATUS"
+      ],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "433",
+      "title": "Lab HL7 Inbound Path (W27 P3)",
+      "folder": "433-PHASE-433-LAB-HL7-INBOUND",
+      "files": [
+        "433-01-IMPLEMENT.md",
+        "433-99-VERIFY.md",
+        "433-NOTES.md"
+      ],
+      "implementFiles": [
+        "433-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "433-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "434",
+      "title": "Order-Check Enhancement (W27 P4)",
+      "folder": "434-PHASE-434-ORDER-CHECK-ENHANCEMENT",
+      "files": [
+        "434-01-IMPLEMENT.md",
+        "434-99-VERIFY.md",
+        "434-NOTES.md"
+      ],
+      "implementFiles": [
+        "434-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "434-99-VERIFY.md"
+      ],
+      "routes": [
+        "/vista/cprs/order-checks"
+      ],
+      "rpcs": [
+        "ORWDXC ACCEPT",
+        "ORWDXC DISPLAY",
+        "ORWDXC SAVECHK",
+        "ORWDXC SESSION",
+        "ORWOR1 SIG"
+      ],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "435",
+      "title": "Clinical Adapter Write Wiring (W27 P5)",
+      "folder": "435-PHASE-435-ADAPTER-WRITE-WIRING",
+      "files": [
+        "435-01-IMPLEMENT.md",
+        "435-99-VERIFY.md",
+        "435-NOTES.md"
+      ],
+      "implementFiles": [
+        "435-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "435-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [
+        "GMV ADD VM",
+        "ORQQPL ADD SAVE",
+        "ORWDAL32 SAVE ALLERGY",
+        "TIU CREATE RECORD",
+        "TIU SET DOCUMENT TEXT"
+      ],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "436",
+      "title": "Write-Back Audit Trail (W27 P6)",
+      "folder": "436-PHASE-436-WRITE-BACK-AUDIT-TRAIL",
+      "files": [
+        "436-01-IMPLEMENT.md",
+        "436-99-VERIFY.md",
+        "436-NOTES.md"
+      ],
+      "implementFiles": [
+        "436-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "436-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "437",
+      "title": "Supervised-Mode UI (W27 P7)",
+      "folder": "437-PHASE-437-SUPERVISED-MODE-UI",
+      "files": [
+        "437-01-IMPLEMENT.md",
+        "437-99-VERIFY.md",
+        "437-NOTES.md"
+      ],
+      "implementFiles": [
+        "437-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "437-99-VERIFY.md"
+      ],
+      "routes": [
+        "/writeback/commands/:id/review"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "WriteReviewBanner.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "438",
+      "title": "W27 Integrity Audit (Capstone)",
+      "folder": "438-PHASE-438-W27-INTEGRITY-AUDIT",
+      "files": [
+        "438-01-IMPLEMENT.md",
+        "438-99-VERIFY.md",
+        "438-NOTES.md"
+      ],
+      "implementFiles": [
+        "438-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "438-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "WriteReviewBanner.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "439",
+      "title": "Regulatory Classification Engine (W28 P1)",
+      "folder": "439-PHASE-439-REGULATORY-CLASSIFICATION-ENGINE",
+      "files": [
+        "439-01-IMPLEMENT.md",
+        "439-99-VERIFY.md",
+        "439-NOTES.md"
+      ],
+      "implementFiles": [
+        "439-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "439-99-VERIFY.md"
+      ],
+      "routes": [
+        "/regulatory/classify",
+        "/regulatory/posture"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
     },
     {
       "phaseNumber": "40",
@@ -5303,6 +10691,232 @@
       ]
     },
     {
+      "phaseNumber": "440",
+      "title": "IMPLEMENT: Compliance Attestation Store (W28 P2)",
+      "folder": "440-PHASE-440-COMPLIANCE-ATTESTATION-STORE",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "441",
+      "title": "IMPLEMENT: Multi-Country Config Layer (W28 P3)",
+      "folder": "441-PHASE-441-MULTI-COUNTRY-CONFIG",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "442",
+      "title": "IMPLEMENT: Export Packaging Pipeline (W28 P4)",
+      "folder": "442-PHASE-442-EXPORT-PACKAGING",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "443",
+      "title": "IMPLEMENT: Country-Specific Validation (W28 P5)",
+      "folder": "443-PHASE-443-COUNTRY-VALIDATION",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "444",
+      "title": "IMPLEMENT: Regulatory Reporting Endpoints (W28 P6)",
+      "folder": "444-PHASE-444-REGULATORY-REPORTING",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/regulatory/",
+        "/regulatory/attestations",
+        "/regulatory/attestations/:id",
+        "/regulatory/attestations/:id/revoke",
+        "/regulatory/attestations/check-expired",
+        "/regulatory/attestations/summary",
+        "/regulatory/attestations/verify",
+        "/regulatory/classify",
+        "/regulatory/country-config",
+        "/regulatory/country-config/:tenantId",
+        "/regulatory/country-config/audit",
+        "/regulatory/country-config/audit/verify",
+        "/regulatory/export",
+        "/regulatory/export/:id",
+        "/regulatory/export/audit",
+        "/regulatory/export/audit/verify",
+        "/regulatory/frameworks",
+        "/regulatory/frameworks/:id",
+        "/regulatory/frameworks/country/:cc",
+        "/regulatory/posture",
+        "/regulatory/validate",
+        "/regulatory/validators"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "445",
+      "title": "IMPLEMENT: Compliance Dashboard UI (W28 P7)",
+      "folder": "445-PHASE-445-COMPLIANCE-DASHBOARD",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "446",
+      "title": "IMPLEMENT: W28 Integrity Audit — Capstone (W28 P8)",
+      "folder": "446-PHASE-446-W28-INTEGRITY-AUDIT",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "447",
+      "title": "W29-P1: Range Reservation + Manifest + Upstream Strategy ADRs",
+      "folder": "447-PHASE-447-RESERVATION-ADRS",
+      "files": [
+        "447-01-IMPLEMENT.md",
+        "447-99-VERIFY.md",
+        "NOTES.md"
+      ],
+      "implementFiles": [
+        "447-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "447-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "448",
+      "title": "W29-P2: Upstream Mirror Tooling + License Snapshotting",
+      "folder": "448-PHASE-448-UPSTREAM-MIRROR",
+      "files": [
+        "448-01-IMPLEMENT.md",
+        "448-99-VERIFY.md",
+        "NOTES.md"
+      ],
+      "implementFiles": [
+        "448-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "448-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "449",
+      "title": "W29-P3: VistA Release Manifest Schema",
+      "folder": "449-PHASE-449-RELEASE-MANIFEST",
+      "files": [
+        "449-01-IMPLEMENT.md",
+        "449-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "449-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "449-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
       "phaseNumber": "41",
       "title": "Vivian Snapshot Integration + RPC Catalog + Coverage Gates",
       "folder": "45-PHASE-41-VIVIAN-RPC-CATALOG",
@@ -5336,6 +10950,206 @@
         "docs/runbooks/vista-rpc-rpc-list-probe.md",
         "scripts/verify-phase41-rpc-catalog.ps"
       ]
+    },
+    {
+      "phaseNumber": "450",
+      "title": "W29-P4: Patch Train Pipeline",
+      "folder": "450-PHASE-450-PATCH-TRAIN",
+      "files": [
+        "450-01-IMPLEMENT.md",
+        "450-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "450-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "450-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "451",
+      "title": "W29-P5: Compatibility Matrix",
+      "folder": "451-PHASE-451-COMPAT-MATRIX",
+      "files": [
+        "451-01-IMPLEMENT.md",
+        "451-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "451-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "451-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "452",
+      "title": "W29-P6: Component Harvest ADRs",
+      "folder": "452-PHASE-452-HARVEST-ADRS",
+      "files": [
+        "452-01-IMPLEMENT.md",
+        "452-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "452-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "452-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "453",
+      "title": "W29-P7: Dashboard/Rules Engine Integration",
+      "folder": "453-PHASE-453-DASHBOARD-INTEGRATION",
+      "files": [
+        "453-01-IMPLEMENT.md",
+        "453-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "453-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "453-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "454",
+      "title": "W29-P8: SBOM + License Policy Gates",
+      "folder": "454-PHASE-454-SBOM-LICENSE",
+      "files": [
+        "454-01-IMPLEMENT.md",
+        "454-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "454-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "454-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "455",
+      "title": "W29-P9: Upgrade Go/No-Go Gate",
+      "folder": "455-PHASE-455-UPGRADE-GONOGO",
+      "files": [
+        "455-01-IMPLEMENT.md",
+        "455-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "455-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "455-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "456",
+      "title": "W30-P1: FHIR Import Pipeline",
+      "folder": "456-PHASE-456-FHIR-IMPORT",
+      "files": [
+        "456-01-IMPLEMENT.md",
+        "456-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "456-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "456-99-VERIFY.md"
+      ],
+      "routes": [
+        "/migration/batches",
+        "/migration/fhir/import"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "457",
+      "title": "C-CDA Ingest (W30-P2)",
+      "folder": "457-PHASE-457-CCDA-INGEST",
+      "files": [
+        "457-01-IMPLEMENT.md",
+        "457-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "457-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "457-99-VERIFY.md"
+      ],
+      "routes": [
+        "/migration/batches",
+        "/migration/ccda/import"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "458",
+      "title": "HL7v2 ADT Feed (W30-P3)",
+      "folder": "458-PHASE-458-HL7V2-ADT",
+      "files": [
+        "458-01-IMPLEMENT.md",
+        "458-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "458-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "458-99-VERIFY.md"
+      ],
+      "routes": [
+        "/migration/hl7v2/adt"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "459",
+      "title": "Dual-Run Harness (W30-P4)",
+      "folder": "459-PHASE-459-DUAL-RUN",
+      "files": [
+        "459-01-IMPLEMENT.md",
+        "459-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "459-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "459-99-VERIFY.md"
+      ],
+      "routes": [
+        "/migration/dual-run/status"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
     },
     {
       "phaseNumber": "42",
@@ -5375,6 +11189,211 @@
       ]
     },
     {
+      "phaseNumber": "460",
+      "title": "Reconciliation Engine (W30-P5)",
+      "folder": "460-PHASE-460-RECON-ENGINE",
+      "files": [
+        "460-01-IMPLEMENT.md",
+        "460-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "460-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "460-99-VERIFY.md"
+      ],
+      "routes": [
+        "/migration/recon/*"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "461",
+      "title": "Cutover Playbook (W30-P6)",
+      "folder": "461-PHASE-461-CUTOVER-PLAYBOOK",
+      "files": [
+        "461-01-IMPLEMENT.md",
+        "461-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "461-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "461-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "462",
+      "title": "Rollback Drills (W30-P7)",
+      "folder": "462-PHASE-462-ROLLBACK-DRILLS",
+      "files": [
+        "462-01-IMPLEMENT.md",
+        "462-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "462-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "462-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "463",
+      "title": "Migration QA Gate (W30-P8)",
+      "folder": "463-PHASE-463-MIGRATION-QA",
+      "files": [
+        "463-01-IMPLEMENT.md",
+        "463-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "463-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "463-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "464",
+      "title": "ED Tracker Types (W31-P1)",
+      "folder": "464-PHASE-464-ED-TRACKER-TYPES",
+      "files": [
+        "464-01-IMPLEMENT.md",
+        "464-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "464-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "464-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "465",
+      "title": "ED Board Adapter (W31-P2)",
+      "folder": "465-PHASE-465-ED-BOARD-ADAPTER",
+      "files": [
+        "465-01-IMPLEMENT.md",
+        "465-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "465-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "465-99-VERIFY.md"
+      ],
+      "routes": [
+        "/ed/beds",
+        "/ed/board",
+        "/ed/visits"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "466",
+      "title": "OR/Anesthesia Types (W31-P3)",
+      "folder": "466-PHASE-466-OR-ANESTHESIA-TYPES",
+      "files": [
+        "466-01-IMPLEMENT.md",
+        "466-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "466-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "466-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "467",
+      "title": "OR Scheduling Adapter (W31-P4)",
+      "folder": "467-PHASE-467-OR-SCHEDULING-ADAPTER",
+      "files": [
+        "467-01-IMPLEMENT.md",
+        "467-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "467-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "467-99-VERIFY.md"
+      ],
+      "routes": [
+        "/or/blocks",
+        "/or/board",
+        "/or/cases",
+        "/or/rooms"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "468",
+      "title": "ICU Flowsheet Types (W31-P5)",
+      "folder": "468-PHASE-468-ICU-FLOWSHEET-TYPES",
+      "files": [
+        "468-01-IMPLEMENT.md",
+        "468-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "468-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "468-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "469",
+      "title": "ICU Device Adapter (W31-P6)",
+      "folder": "469-PHASE-469-ICU-DEVICE-ADAPTER",
+      "files": [
+        "469-01-IMPLEMENT.md",
+        "469-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "469-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "469-99-VERIFY.md"
+      ],
+      "routes": [
+        "/icu/admissions",
+        "/icu/beds",
+        "/icu/metrics"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
       "phaseNumber": "43",
       "title": "Enterprise RCM Loop: Acks + Remits + Denial Workqueues + Rule Updates",
       "folder": "47-PHASE-43-RCM-LOOP",
@@ -5396,6 +11415,141 @@
       "filesTouched": [
         "scripts/verify-phase43-claim-quality.ps",
         "prompts/48-PHASE-43-VERIFY/prompt.md"
+      ]
+    },
+    {
+      "phaseNumber": "470",
+      "title": "Service-Line RBAC (W31-P7)",
+      "folder": "470-PHASE-470-SERVICE-LINE-RBAC",
+      "files": [
+        "470-01-IMPLEMENT.md",
+        "470-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "470-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "470-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "471",
+      "title": "Service-Line Dashboards (W31-P8)",
+      "folder": "471-PHASE-471-SERVICE-LINE-DASHBOARDS",
+      "files": [
+        "471-01-IMPLEMENT.md",
+        "471-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "471-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "471-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "472",
+      "title": "Service-Line QA Gate (W31-P9)",
+      "folder": "472-PHASE-472-SERVICE-LINE-QA",
+      "files": [
+        "472-01-IMPLEMENT.md",
+        "472-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "472-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "472-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "473",
+      "title": "W32-P1: Wave Auto-Numbering + Reservation Bootstrap",
+      "folder": "473-W32-P1-AUTOWAVE-BOOTSTRAP",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "prompts/WAVE_32_MANIFEST.md",
+        "prompts/473-W32-P1-AUTOWAVE-BOOTSTRAP/IMPLEMENT.md",
+        "prompts/473-W32-P1-AUTOWAVE-BOOTSTRAP/VERIFY.md",
+        "prompts/473-W32-P1-AUTOWAVE-BOOTSTRAP/NOTES.md",
+        "docs/qa/prompt-phase-range-reservations.json"
+      ]
+    },
+    {
+      "phaseNumber": "474",
+      "title": "W32-P2: Prompt Phase File-Name Standardization",
+      "folder": "474-W32-P2-WAVE-PROMPT-NORMALIZE",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/prompts-normalize-wave-files.mjs",
+        "scripts/qa-gates/wave-phase-lint.mjs",
+        "prompts/*/IMPLEMENT.md",
+        "prompts/*/VERIFY.md",
+        "prompts/*/NOTES.md"
+      ]
+    },
+    {
+      "phaseNumber": "475",
+      "title": "W32-P3: Fix Phase Index Gate Freshness",
+      "folder": "475-W32-P3-PHASE-INDEX-FIX",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/build-phase-index.mjs",
+        "scripts/qa-gates/phase-index-gate.mjs",
+        "docs/qa/phase-index.json"
       ]
     },
     {
@@ -7231,89 +13385,6 @@
         "docs/reports/phase-93.md",
         "prompts/99-PHASE-93-PH-HMO-DEEPENING/93-01-IMPLEMENT.md"
       ]
-    },
-    {
-      "phaseNumber": "94",
-      "title": "PH HMO WORKFLOW",
-      "folder": "99-PHASE-94-PH-HMO-WORKFLOW",
-      "files": [
-        "94-01-IMPLEMENT.md",
-        "94-99-VERIFY.md"
-      ],
-      "implementFiles": [
-        "94-01-IMPLEMENT.md"
-      ],
-      "verifyFiles": [
-        "94-99-VERIFY.md"
-      ],
-      "routes": [],
-      "rpcs": [],
-      "uiComponents": [
-        "layout.tsx",
-        "page.tsx"
-      ],
-      "filesTouched": []
-    },
-    {
-      "phaseNumber": "95",
-      "title": "Payer Registry Persistence + Audit + Evidence Update Workflow",
-      "folder": "99-PHASE-95-PAYER-REGISTRY-PERSISTENCE",
-      "files": [
-        "95-01-IMPLEMENT.md",
-        "95-99-VERIFY.md"
-      ],
-      "implementFiles": [
-        "95-01-IMPLEMENT.md"
-      ],
-      "verifyFiles": [
-        "95-99-VERIFY.md"
-      ],
-      "routes": [
-        "/admin/payers",
-        "/admin/payers/:id",
-        "/admin/payers/:id/audit",
-        "/admin/payers/:id/capabilities",
-        "/admin/payers/:id/tasks",
-        "/admin/payers/import"
-      ],
-      "rpcs": [],
-      "uiComponents": [
-        "layout.tsx",
-        "page.tsx"
-      ],
-      "filesTouched": [
-        "apps/api/src/rcm/payers/payer-persistence.ts",
-        "apps/api/src/rcm/payers/payer-audit.ts",
-        "apps/api/src/rcm/payers/evidence-manager.ts",
-        "apps/api/src/rcm/payers/payer-admin-routes.ts",
-        "apps/api/src/rcm/payers/ph-hmo-registry.ts",
-        "apps/api/src/index.ts",
-        "apps/web/src/app/cprs/admin/payer-registry/page.tsx",
-        "apps/web/src/app/cprs/admin/layout.tsx",
-        "scripts/import-payer-registry.ps",
-        "scripts/verify-prompt-ordering.ps"
-      ]
-    },
-    {
-      "phaseNumber": "95B",
-      "title": "Platform Persistence Unification + Payer Registry Audit/Evidence",
-      "folder": "99-PHASE-95B-PLATFORM-PERSISTENCE",
-      "files": [
-        "95B-01-IMPLEMENT.md",
-        "95B-99-VERIFY.md"
-      ],
-      "implementFiles": [
-        "95B-01-IMPLEMENT.md"
-      ],
-      "verifyFiles": [
-        "95B-99-VERIFY.md"
-      ],
-      "routes": [],
-      "rpcs": [],
-      "uiComponents": [
-        "page.tsx"
-      ],
-      "filesTouched": []
     }
   ]
 }

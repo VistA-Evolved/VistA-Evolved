@@ -51,7 +51,7 @@ const index = JSON.parse(raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw);
 // 2. Phase count matches prompts/ folder count
 const phaseFolders = readdirSync(PROMPTS_DIR)
   .filter((e) => statSync(join(PROMPTS_DIR, e)).isDirectory())
-  .filter((e) => /^\d{2,3}-PHASE-/.test(e));
+  .filter((e) => /^\d+-(?:PHASE-\d|W\d+-P\d+-|WAVE-\d+-)/.test(e));
 
 gate(
   "phase count matches",
@@ -80,7 +80,7 @@ for (const pn of phaseNumbers) {
   dupeSet.add(pn);
 }
 // Known legacy duplicates (pre-existing in prompts/ folder, not fixable here)
-const KNOWN_DUPES = new Set(["43", "87", "120", "131", "132"]);
+const KNOWN_DUPES = new Set(["43", "87", "120", "131", "132", "263", "283", "284", "290"]);
 const newDupes = dupes.filter((d) => !KNOWN_DUPES.has(String(d)));
 gate(
   "no new duplicate phase numbers",

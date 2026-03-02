@@ -30,6 +30,8 @@ const outPath = outIdx >= 0 && args[outIdx + 1] ? args[outIdx + 1] : DEFAULT_OUT
 // ---- Patterns ----
 
 const PHASE_FOLDER_RE = /^(\d{2,3})-PHASE-(\d+[A-Z]?)-(.+)$/;
+const WAVE_FOLDER_RE = /^(\d+)-W(\d+)-P(\d+)-(.+)$/;
+const WAVE_AUDIT_RE = /^(\d+)-WAVE-(\d+)-(.+)$/;
 const H1_PHASE_RE = /^#\s+Phase\s+(\d+\w*)\s*[-\u2014]+\s*(.+?)(?:\s*\((?:IMPLEMENT|VERIFY)\))?$/m;
 const ROUTE_RE = /(?:GET|POST|PUT|DELETE|PATCH)\s+(\/[^\s"'`,)}\]]+)/g;
 const URL_PATH_RE = /`(\/[a-z][a-z0-9\-_/{}:*]+)`/g;
@@ -110,7 +112,7 @@ if (!existsSync(PROMPTS_DIR)) {
 
 const entries = readdirSync(PROMPTS_DIR)
   .filter((e) => statSync(join(PROMPTS_DIR, e)).isDirectory())
-  .filter((e) => /^\d{2,3}-PHASE-/.test(e))
+  .filter((e) => /^\d+-(?:PHASE-\d|W\d+-P\d+-|WAVE-\d+-)/.test(e))
   .sort();
 
 console.log(`\n=== Phase Index Builder (Phase 108) ===`);
@@ -121,10 +123,24 @@ const phases = [];
 for (const folder of entries) {
   const folderPath = join(PROMPTS_DIR, folder);
   const folderMatch = folder.match(PHASE_FOLDER_RE);
+  const waveMatch = !folderMatch ? folder.match(WAVE_FOLDER_RE) : null;
+  const auditMatch = !folderMatch && !waveMatch ? folder.match(WAVE_AUDIT_RE) : null;
 
   // Extract phase number from folder name
-  const phaseId = folderMatch ? folderMatch[2] : folder.match(/PHASE-(\d+\w*)/)?.[1] || "?";
-  const folderTitle = folderMatch ? folderMatch[3].replace(/-/g, " ") : folder;
+  let phaseId, folderTitle;
+  if (folderMatch) {
+    phaseId = folderMatch[2];
+    folderTitle = folderMatch[3].replace(/-/g, " ");
+  } else if (waveMatch) {
+    phaseId = waveMatch[1];
+    folderTitle = `W${waveMatch[2]}-P${waveMatch[3]} ${waveMatch[4].replace(/-/g, " ")}`;
+  } else if (auditMatch) {
+    phaseId = auditMatch[1];
+    folderTitle = `Wave ${auditMatch[2]} ${auditMatch[3].replace(/-/g, " ")}`;
+  } else {
+    phaseId = folder.match(/^(\d+)/)?.[1] || "?";
+    folderTitle = folder;
+  }
 
   // Read all .md files in folder
   const mdFiles = readdirSync(folderPath).filter((f) => f.endsWith(".md")).sort();
