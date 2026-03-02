@@ -30,6 +30,7 @@ import { createHash } from "node:crypto";
 import { validateCredentials } from "../../vista/config.js";
 import { connect, disconnect, getDuz } from "../../vista/rpcBrokerClient.js";
 import { optionalRpc } from "../../vista/rpcCapabilities.js";
+import { probeTier0Rpc } from "../../lib/tier0-response.js";
 import { safeCallRpc } from "../../lib/rpc-resilience.js";
 import { audit } from "../../lib/audit.js";
 import { log } from "../../lib/logger.js";
@@ -284,8 +285,9 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       }
     }
 
-    // If no quick order found, return honest integration-pending
+    // If no quick order found, return capability-probed response
     if (!qoIen) {
+      const probe = probeTier0Rpc("ORWDXM AUTOACK", "orders");
       const draft = createDraft("order-sign", validDfn!, "ORWDX SAVE", {
         action: "lab-order", labTest: String(labTest || ""), attemptedAt: new Date().toISOString(),
       });
@@ -295,12 +297,14 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       const result = {
         ok: true,
         mode: "draft",
-        status: "integration-pending",
+        status: "unsupported-in-sandbox" as const,
         draftId: draft.id,
         rpcUsed,
         vivianPresence,
+        capabilityProbe: probe,
         pendingTargets: ["ORWDXM AUTOACK"],
         pendingNote: "Lab quick orders (LRZ*) are not pre-configured in WorldVistA Docker sandbox. " +
+          "RPC ORWDXM AUTOACK is available but requires a valid quick order IEN. " +
           "To enable: configure lab quick orders in VistA Order Entry Setup, then pass quickOrderIen directly. " +
           "Medication quick orders (PSOZ* IENs 1628-1658) are available as an alternative path.",
         message: `Lab order for "${labTest || ""}" saved as draft. Quick order IEN not available in sandbox.`,
@@ -461,7 +465,8 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       }
     }
 
-    // Default: integration-pending (no imaging QOs in sandbox)
+    // Default: capability-probed (no imaging QOs in sandbox)
+    const imgProbe = probeTier0Rpc("ORWDXM AUTOACK", "orders");
     const draft = createDraft("order-sign", validDfn!, "ORWDXM AUTOACK", {
       action: "imaging-order", imagingStudy: String(imagingStudy || ""),
       attemptedAt: new Date().toISOString(),
@@ -471,12 +476,14 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
     return {
       ok: true,
       mode: "draft",
-      status: "integration-pending",
+      status: "unsupported-in-sandbox" as const,
       draftId: draft.id,
       rpcUsed,
       vivianPresence,
+      capabilityProbe: imgProbe,
       pendingTargets: ["ORWDXM AUTOACK", "ORWDXR NEW ORDER"],
       pendingNote: "Imaging quick orders (RA*) are not pre-configured in WorldVistA Docker sandbox. " +
+        "RPC ORWDXM AUTOACK is available but requires a valid imaging quick order IEN. " +
         "To enable: configure radiology quick orders in VistA, then pass quickOrderIen directly. " +
         "Alternative: use ORWDX SAVE with full ORDIALOG parameter build for imaging dialogs.",
       message: `Imaging order for "${imagingStudy || ""}" saved as draft. Quick order IEN not available.`,
@@ -504,6 +511,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
 
     const actor = getActor(request);
+    const consultProbe = probeTier0Rpc("ORWDX SAVE", "orders");
     const draft = createDraft("order-sign", validDfn!, "ORWDX SAVE", {
       action: "consult-order", consultService: String(consultService),
       urgency: urgency || "routine",
@@ -514,14 +522,15 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
     return {
       ok: true,
       mode: "draft",
-      status: "integration-pending",
+      status: "unsupported-in-sandbox" as const,
       draftId: draft.id,
       rpcUsed,
       vivianPresence,
+      capabilityProbe: consultProbe,
       pendingTargets: ["ORWDX SAVE"],
-      pendingNote: "Consult orders require full ORDIALOG parameter build — service IEN, urgency, " +
+      pendingNote: "Consult orders require full ORDIALOG parameter build -- service IEN, urgency, " +
         "place of consultation, requesting provider, reason for request, and order dialog ID. " +
-        "This complex parameter assembly is a future enhancement. " +
+        "ORWDX SAVE RPC is available but the complex parameter assembly is a future enhancement. " +
         "Target: ORWDX SAVE with consult dialog (ORDIALOG #101.43).",
       message: `Consult order for "${consultService}" saved as draft. Full dialog integration pending.`,
     };

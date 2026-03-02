@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-02T06:08:04.799Z",
+  "generatedAt": "2026-03-02T06:12:40.735Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 484,
+  "phaseCount": 485,
   "phases": [
     {
       "phaseNumber": "1",
@@ -11774,6 +11774,26 @@
       ],
       "verifyFiles": [
         "485-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "486",
+      "title": "W33-P6: Lab/Imaging/Consult Order Fallbacks",
+      "folder": "486-W33-P6-LAB-WRITEBACK",
+      "files": [
+        "486-01-IMPLEMENT.md",
+        "486-99-VERIFY.md",
+        "486-NOTES.md"
+      ],
+      "implementFiles": [
+        "486-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "486-99-VERIFY.md"
       ],
       "routes": [],
       "rpcs": [],
