@@ -64,7 +64,8 @@
         "^/emar/",
         "^/handoff/",
         "^/vista/mha",
-        "^/vista/clinical-procedures"
+        "^/vista/clinical-procedures",
+        "^/vista/longitudinal"
       ],
       "dependencies": ["kernel"],
       "adapters": ["clinical-engine"],

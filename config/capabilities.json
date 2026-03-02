@@ -939,6 +939,30 @@
       "targetPackage": "SD",
       "description": "VSE vs VistA-Evolved scheduling parity matrix (Phase 539)"
     },
+    "clinical.longitudinal.timeline": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": null,
+      "targetPackage": "OR",
+      "description": "Aggregated chronological timeline across 8 clinical domains (Phase 540)"
+    },
+    "clinical.longitudinal.summary": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": null,
+      "targetPackage": "OR",
+      "description": "Domain-level event count summary for longitudinal viewer (Phase 540)"
+    },
+    "clinical.longitudinal.meds": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "ORWPS ACTIVE",
+      "targetPackage": "OR",
+      "description": "Longitudinal medication summary with active/historical groups (Phase 540)"
+    },
     "migration.import.csv": {
       "status": "live",
       "module": "migration",

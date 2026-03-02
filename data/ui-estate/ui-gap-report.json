@@ -1308,16 +1308,16 @@
       "surface": "jlv-timeline",
       "name": "Clinical Timeline",
       "priority": "p1-high",
-      "migrationStatus": "not-started",
-      "coveragePct": 0
+      "migrationStatus": "scaffold",
+      "coveragePct": 50
     },
     {
       "system": "jlv",
       "surface": "jlv-meds-summary",
       "name": "Longitudinal Medication Summary",
       "priority": "p1-high",
-      "migrationStatus": "not-started",
-      "coveragePct": 0
+      "migrationStatus": "scaffold",
+      "coveragePct": 50
     },
     {
       "system": "cdsp",
@@ -1420,8 +1420,8 @@
       "surface": "jlv-labs-aggregate",
       "name": "Aggregated Lab Results",
       "priority": "p2-medium",
-      "migrationStatus": "not-started",
-      "coveragePct": 0
+      "migrationStatus": "scaffold",
+      "coveragePct": 33
     },
     {
       "system": "ves",

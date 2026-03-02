@@ -850,7 +850,10 @@ export const STORE_INVENTORY: StoreEntry[] = [
   // Phase 539: Scheduling Parity
   { store: 'scheduling-recall-store', domain: 'scheduling', classification: 'clinical_data', durability: 'in_memory_only', description: 'Recall/Reminder entries from File 403.5 (Phase 539)' },
   { store: 'scheduling-parity-cache', domain: 'scheduling', classification: 'cache', durability: 'in_memory_only', description: 'VSE parity matrix cache (Phase 539)' },    file: "routes/imaging-capture/index.ts",
-    variable: "patientCaptureIndex",
+
+  // Phase 540: JLV Longitudinal Viewer
+  { store: 'longitudinal-timeline-cache', domain: 'clinical', classification: 'cache', durability: 'in_memory_only', description: 'Longitudinal timeline event aggregation cache (Phase 540)' },
+  { store: 'longitudinal-summary-cache', domain: 'clinical', classification: 'cache', durability: 'in_memory_only', description: 'Domain-level summary count cache (Phase 540)' },    variable: "patientCaptureIndex",
     description: "Patient DFN -> capture ID index",
     classification: "index",
     durability: "in_memory_only",
