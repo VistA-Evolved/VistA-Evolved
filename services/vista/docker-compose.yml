@@ -1,21 +1,28 @@
 # =============================================================================
-# VistA Development Sandbox — Docker Compose
+# VistA Development Sandbox -- Docker Compose
 # =============================================================================
 # Phase 277: Modernized with healthcheck, resource limits, named volumes.
-# Based on worldvista/worldvista-ehr image (WorldVistA Docker Hub).
+# Phase 476: Added VEHU profile as recommended dev/test baseline.
+#
+# Profiles:
+#   legacy  -- worldvista/worldvista-ehr (demo-only, 7+ years old)
+#   dev     -- alias for legacy (backward compat)
+#   vehu    -- worldvista/vehu (recommended, updated, synthetic patients)
 #
 # Usage:
-#   docker compose --profile dev up -d
+#   docker compose --profile vehu up -d       # recommended
+#   docker compose --profile legacy up -d     # legacy fallback
+#   docker compose --profile dev up -d        # alias for legacy
 #
 # After starting, install VistA routines:
-#   pwsh scripts/install-vista-routines.ps1
+#   pwsh scripts/install-vista-routines.ps1 -ContainerName vehu -VistaUser vehu
 # =============================================================================
 
 services:
   wv:
     image: worldvista/worldvista-ehr:latest
     container_name: wv
-    profiles: ["dev"]
+    profiles: ["dev", "legacy"]
     ports:
       - "2222:22"
       - "9430:9430"
@@ -25,7 +32,7 @@ services:
     stdin_open: true
     tty: true
     restart: unless-stopped
-    # Phase 277: Healthcheck — TCP probe on RPC Broker port
+    # Phase 277: Healthcheck -- TCP probe on RPC Broker port
     healthcheck:
       test: ["CMD-SHELL", "bash -c '</dev/tcp/127.0.0.1/9430' 2>/dev/null || exit 1"]
       interval: 30s
@@ -44,6 +51,36 @@ services:
     volumes:
       - vista-globals:/home/wv
 
+  vehu:
+    image: worldvista/vehu:latest
+    container_name: vehu
+    profiles: ["vehu"]
+    ports:
+      - "2223:22"
+      - "9431:9430"
+      - "5001:5001"
+      - "8082:8080"
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/127.0.0.1/9430' 2>/dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      start_period: 60s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "2.0"
+        reservations:
+          memory: 512M
+    volumes:
+      - vehu-globals:/home/vehu
+
 volumes:
   vista-globals:
     name: vista-evolved-globals
+  vehu-globals:
+    name: vista-evolved-vehu-globals

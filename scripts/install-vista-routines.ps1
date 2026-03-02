@@ -6,6 +6,7 @@
 .DESCRIPTION
     Phase 155 -- Replaces the need to run install-interop-rpcs.ps1,
     install-rpc-catalog.ps1, and install-rcm-wrappers.ps1 separately.
+    Phase 476 -- Added -VistaUser and -RoutinesDir for VEHU support.
 
     Steps:
       1. Check Docker container is running
@@ -21,6 +22,13 @@
 .PARAMETER ContainerName
     Docker container name (default: "wv")
 
+.PARAMETER VistaUser
+    VistA OS user inside the container (default: auto-detect from container)
+    "wv" for worldvista-ehr, "vehu" for VEHU image
+
+.PARAMETER RoutinesDir
+    Path to routines directory inside container (default: /home/<VistaUser>/r)
+
 .PARAMETER Seed
     Also run ZVESDSEED scheduling sandbox seeder (DEV only)
 
@@ -29,11 +37,14 @@
 
 .EXAMPLE
     .\scripts\install-vista-routines.ps1
+    .\scripts\install-vista-routines.ps1 -ContainerName vehu -VistaUser vehu
     .\scripts\install-vista-routines.ps1 -ContainerName wv -Seed
 #>
 [CmdletBinding()]
 param(
     [string]$ContainerName = "wv",
+    [string]$VistaUser = "",
+    [string]$RoutinesDir = "",
     [switch]$Seed,
     [switch]$SkipVerify
 )
@@ -57,8 +68,31 @@ function Write-Gate($status, $msg) {
 }
 
 Write-Host ""
-Write-Host "=== Phase 155: Unified VistA Routine Installer ===" -ForegroundColor Cyan
+Write-Host "=== Phase 155/476: Unified VistA Routine Installer ===" -ForegroundColor Cyan
 Write-Host "    Container: $ContainerName"
+
+# ================================================================
+# Step 0: Auto-detect VistaUser if not provided
+# ================================================================
+if (-not $VistaUser) {
+    # Check if /home/vehu exists in the container (VEHU image)
+    $prevEAP = $ErrorActionPreference
+    $ErrorActionPreference = "SilentlyContinue"
+    $vehuCheck = docker exec $ContainerName test -d /home/vehu 2>&1
+    $vehuExit = $LASTEXITCODE
+    $ErrorActionPreference = $prevEAP
+    if ($vehuExit -eq 0) {
+        $VistaUser = "vehu"
+    } else {
+        $VistaUser = "wv"
+    }
+    Write-Host "    Auto-detected VistaUser: $VistaUser"
+}
+if (-not $RoutinesDir) {
+    $RoutinesDir = "/home/$VistaUser/r"
+}
+Write-Host "    VistaUser: $VistaUser"
+Write-Host "    RoutinesDir: $RoutinesDir"
 Write-Host ""
 
 # ================================================================
@@ -112,7 +146,7 @@ foreach ($routine in $productionRoutines) {
     # $ErrorActionPreference override to avoid PowerShell treating it as fatal.
     $prevEAP = $ErrorActionPreference
     $ErrorActionPreference = "SilentlyContinue"
-    docker cp $src "${ContainerName}:/home/wv/r/$routine" 2>&1 | Out-Null
+    docker cp $src "${ContainerName}:${RoutinesDir}/$routine" 2>&1 | Out-Null
     $cpExit = $LASTEXITCODE
     $ErrorActionPreference = $prevEAP
     if ($cpExit -ne 0) {
@@ -167,7 +201,7 @@ foreach ($step in $installSteps) {
     Write-Host "  Installing: $($step.Label)..."
     $prevEAP = $ErrorActionPreference
     $ErrorActionPreference = "SilentlyContinue"
-    $output = docker exec $ContainerName su - wv -c $step.Command 2>&1
+    $output = docker exec $ContainerName su - $VistaUser -c $step.Command 2>&1
     $stepExit = $LASTEXITCODE
     $ErrorActionPreference = $prevEAP
     $outputStr = ($output | Out-String).Trim()
@@ -192,7 +226,7 @@ Write-Host "--- Step 4: Add RPCs to broker context ---"
 Write-Host "  Running VEMCTX3 (interop context adder)..."
 $prevEAP = $ErrorActionPreference
 $ErrorActionPreference = "SilentlyContinue"
-$ctxOutput = docker exec $ContainerName su - wv -c "mumps -run VEMCTX3" 2>&1
+$ctxOutput = docker exec $ContainerName su - $VistaUser -c "mumps -run VEMCTX3" 2>&1
 $ctxExit = $LASTEXITCODE
 $ErrorActionPreference = $prevEAP
 $ctxStr = ($ctxOutput | Out-String).Trim()
@@ -213,7 +247,7 @@ if ($Seed) {
     Write-Host "--- Step 5a: Scheduling sandbox seed (ZVESDSEED) ---"
     $prevEAP = $ErrorActionPreference
     $ErrorActionPreference = "SilentlyContinue"
-    $seedOutput = docker exec $ContainerName su - wv -c "mumps -run ZVESDSEED" 2>&1
+    $seedOutput = docker exec $ContainerName su - $VistaUser -c "mumps -run ZVESDSEED" 2>&1
     $seedExit = $LASTEXITCODE
     $ErrorActionPreference = $prevEAP
     $seedStr = ($seedOutput | Out-String).Trim()
@@ -266,7 +300,7 @@ if (-not $SkipVerify) {
     foreach ($test in $verifyTests) {
         $prevEAP = $ErrorActionPreference
         $ErrorActionPreference = "SilentlyContinue"
-        $result = docker exec $ContainerName su - wv -c $test.Command 2>&1
+        $result = docker exec $ContainerName su - $VistaUser -c $test.Command 2>&1
         $verifyExit = $LASTEXITCODE
         $ErrorActionPreference = $prevEAP
         $resultStr = ($result | Out-String).Trim()
