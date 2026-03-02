@@ -16,3 +16,4 @@ export { default as MessagingTasksPanel } from './MessagingTasksPanel';
 export { default as AIAssistPanel } from './AIAssistPanel';
 export { default as ADTPanel } from './ADTPanel';
 export { default as NursingPanel } from './NursingPanel';
+export { default as MHAPanel } from './MHAPanel';

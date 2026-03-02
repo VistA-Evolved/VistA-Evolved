@@ -137,6 +137,9 @@ import emarRoutes from "../routes/emar/index.js";
 import handoffRoutes from "../routes/handoff/index.js";
 import uiPrefsRoutes from "../routes/ui-prefs.js";
 
+// Mental Health Assessment (Phase 535)
+import mhaRoutes from "../routes/mha/index.js";
+
 // Service-line boards (Phase 464-471, W31)
 import edRoutes from "../service-lines/ed/ed-routes.js";
 import orRoutes from "../service-lines/or/or-routes.js";
@@ -512,6 +515,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Immunizations (Phase 65)
   server.register(immunizationsRoutes);
+
+  // Mental Health Assessment (Phase 535)
+  server.register(mhaRoutes);
 
   // ADT + Inpatient (Phase 67, 83)
   server.register(adtRoutes);

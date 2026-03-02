@@ -1227,6 +1227,38 @@
       "targetPackage": "TIU",
       "description": "Read nursing note text via TIU GET RECORD TEXT (Phase 84/138)"
     },
+    "clinical.mha.instruments.list": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "YTQZ LISTTESTS",
+      "targetPackage": "YTT",
+      "description": "List available MH instruments from local FHIR catalog; VistA YTQZ LISTTESTS integration pending (Phase 535)"
+    },
+    "clinical.mha.instruments.administer": {
+      "status": "live",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "YTT SAVE RESULTS",
+      "targetPackage": "YTT",
+      "description": "Administer MH instrument with server-side scoring; VistA write-back pending Phase 536 (Phase 535)"
+    },
+    "clinical.mha.results.list": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "YTQZ RESULTLIST",
+      "targetPackage": "YTT",
+      "description": "Patient MH results history; attempts VistA YTQZ RESULTLIST with local fallback (Phase 535)"
+    },
+    "clinical.mha.results.detail": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "YTQZ DETAILLIST",
+      "targetPackage": "YTT",
+      "description": "Detailed MH administration result from VistA File 601.84 (Phase 535)"
+    },
     "clinical.emar.schedule": {
       "status": "live",
       "module": "clinical",

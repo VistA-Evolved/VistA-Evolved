@@ -1,0 +1,274 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "pcl-5",
+  "url": "https://loinc.org/77869-1",
+  "name": "PCL-5",
+  "title": "PTSD Checklist for DSM-5 (PCL-5)",
+  "status": "active",
+  "description": "Below is a list of problems that people sometimes have in response to a very stressful experience. Keeping your worst event in mind, please indicate how much you have been bothered by that problem in the past month.",
+  "code": [
+    { "system": "http://loinc.org", "code": "77869-1", "display": "PCL-5 total score" }
+  ],
+  "item": [
+    {
+      "linkId": "pcl5-1",
+      "text": "Repeated, disturbing, and unwanted memories of the stressful experience?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    },
+    {
+      "linkId": "pcl5-2",
+      "text": "Repeated, disturbing dreams of the stressful experience?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    },
+    {
+      "linkId": "pcl5-3",
+      "text": "Suddenly feeling or acting as if the stressful experience were actually happening again (as if you were actually back there reliving it)?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    },
+    {
+      "linkId": "pcl5-4",
+      "text": "Feeling very upset when something reminded you of the stressful experience?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    },
+    {
+      "linkId": "pcl5-5",
+      "text": "Having strong physical reactions when something reminded you of the stressful experience (for example, heart pounding, trouble breathing, sweating)?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    },
+    {
+      "linkId": "pcl5-6",
+      "text": "Avoiding memories, thoughts, or feelings related to the stressful experience?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    },
+    {
+      "linkId": "pcl5-7",
+      "text": "Avoiding external reminders of the stressful experience (for example, people, places, conversations, activities, objects, or situations)?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    },
+    {
+      "linkId": "pcl5-8",
+      "text": "Trouble remembering important parts of the stressful experience?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    },
+    {
+      "linkId": "pcl5-9",
+      "text": "Having strong negative beliefs about yourself, other people, or the world (for example, having thoughts such as: I am bad, there is something seriously wrong with me, no one can be trusted, the world is completely dangerous)?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    },
+    {
+      "linkId": "pcl5-10",
+      "text": "Blaming yourself or someone else for the stressful experience or what happened after it?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    },
+    {
+      "linkId": "pcl5-11",
+      "text": "Having strong negative feelings such as fear, horror, anger, guilt, or shame?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    },
+    {
+      "linkId": "pcl5-12",
+      "text": "Loss of interest in activities that you used to enjoy?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    },
+    {
+      "linkId": "pcl5-13",
+      "text": "Feeling distant or cut off from other people?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    },
+    {
+      "linkId": "pcl5-14",
+      "text": "Trouble experiencing positive feelings (for example, being unable to feel happiness or have loving feelings for people close to you)?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    },
+    {
+      "linkId": "pcl5-15",
+      "text": "Irritable behavior, angry outbursts, or acting aggressively?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    },
+    {
+      "linkId": "pcl5-16",
+      "text": "Taking too many risks or doing things that could cause you harm?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    },
+    {
+      "linkId": "pcl5-17",
+      "text": "Being 'superalert' or watchful or on guard?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    },
+    {
+      "linkId": "pcl5-18",
+      "text": "Feeling jumpy or easily startled?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    },
+    {
+      "linkId": "pcl5-19",
+      "text": "Having difficulty concentrating?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    },
+    {
+      "linkId": "pcl5-20",
+      "text": "Trouble falling or staying asleep?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "A little bit" } },
+        { "valueCoding": { "code": "2", "display": "Moderately" } },
+        { "valueCoding": { "code": "3", "display": "Quite a bit" } },
+        { "valueCoding": { "code": "4", "display": "Extremely" } }
+      ]
+    }
+  ]
+}

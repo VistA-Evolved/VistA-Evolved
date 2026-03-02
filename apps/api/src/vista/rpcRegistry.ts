@@ -219,6 +219,13 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "SDES CANCEL APPOINTMENT 2",        domain: "scheduling",  tag: "write", description: "SDES appointment cancellation" },
   { name: "SDES CHECKIN",                     domain: "scheduling",  tag: "write", description: "SDES patient check-in" },
   { name: "SDES CHECKOUT",                    domain: "scheduling",  tag: "write", description: "SDES patient checkout" },
+
+  // --- Mental Health Assessment (Phase 535: MHA v1 instrument engine) ---
+  { name: "YTT GET INSTRUMENT",               domain: "mental-health", tag: "read",  description: "Fetch MH instrument definition (questions, scoring rules) from File 601.72" },
+  { name: "YTQZ LISTTESTS",                   domain: "mental-health", tag: "read",  description: "List available MH tests/instruments from File 601.71" },
+  { name: "YTT SAVE RESULTS",                 domain: "mental-health", tag: "write", description: "Store completed instrument results to File 601.84" },
+  { name: "YTQZ RESULTLIST",                  domain: "mental-health", tag: "read",  description: "Get historical MH results for a patient from File 601.84" },
+  { name: "YTQZ DETAILLIST",                  domain: "mental-health", tag: "read",  description: "Get detailed results for a specific MH administration" },
 ];
 
 /**

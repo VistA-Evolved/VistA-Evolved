@@ -1,0 +1,98 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "gad-7",
+  "url": "https://loinc.org/69737-5",
+  "name": "GAD-7",
+  "title": "Generalized Anxiety Disorder 7-item (GAD-7)",
+  "status": "active",
+  "description": "Over the last 2 weeks, how often have you been bothered by the following problems?",
+  "code": [
+    { "system": "http://loinc.org", "code": "69737-5", "display": "GAD-7 total score" }
+  ],
+  "item": [
+    {
+      "linkId": "gad7-1",
+      "text": "Feeling nervous, anxious, or on edge",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "Several days" } },
+        { "valueCoding": { "code": "2", "display": "More than half the days" } },
+        { "valueCoding": { "code": "3", "display": "Nearly every day" } }
+      ]
+    },
+    {
+      "linkId": "gad7-2",
+      "text": "Not being able to stop or control worrying",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "Several days" } },
+        { "valueCoding": { "code": "2", "display": "More than half the days" } },
+        { "valueCoding": { "code": "3", "display": "Nearly every day" } }
+      ]
+    },
+    {
+      "linkId": "gad7-3",
+      "text": "Worrying too much about different things",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "Several days" } },
+        { "valueCoding": { "code": "2", "display": "More than half the days" } },
+        { "valueCoding": { "code": "3", "display": "Nearly every day" } }
+      ]
+    },
+    {
+      "linkId": "gad7-4",
+      "text": "Trouble relaxing",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "Several days" } },
+        { "valueCoding": { "code": "2", "display": "More than half the days" } },
+        { "valueCoding": { "code": "3", "display": "Nearly every day" } }
+      ]
+    },
+    {
+      "linkId": "gad7-5",
+      "text": "Being so restless that it is hard to sit still",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "Several days" } },
+        { "valueCoding": { "code": "2", "display": "More than half the days" } },
+        { "valueCoding": { "code": "3", "display": "Nearly every day" } }
+      ]
+    },
+    {
+      "linkId": "gad7-6",
+      "text": "Becoming easily annoyed or irritable",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "Several days" } },
+        { "valueCoding": { "code": "2", "display": "More than half the days" } },
+        { "valueCoding": { "code": "3", "display": "Nearly every day" } }
+      ]
+    },
+    {
+      "linkId": "gad7-7",
+      "text": "Feeling afraid as if something awful might happen",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Not at all" } },
+        { "valueCoding": { "code": "1", "display": "Several days" } },
+        { "valueCoding": { "code": "2", "display": "More than half the days" } },
+        { "valueCoding": { "code": "3", "display": "Nearly every day" } }
+      ]
+    }
+  ]
+}

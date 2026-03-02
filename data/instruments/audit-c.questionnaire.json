@@ -1,0 +1,53 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "audit-c",
+  "url": "https://loinc.org/75624-2",
+  "name": "AUDIT-C",
+  "title": "Alcohol Use Disorders Identification Test - Consumption (AUDIT-C)",
+  "status": "active",
+  "description": "3-item alcohol screening instrument. Scoring: Men >= 4 positive, Women >= 3 positive.",
+  "code": [
+    { "system": "http://loinc.org", "code": "75624-2", "display": "AUDIT-C total score" }
+  ],
+  "item": [
+    {
+      "linkId": "auditc-1",
+      "text": "How often do you have a drink containing alcohol?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Never" } },
+        { "valueCoding": { "code": "1", "display": "Monthly or less" } },
+        { "valueCoding": { "code": "2", "display": "2 to 4 times a month" } },
+        { "valueCoding": { "code": "3", "display": "2 to 3 times a week" } },
+        { "valueCoding": { "code": "4", "display": "4 or more times a week" } }
+      ]
+    },
+    {
+      "linkId": "auditc-2",
+      "text": "How many drinks containing alcohol do you have on a typical day when you are drinking?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "1 or 2" } },
+        { "valueCoding": { "code": "1", "display": "3 or 4" } },
+        { "valueCoding": { "code": "2", "display": "5 or 6" } },
+        { "valueCoding": { "code": "3", "display": "7 to 9" } },
+        { "valueCoding": { "code": "4", "display": "10 or more" } }
+      ]
+    },
+    {
+      "linkId": "auditc-3",
+      "text": "How often do you have 6 or more drinks on one occasion?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "Never" } },
+        { "valueCoding": { "code": "1", "display": "Less than monthly" } },
+        { "valueCoding": { "code": "2", "display": "Monthly" } },
+        { "valueCoding": { "code": "3", "display": "Weekly" } },
+        { "valueCoding": { "code": "4", "display": "Daily or almost daily" } }
+      ]
+    }
+  ]
+}

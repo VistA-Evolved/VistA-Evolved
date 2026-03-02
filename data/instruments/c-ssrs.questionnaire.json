@@ -1,0 +1,74 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "c-ssrs",
+  "url": "https://cssrs.columbia.edu/the-columbia-scale-c-ssrs",
+  "name": "C-SSRS",
+  "title": "Columbia Suicide Severity Rating Scale (C-SSRS) Screening",
+  "status": "active",
+  "description": "Screening version of the Columbia Suicide Severity Rating Scale. Binary yes/no for suicidal ideation and behavior.",
+  "code": [
+    { "system": "http://loinc.org", "code": "93373-4", "display": "C-SSRS screening" }
+  ],
+  "item": [
+    {
+      "linkId": "cssrs-1",
+      "text": "Have you wished you were dead or wished you could go to sleep and not wake up?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "No" } },
+        { "valueCoding": { "code": "1", "display": "Yes" } }
+      ]
+    },
+    {
+      "linkId": "cssrs-2",
+      "text": "Have you actually had any thoughts of killing yourself?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "No" } },
+        { "valueCoding": { "code": "1", "display": "Yes" } }
+      ]
+    },
+    {
+      "linkId": "cssrs-3",
+      "text": "Have you been thinking about how you might do this?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "No" } },
+        { "valueCoding": { "code": "1", "display": "Yes" } }
+      ]
+    },
+    {
+      "linkId": "cssrs-4",
+      "text": "Have you had these thoughts and had some intention of acting on them?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "No" } },
+        { "valueCoding": { "code": "1", "display": "Yes" } }
+      ]
+    },
+    {
+      "linkId": "cssrs-5",
+      "text": "Have you started to work out or worked out the details of how to kill yourself? Do you intend to carry out this plan?",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "No" } },
+        { "valueCoding": { "code": "1", "display": "Yes" } }
+      ]
+    },
+    {
+      "linkId": "cssrs-6",
+      "text": "Have you ever done anything, started to do anything, or prepared to do anything to end your life? (Examples: collected items to harm yourself, obtained access to means, rehearsed, wrote a suicide note, went to a dangerous location, or actually attempted to end your life.)",
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        { "valueCoding": { "code": "0", "display": "No" } },
+        { "valueCoding": { "code": "1", "display": "Yes" } }
+      ]
+    }
+  ]
+}
