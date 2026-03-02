@@ -87,7 +87,6 @@ export async function hl7UseCaseRoutes(server: FastifyInstance): Promise<void> {
       return reply.code(500).send({
         ok: false,
         error: "HL7 ingest failed",
-        detail: err instanceof Error ? err.message : "Unknown error",
       });
     }
   });

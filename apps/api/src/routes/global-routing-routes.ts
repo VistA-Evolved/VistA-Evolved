@@ -29,6 +29,7 @@
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import { log } from "../lib/logger.js";
 import {
   getRoutingConfig,
   updateRoutingConfig,
@@ -104,7 +105,8 @@ export async function globalRoutingRoutes(server: FastifyInstance): Promise<void
       const ingress = registerIngress(body, getActor(request));
       return reply.code(201).send({ ok: true, ingress });
     } catch (err: any) {
-      return reply.code(err.statusCode || 500).send({ ok: false, error: err.message });
+      log.warn("Ingress registration failed", { error: err.message });
+      return reply.code(err.statusCode || 500).send({ ok: false, error: "Ingress registration failed" });
     }
   });
 
@@ -140,7 +142,8 @@ export async function globalRoutingRoutes(server: FastifyInstance): Promise<void
       const record = createDnsRecord(body, getActor(request));
       return reply.code(201).send({ ok: true, record });
     } catch (err: any) {
-      return reply.code(err.statusCode || 500).send({ ok: false, error: err.message });
+      log.warn("DNS record creation failed", { error: err.message });
+      return reply.code(err.statusCode || 500).send({ ok: false, error: "DNS record creation failed" });
     }
   });
 
@@ -170,7 +173,8 @@ export async function globalRoutingRoutes(server: FastifyInstance): Promise<void
       const record = updateDnsTarget(tenantId, body.targetValue, body.ttlSeconds, getActor(request));
       return { ok: true, record };
     } catch (err: any) {
-      return reply.code(err.statusCode || 500).send({ ok: false, error: err.message });
+      log.warn("DNS target update failed", { error: err.message });
+      return reply.code(err.statusCode || 500).send({ ok: false, error: "DNS target update failed" });
     }
   });
 
@@ -185,7 +189,8 @@ export async function globalRoutingRoutes(server: FastifyInstance): Promise<void
       const event = initiateFailover(body, getActor(request));
       return reply.code(201).send({ ok: true, event });
     } catch (err: any) {
-      return reply.code(err.statusCode || 500).send({ ok: false, error: err.message });
+      log.warn("Failover initiation failed", { error: err.message });
+      return reply.code(err.statusCode || 500).send({ ok: false, error: "Failover initiation failed" });
     }
   });
 
@@ -199,7 +204,8 @@ export async function globalRoutingRoutes(server: FastifyInstance): Promise<void
       const event = completeFailover(id, body.toClusterId, body.newDnsTarget, getActor(request));
       return { ok: true, event };
     } catch (err: any) {
-      return reply.code(err.statusCode || 500).send({ ok: false, error: err.message });
+      log.warn("Failover completion failed", { error: err.message });
+      return reply.code(err.statusCode || 500).send({ ok: false, error: "Failover completion failed" });
     }
   });
 

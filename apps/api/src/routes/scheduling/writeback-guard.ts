@@ -228,7 +228,7 @@ export async function enforceTruthGate(
     return {
       ok: false,
       status: "failed",
-      error: err.message,
+      error: "Truth gate verification failed",
       rpcUsed,
     };
   }

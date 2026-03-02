@@ -78,7 +78,6 @@ export async function dataPortabilityRoutes(
       return reply.code(500).send({
         ok: false,
         error: "Failed to kick off bulk export",
-        detail: err instanceof Error ? err.message : "Unknown error",
       });
     }
   });
@@ -160,7 +159,6 @@ export async function dataPortabilityRoutes(
       return reply.code(500).send({
         ok: false,
         error: "Failed to generate patient chart",
-        detail: err instanceof Error ? err.message : "Unknown error",
       });
     }
   });
@@ -217,7 +215,6 @@ export async function dataPortabilityRoutes(
       return reply.code(500).send({
         ok: false,
         error: "Failed to kick off tenant export",
-        detail: err instanceof Error ? err.message : "Unknown error",
       });
     }
   });
@@ -281,7 +278,6 @@ export async function dataPortabilityRoutes(
       return reply.code(500).send({
         ok: false,
         error: "Failed to verify manifest",
-        detail: err instanceof Error ? err.message : "Unknown error",
       });
     }
   });

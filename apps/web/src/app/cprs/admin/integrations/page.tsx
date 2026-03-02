@@ -189,8 +189,13 @@ export default function IntegrationsPage() {
   const [errorLogEntries, setErrorLogEntries] = useState<Integration['errorLog']>([]);
 
   // Phase 541: VA GUI Hybrids state
-  const [hybridsData, setHybridsData] = useState<any>(null);
+  const [hybridsData, setHybridsData] = useState<{
+    ok: boolean;
+    summary: { totalHybrids: number; avgMigrationReadiness: number; totalRpcOverlap: number; totalRpcGap: number };
+    systems: { id: string; name: string; agency: string; category: string; hostPlatform: string; deploymentModel: string; migrationStrategy: string; surfaceCount: number; coveredSurfaces: number; rpcOverlapCount: number; rpcGapCount: number; capabilityOverlapCount: number; migrationReadiness: number }[];
+  } | null>(null);
   const [hybridsLoading, setHybridsLoading] = useState(false);
+  const [hybridsError, setHybridsError] = useState<string | null>(null);
 
   // VistA HL7/HLO telemetry state (Phase 21)
   const [interopSummary, setInteropSummary] = useState<InteropSummary | null>(null);
@@ -746,14 +751,26 @@ export default function IntegrationsPage() {
               </div>
               <button className={styles.btn} style={{ fontSize: 11 }} onClick={async () => {
                 setHybridsLoading(true);
+                setHybridsError(null);
                 try {
-                  const r = await fetch('/api/vista/hybrids/summary', { credentials: 'include' });
-                  if (r.ok) setHybridsData(await r.json());
+                  const r = await fetch(`${API_BASE}/vista/hybrids/summary`, { credentials: 'include' });
+                  if (r.ok) {
+                    setHybridsData(await r.json());
+                  } else {
+                    setHybridsError(`Failed to load hybrids map (${r.status})`);
+                  }
+                } catch (e: any) {
+                  setHybridsError(e.message || 'Network error loading hybrids map');
                 } finally { setHybridsLoading(false); }
               }}>
                 {hybridsLoading ? 'Loading...' : 'Load Hybrids Map'}
               </button>
             </div>
+            {hybridsError && (
+              <div style={{ padding: '8px 12px', background: '#fee2e2', color: '#991b1b', borderRadius: 6, fontSize: 12, marginBottom: 12 }}>
+                {hybridsError}
+              </div>
+            )}
             {hybridsData?.summary && (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, marginBottom: 16 }}>
                 <div style={{ background: 'var(--cprs-bg-alt)', padding: 10, borderRadius: 6, textAlign: 'center' }}>
@@ -788,7 +805,7 @@ export default function IntegrationsPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {hybridsData.systems.map((h: any) => (
+                  {hybridsData.systems.map((h) => (
                     <tr key={h.id} style={{ borderBottom: '1px solid var(--cprs-border)' }}>
                       <td style={{ padding: '6px 8px' }}>
                         <div style={{ fontWeight: 500 }}>{h.name}</div>

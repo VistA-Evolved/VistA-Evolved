@@ -65,7 +65,7 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
       });
       return reply.code(201).send({ ok: true, extension: ext });
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message });
+      return reply.code(400).send({ ok: false, error: "UI extension registration failed" });
     }
   });
 

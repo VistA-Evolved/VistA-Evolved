@@ -66,7 +66,7 @@ export default async function exportV2Routes(server: FastifyInstance): Promise<v
       return { ok: true, job: meta };
     } catch (err: any) {
       log.warn("Export v2 creation failed", { error: err.message });
-      return reply.code(400).send({ ok: false, error: err.message });
+      return reply.code(400).send({ ok: false, error: "Export creation failed" });
     }
   });
 

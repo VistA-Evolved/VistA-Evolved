@@ -49,7 +49,7 @@ export default async function pilotRoutes(server: FastifyInstance): Promise<void
       const site = createSite(body as CreateSiteRequest);
       return { ok: true, site };
     } catch (err: any) {
-      return reply.code(409).send({ ok: false, error: err.message });
+      return reply.code(409).send({ ok: false, error: "Pilot site registration conflict" });
     }
   });
 
@@ -77,7 +77,7 @@ export default async function pilotRoutes(server: FastifyInstance): Promise<void
       const site = updateSite(id, body);
       return { ok: true, site };
     } catch (err: any) {
-      return reply.code(404).send({ ok: false, error: err.message });
+      return reply.code(404).send({ ok: false, error: "Pilot site update failed" });
     }
   });
 

@@ -218,7 +218,7 @@ export default async function medReconciliationRoutes(server: FastifyInstance) {
       return { ok: true, meds, rpcUsed: ["ORWPS ACTIVE"], source: "vista" };
     } catch (err: any) {
       log.warn("Failed to read active meds", { err: err.message });
-      return { ok: false, status: "integration-pending", targetRpc: ["ORWPS ACTIVE"], error: err.message };
+      return { ok: false, status: "integration-pending", targetRpc: ["ORWPS ACTIVE"], error: "Failed to read active medications" };
     }
   });
 

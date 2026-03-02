@@ -127,7 +127,6 @@ export async function onboardingIntegrationRoutes(
         return reply.code(500).send({
           ok: false,
           error: "Failed to upsert endpoint",
-          detail: err instanceof Error ? err.message : "Unknown error",
         });
       }
     },
@@ -162,7 +161,6 @@ export async function onboardingIntegrationRoutes(
         return reply.code(500).send({
           ok: false,
           error: "Failed to advance step",
-          detail: err instanceof Error ? err.message : "Unknown error",
         });
       }
     },
@@ -185,7 +183,6 @@ export async function onboardingIntegrationRoutes(
         return reply.code(500).send({
           ok: false,
           error: "Failed to probe endpoints",
-          detail: err instanceof Error ? err.message : "Unknown error",
         });
       }
     },
@@ -208,7 +205,6 @@ export async function onboardingIntegrationRoutes(
         return reply.code(500).send({
           ok: false,
           error: "Failed to run preflight",
-          detail: err instanceof Error ? err.message : "Unknown error",
         });
       }
     },

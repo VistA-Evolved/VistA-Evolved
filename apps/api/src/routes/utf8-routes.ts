@@ -58,7 +58,7 @@ export async function utf8Routes(app: FastifyInstance): Promise<void> {
         const decoded = encoded.toString("utf-8");
         return validateRoundTrip(test, decoded, null);
       } catch (err: any) {
-        return validateRoundTrip(test, null, err.message || "Encoding error");
+        return validateRoundTrip(test, null, "Encoding error");
       }
     });
 

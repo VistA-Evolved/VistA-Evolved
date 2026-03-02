@@ -108,7 +108,7 @@ export async function collectDiagnostics(tenantId = "default"): Promise<Diagnost
     await probeConnect(3000);
     vista = { reachable: true, host: vistaHost, port: vistaPort, latencyMs: Date.now() - probeStart };
   } catch (err) {
-    vista = { reachable: false, host: vistaHost, port: vistaPort, error: (err as Error).message };
+    vista = { reachable: false, host: vistaHost, port: vistaPort, error: "VistA probe failed" };
   }
 
   // Modules

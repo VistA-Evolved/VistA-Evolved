@@ -26,6 +26,8 @@
 
 export type StoreClassification =
   | "critical"
+  | "clinical_data"
+  | "index"
   | "cache"
   | "rate_limiter"
   | "registry"
@@ -846,26 +848,78 @@ export const STORE_INVENTORY: StoreEntry[] = [
   },
   {
     id: "imaging-capture-patient-index",
-
-  // Phase 539: Scheduling Parity
-  { store: 'scheduling-recall-store', domain: 'scheduling', classification: 'clinical_data', durability: 'in_memory_only', description: 'Recall/Reminder entries from File 403.5 (Phase 539)' },
-  { store: 'scheduling-parity-cache', domain: 'scheduling', classification: 'cache', durability: 'in_memory_only', description: 'VSE parity matrix cache (Phase 539)' },    file: "routes/imaging-capture/index.ts",
-
-  // Phase 540: JLV Longitudinal Viewer
-  { store: 'longitudinal-timeline-cache', domain: 'clinical', classification: 'cache', durability: 'in_memory_only', description: 'Longitudinal timeline event aggregation cache (Phase 540)' },
-  { store: 'longitudinal-summary-cache', domain: 'clinical', classification: 'cache', durability: 'in_memory_only', description: 'Domain-level summary count cache (Phase 540)' },    variable: "patientCaptureIndex",
-
-
-  // Phase 541: VA GUI Hybrids capability map
-  { id: 'hybrids-map-cache', module: 'migration', backend: 'in_memory', description: 'VA/IHS GUI hybrids cross-reference cache (5m TTL)' },
-  // Phase 541: VA GUI Hybrids capability map
-  { id: 'hybrids-map-cache', module: 'migration', backend: 'in_memory', description: 'VA/IHS GUI hybrids cross-reference cache (5m TTL)' },    description: "Patient DFN -> capture ID index",
+    file: "routes/imaging-capture/index.ts",
+    variable: "patientCaptureIndex",
+    description: "Patient DFN -> capture ID index",
     classification: "index",
     durability: "in_memory_only",
     domain: "imaging",
     maxSize: 50_000,
     migrationTarget: "pg: derived from imaging_capture.dfn column",
     notes: "Phase 538: Secondary index for captures.",
+  },
+  // Phase 539: Scheduling Parity
+  {
+    id: "scheduling-recall-store",
+    file: "routes/scheduling/index.ts",
+    variable: "recallStore",
+    description: "Recall/Reminder entries from File 403.5 (Phase 539)",
+    classification: "clinical_data",
+    durability: "in_memory_only",
+    domain: "scheduling",
+    maxSize: 50_000,
+    migrationTarget: "pg: scheduling_recall table",
+    notes: "Phase 539: In-memory recall store.",
+  },
+  {
+    id: "scheduling-parity-cache",
+    file: "routes/scheduling/index.ts",
+    variable: "parityCache",
+    description: "VSE parity matrix cache (Phase 539)",
+    classification: "cache",
+    durability: "in_memory_only",
+    domain: "scheduling",
+    maxSize: 10_000,
+    migrationTarget: "n/a (cache only)",
+    notes: "Phase 539: Scheduling parity comparison cache.",
+  },
+  // Phase 540: JLV Longitudinal Viewer
+  {
+    id: "longitudinal-timeline-cache",
+    file: "routes/longitudinal/index.ts",
+    variable: "timelineCache",
+    description: "Longitudinal timeline event aggregation cache (Phase 540)",
+    classification: "cache",
+    durability: "in_memory_only",
+    domain: "clinical",
+    maxSize: 10_000,
+    migrationTarget: "n/a (cache only)",
+    notes: "Phase 540: Timeline aggregation cache.",
+  },
+  {
+    id: "longitudinal-summary-cache",
+    file: "routes/longitudinal/index.ts",
+    variable: "summaryCache",
+    description: "Domain-level summary count cache (Phase 540)",
+    classification: "cache",
+    durability: "in_memory_only",
+    domain: "clinical",
+    maxSize: 10_000,
+    migrationTarget: "n/a (cache only)",
+    notes: "Phase 540: Domain summary cache.",
+  },
+  // Phase 541: VA GUI Hybrids capability map
+  {
+    id: "hybrids-map-cache",
+    file: "routes/hybrids/index.ts",
+    variable: "cachedMap",
+    description: "VA/IHS GUI hybrids cross-reference cache (5m TTL)",
+    classification: "cache",
+    durability: "in_memory_only",
+    domain: "migration",
+    maxSize: 1,
+    migrationTarget: "n/a (cache only)",
+    notes: "Phase 541: Single JSON blob cached in memory.",
   }, // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // MIGRATION
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•

@@ -27,6 +27,7 @@
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import { log } from "../lib/logger.js";
 import {
   registerShard,
   listShards,
@@ -66,7 +67,8 @@ export async function dataPlaneShardingRoutes(server: FastifyInstance): Promise<
       const shard = registerShard(body, getActor(request));
       return reply.code(201).send({ ok: true, shard });
     } catch (err: any) {
-      return reply.code(err.statusCode || 500).send({ ok: false, error: err.message });
+      log.warn("Shard registration failed", { error: err.message });
+      return reply.code(err.statusCode || 500).send({ ok: false, error: "Shard registration failed" });
     }
   });
 
@@ -116,7 +118,8 @@ export async function dataPlaneShardingRoutes(server: FastifyInstance): Promise<
       const shard = updateShardStatus(id, body.status, getActor(request));
       return { ok: true, shard };
     } catch (err: any) {
-      return reply.code(err.statusCode || 500).send({ ok: false, error: err.message });
+      log.warn("Shard status update failed", { error: err.message });
+      return reply.code(err.statusCode || 500).send({ ok: false, error: "Shard status update failed" });
     }
   });
 
@@ -157,7 +160,8 @@ export async function dataPlaneShardingRoutes(server: FastifyInstance): Promise<
       const mapping = mapTenantToShard(body, getActor(request));
       return reply.code(201).send({ ok: true, mapping });
     } catch (err: any) {
-      return reply.code(err.statusCode || 500).send({ ok: false, error: err.message });
+      log.warn("Tenant-shard mapping failed", { error: err.message });
+      return reply.code(err.statusCode || 500).send({ ok: false, error: "Tenant-shard mapping failed" });
     }
   });
 
@@ -198,7 +202,8 @@ export async function dataPlaneShardingRoutes(server: FastifyInstance): Promise<
       const plan = createMigrationPlan(body, getActor(request));
       return reply.code(201).send({ ok: true, plan });
     } catch (err: any) {
-      return reply.code(err.statusCode || 500).send({ ok: false, error: err.message });
+      log.warn("Migration plan creation failed", { error: err.message });
+      return reply.code(err.statusCode || 500).send({ ok: false, error: "Migration plan creation failed" });
     }
   });
 

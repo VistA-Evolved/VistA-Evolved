@@ -85,7 +85,7 @@ export async function pluginRoutes(server: FastifyInstance): Promise<void> {
       const plugin = installPlugin(TENANT, manifest, actor || "admin");
       return reply.code(201).send({ ok: true, plugin });
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message });
+      return reply.code(400).send({ ok: false, error: "Plugin registration failed" });
     }
   });
 
@@ -96,7 +96,7 @@ export async function pluginRoutes(server: FastifyInstance): Promise<void> {
       const plugin = activatePlugin(TENANT, pluginId, "admin");
       return reply.send({ ok: true, plugin });
     } catch (err: any) {
-      return reply.code(404).send({ ok: false, error: err.message });
+      return reply.code(404).send({ ok: false, error: "Plugin not found" });
     }
   });
 
@@ -108,7 +108,7 @@ export async function pluginRoutes(server: FastifyInstance): Promise<void> {
       const plugin = suspendPlugin(TENANT, pluginId, "admin", body.reason);
       return reply.send({ ok: true, plugin });
     } catch (err: any) {
-      return reply.code(404).send({ ok: false, error: err.message });
+      return reply.code(404).send({ ok: false, error: "Plugin not found" });
     }
   });
 

@@ -109,7 +109,7 @@ export async function probeAllConnectors(): Promise<HealthProbeResult[]> {
         connectorId: id,
         connectorName: connector.name,
         healthy: false,
-        details: (err as Error).message,
+        details: "Connector health check failed",
         probedAt: Date.now(),
         durationMs: Date.now() - start,
       };

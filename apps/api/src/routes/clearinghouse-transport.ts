@@ -59,7 +59,7 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
         transport.configure(body.config);
       } catch (err: any) {
         reply.code(400);
-        return { ok: false, error: `config_error: ${err.message}` };
+        return { ok: false, error: "config_error" };
       }
     }
 
@@ -147,7 +147,7 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
       });
     } catch (err: any) {
       reply.code(422);
-      return { ok: false, error: err.message || "vault_write_failed" };
+      return { ok: false, error: "vault_write_failed" };
     }
 
     reply.code(201);

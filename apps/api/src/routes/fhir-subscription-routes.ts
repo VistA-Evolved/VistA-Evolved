@@ -52,7 +52,7 @@ export async function fhirSubscriptionRoutes(server: FastifyInstance): Promise<v
       const sub = createFhirSubscription(TENANT, criteria, channel, { end, reason });
       return reply.code(201).send({ ok: true, subscription: sub });
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message });
+      return reply.code(400).send({ ok: false, error: "Failed to create FHIR subscription" });
     }
   });
 

@@ -16,7 +16,6 @@ import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { requireSession } from "../../auth/auth-routes.js";
 import { safeCallRpc } from "../../lib/rpc-resilience.js";
 import { log } from "../../lib/logger.js";
-import { safeErr } from "../../lib/safe-error.js";
 import { listInstruments, getInstrument, loadInstruments } from "./instruments.js";
 import { scoreInstrument, type MhaAnswer, type MhaScoreResult } from "./scoring.js";
 import { generateMhaNote, buildNoteInput } from "./note-generator.js";
@@ -116,9 +115,10 @@ export default async function mhaRoutes(server: FastifyInstance): Promise<void> 
     let vistaAvailable = false;
 
     try {
-      const raw = await safeCallRpc("YTQZ RESULTLIST", dfn);
-      if (raw && typeof raw === "string" && raw.trim()) {
-        vistaResults = parseYtqzResults(raw);
+      const raw = await safeCallRpc("YTQZ RESULTLIST", [dfn]);
+      const rawStr = Array.isArray(raw) ? raw.join("\n") : String(raw);
+      if (rawStr && rawStr.trim()) {
+        vistaResults = parseYtqzResults(rawStr);
         rpcUsed.push("YTQZ RESULTLIST");
         vistaAvailable = true;
       }

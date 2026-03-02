@@ -82,7 +82,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
       if (!listing) return reply.code(404).send({ ok: false, error: "Listing not found" });
       return reply.send({ ok: true, listing });
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message });
+      return reply.code(400).send({ ok: false, error: "Marketplace listing update failed" });
     }
   });
 
@@ -100,7 +100,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
       const listing = transitionListing(id, status as ListingStatus, "admin", notes);
       return reply.send({ ok: true, listing });
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message });
+      return reply.code(400).send({ ok: false, error: "Listing status transition failed" });
     }
   });
 
@@ -123,7 +123,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
       const install = installFromMarketplace(TENANT, id, "admin");
       return reply.code(201).send({ ok: true, install });
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message });
+      return reply.code(400).send({ ok: false, error: "Marketplace install failed" });
     }
   });
 
@@ -158,7 +158,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
       const review = addReview(id, TENANT, rating, comment);
       return reply.send({ ok: true, review });
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message });
+      return reply.code(400).send({ ok: false, error: "Review submission failed" });
     }
   });
 

@@ -55,7 +55,6 @@ export async function satRoutes(app: FastifyInstance): Promise<void> {
       return reply.code(500).send({
         ok: false,
         error: "Failed to start SAT run",
-        detail: err instanceof Error ? err.message : "Unknown error",
       });
     }
   });
@@ -105,7 +104,6 @@ export async function satRoutes(app: FastifyInstance): Promise<void> {
       return reply.code(500).send({
         ok: false,
         error: "Failed to record scenario result",
-        detail: err instanceof Error ? err.message : "Unknown error",
       });
     }
   });
@@ -152,7 +150,6 @@ export async function satRoutes(app: FastifyInstance): Promise<void> {
       return reply.code(500).send({
         ok: false,
         error: "Failed to report degradation",
-        detail: err instanceof Error ? err.message : "Unknown error",
       });
     }
   });
@@ -167,7 +164,6 @@ export async function satRoutes(app: FastifyInstance): Promise<void> {
       return reply.code(500).send({
         ok: false,
         error: "Failed to resolve degradation",
-        detail: err instanceof Error ? err.message : "Unknown error",
       });
     }
   });

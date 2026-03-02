@@ -163,7 +163,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
       return reply.code(201).send(user);
     } catch (err: any) {
       log.warn("SCIM createUser failed", { error: err.message });
-      return reply.code(409).send(scimError(409, err.message, "uniqueness"));
+      return reply.code(409).send(scimError(409, "User already exists", "uniqueness"));
     }
   });
 
@@ -212,7 +212,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
       const user = await connector.replaceUser(id, body, tenantId);
       return user;
     } catch (err: any) {
-      return reply.code(404).send(scimError(404, err.message));
+      return reply.code(404).send(scimError(404, "User not found"));
     }
   });
 
@@ -229,7 +229,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
       const user = await connector.patchUser(id, body, tenantId);
       return user;
     } catch (err: any) {
-      return reply.code(404).send(scimError(404, err.message));
+      return reply.code(404).send(scimError(404, "User not found"));
     }
   });
 
@@ -245,7 +245,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
       await connector.deactivateUser(id, tenantId);
       return reply.code(204).send();
     } catch (err: any) {
-      return reply.code(404).send(scimError(404, err.message));
+      return reply.code(404).send(scimError(404, "User not found"));
     }
   });
 
@@ -268,7 +268,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
       const group = await connector.createGroup(body, tenantId);
       return reply.code(201).send(group);
     } catch (err: any) {
-      return reply.code(409).send(scimError(409, err.message, "uniqueness"));
+      return reply.code(409).send(scimError(409, "Group already exists", "uniqueness"));
     }
   });
 
@@ -310,7 +310,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
       const group = await connector.patchGroup(id, body, tenantId);
       return group;
     } catch (err: any) {
-      return reply.code(404).send(scimError(404, err.message));
+      return reply.code(404).send(scimError(404, "Group not found"));
     }
   });
 
@@ -326,7 +326,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
       await connector.deleteGroup(id, tenantId);
       return reply.code(204).send();
     } catch (err: any) {
-      return reply.code(404).send(scimError(404, err.message));
+      return reply.code(404).send(scimError(404, "Group not found"));
     }
   });
 }

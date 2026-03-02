@@ -48,6 +48,12 @@ interface CaptureAttachment {
 const captureStore = new Map<string, CaptureAttachment>();
 const patientCaptureIndex = new Map<string, string[]>();
 
+/** Strip DFN from capture object before sending to client (PHI-safe) */
+function toSafeCapture(c: CaptureAttachment) {
+  const { dfn, ...safe } = c;
+  return safe;
+}
+
 /* ------------------------------------------------------------------ */
 /* Orthanc config (reuse env vars from imaging-proxy)                  */
 /* ------------------------------------------------------------------ */
@@ -106,6 +112,7 @@ export default async function imagingCaptureRoutes(server: FastifyInstance) {
         method: "POST",
         headers: { "Content-Type": "application/octet-stream" },
         body: fileBuffer,
+        signal: AbortSignal.timeout(30_000),
       });
       if (resp.ok) {
         const result = (await resp.json()) as any;
@@ -116,8 +123,8 @@ export default async function imagingCaptureRoutes(server: FastifyInstance) {
         log.warn(`Imaging capture: Orthanc store failed: ${orthancError}`);
       }
     } catch (err: any) {
-      orthancError = err.message;
-      log.warn(`Imaging capture: Orthanc unavailable: ${orthancError}`);
+      orthancError = "Orthanc service unavailable";
+      log.warn(`Imaging capture: Orthanc unavailable: ${err.message}`);
     }
 
     // Create capture record
@@ -145,7 +152,7 @@ export default async function imagingCaptureRoutes(server: FastifyInstance) {
 
     return reply.code(201).send({
       ok: true,
-      capture,
+      capture: toSafeCapture(capture),
       orthancStored: !!orthancId,
       orthancError,
       vistaFiled: false,
@@ -171,7 +178,7 @@ export default async function imagingCaptureRoutes(server: FastifyInstance) {
     }
 
     const ids = patientCaptureIndex.get(dfn) || [];
-    const captures = ids.map((id) => captureStore.get(id)).filter(Boolean);
+    const captures = ids.map((id) => captureStore.get(id)).filter(Boolean).map((c) => toSafeCapture(c!));
 
     return {
       ok: true,
@@ -193,7 +200,7 @@ export default async function imagingCaptureRoutes(server: FastifyInstance) {
       return reply.code(404).send({ ok: false, error: `Capture not found: ${id}` });
     }
 
-    return { ok: true, capture };
+    return { ok: true, capture: toSafeCapture(capture) };
   });
 
   /* ------------------------------------------------------------ */
@@ -242,7 +249,7 @@ export default async function imagingCaptureRoutes(server: FastifyInstance) {
     return {
       ok: true,
       status: "attached-locally",
-      capture,
+      capture: toSafeCapture(capture),
       vistaFiled: false,
       vistaGrounding: {
         vistaFiles: ["File 2005 (Image)", "File 8925 (TIU Document)", "File 123 (Consultation)"],

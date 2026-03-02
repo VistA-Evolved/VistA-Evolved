@@ -178,7 +178,7 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
       return { ok: true, assignment };
     } catch (err: any) {
       reply.code(400);
-      return { ok: false, error: err.message };
+      return { ok: false, error: "Country assignment failed" };
     }
   });
 

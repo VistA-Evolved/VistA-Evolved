@@ -95,7 +95,7 @@ export async function adapterSdkRoutes(server: FastifyInstance): Promise<void> {
         return {
           name: tc.name,
           status: "fail",
-          detail: err instanceof Error ? err.message : "Unknown error",
+          detail: "Adapter test failed",
         };
       }
     });

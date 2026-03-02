@@ -555,7 +555,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       return {
         ok: false,
         data: [],
-        error: `Lifecycle query failed: ${err.message}`,
+        error: "Lifecycle query failed",
         pending: true,
         target: "PG scheduling_lifecycle table (requires PLATFORM_PG_URL)",
       };
@@ -636,7 +636,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       log.warn("Lifecycle transition failed", { error: err.message });
       return reply.code(500).send({
         ok: false,
-        error: `Lifecycle transition failed: ${err.message}`,
+        error: "Lifecycle transition failed",
         pending: true,
         target: "PG scheduling_lifecycle table (requires PLATFORM_PG_URL)",
       });
@@ -708,7 +708,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       });
     } catch (err: any) {
       log.warn("Check-in failed", { error: err.message });
-      return reply.code(500).send({ ok: false, error: `Check-in failed: ${err.message}` });
+      return reply.code(500).send({ ok: false, error: "Check-in failed" });
     }
   });
 
@@ -773,7 +773,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       });
     } catch (err: any) {
       log.warn("Checkout failed", { error: err.message });
-      return reply.code(500).send({ ok: false, error: `Checkout failed: ${err.message}` });
+      return reply.code(500).send({ ok: false, error: "Checkout failed" });
     }
   });
 
@@ -842,7 +842,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
         });
       }
       log.warn("Request approve failed", { error: err.message });
-      return reply.code(500).send({ ok: false, error: `Approve failed: ${err.message}` });
+      return reply.code(500).send({ ok: false, error: "Approve failed" });
     }
   });
 
@@ -913,7 +913,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
         });
       }
       log.warn("Request reject failed", { error: err.message });
-      return reply.code(500).send({ ok: false, error: `Reject failed: ${err.message}` });
+      return reply.code(500).send({ ok: false, error: "Reject failed" });
     }
   });
 
@@ -943,7 +943,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       return { ok: true, data: prefs };
     } catch (err: any) {
       log.warn("Clinic preferences read failed", { error: err.message });
-      return reply.code(500).send({ ok: false, error: `Preferences read failed: ${err.message}` });
+      return reply.code(500).send({ ok: false, error: "Preferences read failed" });
     }
   });
 
@@ -984,7 +984,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       return { ok: true, data: prefs };
     } catch (err: any) {
       log.warn("Clinic preferences update failed", { error: err.message });
-      return reply.code(500).send({ ok: false, error: `Preferences update failed: ${err.message}` });
+      return reply.code(500).send({ ok: false, error: "Preferences update failed" });
     }
   });
 
@@ -1001,7 +1001,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       return result;
     } catch (err: any) {
       log.warn("GET /scheduling/appointment-types failed", { error: err.message });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: "Failed to retrieve appointment types" });
     }
   });
 
@@ -1014,7 +1014,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       return result;
     } catch (err: any) {
       log.warn("GET /scheduling/cancel-reasons failed", { error: err.message });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: "Failed to retrieve cancel reasons" });
     }
   });
 
@@ -1031,7 +1031,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       return result;
     } catch (err: any) {
       log.warn("GET /scheduling/clinic/:ien/resource failed", { error: err.message });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: "Failed to retrieve clinic resource" });
     }
   });
 
@@ -1055,7 +1055,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       return result;
     } catch (err: any) {
       log.warn("GET /scheduling/sdes-availability failed", { error: err.message });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: "Failed to retrieve SDES availability" });
     }
   });
 
@@ -1087,7 +1087,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       return result;
     } catch (err: any) {
       log.warn("GET /scheduling/verify/:ref failed", { error: err.message });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: "Failed to verify appointment" });
     }
   });
 
@@ -1100,7 +1100,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       return result;
     } catch (err: any) {
       log.warn("GET /scheduling/mode failed", { error: err.message });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: "Failed to retrieve scheduling mode" });
     }
   });
 

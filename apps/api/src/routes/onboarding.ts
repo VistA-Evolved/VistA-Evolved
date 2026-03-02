@@ -66,7 +66,7 @@ export default async function onboardingRoutes(server: FastifyInstance): Promise
       const session = startOnboarding({ templateId, partnerId, partnerName, tenantId, assignee, metadata });
       return reply.code(201).send({ ok: true, session });
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message });
+      return reply.code(400).send({ ok: false, error: "Onboarding session creation failed" });
     }
   });
 
@@ -132,7 +132,7 @@ export default async function onboardingRoutes(server: FastifyInstance): Promise
       const report = runReadinessCheck(id);
       return { ok: true, report };
     } catch (err: any) {
-      return reply.code(404).send({ ok: false, error: err.message });
+      return reply.code(404).send({ ok: false, error: "Readiness check failed" });
     }
   });
 

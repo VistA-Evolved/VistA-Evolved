@@ -96,7 +96,7 @@ export async function dispatch(
     return {
       ok: false,
       destinationId: destination.id,
-      error: (err as Error).message,
+      error: "HL7 dispatch error",
       durationMs,
     };
   }

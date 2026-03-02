@@ -234,7 +234,7 @@ async function processOneClaim(claimId: string): Promise<BatchClaimResult> {
     return {
       claimId,
       ok: false,
-      error: (err as Error).message,
+      error: "Claim submission failed",
       durationMs: Date.now() - start,
     };
   }

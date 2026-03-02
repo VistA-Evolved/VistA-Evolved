@@ -358,7 +358,6 @@ export default async function dischargeWorkflowRoutes(server: FastifyInstance) {
       ok: true,
       plans: plans.map((p) => ({
         id: p.id,
-        patientDfn: p.patientDfn,
         status: p.status,
         pending: p.checklist.filter((c) => c.status === "pending").length,
         completed: p.checklist.filter((c) => c.status === "completed").length,

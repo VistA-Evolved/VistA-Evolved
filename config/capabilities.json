@@ -1347,6 +1347,14 @@
       "targetPackage": "YTT",
       "description": "Detailed MH administration result from VistA File 601.84 (Phase 535)"
     },
+    "clinical.mha.file_note": {
+      "status": "pending",
+      "module": "clinical",
+      "adapter": "clinical-engine",
+      "targetRpc": "TIU CREATE RECORD",
+      "targetPackage": "TIU",
+      "description": "File scored MHA result as TIU progress note (Phase 536)"
+    },
     "clinical.procedures.list": {
       "status": "pending",
       "module": "clinical",

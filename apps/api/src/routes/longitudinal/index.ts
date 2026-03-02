@@ -16,7 +16,7 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { requireSession } from "../../auth/auth-routes.js";
 import { log } from "../../lib/logger.js";
-import { safeCallRpc } from "../../vista/rpc-resilience.js";
+import { safeCallRpc } from "../../lib/rpc-resilience.js";
 
 /** Unified timeline event across all clinical domains */
 interface TimelineEvent {
@@ -269,7 +269,7 @@ export default async function longitudinalRoutes(server: FastifyInstance) {
       };
     } catch (err: any) {
       log.warn("GET /vista/longitudinal/timeline failed", { error: err.message });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: "Failed to build longitudinal timeline" });
     }
   });
 
@@ -311,7 +311,7 @@ export default async function longitudinalRoutes(server: FastifyInstance) {
       };
     } catch (err: any) {
       log.warn("GET /vista/longitudinal/summary failed", { error: err.message });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: "Failed to build longitudinal summary" });
     }
   });
 
@@ -342,7 +342,7 @@ export default async function longitudinalRoutes(server: FastifyInstance) {
       };
     } catch (err: any) {
       log.warn("GET /vista/longitudinal/meds-summary failed", { error: err.message });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: "Failed to build medication summary" });
     }
   });
 

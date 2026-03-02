@@ -163,7 +163,7 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
       });
       return reply.code(422).send({
         ok: false,
-        error: `FHIR conversion failed: ${(err as Error).message}`,
+        error: "FHIR conversion failed",
       });
     }
   });
@@ -226,7 +226,7 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
       });
       return reply.code(422).send({
         ok: false,
-        error: `Build failed: ${(err as Error).message}`,
+        error: "Outbound message build failed",
       });
     }
   });

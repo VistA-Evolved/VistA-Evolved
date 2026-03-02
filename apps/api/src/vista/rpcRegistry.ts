@@ -246,7 +246,7 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "MD TMDCIDC",                        domain: "clinical-procedures", tag: "read",  description: "Procedures+diagnoses for CP clinics" },
   { name: "MD TMDLEX",                         domain: "clinical-procedures", tag: "read",  description: "CPT/ICD lexicon search for CP" },
   { name: "MD TMDWIDGET",                      domain: "clinical-procedures", tag: "read",  description: "Widget data for CP display" },
-  { name: "MD UTILITIES",                      domain: "clinical-procedures", tag: "util",  description: "MD package utility functions" },
+  { name: "MD UTILITIES",                      domain: "clinical-procedures", tag: "read",  description: "MD package utility functions" },
   { name: "ORQQCN ASSIGNABLE MED RESULTS",     domain: "clinical-procedures", tag: "read",  description: "Medicine results attachable to consult" },
   { name: "ORQQCN ATTACH MED RESULTS",         domain: "clinical-procedures", tag: "write", description: "Attach medicine result to consult" },
   { name: "ORQQCN GET MED RESULT DETAILS",     domain: "clinical-procedures", tag: "read",  description: "Detail of a medicine result" },

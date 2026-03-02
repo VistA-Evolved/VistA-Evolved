@@ -79,7 +79,7 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
       );
       return reply.code(201).send({ ok: true, cluster });
     } catch (err: any) {
-      return reply.code(err.statusCode || 500).send({ ok: false, error: err.message });
+      return reply.code(err.statusCode || 500).send({ ok: false, error: "Cluster registration failed" });
     }
   });
 
@@ -137,7 +137,7 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
       const cluster = updateClusterStatus(id, status, getActor(request));
       return { ok: true, cluster };
     } catch (err: any) {
-      return reply.code(err.statusCode || 500).send({ ok: false, error: err.message });
+      return reply.code(err.statusCode || 500).send({ ok: false, error: "Cluster status update failed" });
     }
   });
 
@@ -153,7 +153,7 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
       const cluster = updateClusterMetadata(id, metadata, getActor(request));
       return { ok: true, cluster };
     } catch (err: any) {
-      return reply.code(err.statusCode || 500).send({ ok: false, error: err.message });
+      return reply.code(err.statusCode || 500).send({ ok: false, error: "Cluster metadata update failed" });
     }
   });
 
@@ -214,7 +214,7 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
       );
       return reply.code(201).send({ ok: true, ...result });
     } catch (err: any) {
-      return reply.code(err.statusCode || 500).send({ ok: false, error: err.message });
+      return reply.code(err.statusCode || 500).send({ ok: false, error: "Tenant placement failed" });
     }
   });
 

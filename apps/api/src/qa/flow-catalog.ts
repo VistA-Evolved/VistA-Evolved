@@ -203,7 +203,7 @@ export async function executeFlow(
         path,
         status: step.optional ? "skipped" : "failed",
         durationMs: Date.now() - stepStart,
-        error: (err as Error).message,
+        error: "Flow step execution failed",
       });
       if (!step.optional) break;
     }

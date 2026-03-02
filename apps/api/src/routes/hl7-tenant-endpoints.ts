@@ -45,7 +45,8 @@ export default async function hl7TenantEndpointRoutes(server: FastifyInstance): 
       });
       return reply.code(201).send({ ok: true, endpoint });
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message });
+      log.warn("HL7 endpoint creation failed", { error: err.message });
+      return reply.code(400).send({ ok: false, error: "HL7 endpoint creation failed" });
     }
   });
 
@@ -86,7 +87,8 @@ export default async function hl7TenantEndpointRoutes(server: FastifyInstance): 
       const endpoint = updateEndpoint(id, body);
       return reply.send({ ok: true, endpoint });
     } catch (err: any) {
-      return reply.code(404).send({ ok: false, error: err.message });
+      log.warn("HL7 endpoint update failed", { error: err.message });
+      return reply.code(404).send({ ok: false, error: "HL7 endpoint update failed" });
     }
   });
 

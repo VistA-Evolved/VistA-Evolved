@@ -146,7 +146,7 @@ export default async function onboardingRoutes(server: FastifyInstance): Promise
         vista: "unreachable",
         host,
         port,
-        error: (err as Error).message,
+        error: "VistA probe failed",
       });
     }
   });

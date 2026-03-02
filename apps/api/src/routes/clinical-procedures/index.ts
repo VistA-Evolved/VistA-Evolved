@@ -57,7 +57,6 @@ function integrationPendingResponse(
     ok: true,
     status: "integration-pending",
     endpoint,
-    patientDfn: dfn,
     count: 0,
     results: [],
     vistaGrounding: {

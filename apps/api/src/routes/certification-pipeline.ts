@@ -96,7 +96,7 @@ export default async function certificationPipelineRoutes(server: FastifyInstanc
       const run = startCertificationRun({ suiteId, partnerId, partnerName, endpointId, runBy });
       return reply.code(201).send({ ok: true, run });
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message });
+      return reply.code(400).send({ ok: false, error: "Failed to start certification run" });
     }
   });
 
@@ -152,7 +152,7 @@ export default async function certificationPipelineRoutes(server: FastifyInstanc
       const cert = issueCertificate(runId, validityDays);
       return reply.code(201).send({ ok: true, certificate: cert });
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message });
+      return reply.code(400).send({ ok: false, error: "Failed to issue certificate" });
     }
   });
 

@@ -51,7 +51,7 @@ export async function auditShippingRoutes(server: FastifyInstance): Promise<void
       log.error("Manual audit ship failed", { error: err.message });
       return reply.code(500).send({
         ok: false,
-        error: err.message,
+        error: "Audit shipping operation failed",
         timestamp: new Date().toISOString(),
       });
     }

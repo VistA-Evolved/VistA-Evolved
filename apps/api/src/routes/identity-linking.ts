@@ -203,7 +203,6 @@ export default async function identityLinkingRoutes(server: FastifyInstance) {
       .map((r) => ({
         id: r.id,
         requesterDisplayName: r.requesterDisplayName,
-        patientDfn: r.patientDfn,
         relationship: r.relationship,
         hasVerificationData: !!(r.verificationData.dateOfBirth || r.verificationData.last4Ssn),
         createdAt: r.createdAt,
