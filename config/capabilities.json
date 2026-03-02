@@ -915,6 +915,30 @@
       "targetPackage": "SD",
       "description": "Runtime scheduling mode detection -- SDES/SDOE/SDVW probes (Phase 147)"
     },
+    "scheduling.recall.list": {
+      "status": "pending",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SD RECALL LIST",
+      "targetPackage": "SD",
+      "description": "Patient recall/reminder list from File 403.5 (Phase 539)"
+    },
+    "scheduling.recall.detail": {
+      "status": "pending",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": "SD RECALL GET",
+      "targetPackage": "SD",
+      "description": "Individual recall reminder detail + compliance check (Phase 539)"
+    },
+    "scheduling.parity": {
+      "status": "live",
+      "module": "scheduling",
+      "adapter": "scheduling",
+      "targetRpc": null,
+      "targetPackage": "SD",
+      "description": "VSE vs VistA-Evolved scheduling parity matrix (Phase 539)"
+    },
     "migration.import.csv": {
       "status": "live",
       "module": "migration",

@@ -24,15 +24,18 @@ async function apiFetch(path: string, opts?: RequestInit) {
   return res.json();
 }
 
-type Tab = 'schedule' | 'patient' | 'requests' | 'clinics' | 'lifecycle' | 'posture';
+type Tab = 'schedule' | 'patient' | 'requests' | 'clinics' | 'lifecycle' | 'posture' | 'waitlist' | 'recall' | 'parity';
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'schedule', label: 'Clinic Schedule' },
   { id: 'patient', label: 'Patient Appointments' },
   { id: 'requests', label: 'Request Queue' },
   { id: 'clinics', label: 'Clinics & Providers' },
+  { id: 'waitlist', label: 'Wait List' },
+  { id: 'recall', label: 'Recall' },
   { id: 'lifecycle', label: 'Lifecycle' },
   { id: 'posture', label: 'VistA Posture' },
+  { id: 'parity', label: 'VSE Parity' },
 ];
 
 export default function SchedulingPage() {
@@ -72,6 +75,17 @@ export default function SchedulingPage() {
   const [postureEntries, setPostureEntries] = useState<any[]>([]);
   const [postureSummary, setPostureSummary] = useState<any>(null);
   const [referenceData, setReferenceData] = useState<any>(null);
+
+  // Phase 539: Wait List tab state
+  const [waitlistEntries, setWaitlistEntries] = useState<any[]>([]);
+
+  // Phase 539: Recall tab state
+  const [recallDfn, setRecallDfn] = useState('');
+  const [recallEntries, setRecallEntries] = useState<any[]>([]);
+  const [recallGrounding, setRecallGrounding] = useState<any>(null);
+
+  // Phase 539: Parity tab state
+  const [parityData, setParityData] = useState<any>(null);
 
   const loadSchedule = useCallback(async () => {
     setLoading(true);
@@ -234,13 +248,47 @@ export default function SchedulingPage() {
     }
   }, [loadLifecycle]);
 
+  // Phase 539: Wait List loader
+  const loadWaitlist = useCallback(async () => {
+    setLoading(true); setError('');
+    try {
+      const data = await apiFetch('/scheduling/waitlist');
+      setWaitlistEntries(data.data || data.entries || []);
+    } catch (err: any) { setError(err.message); }
+    setLoading(false);
+  }, []);
+
+  // Phase 539: Recall loader
+  const loadRecall = useCallback(async () => {
+    if (!recallDfn) return;
+    setLoading(true); setError('');
+    try {
+      const data = await apiFetch(`/scheduling/recall?dfn=${recallDfn}`);
+      setRecallEntries(data.data || []);
+      setRecallGrounding(data.vistaGrounding || null);
+    } catch (err: any) { setError(err.message); }
+    setLoading(false);
+  }, [recallDfn]);
+
+  // Phase 539: Parity loader
+  const loadParity = useCallback(async () => {
+    setLoading(true); setError('');
+    try {
+      const data = await apiFetch('/scheduling/parity');
+      setParityData(data);
+    } catch (err: any) { setError(err.message); }
+    setLoading(false);
+  }, []);
+
   useEffect(() => {
     if (tab === 'schedule') loadSchedule();
     else if (tab === 'requests') loadRequests();
     else if (tab === 'clinics') loadClinics();
     else if (tab === 'lifecycle') loadLifecycle();
     else if (tab === 'posture') loadPosture();
-  }, [tab, loadSchedule, loadRequests, loadClinics, loadLifecycle, loadPosture]);
+    else if (tab === 'waitlist') loadWaitlist();
+    else if (tab === 'parity') loadParity();
+  }, [tab, loadSchedule, loadRequests, loadClinics, loadLifecycle, loadPosture, loadWaitlist, loadParity]);
 
   const tabStyle = (t: Tab) => ({
     padding: '0.5rem 1rem',
@@ -752,6 +800,149 @@ export default function SchedulingPage() {
                 </div>
               </div>
             </div>
+          )}
+        </div>
+      )}
+
+      {/* Phase 539: Wait List tab */}
+      {tab === 'waitlist' && !loading && (
+        <div>
+          <h2 style={{ fontSize: '1.125rem', marginBottom: '1rem' }}>Wait List Management</h2>
+          <p style={{ fontSize: '0.8rem', color: '#6c757d', marginBottom: '1rem' }}>
+            SD W/L RETRIVE FULL DATA -- patient wait-list entries across clinics.
+          </p>
+          {waitlistEntries.length === 0 ? (
+            <p style={{ fontStyle: 'italic', color: '#6c757d' }}>No wait-list entries found (sandbox may be empty).</p>
+          ) : (
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid #dee2e6', background: '#f8f9fa' }}>
+                  <th style={{ padding: '0.375rem', textAlign: 'left' }}>IEN</th>
+                  <th style={{ padding: '0.375rem', textAlign: 'left' }}>Patient</th>
+                  <th style={{ padding: '0.375rem', textAlign: 'left' }}>Clinic</th>
+                  <th style={{ padding: '0.375rem', textAlign: 'left' }}>Priority</th>
+                  <th style={{ padding: '0.375rem', textAlign: 'left' }}>Status</th>
+                  <th style={{ padding: '0.375rem', textAlign: 'left' }}>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {waitlistEntries.map((w: any, i: number) => (
+                  <tr key={w.ien || i} style={{ borderBottom: '1px solid #eee' }}>
+                    <td style={{ padding: '0.375rem' }}>{w.ien || '-'}</td>
+                    <td style={{ padding: '0.375rem' }}>{w.patientName || w.dfn || '-'}</td>
+                    <td style={{ padding: '0.375rem' }}>{w.clinicName || w.clinic || '-'}</td>
+                    <td style={{ padding: '0.375rem' }}>{w.priority || '-'}</td>
+                    <td style={{ padding: '0.375rem' }}>{w.status || '-'}</td>
+                    <td style={{ padding: '0.375rem' }}>{w.requestDate || w.date || '-'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      )}
+
+      {/* Phase 539: Recall tab */}
+      {tab === 'recall' && !loading && (
+        <div>
+          <h2 style={{ fontSize: '1.125rem', marginBottom: '1rem' }}>Recall / Reminder Management</h2>
+          <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+            <input
+              type="text"
+              placeholder="Patient DFN"
+              value={recallDfn}
+              onChange={e => setRecallDfn(e.target.value)}
+              style={{ padding: '0.375rem', border: '1px solid #ced4da', borderRadius: 4, width: 120, fontSize: '0.8rem' }}
+            />
+            <button
+              onClick={loadRecall}
+              style={{ padding: '0.375rem 0.75rem', background: '#0d6efd', color: '#fff', border: 'none', borderRadius: 4, fontSize: '0.8rem', cursor: 'pointer' }}>
+              Load Recalls
+            </button>
+          </div>
+          <span style={{ display: 'inline-block', padding: '0.125rem 0.5rem', background: '#fff3cd', color: '#664d03', borderRadius: 4, fontSize: '0.7rem', fontWeight: 600, marginBottom: '0.75rem' }}>
+            INTEGRATION PENDING
+          </span>
+          {recallEntries.length === 0 ? (
+            <p style={{ fontStyle: 'italic', color: '#6c757d', fontSize: '0.85rem' }}>
+              No recall entries. VistA File 403.5 (Recall Reminders) not populated in sandbox.
+            </p>
+          ) : (
+            <ul style={{ fontSize: '0.85rem' }}>
+              {recallEntries.map((r: any, i: number) => (
+                <li key={r.ien || i}>{r.ien}: {r.description || r.recallType || 'Recall entry'}</li>
+              ))}
+            </ul>
+          )}
+          {recallGrounding && (
+            <div style={{ marginTop: '1rem', padding: '0.75rem', background: '#f8f9fa', borderRadius: 6, fontSize: '0.75rem' }}>
+              <strong>VistA Grounding</strong>
+              <p style={{ margin: '0.25rem 0' }}><strong>Files:</strong> {recallGrounding.vistaFiles?.join(', ')}</p>
+              <p style={{ margin: '0.25rem 0' }}><strong>RPCs:</strong> {recallGrounding.targetRpcs?.join(', ')}</p>
+              <p style={{ margin: '0.25rem 0' }}><strong>Migration:</strong> {recallGrounding.migrationPath}</p>
+              <p style={{ margin: '0.25rem 0', color: '#6c757d' }}>{recallGrounding.sandboxNote}</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Phase 539: VSE Parity tab */}
+      {tab === 'parity' && !loading && (
+        <div>
+          <h2 style={{ fontSize: '1.125rem', marginBottom: '0.5rem' }}>VSE / VS GUI Parity Matrix</h2>
+          {parityData ? (
+            <>
+              <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', fontSize: '0.8rem' }}>
+                <span><strong>Overall Coverage:</strong> {parityData.overallCoveragePct}%</span>
+                <span><strong>Endpoints:</strong> {parityData.endpointCount}</span>
+                <span><strong>RPCs:</strong> {parityData.rpcCount}</span>
+                <span><strong>Capabilities:</strong> {parityData.capabilityCount}</span>
+              </div>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
+                <thead>
+                  <tr style={{ borderBottom: '2px solid #dee2e6', background: '#f8f9fa' }}>
+                    <th style={{ padding: '0.5rem', textAlign: 'left' }}>VSE Surface</th>
+                    <th style={{ padding: '0.5rem', textAlign: 'left' }}>Priority</th>
+                    <th style={{ padding: '0.5rem', textAlign: 'center' }}>Coverage</th>
+                    <th style={{ padding: '0.5rem', textAlign: 'left' }}>Status</th>
+                    <th style={{ padding: '0.5rem', textAlign: 'left' }}>RPCs</th>
+                    <th style={{ padding: '0.5rem', textAlign: 'left' }}>Gaps</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(parityData.surfaces || []).map((s: any) => (
+                    <tr key={s.id} style={{ borderBottom: '1px solid #eee' }}>
+                      <td style={{ padding: '0.5rem', fontWeight: 500 }}>{s.name}</td>
+                      <td style={{ padding: '0.5rem' }}>
+                        <span style={{
+                          padding: '0.125rem 0.375rem', borderRadius: 4, fontSize: '0.7rem', fontWeight: 600,
+                          background: s.priority === 'p0-critical' ? '#f8d7da' : s.priority === 'p1-high' ? '#fff3cd' : '#d1e7dd',
+                          color: s.priority === 'p0-critical' ? '#842029' : s.priority === 'p1-high' ? '#664d03' : '#0f5132',
+                        }}>
+                          {s.priority}
+                        </span>
+                      </td>
+                      <td style={{ padding: '0.5rem', textAlign: 'center' }}>
+                        <div style={{ background: '#e9ecef', borderRadius: 4, height: 16, position: 'relative', overflow: 'hidden' }}>
+                          <div style={{
+                            background: s.coveragePct >= 80 ? '#198754' : s.coveragePct >= 50 ? '#ffc107' : '#dc3545',
+                            height: '100%', width: `${s.coveragePct}%`, borderRadius: 4,
+                          }} />
+                          <span style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', fontSize: '0.65rem', fontWeight: 600, lineHeight: '16px' }}>
+                            {s.coveragePct}%
+                          </span>
+                        </div>
+                      </td>
+                      <td style={{ padding: '0.5rem' }}>{s.veStatus}</td>
+                      <td style={{ padding: '0.5rem', fontSize: '0.7rem', color: '#6c757d' }}>{s.rpcs?.join(', ')}</td>
+                      <td style={{ padding: '0.5rem', fontSize: '0.7rem', color: '#6c757d' }}>{s.gaps?.join('; ')}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          ) : (
+            <p style={{ fontStyle: 'italic', color: '#6c757d' }}>Loading parity data...</p>
           )}
         </div>
       )}

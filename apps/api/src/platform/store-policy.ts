@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Store Policy â€” Phase 136: Store Policy Gate + Durability Sweep
  *
  * Machine-readable registry of ALL in-memory stores in the API.
@@ -846,7 +846,10 @@ export const STORE_INVENTORY: StoreEntry[] = [
   },
   {
     id: "imaging-capture-patient-index",
-    file: "routes/imaging-capture/index.ts",
+
+  // Phase 539: Scheduling Parity
+  { store: 'scheduling-recall-store', domain: 'scheduling', classification: 'clinical_data', durability: 'in_memory_only', description: 'Recall/Reminder entries from File 403.5 (Phase 539)' },
+  { store: 'scheduling-parity-cache', domain: 'scheduling', classification: 'cache', durability: 'in_memory_only', description: 'VSE parity matrix cache (Phase 539)' },    file: "routes/imaging-capture/index.ts",
     variable: "patientCaptureIndex",
     description: "Patient DFN -> capture ID index",
     classification: "index",

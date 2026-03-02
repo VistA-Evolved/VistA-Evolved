@@ -223,6 +223,12 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: "SDES CHECKIN",                     domain: "scheduling",  tag: "write", description: "SDES patient check-in" },
   { name: "SDES CHECKOUT",                    domain: "scheduling",  tag: "write", description: "SDES patient checkout" },
 
+  // --- Scheduling Recall/Reminder (Phase 539: Scheduling Parity vs VSE) ---
+  { name: "SD RECALL LIST",                   domain: "scheduling",  tag: "read",  description: "List recall reminders for patient from File 403.5" },
+  { name: "SD RECALL GET",                    domain: "scheduling",  tag: "read",  description: "Get recall reminder detail from File 403.5" },
+  { name: "SDES GET RECALL ENTRIES",          domain: "scheduling",  tag: "read",  description: "SDES recall/reminder entries for patient" },
+  { name: "SD RECALL DATE CHECK",             domain: "scheduling",  tag: "read",  description: "Check recall compliance/overdue status" },
+
   // --- Mental Health Assessment (Phase 535: MHA v1 instrument engine) ---
   { name: "YTT GET INSTRUMENT",               domain: "mental-health", tag: "read",  description: "Fetch MH instrument definition (questions, scoring rules) from File 601.72" },
   { name: "YTQZ LISTTESTS",                   domain: "mental-health", tag: "read",  description: "List available MH tests/instruments from File 601.71" },
@@ -307,6 +313,11 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
   { name: "SDES CANCEL APPOINTMENT 2", reason: "SDES appointment cancel; SDES package not in Vivian index" },
   { name: "SDES CHECKIN", reason: "SDES check-in; SDES package not in Vivian index" },
   { name: "SDES CHECKOUT", reason: "SDES checkout; SDES package not in Vivian index" },
+  // Phase 539: Recall/Reminder RPCs — File 403.5 not populated in WorldVistA Docker
+  { name: "SD RECALL LIST", reason: "SD Recall Reminders; File 403.5 namespace not populated in sandbox" },
+  { name: "SD RECALL GET", reason: "SD Recall detail; File 403.5 namespace not populated in sandbox" },
+  { name: "SDES GET RECALL ENTRIES", reason: "SDES recall entries; SDES package not in Vivian index" },
+  { name: "SD RECALL DATE CHECK", reason: "SD Recall compliance check; File 403.5 not populated in sandbox" },
   // Phase 137: ZVEADT custom RPCs — expected missing until ZVEADT.m installed
   { name: "ZVEADT WARDS", reason: "Custom RPC installed by VistA-Evolved (ZVEADT.m) for ward census with bed counts (Phase 137)" },
   { name: "ZVEADT BEDS", reason: "Custom RPC installed by VistA-Evolved (ZVEADT.m) for bed-level occupancy (Phase 137)" },

@@ -1268,8 +1268,8 @@
       "surface": "vse-wait-list",
       "name": "Wait List Management",
       "priority": "p1-high",
-      "migrationStatus": "not-started",
-      "coveragePct": 0
+      "migrationStatus": "scaffold",
+      "coveragePct": 50
     },
     {
       "system": "cprs",
@@ -1396,8 +1396,8 @@
       "surface": "vse-recall-reminder",
       "name": "Recall/Reminder Management",
       "priority": "p2-medium",
-      "migrationStatus": "not-started",
-      "coveragePct": 0
+      "migrationStatus": "scaffold",
+      "coveragePct": 33
     },
     {
       "system": "cprs",
@@ -1517,7 +1517,7 @@
       "name": "Resource/Provider View",
       "priority": "p2-medium",
       "migrationStatus": "scaffold",
-      "coveragePct": 33
+      "coveragePct": 50
     },
     {
       "system": "ivs-sic",

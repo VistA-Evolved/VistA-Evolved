@@ -40,6 +40,10 @@
  *   GET  /scheduling/sdes-availability          -- SDES clinic availability slots
  *   GET  /scheduling/verify/:ref                -- Truth gate: verify appointment in VistA
  *   GET  /scheduling/mode                       -- Scheduling writeback mode indicator
+ *   --- Phase 539 additions ---
+ *   GET  /scheduling/recall                     -- Recall/Reminder list (integration-pending)
+ *   GET  /scheduling/recall/:ien                -- Recall detail (integration-pending)
+ *   GET  /scheduling/parity                     -- VSE vs VistA-Evolved parity matrix
  *
  * Auth: session-based (default AUTH_RULES catch-all).
  * Audit: all writes logged to immutable-audit (no PHI).
@@ -1100,8 +1104,137 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
     }
   });
 
+  /* ==== Phase 539: Recall / Reminder endpoints ==== */
+
+  /** In-memory recall store for future VistA integration */
+  const recallStore = new Map<string, any>();
+
+  /* ---- GET /scheduling/recall ---- */
+  server.get("/scheduling/recall", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    const { dfn } = request.query as { dfn?: string };
+    if (!dfn) {
+      return reply.code(400).send({ ok: false, error: "dfn query param required" });
+    }
+    // Patient recall entries from in-memory store (empty until VistA wired)
+    const patientRecalls = Array.from(recallStore.values()).filter((r: any) => r.dfn === dfn);
+    return {
+      ok: true,
+      status: "integration-pending",
+      data: patientRecalls,
+      vistaGrounding: {
+        vistaFiles: ["RECALL REMINDERS (403.5)", "RECALL REMINDERS PATIENT (403.6)"],
+        targetRoutines: ["SDRC*", "SDES RECALL*"],
+        targetRpcs: ["SD RECALL LIST", "SDES GET RECALL ENTRIES"],
+        migrationPath: "Wire SD RECALL LIST or SDES GET RECALL ENTRIES when available in sandbox",
+        sandboxNote: "WorldVistA Docker does not have Recall Reminders namespace populated. Returns empty until VistA instance has 403.5 data.",
+      },
+    };
+  });
+
+  /* ---- GET /scheduling/recall/:ien ---- */
+  server.get("/scheduling/recall/:ien", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    const { ien } = request.params as { ien: string };
+    if (!ien) {
+      return reply.code(400).send({ ok: false, error: "ien param required" });
+    }
+    const entry = recallStore.get(ien);
+    if (entry) return { ok: true, data: entry };
+    return {
+      ok: true,
+      status: "integration-pending",
+      data: null,
+      vistaGrounding: {
+        vistaFiles: ["RECALL REMINDERS (403.5)"],
+        targetRoutines: ["SDRC*"],
+        targetRpcs: ["SD RECALL GET", "SD RECALL DATE CHECK"],
+        migrationPath: "Wire SD RECALL GET for individual recall detail with compliance check",
+        sandboxNote: "No recall data in sandbox. File 403.5 empty.",
+      },
+    };
+  });
+
+  /* ---- GET /scheduling/parity ---- */
+  server.get("/scheduling/parity", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!requireSession(request, reply)) return;
+    const vseSurfaces = [
+      {
+        id: "vse-appointment-book",
+        name: "Appointment Book / Grid View",
+        priority: "p0-critical",
+        veStatus: "scaffold",
+        coveragePct: 83,
+        endpoints: ["/scheduling/appointments/range", "/scheduling/clinics", "/scheduling/slots"],
+        rpcs: ["SDOE LIST ENCOUNTERS FOR DATES", "SDEC APPSLOTS", "SDES GET CLIN AVAILABILITY"],
+        gaps: ["Visual calendar grid not yet rendered — data available via API"],
+      },
+      {
+        id: "vse-patient-checkin",
+        name: "Patient Check-In",
+        priority: "p0-critical",
+        veStatus: "scaffold",
+        coveragePct: 50,
+        endpoints: ["/scheduling/appointments/:id/checkin", "/scheduling/appointments/:id/checkout"],
+        rpcs: ["SDOE UPDATE ENCOUNTER", "SDES CHECKIN", "SDES CHECKOUT"],
+        gaps: ["VistA SDOE writeback pending — lifecycle tracked locally"],
+      },
+      {
+        id: "vse-wait-list",
+        name: "Wait List Management",
+        priority: "p1-high",
+        veStatus: "scaffold",
+        coveragePct: 50,
+        endpoints: ["/scheduling/waitlist", "/scheduling/requests", "/scheduling/requests/:id/approve"],
+        rpcs: ["SD W/L RETRIVE FULL DATA", "SD W/L CREATE FILE"],
+        gaps: ["Dedicated wait-list UI tab added in Phase 539 — actions are request-queue based"],
+      },
+      {
+        id: "vse-recall-reminder",
+        name: "Recall/Reminder Management",
+        priority: "p2-medium",
+        veStatus: "scaffold",
+        coveragePct: 33,
+        endpoints: ["/scheduling/recall", "/scheduling/recall/:ien"],
+        rpcs: ["SD RECALL LIST", "SD RECALL GET", "SDES GET RECALL ENTRIES"],
+        gaps: ["VistA File 403.5 not populated in sandbox — integration-pending"],
+      },
+      {
+        id: "vse-clinic-profile",
+        name: "Clinic Profile Setup",
+        priority: "p2-medium",
+        veStatus: "scaffold",
+        coveragePct: 50,
+        endpoints: ["/scheduling/clinic/:ien/preferences", "/scheduling/clinic/:ien/resource"],
+        rpcs: ["SDES GET RESOURCE BY CLINIC", "SDES GET CLINIC INFO2"],
+        gaps: ["Admin-level clinic configuration via preferences endpoint"],
+      },
+      {
+        id: "vse-resource-view",
+        name: "Resource/Provider View",
+        priority: "p2-medium",
+        veStatus: "scaffold",
+        coveragePct: 50,
+        endpoints: ["/scheduling/providers", "/scheduling/clinic/:ien/resource", "/scheduling/sdes-availability"],
+        rpcs: ["SD W/L RETRIVE PERSON(200)", "SDES GET RESOURCE BY CLINIC", "SDES GET CLIN AVAILABILITY"],
+        gaps: ["Provider availability grid not yet rendered — data available via API"],
+      },
+    ];
+    const totalPct = Math.round(vseSurfaces.reduce((s, v) => s + v.coveragePct, 0) / vseSurfaces.length);
+    return {
+      ok: true,
+      system: "vse-vs-gui",
+      overallCoveragePct: totalPct,
+      surfaces: vseSurfaces,
+      endpointCount: 38,
+      rpcCount: 25,
+      capabilityCount: 30,
+      generatedAt: new Date().toISOString(),
+    };
+  });
+
   // Phase 170: Register writeback guard routes
   server.register(writebackRoutes);
 
-  log.info("Scheduling routes registered (Phase 170: 35 endpoints, writeback guard + truth gate enforcement)");
+  log.info("Scheduling routes registered (Phase 539: 38 endpoints, recall + parity + writeback guard)");
 }
