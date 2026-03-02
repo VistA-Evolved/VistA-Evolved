@@ -203,6 +203,60 @@ async function initPostgresLayer(): Promise<void> {
   }
 
   // ═══════════════════════════════════════════════════════════════════
+  // W38: Service Lines + Devices v2 — wire in-memory stores to PG
+  // ═══════════════════════════════════════════════════════════════════
+
+  // W38: ED store -> PG
+  try {
+    const pgEdRepo = await import("../platform/pg/repo/pg-ed-repo.js");
+    const { initEdStoreRepo } = await import("../service-lines/ed/ed-store.js");
+    initEdStoreRepo(pgEdRepo);
+    log.info("ED store wired to PG (W38)");
+  } catch (edErr: any) {
+    log.warn("PG ED repo wire failed (in-memory fallback)", { error: edErr.message });
+  }
+
+  // W38: OR store -> PG
+  try {
+    const pgOrRepo = await import("../platform/pg/repo/pg-or-repo.js");
+    const { initOrStoreRepo } = await import("../service-lines/or/or-store.js");
+    initOrStoreRepo(pgOrRepo);
+    log.info("OR store wired to PG (W38)");
+  } catch (orErr: any) {
+    log.warn("PG OR repo wire failed (in-memory fallback)", { error: orErr.message });
+  }
+
+  // W38: ICU store -> PG
+  try {
+    const pgIcuRepo = await import("../platform/pg/repo/pg-icu-repo.js");
+    const { initIcuStoreRepo } = await import("../service-lines/icu/icu-store.js");
+    initIcuStoreRepo(pgIcuRepo);
+    log.info("ICU store wired to PG (W38)");
+  } catch (icuErr: any) {
+    log.warn("PG ICU repo wire failed (in-memory fallback)", { error: icuErr.message });
+  }
+
+  // W38: Device registry store -> PG
+  try {
+    const pgDevRepo = await import("../platform/pg/repo/pg-device-registry-repo.js");
+    const { initDeviceRegistryStoreRepo } = await import("../devices/device-registry-store.js");
+    initDeviceRegistryStoreRepo(pgDevRepo);
+    log.info("Device registry store wired to PG (W38)");
+  } catch (devErr: any) {
+    log.warn("PG device registry repo wire failed (in-memory fallback)", { error: devErr.message });
+  }
+
+  // W38: Radiology store -> PG
+  try {
+    const pgRadRepo = await import("../platform/pg/repo/pg-radiology-repo.js");
+    const { initRadiologyStoreRepo } = await import("../radiology/radiology-store.js");
+    initRadiologyStoreRepo(pgRadRepo);
+    log.info("Radiology store wired to PG (W38)");
+  } catch (radErr: any) {
+    log.warn("PG radiology repo wire failed (in-memory fallback)", { error: radErr.message });
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
   // Phase 146: Durability Wave — wire all critical Map stores to PG
   // ═══════════════════════════════════════════════════════════════════
   try {

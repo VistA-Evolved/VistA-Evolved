@@ -2,9 +2,12 @@
  * apps/api/src/service-lines/or/or-store.ts
  *
  * Phase 466 (W31-P3). In-memory OR case & room store.
+ *
+ * Phase 524 (W38): PG write-through — fire-and-forget durability.
  */
 
 import { randomBytes } from "crypto";
+import { log } from "../../lib/logger.js";
 import type {
   OrCase,
   OrCaseStatus,
@@ -14,6 +17,28 @@ import type {
   AnesthesiaRecord,
   OrBoardMetrics,
 } from "./types.js";
+
+// ── PG Write-Through (Phase 524 / W38) ────────────────────────────
+
+interface OrDbRepo {
+  insertOrCase(data: any): Promise<any>;
+  updateOrCase(id: string, patch: any): Promise<any>;
+  insertOrRoom(data: any): Promise<any>;
+  updateOrRoom(id: string, patch: any): Promise<any>;
+  insertOrBlock(data: any): Promise<any>;
+}
+
+let dbRepo: OrDbRepo | null = null;
+
+export function initOrStoreRepo(repo: OrDbRepo): void {
+  dbRepo = repo;
+}
+
+function dbWarn(op: string, err: any): void {
+  if (process.env.NODE_ENV !== "test") {
+    log.warn(`[or-store] DB ${op} failed (cache-only fallback)`, { err: err?.message ?? err });
+  }
+}
 
 // ── Stores ─────────────────────────────────────────────────────────
 
@@ -48,6 +73,11 @@ export function updateRoomStatus(id: string, status: OrRoom["status"]): boolean 
   const room = rooms.get(id);
   if (!room) return false;
   room.status = status;
+
+  if (dbRepo) {
+    dbRepo.updateOrRoom(id, { status }).catch((e: unknown) => dbWarn("updateOrRoom", e));
+  }
+
   return true;
 }
 
@@ -86,6 +116,19 @@ export function createCase(data: {
     updatedAt: now,
   };
   cases.set(id, orCase);
+
+  if (dbRepo) {
+    dbRepo.insertOrCase({
+      id, tenantId: "default", patientDfn: data.patientDfn, status: "scheduled",
+      priority: data.priority, roomId: data.roomId ?? null,
+      scheduledDate: data.scheduledDate, scheduledStartTime: data.scheduledStartTime ?? null,
+      estimatedDurationMin: data.estimatedDurationMin, surgeon: data.surgeon,
+      assistants: [], procedure: data.procedure,
+      procedureCpt: data.procedureCpt ?? null, laterality: data.laterality ?? null,
+      anesthesiaJson: null, milestonesJson: [],
+    }).catch((e: unknown) => dbWarn("insertOrCase", e));
+  }
+
   return orCase;
 }
 
@@ -116,6 +159,11 @@ export function updateCaseStatus(id: string, status: OrCaseStatus, recordedBy: s
     const room = rooms.get(c.roomId);
     if (room) { room.status = "turnover"; room.currentCaseId = undefined; }
   }
+
+  if (dbRepo) {
+    dbRepo.updateOrCase(id, { status, milestonesJson: c.milestones }).catch((e: unknown) => dbWarn("updateOrCase/status", e));
+  }
+
   return true;
 }
 
@@ -126,6 +174,11 @@ export function setAnesthesia(caseId: string, record: AnesthesiaRecord): boolean
   if (!c) return false;
   c.anesthesia = record;
   c.updatedAt = new Date().toISOString();
+
+  if (dbRepo) {
+    dbRepo.updateOrCase(caseId, { anesthesiaJson: record }).catch((e: unknown) => dbWarn("updateOrCase/anesthesia", e));
+  }
+
   return true;
 }
 
@@ -135,6 +188,16 @@ export function createBlock(data: Omit<OrBlock, "id">): OrBlock {
   const id = `blk-${randomBytes(4).toString("hex")}`;
   const block: OrBlock = { id, ...data };
   blocks.set(id, block);
+
+  if (dbRepo) {
+    dbRepo.insertOrBlock({
+      id, tenantId: "default", roomId: data.roomId,
+      serviceId: data.serviceId, dayOfWeek: data.dayOfWeek,
+      startTime: data.startTime, endTime: data.endTime,
+      surgeon: data.surgeon,
+    }).catch((e: unknown) => dbWarn("insertOrBlock", e));
+  }
+
   return block;
 }
 

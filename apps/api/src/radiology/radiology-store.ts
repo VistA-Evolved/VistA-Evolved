@@ -13,6 +13,7 @@
  */
 
 import { randomUUID } from "node:crypto";
+import { log } from "../lib/logger.js";
 import type {
   RadOrder,
   RadOrderStatus,
@@ -42,6 +43,27 @@ const radReportStore = new Map<string, RadReport>();
 const doseRegistryStore = new Map<string, DoseRegistryEntry>();
 const radCriticalAlertStore = new Map<string, RadCriticalAlert>();
 const peerReviewStore = new Map<string, PeerReview>();
+
+// -- PG write-through (fire-and-forget) --
+
+export interface RadDbRepo {
+  insertRadiologyOrder(data: any): Promise<any>;
+  updateRadiologyOrder(id: string, patch: any): Promise<any>;
+  insertReadingWorklistItem(data: any): Promise<any>;
+  updateReadingWorklistItem(id: string, patch: any): Promise<any>;
+  insertRadReport(data: any): Promise<any>;
+  updateRadReport(id: string, patch: any): Promise<any>;
+  insertDoseRegistryEntry(data: any): Promise<any>;
+  insertRadCriticalAlert(data: any): Promise<any>;
+  updateRadCriticalAlert(id: string, patch: any): Promise<any>;
+  insertPeerReview(data: any): Promise<any>;
+}
+
+let dbRepo: RadDbRepo | null = null;
+export function initRadiologyStoreRepo(repo: RadDbRepo): void { dbRepo = repo; }
+function dbWarn(op: string, err: unknown): void {
+  log.warn(`PG radiology write-through failed: ${op}`, { error: (err as Error).message ?? err });
+}
 
 // -- FSM: Rad Order Transitions --
 
@@ -169,6 +191,7 @@ export function createRadOrder(input: {
   };
   radOrderStore.set(order.id, order);
   enforceMax(radOrderStore);
+  if (dbRepo) { dbRepo.insertRadiologyOrder(order as any).catch((e: unknown) => dbWarn("insertRadiologyOrder", e)); }
   return order;
 }
 
@@ -212,6 +235,7 @@ export function transitionRadOrder(
   if (newStatus === "in_progress") order.startedAt = now;
   if (newStatus === "completed") order.completedAt = now;
 
+  if (dbRepo) { dbRepo.updateRadiologyOrder(order.id, { status: order.status, updatedAt: order.updatedAt, startedAt: order.startedAt, completedAt: order.completedAt } as any).catch((e: unknown) => dbWarn("updateRadiologyOrder/transition", e)); }
   return { ok: true, order };
 }
 
@@ -229,6 +253,7 @@ export function assignProtocol(
   if (order.status === "ordered") {
     order.status = "protocoled";
   }
+  if (dbRepo) { dbRepo.updateRadiologyOrder(order.id, { protocolName: order.protocolName, protocolAssignedByDuz: order.protocolAssignedByDuz, protocolAssignedAt: order.protocolAssignedAt, status: order.status, updatedAt: order.updatedAt } as any).catch((e: unknown) => dbWarn("updateRadiologyOrder/protocol", e)); }
   return { ok: true, order };
 }
 
@@ -240,6 +265,7 @@ export function linkMwlToRadOrder(
   if (!order) return { ok: false, error: "Rad order not found" };
   order.mwlWorklistItemId = mwlWorklistItemId;
   order.updatedAt = new Date().toISOString();
+  if (dbRepo) { dbRepo.updateRadiologyOrder(order.id, { mwlWorklistItemId: order.mwlWorklistItemId, updatedAt: order.updatedAt } as any).catch((e: unknown) => dbWarn("updateRadiologyOrder/mwl", e)); }
   return { ok: true };
 }
 
@@ -253,6 +279,7 @@ export function linkMppsToRadOrder(
   order.mppsRecordId = mppsRecordId;
   if (studyInstanceUid) order.studyInstanceUid = studyInstanceUid;
   order.updatedAt = new Date().toISOString();
+  if (dbRepo) { dbRepo.updateRadiologyOrder(order.id, { mppsRecordId: order.mppsRecordId, studyInstanceUid: order.studyInstanceUid, updatedAt: order.updatedAt } as any).catch((e: unknown) => dbWarn("updateRadiologyOrder/mpps", e)); }
   return { ok: true };
 }
 
@@ -293,6 +320,7 @@ export function createReadingWorklistItem(input: {
   };
   readingWorklistStore.set(item.id, item);
   enforceMax(readingWorklistStore);
+  if (dbRepo) { dbRepo.insertReadingWorklistItem(item as any).catch((e: unknown) => dbWarn("insertReadingWorklistItem", e)); }
   return item;
 }
 
@@ -325,6 +353,7 @@ export function assignRadiologist(
   item.assignedRadiologistName = radiologistName;
   item.assignedAt = new Date().toISOString();
   item.updatedAt = item.assignedAt;
+  if (dbRepo) { dbRepo.updateReadingWorklistItem(item.id, { assignedRadiologistDuz: item.assignedRadiologistDuz, assignedRadiologistName: item.assignedRadiologistName, assignedAt: item.assignedAt, updatedAt: item.updatedAt } as any).catch((e: unknown) => dbWarn("updateReadingWorklistItem/assign", e)); }
   return { ok: true, item };
 }
 
@@ -343,6 +372,7 @@ export function transitionReadingItem(
   item.updatedAt = now;
   if (newStatus === "in_progress") item.reportStartedAt = now;
   if (newStatus === "final") item.reportFinalizedAt = now;
+  if (dbRepo) { dbRepo.updateReadingWorklistItem(item.id, { status: item.status, updatedAt: item.updatedAt, reportStartedAt: item.reportStartedAt, reportFinalizedAt: item.reportFinalizedAt } as any).catch((e: unknown) => dbWarn("updateReadingWorklistItem/transition", e)); }
   return { ok: true, item };
 }
 
@@ -395,6 +425,7 @@ export function createRadReport(input: {
   };
   radReportStore.set(report.id, report);
   enforceMax(radReportStore);
+  if (dbRepo) { dbRepo.insertRadReport(report as any).catch((e: unknown) => dbWarn("insertRadReport", e)); }
   return report;
 }
 
@@ -443,6 +474,7 @@ export function transitionRadReport(
     report.verifiedByName = actor.name;
     report.verifiedAt = now;
   }
+  if (dbRepo) { dbRepo.updateRadReport(report.id, { status: report.status, updatedAt: report.updatedAt, prelimSignedByDuz: report.prelimSignedByDuz, prelimSignedAt: report.prelimSignedAt, verifiedByDuz: report.verifiedByDuz, verifiedAt: report.verifiedAt } as any).catch((e: unknown) => dbWarn("updateRadReport/transition", e)); }
   return { ok: true, report };
 }
 
@@ -518,6 +550,7 @@ export function recordDose(input: {
   };
   doseRegistryStore.set(entry.id, entry);
   enforceMax(doseRegistryStore);
+  if (dbRepo) { dbRepo.insertDoseRegistryEntry(entry as any).catch((e: unknown) => dbWarn("insertDoseRegistryEntry", e)); }
   return entry;
 }
 
@@ -594,6 +627,7 @@ export function createRadCriticalAlert(input: {
   };
   radCriticalAlertStore.set(alert.id, alert);
   enforceMax(radCriticalAlertStore);
+  if (dbRepo) { dbRepo.insertRadCriticalAlert(alert as any).catch((e: unknown) => dbWarn("insertRadCriticalAlert", e)); }
   return alert;
 }
 
@@ -628,6 +662,7 @@ export function communicateRadCriticalAlert(
   alert.communicatedAt = now;
   alert.communicationMethod = method;
   alert.updatedAt = now;
+  if (dbRepo) { dbRepo.updateRadCriticalAlert(alert.id, { status: alert.status, communicatedToDuz: alert.communicatedToDuz, communicatedAt: alert.communicatedAt, communicationMethod: alert.communicationMethod, updatedAt: alert.updatedAt } as any).catch((e: unknown) => dbWarn("updateRadCriticalAlert/communicate", e)); }
   return { ok: true, alert };
 }
 
@@ -646,6 +681,7 @@ export function acknowledgeRadCriticalAlert(
   alert.acknowledgedByName = actor.name;
   alert.acknowledgedAt = now;
   alert.updatedAt = now;
+  if (dbRepo) { dbRepo.updateRadCriticalAlert(alert.id, { status: alert.status, acknowledgedByDuz: alert.acknowledgedByDuz, acknowledgedAt: alert.acknowledgedAt, updatedAt: alert.updatedAt } as any).catch((e: unknown) => dbWarn("updateRadCriticalAlert/acknowledge", e)); }
   return { ok: true, alert };
 }
 
@@ -661,6 +697,7 @@ export function resolveRadCriticalAlert(id: string): {
   }
   alert.status = "resolved";
   alert.updatedAt = new Date().toISOString();
+  if (dbRepo) { dbRepo.updateRadCriticalAlert(alert.id, { status: alert.status, updatedAt: alert.updatedAt } as any).catch((e: unknown) => dbWarn("updateRadCriticalAlert/resolve", e)); }
   return { ok: true, alert };
 }
 
@@ -698,6 +735,7 @@ export function createPeerReview(input: {
   };
   peerReviewStore.set(review.id, review);
   enforceMax(peerReviewStore);
+  if (dbRepo) { dbRepo.insertPeerReview(review as any).catch((e: unknown) => dbWarn("insertPeerReview", e)); }
   return review;
 }
 

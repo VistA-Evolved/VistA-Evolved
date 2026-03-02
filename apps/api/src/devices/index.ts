@@ -14,6 +14,12 @@ export { default as infusionBcmaRoutes } from "./infusion-bcma-routes.js";
 export { default as imagingModalityRoutes } from "./imaging-modality-routes.js";
 export { default as normalizationRoutes } from "./normalization-routes.js";
 export { startGatewayCleanup, stopGatewayCleanup } from "./gateway-store.js";
+export {
+  processObservation,
+  processObservationBatch,
+  getPipelineStats,
+  resetPipelineStats,
+} from "./device-observation-pipeline.js";
 export type {
   EdgeGateway,
   GatewayStatus,

@@ -30,3 +30,10 @@ export * as pgImagingIngestRepo from "./pg-imaging-ingest-repo.js";
 export * as pgSchedulingRequestRepo from "./pg-scheduling-request-repo.js";
 export * as pgSchedulingLockRepo from "./pg-scheduling-lock-repo.js";
 export * as pgConsentRepo from "./pg-consent-repo.js";
+
+// Phase 523-528 (W38): Service Lines + Devices v2
+export * as pgEdRepo from "./pg-ed-repo.js";
+export * as pgOrRepo from "./pg-or-repo.js";
+export * as pgIcuRepo from "./pg-icu-repo.js";
+export * as pgDeviceRegistryRepo from "./pg-device-registry-repo.js";
+export * as pgRadiologyRepo from "./pg-radiology-repo.js";

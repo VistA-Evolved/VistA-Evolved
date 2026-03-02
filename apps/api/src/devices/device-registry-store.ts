@@ -8,11 +8,12 @@
  *
  * Migration plan:
  * 1. In-memory Map (current)
- * 2. PG-backed via device repo (v60)
+ * 2. PG-backed via device repo (v60) — Phase 526 (W38) write-through wired
  * 3. VistA Equipment file (File 6914) integration (future)
  */
 
 import * as crypto from "node:crypto";
+import { log } from "../lib/logger.js";
 import type {
   ManagedDevice,
   DeviceStatus,
@@ -23,6 +24,28 @@ import type {
   DeviceAuditEntry,
   DeviceAuditAction,
 } from "./device-registry.types.js";
+
+// ── PG Write-Through (Phase 526 / W38) ────────────────────────────
+
+interface DeviceDbRepo {
+  insertManagedDevice(data: any): Promise<any>;
+  updateManagedDevice(id: string, patch: any): Promise<any>;
+  insertDevicePatientAssociation(data: any): Promise<any>;
+  updateDevicePatientAssociation(id: string, patch: any): Promise<any>;
+  insertDeviceLocationMapping(data: any): Promise<any>;
+}
+
+let dbRepo: DeviceDbRepo | null = null;
+
+export function initDeviceRegistryStoreRepo(repo: DeviceDbRepo): void {
+  dbRepo = repo;
+}
+
+function dbWarn(op: string, err: any): void {
+  if (process.env.NODE_ENV !== "test") {
+    log.warn(`[device-registry] DB ${op} failed (cache-only fallback)`, { err: err?.message ?? err });
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Config
@@ -136,6 +159,16 @@ export function registerDevice(opts: {
   serialIndex.set(serialKey, id);
   appendAudit(id, "registered", opts.actor || "system", { name: opts.name }, tid);
 
+  if (dbRepo) {
+    dbRepo.insertManagedDevice({
+      id, tenantId: tid, name: opts.name, manufacturer: opts.manufacturer,
+      model: opts.model, serialNumber: opts.serialNumber, deviceClass: opts.deviceClass,
+      protocols: opts.protocols || [], gatewayId: opts.gatewayId ?? null,
+      status: "active", firmwareVersion: opts.firmwareVersion ?? null,
+      metadata: opts.metadata || {},
+    }).catch((e: unknown) => dbWarn("insertManagedDevice", e));
+  }
+
   return device;
 }
 
@@ -193,6 +226,11 @@ export function updateDevice(
   if (!dev) return undefined;
   Object.assign(dev, updates, { updatedAt: now() });
   appendAudit(id, "updated", actor, updates, dev.tenantId);
+
+  if (dbRepo) {
+    dbRepo.updateManagedDevice(id, updates).catch((e: unknown) => dbWarn("updateManagedDevice", e));
+  }
+
   return dev;
 }
 
@@ -207,6 +245,11 @@ export function changeDeviceStatus(
   dev.status = status;
   dev.updatedAt = now();
   appendAudit(id, "status_changed", actor, { from: prev, to: status }, dev.tenantId);
+
+  if (dbRepo) {
+    dbRepo.updateManagedDevice(id, { status }).catch((e: unknown) => dbWarn("updateManagedDevice/status", e));
+  }
+
   return dev;
 }
 
@@ -226,6 +269,11 @@ export function decommissionDevice(
     }
   }
   appendAudit(id, "decommissioned", actor, {}, dev.tenantId);
+
+  if (dbRepo) {
+    dbRepo.updateManagedDevice(id, { status: "decommissioned" }).catch((e: unknown) => dbWarn("updateManagedDevice/decommission", e));
+  }
+
   return true;
 }
 
@@ -280,6 +328,14 @@ export function associatePatient(opts: {
     { patientDfn: opts.patientDfn, location: opts.location },
     tid
   );
+
+  if (dbRepo) {
+    dbRepo.insertDevicePatientAssociation({
+      id, tenantId: tid, deviceId: opts.deviceId, patientDfn: opts.patientDfn,
+      location: opts.location ?? null, facilityCode: opts.facilityCode ?? null,
+      status: "active", associatedBy: opts.associatedBy, startedAt: assoc.startedAt,
+    }).catch((e: unknown) => dbWarn("insertDevicePatientAssociation", e));
+  }
 
   return assoc;
 }
@@ -380,6 +436,14 @@ export function mapDeviceLocation(opts: {
     { ward: opts.ward, room: opts.room, bed: opts.bed },
     tid
   );
+
+  if (dbRepo) {
+    dbRepo.insertDeviceLocationMapping({
+      id, tenantId: tid, deviceId: opts.deviceId,
+      facilityCode: opts.facilityCode, ward: opts.ward,
+      room: opts.room, bed: opts.bed, active: true,
+    }).catch((e: unknown) => dbWarn("insertDeviceLocationMapping", e));
+  }
 
   return mapping;
 }

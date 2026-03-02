@@ -3,9 +3,12 @@
  *
  * Phase 464 (W31-P1). In-memory ED tracking store.
  * Manages ED visits, beds, and board metrics.
+ *
+ * Phase 523 (W38): PG write-through — fire-and-forget durability.
  */
 
 import { randomBytes } from "crypto";
+import { log } from "../../lib/logger.js";
 import type {
   EdVisit,
   EdVisitStatus,
@@ -15,6 +18,28 @@ import type {
   EdDisposition,
   EdBoardMetrics,
 } from "./types.js";
+
+// ── PG Write-Through (Phase 523 / W38) ────────────────────────────
+
+interface EdDbRepo {
+  insertEdVisit(data: any): Promise<any>;
+  updateEdVisit(id: string, patch: any): Promise<any>;
+  deleteEdVisit(id: string): Promise<any>;
+  insertEdBed(data: any): Promise<any>;
+  updateEdBed(id: string, patch: any): Promise<any>;
+}
+
+let dbRepo: EdDbRepo | null = null;
+
+export function initEdStoreRepo(repo: EdDbRepo): void {
+  dbRepo = repo;
+}
+
+function dbWarn(op: string, err: any): void {
+  if (process.env.NODE_ENV !== "test") {
+    log.warn(`[ed-store] DB ${op} failed (cache-only fallback)`, { err: err?.message ?? err });
+  }
+}
 
 // ── Stores ─────────────────────────────────────────────────────────
 
@@ -62,6 +87,14 @@ export function createVisit(
     updatedAt: now,
   };
   visits.set(id, visit);
+
+  if (dbRepo) {
+    dbRepo.insertEdVisit({
+      id, tenantId: "default", patientDfn, status: "waiting",
+      arrivalTime: now, arrivalMode, createdBy,
+    }).catch((e: unknown) => dbWarn("insertEdVisit", e));
+  }
+
   return visit;
 }
 
@@ -80,6 +113,11 @@ export function updateVisitStatus(id: string, status: EdVisitStatus): boolean {
   if (!visit) return false;
   visit.status = status;
   visit.updatedAt = new Date().toISOString();
+
+  if (dbRepo) {
+    dbRepo.updateEdVisit(id, { status }).catch((e: unknown) => dbWarn("updateEdVisit", e));
+  }
+
   return true;
 }
 
@@ -91,6 +129,11 @@ export function triageVisit(id: string, triage: TriageAssessment): boolean {
   visit.triage = triage;
   visit.status = "triaged";
   visit.updatedAt = new Date().toISOString();
+
+  if (dbRepo) {
+    dbRepo.updateEdVisit(id, { status: "triaged", triageJson: triage }).catch((e: unknown) => dbWarn("updateEdVisit/triage", e));
+  }
+
   return true;
 }
 
@@ -110,6 +153,12 @@ export function assignBed(visitId: string, bedId: string, assignedBy: string): b
 
   bed.status = "occupied";
   bed.currentVisitId = visitId;
+
+  if (dbRepo) {
+    dbRepo.updateEdVisit(visitId, { status: "bedded", bedAssignmentJson: assignment }).catch((e: unknown) => dbWarn("updateEdVisit/assignBed", e));
+    dbRepo.updateEdBed(bedId, { status: "occupied", currentVisitId: visitId }).catch((e: unknown) => dbWarn("updateEdBed/assignBed", e));
+  }
+
   return true;
 }
 
@@ -121,6 +170,9 @@ export function releaseBed(visitId: string): boolean {
   if (bed) {
     bed.status = "cleaning";
     bed.currentVisitId = undefined;
+    if (dbRepo) {
+      dbRepo.updateEdBed(bed.id, { status: "cleaning", currentVisitId: null }).catch((e: unknown) => dbWarn("updateEdBed/releaseBed", e));
+    }
   }
 
   visit.bedAssignment.releasedAt = new Date().toISOString();
@@ -162,6 +214,15 @@ export function disposeVisit(
 
   // Release bed
   if (visit.bedAssignment) releaseBed(id);
+
+  if (dbRepo) {
+    dbRepo.updateEdVisit(id, {
+      status: visit.status, disposition, dispositionBy,
+      dispositionTime: visit.dispositionTime,
+      totalMinutes: visit.totalMinutes,
+      doorToDispositionMinutes: visit.doorToDispositionMinutes,
+    }).catch((e: unknown) => dbWarn("updateEdVisit/dispose", e));
+  }
 
   return true;
 }

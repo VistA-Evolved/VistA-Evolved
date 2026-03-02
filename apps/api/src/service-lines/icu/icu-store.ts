@@ -2,9 +2,12 @@
  * apps/api/src/service-lines/icu/icu-store.ts
  *
  * Phase 468 (W31-P5). In-memory ICU admission, flowsheet, and device store.
+ *
+ * Phase 525 (W38): PG write-through — fire-and-forget durability.
  */
 
 import { randomBytes } from "crypto";
+import { log } from "../../lib/logger.js";
 import type {
   IcuAdmission,
   IcuAdmissionStatus,
@@ -18,6 +21,29 @@ import type {
   SeverityScoreType,
   IcuMetrics,
 } from "./types.js";
+
+// ── PG Write-Through (Phase 525 / W38) ────────────────────────────
+
+interface IcuDbRepo {
+  insertIcuAdmission(data: any): Promise<any>;
+  updateIcuAdmission(id: string, patch: any): Promise<any>;
+  insertIcuFlowsheetEntry(data: any): Promise<any>;
+  insertIcuVentRecord(data: any): Promise<any>;
+  insertIcuIoRecord(data: any): Promise<any>;
+  insertIcuScore(data: any): Promise<any>;
+}
+
+let dbRepo: IcuDbRepo | null = null;
+
+export function initIcuStoreRepo(repo: IcuDbRepo): void {
+  dbRepo = repo;
+}
+
+function dbWarn(op: string, err: any): void {
+  if (process.env.NODE_ENV !== "test") {
+    log.warn(`[icu-store] DB ${op} failed (cache-only fallback)`, { err: err?.message ?? err });
+  }
+}
 
 // ── Stores ─────────────────────────────────────────────────────────
 
@@ -89,6 +115,16 @@ export function createAdmission(data: {
   admissions.set(id, admission);
   bed.status = "occupied";
   bed.currentAdmissionId = id;
+
+  if (dbRepo) {
+    dbRepo.insertIcuAdmission({
+      id, tenantId: "default", patientDfn: data.patientDfn, bedId: data.bedId,
+      unit: bed.unit, status: "active", admitTime: now, admitSource: data.admitSource,
+      attendingProvider: data.attendingProvider, diagnosis: data.diagnosis,
+      codeStatus: data.codeStatus || "full",
+    }).catch((e: unknown) => dbWarn("insertIcuAdmission", e));
+  }
+
   return admission;
 }
 
@@ -112,6 +148,14 @@ export function dischargeAdmission(id: string, disposition: string): boolean {
   adm.updatedAt = adm.dischargeTime;
   const bed = beds.get(adm.bedId);
   if (bed) { bed.status = "cleaning"; bed.currentAdmissionId = undefined; }
+
+  if (dbRepo) {
+    dbRepo.updateIcuAdmission(id, {
+      status: "discharged", dischargeTime: adm.dischargeTime,
+      dischargeDisposition: disposition,
+    }).catch((e: unknown) => dbWarn("updateIcuAdmission/discharge", e));
+  }
+
   return true;
 }
 
@@ -131,6 +175,15 @@ export function addFlowsheetEntry(data: {
     values: data.values, validated: false,
   };
   flowsheetEntries.set(id, entry);
+
+  if (dbRepo) {
+    dbRepo.insertIcuFlowsheetEntry({
+      id, tenantId: "default", admissionId: data.admissionId,
+      category: data.category, timestamp: entry.timestamp,
+      recordedBy: data.recordedBy, valuesJson: data.values, validated: false,
+    }).catch((e: unknown) => dbWarn("insertIcuFlowsheetEntry", e));
+  }
+
   return entry;
 }
 
@@ -147,6 +200,18 @@ export function addVentSettings(data: Omit<VentSettings, "id">): VentSettings | 
   const id = `vent-${randomBytes(6).toString("hex")}`;
   const vs: VentSettings = { id, ...data };
   ventRecords.set(id, vs);
+
+  if (dbRepo) {
+    dbRepo.insertIcuVentRecord({
+      id, tenantId: "default", admissionId: data.admissionId,
+      mode: data.mode, timestamp: data.timestamp,
+      tidalVolume: data.tidalVolume, respiratoryRate: data.respiratoryRate,
+      fio2: data.fio2, peep: data.peep, pip: data.pip ?? null,
+      plateau: data.plateau ?? null,
+      compliance: data.compliance ?? null,
+    }).catch((e: unknown) => dbWarn("insertIcuVentRecord", e));
+  }
+
   return vs;
 }
 
@@ -163,6 +228,16 @@ export function addIoRecord(data: Omit<IoRecord, "id">): IoRecord | null {
   const id = `io-${randomBytes(6).toString("hex")}`;
   const rec: IoRecord = { id, ...data };
   ioRecords.set(id, rec);
+
+  if (dbRepo) {
+    dbRepo.insertIcuIoRecord({
+      id, tenantId: "default", admissionId: data.admissionId,
+      type: data.type, source: data.source, timestamp: data.timestamp,
+      volumeMl: data.volumeMl, description: data.description ?? null,
+      recordedBy: data.recordedBy,
+    }).catch((e: unknown) => dbWarn("insertIcuIoRecord", e));
+  }
+
   return rec;
 }
 
@@ -186,6 +261,15 @@ export function addScore(data: Omit<SeverityScore, "id">): SeverityScore | null 
   const id = `sc-${randomBytes(6).toString("hex")}`;
   const sc: SeverityScore = { id, ...data };
   scores.set(id, sc);
+
+  if (dbRepo) {
+    dbRepo.insertIcuScore({
+      id, tenantId: "default", admissionId: data.admissionId,
+      scoreType: data.scoreType, score: data.score, timestamp: data.timestamp,
+      calculatedBy: data.calculatedBy, componentsJson: data.components ?? null,
+    }).catch((e: unknown) => dbWarn("insertIcuScore", e));
+  }
+
   return sc;
 }
 
