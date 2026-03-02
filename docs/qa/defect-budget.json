@@ -1,0 +1,11 @@
+{
+  "description": "Defect budget thresholds for RC-1 (Phase 502)",
+  "updatedAt": "2026-03-02T00:00:00.000Z",
+  "thresholds": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 20,
+    "P3": 999
+  },
+  "notes": "P0: zero tolerance. P1: zero unmitigated. P2: max 20. P3: unlimited."
+}
