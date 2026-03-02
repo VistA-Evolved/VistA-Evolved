@@ -197,6 +197,22 @@ export const KNOWN_RPCS: { rpc: string; domain: string; fallback?: string; descr
   { rpc: "ZVEADT WARDS",           domain: "adt",        description: "Ward census (ZVEADT)" },
   { rpc: "ZVEADT BEDS",            domain: "adt",        description: "Bed board (ZVEADT)" },
   { rpc: "ZVEADT MVHIST",          domain: "adt",        description: "Movement history (ZVEADT)" },
+
+  // Phase 482 (W33-P2): Tier-0 hospital writeback RPCs — probed for capability evidence
+  // ADT write RPCs (DGPM package)
+  { rpc: "DGPM NEW ADMISSION",     domain: "adt",        description: "Write-back: admit patient (DGPM)" },
+  { rpc: "DGPM NEW TRANSFER",      domain: "adt",        description: "Write-back: transfer patient (DGPM)" },
+  { rpc: "DGPM NEW DISCHARGE",     domain: "adt",        description: "Write-back: discharge patient (DGPM)" },
+  // BCMA / eMAR write RPCs (PSB/PSJ packages)
+  { rpc: "PSB MED LOG",            domain: "emar",       description: "Write-back: BCMA medication log (PSB)" },
+  { rpc: "PSB ALLERGY",            domain: "emar",       description: "BCMA allergy check at scan (PSB)" },
+  { rpc: "PSB VALIDATE ORDER",     domain: "emar",       description: "BCMA order validation at scan (PSB)" },
+  { rpc: "PSJBCMA",                domain: "emar",       description: "Write-back: barcode-to-med lookup (PSJ)" },
+  // Nursing task / assessment RPCs (NURS package)
+  { rpc: "NURS TASK LIST",         domain: "nursing",    description: "Nursing task list (NURS)" },
+  { rpc: "NURS ASSESSMENTS",       domain: "nursing",    description: "Nursing assessments (NURS)" },
+  // Lab write RPCs (LR package)
+  { rpc: "LR VERIFY",              domain: "labs",       description: "Write-back: verify lab result (LR)" },
 ];
 
 /* ------------------------------------------------------------------ */

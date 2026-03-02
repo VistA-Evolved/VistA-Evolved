@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-02T05:39:23.623Z",
+  "generatedAt": "2026-03-02T05:44:24.989Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 480,
+  "phaseCount": 481,
   "phases": [
     {
       "phaseNumber": "1",
@@ -11692,6 +11692,29 @@
         "prompts/WAVE_33_MANIFEST.md",
         "docs/clinical/tier0-writeback-targets.md",
         "docs/qa/tier0-integration-pending.json"
+      ]
+    },
+    {
+      "phaseNumber": "482",
+      "title": "W33-P2: Capability-Driven Routing",
+      "folder": "482-W33-P2-CAPABILITY-ROUTING",
+      "files": [
+        "482-01-IMPLEMENT.md",
+        "482-99-VERIFY.md",
+        "NOTES.md"
+      ],
+      "implementFiles": [
+        "482-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "482-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/lib/tier0-response.ts",
+        "apps/api/src/vista/rpcCapabilities.ts"
       ]
     },
     {

@@ -1,10 +1,10 @@
 {
   "_meta": {
     "description": "Integration-pending budget baseline (Phase 480)",
-    "updatedAt": "2026-03-02T04:48:47.455Z",
+    "updatedAt": "2026-03-02T05:44:13.719Z",
     "updatedBy": "integration-pending-budget.mjs --update"
   },
-  "total": 292,
+  "total": 296,
   "tolerance": 0,
   "files": [
     {
@@ -86,6 +86,10 @@
     {
       "file": "apps/api/src/radiology/types.ts",
       "count": 5
+    },
+    {
+      "file": "apps/api/src/lib/tier0-response.ts",
+      "count": 4
     },
     {
       "file": "apps/api/src/routes/cprs/wave1-routes.ts",
