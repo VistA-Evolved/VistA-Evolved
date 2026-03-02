@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-02T07:36:27.225Z",
+  "generatedAt": "2026-03-02T07:47:39.856Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 500,
+  "phaseCount": 503,
   "phases": [
     {
       "phaseNumber": "1",
@@ -12192,6 +12192,68 @@
       ],
       "verifyFiles": [
         "501-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "502",
+      "title": "Bug Bash Harness + Defect Registry Generator",
+      "folder": "502-W35-P3-BUG-BASH-HARNESS",
+      "files": [
+        "502-01-IMPLEMENT.md",
+        "502-99-VERIFY.md",
+        "502-NOTES.md"
+      ],
+      "implementFiles": [
+        "502-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "502-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "503",
+      "title": "Downtime Mode + VistA Outage Simulation",
+      "folder": "503-W35-P4-DOWNTIME-MODE",
+      "files": [
+        "503-01-IMPLEMENT.md",
+        "503-99-VERIFY.md",
+        "503-NOTES.md"
+      ],
+      "implementFiles": [
+        "503-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "503-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "layout.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "504",
+      "title": "Performance Budgets + Soak Tests",
+      "folder": "504-W35-P5-PERF-BUDGETS",
+      "files": [
+        "504-01-IMPLEMENT.md",
+        "504-99-VERIFY.md",
+        "504-NOTES.md"
+      ],
+      "implementFiles": [
+        "504-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "504-99-VERIFY.md"
       ],
       "routes": [],
       "rpcs": [],

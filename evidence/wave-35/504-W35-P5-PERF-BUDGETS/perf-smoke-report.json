@@ -1,0 +1,51 @@
+{
+    "fail":  0,
+    "pass":  6,
+    "generatedAt":  "2026-03-02T15:47:40.3770700+08:00",
+    "skip":  0,
+    "results":  [
+                    {
+                        "label":  "TypeScript API compile",
+                        "status":  "PASS",
+                        "actualMs":  30213,
+                        "budgetMs":  60000,
+                        "exitCode":  0
+                    },
+                    {
+                        "label":  "TypeScript Web compile",
+                        "status":  "PASS",
+                        "actualMs":  2424,
+                        "budgetMs":  30000,
+                        "exitCode":  0
+                    },
+                    {
+                        "label":  "Phase index build",
+                        "status":  "PASS",
+                        "actualMs":  283,
+                        "budgetMs":  15000,
+                        "exitCode":  0
+                    },
+                    {
+                        "label":  "Prompts tree health",
+                        "status":  "PASS",
+                        "actualMs":  308,
+                        "budgetMs":  5000,
+                        "exitCode":  0
+                    },
+                    {
+                        "label":  "RPC trace compare",
+                        "status":  "PASS",
+                        "actualMs":  65,
+                        "budgetMs":  5000,
+                        "exitCode":  0
+                    },
+                    {
+                        "label":  "Production posture",
+                        "status":  "PASS",
+                        "actualMs":  71,
+                        "budgetMs":  5000,
+                        "exitCode":  0
+                    }
+                ],
+    "mode":  "smoke"
+}
