@@ -1,0 +1,18 @@
+[
+  {
+    "id": "dev-sandbox",
+    "label": "WorldVistA Docker (dev sandbox)",
+    "host": "127.0.0.1",
+    "port": 9430,
+    "profile": "dev",
+    "notes": "Standard WorldVistA Docker image on default port"
+  },
+  {
+    "id": "distro-lane",
+    "label": "VistA Distro Lane (Phase 148)",
+    "host": "127.0.0.1",
+    "port": 9431,
+    "profile": "distro",
+    "notes": "Reproducible VistA build from services/vista-distro/"
+  }
+]
