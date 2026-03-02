@@ -1,0 +1,61 @@
+{
+  "generatedAt": "2025-01-01T00:00:00.000Z",
+  "generatedBy": "Phase 452 (W29-P6)",
+  "components": [
+    {
+      "id": "worldvista-ehr",
+      "repo": "WorldVistA/worldvista-ehr",
+      "name": "WorldVistA EHR Docker",
+      "status": "active",
+      "integration": "primary-upstream",
+      "adr": null,
+      "notes": "Core VistA instance -- upstream source per ADR-W29-VISTA-UPSTREAM-SOURCE"
+    },
+    {
+      "id": "dashboard-rules-engine",
+      "repo": "WorldVistA/worldvista-ehr",
+      "name": "Dashboard / Clinical Rules Engine",
+      "status": "integrate",
+      "integration": "adapter-boundary",
+      "adr": "docs/adrs/ADR-W29-HARVEST-DASHBOARD.md",
+      "targetPhase": 453,
+      "notes": "Integration via DashboardAdapter, optional Docker service"
+    },
+    {
+      "id": "fhir-data-service",
+      "repo": "WorldVistA/FHIR-Data-Service",
+      "name": "FHIR Data Service (nodeVistA)",
+      "status": "evaluate",
+      "integration": "sidecar",
+      "adr": "docs/adrs/ADR-W29-HARVEST-FHIR.md",
+      "notes": "Defer until W30 migration identifies FHIR needs"
+    },
+    {
+      "id": "pophealth",
+      "repo": "WorldVistA/popHealth",
+      "name": "popHealth CQM Reporting",
+      "status": "evaluate",
+      "integration": "standalone",
+      "adr": "docs/adrs/ADR-W29-HARVEST-POPHEALTH.md",
+      "notes": "Defer until quality reporting/MIPS requirements"
+    },
+    {
+      "id": "blue-button",
+      "repo": "WorldVistA/Blue-Button",
+      "name": "Blue Button Patient Export",
+      "status": "skip",
+      "integration": "none",
+      "adr": null,
+      "notes": "Covered by Phase 442 patient data export functionality"
+    },
+    {
+      "id": "mdws",
+      "repo": "WorldVistA/MDWS",
+      "name": "MDWS (.NET Web Services)",
+      "status": "skip",
+      "integration": "none",
+      "adr": null,
+      "notes": "Superseded by direct RPC + FHIR approaches"
+    }
+  ]
+}
