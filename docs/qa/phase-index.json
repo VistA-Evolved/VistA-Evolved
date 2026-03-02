@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-02T04:29:07.399Z",
+  "generatedAt": "2026-03-02T05:34:19.435Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 474,
+  "phaseCount": 479,
   "phases": [
     {
       "phaseNumber": "1",
@@ -11551,6 +11551,124 @@
         "scripts/qa-gates/phase-index-gate.mjs",
         "docs/qa/phase-index.json"
       ]
+    },
+    {
+      "phaseNumber": "476",
+      "title": "W32-P4: VEHU VistA Runtime Profile",
+      "folder": "476-W32-P4-VEHU-RUNTIME",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "services/vista/docker-compose.yml",
+        "scripts/install-vista-routines.ps",
+        "services/vista/README.md"
+      ]
+    },
+    {
+      "phaseNumber": "477",
+      "title": "W32-P5: VEHU Credentials + Test Harness Alignment",
+      "folder": "477-W32-P5-VEHU-TESTS",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/.env.vehu.examp",
+        "scripts/dev/use-vehu-env.ps",
+        "apps/api/.env.examp"
+      ]
+    },
+    {
+      "phaseNumber": "478",
+      "title": "W32-P6: VistA Capability Snapshot",
+      "folder": "478-W32-P6-CAPABILITY-SNAPSHOT",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/vista/",
+        "/vista/capabilities"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "479",
+      "title": "W32-P7: RPC Contract Trace Recorder",
+      "folder": "479-W32-P7-RPC-CONTRACT-TRACE",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [
+        "/qa/contract-traces",
+        "/qa/contract-traces/sessions",
+        "/qa/contract-traces/sessions/:id",
+        "/qa/contract-traces/sessions/:id/compare",
+        "/qa/contract-traces/sessions/:id/end",
+        "/qa/contract-traces/sessions/:id/entry"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "480",
+      "title": "W32-P8: Integration-Pending Budget Gate",
+      "folder": "480-W32-P8-PENDING-BUDGET-GATE",
+      "files": [
+        "IMPLEMENT.md",
+        "NOTES.md",
+        "VERIFY.md"
+      ],
+      "implementFiles": [
+        "IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": []
     },
     {
       "phaseNumber": "44",
