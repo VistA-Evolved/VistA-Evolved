@@ -269,8 +269,9 @@ export default function OrdersPanel({ dfn }: Props) {
         setSignMsg(`Signing blocked: ${data.message || 'e-signature verification failed'}`);
       } else if (data.status === 'sign-failed') {
         setSignMsg(`Signing failed: ${data.message || data.error || 'RPC call failed — retry or contact support'}`);
-      } else if (data.status === 'integration-pending') {
-        setSignMsg(`Signing -- integration pending: ${data.pendingNote || 'ORWOR1 SIG not available'}`);
+      } else if (data.status === 'integration-pending' || data.status === 'unsupported-in-sandbox') {
+        const label = data.status === 'unsupported-in-sandbox' ? 'unsupported in sandbox' : 'integration pending';
+        setSignMsg(`Signing -- ${label}: ${data.pendingNote || data.message || 'ORWOR1 SIG not available'}`);
       } else if (data.ok) {
         setSignMsg(data.message || 'Order sign processed');
         fetchVistaOrders();

@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-02T06:14:18.310Z",
+  "generatedAt": "2026-03-02T06:23:33.217Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 486,
+  "phaseCount": 487,
   "phases": [
     {
       "phaseNumber": "1",
@@ -11818,6 +11818,33 @@
       "routes": [],
       "rpcs": [],
       "uiComponents": [],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "488",
+      "title": "W33-P8 UI HARDENING",
+      "folder": "488-W33-P8-UI-HARDENING",
+      "files": [
+        "488-01-IMPLEMENT.md",
+        "488-99-VERIFY.md",
+        "488-NOTES.md"
+      ],
+      "implementFiles": [
+        "488-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "488-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "ActionInspector.tsx",
+        "IntegrationPendingModal.tsx",
+        "NursingPanel.tsx",
+        "OrdersPanel.tsx",
+        "RpcDebugPanel.tsx",
+        "page.tsx"
+      ],
       "filesTouched": []
     },
     {

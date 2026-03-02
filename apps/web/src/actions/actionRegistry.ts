@@ -8,7 +8,7 @@
  *   - Dev-visible: the RpcDebugPanel shows these mappings at runtime (admin only).
  */
 
-export type ActionStatus = "wired" | "integration-pending" | "stub";
+export type ActionStatus = "wired" | "integration-pending" | "unsupported-in-sandbox" | "stub";
 
 export interface CprsAction {
   /** Unique ID for this action */
@@ -1013,10 +1013,10 @@ export function getAllActionRpcNames(): string[] {
 }
 
 /**
- * Get all integration-pending actions.
+ * Get all integration-pending or unsupported-in-sandbox actions.
  */
 export function getPendingActions(): CprsAction[] {
-  return ACTION_REGISTRY.filter((a) => a.status === "integration-pending" || a.status === "stub");
+  return ACTION_REGISTRY.filter((a) => a.status === "integration-pending" || a.status === "unsupported-in-sandbox" || a.status === "stub");
 }
 
 /**
@@ -1033,6 +1033,7 @@ export function getActionRegistryStats(): {
   total: number;
   wired: number;
   pending: number;
+  unsupported: number;
   stub: number;
   uniqueRpcs: number;
   locations: string[];
@@ -1042,12 +1043,13 @@ export function getActionRegistryStats(): {
   const total = ACTION_REGISTRY.length;
   const wired = ACTION_REGISTRY.filter((a) => a.status === "wired").length;
   const pending = ACTION_REGISTRY.filter((a) => a.status === "integration-pending").length;
+  const unsupported = ACTION_REGISTRY.filter((a) => a.status === "unsupported-in-sandbox").length;
   const stub = ACTION_REGISTRY.filter((a) => a.status === "stub").length;
   const uniqueRpcs = getAllActionRpcNames().length;
   const locations = [...new Set(ACTION_REGISTRY.map((a) => a.location))].sort();
   const readActions = ACTION_REGISTRY.filter((a) => a.rpcKind === "read").length;
   const writeActions = ACTION_REGISTRY.filter((a) => a.rpcKind === "write").length;
-  return { total, wired, pending, stub, uniqueRpcs, locations, readActions, writeActions };
+  return { total, wired, pending, unsupported, stub, uniqueRpcs, locations, readActions, writeActions };
 }
 
 /**

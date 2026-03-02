@@ -107,6 +107,7 @@ export default function ActionInspector({ location }: ActionInspectorProps) {
         <span>Total: {stats.total}</span>
         <span style={{ color: "#a3d9a3" }}>Wired: {stats.wired}</span>
         <span style={{ color: "#d9c9a3" }}>Pending: {stats.pending}</span>
+        <span style={{ color: "#a3c4d9" }}>Unsupported: {stats.unsupported}</span>
         <span style={{ color: "#d9a3a3" }}>Stub: {stats.stub}</span>
         <span>RPCs: {stats.uniqueRpcs}</span>
       </div>
@@ -159,9 +160,11 @@ export default function ActionInspector({ location }: ActionInspectorProps) {
                 background:
                   a.status === "integration-pending"
                     ? "#2a2518"
-                    : a.status === "stub"
-                      ? "#251818"
-                      : "transparent",
+                    : a.status === "unsupported-in-sandbox"
+                      ? "#182a2a"
+                      : a.status === "stub"
+                        ? "#251818"
+                        : "transparent",
               }}
             >
               <td style={{ padding: 4 }}>
@@ -200,6 +203,7 @@ function StatusBadge({ status }: { status: string }) {
   const colors: Record<string, { bg: string; text: string }> = {
     wired: { bg: "#2d4a2d", text: "#a3d9a3" },
     "integration-pending": { bg: "#4a3d2d", text: "#d9c9a3" },
+    "unsupported-in-sandbox": { bg: "#2d3d4a", text: "#a3c4d9" },
     stub: { bg: "#4a2d2d", text: "#d9a3a3" },
   };
   const c = colors[status] || { bg: "#333", text: "#888" };

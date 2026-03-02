@@ -5,7 +5,7 @@
  *
  * 4 tabs: Census | Bedboard | ADT Workflow | Movement Timeline
  * Data: VistA ORQPT WARDS + ORQPT WARD PATIENTS + ORWPT16 ADMITLST
- * Write RPCs (DGPM) are integration-pending — UI shows structured blockers.
+ * Write RPCs (DGPM) are capability-probed — UI shows structured blockers.
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -757,7 +757,9 @@ function ADTWorkflowTab() {
               <div>
                 <div style={S.pendingBanner}>
                   <div style={S.pendingTitle}>
-                    {pendingInfo.status === 'integration-pending' ? 'Integration Pending' : 'Error'}
+                    {pendingInfo.status === 'unsupported-in-sandbox' ? 'Unsupported in Sandbox'
+                      : pendingInfo.status === 'integration-pending' ? 'Integration Pending'
+                      : 'Error'}
                   </div>
                   <div style={S.pendingText}>{pendingInfo.message}</div>
                 </div>

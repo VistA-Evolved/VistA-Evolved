@@ -17,7 +17,7 @@ import { useState, useEffect, useCallback } from "react";
 /*  Types (mirrored from actionRegistry to avoid cross-app import)    */
 /* ------------------------------------------------------------------ */
 
-type ActionStatus = "wired" | "integration-pending" | "stub";
+type ActionStatus = "wired" | "integration-pending" | "unsupported-in-sandbox" | "stub";
 
 interface CprsAction {
   actionId: string;
@@ -50,6 +50,7 @@ function StatusBadge({ status }: { status: ActionStatus }) {
   const colors: Record<ActionStatus, string> = {
     wired: "bg-green-100 text-green-800 border-green-300",
     "integration-pending": "bg-yellow-100 text-yellow-800 border-yellow-300",
+    "unsupported-in-sandbox": "bg-blue-100 text-blue-800 border-blue-300",
     stub: "bg-orange-100 text-orange-800 border-orange-300",
   };
   return (
@@ -77,7 +78,7 @@ export default function RpcDebugPanel() {
   const [catalog, setCatalog] = useState<Map<string, boolean>>(new Map());
   const [registry, setRegistry] = useState<RpcRegistryEntry[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<"all" | "wired" | "pending" | "stub">("all");
+  const [filter, setFilter] = useState<"all" | "wired" | "pending" | "unsupported" | "stub">("all");
   const [locationFilter, setLocationFilter] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -124,7 +125,10 @@ export default function RpcDebugPanel() {
   const locations = [...new Set(actions.map((a) => a.location))].sort();
 
   const filtered = actions.filter((a) => {
-    if (filter !== "all" && a.status !== filter) return false;
+    if (filter === "pending" && a.status !== "integration-pending") return false;
+    if (filter === "unsupported" && a.status !== "unsupported-in-sandbox") return false;
+    if (filter === "wired" && a.status !== "wired") return false;
+    if (filter === "stub" && a.status !== "stub") return false;
     if (locationFilter !== "all" && a.location !== locationFilter) return false;
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
@@ -141,6 +145,7 @@ export default function RpcDebugPanel() {
     total: actions.length,
     wired: actions.filter((a) => a.status === "wired").length,
     pending: actions.filter((a) => a.status === "integration-pending").length,
+    unsupported: actions.filter((a) => a.status === "unsupported-in-sandbox").length,
     stub: actions.filter((a) => a.status === "stub").length,
     rpcsCatalogSize: catalog.size,
     registrySize: registry.length,
@@ -165,8 +170,8 @@ export default function RpcDebugPanel() {
         <Stat label="Total Actions" value={stats.total} />
         <Stat label="Wired" value={stats.wired} color="green" />
         <Stat label="Pending" value={stats.pending} color="yellow" />
+        <Stat label="Unsupported" value={stats.unsupported} color="blue" />
         <Stat label="Stub" value={stats.stub} color="orange" />
-        <Stat label="VistA RPCs" value={stats.rpcsCatalogSize} color="blue" />
         <Stat label="Registry" value={stats.registrySize} color="purple" />
       </div>
 
@@ -179,7 +184,8 @@ export default function RpcDebugPanel() {
         >
           <option value="all">All Status</option>
           <option value="wired">Wired</option>
-          <option value="integration-pending">Pending</option>
+          <option value="pending">Pending</option>
+          <option value="unsupported">Unsupported</option>
           <option value="stub">Stub</option>
         </select>
         <select

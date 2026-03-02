@@ -285,7 +285,7 @@ function FlowsheetTab({ dfn }: { dfn: string }) {
       {data.items.length === 0 ? (
         <p style={{ fontSize: 13, color: 'var(--cprs-text-muted, #888)', padding: 8 }}>
           No flowsheet data found.
-          {data.status === 'integration-pending' && ' Flowsheet aggregation will populate when I/O and assessment RPCs are wired.'}
+          {(data.status === 'integration-pending' || data.status === 'unsupported-in-sandbox') && ' Flowsheet aggregation will populate when I/O and assessment RPCs are wired.'}
           {data.source && ` Source: ${data.source}`}
         </p>
       ) : (

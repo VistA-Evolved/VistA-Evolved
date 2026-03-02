@@ -16,6 +16,8 @@ export interface PendingActionInfo {
   pendingNote?: string;
   pendingTargets?: string[];
   vivianPresence?: Record<string, string>;
+  /** API status -- "integration-pending" or "unsupported-in-sandbox" */
+  status?: string;
 }
 
 interface IntegrationPendingModalProps {
@@ -56,7 +58,9 @@ export default function IntegrationPendingModal({
         onClick={(e) => e.stopPropagation()}
       >
         <h3 style={{ margin: "0 0 12px", color: "#ffb347" }}>
-          Integration Pending
+          {action.status === "unsupported-in-sandbox"
+            ? "Unsupported in Sandbox"
+            : "Integration Pending"}
         </h3>
         <p style={{ margin: "0 0 8px", fontSize: 14 }}>
           <strong>{action.label}</strong> ({action.actionId})

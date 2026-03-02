@@ -575,13 +575,13 @@ function AdminTab({ dfn }: { dfn: string }) {
               {adminResult && (
                 <div style={{
                   marginTop: 12, padding: '10px 12px', borderRadius: 4,
-                  background: adminResult.status === 'integration-pending' ? colors.pendingBg : '#fed7d7',
-                  border: `1px solid ${adminResult.status === 'integration-pending' ? colors.pendingBorder : '#fc8181'}`,
+                  background: (adminResult.status === 'integration-pending' || adminResult.status === 'unsupported-in-sandbox') ? colors.pendingBg : '#fed7d7',
+                  border: `1px solid ${(adminResult.status === 'integration-pending' || adminResult.status === 'unsupported-in-sandbox') ? colors.pendingBorder : '#fc8181'}`,
                   fontSize: 13,
                 }}>
-                  {adminResult.status === 'integration-pending' ? (
+                  {(adminResult.status === 'integration-pending' || adminResult.status === 'unsupported-in-sandbox') ? (
                     <>
-                      <strong>Integration Pending:</strong> {adminResult.message}
+                      <strong>{adminResult.status === 'unsupported-in-sandbox' ? 'Unsupported in Sandbox:' : 'Integration Pending:'}</strong> {adminResult.message}
                       <div style={{ fontSize: 11, color: '#975a16', marginTop: 4 }}>
                         Target: PSB MED LOG → File 53.79 BCMA MEDICATION LOG
                       </div>
@@ -707,7 +707,7 @@ function BCMATab({ dfn }: { dfn: string }) {
               marginTop: 12, padding: '10px 12px', borderRadius: 4,
               background: colors.pendingBg, border: `1px solid ${colors.pendingBorder}`, fontSize: 13,
             }}>
-              <strong>Integration Pending:</strong> {scanResult.message || 'BCMA verification requires PSB/PSJ packages'}
+              <strong>{scanResult.status === 'unsupported-in-sandbox' ? 'Unsupported in Sandbox:' : 'Integration Pending:'}</strong> {scanResult.message || 'BCMA verification requires PSB/PSJ packages'}
               <div style={{ fontSize: 11, color: '#975a16', marginTop: 4 }}>
                 Targets: PSB MED LOG, PSJBCMA
               </div>
