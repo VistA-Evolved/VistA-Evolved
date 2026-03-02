@@ -1776,6 +1776,28 @@ export const STORE_INVENTORY: StoreEntry[] = [
     durability: "env_gated",
     domain: "qa",
   },
+  // Phase 479: RPC Contract Trace Recorder
+  {
+    id: "contract-trace-active-sessions",
+    file: "qa/rpc-contract-trace.ts",
+    variable: "activeSessions",
+    description: "Active RPC contract trace recording sessions",
+    classification: "dev_only",
+    durability: "env_gated",
+    domain: "qa",
+    notes: "Phase 479: Active trace sessions; reset on restart.",
+  },
+  {
+    id: "contract-trace-completed-sessions",
+    file: "qa/rpc-contract-trace.ts",
+    variable: "completedSessions",
+    description: "Completed RPC contract trace sessions (ring buffer)",
+    classification: "dev_only",
+    durability: "env_gated",
+    domain: "qa",
+    maxSize: 100,
+    notes: "Phase 479: Completed traces; 100-entry ring buffer.",
+  },
   // Phase 141: Enterprise IAM posture
   {
     id: "enterprise-break-glass",

@@ -51,7 +51,9 @@ const COOKIE_FILE = opt("--cookie", null);
 function loadCookie() {
   // Try explicit cookie file
   if (COOKIE_FILE && existsSync(COOKIE_FILE)) {
-    const raw = readFileSync(COOKIE_FILE, "utf-8").trim();
+    let raw = readFileSync(COOKIE_FILE, "utf-8").trim();
+    // Strip BOM if present (BUG-064: PowerShell Set-Content adds UTF-8 BOM)
+    if (raw.charCodeAt(0) === 0xfeff) raw = raw.slice(1);
     // Extract just the cookie key=value pairs
     const cookies = raw.split("\n")
       .map((line) => line.trim())
@@ -119,7 +121,7 @@ async function main() {
   console.log(`OK    ${latestPath.replace(ROOT + "\\", "").replace(ROOT + "/", "")}`);
 
   // Write timestamped archive
-  if (!NO_TIMESTAMP) {
+  if (!NO_TIMESTAMP && snapshot.generatedAt) {
     const ts = snapshot.generatedAt.replace(/[:.]/g, "-").replace("Z", "");
     const archivePath = join(OUT_DIR, `capability-snapshot-${ts}.json`);
     writeFileSync(archivePath, JSON.stringify(snapshot, null, 2) + "\n", "utf-8");
@@ -127,18 +129,19 @@ async function main() {
   }
 
   // Summary
-  const probe = snapshot.rpcProbe;
+  const probe = snapshot.rpcProbe || {};
+  const reg = snapshot.registry || {};
   console.log();
   console.log(`Summary:`);
-  console.log(`  Instance:          ${snapshot.instanceId}`);
-  console.log(`  RPCs probed:       ${probe.totalProbed}`);
-  console.log(`  Available:         ${probe.available}`);
-  console.log(`  Missing:           ${probe.missing} (${probe.expectedMissing} expected)`);
-  console.log(`  Unexpected missing: ${probe.unexpectedMissing}`);
-  console.log(`  Registry total:    ${snapshot.registry.totalRegistered} + ${snapshot.registry.totalExceptions} exceptions`);
+  console.log(`  Instance:          ${snapshot.instanceId || "unknown"}`);
+  console.log(`  RPCs probed:       ${probe.totalProbed ?? "?"}`);
+  console.log(`  Available:         ${probe.available ?? "?"}`);
+  console.log(`  Missing:           ${probe.missing ?? "?"} (${probe.expectedMissing ?? "?"} expected)`);
+  console.log(`  Unexpected missing: ${probe.unexpectedMissing ?? "?"}`);
+  console.log(`  Registry total:    ${reg.totalRegistered ?? "?"} + ${reg.totalExceptions ?? "?"} exceptions`);
   console.log();
 
-  if (probe.unexpectedMissing > 0) {
+  if ((probe.unexpectedMissing || 0) > 0 && Array.isArray(probe.unexpectedMissingList)) {
     console.log(`  WARNING: ${probe.unexpectedMissing} unexpectedly missing RPCs:`);
     for (const rpc of probe.unexpectedMissingList) {
       console.log(`    - ${rpc}`);

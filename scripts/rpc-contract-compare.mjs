@@ -52,7 +52,10 @@ const WORKFLOW = args.find((a) => !a.startsWith("-"));
 /* ── Helpers ──────────────────────────────────────────────── */
 
 function loadJsonl(filepath) {
-  const lines = readFileSync(filepath, "utf-8").trim().split("\n");
+  let raw = readFileSync(filepath, "utf-8").trim();
+  // Strip BOM if present (BUG-064: PowerShell Set-Content adds UTF-8 BOM)
+  if (raw.charCodeAt(0) === 0xfeff) raw = raw.slice(1);
+  const lines = raw.split("\n");
   const meta = JSON.parse(lines[0]);
   const entries = lines.slice(1).map((l) => JSON.parse(l));
   return { meta, entries };
@@ -148,6 +151,10 @@ function main() {
 
     for (const wf of workflows) {
       const goldenPath = findLatestTrace(wf, GOLDEN_DIR);
+      if (!goldenPath) {
+        console.log(`SKIP  ${wf} -- golden file missing or removed`);
+        continue;
+      }
       const actualPath = findLatestTrace(wf, DEFAULT_TRACE_DIR);
       if (!actualPath) {
         console.log(`SKIP  ${wf} -- no actual trace found`);
