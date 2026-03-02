@@ -84,13 +84,11 @@ const SANDBOX_EXPECTED_MISSING: string[] = [
   "NURS ASSESSMENTS",
   // Lab write -- LR package not exposed via broker context
   "LR VERIFY",
-  "LRFZX",
   // Phase 484 (W33-P4): Nursing I/O + assessment RPCs
   "GMRIO RESULTS",
   "GMRIO ADD",
   "ZVENAS LIST",
   "ZVENAS SAVE",
-  "ORWORDG IEN",
 ];
 
 /* ------------------------------------------------------------------ */

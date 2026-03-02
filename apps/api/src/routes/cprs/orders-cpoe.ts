@@ -172,7 +172,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
    * GET /vista/cprs/orders
    * RPC: ORWORR AGET — active orders by display group
    * ================================================================ */
-  server.get("/vista/cprs/orders", async (request) => {
+  server.get("/vista/cprs/orders", async (request, reply) => {
     const dfn = (request.query as any)?.dfn;
     if (!dfn || !/^\d+$/.test(String(dfn)))
       return { ok: false, error: "Missing or non-numeric dfn" };
@@ -184,8 +184,8 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
     const check = optionalRpc("ORWORR AGET");
     if (!check.available) {
       const ordersProbe = probeTier0Rpc("ORWORR AGET", "orders");
-      return {
-        ok: true,
+      return reply.code(202).send({
+        ok: false,
         status: "unsupported-in-sandbox" as const,
         orders: [],
         rpcUsed,
@@ -193,7 +193,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         capabilityProbe: ordersProbe,
         pendingTargets: ["ORWORR AGET"],
         pendingNote: "ORWORR AGET present in Vivian but RPC capability not detected at runtime.",
-      };
+      });
     }
 
     try {
@@ -297,7 +297,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         mode: "draft", draftId: draft.id, orderType: "lab",
       });
       const result = {
-        ok: true,
+        ok: false,
         mode: "draft",
         status: "unsupported-in-sandbox" as const,
         draftId: draft.id,
@@ -311,7 +311,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
           "Medication quick orders (PSOZ* IENs 1628-1658) are available as an alternative path.",
         message: `Lab order for "${labTest || ""}" saved as draft. Quick order IEN not available in sandbox.`,
       };
-      return result;
+      return reply.code(202).send(result);
     }
 
     // Attempt real AUTOACK path
@@ -324,11 +324,11 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         mode: "draft", draftId: draft.id, orderType: "lab",
       });
       const result = {
-        ok: true, mode: "draft", draftId: draft.id, status: "sync-pending",
+        ok: false, mode: "draft", draftId: draft.id, status: "sync-pending",
         rpcUsed, vivianPresence,
         message: "Lab order saved as draft. ORWDXM AUTOACK sync pending.",
       };
-      return result;
+      return reply.code(202).send(result);
     }
 
     let locked = false;
@@ -475,8 +475,8 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
     });
     auditWrite("clinical.order-imaging", "success", actor, validDfn!, { mode: "draft", draftId: draft.id, orderType: "imaging" });
 
-    return {
-      ok: true,
+    return reply.code(202).send({
+      ok: false,
       mode: "draft",
       status: "unsupported-in-sandbox" as const,
       draftId: draft.id,
@@ -489,7 +489,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         "To enable: configure radiology quick orders in VistA, then pass quickOrderIen directly. " +
         "Alternative: use ORWDX SAVE with full ORDIALOG parameter build for imaging dialogs.",
       message: `Imaging order for "${imagingStudy || ""}" saved as draft. Quick order IEN not available.`,
-    };
+    });
   });
 
   /* ================================================================
@@ -521,8 +521,8 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
     });
     auditWrite("clinical.order-consult", "success", actor, validDfn!, { mode: "draft", draftId: draft.id, orderType: "consult" });
 
-    return {
-      ok: true,
+    return reply.code(202).send({
+      ok: false,
       mode: "draft",
       status: "unsupported-in-sandbox" as const,
       draftId: draft.id,
@@ -535,7 +535,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         "ORWDX SAVE RPC is available but the complex parameter assembly is a future enhancement. " +
         "Target: ORWDX SAVE with consult dialog (ORDIALOG #101.43).",
       message: `Consult order for "${consultService}" saved as draft. Full dialog integration pending.`,
-    };
+    });
   });
 
   /* ================================================================
@@ -661,7 +661,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         detail: { rpcTarget: "ORWOR1 SIG" },
       });
     }
-    return {
+    return reply.code(202).send({
       ok: false,
       status: "unsupported-in-sandbox" as const,
       rpcUsed,
@@ -671,7 +671,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       pendingNote: "ORWOR1 SIG not available at runtime. Orders remain unsigned.",
       unsignedCount: (orderIds as string[]).length,
       message: `${(orderIds as string[]).length} order(s) remain unsigned. Signing RPC unavailable.`,
-    };
+    });
   });
 
   /* ================================================================
@@ -755,8 +755,8 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       detail: { mode: "capability-probed" },
     });
 
-    return {
-      ok: true,
+    return reply.code(202).send({
+      ok: false,
       status: "unsupported-in-sandbox" as const,
       checks: [],
       checkCount: 0,
@@ -770,7 +770,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         "In this sandbox: order check RPCs exist but require orders with proper orderable " +
         "items data to produce meaningful results.",
       message: "Order checks RPC available but requires valid order context.",
-    };
+    });
   });
 
   log.info("CPOE Parity routes registered (Phase 59)", {

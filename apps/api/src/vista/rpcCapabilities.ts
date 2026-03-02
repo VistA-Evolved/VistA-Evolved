@@ -123,6 +123,9 @@ export const KNOWN_RPCS: { rpc: string; domain: string; fallback?: string; descr
   { rpc: "ORWDXA DC", domain: "orders", description: "Discontinue order" },
   { rpc: "ORWDXA FLAG", domain: "orders", description: "Flag order" },
   { rpc: "ORWDXA VERIFY", domain: "orders", description: "Verify order" },
+  { rpc: "ORWORR AGET", domain: "orders", description: "Active orders list" },
+  { rpc: "ORWOR1 SIG", domain: "orders", description: "Write-back: sign orders electronically" },
+  { rpc: "ORWDXC ACCEPT", domain: "orders", description: "Order checks: accept/display findings" },
 
   // Consults
   { rpc: "ORQQCN LIST", domain: "consults", description: "List consults" },

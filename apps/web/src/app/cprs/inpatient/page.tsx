@@ -720,13 +720,13 @@ function ADTWorkflowTab() {
         </div>
       </div>
 
-      <div style={S.pendingBanner}>
-        <div style={S.pendingTitle}>Integration Status</div>
+      <div style={{ ...S.pendingBanner, background: '#e8f4f8', border: '1px solid #90cdf4' }}>
+        <div style={{ ...S.pendingTitle, color: '#2b6cb0' }}>Unsupported in Sandbox</div>
         <div style={S.pendingText}>
           ADT write operations (Admit/Transfer/Discharge) target the DG ADT package
           (<code>DGPM</code> routines) which is not exposed in the WorldVistA Docker sandbox
-          context <code>OR CPRS GUI CHART</code>. These will be wired in Phase 83B when
-          DG ADT write RPCs become available.
+          context <code>OR CPRS GUI CHART</code>. These will activate when
+          DG ADT write RPCs become available on the connected VistA instance.
         </div>
         <div style={S.codeBlock}>
           Target RPCs: DGPM NEW ADMISSION, DGPM NEW TRANSFER, DGPM NEW DISCHARGE{'\n'}

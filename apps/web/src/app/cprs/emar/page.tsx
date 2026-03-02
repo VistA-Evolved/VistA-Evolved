@@ -97,14 +97,17 @@ const colors = {
 /* Sub-components                                                       */
 /* ------------------------------------------------------------------ */
 
-function IntegrationPendingBanner({ targets, context }: { targets: PendingTarget[]; context?: string }) {
+function IntegrationPendingBanner({ targets, context, status }: { targets: PendingTarget[]; context?: string; status?: string }) {
+  const isUnsupported = status === 'unsupported-in-sandbox';
+  const title = isUnsupported ? 'Unsupported in Sandbox' : 'Integration Pending';
   return (
     <div style={{
-      background: colors.pendingBg, border: `1px solid ${colors.pendingBorder}`,
+      background: isUnsupported ? '#e8f4f8' : colors.pendingBg,
+      border: `1px solid ${isUnsupported ? '#90cdf4' : colors.pendingBorder}`,
       borderRadius: 6, padding: '12px 16px', margin: '12px 0',
     }}>
-      <div style={{ fontWeight: 600, color: '#975a16', marginBottom: 4 }}>
-        Integration Pending{context ? ` — ${context}` : ''}
+      <div style={{ fontWeight: 600, color: isUnsupported ? '#2b6cb0' : '#975a16', marginBottom: 4 }}>
+        {title}{context ? ` — ${context}` : ''}
       </div>
       <div style={{ fontSize: 13, color: '#744210', marginBottom: 8 }}>
         This feature requires VistA packages not available in the WorldVistA Docker sandbox.
@@ -184,6 +187,7 @@ function ScheduleTab({ dfn }: { dfn: string }) {
   const [schedule, setSchedule] = useState<ScheduleEntry[]>([]);
   const [duplicates, setDuplicates] = useState<DuplicateAlert[]>([]);
   const [pendingTargets, setPendingTargets] = useState<PendingTarget[]>([]);
+  const [schedStatus, setSchedStatus] = useState<string | undefined>();
   const [heuristicWarning, setHeuristicWarning] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -200,6 +204,7 @@ function ScheduleTab({ dfn }: { dfn: string }) {
       if (schedResult.status === 'fulfilled' && schedResult.value.ok) {
         setSchedule(schedResult.value.schedule || []);
         setPendingTargets(schedResult.value.pendingTargets || []);
+        setSchedStatus(schedResult.value.status);
         setHeuristicWarning(schedResult.value._heuristicWarning || '');
       } else if (schedResult.status === 'fulfilled' && !schedResult.value.ok) {
         setError(schedResult.value.error || 'Failed to load schedule');
@@ -226,7 +231,7 @@ function ScheduleTab({ dfn }: { dfn: string }) {
       )}
       <DuplicateTherapyBanner duplicates={duplicates} />
       {pendingTargets.length > 0 && (
-        <IntegrationPendingBanner targets={pendingTargets} context="Real-time due times require BCMA" />
+        <IntegrationPendingBanner targets={pendingTargets} context="Real-time due times require BCMA" status={schedStatus} />
       )}
 
       {/* Scheduled Medications */}
@@ -487,6 +492,7 @@ function AdminTab({ dfn }: { dfn: string }) {
           { rpc: 'PSB MED LOG', package: 'PSB', reason: 'Write administration record to BCMA Medication Log (file 53.79)' },
         ]}
         context="Medication administration recording"
+        status="unsupported-in-sandbox"
       />
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 12 }}>
@@ -640,6 +646,7 @@ function BCMATab({ dfn }: { dfn: string }) {
           { rpc: 'PSJBCMA', package: 'PSB', reason: 'Barcode-to-medication lookup via PSJ BCMA routines' },
         ]}
         context="Barcode Medication Administration (BCMA)"
+        status="unsupported-in-sandbox"
       />
 
       <div style={{

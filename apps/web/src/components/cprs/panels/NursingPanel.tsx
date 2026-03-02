@@ -61,14 +61,17 @@ async function apiFetchRaw<T = any>(path: string): Promise<T> {
 /* Shared Components                                                    */
 /* ------------------------------------------------------------------ */
 
-function IntegrationPendingBanner({ targets }: { targets: PendingTarget[] }) {
+function IntegrationPendingBanner({ targets, status }: { targets: PendingTarget[]; status?: string }) {
   if (!targets?.length) return null;
+  const title = status === 'unsupported-in-sandbox' ? 'Unsupported in Sandbox' : 'Integration Pending';
   return (
     <div style={{
       padding: '8px 12px', margin: '8px 0', borderRadius: 4,
-      background: '#fff3cd', border: '1px solid #ffc107', fontSize: 12,
+      background: status === 'unsupported-in-sandbox' ? '#e8f4f8' : '#fff3cd',
+      border: `1px solid ${status === 'unsupported-in-sandbox' ? '#90cdf4' : '#ffc107'}`,
+      fontSize: 12,
     }}>
-      <strong>Integration Pending</strong>
+      <strong>{title}</strong>
       <ul style={{ margin: '4px 0 0', paddingLeft: 18 }}>
         {targets.map((t, i) => (
           <li key={i}><code>{t.rpc}</code> ({t.package}) -- {t.reason}</li>
@@ -111,7 +114,7 @@ function TaskListTab({ dfn }: { dfn: string }) {
   if (!data) return <LoadingSpinner />;
   return (
     <div>
-      <IntegrationPendingBanner targets={data.pendingTargets} />
+      <IntegrationPendingBanner targets={data.pendingTargets} status={data.status} />
       <p style={{ fontSize: 13, color: 'var(--cprs-text-muted, #888)', padding: 8 }}>
         Nursing task list will be populated when BCMA/PSB and order-based task derivation are available.
         Tasks are sourced from active orders, scheduled medications, nursing protocols, and provider instructions.
@@ -136,7 +139,7 @@ function VitalsTab({ dfn }: { dfn: string }) {
 
   if (error) return <ErrorBanner message={error} />;
   if (!data) return <LoadingSpinner />;
-  if (data.pendingTargets?.length) return <IntegrationPendingBanner targets={data.pendingTargets} />;
+  if (data.pendingTargets?.length) return <IntegrationPendingBanner targets={data.pendingTargets} status={data.status} />;
 
   return (
     <div>
@@ -191,7 +194,7 @@ function NotesTab({ dfn }: { dfn: string }) {
 
   if (error) return <ErrorBanner message={error} />;
   if (!data) return <LoadingSpinner />;
-  if (data.pendingTargets?.length) return <IntegrationPendingBanner targets={data.pendingTargets} />;
+  if (data.pendingTargets?.length) return <IntegrationPendingBanner targets={data.pendingTargets} status={data.status} />;
 
   return (
     <div>
@@ -253,7 +256,7 @@ function MARTab({ dfn }: { dfn: string }) {
   if (!data) return <LoadingSpinner />;
   return (
     <div>
-      <IntegrationPendingBanner targets={data.pendingTargets} />
+      <IntegrationPendingBanner targets={data.pendingTargets} status={data.status} />
       <p style={{ fontSize: 13, color: 'var(--cprs-text-muted, #888)', padding: 8 }}>
         Medication Administration Record (MAR) requires the BCMA/PSB package which is not available
         in the WorldVistA Docker sandbox. When BCMA is installed, this tab will show scheduled and
@@ -281,7 +284,7 @@ function FlowsheetTab({ dfn }: { dfn: string }) {
   if (!data) return <LoadingSpinner />;
   return (
     <div>
-      <IntegrationPendingBanner targets={data.pendingTargets} />
+      <IntegrationPendingBanner targets={data.pendingTargets} status={data.status} />
       {data.items.length === 0 ? (
         <p style={{ fontSize: 13, color: 'var(--cprs-text-muted, #888)', padding: 8 }}>
           No flowsheet data found.
