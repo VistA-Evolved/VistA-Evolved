@@ -1,26 +1,41 @@
-# Phase 557 — W40-P15 — RC Gates Command
+# Phase 557 — RC Gates Command — IMPLEMENT
 
-## User request
-Create a one-shot `pnpm qa:rc` command that runs all 9 Wave 40 hygiene gates
-and writes evidence to artifacts/.
+## Context
 
-## Implementation steps
-1. Created `scripts/qa-rc.mjs` with 9 sequential gates:
-   - G1 prompts-tree-health
-   - G2 wave-phase-lint
-   - G3 prompts-quality-gate
-   - G4 secret-scan
-   - G5 phi-leak-scan
-   - G6 rpc-trace-compare
-   - G7 integration-pending-budget
-   - G8 i18n-coverage-gate
-   - G9 no-hardcoded-localhost
-2. Added `"qa:rc": "node scripts/qa-rc.mjs"` to root package.json
-3. Evidence written to `artifacts/qa-rc-evidence.json`
+Wave 40 introduced 9 independent QA hygiene gates (prompts-tree, wave-phase-lint,
+prompts-quality, secret-scan, PHI-leak, RPC-trace, integration-pending-budget,
+i18n-coverage, no-hardcoded-localhost). Running them individually is slow and
+error-prone. A single `pnpm qa:rc` command is needed to run all gates
+sequentially and produce a machine-readable evidence artifact.
 
-## Verification steps
-- `pnpm qa:rc` — 9 pass, 0 fail
+## Implementation Steps
 
-## Files touched
-- `scripts/qa-rc.mjs` (NEW)
-- `package.json` (MODIFIED — added qa:rc script)
+1. Created `scripts/qa-rc.mjs` — runs all 9 gates via `child_process.execFileSync`.
+2. Each gate is executed as `node scripts/qa-gates/<name>.mjs` with a 60s timeout.
+3. Results collected as `{gate, passed, durationMs, output}` tuples.
+4. Summary written to `artifacts/qa-rc-evidence.json` (gitignored).
+5. Exit code 0 if all pass, 1 if any fail.
+6. Added `"qa:rc": "node scripts/qa-rc.mjs"` to root `package.json` scripts.
+
+## Files Changed
+
+| File | Action |
+|------|--------|
+| `scripts/qa-rc.mjs` | NEW — RC gates runner |
+| `package.json` | MODIFIED — added `qa:rc` script |
+
+## Decisions
+
+- **Sequential execution**: Gates run one-at-a-time to keep output readable
+  and avoid resource contention (some gates scan the entire file tree).
+- **60s per-gate timeout**: Generous but bounded — prevents a hung gate from
+  blocking CI indefinitely.
+- **Evidence in artifacts/**: Follows the project convention that verification
+  outputs are artifacts (gitignored), not documentation.
+- **No npm dependency**: Pure Node.js `child_process` + `fs` — no test runner
+  or framework needed.
+
+## Evidence Captured
+
+- `pnpm qa:rc` — 9/9 gates pass on initial run.
+- `artifacts/qa-rc-evidence.json` — JSON with per-gate results and durations.

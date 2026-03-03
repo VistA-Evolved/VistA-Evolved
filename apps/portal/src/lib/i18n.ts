@@ -39,8 +39,7 @@ export function setStoredLocale(locale: SupportedLocale): void {
 /** Sync locale to the API via portal settings */
 export async function syncLocaleToApi(locale: SupportedLocale): Promise<void> {
   try {
-    const API = API_BASE;
-    await fetch(`${API}/portal/settings`, {
+    await fetch(`${API_BASE}/portal/settings`, {
       method: "PUT",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -54,8 +53,7 @@ export async function syncLocaleToApi(locale: SupportedLocale): Promise<void> {
 /** Load locale from API portal settings */
 export async function loadLocaleFromApi(): Promise<SupportedLocale | null> {
   try {
-    const API = API_BASE;
-    const res = await fetch(`${API}/portal/settings`, { credentials: "include" });
+    const res = await fetch(`${API_BASE}/portal/settings`, { credentials: "include" });
     if (res.ok) {
       const data = await res.json();
       if (data.ok && data.settings?.language) {

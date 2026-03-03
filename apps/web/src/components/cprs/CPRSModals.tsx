@@ -7,7 +7,7 @@ import { useSession } from '@/stores/session-context';
 import { useDataCache, type Vital } from '@/stores/data-cache';
 import { AddProblemDialog, EditProblemDialog, AddMedicationDialog, CreateNoteDialog, AddVitalDialog, AddAllergyDialog, AcknowledgeLabDialog } from './dialogs';
 import styles from './cprs.module.css';
-import { API_BASE } from '@/lib/api-config';
+import { API_BASE, WS_BASE } from '@/lib/api-config';
 
 
 /* ------------------------------------------------------------------ */
@@ -198,8 +198,7 @@ function LegacyConsoleModal({ onClose }: { onClose: () => void }) {
     let ws: WebSocket;
     try {
       // Cookie is sent automatically by the browser on WS upgrade request
-      const apiBase = API_BASE;
-      const wsUrl = apiBase.replace(/^http/, 'ws') + '/ws/console';
+      const wsUrl = WS_BASE + '/ws/console';
       ws = new WebSocket(wsUrl);
     } catch {
       setOutput((prev) => [...prev, '[ERROR] Failed to create WebSocket connection.']);

@@ -61,13 +61,12 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
     setLoading(true);
     setError(null);
     try {
-      const base = API_BASE;
       const opts = { credentials: 'include' as RequestCredentials };
 
       const [msgRes, refillRes, taskRes] = await Promise.allSettled([
-        fetch(`${base}/portal/staff/messages`, opts),
-        fetch(`${base}/portal/staff/refills`, opts),
-        fetch(`${base}/portal/staff/tasks`, opts),
+        fetch(`${API_BASE}/portal/staff/messages`, opts),
+        fetch(`${API_BASE}/portal/staff/refills`, opts),
+        fetch(`${API_BASE}/portal/staff/tasks`, opts),
       ]);
 
       if (msgRes.status === 'fulfilled' && msgRes.value.ok) {
@@ -93,8 +92,7 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
 
   const reviewRefill = async (refillId: string, action: 'approve' | 'deny') => {
     try {
-      const base = API_BASE;
-      const res = await fetch(`${base}/portal/staff/refills/${refillId}/review`, {
+      const res = await fetch(`${API_BASE}/portal/staff/refills/${refillId}/review`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
@@ -108,8 +106,7 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
     const body = prompt('Reply text:');
     if (!body) return;
     try {
-      const base = API_BASE;
-      await fetch(`${base}/portal/staff/messages/${msgId}/reply`, {
+      await fetch(`${API_BASE}/portal/staff/messages/${msgId}/reply`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json', ...csrfHeaders() },

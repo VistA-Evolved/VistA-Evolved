@@ -46,8 +46,7 @@ export function setStoredLocale(locale: SupportedLocale): void {
 export async function syncLocaleToApi(locale: SupportedLocale): Promise<void> {
   try {
     const { csrfHeaders } = await import("./csrf");
-    const API = API_BASE;
-    await fetch(`${API}/i18n/locale`, {
+    await fetch(`${API_BASE}/i18n/locale`, {
       method: "PUT",
       credentials: "include",
       headers: {
@@ -64,8 +63,7 @@ export async function syncLocaleToApi(locale: SupportedLocale): Promise<void> {
 /** Load locale from API (for initial hydration) */
 export async function loadLocaleFromApi(): Promise<SupportedLocale | null> {
   try {
-    const API = API_BASE;
-    const res = await fetch(`${API}/i18n/locale`, { credentials: "include" });
+    const res = await fetch(`${API_BASE}/i18n/locale`, { credentials: "include" });
     if (res.ok) {
       const data = await res.json();
       if (data.ok && (SUPPORTED_LOCALES as readonly string[]).includes(data.locale)) {
