@@ -79,7 +79,9 @@ const SECRET_PATTERNS = [
             ".hooks/", "tools/", "e2e/", "e2e-results.json", "artifacts/", "qa/gauntlet/",
             "scripts/tenant/", "scripts/certify-", "scripts/generate-certification",
             "scripts/pilot-", "scripts/privacy/", "scripts/qa/",
-            "scripts/qa-gates/vista-container", "infra/secrets/dev/"], // login page + test/audit/tool/QA infra use Docker dev creds
+            "scripts/qa-gates/vista-container", "infra/secrets/dev/",
+            "data/vista/runtime-matrix.json", "scripts/security/run-precert.ps1",
+            "scripts/tier0-day-in-the-life.mjs"], // login page + test/audit/tool/QA infra use Docker dev creds
   },
 ];
 
