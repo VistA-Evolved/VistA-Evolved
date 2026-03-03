@@ -208,5 +208,15 @@
     "owner": "copilot",
     "status": "reserved",
     "reservedAt": "2026-03-02T11:19:58.393Z"
+  },
+  {
+    "wave": "40",
+    "start": 543,
+    "end": 555,
+    "count": 13,
+    "branch": "main",
+    "owner": "copilot",
+    "status": "reserved",
+    "reservedAt": "2026-03-03T00:21:54.194Z"
   }
 ]

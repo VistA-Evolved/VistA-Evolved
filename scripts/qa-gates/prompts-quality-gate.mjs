@@ -25,6 +25,26 @@ const ROOT = resolve(import.meta.dirname, "../..");
 const PROMPTS_DIR = join(ROOT, "prompts");
 
 const MIN_LINES = 15;
+const WAVE_FOLDER_RE = /^\d+-W(\d+)-P\d+-/;
+
+// Strict heading enforcement starts at this wave number.
+// Earlier waves pre-date the heading convention and get WARN-only.
+const STRICT_WAVE_MIN = 40;
+
+// Strict headings for wave folders
+const WAVE_IMPL_HEADINGS = [
+  /^##\s+(Context)/im,
+  /^##\s+(Implementation\s+Steps|Steps|Changes)/im,
+  /^##\s+(Files\s+(Changed|Touched|Modified)|Affected\s+Files)/im,
+  /^##\s+(Decisions)/im,
+  /^##\s+(Evidence\s+Captured)/im,
+];
+const WAVE_VERIFY_HEADINGS = [
+  /^##\s+(Verification\s+Steps|Verify|Steps|Commands)/im,
+  /^##\s+(Expected\s+Output|Expected\s+Results?)/im,
+  /^##\s+(Negative\s+Tests)/im,
+  /^##\s+(Evidence\s+Captured)/im,
+];
 
 let passed = 0;
 let warned = 0;
@@ -52,7 +72,7 @@ const allEntries = readdirSync(PROMPTS_DIR);
 const phaseFolders = allEntries.filter((e) => {
   if (!statSync(join(PROMPTS_DIR, e)).isDirectory()) return false;
   if (e.startsWith("00-")) return false;
-  return /^\d{1,3}-/.test(e);
+  return /^\d+-/.test(e);
 });
 
 let totalImpl = 0;
@@ -83,6 +103,9 @@ for (const folder of phaseFolders) {
     continue;
   }
 
+  const waveMatch = folder.match(WAVE_FOLDER_RE);
+  const isStrictWave = waveMatch && parseInt(waveMatch[1], 10) >= STRICT_WAVE_MIN;
+
   // Gate 2: Check IMPLEMENT quality
   if (implFile) {
     totalImpl++;
@@ -90,16 +113,30 @@ for (const folder of phaseFolders) {
     const lines = content.split("\n").filter((l) => l.trim().length > 0);
 
     if (lines.length < MIN_LINES) {
-      warn("quality-floor", `"${folder}/${implFile}" has ${lines.length} non-empty lines (min ${MIN_LINES})`);
+      if (isStrictWave) {
+        fail("quality-floor", `"${folder}/${implFile}" has ${lines.length} non-empty lines (min ${MIN_LINES}) [WAVE-STRICT]`);
+      } else {
+        warn("quality-floor", `"${folder}/${implFile}" has ${lines.length} non-empty lines (min ${MIN_LINES})`);
+      }
       belowFloor++;
     }
 
-    const hasImplSteps = /^##\s+(Implementation\s+Steps|Steps|Changes)/im.test(content);
-    const hasFilesTouched = /^##\s+(Files\s+Touched|Files\s+Changed|Files\s+Modified|Affected\s+Files)/im.test(content);
+    if (isStrictWave) {
+      // Strict: check all required wave headings
+      for (const hRe of WAVE_IMPL_HEADINGS) {
+        if (!hRe.test(content)) {
+          fail("headings", `"${folder}/${implFile}" missing heading matching ${hRe.source} [WAVE-STRICT]`);
+          missingHeadings++;
+        }
+      }
+    } else {
+      const hasImplSteps = /^##\s+(Implementation\s+Steps|Steps|Changes)/im.test(content);
+      const hasFilesTouched = /^##\s+(Files\s+Touched|Files\s+Changed|Files\s+Modified|Affected\s+Files)/im.test(content);
 
-    if (!hasImplSteps && !hasFilesTouched) {
-      warn("headings", `"${folder}/${implFile}" missing both "## Implementation Steps" and "## Files Touched"`);
-      missingHeadings++;
+      if (!hasImplSteps && !hasFilesTouched) {
+        warn("headings", `"${folder}/${implFile}" missing both "## Implementation Steps" and "## Files Touched"`);
+        missingHeadings++;
+      }
     }
   }
 
@@ -110,16 +147,30 @@ for (const folder of phaseFolders) {
     const lines = content.split("\n").filter((l) => l.trim().length > 0);
 
     if (lines.length < MIN_LINES) {
-      warn("quality-floor", `"${folder}/${verifyFile}" has ${lines.length} non-empty lines (min ${MIN_LINES})`);
+      if (isStrictWave) {
+        fail("quality-floor", `"${folder}/${verifyFile}" has ${lines.length} non-empty lines (min ${MIN_LINES}) [WAVE-STRICT]`);
+      } else {
+        warn("quality-floor", `"${folder}/${verifyFile}" has ${lines.length} non-empty lines (min ${MIN_LINES})`);
+      }
       belowFloor++;
     }
 
-    const hasVerifySteps = /^##\s+(Verification\s+Steps|Verify|Steps|Commands)/im.test(content);
-    const hasCriteria = /^##\s+(Acceptance\s+Criteria|Accept\s+if|Expected\s+Results?|Expected\s+Output)/im.test(content);
+    if (isStrictWave) {
+      // Strict: check all required wave headings
+      for (const hRe of WAVE_VERIFY_HEADINGS) {
+        if (!hRe.test(content)) {
+          fail("headings", `"${folder}/${verifyFile}" missing heading matching ${hRe.source} [WAVE-STRICT]`);
+          missingHeadings++;
+        }
+      }
+    } else {
+      const hasVerifySteps = /^##\s+(Verification\s+Steps|Verify|Steps|Commands)/im.test(content);
+      const hasCriteria = /^##\s+(Acceptance\s+Criteria|Accept\s+if|Expected\s+Results?|Expected\s+Output)/im.test(content);
 
-    if (!hasVerifySteps && !hasCriteria) {
-      warn("headings", `"${folder}/${verifyFile}" missing both "## Verification Steps" and "## Acceptance Criteria"`);
-      missingHeadings++;
+      if (!hasVerifySteps && !hasCriteria) {
+        warn("headings", `"${folder}/${verifyFile}" missing both "## Verification Steps" and "## Acceptance Criteria"`);
+        missingHeadings++;
+      }
     }
   }
 }
