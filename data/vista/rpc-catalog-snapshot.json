@@ -1,695 +1,503 @@
 {
-  "generatedAt": "2026-02-26T14:47:19.277Z",
-  "contractVersion": "1.0.0",
-  "totalRpcs": 137,
-  "totalExceptions": 59,
-  "registry": [
-    {
-      "name": "XUS SIGNON SETUP",
-      "domain": "auth",
-      "tag": "auth"
-    },
-    {
-      "name": "XUS AV CODE",
-      "domain": "auth",
-      "tag": "auth"
-    },
-    {
-      "name": "XWB CREATE CONTEXT",
-      "domain": "auth",
-      "tag": "auth"
-    },
-    {
-      "name": "XUS GET USER INFO",
-      "domain": "auth",
-      "tag": "auth"
-    },
-    {
-      "name": "ORQQAL LIST",
-      "domain": "allergies",
-      "tag": "read"
-    },
-    {
-      "name": "ORWDAL32 ALLERGY MATCH",
-      "domain": "allergies",
-      "tag": "read"
-    },
-    {
-      "name": "ORWDAL32 SAVE ALLERGY",
-      "domain": "allergies",
-      "tag": "write"
-    },
-    {
-      "name": "IBCN INSURANCE QUERY",
-      "domain": "billing",
-      "tag": "read"
-    },
-    {
-      "name": "IBD GET ALL PCE DATA",
-      "domain": "billing",
-      "tag": "read"
-    },
-    {
-      "name": "IBD GET FORMSPEC",
-      "domain": "billing",
-      "tag": "read"
-    },
-    {
-      "name": "IBARXM QUERY ONLY",
-      "domain": "billing",
-      "tag": "read"
-    },
-    {
-      "name": "IBO MT LTC COPAY QUERY",
-      "domain": "billing",
-      "tag": "read"
-    },
-    {
-      "name": "ORWPCE VISIT",
-      "domain": "billing",
-      "tag": "read"
-    },
-    {
-      "name": "ORWPCE GET VISIT",
-      "domain": "billing",
-      "tag": "read"
-    },
-    {
-      "name": "ORWPCE DIAG",
-      "domain": "billing",
-      "tag": "read"
-    },
-    {
-      "name": "ORWPCE PROC",
-      "domain": "billing",
-      "tag": "read"
-    },
-    {
-      "name": "ORWPCE PCE4NOTE",
-      "domain": "billing",
-      "tag": "read"
-    },
-    {
-      "name": "ORWPCE HASVISIT",
-      "domain": "billing",
-      "tag": "read"
-    },
-    {
-      "name": "ORWPCE GETSVC",
-      "domain": "billing",
-      "tag": "read"
-    },
-    {
-      "name": "ORWPCE4 LEX",
-      "domain": "billing",
-      "tag": "read"
-    },
-    {
-      "name": "ORWPCE LEXCODE",
-      "domain": "billing",
-      "tag": "read"
-    },
-    {
-      "name": "ORWPCE ACTIVE CODE",
-      "domain": "billing",
-      "tag": "read"
-    },
-    {
-      "name": "ORWPCE SAVE",
-      "domain": "billing",
-      "tag": "write"
-    },
-    {
-      "name": "ORQQCN LIST",
-      "domain": "consults",
-      "tag": "read"
-    },
-    {
-      "name": "ORQQCN DETAIL",
-      "domain": "consults",
-      "tag": "read"
-    },
-    {
-      "name": "ORQQCN2 MED RESULTS",
-      "domain": "consults",
-      "tag": "write"
-    },
-    {
-      "name": "VE LIST RPCS",
-      "domain": "catalog",
-      "tag": "custom"
-    },
-    {
-      "name": "VE INTEROP HL7 LINKS",
-      "domain": "interop",
-      "tag": "custom"
-    },
-    {
-      "name": "VE INTEROP HL7 MSGS",
-      "domain": "interop",
-      "tag": "custom"
-    },
-    {
-      "name": "VE INTEROP HLO STATUS",
-      "domain": "interop",
-      "tag": "custom"
-    },
-    {
-      "name": "VE INTEROP QUEUE DEPTH",
-      "domain": "interop",
-      "tag": "custom"
-    },
-    {
-      "name": "VE INTEROP MSG LIST",
-      "domain": "interop",
-      "tag": "custom"
-    },
-    {
-      "name": "VE INTEROP MSG DETAIL",
-      "domain": "interop",
-      "tag": "custom"
-    },
-    {
-      "name": "MAG4 REMOTE PROCEDURE",
-      "domain": "imaging",
-      "tag": "read"
-    },
-    {
-      "name": "MAG4 PAT GET IMAGES",
-      "domain": "imaging",
-      "tag": "read"
-    },
-    {
-      "name": "MAGG PAT PHOTOS",
-      "domain": "imaging",
-      "tag": "read"
-    },
-    {
-      "name": "RA DETAILED REPORT",
-      "domain": "imaging",
-      "tag": "read"
-    },
-    {
-      "name": "ORWORB UNSIG ORDERS",
-      "domain": "inbox",
-      "tag": "read"
-    },
-    {
-      "name": "ORWORB FASTUSER",
-      "domain": "inbox",
-      "tag": "read"
-    },
-    {
-      "name": "ORWLRR INTERIM",
-      "domain": "labs",
-      "tag": "read"
-    },
-    {
-      "name": "ORWLRR ACK",
-      "domain": "labs",
-      "tag": "write"
-    },
-    {
-      "name": "ORWLRR CHART",
-      "domain": "labs",
-      "tag": "read"
-    },
-    {
-      "name": "ORWLRR INTERIMG",
-      "domain": "labs",
-      "tag": "read"
-    },
-    {
-      "name": "ORWPS ACTIVE",
-      "domain": "medications",
-      "tag": "read"
-    },
-    {
-      "name": "ORWORR GETTXT",
-      "domain": "medications",
-      "tag": "read"
-    },
-    {
-      "name": "ORWDXM AUTOACK",
-      "domain": "medications",
-      "tag": "write"
-    },
-    {
-      "name": "TIU DOCUMENTS BY CONTEXT",
-      "domain": "notes",
-      "tag": "read"
-    },
-    {
-      "name": "TIU CREATE RECORD",
-      "domain": "notes",
-      "tag": "write"
-    },
-    {
-      "name": "TIU SET DOCUMENT TEXT",
-      "domain": "notes",
-      "tag": "write"
-    },
-    {
-      "name": "TIU SET RECORD TEXT",
-      "domain": "notes",
-      "tag": "write"
-    },
-    {
-      "name": "TIU GET RECORD TEXT",
-      "domain": "notes",
-      "tag": "read"
-    },
-    {
-      "name": "TIU SIGN RECORD",
-      "domain": "notes",
-      "tag": "write"
-    },
-    {
-      "name": "TIU LOCK RECORD",
-      "domain": "notes",
-      "tag": "write"
-    },
-    {
-      "name": "TIU UNLOCK RECORD",
-      "domain": "notes",
-      "tag": "write"
-    },
-    {
-      "name": "TIU CREATE ADDENDUM RECORD",
-      "domain": "notes",
-      "tag": "write"
-    },
-    {
-      "name": "TIU REQUIRES COSIGNATURE",
-      "domain": "notes",
-      "tag": "read"
-    },
-    {
-      "name": "TIU PERSONAL TITLE LIST",
-      "domain": "notes",
-      "tag": "read"
-    },
-    {
-      "name": "ORWDX LOCK",
-      "domain": "orders",
-      "tag": "write"
-    },
-    {
-      "name": "ORWDX UNLOCK",
-      "domain": "orders",
-      "tag": "write"
-    },
-    {
-      "name": "ORWDX SAVE",
-      "domain": "orders",
-      "tag": "write"
-    },
-    {
-      "name": "ORWDXA DC",
-      "domain": "orders",
-      "tag": "write"
-    },
-    {
-      "name": "ORWDXA FLAG",
-      "domain": "orders",
-      "tag": "write"
-    },
-    {
-      "name": "ORWDXA VERIFY",
-      "domain": "orders",
-      "tag": "write"
-    },
-    {
-      "name": "ORWORR AGET",
-      "domain": "orders",
-      "tag": "read"
-    },
-    {
-      "name": "ORWOR1 SIG",
-      "domain": "orders",
-      "tag": "write"
-    },
-    {
-      "name": "ORWDXC ACCEPT",
-      "domain": "orders",
-      "tag": "read"
-    },
-    {
-      "name": "ORWDXC DISPLAY",
-      "domain": "orders",
-      "tag": "read"
-    },
-    {
-      "name": "ORWDXC SAVECHK",
-      "domain": "orders",
-      "tag": "write"
-    },
-    {
-      "name": "ORWDX WRLST",
-      "domain": "orders",
-      "tag": "read"
-    },
-    {
-      "name": "ORQPT DEFAULT PATIENT LIST",
-      "domain": "patients",
-      "tag": "read"
-    },
-    {
-      "name": "ORQPT DEFAULT LIST SOURCE",
-      "domain": "patients",
-      "tag": "read"
-    },
-    {
-      "name": "ORWPT LIST ALL",
-      "domain": "patients",
-      "tag": "read"
-    },
-    {
-      "name": "ORWPT SELECT",
-      "domain": "patients",
-      "tag": "read"
-    },
-    {
-      "name": "ORWPT ID INFO",
-      "domain": "patients",
-      "tag": "read"
-    },
-    {
-      "name": "ORWPT16 ID INFO",
-      "domain": "patients",
-      "tag": "read"
-    },
-    {
-      "name": "ORQQPL PROBLEM LIST",
-      "domain": "problems",
-      "tag": "read"
-    },
-    {
-      "name": "ORQQPL4 LEX",
-      "domain": "problems",
-      "tag": "read"
-    },
-    {
-      "name": "ORQQPL ADD SAVE",
-      "domain": "problems",
-      "tag": "write"
-    },
-    {
-      "name": "ORQQPL EDIT SAVE",
-      "domain": "problems",
-      "tag": "write"
-    },
-    {
-      "name": "ORWCH PROBLEM LIST",
-      "domain": "problems",
-      "tag": "read"
-    },
-    {
-      "name": "ORWCIRN FACILITIES",
-      "domain": "remote",
-      "tag": "read"
-    },
-    {
-      "name": "ORWRP REPORT LISTS",
-      "domain": "reports",
-      "tag": "read"
-    },
-    {
-      "name": "ORWRP REPORT TEXT",
-      "domain": "reports",
-      "tag": "read"
-    },
-    {
-      "name": "ORWSR LIST",
-      "domain": "surgery",
-      "tag": "read"
-    },
-    {
-      "name": "ORWSR RPTLIST",
-      "domain": "surgery",
-      "tag": "read"
-    },
-    {
-      "name": "GMV V/M ALLDATA",
-      "domain": "vitals",
-      "tag": "read"
-    },
-    {
-      "name": "GMV ADD VM",
-      "domain": "vitals",
-      "tag": "write"
-    },
-    {
-      "name": "ORQQVI VITALS",
-      "domain": "vitals",
-      "tag": "read"
-    },
-    {
-      "name": "ORQQVI VITALS FOR DATE RANGE",
-      "domain": "vitals",
-      "tag": "read"
-    },
-    {
-      "name": "ORQPT WARDS",
-      "domain": "adt",
-      "tag": "read"
-    },
-    {
-      "name": "ORQPT WARD PATIENTS",
-      "domain": "adt",
-      "tag": "read"
-    },
-    {
-      "name": "ORQPT PROVIDER PATIENTS",
-      "domain": "adt",
-      "tag": "read"
-    },
-    {
-      "name": "ORQPT TEAMS",
-      "domain": "adt",
-      "tag": "read"
-    },
-    {
-      "name": "ORQPT TEAM PATIENTS",
-      "domain": "adt",
-      "tag": "read"
-    },
-    {
-      "name": "ORQPT SPECIALTIES",
-      "domain": "adt",
-      "tag": "read"
-    },
-    {
-      "name": "ORQPT SPECIALTY PATIENTS",
-      "domain": "adt",
-      "tag": "read"
-    },
-    {
-      "name": "ORWU1 NEWLOC",
-      "domain": "adt",
-      "tag": "read"
-    },
-    {
-      "name": "ORWPT16 ADMITLST",
-      "domain": "adt",
-      "tag": "read"
-    },
-    {
-      "name": "ZVEADT WARDS",
-      "domain": "adt",
-      "tag": "read"
-    },
-    {
-      "name": "ZVEADT BEDS",
-      "domain": "adt",
-      "tag": "read"
-    },
-    {
-      "name": "ZVEADT MVHIST",
-      "domain": "adt",
-      "tag": "read"
-    },
-    {
-      "name": "ORQQPX REMINDERS LIST",
-      "domain": "reminders",
-      "tag": "read"
-    },
-    {
-      "name": "ORQQPX REMINDER DETAIL",
-      "domain": "reminders",
-      "tag": "read"
-    },
-    {
-      "name": "ORQQPX IMMUN LIST",
-      "domain": "immunizations",
-      "tag": "read"
-    },
-    {
-      "name": "PXVIMM IMM SHORT LIST",
-      "domain": "immunizations",
-      "tag": "read"
-    },
-    {
-      "name": "ORQQXMB MAIL GROUPS",
-      "domain": "messaging",
-      "tag": "read"
-    },
-    {
-      "name": "ZVE MAIL FOLDERS",
-      "domain": "messaging",
-      "tag": "read"
-    },
-    {
-      "name": "ZVE MAIL LIST",
-      "domain": "messaging",
-      "tag": "read"
-    },
-    {
-      "name": "ZVE MAIL GET",
-      "domain": "messaging",
-      "tag": "read"
-    },
-    {
-      "name": "ZVE MAIL SEND",
-      "domain": "messaging",
-      "tag": "write"
-    },
-    {
-      "name": "ZVE MAIL MANAGE",
-      "domain": "messaging",
-      "tag": "write"
-    },
-    {
-      "name": "SDOE LIST ENCOUNTERS FOR PAT",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "SD W/L RETRIVE HOSP LOC(#44)",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "SD W/L RETRIVE PERSON(200)",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "SDOE LIST ENCOUNTERS FOR DATES",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "SDOE GET GENERAL DATA",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "SDOE GET PROVIDERS",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "SDOE GET DIAGNOSES",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "SD W/L CREATE FILE",
-      "domain": "scheduling",
-      "tag": "write"
-    },
-    {
-      "name": "SD W/L RETRIVE FULL DATA",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "ORWPT APPTLST",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "SDVW MAKE APPT API APP",
-      "domain": "scheduling",
-      "tag": "write"
-    },
-    {
-      "name": "SDVW SDAPI APP",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "SD W/L PRIORITY",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "SD W/L TYPE",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "SD W/L CURRENT STATUS",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "SDES GET APPTS BY PATIENT DFN3",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "SDES GET CLIN AVAILABILITY",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "SDES GET APPT TYPES",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "SDES GET CANCEL REASONS",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "SDES GET RESOURCE BY CLINIC",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "SDES GET CLINIC INFO2",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "SDES GET APPT BY APPT IEN",
-      "domain": "scheduling",
-      "tag": "read"
-    },
-    {
-      "name": "SDES CREATE APPOINTMENTS",
-      "domain": "scheduling",
-      "tag": "write"
-    },
-    {
-      "name": "SDES CANCEL APPOINTMENT 2",
-      "domain": "scheduling",
-      "tag": "write"
-    },
-    {
-      "name": "SDES CHECKIN",
-      "domain": "scheduling",
-      "tag": "write"
-    },
-    {
-      "name": "SDES CHECKOUT",
-      "domain": "scheduling",
-      "tag": "write"
+  "generatedAt": "2026-03-03T02:16:37.404Z",
+  "generatedBy": "scripts/regen-rpc-snapshot.mjs",
+  "registry": {
+    "XUS SIGNON SETUP": {
+      "domain": "auth"
+    },
+    "XUS AV CODE": {
+      "domain": "auth"
+    },
+    "XWB CREATE CONTEXT": {
+      "domain": "auth"
+    },
+    "XUS GET USER INFO": {
+      "domain": "auth"
+    },
+    "ORQQAL LIST": {
+      "domain": "allergies"
+    },
+    "ORWDAL32 ALLERGY MATCH": {
+      "domain": "allergies"
+    },
+    "ORWDAL32 SAVE ALLERGY": {
+      "domain": "allergies"
+    },
+    "IBCN INSURANCE QUERY": {
+      "domain": "billing"
+    },
+    "IBD GET ALL PCE DATA": {
+      "domain": "billing"
+    },
+    "IBD GET FORMSPEC": {
+      "domain": "billing"
+    },
+    "IBARXM QUERY ONLY": {
+      "domain": "billing"
+    },
+    "IBO MT LTC COPAY QUERY": {
+      "domain": "billing"
+    },
+    "ORWPCE VISIT": {
+      "domain": "billing"
+    },
+    "ORWPCE GET VISIT": {
+      "domain": "billing"
+    },
+    "ORWPCE DIAG": {
+      "domain": "billing"
+    },
+    "ORWPCE PROC": {
+      "domain": "billing"
+    },
+    "ORWPCE PCE4NOTE": {
+      "domain": "billing"
+    },
+    "ORWPCE HASVISIT": {
+      "domain": "billing"
+    },
+    "ORWPCE GETSVC": {
+      "domain": "billing"
+    },
+    "ORWPCE4 LEX": {
+      "domain": "billing"
+    },
+    "ORWPCE LEXCODE": {
+      "domain": "billing"
+    },
+    "ORWPCE ACTIVE CODE": {
+      "domain": "billing"
+    },
+    "ORWPCE SAVE": {
+      "domain": "billing"
+    },
+    "ORQQCN LIST": {
+      "domain": "consults"
+    },
+    "ORQQCN DETAIL": {
+      "domain": "consults"
+    },
+    "ORQQCN2 MED RESULTS": {
+      "domain": "consults"
+    },
+    "VE LIST RPCS": {
+      "domain": "catalog"
+    },
+    "VE INTEROP HL7 LINKS": {
+      "domain": "interop"
+    },
+    "VE INTEROP HL7 MSGS": {
+      "domain": "interop"
+    },
+    "VE INTEROP HLO STATUS": {
+      "domain": "interop"
+    },
+    "VE INTEROP QUEUE DEPTH": {
+      "domain": "interop"
+    },
+    "VE INTEROP MSG LIST": {
+      "domain": "interop"
+    },
+    "VE INTEROP MSG DETAIL": {
+      "domain": "interop"
+    },
+    "MAG4 REMOTE PROCEDURE": {
+      "domain": "imaging"
+    },
+    "MAG4 PAT GET IMAGES": {
+      "domain": "imaging"
+    },
+    "MAGG PAT PHOTOS": {
+      "domain": "imaging"
+    },
+    "RA DETAILED REPORT": {
+      "domain": "imaging"
+    },
+    "MAG4 ADD IMAGE": {
+      "domain": "imaging"
+    },
+    "MAG NEW SO ENTRY": {
+      "domain": "imaging"
+    },
+    "MAG4 IMAGE": {
+      "domain": "imaging"
+    },
+    "ORWORB UNSIG ORDERS": {
+      "domain": "inbox"
+    },
+    "ORWORB FASTUSER": {
+      "domain": "inbox"
+    },
+    "ORWLRR INTERIM": {
+      "domain": "labs"
+    },
+    "ORWLRR ACK": {
+      "domain": "labs"
+    },
+    "ORWLRR CHART": {
+      "domain": "labs"
+    },
+    "ORWLRR INTERIMG": {
+      "domain": "labs"
+    },
+    "ORWPS ACTIVE": {
+      "domain": "medications"
+    },
+    "ORWORR GETTXT": {
+      "domain": "medications"
+    },
+    "ORWDXM AUTOACK": {
+      "domain": "medications"
+    },
+    "TIU DOCUMENTS BY CONTEXT": {
+      "domain": "notes"
+    },
+    "TIU CREATE RECORD": {
+      "domain": "notes"
+    },
+    "TIU SET DOCUMENT TEXT": {
+      "domain": "notes"
+    },
+    "TIU SET RECORD TEXT": {
+      "domain": "notes"
+    },
+    "TIU GET RECORD TEXT": {
+      "domain": "notes"
+    },
+    "TIU SIGN RECORD": {
+      "domain": "notes"
+    },
+    "TIU LOCK RECORD": {
+      "domain": "notes"
+    },
+    "TIU UNLOCK RECORD": {
+      "domain": "notes"
+    },
+    "TIU CREATE ADDENDUM RECORD": {
+      "domain": "notes"
+    },
+    "TIU REQUIRES COSIGNATURE": {
+      "domain": "notes"
+    },
+    "TIU PERSONAL TITLE LIST": {
+      "domain": "notes"
+    },
+    "ORWDX LOCK": {
+      "domain": "orders"
+    },
+    "ORWDX UNLOCK": {
+      "domain": "orders"
+    },
+    "ORWDX SAVE": {
+      "domain": "orders"
+    },
+    "ORWDXA DC": {
+      "domain": "orders"
+    },
+    "ORWDXA FLAG": {
+      "domain": "orders"
+    },
+    "ORWDXA VERIFY": {
+      "domain": "orders"
+    },
+    "ORWORR AGET": {
+      "domain": "orders"
+    },
+    "ORWOR1 SIG": {
+      "domain": "orders"
+    },
+    "ORWDXC ACCEPT": {
+      "domain": "orders"
+    },
+    "ORWDXC DISPLAY": {
+      "domain": "orders"
+    },
+    "ORWDXC SAVECHK": {
+      "domain": "orders"
+    },
+    "ORWDX WRLST": {
+      "domain": "orders"
+    },
+    "ORQPT DEFAULT PATIENT LIST": {
+      "domain": "patients"
+    },
+    "ORQPT DEFAULT LIST SOURCE": {
+      "domain": "patients"
+    },
+    "ORWPT LIST ALL": {
+      "domain": "patients"
+    },
+    "ORWPT SELECT": {
+      "domain": "patients"
+    },
+    "ORWPT ID INFO": {
+      "domain": "patients"
+    },
+    "ORWPT16 ID INFO": {
+      "domain": "patients"
+    },
+    "ORQQPL PROBLEM LIST": {
+      "domain": "problems"
+    },
+    "ORQQPL4 LEX": {
+      "domain": "problems"
+    },
+    "ORQQPL ADD SAVE": {
+      "domain": "problems"
+    },
+    "ORQQPL EDIT SAVE": {
+      "domain": "problems"
+    },
+    "ORWCH PROBLEM LIST": {
+      "domain": "problems"
+    },
+    "ORWCIRN FACILITIES": {
+      "domain": "remote"
+    },
+    "ORWRP REPORT LISTS": {
+      "domain": "reports"
+    },
+    "ORWRP REPORT TEXT": {
+      "domain": "reports"
+    },
+    "ORWSR LIST": {
+      "domain": "surgery"
+    },
+    "ORWSR RPTLIST": {
+      "domain": "surgery"
+    },
+    "GMV V/M ALLDATA": {
+      "domain": "vitals"
+    },
+    "GMV ADD VM": {
+      "domain": "vitals"
+    },
+    "ORQQVI VITALS": {
+      "domain": "vitals"
+    },
+    "ORQQVI VITALS FOR DATE RANGE": {
+      "domain": "vitals"
+    },
+    "ORQPT WARDS": {
+      "domain": "adt"
+    },
+    "ORQPT WARD PATIENTS": {
+      "domain": "adt"
+    },
+    "ORQPT PROVIDER PATIENTS": {
+      "domain": "adt"
+    },
+    "ORQPT TEAMS": {
+      "domain": "adt"
+    },
+    "ORQPT TEAM PATIENTS": {
+      "domain": "adt"
+    },
+    "ORQPT SPECIALTIES": {
+      "domain": "adt"
+    },
+    "ORQPT SPECIALTY PATIENTS": {
+      "domain": "adt"
+    },
+    "ORWU1 NEWLOC": {
+      "domain": "adt"
+    },
+    "ORWPT16 ADMITLST": {
+      "domain": "adt"
+    },
+    "ZVEADT WARDS": {
+      "domain": "adt"
+    },
+    "ZVEADT BEDS": {
+      "domain": "adt"
+    },
+    "ZVEADT MVHIST": {
+      "domain": "adt"
+    },
+    "ORQQPX REMINDERS LIST": {
+      "domain": "reminders"
+    },
+    "ORQQPX REMINDER DETAIL": {
+      "domain": "reminders"
+    },
+    "ORQQPX IMMUN LIST": {
+      "domain": "immunizations"
+    },
+    "PXVIMM IMM SHORT LIST": {
+      "domain": "immunizations"
+    },
+    "ORQQXMB MAIL GROUPS": {
+      "domain": "messaging"
+    },
+    "ZVE MAIL FOLDERS": {
+      "domain": "messaging"
+    },
+    "ZVE MAIL LIST": {
+      "domain": "messaging"
+    },
+    "ZVE MAIL GET": {
+      "domain": "messaging"
+    },
+    "ZVE MAIL SEND": {
+      "domain": "messaging"
+    },
+    "ZVE MAIL MANAGE": {
+      "domain": "messaging"
+    },
+    "ORWCV VST": {
+      "domain": "scheduling"
+    },
+    "SDOE LIST ENCOUNTERS FOR PAT": {
+      "domain": "scheduling"
+    },
+    "SD W/L RETRIVE HOSP LOC(#44)": {
+      "domain": "scheduling"
+    },
+    "SD W/L RETRIVE PERSON(200)": {
+      "domain": "scheduling"
+    },
+    "SDOE LIST ENCOUNTERS FOR DATES": {
+      "domain": "scheduling"
+    },
+    "SDOE GET GENERAL DATA": {
+      "domain": "scheduling"
+    },
+    "SDOE GET PROVIDERS": {
+      "domain": "scheduling"
+    },
+    "SDOE GET DIAGNOSES": {
+      "domain": "scheduling"
+    },
+    "SD W/L CREATE FILE": {
+      "domain": "scheduling"
+    },
+    "SD W/L RETRIVE FULL DATA": {
+      "domain": "scheduling"
+    },
+    "ORWPT APPTLST": {
+      "domain": "scheduling"
+    },
+    "SDVW MAKE APPT API APP": {
+      "domain": "scheduling"
+    },
+    "SDVW SDAPI APP": {
+      "domain": "scheduling"
+    },
+    "SD W/L PRIORITY": {
+      "domain": "scheduling"
+    },
+    "SD W/L TYPE": {
+      "domain": "scheduling"
+    },
+    "SD W/L CURRENT STATUS": {
+      "domain": "scheduling"
+    },
+    "SDES GET APPTS BY PATIENT DFN3": {
+      "domain": "scheduling"
+    },
+    "SDES GET CLIN AVAILABILITY": {
+      "domain": "scheduling"
+    },
+    "SDES GET APPT TYPES": {
+      "domain": "scheduling"
+    },
+    "SDES GET CANCEL REASONS": {
+      "domain": "scheduling"
+    },
+    "SDES GET RESOURCE BY CLINIC": {
+      "domain": "scheduling"
+    },
+    "SDES GET CLINIC INFO2": {
+      "domain": "scheduling"
+    },
+    "SDES GET APPT BY APPT IEN": {
+      "domain": "scheduling"
+    },
+    "SDES CREATE APPOINTMENTS": {
+      "domain": "scheduling"
+    },
+    "SDES CANCEL APPOINTMENT 2": {
+      "domain": "scheduling"
+    },
+    "SDES CHECKIN": {
+      "domain": "scheduling"
+    },
+    "SDES CHECKOUT": {
+      "domain": "scheduling"
+    },
+    "SD RECALL LIST": {
+      "domain": "scheduling"
+    },
+    "SD RECALL GET": {
+      "domain": "scheduling"
+    },
+    "SDES GET RECALL ENTRIES": {
+      "domain": "scheduling"
+    },
+    "SD RECALL DATE CHECK": {
+      "domain": "scheduling"
+    },
+    "YTT GET INSTRUMENT": {
+      "domain": "mental-health"
+    },
+    "YTQZ LISTTESTS": {
+      "domain": "mental-health"
+    },
+    "YTT SAVE RESULTS": {
+      "domain": "mental-health"
+    },
+    "YTQZ RESULTLIST": {
+      "domain": "mental-health"
+    },
+    "YTQZ DETAILLIST": {
+      "domain": "mental-health"
+    },
+    "MD CLIO": {
+      "domain": "clinical-procedures"
+    },
+    "MD TMDPROCEDURE": {
+      "domain": "clinical-procedures"
+    },
+    "MD TMDPATIENT": {
+      "domain": "clinical-procedures"
+    },
+    "MD TMDNOTE": {
+      "domain": "clinical-procedures"
+    },
+    "MD TMDRECORDID": {
+      "domain": "clinical-procedures"
+    },
+    "MD TMDOUTPUT": {
+      "domain": "clinical-procedures"
+    },
+    "MD TMDCIDC": {
+      "domain": "clinical-procedures"
+    },
+    "MD TMDLEX": {
+      "domain": "clinical-procedures"
+    },
+    "MD TMDWIDGET": {
+      "domain": "clinical-procedures"
+    },
+    "MD UTILITIES": {
+      "domain": "clinical-procedures"
+    },
+    "ORQQCN ASSIGNABLE MED RESULTS": {
+      "domain": "clinical-procedures"
+    },
+    "ORQQCN ATTACH MED RESULTS": {
+      "domain": "clinical-procedures"
+    },
+    "ORQQCN GET MED RESULT DETAILS": {
+      "domain": "clinical-procedures"
+    },
+    "TIU IS THIS A CLINPROC?": {
+      "domain": "clinical-procedures"
+    },
+    "TIU IDENTIFY CLINPROC CLASS": {
+      "domain": "clinical-procedures"
     }
-  ],
+  },
   "exceptions": [
     {
       "name": "VE LIST RPCS"
@@ -845,6 +653,18 @@
       "name": "SDES CHECKOUT"
     },
     {
+      "name": "SD RECALL LIST"
+    },
+    {
+      "name": "SD RECALL GET"
+    },
+    {
+      "name": "SDES GET RECALL ENTRIES"
+    },
+    {
+      "name": "SD RECALL DATE CHECK"
+    },
+    {
       "name": "ZVEADT WARDS"
     },
     {
@@ -867,6 +687,45 @@
     },
     {
       "name": "GMRIO ADD"
+    },
+    {
+      "name": "DGPM NEW ADMISSION"
+    },
+    {
+      "name": "DGPM NEW TRANSFER"
+    },
+    {
+      "name": "DGPM NEW DISCHARGE"
+    },
+    {
+      "name": "PSJ VERIFY"
+    },
+    {
+      "name": "PSJ ORDER STATUS"
+    },
+    {
+      "name": "PSB VALIDATE ORDER"
+    },
+    {
+      "name": "LRFZX"
+    },
+    {
+      "name": "LR VERIFY"
+    },
+    {
+      "name": "ORWDXC DELAY"
+    },
+    {
+      "name": "ORWDXC DELORD"
+    },
+    {
+      "name": "ORWDXC FILLID"
+    },
+    {
+      "name": "ORWDXC ON"
+    },
+    {
+      "name": "ORWDXC SESSION"
     }
   ]
 }
