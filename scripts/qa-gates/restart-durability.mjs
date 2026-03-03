@@ -158,20 +158,22 @@ const idemp = readSrc("apps/api/src/middleware/idempotency.ts") ?? "";
 gate("idempotency has initIdempotencyRepo", idemp.includes("export function initIdempotencyRepo"));
 gate("idempotency has _repo wiring", idemp.includes("let _repo:"));
 
-// ── 5. index.ts wiring ──────────────────────────────────────
+// ── 5. index.ts / lifecycle.ts wiring ────────────────────────
 console.log("\nStartup wiring (Phase 114):");
 const index = readSrc("apps/api/src/index.ts") ?? "";
-gate("index.ts wires initSessionRepo", index.includes("initSessionRepo"));
-gate("index.ts wires initWorkqueueRepo", index.includes("initWorkqueueRepo"));
-gate("index.ts wires initCapabilityAudit", index.includes("initCapabilityAudit"));
+const lifecycle = readSrc("apps/api/src/server/lifecycle.ts") ?? "";
+const startup = index + "\n" + lifecycle;
+gate("index.ts wires initSessionRepo", startup.includes("initSessionRepo"));
+gate("index.ts wires initWorkqueueRepo", startup.includes("initWorkqueueRepo"));
+gate("index.ts wires initCapabilityAudit", startup.includes("initCapabilityAudit"));
 
 console.log("\nStartup wiring (Phase 115):");
-gate("index.ts wires initMessageRepo", index.includes("initMessageRepo"));
-gate("index.ts wires initAppointmentRepo", index.includes("initAppointmentRepo"));
-gate("index.ts wires initTelehealthRoomRepo", index.includes("initTelehealthRoomRepo"));
-gate("index.ts wires initWorklistRepo", index.includes("initWorklistRepo"));
-gate("index.ts wires initIngestRepo", index.includes("initIngestRepo"));
-gate("index.ts wires initIdempotencyRepo", index.includes("initIdempotencyRepo"));
+gate("index.ts wires initMessageRepo", startup.includes("initMessageRepo"));
+gate("index.ts wires initAppointmentRepo", startup.includes("initAppointmentRepo"));
+gate("index.ts wires initTelehealthRoomRepo", startup.includes("initTelehealthRoomRepo"));
+gate("index.ts wires initWorklistRepo", startup.includes("initWorklistRepo"));
+gate("index.ts wires initIngestRepo", startup.includes("initIngestRepo"));
+gate("index.ts wires initIdempotencyRepo", startup.includes("initIdempotencyRepo"));
 
 // ── 6. Barrel exports ───────────────────────────────────────
 console.log("\nBarrel exports:");
@@ -239,12 +241,12 @@ gate("pipeline has initPipelineRepo", pipeline.includes("export function initPip
 gate("pipeline has dbRepo write-through", pipeline.includes("dbRepo.insertPipelineEntry"));
 
 console.log("\nPhase 126 startup wiring:");
-gate("index.ts wires initAckStatusRepo (PG)", index.includes("initAckStatusRepo"));
-gate("index.ts wires initPipelineRepo (PG)", index.includes("initPipelineRepo"));
-gate("index.ts imports pg edi-ack-repo", index.includes("edi-ack-repo"));
-gate("index.ts imports pg edi-pipeline-repo", index.includes("edi-pipeline-repo"));
-gate("index.ts imports pg rcm-claim-repo (PG)", index.includes("platform/pg/repo/rcm-claim-repo"));
-gate("index.ts imports pg rcm-claim-case-repo (PG)", index.includes("platform/pg/repo/rcm-claim-case-repo"));
+gate("index.ts wires initAckStatusRepo (PG)", startup.includes("initAckStatusRepo"));
+gate("index.ts wires initPipelineRepo (PG)", startup.includes("initPipelineRepo"));
+gate("index.ts imports pg edi-ack-repo", startup.includes("edi-ack-repo"));
+gate("index.ts imports pg edi-pipeline-repo", startup.includes("edi-pipeline-repo"));
+gate("index.ts imports pg rcm-claim-repo (PG)", startup.includes("platform/pg/repo/rcm-claim-repo"));
+gate("index.ts imports pg rcm-claim-case-repo (PG)", startup.includes("platform/pg/repo/rcm-claim-case-repo"));
 
 console.log("\nPhase 126 RLS tenant list:");
 gate("rcm_claim in RLS tenant list", pgMigrate.includes('"rcm_claim"'));
@@ -310,11 +312,11 @@ gate("portal-settings has SettingsRepo interface", settingsStore.includes("expor
 gate("portal-settings has write-through", settingsStore.includes("_settingsRepo.upsertSetting") || settingsStore.includes("_settingsRepo"));
 
 console.log("\nPhase 127 startup wiring:");
-gate("index.ts wires PG portal message repo", index.includes("pg-portal-message-repo"));
-gate("index.ts wires PG portal access log repo", index.includes("pg-portal-access-log-repo"));
-gate("index.ts wires PG portal patient setting repo", index.includes("pg-portal-patient-setting-repo"));
-gate("index.ts wires PG telehealth room repo", index.includes("pg-telehealth-room-repo"));
-gate("index.ts imports initSettingsRepo", index.includes("initSettingsRepo"));
+gate("index.ts wires PG portal message repo", startup.includes("pg-portal-message-repo"));
+gate("index.ts wires PG portal access log repo", startup.includes("pg-portal-access-log-repo"));
+gate("index.ts wires PG portal patient setting repo", startup.includes("pg-portal-patient-setting-repo"));
+gate("index.ts wires PG telehealth room repo", startup.includes("pg-telehealth-room-repo"));
+gate("index.ts imports initSettingsRepo", startup.includes("initSettingsRepo"));
 
 console.log("\nPhase 127 RLS tenant list:");
 gate("portal_message in RLS tenant list", pgMigrate.includes('"portal_message"'));
@@ -355,11 +357,11 @@ gate("pg-scheduling-lock-repo.ts exists", pgSlRepoFile !== null);
 gate("pg-scheduling-lock-repo has expires_at TTL", pgSlRepoFile?.includes("expires_at") ?? false);
 
 console.log("\nPhase 128 startup wiring:");
-gate("index.ts wires pg-imaging-worklist-repo (PG)", index.includes("pg-imaging-worklist-repo"));
-gate("index.ts wires pg-imaging-ingest-repo (PG)", index.includes("pg-imaging-ingest-repo"));
-gate("index.ts wires pg-scheduling-request-repo (PG)", index.includes("pg-scheduling-request-repo"));
-gate("index.ts wires pg-scheduling-lock-repo (PG)", index.includes("pg-scheduling-lock-repo"));
-gate("index.ts wires initSchedulingLockRepo", index.includes("initSchedulingLockRepo"));
+gate("index.ts wires pg-imaging-worklist-repo (PG)", startup.includes("pg-imaging-worklist-repo"));
+gate("index.ts wires pg-imaging-ingest-repo (PG)", startup.includes("pg-imaging-ingest-repo"));
+gate("index.ts wires pg-scheduling-request-repo (PG)", startup.includes("pg-scheduling-request-repo"));
+gate("index.ts wires pg-scheduling-lock-repo (PG)", startup.includes("pg-scheduling-lock-repo"));
+gate("index.ts wires initSchedulingLockRepo", startup.includes("initSchedulingLockRepo"));
 
 console.log("\nPhase 128 RLS tenant list:");
 gate("imaging_work_item in RLS tenant list", pgMigrate.includes('"imaging_work_item"'));

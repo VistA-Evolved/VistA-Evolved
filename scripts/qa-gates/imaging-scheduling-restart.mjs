@@ -128,12 +128,14 @@ gate("vista-adapter getRequestStore is async", schedAdapter.includes("export asy
 // ── 5. index.ts wiring ──────────────────────────────────────
 console.log("\nStartup wiring (Phase 128 PG block):");
 const index = readSrc("apps/api/src/index.ts") ?? "";
-gate("index.ts wires PG imaging worklist repo", index.includes("pg-imaging-worklist-repo"));
-gate("index.ts wires PG imaging ingest repo", index.includes("pg-imaging-ingest-repo"));
-gate("index.ts wires PG scheduling request repo", index.includes("pg-scheduling-request-repo"));
-gate("index.ts wires PG scheduling lock repo", index.includes("pg-scheduling-lock-repo"));
-gate("index.ts wires initSchedulingLockRepo", index.includes("initSchedulingLockRepo"));
-gate("index.ts awaits initSchedulingRepo (async)", index.includes("await initSchedPgRepo") || index.includes("await initSchedulingRepo"));
+const lifecycle = readSrc("apps/api/src/server/lifecycle.ts") ?? "";
+const startup = index + "\n" + lifecycle;
+gate("index.ts wires PG imaging worklist repo", startup.includes("pg-imaging-worklist-repo"));
+gate("index.ts wires PG imaging ingest repo", startup.includes("pg-imaging-ingest-repo"));
+gate("index.ts wires PG scheduling request repo", startup.includes("pg-scheduling-request-repo"));
+gate("index.ts wires PG scheduling lock repo", startup.includes("pg-scheduling-lock-repo"));
+gate("index.ts wires initSchedulingLockRepo", startup.includes("initSchedulingLockRepo"));
+gate("index.ts awaits initSchedulingRepo (async)", startup.includes("await initSchedPgRepo") || startup.includes("await initSchedulingRepo"));
 
 // ── 6. PG barrel exports ────────────────────────────────────
 console.log("\nPG Barrel exports:");
@@ -179,9 +181,9 @@ gate("initWorklistRepo is async",
 gate("initIngestRepo is async",
   imgIng.includes("async function initIngestRepo"));
 gate("index.ts awaits initWorklistRepo",
-  index.includes("await initWorklistRepo"));
+  startup.includes("await initWorklistRepo"));
 gate("index.ts awaits initIngestRepo",
-  index.includes("await initIngestRepo"));
+  startup.includes("await initIngestRepo"));
 gate("Lock tenant scoping in releaseLock",
   pgSlRepo?.includes("tenantId") && pgSlRepo?.includes("releaseLock") ? true : false);
 
