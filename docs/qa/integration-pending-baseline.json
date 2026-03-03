@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "description": "Integration-pending budget baseline (Phase 480)",
-    "updatedAt": "2026-03-02T07:36:49.552Z",
-    "updatedBy": "integration-pending-budget.mjs --update"
+    "description": "Integration-pending budget baseline (Phase 555 / Wave 40 P13)",
+    "updatedAt": "2026-03-03T02:23:12.648Z",
+    "updatedBy": "Phase 555: +11 from Waves 37-39 (clinical-procedures +3, imaging-capture +2, scheduling +5, store-policy +1)"
   },
-  "total": 254,
+  "total": 265,
   "tolerance": 0,
   "files": [
     {
@@ -36,6 +36,10 @@
       "count": 9
     },
     {
+      "file": "apps/api/src/platform/store-policy.ts",
+      "count": 8
+    },
+    {
       "file": "apps/api/src/routes/cprs/orders-cpoe.ts",
       "count": 8
     },
@@ -52,11 +56,11 @@
       "count": 7
     },
     {
-      "file": "apps/api/src/platform/store-policy.ts",
+      "file": "apps/api/src/routes/emar/index.ts",
       "count": 7
     },
     {
-      "file": "apps/api/src/routes/emar/index.ts",
+      "file": "apps/api/src/routes/scheduling/index.ts",
       "count": 7
     },
     {
@@ -124,6 +128,10 @@
       "count": 3
     },
     {
+      "file": "apps/api/src/routes/clinical-procedures/index.ts",
+      "count": 3
+    },
+    {
       "file": "apps/api/src/routes/cprs/tiu-notes.ts",
       "count": 3
     },
@@ -164,11 +172,11 @@
       "count": 2
     },
     {
-      "file": "apps/api/src/routes/mar-safety.ts",
+      "file": "apps/api/src/routes/imaging-capture/index.ts",
       "count": 2
     },
     {
-      "file": "apps/api/src/routes/scheduling/index.ts",
+      "file": "apps/api/src/routes/mar-safety.ts",
       "count": 2
     },
     {
