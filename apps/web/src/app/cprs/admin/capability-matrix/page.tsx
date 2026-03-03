@@ -13,8 +13,8 @@
 import { useState, useEffect } from 'react';
 import styles from '@/components/cprs/cprs.module.css';
 import { csrfHeaders } from '@/lib/csrf';
+import { API_BASE } from '@/lib/api-config';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 const CAPABILITY_LABELS: Record<string, string> = {
   eligibility: 'Eligibility',

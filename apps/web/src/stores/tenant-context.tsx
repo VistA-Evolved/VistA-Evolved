@@ -13,6 +13,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
 import { useSession } from './session-context';
+import { API_BASE } from '@/lib/api-config';
 
 /* ------------------------------------------------------------------ */
 /* Types (mirror API types for client)                                 */
@@ -85,7 +86,6 @@ const DEFAULT_UI: UIDefaults = {
   enableDragReorder: false,
 };
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 /* ------------------------------------------------------------------ */
 /* Context + Provider                                                  */

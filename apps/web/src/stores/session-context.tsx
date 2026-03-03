@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import { setCsrfToken, clearCsrfToken, csrfHeaders } from '@/lib/csrf';
+import { API_BASE } from '@/lib/api-config';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -41,7 +42,6 @@ export interface SessionContextValue {
 /* Constants                                                           */
 /* ------------------------------------------------------------------ */
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 /* ------------------------------------------------------------------ */
 /* Context + Provider                                                  */

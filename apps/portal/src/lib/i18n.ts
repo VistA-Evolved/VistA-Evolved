@@ -1,3 +1,4 @@
+import { API_BASE } from '@/lib/api-config';
 /**
  * i18n configuration for the Patient Portal — Phase 132.
  *
@@ -38,7 +39,7 @@ export function setStoredLocale(locale: SupportedLocale): void {
 /** Sync locale to the API via portal settings */
 export async function syncLocaleToApi(locale: SupportedLocale): Promise<void> {
   try {
-    const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+    const API = API_BASE;
     await fetch(`${API}/portal/settings`, {
       method: "PUT",
       credentials: "include",
@@ -53,7 +54,7 @@ export async function syncLocaleToApi(locale: SupportedLocale): Promise<void> {
 /** Load locale from API portal settings */
 export async function loadLocaleFromApi(): Promise<SupportedLocale | null> {
   try {
-    const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+    const API = API_BASE;
     const res = await fetch(`${API}/portal/settings`, { credentials: "include" });
     if (res.ok) {
       const data = await res.json();

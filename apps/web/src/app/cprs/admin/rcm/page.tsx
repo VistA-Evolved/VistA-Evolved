@@ -16,8 +16,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import styles from '@/components/cprs/cprs.module.css';
 import { getCsrfTokenSync, getCsrfToken as fetchCsrfToken } from '@/lib/csrf';
+import { API_BASE } from '@/lib/api-config';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 type Tab = 'payers' | 'claims' | 'connectors' | 'audit' | 'vista-billing' | 'draft-from-vista' | 'workqueues' | 'rules' | 'directory' | 'transactions' | 'gateways' | 'adapters' | 'jobs' | 'eligibility' | 'claim-status' | 'ops-dashboard' | 'credential-vault' | 'accreditation' | 'claim-lifecycle' | 'evidence' | 'durable-jobs' | 'evidence-gate';
 

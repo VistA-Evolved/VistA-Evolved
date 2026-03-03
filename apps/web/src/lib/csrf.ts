@@ -1,3 +1,4 @@
+import { API_BASE } from '@/lib/api-config';
 /**
  * CSRF Token Manager — Phase 132
  *
@@ -21,7 +22,6 @@
  *   - Server-side binding means the token is cryptographically tied to the session
  */
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 /** In-memory CSRF token cache. Cleared on logout or page unload. */
 let _token: string = "";

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useCallback } from "react";
+import { API_BASE as API } from '@/lib/api-config';
 
 /* ================================================================== */
 /*  Phase 163 — Modular Packaging Validation Dashboard                 */
@@ -34,7 +35,6 @@ interface ValidationReport {
   tenantId: string;
 }
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
 async function apiFetch(path: string) {
   const res = await fetch(`${API}${path}`, { credentials: "include" });

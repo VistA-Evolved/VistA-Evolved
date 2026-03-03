@@ -42,6 +42,7 @@
     "qa:gauntlet:fast": "node qa/gauntlet/cli.mjs --suite fast",
     "qa:gauntlet:rc": "node qa/gauntlet/cli.mjs --suite rc",
     "qa:gauntlet:full": "node qa/gauntlet/cli.mjs --suite full",
+    "qa:rc": "node scripts/qa-rc.mjs",
     "qa:gauntlet:manifest": "node qa/gauntlet/build-manifest.mjs",
     "qa:phase-registry": "node scripts/qa/phase-registry.mjs",
     "qa:generate-tests": "node scripts/qa/generate-phase-tests.mjs",

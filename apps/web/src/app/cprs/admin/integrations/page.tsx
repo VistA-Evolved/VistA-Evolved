@@ -21,8 +21,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { useSession } from '@/stores/session-context';
 import { csrfHeaders } from '@/lib/csrf';
 import styles from '@/components/cprs/cprs.module.css';
+import { API_BASE } from '@/lib/api-config';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */

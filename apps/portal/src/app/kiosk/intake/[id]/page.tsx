@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { API_BASE } from '@/lib/api-config';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 const KIOSK_IDLE_TIMEOUT_MS = 5 * 60 * 1000; // 5 min idle → warning
 const KIOSK_LOGOUT_TIMEOUT_MS = 60 * 1000; // 60s after warning → reset
 

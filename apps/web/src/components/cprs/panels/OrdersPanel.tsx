@@ -4,13 +4,13 @@ import { useState, useEffect, useCallback } from 'react';
 import { useDataCache, type DraftOrder } from '@/stores/data-cache';
 import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
+import { API_BASE } from '@/lib/api-config';
 
 interface Props { dfn: string; }
 
 const ORDER_TYPES = ['med', 'lab', 'imaging', 'consult'] as const;
 type OrderType = typeof ORDER_TYPES[number];
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 /* ------------------------------------------------------------------ */
 /* Quick-order drug list (matches API backend Phase 8B)                */

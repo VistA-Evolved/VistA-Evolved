@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
+import { API_BASE } from '@/lib/api-config';
 
 interface Props { dfn: string; }
 
@@ -90,7 +91,6 @@ interface AuditEntry {
   patientDfn?: string;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 export default function ImagingPanel({ dfn }: Props) {
   const [activeTab, setActiveTab] = useState<ImagingTab>('studies');

@@ -15,8 +15,8 @@ import { usePatient } from '@/stores/patient-context';
 import CPRSMenuBar from '@/components/cprs/CPRSMenuBar';
 import PatientBanner from '@/components/cprs/PatientBanner';
 import styles from '@/components/cprs/cprs.module.css';
+import { API_BASE } from '@/lib/api-config';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */

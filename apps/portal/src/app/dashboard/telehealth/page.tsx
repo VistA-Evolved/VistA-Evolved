@@ -14,6 +14,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { DataSourceBadge } from "@/components/data-source-badge";
+import { API_BASE } from '@/lib/api-config';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
@@ -56,7 +57,6 @@ interface TelehealthRoom {
 
 type View = "appointments" | "device-check" | "waiting-room" | "in-visit";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 /* ------------------------------------------------------------------ */
 /* API helpers                                                          */

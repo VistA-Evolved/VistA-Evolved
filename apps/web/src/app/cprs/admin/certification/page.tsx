@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useCallback } from "react";
+import { API_BASE as API } from '@/lib/api-config';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -23,7 +24,6 @@ interface CertificationPosture {
 /*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 const jsonGet = (path: string) =>
   fetch(`${API}${path}`, { credentials: "include" }).then((r) => r.json());
 

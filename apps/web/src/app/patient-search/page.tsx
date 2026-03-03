@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import styles from "./page.module.css";
+import { API_BASE } from '@/lib/api-config';
 
 interface Patient {
   dfn: string;
@@ -107,7 +108,6 @@ interface ProblemsResult {
   error?: string;
 }
 
-const API_BASE = "http://localhost:3001";
 const DEBOUNCE_MS = 400;
 
 export default function PatientSearchPage() {

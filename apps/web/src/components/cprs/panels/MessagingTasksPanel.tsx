@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
+import { API_BASE } from '@/lib/api-config';
 
 /**
  * MessagingTasksPanel — Phase 32 CPRS staff panel
@@ -60,7 +61,7 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
     setLoading(true);
     setError(null);
     try {
-      const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+      const base = API_BASE;
       const opts = { credentials: 'include' as RequestCredentials };
 
       const [msgRes, refillRes, taskRes] = await Promise.allSettled([
@@ -92,7 +93,7 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
 
   const reviewRefill = async (refillId: string, action: 'approve' | 'deny') => {
     try {
-      const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+      const base = API_BASE;
       const res = await fetch(`${base}/portal/staff/refills/${refillId}/review`, {
         method: 'POST',
         credentials: 'include',
@@ -107,7 +108,7 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
     const body = prompt('Reply text:');
     if (!body) return;
     try {
-      const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+      const base = API_BASE;
       await fetch(`${base}/portal/staff/messages/${msgId}/reply`, {
         method: 'POST',
         credentials: 'include',

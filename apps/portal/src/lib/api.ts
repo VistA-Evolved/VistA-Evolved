@@ -1,3 +1,4 @@
+import { API_BASE } from '@/lib/api-config';
 /**
  * Portal API client — all fetch calls to the Fastify API.
  * Uses credentials: 'include' for httpOnly cookie auth.
@@ -5,7 +6,6 @@
  * IMPORTANT: No PHI in console.log. No DFN in error messages.
  */
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 interface ApiResponse<T = unknown> {
   ok: boolean;

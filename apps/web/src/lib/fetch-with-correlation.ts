@@ -1,3 +1,4 @@
+import { API_BASE } from '@/lib/api-config';
 /**
  * Correlated Fetch — Phase 77.
  *
@@ -12,7 +13,6 @@
  *   console.log(res.correlationId); // from X-Request-Id response header
  */
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 /* ------------------------------------------------------------------ */
 /* Correlation ID generator                                            */

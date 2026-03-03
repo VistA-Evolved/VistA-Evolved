@@ -14,8 +14,8 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { API_BASE as API } from '@/lib/api-config';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 /* ── Types ──────────────────────────────────────────────────── */
 

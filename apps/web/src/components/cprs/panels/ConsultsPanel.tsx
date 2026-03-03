@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useDataCache, type Consult } from '../../../stores/data-cache';
 import styles from '../cprs.module.css';
+import { API_BASE } from '@/lib/api-config';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 interface Props { dfn: string; }
 

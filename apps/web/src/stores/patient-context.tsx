@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
+import { API_BASE } from '@/lib/api-config';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -42,7 +43,6 @@ const PatientContext = createContext<PatientContextValue | null>(null);
 /* Provider                                                            */
 /* ------------------------------------------------------------------ */
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 export function PatientProvider({ children }: { children: ReactNode }) {
   const [dfn, setDfn] = useState('');

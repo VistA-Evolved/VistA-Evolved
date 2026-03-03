@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { API_BASE as API } from '@/lib/api-config';
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 type Tab = "ed" | "or" | "icu";
 

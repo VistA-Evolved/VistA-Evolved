@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
+import { API_BASE } from '@/lib/api-config';
 
 /* ------------------------------------------------------------------ */
 /* Types (mirror API shapes — no shared package in monorepo)            */
@@ -75,7 +76,6 @@ interface ReviewData {
 /* Constants                                                            */
 /* ------------------------------------------------------------------ */
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 const STATUS_LABELS: Record<string, string> = {
   not_started: 'Not Started',

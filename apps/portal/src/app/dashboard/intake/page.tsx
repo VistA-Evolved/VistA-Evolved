@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useLocale } from "@/components/I18nProvider";
+import { API_BASE } from '@/lib/api-config';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 async function portalFetch<T = unknown>(path: string, options: RequestInit = {}): Promise<any> {
   const res = await fetch(`${API_BASE}${path}`, {

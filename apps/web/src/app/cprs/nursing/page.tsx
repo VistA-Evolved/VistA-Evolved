@@ -15,8 +15,8 @@
 import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { csrfHeaders } from '@/lib/csrf';
+import { API_BASE } from '@/lib/api-config';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, {

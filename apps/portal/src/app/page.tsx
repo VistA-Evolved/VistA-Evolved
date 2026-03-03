@@ -11,6 +11,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { API_BASE } from '@/lib/api-config';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -28,7 +29,7 @@ export default function LoginPage() {
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001"}/portal/auth/login`,
+        `${API_BASE}/portal/auth/login`,
         {
           method: "POST",
           credentials: "include",

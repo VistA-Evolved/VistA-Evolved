@@ -7,8 +7,8 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { DataSourceBadge } from "@/components/data-source-badge";
+import { API_BASE as API } from '@/lib/api-config';
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 interface RefillRequest {
   id: string;

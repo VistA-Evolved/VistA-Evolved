@@ -9,6 +9,7 @@
  */
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
+import { WS_BASE } from "@/lib/api-config";
 
 // Dynamic imports for xterm (client-only, no SSR)
 let TerminalClass: typeof import("@xterm/xterm").Terminal | null = null;
@@ -46,7 +47,7 @@ export default function BrowserTerminal({
     wsUrl ??
     (typeof window !== "undefined"
       ? `${window.location.protocol === "https:" ? "wss:" : "ws:"}//${window.location.hostname}:3001/ws/console`
-      : "ws://localhost:3001/ws/console");
+      : `${WS_BASE}/ws/console`);
 
   const connect = useCallback(async () => {
     if (!termRef.current) return;

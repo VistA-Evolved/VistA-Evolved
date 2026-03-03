@@ -11,8 +11,8 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { DataSourceBadge } from "@/components/data-source-badge";
+import { API_BASE } from '@/lib/api-config';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 interface ConsentItem {
   consentType: string;

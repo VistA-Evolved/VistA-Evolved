@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { API_BASE } from '@/lib/api-config';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 async function kioskFetch(path: string, options: RequestInit = {}): Promise<any> {
   const res = await fetch(`${API_BASE}${path}`, {

@@ -5,6 +5,7 @@ import { useDataCache, type Note } from '@/stores/data-cache';
 import { useTenant } from '@/stores/tenant-context';
 import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
+import { API_BASE } from '@/lib/api-config';
 
 /* ------------------------------------------------------------------ */
 /* Local note templates (fallbacks when no facility templates exist)    */
@@ -84,8 +85,6 @@ export default function NotesPanel({ dfn }: Props) {
 
   const notes = cache.getDomain(dfn, 'notes');
   const loading = cache.isLoading(dfn, 'notes');
-
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
   // Fetch VistA titles on mount
   useEffect(() => {

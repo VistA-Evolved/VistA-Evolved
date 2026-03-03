@@ -7,8 +7,8 @@ import { useSession } from '@/stores/session-context';
 import { useDataCache, type Vital } from '@/stores/data-cache';
 import { AddProblemDialog, EditProblemDialog, AddMedicationDialog, CreateNoteDialog, AddVitalDialog, AddAllergyDialog, AcknowledgeLabDialog } from './dialogs';
 import styles from './cprs.module.css';
+import { API_BASE } from '@/lib/api-config';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 /* ------------------------------------------------------------------ */
 /* Modal shell                                                         */
@@ -198,7 +198,7 @@ function LegacyConsoleModal({ onClose }: { onClose: () => void }) {
     let ws: WebSocket;
     try {
       // Cookie is sent automatically by the browser on WS upgrade request
-      const apiBase = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
+      const apiBase = API_BASE;
       const wsUrl = apiBase.replace(/^http/, 'ws') + '/ws/console';
       ws = new WebSocket(wsUrl);
     } catch {

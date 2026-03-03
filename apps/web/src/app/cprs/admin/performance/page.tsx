@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useCallback } from "react";
+import { API_BASE as API } from '@/lib/api-config';
 
 /* ================================================================== */
 /*  Phase 162 — Performance + UX Speed Pass Admin Dashboard            */
@@ -48,7 +49,6 @@ interface SlowQuery {
   timestamp: string;
 }
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API}${path}`, { credentials: "include", ...opts });

@@ -49,7 +49,8 @@ export function defaultTab(): ChartTab {
 /* API                                                                 */
 /* ------------------------------------------------------------------ */
 
-export const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
+// Re-export from centralised config for backward compat
+export { API_BASE } from '@/lib/api-config';
 
 /* ------------------------------------------------------------------ */
 /* Menu types (subset of menus.json structure)                         */

@@ -1,3 +1,4 @@
+import { API_BASE } from '@/lib/api-config';
 /**
  * i18n configuration for the EHR Web App — Phase 132.
  *
@@ -45,7 +46,7 @@ export function setStoredLocale(locale: SupportedLocale): void {
 export async function syncLocaleToApi(locale: SupportedLocale): Promise<void> {
   try {
     const { csrfHeaders } = await import("./csrf");
-    const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+    const API = API_BASE;
     await fetch(`${API}/i18n/locale`, {
       method: "PUT",
       credentials: "include",
@@ -63,7 +64,7 @@ export async function syncLocaleToApi(locale: SupportedLocale): Promise<void> {
 /** Load locale from API (for initial hydration) */
 export async function loadLocaleFromApi(): Promise<SupportedLocale | null> {
   try {
-    const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+    const API = API_BASE;
     const res = await fetch(`${API}/i18n/locale`, { credentials: "include" });
     if (res.ok) {
       const data = await res.json();

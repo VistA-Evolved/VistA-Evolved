@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { useCPRSUI } from '../../../stores/cprs-ui-state';
 import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
+import { API_BASE } from '@/lib/api-config';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 /**
  * Acknowledge Lab Results dialog -- Phase 57 write safety model.

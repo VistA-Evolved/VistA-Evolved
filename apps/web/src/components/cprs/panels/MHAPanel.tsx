@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import styles from '../cprs.module.css';
+import { API_BASE } from '@/lib/api-config';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
@@ -73,7 +74,6 @@ interface Props {
 /* Constants                                                            */
 /* ------------------------------------------------------------------ */
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 const SEVERITY_COLORS: Record<string, string> = {
   'minimal': '#4caf50',

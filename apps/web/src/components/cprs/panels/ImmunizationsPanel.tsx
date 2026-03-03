@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import styles from '../cprs.module.css';
+import { API_BASE } from '@/lib/api-config';
 
 interface Immunization {
   ien: string;
@@ -25,7 +26,6 @@ interface Props {
   dfn: string;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 export default function ImmunizationsPanel({ dfn }: Props) {
   const [data, setData] = useState<ImmunizationResponse | null>(null);

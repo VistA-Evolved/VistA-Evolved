@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useCallback } from "react";
+import { API_BASE as API } from '@/lib/api-config';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -79,7 +80,6 @@ interface WorkflowStats {
 /* ------------------------------------------------------------------ */
 /*  API helpers                                                        */
 /* ------------------------------------------------------------------ */
-const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
 async function apiFetch<T>(path: string, opts?: RequestInit): Promise<T> {
   const res = await fetch(`${API}${path}`, {

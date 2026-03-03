@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
+import { API_BASE as API } from '@/lib/api-config';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
@@ -27,7 +28,6 @@ interface ApiResponse<T> {
 /* Shared fetcher                                                        */
 /* ------------------------------------------------------------------ */
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 async function apiFetch<T>(path: string): Promise<ApiResponse<T>> {
   try {
