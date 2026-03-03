@@ -14,7 +14,18 @@ import { createPgRepo, type GenericPgRepo } from "./generic-pg-repo.js";
 
 /* ── W41-P1: Clinical Writeback Command Bus ───────────── */
 export function createClinicalCommandRepo(): GenericPgRepo<any> { return createPgRepo("clinical_command"); }
+/**
+ * WARNING: clinical_command_attempt PK is `id SERIAL` — insert() works but
+ * callers must NOT pass an `id` field (let PG auto-assign).
+ */
 export function createClinicalCommandAttemptRepo(): GenericPgRepo<any> { return createPgRepo("clinical_command_attempt"); }
+/**
+ * WARNING: clinical_command_result PK is `command_id`, NOT `id`.
+ * GenericPgRepo.upsert() and findById() are BROKEN for this table because
+ * they hardcode ON CONFLICT (id) / WHERE id = $1. Use .query() with raw
+ * SQL for upserts and lookups on this repo. See persistResult() in
+ * command-store.ts for the correct pattern.
+ */
 export function createClinicalCommandResultRepo(): GenericPgRepo<any> { return createPgRepo("clinical_command_result"); }
 
 /* ── W41-P3: Event Bus Outbox ─────────────────────────── */

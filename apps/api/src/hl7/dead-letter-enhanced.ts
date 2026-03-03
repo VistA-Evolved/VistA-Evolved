@@ -106,6 +106,7 @@ export async function rehydrateHl7Dlq(tenantId: string): Promise<void> {
 
 function persistDlqEntry(entry: EnhancedDeadLetterEntry, rawMessage?: string): void {
   if (!_dlqRepo) return;
+  // PG columns received_at, last_retry_at, resolved_at are BIGINT (epoch ms)
   void _dlqRepo.upsert({
     id: entry.id,
     tenantId: entry.tenantId,
@@ -113,14 +114,14 @@ function persistDlqEntry(entry: EnhancedDeadLetterEntry, rawMessage?: string): v
     messageControlId: entry.messageControlId,
     sendingApplication: entry.sendingApplication,
     sendingFacility: entry.sendingFacility,
-    receivedAt: new Date(entry.receivedAt).toISOString(),
+    receivedAt: entry.receivedAt,
     reason: entry.reason,
     retryCount: entry.retryCount,
     messageHash: entry.messageHash,
     messageSizeBytes: entry.messageSizeBytes,
-    lastRetryAt: entry.lastRetryAt ? new Date(entry.lastRetryAt).toISOString() : null,
+    lastRetryAt: entry.lastRetryAt || null,
     resolved: entry.resolved,
-    resolvedAt: entry.resolvedAt ? new Date(entry.resolvedAt).toISOString() : null,
+    resolvedAt: entry.resolvedAt || null,
     resolvedBy: entry.resolvedBy,
     rawMessage: rawMessage || null,
     createdAt: new Date(entry.receivedAt).toISOString(),

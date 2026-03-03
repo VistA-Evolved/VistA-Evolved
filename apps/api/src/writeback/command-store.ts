@@ -111,28 +111,35 @@ function persistCommand(cmd: ClinicalCommand): void {
 /** Fire-and-forget PG persist for an attempt */
 function persistAttempt(attempt: CommandAttempt): void {
   if (!_attemptRepo) return;
+  // PG table: id=SERIAL (omit), no tenant_id, columns: error_class, error_detail_redacted, ended_at
   void _attemptRepo.insert({
-    id: `${attempt.commandId}-${attempt.attemptNo}`,
     commandId: attempt.commandId,
     attemptNo: attempt.attemptNo,
     status: attempt.status,
-    error: attempt.errorDetailRedacted || attempt.errorClass || null,
+    errorClass: attempt.errorClass || null,
+    errorDetailRedacted: attempt.errorDetailRedacted || null,
     startedAt: attempt.startedAt,
-    completedAt: attempt.endedAt || null,
-    tenantId: "default",
+    endedAt: attempt.endedAt || null,
   }).catch((e: any) => log.warn("PG attempt persist failed", { error: String(e) }));
 }
 
 /** Fire-and-forget PG persist for a result */
 function persistResult(result: CommandResult): void {
   if (!_resultRepo) return;
-  void _resultRepo.upsert({
-    id: result.commandId,
-    commandId: result.commandId,
-    vistaRefs: typeof result.vistaRefs === "string" ? result.vistaRefs : JSON.stringify(result.vistaRefs || {}),
-    resultSummary: typeof result.resultSummary === "string" ? result.resultSummary : JSON.stringify(result.resultSummary || {}),
-    tenantId: "default",
-  }).catch((e: any) => log.warn("PG result persist failed", { error: String(e) }));
+  // PG table PK is command_id (no id column, no tenant_id column).
+  // GenericPgRepo.upsert uses ON CONFLICT (id) which won't work here,
+  // so we use raw query with ON CONFLICT (command_id).
+  const vistaRefs = typeof result.vistaRefs === "string" ? result.vistaRefs : JSON.stringify(result.vistaRefs || {});
+  const resultSummary = typeof result.resultSummary === "string" ? result.resultSummary : JSON.stringify(result.resultSummary || {});
+  void _resultRepo.query(
+    `INSERT INTO clinical_command_result (command_id, vista_refs, result_summary, completed_at)
+     VALUES ($1, $2, $3, NOW())
+     ON CONFLICT (command_id) DO UPDATE SET
+       vista_refs = EXCLUDED.vista_refs,
+       result_summary = EXCLUDED.result_summary,
+       completed_at = EXCLUDED.completed_at`,
+    [result.commandId, vistaRefs, resultSummary],
+  ).catch((e: any) => log.warn("PG result persist failed", { error: String(e) }));
 }
 
 /* ------------------------------------------------------------------ */

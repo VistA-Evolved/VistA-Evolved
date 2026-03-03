@@ -168,6 +168,7 @@ function persistDlqEntry(entry: DlqEntry): void {
     id: entry.id,
     tenantId: entry.event.tenantId,
     eventId: entry.event.eventId,
+    eventType: entry.event.eventType,
     consumerId: entry.consumerId,
     error: entry.error,
     failedAt: entry.failedAt,
