@@ -10,6 +10,7 @@
  */
 
 import { randomBytes } from "node:crypto";
+import { log } from "../lib/logger.js";
 
 // ── Types ──────────────────────────────────────────────────────
 
@@ -43,6 +44,71 @@ export interface DsarRequest {
 const MAX_REQUESTS = 50_000;
 const store = new Map<string, DsarRequest>();
 
+// ── PG Write-Through (W41-P6) ─────────────────────────────────
+
+interface DsarRepo {
+  upsert(data: any): Promise<any>;
+  findByTenant(tenantId: string, opts?: { limit?: number }): Promise<any[]>;
+}
+
+let _dsarRepo: DsarRepo | null = null;
+
+/**
+ * Wire PG repo for DSAR request persistence.
+ * Called from lifecycle.ts during PG init.
+ */
+export function initDsarStoreRepo(repo: DsarRepo): void {
+  _dsarRepo = repo;
+  log.info("DSAR store wired to PG (W41-P6)");
+}
+
+/**
+ * Rehydrate DSAR requests from PG on startup.
+ */
+export async function rehydrateDsarStore(tenantId: string): Promise<void> {
+  if (!_dsarRepo) return;
+  try {
+    const rows = await _dsarRepo.findByTenant(tenantId, { limit: 5000 });
+    for (const row of rows) {
+      if (!store.has(row.id)) {
+        // Parse statusHistory if stored as JSON string
+        if (typeof row.statusHistory === "string") {
+          try { row.statusHistory = JSON.parse(row.statusHistory); } catch { row.statusHistory = []; }
+        }
+        if (typeof row.metadata === "string") {
+          try { row.metadata = JSON.parse(row.metadata); } catch { row.metadata = {}; }
+        }
+        store.set(row.id, row as DsarRequest);
+      }
+    }
+    log.info("DSAR store rehydrated from PG", { count: rows.length });
+  } catch (e) { log.warn("DSAR store rehydration failed", { error: String(e) }); }
+}
+
+function persistDsarRequest(req: DsarRequest): void {
+  if (!_dsarRepo) return;
+  void _dsarRepo.upsert({
+    id: req.id,
+    tenantId: req.tenantId,
+    requestType: req.requestType,
+    subjectRef: req.subjectRef,
+    requestedBy: req.requestedBy,
+    requestedAt: req.requestedAt,
+    status: req.status,
+    statusHistory: JSON.stringify(req.statusHistory),
+    countryPackId: req.countryPackId,
+    framework: req.framework,
+    rightToErasure: req.rightToErasure,
+    dataPortability: req.dataPortability,
+    dueDate: req.dueDate,
+    fulfilledAt: req.fulfilledAt,
+    fulfilledBy: req.fulfilledBy,
+    denialReason: req.denialReason,
+    exportRef: req.exportRef,
+    metadata: JSON.stringify(req.metadata),
+  }).catch((e: unknown) => log.warn("DSAR persist failed", { error: String(e) }));
+}
+
 function enforceMax(): void {
   if (store.size >= MAX_REQUESTS) {
     const oldest = store.keys().next().value;
@@ -68,6 +134,7 @@ export function createDsarRequest(
     exportRef: null,
   };
   store.set(req.id, req);
+  persistDsarRequest(req);
   return req;
 }
 
@@ -125,6 +192,7 @@ export function transitionDsar(
   }
 
   store.set(id, req);
+  persistDsarRequest(req);
   return req;
 }
 

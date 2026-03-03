@@ -10,6 +10,7 @@
  */
 
 import { randomUUID, createHash } from "node:crypto";
+import { log } from "../lib/logger.js";
 
 // ─── Event Schema ────────────────────────────────────────
 
@@ -94,6 +95,101 @@ const MAX_DLQ_SIZE = 5_000;
 const MAX_DELIVERY_LOG = 10_000;
 const DEFAULT_MAX_RETRIES = 3;
 
+// ─── PG Write-Through (W41-P3) ──────────────────────────
+
+interface EventBusRepo {
+  upsert(data: any): Promise<any>;
+  findByTenant(tenantId: string, opts?: { limit?: number }): Promise<any[]>;
+}
+
+let _outboxRepo: EventBusRepo | null = null;
+let _dlqRepo: EventBusRepo | null = null;
+let _deliveryLogRepo: EventBusRepo | null = null;
+
+/**
+ * Wire PG repos for event bus persistence.
+ * Called from lifecycle.ts during PG init.
+ */
+export function initEventBusRepos(repos: {
+  outbox: EventBusRepo;
+  dlq: EventBusRepo;
+  deliveryLog: EventBusRepo;
+}): void {
+  _outboxRepo = repos.outbox;
+  _dlqRepo = repos.dlq;
+  _deliveryLogRepo = repos.deliveryLog;
+  log.info("Event bus stores wired to PG (W41-P3)");
+}
+
+/**
+ * Rehydrate outbox + DLQ from PG on startup.
+ * Only loads last N entries to prevent memory bloat.
+ */
+export async function rehydrateEventBus(tenantId: string): Promise<void> {
+  if (!_outboxRepo) return;
+  try {
+    const pgOutbox = await _outboxRepo.findByTenant(tenantId, { limit: MAX_OUTBOX_SIZE });
+    for (const row of pgOutbox) {
+      if (!outbox.find((e) => e.eventId === row.eventId || e.eventId === row.id)) {
+        outbox.push(row as DomainEvent);
+      }
+    }
+  } catch (e) { log.warn("Event bus outbox rehydration failed", { error: String(e) }); }
+
+  if (!_dlqRepo) return;
+  try {
+    const pgDlq = await _dlqRepo.findByTenant(tenantId, { limit: MAX_DLQ_SIZE });
+    for (const row of pgDlq) {
+      if (!dlq.find((d) => d.id === row.id)) {
+        dlq.push(row as DlqEntry);
+      }
+    }
+  } catch (e) { log.warn("Event bus DLQ rehydration failed", { error: String(e) }); }
+}
+
+function persistOutboxEvent(event: DomainEvent): void {
+  if (!_outboxRepo) return;
+  void _outboxRepo.upsert({
+    id: event.eventId,
+    tenantId: event.tenantId,
+    eventType: event.eventType,
+    version: event.version,
+    subjectRefHash: event.subjectRefHash,
+    occurredAt: event.occurredAt,
+    payload: JSON.stringify(event.payload),
+    source: event.source,
+    correlationId: event.correlationId || null,
+  }).catch((e: unknown) => log.warn("Event bus outbox persist failed", { error: String(e) }));
+}
+
+function persistDlqEntry(entry: DlqEntry): void {
+  if (!_dlqRepo) return;
+  void _dlqRepo.upsert({
+    id: entry.id,
+    tenantId: entry.event.tenantId,
+    eventId: entry.event.eventId,
+    consumerId: entry.consumerId,
+    error: entry.error,
+    failedAt: entry.failedAt,
+    retryCount: entry.retryCount,
+    maxRetries: entry.maxRetries,
+    eventPayload: JSON.stringify(entry.event),
+  }).catch((e: unknown) => log.warn("Event bus DLQ persist failed", { error: String(e) }));
+}
+
+function persistDeliveryLog(entry: { eventId: string; consumerId: string; deliveredAt: string; success: boolean; error?: string }): void {
+  if (!_deliveryLogRepo) return;
+  void _deliveryLogRepo.upsert({
+    id: `${entry.eventId}-${entry.consumerId}-${Date.now()}`,
+    tenantId: "default",
+    eventId: entry.eventId,
+    consumerId: entry.consumerId,
+    deliveredAt: entry.deliveredAt,
+    success: entry.success,
+    error: entry.error || null,
+  }).catch((e: unknown) => log.warn("Event bus delivery log persist failed", { error: String(e) }));
+}
+
 // ─── Helpers ─────────────────────────────────────────────
 
 /** Hash a subject identifier for PHI safety */
@@ -129,6 +225,7 @@ export async function publishEvent(event: Omit<DomainEvent, "eventId" | "occurre
   if (outbox.length > MAX_OUTBOX_SIZE) {
     outbox.splice(0, outbox.length - MAX_OUTBOX_SIZE);
   }
+  persistOutboxEvent(full);
 
   // Dispatch to consumers
   await dispatchEvent(full);
@@ -159,21 +256,25 @@ async function dispatchEvent(event: DomainEvent): Promise<void> {
           (err) => { clearTimeout(timer); reject(err); },
         );
       });
-      deliveryLog.push({
+      const successEntry = {
         eventId: event.eventId,
         consumerId: consumer.id,
         deliveredAt: new Date().toISOString(),
         success: true,
-      });
+      };
+      deliveryLog.push(successEntry);
+      persistDeliveryLog(successEntry);
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : String(err);
-      deliveryLog.push({
+      const failEntry = {
         eventId: event.eventId,
         consumerId: consumer.id,
         deliveredAt: new Date().toISOString(),
         success: false,
         error: errorMsg,
-      });
+      };
+      deliveryLog.push(failEntry);
+      persistDeliveryLog(failEntry);
       // Route to DLQ
       addToDlq(event, consumer.id, errorMsg);
     }
@@ -188,7 +289,7 @@ async function dispatchEvent(event: DomainEvent): Promise<void> {
 // ─── DLQ ─────────────────────────────────────────────────
 
 function addToDlq(event: DomainEvent, consumerId: string, error: string): void {
-  dlq.push({
+  const entry: DlqEntry = {
     id: randomUUID(),
     event,
     consumerId,
@@ -196,7 +297,9 @@ function addToDlq(event: DomainEvent, consumerId: string, error: string): void {
     failedAt: new Date().toISOString(),
     retryCount: 0,
     maxRetries: DEFAULT_MAX_RETRIES,
-  });
+  };
+  dlq.push(entry);
+  persistDlqEntry(entry);
   if (dlq.length > MAX_DLQ_SIZE) {
     dlq.splice(0, dlq.length - MAX_DLQ_SIZE);
   }

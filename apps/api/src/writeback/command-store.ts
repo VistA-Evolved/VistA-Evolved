@@ -21,6 +21,121 @@ import { INTENT_DOMAIN_MAP } from "./types.js";
 import { log } from "../lib/logger.js";
 
 /* ------------------------------------------------------------------ */
+/* PG write-through repo (wired from lifecycle.ts)                     */
+/* ------------------------------------------------------------------ */
+
+interface CommandRepo {
+  insert(data: any): Promise<any>;
+  upsert(data: any): Promise<any>;
+  findById(id: string): Promise<any>;
+  findByField(field: string, value: unknown, tenantId?: string): Promise<any[]>;
+  findByTenant(tenantId: string, opts?: { limit?: number; offset?: number }): Promise<any[]>;
+  query(sql: string, params: unknown[]): Promise<any[]>;
+}
+
+let _cmdRepo: CommandRepo | null = null;
+let _attemptRepo: CommandRepo | null = null;
+let _resultRepo: CommandRepo | null = null;
+
+/** Wire PG repos for write-through. Called from lifecycle.ts after PG init. */
+export function initCommandStoreRepos(repos: {
+  commandRepo: CommandRepo;
+  attemptRepo: CommandRepo;
+  resultRepo: CommandRepo;
+}): void {
+  _cmdRepo = repos.commandRepo;
+  _attemptRepo = repos.attemptRepo;
+  _resultRepo = repos.resultRepo;
+  log.info("Command store repos wired to PG (W41-P1)");
+}
+
+/** Rehydrate in-memory maps from PG on startup. */
+export async function rehydrateCommandStore(tenantId?: string): Promise<number> {
+  if (!_cmdRepo) return 0;
+  try {
+    const rows = await _cmdRepo.findByTenant(tenantId || "default", { limit: MAX_COMMANDS });
+    let count = 0;
+    for (const row of rows) {
+      if (!commands.has(row.id)) {
+        commands.set(row.id, {
+          id: row.id,
+          tenantId: row.tenantId,
+          patientRefHash: row.patientRefHash,
+          domain: row.domain,
+          intent: row.intent,
+          payloadJson: row.payloadJson,
+          idempotencyKey: row.idempotencyKey,
+          status: row.status,
+          createdAt: row.createdAt,
+          createdBy: row.createdBy,
+          correlationId: row.correlationId,
+          attemptCount: row.attemptCount || 0,
+          lastError: row.lastError,
+          dryRunTranscript: row.dryRunTranscript,
+        });
+        if (row.idempotencyKey) {
+          idempotencyIndex.set(compositeKey(row.tenantId, row.idempotencyKey), row.id);
+        }
+        count++;
+      }
+    }
+    log.info(`Command store rehydrated ${count} commands from PG`);
+    return count;
+  } catch (err: any) {
+    log.warn("Command store rehydration failed", { error: err.message });
+    return 0;
+  }
+}
+
+/** Fire-and-forget PG persist for a command */
+function persistCommand(cmd: ClinicalCommand): void {
+  if (!_cmdRepo) return;
+  void _cmdRepo.upsert({
+    id: cmd.id,
+    tenantId: cmd.tenantId,
+    patientRefHash: cmd.patientRefHash,
+    domain: cmd.domain,
+    intent: cmd.intent,
+    payloadJson: typeof cmd.payloadJson === "string" ? cmd.payloadJson : JSON.stringify(cmd.payloadJson),
+    idempotencyKey: cmd.idempotencyKey,
+    status: cmd.status,
+    createdAt: cmd.createdAt,
+    createdBy: cmd.createdBy,
+    correlationId: cmd.correlationId,
+    attemptCount: cmd.attemptCount,
+    lastError: cmd.lastError || null,
+    dryRunTranscript: cmd.dryRunTranscript ? JSON.stringify(cmd.dryRunTranscript) : null,
+  }).catch((e: any) => log.warn("PG command persist failed", { error: String(e) }));
+}
+
+/** Fire-and-forget PG persist for an attempt */
+function persistAttempt(attempt: CommandAttempt): void {
+  if (!_attemptRepo) return;
+  void _attemptRepo.insert({
+    id: `${attempt.commandId}-${attempt.attemptNo}`,
+    commandId: attempt.commandId,
+    attemptNo: attempt.attemptNo,
+    status: attempt.status,
+    error: attempt.errorDetailRedacted || attempt.errorClass || null,
+    startedAt: attempt.startedAt,
+    completedAt: attempt.endedAt || null,
+    tenantId: "default",
+  }).catch((e: any) => log.warn("PG attempt persist failed", { error: String(e) }));
+}
+
+/** Fire-and-forget PG persist for a result */
+function persistResult(result: CommandResult): void {
+  if (!_resultRepo) return;
+  void _resultRepo.upsert({
+    id: result.commandId,
+    commandId: result.commandId,
+    vistaRefs: typeof result.vistaRefs === "string" ? result.vistaRefs : JSON.stringify(result.vistaRefs || {}),
+    resultSummary: typeof result.resultSummary === "string" ? result.resultSummary : JSON.stringify(result.resultSummary || {}),
+    tenantId: "default",
+  }).catch((e: any) => log.warn("PG result persist failed", { error: String(e) }));
+}
+
+/* ------------------------------------------------------------------ */
 /* In-memory stores                                                    */
 /* ------------------------------------------------------------------ */
 
@@ -105,6 +220,7 @@ export function createCommand(req: SubmitCommandRequest): {
 
   commands.set(id, command);
   idempotencyIndex.set(ck, id);
+  persistCommand(command);
 
   return { command, isNew: true };
 }
@@ -128,6 +244,7 @@ export function updateCommandStatus(
   if (!cmd) return undefined;
   cmd.status = status;
   if (error) cmd.lastError = error;
+  persistCommand(cmd);
   return cmd;
 }
 
@@ -142,6 +259,7 @@ export function setDryRunTranscript(
   if (cmd) {
     cmd.dryRunTranscript = transcript;
     cmd.status = "dry_run";
+    persistCommand(cmd);
   }
 }
 
@@ -152,9 +270,13 @@ export function recordAttempt(attempt: CommandAttempt): void {
   const list = attempts.get(attempt.commandId) || [];
   list.push(attempt);
   attempts.set(attempt.commandId, list);
+  persistAttempt(attempt);
 
   const cmd = commands.get(attempt.commandId);
-  if (cmd) cmd.attemptCount = list.length;
+  if (cmd) {
+    cmd.attemptCount = list.length;
+    persistCommand(cmd);
+  }
 }
 
 /**
@@ -169,6 +291,7 @@ export function getAttempts(commandId: string): CommandAttempt[] {
  */
 export function recordResult(result: CommandResult): void {
   results.set(result.commandId, result);
+  persistResult(result);
 }
 
 /**

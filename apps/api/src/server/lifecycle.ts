@@ -367,6 +367,54 @@ async function initPostgresLayer(): Promise<void> {
   } catch (d146Err: any) {
     log.warn("Phase 146 durability wire partially failed (Map cache fallback)", { error: d146Err.message });
   }
+
+  // ═══════════════════════════════════════════════════════════════════
+  // Wave 41: Restart-Safe Writeback + Durable Ops Stores (PG Wiring)
+  // ═══════════════════════════════════════════════════════════════════
+  try {
+    const W41 = await import("../platform/pg/repo/w41-durable-repos.js");
+
+    // W41-P1: Clinical writeback command bus
+    const { initCommandStoreRepos, rehydrateCommandStore } = await import("../writeback/command-store.js");
+    initCommandStoreRepos({
+      commandRepo: W41.createClinicalCommandRepo(),
+      attemptRepo: W41.createClinicalCommandAttemptRepo(),
+      resultRepo: W41.createClinicalCommandResultRepo(),
+    });
+    await rehydrateCommandStore("default");
+
+    // W41-P3: Event bus outbox/DLQ/delivery log
+    const { initEventBusRepos, rehydrateEventBus } = await import("../services/event-bus.js");
+    initEventBusRepos({
+      outbox: W41.createEventBusOutboxRepo(),
+      dlq: W41.createEventBusDlqRepo(),
+      deliveryLog: W41.createEventBusDeliveryLogRepo(),
+    });
+    await rehydrateEventBus("default");
+
+    // W41-P4: Scheduling writeback guard
+    const { initWritebackGuardRepo, rehydrateWritebackEntries } = await import("../routes/scheduling/writeback-guard.js");
+    initWritebackGuardRepo(W41.createSchedulingWritebackRepo());
+    await rehydrateWritebackEntries("default");
+
+    // W41-P5: HL7 dead-letter queue
+    const { initHl7DlqRepo, rehydrateHl7Dlq } = await import("../hl7/dead-letter-enhanced.js");
+    initHl7DlqRepo(W41.createHl7DeadLetterRepo());
+    await rehydrateHl7Dlq("default");
+
+    // W41-P6: DSAR + bulk export
+    const { initDsarStoreRepo, rehydrateDsarStore } = await import("../services/dsar-store.js");
+    initDsarStoreRepo(W41.createDsarRequestRepo());
+    await rehydrateDsarStore("default");
+
+    const { initBulkExportRepo, rehydrateBulkExportJobs } = await import("../exports/data-portability.js");
+    initBulkExportRepo(W41.createBulkExportJobRepo());
+    await rehydrateBulkExportJobs("default");
+
+    log.info("Wave 41: All durable ops stores wired to PG (6 stores, 10 repos)");
+  } catch (w41Err: any) {
+    log.warn("Wave 41 durability wire partially failed (Map cache fallback)", { error: w41Err.message });
+  }
 }
 
 /**

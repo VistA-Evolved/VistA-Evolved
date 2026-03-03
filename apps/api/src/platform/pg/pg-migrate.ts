@@ -4317,6 +4317,106 @@ CREATE INDEX IF NOT EXISTS idx_pr_report ON peer_review(rad_report_id);
 CREATE INDEX IF NOT EXISTS idx_pr_reviewer ON peer_review(reviewer_duz);
 `,
   },
+
+  // ═══════════════════════════════════════════════════════════
+  // v58 — Wave 41: Durable Ops Stores (scheduling writeback,
+  //        HL7 dead-letter + vault, DSAR requests, bulk exports)
+  // ═══════════════════════════════════════════════════════════
+  {
+    version: 58,
+    name: "wave41_durable_ops_stores",
+    sql: `
+-- Scheduling writeback entries (Phase 170 -> PG)
+CREATE TABLE IF NOT EXISTS scheduling_writeback_entry (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  appointment_ref TEXT NOT NULL,
+  patient_dfn TEXT NOT NULL,
+  clinic_ien TEXT,
+  status TEXT NOT NULL DEFAULT 'pending_approval',
+  truth_gate_result JSONB,
+  vista_ien TEXT,
+  attempts INTEGER NOT NULL DEFAULT 0,
+  last_attempt_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_swe_tenant ON scheduling_writeback_entry(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_swe_status ON scheduling_writeback_entry(tenant_id, status);
+CREATE INDEX IF NOT EXISTS idx_swe_appt ON scheduling_writeback_entry(appointment_ref);
+
+-- HL7 enhanced dead-letter queue (Phase 259 -> PG)
+CREATE TABLE IF NOT EXISTS hl7_dead_letter (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  message_type TEXT NOT NULL,
+  message_control_id TEXT NOT NULL,
+  sending_application TEXT NOT NULL,
+  sending_facility TEXT NOT NULL,
+  received_at BIGINT NOT NULL,
+  reason TEXT NOT NULL,
+  retry_count INTEGER NOT NULL DEFAULT 0,
+  message_hash TEXT NOT NULL,
+  message_size_bytes INTEGER NOT NULL DEFAULT 0,
+  last_retry_at BIGINT,
+  resolved BOOLEAN NOT NULL DEFAULT FALSE,
+  resolved_at BIGINT,
+  resolved_by TEXT,
+  raw_message TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_hdl_tenant ON hl7_dead_letter(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_hdl_resolved ON hl7_dead_letter(tenant_id, resolved);
+CREATE INDEX IF NOT EXISTS idx_hdl_msgctrl ON hl7_dead_letter(message_control_id);
+
+-- DSAR request store (Phase 496 -> PG)
+CREATE TABLE IF NOT EXISTS dsar_request (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  request_type TEXT NOT NULL,
+  subject_ref TEXT NOT NULL,
+  requested_by TEXT NOT NULL,
+  requested_at TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending',
+  status_history JSONB NOT NULL DEFAULT '[]',
+  country_pack_id TEXT NOT NULL DEFAULT '',
+  framework TEXT NOT NULL DEFAULT '',
+  right_to_erasure BOOLEAN NOT NULL DEFAULT FALSE,
+  data_portability BOOLEAN NOT NULL DEFAULT FALSE,
+  due_date TEXT NOT NULL,
+  fulfilled_at TEXT,
+  fulfilled_by TEXT,
+  denial_reason TEXT,
+  export_ref TEXT,
+  metadata JSONB NOT NULL DEFAULT '{}',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_dsar_tenant ON dsar_request(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_dsar_status ON dsar_request(tenant_id, status);
+CREATE INDEX IF NOT EXISTS idx_dsar_type ON dsar_request(tenant_id, request_type);
+
+-- Bulk export job store (Phase 264 -> PG)
+CREATE TABLE IF NOT EXISTS bulk_export_job (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  level TEXT NOT NULL DEFAULT 'system',
+  subject_id TEXT,
+  requested_by TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'accepted',
+  resource_types JSONB NOT NULL DEFAULT '[]',
+  since TEXT,
+  output_files JSONB NOT NULL DEFAULT '[]',
+  manifest JSONB,
+  progress INTEGER NOT NULL DEFAULT 0,
+  error TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  completed_at TIMESTAMPTZ
+);
+CREATE INDEX IF NOT EXISTS idx_bej_tenant ON bulk_export_job(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_bej_status ON bulk_export_job(tenant_id, status);
+`,
+  },
 ];
 
 /**
@@ -4576,6 +4676,11 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   "dose_registry_entry",
   "rad_critical_alert",
   "peer_review",
+  // Wave 41: Durable Ops Stores
+  "scheduling_writeback_entry",
+  "hl7_dead_letter",
+  "dsar_request",
+  "bulk_export_job",
 ] as const;
 
 /**

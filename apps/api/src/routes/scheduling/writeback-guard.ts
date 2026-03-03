@@ -76,6 +76,58 @@ const writebackEntries = new Map<string, WritebackEntry>();
 const WRITEBACK_TTL_MS = 24 * 60 * 60 * 1000; // 24h
 const WRITEBACK_MAX_SIZE = 1000;
 
+// ── PG Write-Through (W41-P4) ──────────────────────────────
+
+interface WritebackRepo {
+  upsert(data: any): Promise<any>;
+  findByTenant(tenantId: string, opts?: { limit?: number }): Promise<any[]>;
+}
+
+let _writebackRepo: WritebackRepo | null = null;
+
+/**
+ * Wire PG repo for scheduling writeback entries.
+ * Called from lifecycle.ts during PG init.
+ */
+export function initWritebackGuardRepo(repo: WritebackRepo): void {
+  _writebackRepo = repo;
+  log.info("Scheduling writeback store wired to PG (W41-P4)");
+}
+
+/**
+ * Rehydrate writeback entries from PG on startup.
+ */
+export async function rehydrateWritebackEntries(tenantId: string): Promise<void> {
+  if (!_writebackRepo) return;
+  try {
+    const rows = await _writebackRepo.findByTenant(tenantId, { limit: WRITEBACK_MAX_SIZE });
+    for (const row of rows) {
+      if (!writebackEntries.has(row.id)) {
+        writebackEntries.set(row.id, row as WritebackEntry);
+      }
+    }
+    log.info("Scheduling writeback entries rehydrated from PG", { count: rows.length });
+  } catch (e) { log.warn("Scheduling writeback rehydration failed", { error: String(e) }); }
+}
+
+function persistWritebackEntry(entry: WritebackEntry): void {
+  if (!_writebackRepo) return;
+  void _writebackRepo.upsert({
+    id: entry.id,
+    tenantId: entry.tenantId,
+    appointmentRef: entry.appointmentRef,
+    patientDfn: entry.patientDfn,
+    clinicIen: entry.clinicIen || null,
+    status: entry.status,
+    truthGateResult: entry.truthGateResult ? JSON.stringify(entry.truthGateResult) : null,
+    vistaIen: entry.vistaIen || null,
+    attempts: entry.attempts,
+    lastAttemptAt: entry.lastAttemptAt || null,
+    createdAt: entry.createdAt,
+    updatedAt: entry.updatedAt,
+  }).catch((e: unknown) => log.warn("Scheduling writeback persist failed", { error: String(e) }));
+}
+
 export function getWritebackEntryCount(): number {
   return writebackEntries.size;
 }
@@ -194,6 +246,7 @@ export async function enforceTruthGate(
         entry.status = "scheduled";
         entry.vistaIen = gateResult.vistaIen;
       }
+      persistWritebackEntry(entry);
     }
 
     immutableAudit("scheduling.truth_gate", gateResult.passed ? "success" : "failure",
@@ -255,6 +308,7 @@ export function trackWriteback(
     updatedAt: now,
   };
   writebackEntries.set(appointmentRef, entry);
+  persistWritebackEntry(entry);
   return entry;
 }
 
@@ -266,5 +320,6 @@ export function updateWritebackStatus(
   if (!entry) return null;
   entry.status = status;
   entry.updatedAt = new Date().toISOString();
+  persistWritebackEntry(entry);
   return entry;
 }

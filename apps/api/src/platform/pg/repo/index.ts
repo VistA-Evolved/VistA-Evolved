@@ -37,3 +37,6 @@ export * as pgOrRepo from "./pg-or-repo.js";
 export * as pgIcuRepo from "./pg-icu-repo.js";
 export * as pgDeviceRegistryRepo from "./pg-device-registry-repo.js";
 export * as pgRadiologyRepo from "./pg-radiology-repo.js";
+
+// Wave 41: Durable Ops Stores
+export * as w41DurableRepos from "./w41-durable-repos.js";

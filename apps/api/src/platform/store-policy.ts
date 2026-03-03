@@ -36,6 +36,7 @@ export type StoreClassification =
 
 export type DurabilityStatus =
   | "pg_backed"
+  | "pg_write_through"
   | "jsonl_backed"
   | "file_seeded"
   | "vista_passthrough"
@@ -724,11 +725,11 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "memoryStore",
     description: "Idempotency CachedResponse store",
     classification: "cache",
-    durability: "in_memory_only",
+    durability: "pg_write_through",
     domain: "infrastructure",
     ttlMs: 3_600_000,
     maxSize: 5_000,
-    notes: "Phase 103: payer-db route idempotency. Loss = retryable.",
+    notes: "W41-P2: PG write-through via initIdempotencyRepo. 24h TTL enforced.",
   },
   {
     id: "secure-messaging-fallback",
@@ -984,11 +985,11 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "enhancedDlq",
     description: "Enhanced dead-letter queue with raw message vault",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_write_through",
     domain: "interop",
     maxSize: 1000,
-    migrationTarget: "pg: hl7_dead_letter table",
-    notes: "Phase 259: raw messages stored in vault for replay. Lost on restart.",
+    migrationTarget: "pg: hl7_dead_letter table (v58)",
+    notes: "W41-P5: PG write-through wired via initHl7DlqRepo. Rehydrates on startup.",
   },
   {
     id: "hl7-raw-message-vault",
@@ -996,11 +997,11 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "rawMessageVault",
     description: "Raw HL7 message vault for DLQ replay",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_write_through",
     domain: "interop",
     maxSize: 1000,
-    migrationTarget: "pg: hl7_dead_letter.raw_message column",
-    notes: "Phase 259: enables DLQ replay. Evicted FIFO. Lost on restart.",
+    migrationTarget: "pg: hl7_dead_letter.raw_message column (v58)",
+    notes: "W41-P5: Raw messages persisted in hl7_dead_letter.raw_message. Rehydrates with DLQ.",
   },
   {
     id: "hl7-routing-routes",
@@ -2038,10 +2039,10 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "writebackEntries",
     description: "Scheduling writeback tracking entries (truth gate enforcement)",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_write_through",
     domain: "scheduling",
-    migrationTarget: "PG scheduling_writeback table",
-    notes: "Phase 170: writeback tracking resets on restart; PG integration-pending",
+    migrationTarget: "PG scheduling_writeback_entry table (v58)",
+    notes: "W41-P4: PG write-through wired via initWritebackGuardRepo. Rehydrates on startup.",
   },
   {
     id: "scheduling-mode-cache",
@@ -2127,10 +2128,10 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "bulkExportJobs",
     description: "FHIR Bulk Export job tracking (system/patient/group level NDJSON)",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_write_through",
     domain: "exports",
-    migrationTarget: "PG bulk_export_job table",
-    notes: "Phase 264: resets on restart; async export jobs lost on crash",
+    migrationTarget: "PG bulk_export_job table (v58)",
+    notes: "W41-P6: PG write-through wired via initBulkExportRepo. Rehydrates on startup.",
   },
   {
     id: "patient-chart-bundles",
@@ -2236,11 +2237,11 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "commands",
     description: "Clinical writeback command records (Map<id, ClinicalCommand>)",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_write_through",
     domain: "writeback",
     maxSize: 50_000,
     migrationTarget: "pg: clinical_command table (v30)",
-    notes: "Phase 300: In-memory with PG table ready (v30). PG write-through wiring TBD.",
+    notes: "W41-P1: PG write-through wired via initCommandStoreRepos. Rehydrates on startup.",
   },
   {
     id: "writeback-attempts",
@@ -2248,10 +2249,10 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "attempts",
     description: "Clinical writeback command attempt logs (Map<commandId, CommandAttempt[]>)",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_write_through",
     domain: "writeback",
     migrationTarget: "pg: clinical_command_attempt table (v30)",
-    notes: "Phase 300: In-memory attempt log. PG write-through wiring TBD.",
+    notes: "W41-P1: PG write-through wired via initCommandStoreRepos. Rehydrates on startup.",
   },
   {
     id: "writeback-results",
@@ -2259,10 +2260,10 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "results",
     description: "Clinical writeback command results (Map<commandId, CommandResult>)",
     classification: "critical",
-    durability: "in_memory_only",
+    durability: "pg_write_through",
     domain: "writeback",
     migrationTarget: "pg: clinical_command_result table (v30)",
-    notes: "Phase 300: In-memory result store. PG write-through wiring TBD.",
+    notes: "W41-P1: PG write-through wired via initCommandStoreRepos. Rehydrates on startup.",
   },
   {
     id: "writeback-idempotency-index",
@@ -3719,10 +3720,10 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "outbox",
     description: "In-memory event outbox (published domain events)",
     classification: "critical" as StoreClassification,
-    durability: "in_memory_only" as DurabilityStatus,
+    durability: "pg_write_through" as DurabilityStatus,
     domain: "event-bus",
     migrationTarget: "pg: event_bus_outbox (v44)",
-    notes: "Phase 355: FIFO eviction at 10K entries.",
+    notes: "W41-P3: PG write-through wired via initEventBusRepos. Rehydrates on startup.",
   },
   {
     id: "event-bus-dlq",
@@ -3730,10 +3731,10 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "dlq",
     description: "In-memory dead letter queue for failed event deliveries",
     classification: "audit" as StoreClassification,
-    durability: "in_memory_only" as DurabilityStatus,
+    durability: "pg_write_through" as DurabilityStatus,
     domain: "event-bus",
     migrationTarget: "pg: event_bus_dlq (v44)",
-    notes: "Phase 355: Max 5K entries; retryable.",
+    notes: "W41-P3: PG write-through wired via initEventBusRepos. Rehydrates on startup.",
   },
   {
     id: "event-bus-consumers",
@@ -3752,10 +3753,10 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "deliveryLog",
     description: "In-memory event delivery audit log",
     classification: "audit" as StoreClassification,
-    durability: "in_memory_only" as DurabilityStatus,
+    durability: "pg_write_through" as DurabilityStatus,
     domain: "event-bus",
     migrationTarget: "pg: event_bus_delivery_log (v44)",
-    notes: "Phase 355: Max 10K entries; success/failure tracking.",
+    notes: "W41-P3: PG write-through wired via initEventBusRepos.",
   },
   // ── Phase 356: Webhooks ──
   {
@@ -5318,10 +5319,10 @@ export const STORE_INVENTORY: StoreEntry[] = [
     variable: "store",
     description: "In-memory DSAR request lifecycle store",
     classification: "critical" as StoreClassification,
-    durability: "in_memory_only" as DurabilityStatus,
+    durability: "pg_write_through" as DurabilityStatus,
     domain: "compliance",
-    migrationTarget: "pg: dsar_requests (future)",
-    notes: "Phase 496: DSAR requests lost on restart. 50K max with FIFO eviction.",
+    migrationTarget: "pg: dsar_request (v58)",
+    notes: "W41-P6: PG write-through wired via initDsarStoreRepo. Rehydrates on startup.",
   },
   // Wave 37: International Revenue Cycle + Billing + Payer Ops v2 (Phases 513-521)
   {

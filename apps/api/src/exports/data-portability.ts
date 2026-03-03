@@ -172,6 +172,67 @@ const bulkExportJobs = new Map<string, BulkExportJob>();
 const patientChartBundles = new Map<string, PatientChartBundle>();
 const tenantExportJobs = new Map<string, TenantExportJob>();
 
+// ── PG Write-Through (W41-P6) ──────────────────────────
+
+interface ExportRepo {
+  upsert(data: any): Promise<any>;
+  findByTenant(tenantId: string, opts?: { limit?: number }): Promise<any[]>;
+}
+
+let _exportRepo: ExportRepo | null = null;
+
+/**
+ * Wire PG repo for bulk export job persistence.
+ * Called from lifecycle.ts during PG init.
+ */
+export function initBulkExportRepo(repo: ExportRepo): void {
+  _exportRepo = repo;
+  log.info("Bulk export store wired to PG (W41-P6)");
+}
+
+/**
+ * Rehydrate bulk export jobs from PG on startup.
+ */
+export async function rehydrateBulkExportJobs(tenantId: string): Promise<void> {
+  if (!_exportRepo) return;
+  try {
+    const rows = await _exportRepo.findByTenant(tenantId, { limit: 1000 });
+    for (const row of rows) {
+      if (!bulkExportJobs.has(row.id)) {
+        // Parse JSON fields
+        for (const field of ["resourceTypes", "outputFiles", "manifest"]) {
+          if (typeof (row as any)[field] === "string") {
+            try { (row as any)[field] = JSON.parse((row as any)[field]); } catch { /* keep as-is */ }
+          }
+        }
+        bulkExportJobs.set(row.id, row as BulkExportJob);
+      }
+    }
+    log.info("Bulk export jobs rehydrated from PG", { count: rows.length });
+  } catch (e) { log.warn("Bulk export rehydration failed", { error: String(e) }); }
+}
+
+function persistBulkExportJob(job: BulkExportJob): void {
+  if (!_exportRepo) return;
+  void _exportRepo.upsert({
+    id: job.id,
+    tenantId: job.tenantId,
+    level: job.level,
+    subjectId: job.subjectId || null,
+    requestedBy: job.requestedBy,
+    status: job.status,
+    resourceTypes: JSON.stringify(job.resourceTypes),
+    since: job.since || null,
+    outputFiles: JSON.stringify(job.outputFiles),
+    manifest: job.manifest ? JSON.stringify(job.manifest) : null,
+    progress: job.progress,
+    error: job.error || null,
+    createdAt: job.createdAt,
+    updatedAt: job.updatedAt,
+    completedAt: job.completedAt || null,
+  }).catch((e: unknown) => log.warn("Bulk export persist failed", { error: String(e) }));
+}
+
 function genId(prefix: string): string {
   return `${prefix}-${Date.now()}-${crypto.randomBytes(4).toString("hex")}`;
 }
@@ -221,6 +282,7 @@ export function kickoffBulkExport(params: {
   };
 
   bulkExportJobs.set(job.id, job);
+  persistBulkExportJob(job);
 
   // Simulate async processing (in production, delegate to worker queue)
   setTimeout(() => processBulkExport(job.id), 100);
@@ -268,6 +330,7 @@ function processBulkExport(jobId: string): void {
 
   // Generate manifest
   job.manifest = buildExportManifest(job.id, job.tenantId, files);
+  persistBulkExportJob(job);
 
   log.info("Bulk export completed", {
     jobId: job.id,

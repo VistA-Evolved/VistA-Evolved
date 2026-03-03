@@ -11,6 +11,7 @@
  */
 import { createHash, randomBytes } from "crypto";
 import { recordMessageEvent } from "./message-event-store.js";
+import { log } from "../lib/logger.js";
 
 /* ── Types ─────────────────────────────────────────────── */
 
@@ -66,6 +67,66 @@ function vaultEvict(): void {
 const enhancedDlq: EnhancedDeadLetterEntry[] = [];
 const MAX_DLQ_SIZE = 1000;
 
+/* ── PG Write-Through (W41-P5) ─────────────────────────── */
+
+interface Hl7DlqRepo {
+  upsert(data: any): Promise<any>;
+  findByTenant(tenantId: string, opts?: { limit?: number }): Promise<any[]>;
+  update(id: string, updates: any): Promise<any>;
+}
+
+let _dlqRepo: Hl7DlqRepo | null = null;
+
+/**
+ * Wire PG repo for HL7 dead-letter persistence.
+ * Called from lifecycle.ts during PG init.
+ */
+export function initHl7DlqRepo(repo: Hl7DlqRepo): void {
+  _dlqRepo = repo;
+  log.info("HL7 dead-letter store wired to PG (W41-P5)");
+}
+
+/**
+ * Rehydrate DLQ + raw vault from PG on startup.
+ */
+export async function rehydrateHl7Dlq(tenantId: string): Promise<void> {
+  if (!_dlqRepo) return;
+  try {
+    const rows = await _dlqRepo.findByTenant(tenantId, { limit: MAX_DLQ_SIZE });
+    for (const row of rows) {
+      if (!enhancedDlq.find((e) => e.id === row.id)) {
+        enhancedDlq.push(row as EnhancedDeadLetterEntry);
+        // raw_message column is stored in PG; restore to vault
+        if (row.rawMessage) rawMessageVault.set(row.id, row.rawMessage);
+      }
+    }
+    log.info("HL7 DLQ rehydrated from PG", { count: rows.length });
+  } catch (e) { log.warn("HL7 DLQ rehydration failed", { error: String(e) }); }
+}
+
+function persistDlqEntry(entry: EnhancedDeadLetterEntry, rawMessage?: string): void {
+  if (!_dlqRepo) return;
+  void _dlqRepo.upsert({
+    id: entry.id,
+    tenantId: entry.tenantId,
+    messageType: entry.messageType,
+    messageControlId: entry.messageControlId,
+    sendingApplication: entry.sendingApplication,
+    sendingFacility: entry.sendingFacility,
+    receivedAt: new Date(entry.receivedAt).toISOString(),
+    reason: entry.reason,
+    retryCount: entry.retryCount,
+    messageHash: entry.messageHash,
+    messageSizeBytes: entry.messageSizeBytes,
+    lastRetryAt: entry.lastRetryAt ? new Date(entry.lastRetryAt).toISOString() : null,
+    resolved: entry.resolved,
+    resolvedAt: entry.resolvedAt ? new Date(entry.resolvedAt).toISOString() : null,
+    resolvedBy: entry.resolvedBy,
+    rawMessage: rawMessage || null,
+    createdAt: new Date(entry.receivedAt).toISOString(),
+  }).catch((e: unknown) => log.warn("HL7 DLQ persist failed", { error: String(e) }));
+}
+
 /**
  * Add a message to the enhanced dead-letter queue.
  * Called from the routing dispatcher when a message cannot be routed.
@@ -108,6 +169,7 @@ export function addEnhancedDeadLetter(opts: {
 
   // FIFO eviction on DLQ
   enhancedDlq.push(entry);
+  persistDlqEntry(entry, opts.rawMessage);
   if (enhancedDlq.length > MAX_DLQ_SIZE) {
     const evicted = enhancedDlq.shift();
     if (evicted) rawMessageVault.delete(evicted.id);
@@ -196,6 +258,7 @@ export function replayDeadLetter(
 
   entry.retryCount++;
   entry.lastRetryAt = Date.now();
+  persistDlqEntry(entry);
 
   // Record replay event
   recordMessageEvent({
@@ -236,6 +299,7 @@ export function resolveDeadLetter(
   entry.resolvedBy = actorId;
   // Remove raw message from vault
   rawMessageVault.delete(id);
+  persistDlqEntry(entry);
   return { ok: true, detail: `Resolved by ${actorId}` };
 }
 
