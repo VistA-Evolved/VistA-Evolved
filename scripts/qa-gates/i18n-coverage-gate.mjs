@@ -5,7 +5,7 @@
  * QA gate that validates all country-pack-supported locales have
  * message bundles in both apps/web and apps/portal.
  *
- * Reads country-packs/*/values.json for supportedLocales[], then checks:
+ * Reads country-packs/<pack>/values.json for supportedLocales[], then checks:
  *   - apps/web/public/messages/{locale}.json exists and is valid JSON
  *   - apps/portal/public/messages/{locale}.json exists and is valid JSON
  *   - Each key in en.json exists in every other locale (coverage %)
