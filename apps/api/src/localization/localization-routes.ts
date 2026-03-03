@@ -106,7 +106,7 @@ export default async function localizationRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, locale: loc });
     } catch (err: any) {
-      return reply.code(409).send({ ok: false, error: err.message });
+      return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
 
@@ -160,7 +160,7 @@ export default async function localizationRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, bundle });
     } catch (err: any) {
-      return reply.code(409).send({ ok: false, error: err.message });
+      return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
 
@@ -222,7 +222,7 @@ export default async function localizationRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, profile });
     } catch (err: any) {
-      return reply.code(409).send({ ok: false, error: err.message });
+      return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
 
@@ -264,7 +264,7 @@ export default async function localizationRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, countryPack: pack });
     } catch (err: any) {
-      return reply.code(409).send({ ok: false, error: err.message });
+      return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
 
@@ -320,7 +320,7 @@ export default async function localizationRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, theme });
     } catch (err: any) {
-      return reply.code(409).send({ ok: false, error: err.message });
+      return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
 

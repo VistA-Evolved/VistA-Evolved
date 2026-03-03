@@ -111,7 +111,7 @@ export default async function clinicalReasoningRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, library: lib });
     } catch (err: any) {
-      return reply.code(409).send({ ok: false, error: err.message });
+      return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
 
@@ -172,7 +172,7 @@ export default async function clinicalReasoningRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, measure });
     } catch (err: any) {
-      return reply.code(409).send({ ok: false, error: err.message });
+      return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
 
@@ -261,7 +261,7 @@ export default async function clinicalReasoningRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, result });
     } catch (err: any) {
-      return reply.code(409).send({ ok: false, error: err.message });
+      return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
 
@@ -292,7 +292,7 @@ export default async function clinicalReasoningRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, planDefinition: plan });
     } catch (err: any) {
-      return reply.code(409).send({ ok: false, error: err.message });
+      return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
 
@@ -347,7 +347,7 @@ export default async function clinicalReasoningRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, activityDefinition: def });
     } catch (err: any) {
-      return reply.code(409).send({ ok: false, error: err.message });
+      return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
 
@@ -401,7 +401,7 @@ export default async function clinicalReasoningRoutes(server: FastifyInstance) {
       }
       return reply.code(201).send({ ok: true, report });
     } catch (err: any) {
-      return reply.code(409).send({ ok: false, error: err.message });
+      return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
 

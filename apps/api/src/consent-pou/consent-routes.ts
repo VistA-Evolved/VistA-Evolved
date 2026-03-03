@@ -60,7 +60,7 @@ export default async function consentPouRoutes(server: FastifyInstance): Promise
       });
       return reply.code(201).send({ ok: true, directive: rec });
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message || "Create failed" });
+      return reply.code(400).send({ ok: false, error: "Create failed" });
     }
   });
 

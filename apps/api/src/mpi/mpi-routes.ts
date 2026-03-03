@@ -52,7 +52,7 @@ export default async function mpiRoutes(server: FastifyInstance): Promise<void> 
       });
       return reply.code(201).send({ ok: true, identity: rec });
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message || "Create failed" });
+      return reply.code(400).send({ ok: false, error: "Create failed" });
     }
   });
 

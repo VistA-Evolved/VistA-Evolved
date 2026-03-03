@@ -45,7 +45,7 @@ export default async function bulkDataRoutes(server: FastifyInstance): Promise<v
       });
       return reply.code(202).send({ ok: true, job });
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message || "Export failed" });
+      return reply.code(400).send({ ok: false, error: "Export failed" });
     }
   });
 
@@ -65,7 +65,7 @@ export default async function bulkDataRoutes(server: FastifyInstance): Promise<v
       });
       return reply.code(202).send({ ok: true, job });
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message || "Import failed" });
+      return reply.code(400).send({ ok: false, error: "Import failed" });
     }
   });
 

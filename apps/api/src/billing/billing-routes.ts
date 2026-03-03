@@ -82,7 +82,7 @@ export default async function billingRoutes(server: FastifyInstance): Promise<vo
       const sub = await provider.cancelSubscription(tenantId, cancelAtPeriodEnd);
       return reply.send({ ok: true, subscription: sub });
     } catch (err: any) {
-      return reply.code(404).send({ ok: false, error: err.message });
+      return reply.code(404).send({ ok: false, error: "Internal error" });
     }
   });
 

@@ -61,7 +61,7 @@ export default async function interopGatewayRoutes(server: FastifyInstance): Pro
       });
       return reply.code(201).send({ ok: true, channel: ch });
     } catch (err: any) {
-      return reply.code(409).send({ ok: false, error: err.message });
+      return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
 
@@ -122,7 +122,7 @@ export default async function interopGatewayRoutes(server: FastifyInstance): Pro
       });
       return reply.code(201).send({ ok: true, pipeline: p });
     } catch (err: any) {
-      return reply.code(409).send({ ok: false, error: err.message });
+      return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
 
@@ -211,7 +211,7 @@ export default async function interopGatewayRoutes(server: FastifyInstance): Pro
       });
       return reply.code(201).send({ ok: true, mediator: m });
     } catch (err: any) {
-      return reply.code(409).send({ ok: false, error: err.message });
+      return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
 

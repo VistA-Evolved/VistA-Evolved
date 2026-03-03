@@ -171,7 +171,7 @@ export default async function cdsHooksRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, rule });
     } catch (err: any) {
-      return reply.code(409).send({ ok: false, error: err.message });
+      return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
 
@@ -248,7 +248,7 @@ export default async function cdsHooksRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, app });
     } catch (err: any) {
-      return reply.code(409).send({ ok: false, error: err.message });
+      return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
 

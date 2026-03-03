@@ -65,7 +65,7 @@ export default async function exchangePackRoutes(server: FastifyInstance): Promi
       });
       return reply.code(201).send({ ok: true, connector: rec });
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message || "Create failed" });
+      return reply.code(400).send({ ok: false, error: "Create failed" });
     }
   });
 

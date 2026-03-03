@@ -62,7 +62,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
       });
       return reply.code(201).send({ ok: true, intake: rec });
     } catch (err: any) {
-      return reply.code(400).send({ ok: false, error: err.message || "Create failed" });
+      return reply.code(400).send({ ok: false, error: "Create failed" });
     }
   });
 
