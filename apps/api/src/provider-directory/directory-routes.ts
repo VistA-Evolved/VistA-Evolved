@@ -4,6 +4,7 @@
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { requireSession } from "../auth/auth-routes.js";
+import { log } from "../lib/logger.js";
 import {
   createPractitioner, getPractitioner, listPractitioners, updatePractitioner, searchPractitioners,
   createOrganization, getOrganization, listOrganizations, updateOrganization,
@@ -57,6 +58,7 @@ export default async function providerDirectoryRoutes(server: FastifyInstance): 
       });
       return reply.code(201).send({ ok: true, practitioner: rec });
     } catch (err: any) {
+      log.error("Practitioner creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(400).send({ ok: false, error: "Create failed" });
     }
   });
@@ -104,6 +106,7 @@ export default async function providerDirectoryRoutes(server: FastifyInstance): 
       });
       return reply.code(201).send({ ok: true, organization: rec });
     } catch (err: any) {
+      log.error("Organization creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(400).send({ ok: false, error: "Create failed" });
     }
   });
@@ -150,6 +153,7 @@ export default async function providerDirectoryRoutes(server: FastifyInstance): 
       });
       return reply.code(201).send({ ok: true, location: rec });
     } catch (err: any) {
+      log.error("Location creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(400).send({ ok: false, error: "Create failed" });
     }
   });

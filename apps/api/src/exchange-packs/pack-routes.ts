@@ -4,6 +4,7 @@
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { requireSession } from "../auth/auth-routes.js";
+import { log } from "../lib/logger.js";
 import {
   getPackProfiles, getPackProfile,
   createConnector, getConnector, listConnectors, updateConnector, deleteConnector,
@@ -65,6 +66,7 @@ export default async function exchangePackRoutes(server: FastifyInstance): Promi
       });
       return reply.code(201).send({ ok: true, connector: rec });
     } catch (err: any) {
+      log.error("Exchange connector creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(400).send({ ok: false, error: "Create failed" });
     }
   });

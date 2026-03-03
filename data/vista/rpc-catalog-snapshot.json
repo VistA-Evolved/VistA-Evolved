@@ -1,501 +1,831 @@
 {
-  "generatedAt": "2026-03-03T02:16:37.404Z",
+  "generatedAt": "2026-03-03T02:46:16.132Z",
   "generatedBy": "scripts/regen-rpc-snapshot.mjs",
   "registry": {
     "XUS SIGNON SETUP": {
-      "domain": "auth"
+      "domain": "auth",
+      "tag": "auth",
+      "description": "Broker sign-on handshake"
     },
     "XUS AV CODE": {
-      "domain": "auth"
+      "domain": "auth",
+      "tag": "auth",
+      "description": "Access/verify code authentication"
     },
     "XWB CREATE CONTEXT": {
-      "domain": "auth"
+      "domain": "auth",
+      "tag": "auth",
+      "description": "Set application context"
     },
     "XUS GET USER INFO": {
-      "domain": "auth"
+      "domain": "auth",
+      "tag": "auth",
+      "description": "Get authenticated user metadata"
     },
     "ORQQAL LIST": {
-      "domain": "allergies"
+      "domain": "allergies",
+      "tag": "read",
+      "description": "List patient allergies"
     },
     "ORWDAL32 ALLERGY MATCH": {
-      "domain": "allergies"
+      "domain": "allergies",
+      "tag": "read",
+      "description": "Search allergy reactants"
     },
     "ORWDAL32 SAVE ALLERGY": {
-      "domain": "allergies"
+      "domain": "allergies",
+      "tag": "write",
+      "description": "Save new allergy"
     },
     "IBCN INSURANCE QUERY": {
-      "domain": "billing"
+      "domain": "billing",
+      "tag": "read",
+      "description": "Query patient insurance"
     },
     "IBD GET ALL PCE DATA": {
-      "domain": "billing"
+      "domain": "billing",
+      "tag": "read",
+      "description": "Get all PCE encounter data"
     },
     "IBD GET FORMSPEC": {
-      "domain": "billing"
+      "domain": "billing",
+      "tag": "read",
+      "description": "Get encounter form specification"
     },
     "IBARXM QUERY ONLY": {
-      "domain": "billing"
+      "domain": "billing",
+      "tag": "read",
+      "description": "Pharmacy billing query"
     },
     "IBO MT LTC COPAY QUERY": {
-      "domain": "billing"
+      "domain": "billing",
+      "tag": "read",
+      "description": "Means Test / LTC copay query"
     },
     "ORWPCE VISIT": {
-      "domain": "billing"
+      "domain": "billing",
+      "tag": "read",
+      "description": "Get PCE visit data"
     },
     "ORWPCE GET VISIT": {
-      "domain": "billing"
+      "domain": "billing",
+      "tag": "read",
+      "description": "Get detailed visit"
     },
     "ORWPCE DIAG": {
-      "domain": "billing"
+      "domain": "billing",
+      "tag": "read",
+      "description": "Get PCE diagnoses"
     },
     "ORWPCE PROC": {
-      "domain": "billing"
+      "domain": "billing",
+      "tag": "read",
+      "description": "Get PCE procedures"
     },
     "ORWPCE PCE4NOTE": {
-      "domain": "billing"
+      "domain": "billing",
+      "tag": "read",
+      "description": "Get PCE data for note"
     },
     "ORWPCE HASVISIT": {
-      "domain": "billing"
+      "domain": "billing",
+      "tag": "read",
+      "description": "Check if visit exists"
     },
     "ORWPCE GETSVC": {
-      "domain": "billing"
+      "domain": "billing",
+      "tag": "read",
+      "description": "Get service connected data"
     },
     "ORWPCE4 LEX": {
-      "domain": "billing"
+      "domain": "billing",
+      "tag": "read",
+      "description": "Lexicon search (PCE)"
     },
     "ORWPCE LEXCODE": {
-      "domain": "billing"
+      "domain": "billing",
+      "tag": "read",
+      "description": "Get lexicon code"
     },
     "ORWPCE ACTIVE CODE": {
-      "domain": "billing"
+      "domain": "billing",
+      "tag": "read",
+      "description": "Check if code is active"
     },
     "ORWPCE SAVE": {
-      "domain": "billing"
+      "domain": "billing",
+      "tag": "write",
+      "description": "Save PCE encounter"
     },
     "ORQQCN LIST": {
-      "domain": "consults"
+      "domain": "consults",
+      "tag": "read",
+      "description": "List consults for patient"
     },
     "ORQQCN DETAIL": {
-      "domain": "consults"
+      "domain": "consults",
+      "tag": "read",
+      "description": "Get consult detail"
     },
     "ORQQCN2 MED RESULTS": {
-      "domain": "consults"
+      "domain": "consults",
+      "tag": "write",
+      "description": "Complete consult with results"
     },
     "VE LIST RPCS": {
-      "domain": "catalog"
+      "domain": "catalog",
+      "tag": "custom",
+      "description": "List all registered RPCs from File 8994"
     },
     "VE INTEROP HL7 LINKS": {
-      "domain": "interop"
+      "domain": "interop",
+      "tag": "custom",
+      "description": "List HL7 logical links"
     },
     "VE INTEROP HL7 MSGS": {
-      "domain": "interop"
+      "domain": "interop",
+      "tag": "custom",
+      "description": "List recent HL7 messages"
     },
     "VE INTEROP HLO STATUS": {
-      "domain": "interop"
+      "domain": "interop",
+      "tag": "custom",
+      "description": "HLO application status"
     },
     "VE INTEROP QUEUE DEPTH": {
-      "domain": "interop"
+      "domain": "interop",
+      "tag": "custom",
+      "description": "HL7 queue depths"
     },
     "VE INTEROP MSG LIST": {
-      "domain": "interop"
+      "domain": "interop",
+      "tag": "custom",
+      "description": "List HL7 messages with filters"
     },
     "VE INTEROP MSG DETAIL": {
-      "domain": "interop"
+      "domain": "interop",
+      "tag": "custom",
+      "description": "HL7 message metadata + segment summary"
     },
     "MAG4 REMOTE PROCEDURE": {
-      "domain": "imaging"
+      "domain": "imaging",
+      "tag": "read",
+      "description": "Imaging remote procedure call"
     },
     "MAG4 PAT GET IMAGES": {
-      "domain": "imaging"
+      "domain": "imaging",
+      "tag": "read",
+      "description": "Get patient images list"
     },
     "MAGG PAT PHOTOS": {
-      "domain": "imaging"
+      "domain": "imaging",
+      "tag": "read",
+      "description": "Get patient photos"
     },
     "RA DETAILED REPORT": {
-      "domain": "imaging"
+      "domain": "imaging",
+      "tag": "read",
+      "description": "Radiology detailed report"
     },
     "MAG4 ADD IMAGE": {
-      "domain": "imaging"
+      "domain": "imaging",
+      "tag": "write",
+      "description": "Add image entry to VistA File 2005 (Phase 538: SIC capture)"
     },
     "MAG NEW SO ENTRY": {
-      "domain": "imaging"
+      "domain": "imaging",
+      "tag": "write",
+      "description": "Create new storage object entry for image capture"
     },
     "MAG4 IMAGE": {
-      "domain": "imaging"
+      "domain": "imaging",
+      "tag": "read",
+      "description": "Get image metadata from File 2005"
     },
     "ORWORB UNSIG ORDERS": {
-      "domain": "inbox"
+      "domain": "inbox",
+      "tag": "read",
+      "description": "Get unsigned orders notifications"
     },
     "ORWORB FASTUSER": {
-      "domain": "inbox"
+      "domain": "inbox",
+      "tag": "read",
+      "description": "Get user notification info"
     },
     "ORWLRR INTERIM": {
-      "domain": "labs"
+      "domain": "labs",
+      "tag": "read",
+      "description": "Interim lab results"
     },
     "ORWLRR ACK": {
-      "domain": "labs"
+      "domain": "labs",
+      "tag": "write",
+      "description": "Acknowledge lab result"
     },
     "ORWLRR CHART": {
-      "domain": "labs"
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab chart data"
     },
     "ORWLRR INTERIMG": {
-      "domain": "labs"
+      "domain": "labs",
+      "tag": "read",
+      "description": "Interim lab results (imaging context)"
     },
     "ORWPS ACTIVE": {
-      "domain": "medications"
+      "domain": "medications",
+      "tag": "read",
+      "description": "Active medications list"
     },
     "ORWORR GETTXT": {
-      "domain": "medications"
+      "domain": "medications",
+      "tag": "read",
+      "description": "Order result text"
     },
     "ORWDXM AUTOACK": {
-      "domain": "medications"
+      "domain": "medications",
+      "tag": "write",
+      "description": "Quick-order medication auto-acknowledge"
     },
     "TIU DOCUMENTS BY CONTEXT": {
-      "domain": "notes"
+      "domain": "notes",
+      "tag": "read",
+      "description": "List documents by context"
     },
     "TIU CREATE RECORD": {
-      "domain": "notes"
+      "domain": "notes",
+      "tag": "write",
+      "description": "Create new TIU record"
     },
     "TIU SET DOCUMENT TEXT": {
-      "domain": "notes"
+      "domain": "notes",
+      "tag": "write",
+      "description": "Set document text body"
     },
     "TIU SET RECORD TEXT": {
-      "domain": "notes"
+      "domain": "notes",
+      "tag": "write",
+      "description": "Set record text body"
     },
     "TIU GET RECORD TEXT": {
-      "domain": "notes"
+      "domain": "notes",
+      "tag": "read",
+      "description": "Get record text"
     },
     "TIU SIGN RECORD": {
-      "domain": "notes"
+      "domain": "notes",
+      "tag": "write",
+      "description": "Electronically sign TIU document"
     },
     "TIU LOCK RECORD": {
-      "domain": "notes"
+      "domain": "notes",
+      "tag": "write",
+      "description": "Lock TIU document for editing/signing"
     },
     "TIU UNLOCK RECORD": {
-      "domain": "notes"
+      "domain": "notes",
+      "tag": "write",
+      "description": "Unlock TIU document"
     },
     "TIU CREATE ADDENDUM RECORD": {
-      "domain": "notes"
+      "domain": "notes",
+      "tag": "write",
+      "description": "Create addendum to TIU document"
     },
     "TIU REQUIRES COSIGNATURE": {
-      "domain": "notes"
+      "domain": "notes",
+      "tag": "read",
+      "description": "Check if document requires cosignature"
     },
     "TIU PERSONAL TITLE LIST": {
-      "domain": "notes"
+      "domain": "notes",
+      "tag": "read",
+      "description": "Get user personal note title list"
     },
     "ORWDX LOCK": {
-      "domain": "orders"
+      "domain": "orders",
+      "tag": "write",
+      "description": "Lock patient for ordering"
     },
     "ORWDX UNLOCK": {
-      "domain": "orders"
+      "domain": "orders",
+      "tag": "write",
+      "description": "Unlock patient after ordering"
     },
     "ORWDX SAVE": {
-      "domain": "orders"
+      "domain": "orders",
+      "tag": "write",
+      "description": "Save order"
     },
     "ORWDXA DC": {
-      "domain": "orders"
+      "domain": "orders",
+      "tag": "write",
+      "description": "Discontinue order"
     },
     "ORWDXA FLAG": {
-      "domain": "orders"
+      "domain": "orders",
+      "tag": "write",
+      "description": "Flag order"
     },
     "ORWDXA VERIFY": {
-      "domain": "orders"
+      "domain": "orders",
+      "tag": "write",
+      "description": "Verify order"
     },
     "ORWORR AGET": {
-      "domain": "orders"
+      "domain": "orders",
+      "tag": "read",
+      "description": "Get active orders by display group"
     },
     "ORWOR1 SIG": {
-      "domain": "orders"
+      "domain": "orders",
+      "tag": "write",
+      "description": "Electronically sign order(s)"
     },
     "ORWDXC ACCEPT": {
-      "domain": "orders"
+      "domain": "orders",
+      "tag": "read",
+      "description": "Accept/get order check results"
     },
     "ORWDXC DISPLAY": {
-      "domain": "orders"
+      "domain": "orders",
+      "tag": "read",
+      "description": "Display order check text"
     },
     "ORWDXC SAVECHK": {
-      "domain": "orders"
+      "domain": "orders",
+      "tag": "write",
+      "description": "Save/acknowledge order checks"
     },
     "ORWDX WRLST": {
-      "domain": "orders"
+      "domain": "orders",
+      "tag": "read",
+      "description": "Write/order list for patient"
     },
     "ORQPT DEFAULT PATIENT LIST": {
-      "domain": "patients"
+      "domain": "patients",
+      "tag": "read",
+      "description": "Default patient list"
     },
     "ORQPT DEFAULT LIST SOURCE": {
-      "domain": "patients"
+      "domain": "patients",
+      "tag": "read",
+      "description": "Default patient list source configuration"
     },
     "ORWPT LIST ALL": {
-      "domain": "patients"
+      "domain": "patients",
+      "tag": "read",
+      "description": "Search all patients"
     },
     "ORWPT SELECT": {
-      "domain": "patients"
+      "domain": "patients",
+      "tag": "read",
+      "description": "Select patient demographics"
     },
     "ORWPT ID INFO": {
-      "domain": "patients"
+      "domain": "patients",
+      "tag": "read",
+      "description": "Patient ID info (SSN, DOB, etc.)"
     },
     "ORWPT16 ID INFO": {
-      "domain": "patients"
+      "domain": "patients",
+      "tag": "read",
+      "description": "Extended patient ID info"
     },
     "ORQQPL PROBLEM LIST": {
-      "domain": "problems"
+      "domain": "problems",
+      "tag": "read",
+      "description": "Get problem list"
     },
     "ORQQPL4 LEX": {
-      "domain": "problems"
+      "domain": "problems",
+      "tag": "read",
+      "description": "ICD/Lexicon search"
     },
     "ORQQPL ADD SAVE": {
-      "domain": "problems"
+      "domain": "problems",
+      "tag": "write",
+      "description": "Add problem"
     },
     "ORQQPL EDIT SAVE": {
-      "domain": "problems"
+      "domain": "problems",
+      "tag": "write",
+      "description": "Edit problem"
     },
     "ORWCH PROBLEM LIST": {
-      "domain": "problems"
+      "domain": "problems",
+      "tag": "read",
+      "description": "Chart problem list"
     },
     "ORWCIRN FACILITIES": {
-      "domain": "remote"
+      "domain": "remote",
+      "tag": "read",
+      "description": "Remote facility list"
     },
     "ORWRP REPORT LISTS": {
-      "domain": "reports"
+      "domain": "reports",
+      "tag": "read",
+      "description": "Available report lists"
     },
     "ORWRP REPORT TEXT": {
-      "domain": "reports"
+      "domain": "reports",
+      "tag": "read",
+      "description": "Get report text"
     },
     "ORWSR LIST": {
-      "domain": "surgery"
+      "domain": "surgery",
+      "tag": "read",
+      "description": "Surgery case list"
     },
     "ORWSR RPTLIST": {
-      "domain": "surgery"
+      "domain": "surgery",
+      "tag": "read",
+      "description": "Surgery report list"
     },
     "GMV V/M ALLDATA": {
-      "domain": "vitals"
+      "domain": "vitals",
+      "tag": "read",
+      "description": "All vitals/measurements data"
     },
     "GMV ADD VM": {
-      "domain": "vitals"
+      "domain": "vitals",
+      "tag": "write",
+      "description": "Add vital measurement"
     },
     "ORQQVI VITALS": {
-      "domain": "vitals"
+      "domain": "vitals",
+      "tag": "read",
+      "description": "Get patient vitals"
     },
     "ORQQVI VITALS FOR DATE RANGE": {
-      "domain": "vitals"
+      "domain": "vitals",
+      "tag": "read",
+      "description": "Vitals for date range (shift-based nursing view)"
     },
     "ORQPT WARDS": {
-      "domain": "adt"
+      "domain": "adt",
+      "tag": "read",
+      "description": "List all wards"
     },
     "ORQPT WARD PATIENTS": {
-      "domain": "adt"
+      "domain": "adt",
+      "tag": "read",
+      "description": "Census: patients on a ward"
     },
     "ORQPT PROVIDER PATIENTS": {
-      "domain": "adt"
+      "domain": "adt",
+      "tag": "read",
+      "description": "Provider inpatient list"
     },
     "ORQPT TEAMS": {
-      "domain": "adt"
+      "domain": "adt",
+      "tag": "read",
+      "description": "List available teams"
     },
     "ORQPT TEAM PATIENTS": {
-      "domain": "adt"
+      "domain": "adt",
+      "tag": "read",
+      "description": "Team patient list"
     },
     "ORQPT SPECIALTIES": {
-      "domain": "adt"
+      "domain": "adt",
+      "tag": "read",
+      "description": "List treating specialties"
     },
     "ORQPT SPECIALTY PATIENTS": {
-      "domain": "adt"
+      "domain": "adt",
+      "tag": "read",
+      "description": "Specialty patient list"
     },
     "ORWU1 NEWLOC": {
-      "domain": "adt"
+      "domain": "adt",
+      "tag": "read",
+      "description": "Location search/lookup"
     },
     "ORWPT16 ADMITLST": {
-      "domain": "adt"
+      "domain": "adt",
+      "tag": "read",
+      "description": "Patient admission history list"
     },
     "ZVEADT WARDS": {
-      "domain": "adt"
+      "domain": "adt",
+      "tag": "read",
+      "description": "Ward census with bed counts (custom)"
     },
     "ZVEADT BEDS": {
-      "domain": "adt"
+      "domain": "adt",
+      "tag": "read",
+      "description": "Bed-level occupancy for a ward (custom)"
     },
     "ZVEADT MVHIST": {
-      "domain": "adt"
+      "domain": "adt",
+      "tag": "read",
+      "description": "Patient movement history from File 405 (custom)"
     },
     "ORQQPX REMINDERS LIST": {
-      "domain": "reminders"
+      "domain": "reminders",
+      "tag": "read",
+      "description": "Evaluate clinical reminders for patient (due/applicable list)"
     },
     "ORQQPX REMINDER DETAIL": {
-      "domain": "reminders"
+      "domain": "reminders",
+      "tag": "read",
+      "description": "Detailed info for a single clinical reminder"
     },
     "ORQQPX IMMUN LIST": {
-      "domain": "immunizations"
+      "domain": "immunizations",
+      "tag": "read",
+      "description": "Patient immunization history list"
     },
     "PXVIMM IMM SHORT LIST": {
-      "domain": "immunizations"
+      "domain": "immunizations",
+      "tag": "read",
+      "description": "Immunization type picker (short list)"
     },
     "ORQQXMB MAIL GROUPS": {
-      "domain": "messaging"
+      "domain": "messaging",
+      "tag": "read",
+      "description": "List MailMan mail groups for recipient selection"
     },
     "ZVE MAIL FOLDERS": {
-      "domain": "messaging"
+      "domain": "messaging",
+      "tag": "read",
+      "description": "List MailMan baskets/folders with counts (ZVEMSGR.m)"
     },
     "ZVE MAIL LIST": {
-      "domain": "messaging"
+      "domain": "messaging",
+      "tag": "read",
+      "description": "List messages in a MailMan basket (ZVEMSGR.m)"
     },
     "ZVE MAIL GET": {
-      "domain": "messaging"
+      "domain": "messaging",
+      "tag": "read",
+      "description": "Read MailMan message header+body+recipients (ZVEMSGR.m)"
     },
     "ZVE MAIL SEND": {
-      "domain": "messaging"
+      "domain": "messaging",
+      "tag": "write",
+      "description": "Send MailMan message via XMXSEND with inline delivery (ZVEMSGR.m)"
     },
     "ZVE MAIL MANAGE": {
-      "domain": "messaging"
+      "domain": "messaging",
+      "tag": "write",
+      "description": "Mark read/delete/move MailMan message (ZVEMSGR.m)"
     },
     "ORWCV VST": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "Cover sheet visit list for patient (VISIT #9000010)"
     },
     "SDOE LIST ENCOUNTERS FOR PAT": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "List encounters/appointments for patient"
     },
     "SD W/L RETRIVE HOSP LOC(#44)": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "Retrieve hospital locations for scheduling"
     },
     "SD W/L RETRIVE PERSON(200)": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "Retrieve person file entries for scheduling"
     },
     "SDOE LIST ENCOUNTERS FOR DATES": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "List encounters for date range"
     },
     "SDOE GET GENERAL DATA": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "Get encounter general data fields (date, clinic, type)"
     },
     "SDOE GET PROVIDERS": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "Get providers assigned to an encounter"
     },
     "SDOE GET DIAGNOSES": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "Get diagnoses associated with an encounter"
     },
     "SD W/L CREATE FILE": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "write",
+      "description": "Create wait-list entry in VistA SD package"
     },
     "SD W/L RETRIVE FULL DATA": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "Retrieve full wait-list data"
     },
     "ORWPT APPTLST": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "CPRS cover sheet appointment list"
     },
     "SDVW MAKE APPT API APP": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "write",
+      "description": "Real appointment creation via SDVW HL7 messaging"
     },
     "SDVW SDAPI APP": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "SDVW appointment list API"
     },
     "SD W/L PRIORITY": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "Wait-list priority reference data"
     },
     "SD W/L TYPE": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "Wait-list type reference data"
     },
     "SD W/L CURRENT STATUS": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "Wait-list current status reference data"
     },
     "SDES GET APPTS BY PATIENT DFN3": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "SDES patient appointment list by DFN"
     },
     "SDES GET CLIN AVAILABILITY": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "SDES clinic availability slots"
     },
     "SDES GET APPT TYPES": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "SDES appointment types from File 409.1"
     },
     "SDES GET CANCEL REASONS": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "SDES cancellation reasons"
     },
     "SDES GET RESOURCE BY CLINIC": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "SDES clinic resource/schedule info"
     },
     "SDES GET CLINIC INFO2": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "SDES detailed clinic info from File 44"
     },
     "SDES GET APPT BY APPT IEN": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "SDES single appointment detail by IEN (truth gate)"
     },
     "SDES CREATE APPOINTMENTS": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "write",
+      "description": "SDES direct appointment booking"
     },
     "SDES CANCEL APPOINTMENT 2": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "write",
+      "description": "SDES appointment cancellation"
     },
     "SDES CHECKIN": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "write",
+      "description": "SDES patient check-in"
     },
     "SDES CHECKOUT": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "write",
+      "description": "SDES patient checkout"
     },
     "SD RECALL LIST": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "List recall reminders for patient from File 403.5"
     },
     "SD RECALL GET": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "Get recall reminder detail from File 403.5"
     },
     "SDES GET RECALL ENTRIES": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "SDES recall/reminder entries for patient"
     },
     "SD RECALL DATE CHECK": {
-      "domain": "scheduling"
+      "domain": "scheduling",
+      "tag": "read",
+      "description": "Check recall compliance/overdue status"
     },
     "YTT GET INSTRUMENT": {
-      "domain": "mental-health"
+      "domain": "mental-health",
+      "tag": "read",
+      "description": "Fetch MH instrument definition (questions, scoring rules) from File 601.72"
     },
     "YTQZ LISTTESTS": {
-      "domain": "mental-health"
+      "domain": "mental-health",
+      "tag": "read",
+      "description": "List available MH tests/instruments from File 601.71"
     },
     "YTT SAVE RESULTS": {
-      "domain": "mental-health"
+      "domain": "mental-health",
+      "tag": "write",
+      "description": "Store completed instrument results to File 601.84"
     },
     "YTQZ RESULTLIST": {
-      "domain": "mental-health"
+      "domain": "mental-health",
+      "tag": "read",
+      "description": "Get historical MH results for a patient from File 601.84"
     },
     "YTQZ DETAILLIST": {
-      "domain": "mental-health"
+      "domain": "mental-health",
+      "tag": "read",
+      "description": "Get detailed results for a specific MH administration"
     },
     "MD CLIO": {
-      "domain": "clinical-procedures"
+      "domain": "clinical-procedures",
+      "tag": "read",
+      "description": "Primary Clinical Procedures CliO engine RPC (File 702)"
     },
     "MD TMDPROCEDURE": {
-      "domain": "clinical-procedures"
+      "domain": "clinical-procedures",
+      "tag": "read",
+      "description": "Procedure management for CP studies"
     },
     "MD TMDPATIENT": {
-      "domain": "clinical-procedures"
+      "domain": "clinical-procedures",
+      "tag": "read",
+      "description": "Patient context for CP/Medicine data"
     },
     "MD TMDNOTE": {
-      "domain": "clinical-procedures"
+      "domain": "clinical-procedures",
+      "tag": "write",
+      "description": "TIU note linking for CP studies"
     },
     "MD TMDRECORDID": {
-      "domain": "clinical-procedures"
+      "domain": "clinical-procedures",
+      "tag": "read",
+      "description": "FileMan CRUD for CP records (File 702)"
     },
     "MD TMDOUTPUT": {
-      "domain": "clinical-procedures"
+      "domain": "clinical-procedures",
+      "tag": "read",
+      "description": "Report output for CP results"
     },
     "MD TMDCIDC": {
-      "domain": "clinical-procedures"
+      "domain": "clinical-procedures",
+      "tag": "read",
+      "description": "Procedures+diagnoses for CP clinics"
     },
     "MD TMDLEX": {
-      "domain": "clinical-procedures"
+      "domain": "clinical-procedures",
+      "tag": "read",
+      "description": "CPT/ICD lexicon search for CP"
     },
     "MD TMDWIDGET": {
-      "domain": "clinical-procedures"
+      "domain": "clinical-procedures",
+      "tag": "read",
+      "description": "Widget data for CP display"
     },
     "MD UTILITIES": {
-      "domain": "clinical-procedures"
+      "domain": "clinical-procedures",
+      "tag": "read",
+      "description": "MD package utility functions"
     },
     "ORQQCN ASSIGNABLE MED RESULTS": {
-      "domain": "clinical-procedures"
+      "domain": "clinical-procedures",
+      "tag": "read",
+      "description": "Medicine results attachable to consult"
     },
     "ORQQCN ATTACH MED RESULTS": {
-      "domain": "clinical-procedures"
+      "domain": "clinical-procedures",
+      "tag": "write",
+      "description": "Attach medicine result to consult"
     },
     "ORQQCN GET MED RESULT DETAILS": {
-      "domain": "clinical-procedures"
+      "domain": "clinical-procedures",
+      "tag": "read",
+      "description": "Detail of a medicine result"
     },
     "TIU IS THIS A CLINPROC?": {
-      "domain": "clinical-procedures"
+      "domain": "clinical-procedures",
+      "tag": "read",
+      "description": "Check if TIU title is under CP class"
     },
     "TIU IDENTIFY CLINPROC CLASS": {
-      "domain": "clinical-procedures"
+      "domain": "clinical-procedures",
+      "tag": "read",
+      "description": "Get CP class IEN from TIU"
     }
   },
   "exceptions": [

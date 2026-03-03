@@ -4,6 +4,7 @@
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { requireSession } from "../auth/auth-routes.js";
+import { log } from "../lib/logger.js";
 import {
   createIdentity,
   getIdentity,
@@ -52,6 +53,7 @@ export default async function mpiRoutes(server: FastifyInstance): Promise<void> 
       });
       return reply.code(201).send({ ok: true, identity: rec });
     } catch (err: any) {
+      log.error("MPI identity creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(400).send({ ok: false, error: "Create failed" });
     }
   });

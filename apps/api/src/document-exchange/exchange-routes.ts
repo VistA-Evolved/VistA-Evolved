@@ -4,6 +4,7 @@
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { requireSession } from "../auth/auth-routes.js";
+import { log } from "../lib/logger.js";
 import {
   createDocument, getDocument, listDocuments, updateDocument, searchDocuments,
   createSubmissionSet, getSubmissionSet, listSubmissionSets,
@@ -59,6 +60,7 @@ export default async function documentExchangeRoutes(server: FastifyInstance): P
       });
       return reply.code(201).send({ ok: true, document: rec });
     } catch (err: any) {
+      log.error("Document creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(400).send({ ok: false, error: "Create failed" });
     }
   });
@@ -102,6 +104,7 @@ export default async function documentExchangeRoutes(server: FastifyInstance): P
       });
       return reply.code(201).send({ ok: true, submission: rec });
     } catch (err: any) {
+      log.error("Submission set creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(400).send({ ok: false, error: "Create failed" });
     }
   });

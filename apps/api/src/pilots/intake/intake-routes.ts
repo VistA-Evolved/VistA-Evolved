@@ -4,6 +4,7 @@
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { requireSession } from "../../auth/auth-routes.js";
+import { log } from "../../lib/logger.js";
 import {
   createIntake, getIntake, listIntakes, updateIntake, transitionIntake,
   getConfigArtifact, storeConfigArtifact, getIntakeDashboard,
@@ -62,6 +63,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
       });
       return reply.code(201).send({ ok: true, intake: rec });
     } catch (err: any) {
+      log.error("Pilot intake creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(400).send({ ok: false, error: "Create failed" });
     }
   });

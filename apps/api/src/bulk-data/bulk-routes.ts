@@ -8,6 +8,7 @@ import {
   createBulkJob, getBulkJob, listBulkJobs, cancelBulkJob, simulateJobProgress,
   getBulkDataDashboardStats,
 } from "./bulk-store.js";
+import { log } from "../lib/logger.js";
 
 export default async function bulkDataRoutes(server: FastifyInstance): Promise<void> {
 
@@ -45,6 +46,7 @@ export default async function bulkDataRoutes(server: FastifyInstance): Promise<v
       });
       return reply.code(202).send({ ok: true, job });
     } catch (err: any) {
+      log.error("Bulk export job creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(400).send({ ok: false, error: "Export failed" });
     }
   });
@@ -65,6 +67,7 @@ export default async function bulkDataRoutes(server: FastifyInstance): Promise<v
       });
       return reply.code(202).send({ ok: true, job });
     } catch (err: any) {
+      log.error("Bulk import job creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(400).send({ ok: false, error: "Import failed" });
     }
   });

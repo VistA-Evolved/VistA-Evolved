@@ -51,6 +51,7 @@
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { requireSession } from "../auth/auth-routes.js";
+import { log } from "../lib/logger.js";
 import {
   listCqlLibraries,
   getCqlLibrary,
@@ -111,6 +112,7 @@ export default async function clinicalReasoningRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, library: lib });
     } catch (err: any) {
+      log.error("CQL library creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
@@ -172,6 +174,7 @@ export default async function clinicalReasoningRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, measure });
     } catch (err: any) {
+      log.error("Quality measure creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
@@ -261,6 +264,7 @@ export default async function clinicalReasoningRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, result });
     } catch (err: any) {
+      log.error("Patient measure result creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
@@ -292,6 +296,7 @@ export default async function clinicalReasoningRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, planDefinition: plan });
     } catch (err: any) {
+      log.error("Plan definition creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
@@ -347,6 +352,7 @@ export default async function clinicalReasoningRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, activityDefinition: def });
     } catch (err: any) {
+      log.error("Activity definition creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
@@ -401,6 +407,7 @@ export default async function clinicalReasoningRoutes(server: FastifyInstance) {
       }
       return reply.code(201).send({ ok: true, report });
     } catch (err: any) {
+      log.error("Measure report generation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });

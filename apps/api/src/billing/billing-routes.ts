@@ -12,6 +12,7 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { getBillingProvider } from "./types.js";
 import { getMeterSnapshot, flushMeters } from "./metering.js";
+import { log } from "../lib/logger.js";
 
 export default async function billingRoutes(server: FastifyInstance): Promise<void> {
   /* ================================================================ */
@@ -82,7 +83,8 @@ export default async function billingRoutes(server: FastifyInstance): Promise<vo
       const sub = await provider.cancelSubscription(tenantId, cancelAtPeriodEnd);
       return reply.send({ ok: true, subscription: sub });
     } catch (err: any) {
-      return reply.code(404).send({ ok: false, error: "Internal error" });
+      log.error("Cancel subscription failed", { error: err instanceof Error ? err.message : String(err) });
+      return reply.code(500).send({ ok: false, error: "Internal error" });
     }
   });
 

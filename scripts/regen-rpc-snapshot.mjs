@@ -40,7 +40,11 @@ function extractEntries(src) {
     const domainMatch = rest.match(/domain:\s*["']([^"']+)["']/);
     const domain = domainMatch ? domainMatch[1] : undefined;
 
-    // Extract tags if present
+    // Extract tag (singular string) — used by RPC_REGISTRY
+    const tagMatch = rest.match(/\btag:\s*["']([^"']+)["']/);
+    const tag = tagMatch ? tagMatch[1] : undefined;
+
+    // Extract tags (plural array) — used by RPC_EXCEPTIONS
     const tagsMatch = rest.match(/tags:\s*\[([^\]]*)\]/);
     let tags;
     if (tagsMatch) {
@@ -54,10 +58,16 @@ function extractEntries(src) {
     const reasonMatch = rest.match(/reason:\s*["']([^"']+)["']/);
     const reason = reasonMatch ? reasonMatch[1] : undefined;
 
+    // Extract description if present
+    const descMatch = rest.match(/description:\s*["']([^"']+)["']/);
+    const description = descMatch ? descMatch[1] : undefined;
+
     const entry = { name };
     if (domain) entry.domain = domain;
+    if (tag) entry.tag = tag;
     if (tags && tags.length > 0) entry.tags = tags;
     if (reason) entry.reason = reason;
+    if (description) entry.description = description;
     entries.push(entry);
   }
   return entries;
@@ -71,14 +81,18 @@ const registry = {};
 for (const e of registryEntries) {
   registry[e.name] = {};
   if (e.domain) registry[e.name].domain = e.domain;
+  if (e.tag) registry[e.name].tag = e.tag;
   if (e.tags) registry[e.name].tags = e.tags;
+  if (e.description) registry[e.name].description = e.description;
 }
 
 // Build exceptions array
 const exceptions = exceptionEntries.map((e) => {
   const obj = { name: e.name };
   if (e.domain) obj.domain = e.domain;
+  if (e.tag) obj.tag = e.tag;
   if (e.tags) obj.tags = e.tags;
+  if (e.description) obj.description = e.description;
   return obj;
 });
 

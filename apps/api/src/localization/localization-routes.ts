@@ -47,6 +47,7 @@
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { requireSession } from "../auth/auth-routes.js";
+import { log } from "../lib/logger.js";
 import {
   listLocales,
   getLocale,
@@ -106,6 +107,7 @@ export default async function localizationRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, locale: loc });
     } catch (err: any) {
+      log.error("Locale creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
@@ -160,6 +162,7 @@ export default async function localizationRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, bundle });
     } catch (err: any) {
+      log.error("Translation bundle creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
@@ -222,6 +225,7 @@ export default async function localizationRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, profile });
     } catch (err: any) {
+      log.error("Unit profile creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
@@ -264,6 +268,7 @@ export default async function localizationRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, countryPack: pack });
     } catch (err: any) {
+      log.error("Country pack creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
@@ -320,6 +325,7 @@ export default async function localizationRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, theme });
     } catch (err: any) {
+      log.error("Theme creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });

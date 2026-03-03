@@ -39,6 +39,7 @@
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { requireSession } from "../auth/auth-routes.js";
+import { log } from "../lib/logger.js";
 import {
   listCdsServices,
   getCdsService,
@@ -171,6 +172,7 @@ export default async function cdsHooksRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, rule });
     } catch (err: any) {
+      log.error("CDS rule creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
@@ -248,6 +250,7 @@ export default async function cdsHooksRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, app });
     } catch (err: any) {
+      log.error("SMART app creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });

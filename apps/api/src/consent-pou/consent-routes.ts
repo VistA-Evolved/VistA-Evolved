@@ -5,6 +5,7 @@
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { requireSession } from "../auth/auth-routes.js";
+import { log } from "../lib/logger.js";
 import {
   createDirective, getDirective, listDirectives, updateDirective, revokeDirective,
   evaluateConsent, logDisclosure, listDisclosures,
@@ -60,6 +61,7 @@ export default async function consentPouRoutes(server: FastifyInstance): Promise
       });
       return reply.code(201).send({ ok: true, directive: rec });
     } catch (err: any) {
+      log.error("Consent directive creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(400).send({ ok: false, error: "Create failed" });
     }
   });

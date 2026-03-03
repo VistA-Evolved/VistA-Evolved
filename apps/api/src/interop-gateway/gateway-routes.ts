@@ -7,6 +7,7 @@
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { requireSession } from "../auth/auth-routes.js";
+import { log } from "../lib/logger.js";
 import {
   createChannel,
   getChannel,
@@ -61,6 +62,7 @@ export default async function interopGatewayRoutes(server: FastifyInstance): Pro
       });
       return reply.code(201).send({ ok: true, channel: ch });
     } catch (err: any) {
+      log.error("Interop channel creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
@@ -122,6 +124,7 @@ export default async function interopGatewayRoutes(server: FastifyInstance): Pro
       });
       return reply.code(201).send({ ok: true, pipeline: p });
     } catch (err: any) {
+      log.error("Transform pipeline creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
@@ -211,6 +214,7 @@ export default async function interopGatewayRoutes(server: FastifyInstance): Pro
       });
       return reply.code(201).send({ ok: true, mediator: m });
     } catch (err: any) {
+      log.error("Mediator creation failed", { error: err instanceof Error ? err.message : String(err) });
       return reply.code(409).send({ ok: false, error: "Internal error" });
     }
   });
