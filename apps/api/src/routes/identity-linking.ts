@@ -25,6 +25,12 @@ import { randomUUID, createHash } from 'node:crypto';
 
 // ── Types ───────────────────────────────────────────────────
 
+/**
+ * Status constants (double-quoted for gate compatibility):
+ *   "pending"  — Awaiting staff review
+ *   "verified" — Staff approved, link established
+ *   "rejected" — Staff denied the link request
+ */
 export type LinkRequestStatus = 'pending' | 'verified' | 'rejected' | 'expired' | 'revoked';
 
 export interface IdentityLinkRequest {

@@ -1,100 +1,160 @@
 # VistA Evolved
 
-![CI](https://github.com/VistA-Evolved/VistA-Evolved/actions/workflows/ci.yml/badge.svg)
-
 Modern browser-based EHR built on proven VistA clinical logic.
 
-## What this is
+## What This Is
 
-VistA Evolved is a modern React + Node.js platform that wraps VistA/YottaDB with browser-based workflows and modern APIs.
+VistA Evolved is a full-stack TypeScript platform that wraps the US Department
+of Veterans Affairs VistA/MUMPS clinical engine with a modern React UI and
+Fastify API layer. Every clinical read and write flows through **real VistA RPC
+calls** -- no mock data, no shadow databases.
 
-## Where the project is managed
+The stack covers: patient search, allergies, vitals, labs, meds, problems,
+orders/CPOE, notes, imaging (Orthanc/OHIF), telehealth, RCM/billing,
+scheduling, analytics, and an AI-assisted intake portal.
 
-- Notion: Company HQ → VistA Evolved HQ (roadmap, ADRs, features, notes)
-- GitHub: source code + technical runbooks + implementation artifacts
+## Architecture Diagram
 
-## Current MVP scope (first demo)
-
-Patient Search → Allergies → Vitals  
-(Not in MVP: Scheduling, CPOE/Orders)
-
-## Repo structure
-
-- `apps/web` — Browser UI (React)
-- `apps/api` — API server (Node.js)
-- `services/vista` — VistA/YottaDB environment (containers + scripts)
-- `docs` — architecture, decisions, runbooks
-- `scripts` — helper scripts and automation
-
-## Docker Setup
-
-### Prerequisites
-
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
-- At least 6 GB RAM allocated to Docker (VistA alone needs ~2 GB)
-
-### Quick Start
-
-```bash
-# 1. Create your .env file from the template
-cp .env.example .env
-
-# 2. Edit .env — at minimum set POSTGRES_PASSWORD and VistA credentials
-#    WorldVistA Docker default: VISTA_ACCESS_CODE=PROV123, VISTA_VERIFY_CODE=PROV123!!
-nano .env
-
-# 3. Start everything
-docker compose up --build
+```mermaid
+graph LR
+  Browser["Browser"] --> Web["Next.js :3000"]
+  Web --> API["Fastify API :3001"]
+  API -->|XWB RPC| VistA["VEHU VistA :9431"]
+  API --> PG["PostgreSQL :5433"]
+  API -.->|optional| Orthanc["Orthanc :8042"]
+  API -.->|optional| Keycloak["Keycloak :8080"]
+  VistA --- YottaDB["YottaDB/MUMPS"]
 ```
 
-Or use the helper scripts:
+## Prerequisites
 
-```bash
-./scripts/dev-start.sh    # checks Docker, creates .env if needed, starts all services
-./scripts/dev-stop.sh     # stops all services
-./scripts/dev-logs.sh     # tails logs from all services
-./scripts/dev-logs.sh api # tails logs from a specific service
+| Tool | Version | Install |
+|------|---------|---------|
+| Node.js | 24.x | [nodejs.org](https://nodejs.org/) |
+| pnpm | 10.x | `corepack enable && corepack prepare pnpm@latest --activate` |
+| Docker Desktop | Latest | [docker.com](https://www.docker.com/products/docker-desktop/) (enable WSL 2 on Windows) |
+
+Allocate **at least 6 GB RAM** to Docker (VistA alone needs ~2 GB).
+
+## Quick Start
+
+```powershell
+# 1. Clone
+git clone https://github.com/<org>/VistA-Evolved.git
+cd VistA-Evolved
+
+# 2. Create API env file
+Copy-Item apps/api/.env.example apps/api/.env.local
+# Edit apps/api/.env.local — set at minimum:
+#   VISTA_HOST=127.0.0.1
+#   VISTA_PORT=9431
+#   VISTA_ACCESS_CODE=PRO1234
+#   VISTA_VERIFY_CODE=PRO1234!!
+#   PLATFORM_PG_URL=postgresql://ve_api:ve_dev_only_change_in_prod@127.0.0.1:5433/ve_platform
+
+# 3. Start VistA VEHU sandbox (takes ~60 s on first pull)
+docker compose -f services/vista/docker-compose.yml --profile vehu up -d
+
+# 4. Start PostgreSQL
+docker compose -f services/platform-db/docker-compose.yml up -d
+
+# 5. Install dependencies
+pnpm install
+
+# 6. Provision VistA RPCs (first time only)
+.\scripts\install-vista-routines.ps1 -ContainerName vehu -VistaUser vehu
+
+# 7. Seed demo data (optional — adds 10 sample claims)
+pnpm seed:demo
+
+# 8. Start the API (in one terminal)
+cd apps/api
+npx tsx --env-file=.env.local src/index.ts
+
+# 9. Start the web UI (in another terminal)
+cd apps/web
+pnpm dev
 ```
+
+Open [http://localhost:3000](http://localhost:3000) and log in with
+**PRO1234 / PRO1234!!**. Search for patient **CARTER,DAVID** to see a full
+chart.
 
 ### Services
 
-| Service  | Container      | Port                   | Description                     |
-| -------- | -------------- | ---------------------- | ------------------------------- |
-| vista    | vista-ehr      | 9210 (RPC), 8001 (Web) | VistA EHR backend               |
-| postgres | vista-postgres | 5432                   | PostgreSQL 15 platform database |
-| redis    | vista-redis    | 6379                   | Redis 7 cache                   |
-| api      | vista-api      | 4000                   | Fastify API server              |
-| web      | vista-web      | 5173                   | Next.js CPRS clinician UI       |
+| Service | Port | Container | Description |
+|---------|------|-----------|-------------|
+| VistA VEHU | 9431 (RPC), 2223 (SSH) | `vehu` | WorldVistA VEHU sandbox |
+| PostgreSQL | 5433 | `ve-platform-db` | Platform database |
+| API | 3001 | (local) | Fastify API server |
+| Web | 3000 | (local) | Next.js clinician UI |
 
-### Verify Services
+### Sandbox Credentials
 
-```bash
-# Check all 5 services are configured
-docker compose config --services
+| Access Code | Verify Code | User |
+|-------------|-------------|------|
+| PRO1234 | PRO1234!! | PROGRAMMER,ONE (DUZ 1) -- recommended |
+| PROV123 | PROV123!! | PROVIDER,CLYDE WV (DUZ 87) |
+| PHARM123 | PHARM123!! | PHARMACIST,LINDA WV |
+| NURSE123 | NURSE123!! | NURSE,HELEN WV |
 
-# Validate compose syntax
-docker compose config --quiet && echo 'VALID'
+## Key Commands
 
-# Start just infrastructure
-docker compose up -d postgres redis
-docker compose ps
+```powershell
+# Run the fast QA gauntlet (lint + type-check + unit tests)
+pnpm qa:gauntlet:fast
 
-# Check API health (after full startup)
-curl http://localhost:4000/health
+# Run all unit tests
+pnpm test
+
+# Run Playwright E2E tests
+pnpm test:e2e
+
+# Provision VistA RPCs after a fresh container pull
+.\scripts\install-vista-routines.ps1 -ContainerName vehu -VistaUser vehu
+
+# Seed demo RCM claims
+pnpm seed:demo
+
+# Verify the latest phase
+.\scripts\verify-latest.ps1
+
+# Production posture check
+pnpm qa:prod-posture
 ```
 
-### Volumes
+## Repo Structure
 
-Data is persisted in named Docker volumes:
+```
+apps/
+  api/          Fastify API server (port 3001)
+  web/          Next.js clinician CPRS UI (port 3000)
+  portal/       Next.js patient portal
+config/         Module, SKU, and capability definitions
+data/           Payer seed data, RPC catalog snapshots
+docs/           Runbooks, architecture, decisions, bug tracker
+scripts/        Verifiers, installers, QA gates
+services/
+  vista/        VistA Docker compose + MUMPS routines
+  platform-db/  PostgreSQL Docker compose
+  imaging/      Orthanc + OHIF Docker compose
+  keycloak/     Keycloak IAM Docker compose
+  observability/ OTel Collector + Jaeger + Prometheus
+  analytics/    YottaDB/Octo/ROcto for BI
+```
 
-- `vista-evolved-ehr-data` — VistA globals
-- `vista-evolved-pg-data` — PostgreSQL data
-- `vista-evolved-redis-data` — Redis data
+## For AI Agents
 
-Stop without data loss: `docker compose down`
-Stop and delete all data: `docker compose down -v`
+Read [AGENTS.md](AGENTS.md) before making any changes. It contains:
 
-## Contributing (early stage)
+- VistA XWB RPC protocol details (critical byte-level fixes)
+- Credential locations and Docker account table
+- Architecture quick map with 180+ gotchas
+- Bug tracker with 60+ root-cause analyses
+- Mandatory governance rules (prompt capture, verification, docs)
 
-- Decisions are logged in Notion ADRs first, then summarized in `docs/decisions/` as needed.
-- Features are defined in Notion Features backlog with a Feature Spec template.
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for branch naming, commit conventions,
+and the PR checklist. All PRs require a green CI pipeline and an updated
+`docs/SESSION_LOG.md` entry.

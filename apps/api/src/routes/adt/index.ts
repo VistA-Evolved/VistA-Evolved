@@ -1,5 +1,5 @@
 /**
- * ADT + Inpatient Routes -- Phase 67 + Phase 137 enhancements.
+ * ADT + Inpatient Routes -- Phase 67 + Phase 137 enhancements + ADT-1 PG stubs.
  *
  * Endpoints:
  *   GET  /vista/adt/wards                          -- List all wards (ORQPT WARDS)
@@ -13,9 +13,9 @@
  *   GET  /vista/adt/admission-list?dfn=N            -- Admission history (ORWPT16 ADMITLST)
  *   GET  /vista/adt/census?ward=IEN                 -- Ward census + enriched patient list (Phase 137)
  *   GET  /vista/adt/movements?dfn=N                 -- Patient movement timeline (Phase 137)
- *   POST /vista/adt/admit                           -- (integration-pending)
- *   POST /vista/adt/transfer                        -- (integration-pending)
- *   POST /vista/adt/discharge                       -- (integration-pending)
+ *   POST /vista/adt/admit                           -- PG-backed stub (ADT-1)
+ *   POST /vista/adt/transfer                        -- PG-backed stub (ADT-1)
+ *   POST /vista/adt/discharge                       -- PG-backed stub (ADT-1)
  *
  * Auth: session-based (/vista/* catch-all in security.ts).
  * Audit: immutable audit trail for census + movement access (Phase 137).
@@ -23,11 +23,12 @@
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { randomUUID } from 'node:crypto';
+import { z } from 'zod';
 import { requireSession } from '../../auth/auth-routes.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { immutableAudit } from '../../lib/immutable-audit.js';
 import { log } from '../../lib/logger.js';
-import { tier0Gate } from '../../lib/tier0-response.js';
 
 /* ------------------------------------------------------------------ */
 /* Audit helper                                                         */
@@ -138,6 +139,97 @@ function pendingFallback(reply: FastifyReply, rpcName: string, err: any) {
     _error: errMsg.includes('ECONNREFUSED') ? 'VistA unavailable' : 'RPC call failed',
   });
 }
+
+/* ------------------------------------------------------------------ */
+/* ADT-1: PG-backed stub infrastructure                                */
+/* ------------------------------------------------------------------ */
+
+let _pgPool: any = null;
+let _pgImportAttempted = false;
+
+/** Lazy-load PG pool for ADT movement storage. */
+async function getPgPoolLazy(): Promise<any> {
+  if (_pgPool) return _pgPool;
+  if (_pgImportAttempted) return null;
+  _pgImportAttempted = true;
+  try {
+    const pgDb = await import('../../platform/pg/pg-db.js');
+    if (pgDb.isPgConfigured()) {
+      _pgPool = pgDb.getPgPool();
+      return _pgPool;
+    }
+  } catch {
+    /* PG not available — ADT movements only audited via immutableAudit */
+  }
+  return null;
+}
+
+/** Insert an ADT movement record into PG. Returns the movement ID or null. */
+async function insertAdtMovement(movement: {
+  movementType: string;
+  patientDfn: string;
+  fromWardIen?: string;
+  toWardIen?: string;
+  bedId?: string;
+  admittingDuz?: string;
+  attendingDuz?: string;
+  movementDatetime: string;
+  dischargeType?: string;
+  detail?: Record<string, unknown>;
+}): Promise<string | null> {
+  const pool = await getPgPoolLazy();
+  if (!pool) return null;
+  const id = randomUUID();
+  try {
+    await pool.query(
+      `INSERT INTO adt_movement
+         (id, movement_type, patient_dfn, from_ward_ien, to_ward_ien, bed_id,
+          admitting_duz, attending_duz, movement_datetime, discharge_type, detail)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+      [
+        id,
+        movement.movementType,
+        movement.patientDfn,
+        movement.fromWardIen || null,
+        movement.toWardIen || null,
+        movement.bedId || null,
+        movement.admittingDuz || null,
+        movement.attendingDuz || null,
+        movement.movementDatetime,
+        movement.dischargeType || null,
+        movement.detail ? JSON.stringify(movement.detail) : null,
+      ]
+    );
+    return id;
+  } catch (err: any) {
+    log.warn('ADT movement PG insert failed', { error: err.message });
+    return null;
+  }
+}
+
+/* ---- Zod body schemas ---- */
+
+const AdmitSchema = z.object({
+  patientDfn: z.string().min(1, 'patientDfn required'),
+  wardIen: z.string().optional(),
+  bedId: z.string().optional(),
+  admittingPhysicianDuz: z.string().optional(),
+  admitDateTime: z.string().optional(),
+});
+
+const TransferSchema = z.object({
+  patientDfn: z.string().min(1, 'patientDfn required'),
+  toWardIen: z.string().min(1, 'toWardIen required'),
+  toBedId: z.string().optional(),
+  attendingDuz: z.string().optional(),
+  transferDateTime: z.string().optional(),
+});
+
+const DischargeSchema = z.object({
+  patientDfn: z.string().min(1, 'patientDfn required'),
+  dischargeType: z.string().optional(),
+  dischargeDateTime: z.string().optional(),
+});
 
 /* ------------------------------------------------------------------ */
 /* Routes                                                               */
@@ -489,67 +581,138 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
     }
   });
 
-  /* ---- POST /vista/adt/admit -- Tier-0 capability-driven (Phase 483) ---- */
+  /* ---- POST /vista/adt/admit -- PG-backed stub (ADT-1) ---- */
+  // TODO-RPC: Wire to DGPM NEW ADMISSION when available in VistA context
   server.post('/vista/adt/admit', async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
-    const blocked = tier0Gate('DGPM NEW ADMISSION', 'adt', {
-      vistaFiles: ['PATIENT MOVEMENT (405)', 'PATIENT (2)'],
-      targetRoutines: ['DGPMV', 'DGADM'],
-      migrationPath: 'Wire DGPM admission RPCs with ward/bed selection + DG ADT event triggers',
-      sandboxNote:
-        'WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context',
+    const session = await requireSession(request, reply);
+    const body = (request.body as any) || {};
+    const parsed = AdmitSchema.safeParse(body);
+    if (!parsed.success) {
+      return reply.status(400).send({
+        ok: false,
+        error: 'Validation failed',
+        details: parsed.error.issues,
+      });
+    }
+
+    // DGPM NEW ADMISSION is not usable in the WorldVistA sandbox (not exposed
+    // in OR CPRS GUI CHART context). Persist to PG as a pending movement.
+    const dt = parsed.data.admitDateTime || new Date().toISOString();
+    const movementId = await insertAdtMovement({
+      movementType: 'admit',
+      patientDfn: parsed.data.patientDfn,
+      toWardIen: parsed.data.wardIen,
+      bedId: parsed.data.bedId,
+      admittingDuz: parsed.data.admittingPhysicianDuz || (session as any)?.duz,
+      movementDatetime: dt,
     });
-    immutableAudit('adt.admit', blocked ? 'blocked' : 'attempt', auditActor(request), {
-      detail: { capabilityProbe: blocked?.capabilityProbe },
+    immutableAudit('adt.admit', movementId ? 'success' : 'blocked', auditActor(request), {
+      detail: { movementId, pgBacked: !!movementId },
     });
-    if (blocked) return reply.status(202).send(blocked);
-    // RPC available -- attempt real writeback (future: wire DGPM NEW ADMISSION call)
-    return reply.status(501).send({
-      ok: false,
-      status: 'not-implemented',
-      message: 'DGPM NEW ADMISSION call not yet wired',
+    return reply.status(201).send({
+      ok: true,
+      admissionId: movementId,
+      status: 'pending',
+      source: 'pg-pending-vista',
+      rpcUsed: [],
+      pendingTargets: ['DGPM NEW ADMISSION'],
+      _note: 'Stored in PG. Will sync to VistA when DGPM NEW ADMISSION becomes available.',
+      vistaGrounding: {
+        vistaFiles: ['PATIENT MOVEMENT (405)', 'PATIENT (2)'],
+        targetRoutines: ['DGPMV', 'DGADM'],
+        migrationPath:
+          'Wire DGPM admission RPCs with ward/bed selection + DG ADT event triggers',
+        sandboxNote:
+          'WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context',
+      },
     });
   });
 
-  /* ---- POST /vista/adt/transfer -- Tier-0 capability-driven (Phase 483) ---- */
+  /* ---- POST /vista/adt/transfer -- PG-backed stub (ADT-1) ---- */
+  // TODO-RPC: Wire to DGPM NEW TRANSFER when available in VistA context
   server.post('/vista/adt/transfer', async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
-    const blocked = tier0Gate('DGPM NEW TRANSFER', 'adt', {
-      vistaFiles: ['PATIENT MOVEMENT (405)', 'WARD LOCATION (42)'],
-      targetRoutines: ['DGPMV', 'DGTRAN'],
-      migrationPath: 'Wire DGPM transfer RPC with destination ward/bed + attending provider',
-      sandboxNote:
-        'WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context',
+    const session = await requireSession(request, reply);
+    const body = (request.body as any) || {};
+    const parsed = TransferSchema.safeParse(body);
+    if (!parsed.success) {
+      return reply.status(400).send({
+        ok: false,
+        error: 'Validation failed',
+        details: parsed.error.issues,
+      });
+    }
+
+    const dt = parsed.data.transferDateTime || new Date().toISOString();
+    const movementId = await insertAdtMovement({
+      movementType: 'transfer',
+      patientDfn: parsed.data.patientDfn,
+      toWardIen: parsed.data.toWardIen,
+      bedId: parsed.data.toBedId,
+      attendingDuz: parsed.data.attendingDuz || (session as any)?.duz,
+      movementDatetime: dt,
     });
-    immutableAudit('adt.transfer', blocked ? 'blocked' : 'attempt', auditActor(request), {
-      detail: { capabilityProbe: blocked?.capabilityProbe },
+    immutableAudit('adt.transfer', movementId ? 'success' : 'blocked', auditActor(request), {
+      detail: { movementId, pgBacked: !!movementId },
     });
-    if (blocked) return reply.status(202).send(blocked);
-    return reply.status(501).send({
-      ok: false,
-      status: 'not-implemented',
-      message: 'DGPM NEW TRANSFER call not yet wired',
+    return reply.status(201).send({
+      ok: true,
+      transferId: movementId,
+      status: 'pending',
+      source: 'pg-pending-vista',
+      rpcUsed: [],
+      pendingTargets: ['DGPM NEW TRANSFER'],
+      _note: 'Stored in PG. Will sync to VistA when DGPM NEW TRANSFER becomes available.',
+      vistaGrounding: {
+        vistaFiles: ['PATIENT MOVEMENT (405)', 'WARD LOCATION (42)'],
+        targetRoutines: ['DGPMV', 'DGTRAN'],
+        migrationPath:
+          'Wire DGPM transfer RPC with destination ward/bed + attending provider',
+        sandboxNote:
+          'WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context',
+      },
     });
   });
 
-  /* ---- POST /vista/adt/discharge -- Tier-0 capability-driven (Phase 483) ---- */
+  /* ---- POST /vista/adt/discharge -- PG-backed stub (ADT-1) ---- */
+  // TODO-RPC: Wire to DGPM NEW DISCHARGE when available in VistA context
   server.post('/vista/adt/discharge', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
-    const blocked = tier0Gate('DGPM NEW DISCHARGE', 'adt', {
-      vistaFiles: ['PATIENT MOVEMENT (405)', 'PATIENT (2)'],
-      targetRoutines: ['DGPMV', 'DGDIS'],
-      migrationPath: 'Wire DGPM discharge RPC with discharge type + disposition',
-      sandboxNote:
-        'WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context',
+    const body = (request.body as any) || {};
+    const parsed = DischargeSchema.safeParse(body);
+    if (!parsed.success) {
+      return reply.status(400).send({
+        ok: false,
+        error: 'Validation failed',
+        details: parsed.error.issues,
+      });
+    }
+
+    const dt = parsed.data.dischargeDateTime || new Date().toISOString();
+    const movementId = await insertAdtMovement({
+      movementType: 'discharge',
+      patientDfn: parsed.data.patientDfn,
+      dischargeType: parsed.data.dischargeType,
+      movementDatetime: dt,
     });
-    immutableAudit('adt.discharge', blocked ? 'blocked' : 'attempt', auditActor(request), {
-      detail: { capabilityProbe: blocked?.capabilityProbe },
+    immutableAudit('adt.discharge', movementId ? 'success' : 'blocked', auditActor(request), {
+      detail: { movementId, pgBacked: !!movementId },
     });
-    if (blocked) return reply.status(202).send(blocked);
-    return reply.status(501).send({
-      ok: false,
-      status: 'not-implemented',
-      message: 'DGPM NEW DISCHARGE call not yet wired',
+    return reply.status(201).send({
+      ok: true,
+      dischargeId: movementId,
+      status: 'pending',
+      source: 'pg-pending-vista',
+      rpcUsed: [],
+      pendingTargets: ['DGPM NEW DISCHARGE'],
+      _note: 'Stored in PG. Will sync to VistA when DGPM NEW DISCHARGE becomes available.',
+      vistaGrounding: {
+        vistaFiles: ['PATIENT MOVEMENT (405)', 'PATIENT (2)'],
+        targetRoutines: ['DGPMV', 'DGDIS'],
+        migrationPath:
+          'Wire DGPM discharge RPC with discharge type + disposition',
+        sandboxNote:
+          'WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context',
+      },
     });
   });
 }

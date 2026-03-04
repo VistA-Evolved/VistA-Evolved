@@ -162,6 +162,15 @@ if ($copyFailed) {
     exit 1
 }
 
+# Strip BOM and convert CRLF to LF (Windows git may check out with CRLF;
+# YottaDB/MUMPS cannot parse labels when lines end with \r)
+Write-Host "  Fixing line endings (BOM + CRLF)..."
+$prevEAP = $ErrorActionPreference
+$ErrorActionPreference = "SilentlyContinue"
+docker exec $ContainerName bash -c "cd $RoutinesDir && for f in ZVE*.m VEMCTX3.m; do [ -f \`$f ] && sed -i 's/\r\`$//' \`$f && sed -i '1s/^\xEF\xBB\xBF//' \`$f; done" 2>&1 | Out-Null
+$ErrorActionPreference = $prevEAP
+Write-Gate "PASS" "Line endings normalized (BOM + CRLF stripped)"
+
 # ================================================================
 # Step 3: Run INSTALL entry points (idempotent)
 # ================================================================
@@ -277,22 +286,22 @@ if (-not $SkipVerify) {
         },
         @{
             Label   = "ZVEMSGR callable"
-            Command = "mumps -run %XCMD 'N R D FOLDERS^ZVEMSGR(.R,87) W R(0)'"
-            Match   = "\d|\^|MAIL"
+            Command = "mumps -run %XCMD 'S DUZ=87 N R D FOLDERS^ZVEMSGR(.R) W R(0)'"
+            Match   = "ok|\d|\^"
         },
         @{
             Label   = "ZVERPC callable"
-            Command = "mumps -run %XCMD 'N R D LIST^ZVERPC(.R,"""") W R(0)'"
+            Command = "mumps -run %XCMD 'N R D LIST^ZVERPC(.R) W R(0)'"
             Match   = "\d|\^|RPC"
         },
         @{
             Label   = "ZVERCMP callable"
-            Command = "mumps -run %XCMD 'N R D INFO^ZVERCMP(.R,87) W R(0)'"
+            Command = "mumps -run %XCMD 'N R D LIST^ZVERCMP(.R,87) W R(0)'"
             Match   = "\d|\^|PROVIDER"
         },
         @{
             Label   = "ZVEADT callable"
-            Command = "mumps -run %XCMD 'N R D WARDS^ZVEADT(.R,"""") W R(0)'"
+            Command = "mumps -run %XCMD 'N R D WARDS^ZVEADT(.R) W R(0)'"
             Match   = "\d|\^|WARD"
         }
     )

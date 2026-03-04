@@ -62,10 +62,12 @@ async function fetchJson(path, opts = {}) {
 }
 
 async function loginAndGetCookies() {
+  const accessCode = process.env.VISTA_ACCESS_CODE || 'PRO1234';
+  const verifyCode = process.env.VISTA_VERIFY_CODE || 'PRO1234!!';
   const res = await fetch(`${API}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ accessCode: 'PROV123', verifyCode: 'PROV123!!' }),
+    body: JSON.stringify({ accessCode, verifyCode }),
     redirect: 'manual',
   });
   const cookies = res.headers.getSetCookie?.() || [];

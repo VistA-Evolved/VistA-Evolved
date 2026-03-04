@@ -7,99 +7,99 @@
  *   node scripts/generate-phase-qa.mjs
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from "vitest";
 
-const API = process.env.API_URL ?? 'http://localhost:3001';
+const API = process.env.API_URL ?? "http://localhost:3001";
 
-describe('Phase 134: IMPLEMENT: Disaster Recovery & Resilience', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 134: IMPLEMENT: Disaster Recovery & Resilience", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/backups/`);
-    expect(r0.status, '/backups/').not.toBe(500);
+    expect(r0.status, "/backups/").not.toBe(500);
   });
 });
 
-describe('Phase 136: IMPLEMENT: Store Policy Gate + Durability Sweep', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 136: IMPLEMENT: Store Policy Gate + Durability Sweep", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/posture/store-policy`);
-    expect(r0.status, '/posture/store-policy').not.toBe(500);
+    expect(r0.status, "/posture/store-policy").not.toBe(500);
   });
 });
 
-describe('Phase 150: Enterprise IAM Default + Portal Auth Modernization', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 150: Enterprise IAM Default + Portal Auth Modernization", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/posture/data-plane`);
-    expect(r0.status, '/posture/data-plane').not.toBe(500);
+    expect(r0.status, "/posture/data-plane").not.toBe(500);
   });
 });
 
-describe('Phase 152: SCHEDULING REALISM V3 (PG-ONLY, NO MAP FALLBACK, OPTIONAL SE', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 152: SCHEDULING REALISM V3 (PG-ONLY, NO MAP FALLBACK, OPTIONAL SE", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/scheduling/requests`);
-    expect(r0.status, '/scheduling/requests').not.toBe(500);
+    expect(r0.status, "/scheduling/requests").not.toBe(500);
   });
 });
 
-describe('Phase 153: IMPLEMENT: Enterprise IAM Default (OIDC Mandatory in rc/prod', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 153: IMPLEMENT: Enterprise IAM Default (OIDC Mandatory in rc/prod", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/posture/data-plane`);
-    expect(r0.status, '/posture/data-plane').not.toBe(500);
+    expect(r0.status, "/posture/data-plane").not.toBe(500);
   });
 });
 
-describe('Phase 155: VistA Routine Install Automation (M Routines + RPC Registrat', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 155: VistA Routine Install Automation (M Routines + RPC Registrat", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/vista/provision/status`);
-    expect(r0.status, '/vista/provision/status').not.toBe(500);
+    expect(r0.status, "/vista/provision/status").not.toBe(500);
   });
 });
 
-describe('Phase 156: Imaging Operationalization (Orthanc Profile + Wiring + CI Sm', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 156: Imaging Operationalization (Orthanc Profile + Wiring + CI Sm", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/imaging/health`);
-    expect(r0.status, '/imaging/health').not.toBe(500);
+    expect(r0.status, "/imaging/health").not.toBe(500);
     const r1 = await fetch(`${API}/system`);
-    expect(r1.status, '/system').not.toBe(500);
+    expect(r1.status, "/system").not.toBe(500);
   });
 });
 
-describe('Phase 157: Audit JSONL Shipping to Object Store', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 157: Audit JSONL Shipping to Object Store", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/audit/shipping/manifests`);
-    expect(r0.status, '/audit/shipping/manifests').not.toBe(500);
+    expect(r0.status, "/audit/shipping/manifests").not.toBe(500);
     const r1 = await fetch(`${API}/audit/shipping/status`);
-    expect(r1.status, '/audit/shipping/status').not.toBe(500);
+    expect(r1.status, "/audit/shipping/status").not.toBe(500);
     const r2 = await fetch(`${API}/audit/shipping/trigger`);
-    expect(r2.status, '/audit/shipping/trigger').not.toBe(500);
+    expect(r2.status, "/audit/shipping/trigger").not.toBe(500);
   });
 });
 
-describe('Phase 239: HL7v2 Engine Packaging (Wave 6 P2)', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 239: HL7v2 Engine Packaging (Wave 6 P2)", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/hl7/connections`);
-    expect(r0.status, '/hl7/connections').not.toBe(500);
+    expect(r0.status, "/hl7/connections").not.toBe(500);
     const r1 = await fetch(`${API}/hl7/health`);
-    expect(r1.status, '/hl7/health').not.toBe(500);
+    expect(r1.status, "/hl7/health").not.toBe(500);
   });
 });
 
-describe('Phase 240: HL7v2 Routing Layer (Wave 6 P3)', () => {
-  it('phase registered in index', () => {
-    expect('240').toBeTruthy();
+describe("Phase 240: HL7v2 Routing Layer (Wave 6 P3)", () => {
+  it("phase registered in index", () => {
+    expect("240").toBeTruthy();
   });
 });
 
-describe('Phase 254: Resilience Certification (Wave 7 P7)', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 254: Resilience Certification (Wave 7 P7)", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/health`);
-    expect(r0.status, '/health').not.toBe(500);
+    expect(r0.status, "/health").not.toBe(500);
     const r1 = await fetch(`${API}/ready`);
-    expect(r1.status, '/ready').not.toBe(500);
+    expect(r1.status, "/ready").not.toBe(500);
   });
 });
 
-describe('Phase 258: HL7v2 Integration Engine Baseline (Wave 8 P2)', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 258: HL7v2 Integration Engine Baseline (Wave 8 P2)", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/api/platform/integrations/hl7v2/endpoints`);
-    expect(r0.status, '/api/platform/integrations/hl7v2/endpoints').not.toBe(500);
+    expect(r0.status, "/api/platform/integrations/hl7v2/endpoints").not.toBe(500);
   });
 });

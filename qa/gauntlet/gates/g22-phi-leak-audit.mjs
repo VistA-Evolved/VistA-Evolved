@@ -35,7 +35,7 @@ export async function run(opts = {}) {
 
   const phiSrc = readFileSync(phiRedactPath, 'utf8');
   const requiredPhiFields = ['dfn', 'patientdfn', 'patient_dfn', 'mrn'];
-  const missingPhiFields = requiredPhiFields.filter((f) => !phiSrc.includes(`"${f}"`));
+  const missingPhiFields = requiredPhiFields.filter((f) => !phiSrc.includes(`"${f}"`) && !phiSrc.includes(`'${f}'`));
   if (missingPhiFields.length > 0) {
     details.push(`phi-redaction.ts: missing PHI fields: ${missingPhiFields.join(', ')}`);
     status = 'fail';
@@ -66,7 +66,7 @@ export async function run(opts = {}) {
 
     // Check neverLogFields includes dfn
     const neverLogFieldsCheck = ['dfn', 'patientDfn', 'mrn'].filter(
-      (f) => !configSrc.includes(`"${f}"`)
+      (f) => !configSrc.includes(`"${f}"`) && !configSrc.includes(`'${f}'`)
     );
     if (neverLogFieldsCheck.length > 0) {
       details.push(`server-config.ts: neverLogFields missing: ${neverLogFieldsCheck.join(', ')}`);

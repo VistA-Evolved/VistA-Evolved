@@ -240,6 +240,10 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: 'ORWLRR INTERIM', domain: 'labs', tag: 'read', description: 'Interim lab results' },
   { name: 'ORWLRR ACK', domain: 'labs', tag: 'write', description: 'Acknowledge lab result' },
   { name: 'ORWLRR CHART', domain: 'labs', tag: 'read', description: 'Lab chart data' },
+  { name: 'ORQQL DETAIL', domain: 'labs', tag: 'read', description: 'Lab order detail' },
+  { name: 'ORWLR RECENTSIT', domain: 'labs', tag: 'read', description: 'Recent lab results by site' },
+  { name: 'ORWLR CUMULATIVE', domain: 'labs', tag: 'read', description: 'Cumulative lab report' },
+  { name: 'LR ORDER', domain: 'labs', tag: 'write', description: 'Place lab order' },
   {
     name: 'ORWLRR INTERIMG',
     domain: 'labs',
@@ -254,6 +258,8 @@ export const RPC_REGISTRY: RpcDefinition[] = [
     tag: 'read',
     description: 'Active medications list',
   },
+  { name: 'ORWPS COVER', domain: 'medications', tag: 'read', description: 'Medications cover sheet' },
+  { name: 'ORWPS DETAIL', domain: 'medications', tag: 'read', description: 'Medication detail' },
   { name: 'ORWORR GETTXT', domain: 'medications', tag: 'read', description: 'Order result text' },
   {
     name: 'ORWDXM AUTOACK',
@@ -408,6 +414,8 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: 'ORQQPL PROBLEM LIST', domain: 'problems', tag: 'read', description: 'Get problem list' },
   { name: 'ORQQPL4 LEX', domain: 'problems', tag: 'read', description: 'ICD/Lexicon search' },
   { name: 'ORQQPL ADD SAVE', domain: 'problems', tag: 'write', description: 'Add problem' },
+  { name: 'GMPL PROB LIST', domain: 'problems', tag: 'read', description: 'GMPL problem list by status' },
+  { name: 'GMPL ADD SAVE', domain: 'problems', tag: 'write', description: 'GMPL add and save problem' },
   { name: 'ORQQPL EDIT SAVE', domain: 'problems', tag: 'write', description: 'Edit problem' },
   {
     name: 'ORWCH PROBLEM LIST',
@@ -1228,6 +1236,39 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
   {
     name: 'ORWDXC SESSION',
     reason: 'Order check session management — CPRS Delphi references (Phase 434)',
+  },
+  // Phase 568: Labs/Meds/Problems wiring — RPCs present in CPRS Delphi but absent from some Vivian snapshots
+  {
+    name: 'ORQQL DETAIL',
+    reason: 'Lab order detail — ORQQL namespace absent from Vivian (Phase 568)',
+  },
+  {
+    name: 'ORWLR RECENTSIT',
+    reason: 'Recent lab results — ORWLR namespace absent from Vivian (Phase 568)',
+  },
+  {
+    name: 'ORWLR CUMULATIVE',
+    reason: 'Cumulative lab report — ORWLR namespace absent from Vivian (Phase 568)',
+  },
+  {
+    name: 'LR ORDER',
+    reason: 'Lab order entry — LR package underrepresented in Vivian (Phase 568)',
+  },
+  {
+    name: 'ORWPS COVER',
+    reason: 'Medications cover sheet — present in CPRS Delphi but absent from Vivian (Phase 568)',
+  },
+  {
+    name: 'ORWPS DETAIL',
+    reason: 'Medication detail — present in CPRS Delphi but absent from Vivian (Phase 568)',
+  },
+  {
+    name: 'GMPL PROB LIST',
+    reason: 'GMPL problem list by status — GMPL package underrepresented in Vivian (Phase 568)',
+  },
+  {
+    name: 'GMPL ADD SAVE',
+    reason: 'GMPL add/save problem — GMPL package underrepresented in Vivian (Phase 568)',
   },
 ];
 

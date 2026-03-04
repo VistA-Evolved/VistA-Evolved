@@ -4417,6 +4417,39 @@ CREATE INDEX IF NOT EXISTS idx_bej_tenant ON bulk_export_job(tenant_id);
 CREATE INDEX IF NOT EXISTS idx_bej_status ON bulk_export_job(tenant_id, status);
 `,
   },
+
+  // ═══════════════════════════════════════════════════════════
+  // v59 — ADT-1: Durable ADT movement store (admit/transfer/discharge)
+  // PG-backed stubs for DGPM write RPCs not available in sandbox.
+  // ═══════════════════════════════════════════════════════════
+  {
+    version: 59,
+    name: 'adt_movement_store',
+    sql: `
+CREATE TABLE IF NOT EXISTS adt_movement (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  movement_type TEXT NOT NULL,
+  patient_dfn TEXT NOT NULL,
+  from_ward_ien TEXT,
+  to_ward_ien TEXT,
+  bed_id TEXT,
+  admitting_duz TEXT,
+  attending_duz TEXT,
+  movement_datetime TEXT NOT NULL,
+  discharge_type TEXT,
+  status TEXT NOT NULL DEFAULT 'pending',
+  vista_ien TEXT,
+  detail JSONB,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_adt_mv_tenant ON adt_movement(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_adt_mv_type ON adt_movement(tenant_id, movement_type);
+CREATE INDEX IF NOT EXISTS idx_adt_mv_dfn ON adt_movement(tenant_id, patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_adt_mv_status ON adt_movement(tenant_id, status);
+`,
+  },
 ];
 
 /**
@@ -4606,7 +4639,6 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   'workflow_task',
   'workflow_task_event',
   // Phase 351: Patient Communications
-  'patient_consent',
   'notification_template',
   'notification_record',
   // Phase 352: Department Scheduling & Resources
@@ -4679,6 +4711,8 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   'hl7_dead_letter',
   'dsar_request',
   'bulk_export_job',
+  // ADT-1: ADT movement store
+  'adt_movement',
 ] as const;
 
 /**

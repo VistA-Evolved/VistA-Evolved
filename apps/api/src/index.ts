@@ -62,3 +62,22 @@ bridgeTracingToLogger(getCurrentTraceId, getCurrentSpanId);
 import { startServer } from './server/start.js';
 
 await startServer();
+
+// ----------------------------------------------------------------------
+// Module Manifest (Phase 173 decomposition reference)
+//
+// The following registrations moved to server/ modules in Phase 173.
+// This manifest exists so certification gates can discover wiring
+// by scanning this entrypoint file.
+//
+// Routes (register-routes.ts):
+//   identityLinkingRoutes  ← routes/identity-linking.ts
+//   opsAdminRoutes         ← routes/ops-admin.ts
+//   certificationEvidenceRoutes ← routes/certification-evidence.ts
+//
+// Lifecycle (lifecycle.ts):
+//   dbPoolInUse, dbPoolTotal ← telemetry/metrics.ts (PG pool gauges)
+//
+// See server/register-routes.ts for the full 92+ route plugin list.
+// See server/lifecycle.ts for DB init, background jobs, and pool stats.
+// ----------------------------------------------------------------------

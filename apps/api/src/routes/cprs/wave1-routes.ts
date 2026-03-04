@@ -44,6 +44,23 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
       const lines = await safeCallRpc('ORWORB UNSIG ORDERS', [String(dfn)]);
       disconnect();
 
+      // Guard: if the RPC doesn't exist on this VistA instance, the response
+      // contains an error message like "Remote Procedure '...' doesn't exist".
+      // Treat that as zero unsigned orders rather than garbled data.
+      const rpcMissing = lines.some(
+        (l: string) => l.includes("doesn't exist") || l.includes('not found')
+      );
+      if (rpcMissing) {
+        return {
+          ok: true,
+          unsigned: 0,
+          recent: [],
+          rpcUsed,
+          vivianPresence,
+          _note: 'ORWORB UNSIG ORDERS not available on this VistA instance',
+        };
+      }
+
       const orders = lines
         .filter((l: string) => l.trim())
         .map((line: string, i: number) => {

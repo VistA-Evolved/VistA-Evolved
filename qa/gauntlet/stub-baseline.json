@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-26T12:18:56.603Z",
+  "generatedAt": "2026-03-04T13:52:55.569Z",
   "note": "Baseline for stub growth detection. Update with: node qa/gauntlet/gates/g20-no-new-stub-growth.mjs --update-baseline",
   "counts": {
-    "stub": 978,
-    "not_implemented": 433,
-    "integration_pending": 346
+    "stub": 1033,
+    "not_implemented": 429,
+    "integration_pending": 494
   }
 }

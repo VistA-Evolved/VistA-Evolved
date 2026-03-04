@@ -26,6 +26,31 @@ export default function MenuBar({ dfn }: MenuBarProps) {
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
+  // Dead-click audit: Phase 568 — all interactions wired or labeled
+  const DISABLED_RPC_MAP: Record<string, string> = {
+    mnuFileEncounter: 'ORWPCE PCE4NOTE',
+    mnuFileReview: 'ORWOR1 SIG',
+    mnuFilePrint: 'ORWRP REPORT TEXT',
+    mnuEditUndo: 'browser native',
+    mnuEditRedo: 'browser native',
+    mnuEditCut: 'browser native',
+    mnuEditCopy: 'browser native',
+    mnuEditPaste: 'browser native',
+    mnuViewVisits: 'ORWCV VST',
+    mnuInsurance: 'DG SENSITIVE RECORD ACCESS',
+    mnuViewFlags: 'ORPRF HAS DGPF DATA',
+    mnuViewReminders: 'ORQQPXRM REMINDERS APPLICABLE',
+    mnuToolsGraphing: 'ORWGRPC ALLITEMS',
+    mnuToolsOptions: 'ORWCH SAVESIZ',
+    mnuHelpContents: 'static help content',
+  };
+
+  const PENDING_RPC_MAP: Record<string, string> = {
+    'info:demographics': 'ORWPT PTINQ',
+    'fontSize': 'N/A (local preference)',
+    'about': 'N/A (static dialog)',
+  };
+
   function handleAction(item: MenuItem) {
     setOpenMenu(null);
     if (!item.onClick) return;
@@ -39,6 +64,15 @@ export default function MenuBar({ dfn }: MenuBarProps) {
       router.push('/');
     } else if (item.onClick === 'refresh') {
       window.location.reload();
+    } else if (item.onClick === 'fontSize') {
+      const size = item.tag ?? 10;
+      document.documentElement.style.setProperty('--chart-font-size', `${size}px`);
+    } else if (item.onClick === 'about') {
+      window.alert('VistA-Evolved CPRS Web Client\nIntegration pending features shown in menu tooltips.');
+    } else {
+      // No dead clicks — show pending info for any unhandled action
+      const rpc = PENDING_RPC_MAP[item.onClick] ?? 'unknown';
+      window.alert(`Integration pending\nAction: ${item.onClick}\nTarget RPC: ${rpc}`);
     }
   }
 
@@ -57,6 +91,7 @@ export default function MenuBar({ dfn }: MenuBarProps) {
             <button
               className={`${styles.menuItem} ${!item.enabled ? styles.disabled : ''}`}
               disabled={!item.enabled}
+              title={!item.enabled ? `Integration pending${DISABLED_RPC_MAP[item.name] ? ' — target: ' + DISABLED_RPC_MAP[item.name] : ''}` : undefined}
               onClick={() => {
                 if (!hasChildren) handleAction(item);
               }}

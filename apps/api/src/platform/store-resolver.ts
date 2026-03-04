@@ -14,6 +14,7 @@
  */
 
 import { isPgConfigured } from './pg/pg-db.js';
+import { requiresPg } from './runtime-mode.js';
 
 // PG repos
 import * as pgPayerRepo from './pg/repo/payer-repo.js';
@@ -33,6 +34,13 @@ export type StoreBackend = 'pg';
  * Returns "pg". Throws if PLATFORM_PG_URL is not configured.
  */
 export function resolveBackend(): StoreBackend {
+  // Phase 125: In rc/prod modes, PG is mandatory via runtime-mode contract
+  if (requiresPg() && !isPgConfigured()) {
+    throw new Error(
+      'PLATFORM_PG_URL is not set. PostgreSQL is required in rc/prod mode. ' +
+        'Set PLATFORM_PG_URL to enable the data store.'
+    );
+  }
   if (!isPgConfigured()) {
     throw new Error(
       'PLATFORM_PG_URL is not set. PostgreSQL is required. ' +

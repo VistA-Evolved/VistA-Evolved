@@ -48,6 +48,7 @@ import {
   getClinicalReportText,
   getClinicalReportHealth,
 } from '../services/clinical-reports.js';
+import { getRevenueSummary } from '../rcm/claim-lifecycle/revenue-summary-repo.js';
 
 /* ================================================================== */
 /* Helpers                                                              */
@@ -422,6 +423,34 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
     });
 
     return { ok: true, ...result };
+  });
+
+  /* ── GET /analytics/revenue-summary ─────────────────────── */
+  /* CFO Dashboard: 5 PG-backed financial metrics (BILLING-2)  */
+  server.get('/analytics/revenue-summary', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requireAnalyticsPermission(session, 'analytics_viewer', reply);
+
+    const { period } = request.query as any;
+    const validPeriods = ['week', 'month', 'quarter', 'year'];
+    const safePeriod = validPeriods.includes(period) ? period : 'month';
+
+    try {
+      const summary = await getRevenueSummary(session.tenantId, safePeriod);
+
+      audit('analytics.revenue_summary' as AuditAction, 'success', auditActor(request), {
+        detail: { period: safePeriod, claimCount: summary.collectionRate.totalClaimCount },
+      });
+
+      return { ok: true, ...summary };
+    } catch (err: any) {
+      log.warn('[revenue-summary] Query failed', { error: err?.message });
+      return reply.code(500).send({
+        ok: false,
+        error: 'Revenue summary query failed',
+        detail: err?.message,
+      });
+    }
   });
 
   log.info('Analytics routes registered (Phase 25)');

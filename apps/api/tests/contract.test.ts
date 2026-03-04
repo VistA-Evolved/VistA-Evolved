@@ -41,8 +41,8 @@ async function api(path: string, opts?: { method?: string; body?: unknown; cooki
 
 /** Login and return session cookie. */
 async function getSessionCookie(): Promise<string> {
-  const accessCode = process.env.VISTA_ACCESS_CODE ?? 'PROV123';
-  const verifyCode = process.env.VISTA_VERIFY_CODE ?? 'PROV123!!';
+  const accessCode = process.env.VISTA_ACCESS_CODE ?? 'PRO1234';
+  const verifyCode = process.env.VISTA_VERIFY_CODE ?? 'PRO1234!!';
 
   const res = await fetch(`${API}/auth/login`, {
     method: 'POST',
@@ -51,11 +51,13 @@ async function getSessionCookie(): Promise<string> {
     redirect: 'manual',
   });
 
-  const setCookie = res.headers.get('set-cookie') ?? '';
-  // Extract session cookie from comma-separated Set-Cookie header
-  const cookies = setCookie
-    .split(',')
-    .map((c) => {
+  // Node 18+ fetch exposes set-cookie via getSetCookie(); fallback to .get()
+  const rawCookies: string[] =
+    typeof (res.headers as any).getSetCookie === 'function'
+      ? (res.headers as any).getSetCookie()
+      : (res.headers.get('set-cookie') ?? '').split(',');
+  const cookies = rawCookies
+    .map((c: string) => {
       const m = c.trim().match(/^([^=]+=[^;]+)/);
       return m?.[1] ?? '';
     })
@@ -254,8 +256,8 @@ describe('Auth flow', () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        accessCode: process.env.VISTA_ACCESS_CODE ?? 'PROV123',
-        verifyCode: process.env.VISTA_VERIFY_CODE ?? 'PROV123!!',
+        accessCode: process.env.VISTA_ACCESS_CODE ?? 'PRO1234',
+        verifyCode: process.env.VISTA_VERIFY_CODE ?? 'PRO1234!!',
       }),
     });
     expect(res.status).toBe(200);
@@ -263,8 +265,12 @@ describe('Auth flow', () => {
     expect(data).toHaveProperty('ok', true);
     expect(data).toHaveProperty('session');
     expect(data.session).toHaveProperty('duz');
-    // Should set cookie
-    const setCookie = res.headers.get('set-cookie');
+    // Should set cookie — use getSetCookie() for Node 18+ fetch
+    const rawCookies: string[] =
+      typeof (res.headers as any).getSetCookie === 'function'
+        ? (res.headers as any).getSetCookie()
+        : (res.headers.get('set-cookie') ?? '').split(',');
+    const setCookie = rawCookies.join(', ');
     expect(setCookie).toBeTruthy();
   });
 

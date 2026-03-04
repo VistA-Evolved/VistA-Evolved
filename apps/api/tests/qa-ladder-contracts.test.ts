@@ -51,15 +51,18 @@ async function getSessionCookie(): Promise<string> {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      accessCode: process.env.VISTA_ACCESS_CODE ?? 'PROV123',
-      verifyCode: process.env.VISTA_VERIFY_CODE ?? 'PROV123!!',
+      accessCode: process.env.VISTA_ACCESS_CODE ?? 'PRO1234',
+      verifyCode: process.env.VISTA_VERIFY_CODE ?? 'PRO1234!!',
     }),
     redirect: 'manual',
   });
-  const setCookie = res.headers.get('set-cookie') ?? '';
-  const cookies = setCookie
-    .split(',')
-    .map((c) => {
+  // Node 18+ fetch exposes set-cookie via getSetCookie(); fallback to .get()
+  const rawCookies: string[] =
+    typeof (res.headers as any).getSetCookie === 'function'
+      ? (res.headers as any).getSetCookie()
+      : (res.headers.get('set-cookie') ?? '').split(',');
+  const cookies = rawCookies
+    .map((c: string) => {
       const m = c.trim().match(/^([^=]+=[^;]+)/);
       return m?.[1] ?? '';
     })
@@ -304,13 +307,18 @@ describe('Security headers present', () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        accessCode: process.env.VISTA_ACCESS_CODE ?? 'PROV123',
-        verifyCode: process.env.VISTA_VERIFY_CODE ?? 'PROV123!!',
+        accessCode: process.env.VISTA_ACCESS_CODE ?? 'PRO1234',
+        verifyCode: process.env.VISTA_VERIFY_CODE ?? 'PRO1234!!',
       }),
     });
-    const setCookie = res.headers.get('set-cookie') ?? '';
+    // Node 18+ fetch exposes set-cookie via getSetCookie(); fallback to .get()
+    const rawCookies: string[] =
+      typeof (res.headers as any).getSetCookie === 'function'
+        ? (res.headers as any).getSetCookie()
+        : (res.headers.get('set-cookie') ?? '').split(',');
+    const setCookie = rawCookies.join(', ').toLowerCase();
     // Session cookie should be httpOnly
-    expect(setCookie.toLowerCase()).toContain('httponly');
+    expect(setCookie).toContain('httponly');
   });
 });
 

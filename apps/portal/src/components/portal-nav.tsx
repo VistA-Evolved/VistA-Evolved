@@ -10,9 +10,10 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { API_BASE } from '@/lib/api-config';
 
 /** Nav items with i18n keys that map to portal messages/nav.* */
 const NAV_ITEMS = [
@@ -38,10 +39,22 @@ const NAV_ITEMS = [
   { href: '/dashboard/ai-help', i18nKey: 'aiHelp', icon: '🤖' },
 ] as const;
 
+// Dead-click audit: Phase 568 — all interactions wired or labeled
 export function PortalNav() {
   const pathname = usePathname();
+  const router = useRouter();
   const tNav = useTranslations('nav');
   const tCommon = useTranslations('common');
+
+  async function handleLogout() {
+    try {
+      await fetch(`${API_BASE}/portal/auth/logout`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+    } catch { /* best-effort */ }
+    router.push('/');
+  }
 
   return (
     <nav style={styles.nav}>
@@ -74,11 +87,9 @@ export function PortalNav() {
         <div style={{ marginBottom: '0.5rem' }}>
           <LanguageSwitcher />
         </div>
-        <form action="/api/logout" method="POST">
-          <button type="submit" style={styles.logoutBtn}>
-            {tCommon('signOut')}
-          </button>
-        </form>
+        <button type="button" style={styles.logoutBtn} onClick={handleLogout}>
+          {tCommon('signOut')}
+        </button>
       </div>
     </nav>
   );

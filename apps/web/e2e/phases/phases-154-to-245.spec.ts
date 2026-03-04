@@ -7,362 +7,347 @@
  *   node scripts/generate-phase-qa.mjs
  */
 
-import { test, expect } from '@playwright/test';
-import { readdirSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { test, expect } from "@playwright/test";
+import { readdirSync } from "node:fs";
+import { join, resolve } from "node:path";
 
-const API = process.env.API_URL ?? 'http://localhost:3001';
-const ROOT = resolve(__dirname, '..', '..', '..', '..');
+const API = process.env.API_URL ?? "http://localhost:3001";
+const ROOT = resolve(__dirname, "..", "..", "..", "..");
 
-test.describe('Phase 154: CPOE Order Signing + Idempotency (Postgres-Backed)', () => {
-  test('API routes respond (no 500)', async ({ request }) => {
+test.describe("Phase 154: CPOE Order Signing + Idempotency (Postgres-Backed)", () => {
+  test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/vista/cprs/orders/sign`);
-    expect(r0.status(), '/vista/cprs/orders/sign not 500').not.toBe(500);
+    expect(r0.status(), "/vista/cprs/orders/sign not 500").not.toBe(500);
   });
 
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['OrdersPanel.tsx'];
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["OrdersPanel.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 154`).toBeGreaterThan(0);
   });
 
-  test('integration-pending responses are compliant', async ({ request }) => {
+  test("integration-pending responses are compliant", async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/vista/cprs/orders/sign`);
-    expect(res.status(), '/vista/cprs/orders/sign should respond').toBeDefined();
+    expect(res.status(), "/vista/cprs/orders/sign should respond").toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === 'integration-pending') {
-        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
+      if (body && body.status === "integration-pending") {
+        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
       }
     }
   });
 });
 
-test.describe('Phase 158: 01 — IMPLEMENT: Specialty Template & Workflow Studio', () => {
-  test('API routes respond (no 500)', async ({ request }) => {
+test.describe("Phase 158: 01 — IMPLEMENT: Specialty Template & Workflow Studio", () => {
+  test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/admin/templates`);
-    expect(r0.status(), '/admin/templates not 500').not.toBe(500);
+    expect(r0.status(), "/admin/templates not 500").not.toBe(500);
     const r1 = await request.get(`${API}/encounter/note-builder/generate`);
-    expect(r1.status(), '/encounter/note-builder/generate not 500').not.toBe(500);
+    expect(r1.status(), "/encounter/note-builder/generate not 500").not.toBe(500);
   });
 
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['NotesPanel.tsx', 'page.tsx', 'tenant-context.tsx'];
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["NotesPanel.tsx","page.tsx","tenant-context.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 3 UI files for Phase 158`).toBeGreaterThan(0);
   });
 
-  test('integration-pending responses are compliant', async ({ request }) => {
+  test("integration-pending responses are compliant", async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/admin/templates`);
-    expect(res.status(), '/admin/templates should respond').toBeDefined();
+    expect(res.status(), "/admin/templates should respond").toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === 'integration-pending') {
-        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
+      if (body && body.status === "integration-pending") {
+        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
       }
     }
   });
 });
 
-test.describe('Phase 159: 01: IMPLEMENT — Patient Queue / Waiting / Numbering / Callin', () => {
-  test('API routes respond (no 500)', async ({ request }) => {
+test.describe("Phase 159: 01: IMPLEMENT — Patient Queue / Waiting / Numbering / Callin", () => {
+  test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/cprs/admin/queue`);
-    expect(r0.status(), '/cprs/admin/queue not 500').not.toBe(500);
+    expect(r0.status(), "/cprs/admin/queue not 500").not.toBe(500);
   });
 
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['page.tsx'];
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 159`).toBeGreaterThan(0);
   });
 
-  test('integration-pending responses are compliant', async ({ request }) => {
+  test("integration-pending responses are compliant", async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/cprs/admin/queue`);
-    expect(res.status(), '/cprs/admin/queue should respond').toBeDefined();
+    expect(res.status(), "/cprs/admin/queue should respond").toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === 'integration-pending') {
-        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
+      if (body && body.status === "integration-pending") {
+        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
       }
     }
   });
 });
 
-test.describe('Phase 160: 01: IMPLEMENT — Department Workflow Packs', () => {
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['page.tsx'];
+test.describe("Phase 160: 01: IMPLEMENT — Department Workflow Packs", () => {
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 160`).toBeGreaterThan(0);
   });
+
 });
 
-test.describe('Phase 161: VistA + CPRS Alignment Verification Pack', () => {
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['page.tsx'];
+test.describe("Phase 161: VistA + CPRS Alignment Verification Pack", () => {
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 161`).toBeGreaterThan(0);
   });
+
 });
 
-test.describe('Phase 162: Performance + UX Speed Pass', () => {
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['page.tsx'];
+test.describe("Phase 162: Performance + UX Speed Pass", () => {
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 162`).toBeGreaterThan(0);
   });
+
 });
 
-test.describe('Phase 163: Modular Packaging Validation', () => {
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['page.tsx'];
+test.describe("Phase 163: Modular Packaging Validation", () => {
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 163`).toBeGreaterThan(0);
   });
+
 });
 
-test.describe('Phase 164: Certification / Readiness Posture', () => {
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['page.tsx'];
+test.describe("Phase 164: Certification / Readiness Posture", () => {
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 164`).toBeGreaterThan(0);
   });
+
 });
 
-test.describe('Phase 165: Specialty Coverage Score + QA Ladder Extension', () => {
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['page.tsx'];
+test.describe("Phase 165: Specialty Coverage Score + QA Ladder Extension", () => {
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 165`).toBeGreaterThan(0);
   });
+
 });
 
-test.describe('Phase 243: Onboarding UX Wizard (Wave 6 P6)', () => {
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['layout.tsx', 'page.tsx'];
+test.describe("Phase 243: Onboarding UX Wizard (Wave 6 P6)", () => {
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["layout.tsx","page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 2 UI files for Phase 243`).toBeGreaterThan(0);
   });
+
 });
 
-test.describe('Phase 244: Support Tooling (Wave 6 P7)', () => {
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['layout.tsx', 'page.tsx'];
+test.describe("Phase 244: Support Tooling (Wave 6 P7)", () => {
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["layout.tsx","page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 2 UI files for Phase 244`).toBeGreaterThan(0);
   });
+
 });
 
-test.describe('Phase 245: Data Exports v2 (Wave 6 P8)', () => {
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['layout.tsx', 'page.tsx'];
+test.describe("Phase 245: Data Exports v2 (Wave 6 P8)", () => {
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["layout.tsx","page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 2 UI files for Phase 245`).toBeGreaterThan(0);
   });
+
 });

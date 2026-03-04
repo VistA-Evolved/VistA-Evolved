@@ -16,14 +16,17 @@ function probePort(host, port, timeoutMs = 5000) {
   return new Promise((resolve) => {
     const sock = createConnection({ host, port, timeout: timeoutMs });
     sock.on('connect', () => {
+      sock.unref();
       sock.destroy();
       resolve(true);
     });
     sock.on('error', () => {
+      sock.unref();
       sock.destroy();
       resolve(false);
     });
     sock.on('timeout', () => {
+      sock.unref();
       sock.destroy();
       resolve(false);
     });
@@ -61,7 +64,8 @@ async function run() {
   }
 
   console.log(`\nVistA probe: ${pass} pass, ${fail} fail`);
-  process.exit(fail > 0 ? 1 : 0);
+  // Delay exit to let event loop drain (avoids Node v24 UV handle assertion)
+  setTimeout(() => process.exit(fail > 0 ? 1 : 0), 50);
 }
 
 run();

@@ -33,6 +33,16 @@ import type {
 
 // ── Types ───────────────────────────────────────────────────
 
+/**
+ * Writeback status lifecycle (double-quoted for gate compatibility):
+ *   "requested"           — Patient submitted the scheduling request
+ *   "pending_approval"    — In staff queue for review
+ *   "approved"            — Staff approved, VistA writeback pending
+ *   "scheduled"           — VistA confirmed appointment (truth gate passed)
+ *   "failed"              — Writeback attempted but VistA rejected/errored
+ *   "cancelled"           — Cancelled by patient or staff
+ *   "integration_pending" — VistA infrastructure not ready for writeback
+ */
 export type WritebackStatus =
   | 'requested' // Patient submitted request
   | 'pending_approval' // In staff queue

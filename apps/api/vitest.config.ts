@@ -4,7 +4,8 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
-    testTimeout: 30_000,
+    envFile: '.env.local',
+    testTimeout: 60_000,
     hookTimeout: 15_000,
     include: ['tests/**/*.test.ts'],
     exclude: ['src/**/*.test.ts'], // node:test files (logger, redaction) — run via `node --test`

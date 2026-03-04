@@ -28,6 +28,7 @@ import {
   resetCircuitBreaker,
   forceOpenCircuitBreaker,
   invalidateCache,
+  safeCallRpc,
 } from '../lib/rpc-resilience.js';
 import { getIntegrationHealthSummary } from '../config/integration-registry.js';
 import { isPgConfigured, pgHealthCheck } from '../platform/pg/index.js';
@@ -416,18 +417,19 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     }
     const RPC_NAME = 'ORWPT LIST ALL';
     try {
-      await connect();
-      const lines = await callRpc(RPC_NAME, [q.trim().toUpperCase(), '1']);
+      const lines = await safeCallRpc(RPC_NAME, [q.trim().toUpperCase(), '1']);
       const results = lines
         .map((line) => {
           const parts = line.split('^');
           const dfn = parts[0]?.trim();
           const name = parts[1]?.trim();
-          if (dfn && name) return { dfn, name };
-          return null;
+          if (!dfn || !name) return null;
+          // ORWPT LIST ALL may return additional fields (SSN, DOB) on some instances
+          const ssn = parts[2]?.trim() || undefined;
+          const dob = parts[3]?.trim() || undefined;
+          return { dfn, name, ...(ssn && { ssn }), ...(dob && { dob }) };
         })
         .filter((r) => r !== null);
-      disconnect();
       audit('phi.patient-search', 'success', auditActor(request), {
         requestId: (request as any).requestId,
         sourceIp: request.ip,
@@ -435,11 +437,10 @@ export function registerInlineRoutes(server: FastifyInstance): void {
       });
       return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
     } catch (err: any) {
-      disconnect();
       return {
         ok: false,
         error: safeErr(err),
-        hint: 'Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct',
+        hint: 'Ensure VistA RPC Broker is running and credentials are correct',
       };
     }
   });
@@ -460,9 +461,7 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     }
     const RPC_NAME = 'ORWPT SELECT';
     try {
-      await connect();
-      const lines = await callRpc(RPC_NAME, [String(dfn)]);
-      disconnect();
+      const lines = await safeCallRpc(RPC_NAME, [String(dfn)]);
       const raw = lines[0] || '';
       const parts = raw.split('^');
       if (parts[0] === '-1' || !parts[0]) {
@@ -479,18 +478,24 @@ export function registerInlineRoutes(server: FastifyInstance): void {
         const d = dobFM.substring(5, 7);
         dob = `${y}-${m}-${d}`;
       }
+      // SSN from piece 4 (last 4 only for display safety)
+      const rawSsn = parts[3]?.trim() || '';
+      const ssn = rawSsn.length >= 4 ? rawSsn.slice(-4) : undefined;
       audit('phi.demographics-view', 'success', auditActor(request), {
         patientDfn: String(dfn),
         requestId: (request as any).requestId,
         sourceIp: request.ip,
       });
-      return { ok: true, patient: { dfn: String(dfn), name, dob, sex }, rpcUsed: RPC_NAME };
+      return {
+        ok: true,
+        patient: { dfn: String(dfn), name, dob, sex, ...(ssn && { ssn }) },
+        rpcUsed: RPC_NAME,
+      };
     } catch (err: any) {
-      disconnect();
       return {
         ok: false,
         error: safeErr(err),
-        hint: 'Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct',
+        hint: 'Ensure VistA RPC Broker is running and credentials are correct',
       };
     }
   });
@@ -1061,22 +1066,23 @@ export function registerInlineRoutes(server: FastifyInstance): void {
       return { ok: false, error: safeErr(err) };
     }
     try {
-      await connect();
-      const lines = await callRpc('ORQPT DEFAULT PATIENT LIST', []);
+      const lines = await safeCallRpc('ORQPT DEFAULT PATIENT LIST', []);
       const results = lines
         .map((line) => {
-          const [dfn, name] = line.split('^').map((s) => s.trim());
-          if (dfn && name) return { dfn, name };
-          return null;
+          const parts = line.split('^').map((s) => s.trim());
+          const dfn = parts[0];
+          const name = parts[1];
+          if (!dfn || !name) return null;
+          const ssn = parts[2] || undefined;
+          const dob = parts[3] || undefined;
+          return { dfn, name, ...(ssn && { ssn }), ...(dob && { dob }) };
         })
         .filter((r) => r !== null);
-      disconnect();
       audit('phi.patient-list', 'success', auditActor(request), {
         detail: { count: results.length },
       });
       return { ok: true, count: results.length, results };
     } catch (err: any) {
-      disconnect();
       return { ok: false, error: safeErr(err) };
     }
   });
